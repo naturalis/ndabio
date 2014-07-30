@@ -112,15 +112,15 @@ function ndabio_ndasearchform_callback() {
     '#type' => 'fieldset',
     '#title' => t('Advanced Naturalis Data Search')
   );
-  $form['ndabio_advsearch']['ndabio_advseach_species'] = array(
+  $form['ndabio_advsearch']['ndabio_advsearch_species'] = array(
     '#type' => 'textfield',
     '#title' => t('Search Species'),
     '#default_value' => '',
     '#required' => FALSE,
   );
-  $form['ndabio_advsearch']['ndabio_advseach_taxus'] = array(
+  $form['ndabio_advsearch']['ndabio_advsearch_taxon'] = array(
     '#type' => 'textfield',
-    '#title' => t('Search Taxus'),
+    '#title' => t('Search Taxon'),
     '#default_value' => '',
     '#required' => FALSE,
   );
