@@ -41,7 +41,7 @@ function ndabio_menu() {
     'type' => MENU_CALLBACK,
   );
   $items['naturalis/jsonp'] = array(
-    'page callback' => 'NDABIO_JSON_callback',
+    'page callback' => 'ndabio_jsonp_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -155,7 +155,7 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
     "c:" . $form['ndabio_adv']['#value'];
   drupal_set_message($searchterms);
   echo "result pagina!";
-  return NDABIO_JSON_callback($searchterms);
+  return ndabio_jsonp_callback($searchterms);
 }
 
 /**
@@ -282,15 +282,15 @@ function isJson($string) {
 /**
 * Wrap a JSON for output.
 */
-function NDABIO_JSON_callback($keys = "") {
-  return "<h2>" . t("Result") . "</h2><pre>" . NDABIO_JSONget_callback($keys) . "</pre>";
+function ndabio_jsonp_callback($keys = "") {
+  return "<h2>" . t("Result") . "</h2><pre>" . ndabio_jsonpget_callback($keys) . "</pre>";
 }
 
 
 /**
 * Get a JOSN string.
 */
-function NDABIO_JSONget_callback($keys = "") {
+function ndabio_jsonpget_callback($keys = "") {
   $service_url = variable_get('ndabio_config_json', NDABIO_JSON);
   $curl = curl_init($service_url);
 //  $curl_post_data = array("keys" => $keys);
@@ -423,7 +423,7 @@ function ndabio_search_execute($keys = NULL, $conditions = NULL) {
   global $base_url;
   drupal_set_message("Naturalis: ndabio_search_execute (" . $keys . ", " . implode($conditions) . ")");
   
-  $ndsearch = json_decode(NDABIO_JSONget_callback($keys));
+  $ndsearch = json_decode(ndabio_jsonpget_callback($keys));
   $i = 0;
   foreach ($ndsearch->specimens as $item) {
     $result[$i]['link'] = $base_url. "?q=naturalis/ndadetail/" . $item->specimenId;
