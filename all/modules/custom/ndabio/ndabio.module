@@ -9,8 +9,9 @@
  * Defaults.
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
-//define('NDABIO_JSONP', 'http://www.nederlandsesoorten.nl/linnaeus_ng/app/views/webservices/lookup_nsr_id.php?pid=1&nsr=11111');
-define('NDABIO_JSONP', 'http://localhost/drupal/?q=naturalis/json');
+//define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/RMNH.MAM.50059');
+//define('NDABIO_JSON', 'http://www.nederlandsesoorten.nl/linnaeus_ng/app/views/webservices/lookup_nsr_id.php?pid=1&nsr=11111');
+define('NDABIO_JSON', 'http://localhost/drupal/?q=naturalis/json');
 
  
 /**
@@ -40,7 +41,7 @@ function ndabio_menu() {
     'type' => MENU_CALLBACK,
   );
   $items['naturalis/jsonp'] = array(
-    'page callback' => 'ndabio_jsonp_callback',
+    'page callback' => 'NDABIO_JSON_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -82,14 +83,14 @@ function ndabio_config_form($form, &$form_state) {
       t('Default') . ': ' . NDABIO_NDA,
     '#required' => TRUE,
   );
-  $form['ndabio_config']['ndabio_config_jsonp'] = array(
+  $form['ndabio_config']['ndabio_config_json'] = array(
     '#type' => 'textfield',
     '#title' => t('JSONP Url'),
-    '#default_value' => variable_get('ndabio_config_jsonp', NDABIO_JSONP),
+    '#default_value' => variable_get('ndabio_config_json', NDABIO_JSON),
     '#size' => 140,
     '#maxlength' => 200,
-    '#description' => t('The URL used for getting JSONP data.') . '<br />' . 
-      t('Default') . ': ' . NDABIO_JSONP,
+    '#description' => t('The URL used for getting JSON data.') . '<br />' . 
+      t('Default') . ': ' . NDABIO_JSON,
     '#required' => TRUE,
   );
 
@@ -154,7 +155,7 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
     "c:" . $form['ndabio_adv']['#value'];
   drupal_set_message($searchterms);
   echo "result pagina!";
-  return ndabio_jsonp_callback($searchterms);
+  return NDABIO_JSON_callback($searchterms);
 }
 
 /**
@@ -281,21 +282,22 @@ function isJson($string) {
 /**
 * Wrap a JSON for output.
 */
-function ndabio_jsonp_callback($keys = "") {
-  return "<h2>" . t("Result") . "</h2><pre>" . ndabio_jsonpget_callback($keys) . "</pre>";
+function NDABIO_JSON_callback($keys = "") {
+  return "<h2>" . t("Result") . "</h2><pre>" . NDABIO_JSONget_callback($keys) . "</pre>";
 }
 
 
 /**
 * Get a JOSN string.
 */
-function ndabio_jsonpget_callback($keys = "") {
-  $service_url = variable_get('ndabio_config_jsonp', NDABIO_JSONP);
+function NDABIO_JSONget_callback($keys = "") {
+  $service_url = variable_get('ndabio_config_json', NDABIO_JSON);
   $curl = curl_init($service_url);
-  $curl_post_data = array("keys" => $keys);
+//  $curl_post_data = array("keys" => $keys);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_POST, true);
-  curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+//  curl_setopt($curl, CURLOPT_POST, true);
+//  curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
   $curl_response = curl_exec($curl);
   dpm($curl);
   $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -421,7 +423,7 @@ function ndabio_search_execute($keys = NULL, $conditions = NULL) {
   global $base_url;
   drupal_set_message("Naturalis: ndabio_search_execute (" . $keys . ", " . implode($conditions) . ")");
   
-  $ndsearch = json_decode(ndabio_jsonpget_callback($keys));
+  $ndsearch = json_decode(NDABIO_JSONget_callback($keys));
   $i = 0;
   foreach ($ndsearch->specimens as $item) {
     $result[$i]['link'] = $base_url. "?q=naturalis/ndadetail/" . $item->specimenId;
