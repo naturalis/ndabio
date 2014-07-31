@@ -1,0 +1,15 @@
+name = Bioportal Controller
+core = 7.x
+package = Bioportal
+dependencies[] = bioportal_theme_settings
+dependencies[] = ctools
+dependencies[] = devel
+dependencies[] = ndabio
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = ndabio_config_jsonp
+features[variable][] = ndabio_config_nda
+features[variable][] = search_active_modules
+features[variable][] = search_cron_limit
+features[variable][] = search_default_module
