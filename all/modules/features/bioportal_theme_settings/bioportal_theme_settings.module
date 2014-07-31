@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bioportal Theme Settings feature.
+ */
+
+include_once 'bioportal_theme_settings.features.inc';
