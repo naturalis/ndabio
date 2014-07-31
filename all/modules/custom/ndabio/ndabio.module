@@ -108,6 +108,10 @@ function ndabio_ndasearchform_callback() {
     '#default_value' => '',
     '#required' => FALSE,
   );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
   $form['ndabio_advsearch'] = array(
     '#type' => 'fieldset',
     '#title' => t('Advanced Naturalis Data Search')
@@ -124,10 +128,9 @@ function ndabio_ndasearchform_callback() {
     '#default_value' => '',
     '#required' => FALSE,
   );
-  $form['submit'] = array(
+  $form['ndabio_advsearch']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
-    '#src' => base_path() . path_to_theme() . '/images/search-button.png'
   );
   $form['#submit'][] = 'ndabio_ndasearchform_callback_submit';
   return $form;
@@ -146,8 +149,8 @@ function ndabio_ndasearchform_callback_validate($form, &$form_state) {
 function ndabio_ndasearchform_callback_submit($form, &$form_state) {
   drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
   //Build search query
-  $searchterms = "a:" . $form['ndabio_advsearch']['ndabio_advseach_species']['#value'] . ";" .
-    "b:" . $form['ndabio_advsearch']['ndabio_advseach_taxus']['#value'] . ";" .
+  $searchterms = "a:" . $form['ndabio_advsearch']['ndabio_advsearch_species']['#value'] . ";" .
+    "b:" . $form['ndabio_advsearch']['ndabio_advsearch_taxon']['#value'] . ";" .
     "c:" . $form['ndabio_adv']['#value'];
   drupal_set_message($searchterms);
   echo "result pagina!";
