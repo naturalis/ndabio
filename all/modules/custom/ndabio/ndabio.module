@@ -173,7 +173,19 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
 */
 function ndabio_page_callback() {
   global $base_root, $base_path;
-  return t('Copyright') . ' ' . date("Y") . ' <a href="' . variable_get('ndabio_copyright_url', $base_root . $base_path) . '">Naturalis</a>';
+  $path = drupal_get_path('module', 'ndabio');
+  drupal_add_css($path . "/css/naturalis.css");
+  drupal_add_js($path . "/js/map.js", array('weight' => 1));
+  drupal_add_js("https://maps.googleapis.com/maps/api/js?key=AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ&libraries=drawing");
+  drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); })", 'inline');
+
+
+  $pagecontent = "nieuwdg sdg e pagina: <div id='map-canvas'></div><div id='areas'>
+    	<button onclick='postShape();'>Post geometry</button></div>";
+  
+ 
+
+  return $pagecontent;
 }
 
 /**
@@ -189,7 +201,7 @@ function ndabio_pass() {
   dpm($_GET);
   $path = drupal_get_path('module', 'ndabio');
   drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
-  
+ 
   //return "doorsturen :)";//ndabio_jsonpget_callback($keys . ";passthrough");
   //return ndabio_search_execute("passthrough");
   return drupal_deliver_page(search_data($searchterms, "ndabio"));
