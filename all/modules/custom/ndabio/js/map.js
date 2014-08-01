@@ -116,7 +116,7 @@ function plotMapArea(gid) {
 
 	if (!gid) return;
 
-	$.ajax({
+	jQuery.ajax({
 		url: 'naturalis/ajax',
 		type: "GET",
 		dataType: "json",
