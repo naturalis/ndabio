@@ -11,8 +11,7 @@
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
 //define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/RMNH.MAM.50059');
 //define('NDABIO_JSON', 'http://www.nederlandsesoorten.nl/linnaeus_ng/app/views/webservices/lookup_nsr_id.php?pid=1&nsr=11111');
-define('NDABIO_JSON', 'http://localhost/drupal/?q=naturalis/json');
-
+define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/?country=Suriname&sex=male');
  
 /**
 * DEFINE CUSTOM PAGES
@@ -35,11 +34,6 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['naturalis/json'] = array(
-    'page callback' => 'ndabio_json_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
   $items['naturalis/jsonp'] = array(
     'page callback' => 'ndabio_jsonp_callback',
     'access arguments' => array('access content'),
@@ -55,6 +49,12 @@ function ndabio_menu() {
     'page callback' => 'ndabio_displayform',
     'access arguments' => array('access content'),
     'title' => t('Advanced Naturalis Data Search'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['search/ndapass'] = array(
+    'page callback' => 'ndabio_pass',
+    'access arguments' => array('access content'),
+    'title' => t('Passthrough'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -113,19 +113,29 @@ function ndabio_ndasearchform_callback() {
     '#type' => 'submit',
     '#value' => t('Search'),
   );
-  $form['ndabio_advsearch'] = array(
+  $form['ndabio_advsearch_mm'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Advanced Naturalis Data Search')
+    '#title' => t('Multimedia')
   );
-  $form['ndabio_advsearch']['ndabio_advsearch_species'] = array(
+  $form['ndabio_advsearch_mm']['ndabio_advsearch_mmwetenschap'] = array(
     '#type' => 'textfield',
-    '#title' => t('Search Species'),
+    '#title' => t('Wetenschappelijke naam'),
     '#default_value' => '',
     '#required' => FALSE,
   );
-  $form['ndabio_advsearch']['ndabio_advsearch_taxon'] = array(
+  $form['ndabio_advsearch_mm']['ndabio_advsearch_mmgangbaar'] = array(
     '#type' => 'textfield',
-    '#title' => t('Search Taxon'),
+    '#title' => t('Gangbare naam'),
+    '#default_value' => '',
+    '#required' => FALSE,
+  );
+  $form['ndabio_advsearch_col'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Collectieexemplaren')
+  );
+  $form['ndabio_advsearch_col']['ndabio_advsearch_colwetenschap'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Wetenschappelijke naam'),
     '#default_value' => '',
     '#required' => FALSE,
   );
@@ -148,14 +158,14 @@ function ndabio_ndasearchform_callback_validate($form, &$form_state) {
 * Execute search
 */
 function ndabio_ndasearchform_callback_submit($form, &$form_state) {
-  drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
+  //drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
   //Build search query
-  $searchterms = "a:" . $form['ndabio_advsearch']['ndabio_advsearch_species']['#value'] . ";" .
-    "b:" . $form['ndabio_advsearch']['ndabio_advsearch_taxon']['#value'] . ";" .
+  $searchterms = "species=" . $form['ndabio_advsearch']['ndabio_advsearch_species']['#value'] . ";" .
+    "taxon=" . $form['ndabio_advsearch']['ndabio_advsearch_taxon']['#value'] . ";" .
     "c:" . $form['ndabio_adv']['#value'];
-  drupal_set_message($searchterms);
-  echo "result pagina!";
-  return ndabio_jsonp_callback($searchterms);
+  //drupal_set_message($searchterms);
+  return drupal_deliver_page(search_data($searchterms, "ndabio"));
+  //return ""; //ndabio_jsonp_callback($searchterms);
 }
 
 /**
@@ -167,117 +177,24 @@ function ndabio_page_callback() {
 }
 
 /**
-* Give a (hardcoded) JSON output
-*/
-function ndabio_json_callback() {
-  //drupal_set_message("Naturalis: ndabio_json_callback");
-  $jsonreply = array(
-    "request_datetime" => date("Y-m-d H:i:s"),
-    "data" => NULL,
-  );
-  $determination[] = array(
-    "preferred" => true,
-	  "scientificName" => "Larus Fiscus",
-	  "higherTaxonRank" => "",
-	  "genusOrMonomial" => "",
-	  "subgenus" => "",
-	  "speciesEpithet" => "",
-	  "infraSubspecificRank" => "",
-	  "subspeciesEpithet" => "",
-	  "infraSubspecificName" => "",
-	  "authorTeamOriginalAndYear" => "",
-	  "typeStatus" => "",
-	  "nameAddendum" => "",
-	  "identificationQualifier1" => "",
-	  "identificationQualifier2" => "",
-	  "identificationQualifier3" => "",
-  );
-  $specimens[] = array(
-      "sourceSystemName" => "CRS",
-      "sourceSystemId" => "6732910",
-      "sourceSystemDateCreated" => null,
-      "specimenId" => "RMNH.MAM.50044",
-      "recordBasis" => "PreservedSpecimen",
-      "kindOfUnit" => "",
-      "sourceInstitutionID" => "",
-      "phylum" => "Mammalia",
-      "sex" => "",
-      "phaseOrStage" => "",
-      "accessionSpecimenNumbers" => "1",
-      "altitude" => "",
-      "depth" => "",
-      "gatheringAgent" => "Haverschmidt, F.",
-      "worldRegion" => "",
-      "country" => "Suriname",
-      "provinceState" => "",
-      "locality" => "plantage Peperpot langs Surinamerivier",
-      "publicObject" => true,
-      "altitudeUnit" => "",
-      "depthUnit" => "",
-      "collectingStartDate" => "",
-      "collectingEndDate" => "",
-      "title" => null,
-      "taxonCoverage" => null,
-      "multiMediaPublic" => null,
-      "latitudeDecimal" => null,
-      "longitudeDecimal" => null,
-      "geodeticDatum" => null,
-      "determination" => $determination,
-    );
-  $specimens[] = array(
-      "sourceSystemName" => "C2RS",
-      "sourceSystemId" => "26732910",
-      "sourceSystemDateCreated" => null,
-      "specimenId" => "RMNH.MAM.2250044",
-      "recordBasis" => "Pr22eservedSpecimen",
-      "kindOfUnit" => "",
-      "sourceInstitutionID" => "",
-      "phylum" => "Mammmmmalia",
-      "sex" => "",
-      "phaseOrStage" => "",
-      "accessionSpecimenNumbers" => "1",
-      "altitude" => "",
-      "depth" => "",
-      "gatheringAgent" => "Havermmschmidt, F.",
-      "worldRegion" => "",
-      "country" => "Surmmmminame",
-      "provinceState" => "",
-      "locality" => "plmmmmantage Peperpot langs Surinamerivier",
-      "publicObject" => true,
-      "altitudeUnit" => "",
-      "depthUnit" => "",
-      "collectingStartDate" => "",
-      "collectingEndDate" => "",
-      "title" => null,
-      "taxonCoverage" => null,
-      "multiMediaPublic" => null,
-      "latitudeDecimal" => null,
-      "longitudeDecimal" => null,
-      "geodeticDatum" => null,
-      "determination" => $determination,
-    );
-  $jsonreply = array(
-    "totalSize" => 1,
-    "specimens" => $specimens,
-  );
-
-  if (isset($_GET['callback'])) {
-    header("Content-Type: application/json");
-    print($_GET['callback'] . "(" . json_encode($jsonreply) . ")");
-  }
-  else {
-    print(json_encode($jsonreply));
-  }
-  return;
-}
-
-/**
 * Check if a string is JOSN.
 */
 function isJson($string) {
  json_decode($string);
  return (json_last_error() == JSON_ERROR_NONE);
 }
+
+function ndabio_pass() {
+  dpm($_POST);
+  dpm($_GET);
+  $path = drupal_get_path('module', 'ndabio');
+  drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
+  
+  //return "doorsturen :)";//ndabio_jsonpget_callback($keys . ";passthrough");
+  //return ndabio_search_execute("passthrough");
+  return drupal_deliver_page(search_data($searchterms, "ndabio"));
+}
+
 
 /**
 * Wrap a JSON for output.
@@ -291,7 +208,8 @@ function ndabio_jsonp_callback($keys = "") {
 * Get a JOSN string.
 */
 function ndabio_jsonpget_callback($keys = "") {
-  $service_url = variable_get('ndabio_config_json', NDABIO_JSON);
+  $service_url = variable_get('ndabio_config_json', NDABIO_JSON) . "&sourceSystemName=CRS"; // . "&key=" . $keys;
+//  dpm($service_url);
   $curl = curl_init($service_url);
 //  $curl_post_data = array("keys" => $keys);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -299,7 +217,7 @@ function ndabio_jsonpget_callback($keys = "") {
 //  curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
   curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
   $curl_response = curl_exec($curl);
-  dpm($curl);
+//  dpm($curl_response);
   $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
   curl_close($curl);
   if ($http_status >= 400) {
@@ -332,6 +250,16 @@ function ndabio_block_info() {
       ),
     ),
   );
+ $blocks['ndabio_search_block'] = array(
+  'info' => t('Naturalis: Search'),
+  '#attached' => array(
+      'css' => array(
+        drupal_get_path('module', 'naturalis') . '/css/naturalis.css',
+      ),
+      'js' => array(
+      ),
+    ),
+  );
   return $blocks;
 }
 
@@ -347,6 +275,10 @@ function ndabio_block_view($delta = '') {
       $block['content'] = t('Copyright') . ' ' . date("Y") . ' ' .
         '<a href="' . variable_get('ndabio_copyright_url', $base_root . $base_path) . '">' . 
         variable_get('ndabio_copyright_label', 'Naturalis') . '</a>';
+      break;
+    case 'ndabio_search_block':
+      $form = drupal_get_form('ndabio_ndasearchform_callback');
+      $block['content'] = drupal_render($form);
       break;
   }
 
@@ -421,20 +353,20 @@ function ndabio_search_info() {
 */
 function ndabio_search_execute($keys = NULL, $conditions = NULL) {
   global $base_url;
-  drupal_set_message("Naturalis: ndabio_search_execute (" . $keys . ", " . implode($conditions) . ")");
+  //drupal_set_message("Naturalis: ndabio_search_execute (" . $keys . ", " . implode($conditions) . ")");
   
   $ndsearch = json_decode(ndabio_jsonpget_callback($keys));
   $i = 0;
   foreach ($ndsearch->specimens as $item) {
     $result[$i]['link'] = $base_url. "?q=naturalis/ndadetail/" . $item->specimenId;
     $result[$i]['type'] = $item->sourceSystemName;
-    $result[$i]['title'] = $item->determination[0]->scientificName;
+    $result[$i]['title'] = $item->determinations[0]->genusOrMonomial;
     $result[$i]['user'] = $item->sourceSystemId;
     $result[$i]['date'] = "xxx1";
     $result[$i]['node'] = "xxx2";
-    $result[$i]['extra'] = $item->determination[0];
+    $result[$i]['extra'] = $item->gatheringAgent;
     $result[$i]['score'] = "xxx3";
-    $result[$i]['snippet'] = $item->determination[0]->scientificName . " " . $item->phylum . " " . $item->specimenId . " " . $item->locality;
+    $result[$i]['snippet'] = $item->genusOrMonomial . " " .  $item->gatheringAgent . " " . $item->specimenId . " " . $item->locality;
     $result[$i]['language'] = "xxx5";
     $i += 1;
   }
@@ -454,6 +386,7 @@ function ndabio_search_preprocess($text) {
 */
 function ndabio_search_page($results) {
   //drupal_set_message("Naturalis: ndabio_search_page");
+ 
   $output['prefix']['#markup'] = '<h2>Search results ' . '</h2>' ;
   $output['prefix']['#markup'] .= '<ol class="search-results">';
 
@@ -477,7 +410,6 @@ function ndabio_search_page($results) {
 function ndabio_form_alter(&$form, $form_state, $form_id) {
   switch($form_id) {
     case 'search_form':
-     drupal_set_message("Form ID: " . $form_id);
 /*     $form['extra'] = array(
         '#type' => 'textfield',
         '#title' => check_plain('Extra'),
@@ -497,7 +429,7 @@ function ndabio_form_alter(&$form, $form_state, $form_id) {
 * 
 */
 function ndabio_searchform_submit(&$form, &$form_state) {
-  drupal_set_message("Form submit");
+  //drupal_set_message("Form submit");
   $_REQUEST['keys'] = $_REQUEST['keys']; // . " " . $_REQUEST['extra'];
   $form['basic']['keys']['#value'] = $form['basic']['keys']['#value']; //  . " " . $_REQUEST['extra'];
   $form['basic']['keys']['#default_value'] = $form['basic']['keys']['#default_value']; //  . " " . $_REQUEST['extra'];
@@ -509,7 +441,7 @@ function ndabio_searchform_submit(&$form, &$form_state) {
 * 
 */
 function ndabio_search_conditions_callback($keys) {
-  drupal_set_message("ndabio_search_conditions_callback (" . $keys . ")");
+  //drupal_set_message("ndabio_search_conditions_callback (" . $keys . ")");
   $conditions = array();
   //dpm($_REQUEST);
   if (!empty($_REQUEST['keys'])) {
