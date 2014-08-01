@@ -200,7 +200,7 @@ function ndabio_page_callback() {
   drupal_add_css($path . "/css/naturalis.css");
   drupal_add_js($path . "/js/map.js", array('weight' => 1));
   drupal_add_js("https://maps.googleapis.com/maps/api/js?key=AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ&libraries=drawing");
-  drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); }", 'inline');
+  drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { alert(this.id.substr(4)); }); });", 'inline');
 
 
