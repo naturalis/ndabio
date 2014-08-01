@@ -34,6 +34,12 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['naturalis/ajax'] = array(
+    'page callback' => 'ndabio_ajax_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['naturalis/jsonp'] = array(
     'page callback' => 'ndabio_jsonp_callback',
     'access arguments' => array('access content'),
@@ -67,6 +73,14 @@ function ndabio_menu() {
 function ndabio_ndadetail_callback($myid = "", $myaction = NULL) {
   return "<h2>" . t("My ID") . "</h2><pre>" . $myid . " " . $myaction . "</pre>";
 }
+
+/**
+* Output detail page.
+*/
+function ndabio_ajax_callback() {
+  return "ajax";
+}
+
 
 function ndabio_config_form($form, &$form_state) {
   $form['ndabio_config'] = array(
