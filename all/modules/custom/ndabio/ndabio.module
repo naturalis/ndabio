@@ -85,7 +85,7 @@ function ndabio_ajax_callback() {
   $row = db_query($sql)->fetchObject();
   
   if($row) {
-    echo ({"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '});
+    echo '{"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
   }
   die();
 }
