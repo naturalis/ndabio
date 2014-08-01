@@ -78,7 +78,18 @@ function ndabio_ndadetail_callback($myid = "", $myaction = NULL) {
 * Output detail page.
 */
 function ndabio_ajax_callback() {
-  return "ajax";
+  print_r($_GET);
+  $geonode = (int)$_GET["nid"];
+  
+  $sql = "SELECT n.nid, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
+  
+  $result = db_query($sql)->fetchObject();
+  
+  //print_r($result);
+  
+  echo $sql;
+  echo "ajax";
+  die();
 }
 
 
