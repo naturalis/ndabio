@@ -1,0 +1,38 @@
+// COLOURS
+
+$yellow                  : #ffed00;
+$orange                  : #f29400;
+$orange                  : #ef6d14;
+$red                     : #e3004a;
+$blue                    : #009ee0;
+$green                   : #009932;
+$purple                  : #3e2782;
+$brown                   : #542e08;
+$gray                    : #b2b1a8;
+$black                   : #000000;
+$white                   : #ffffff;
+$ghost                   : #EEEDE9;
+$smoke                   : #F6F6F4;
+
+
+// GLOBAL OVERRIDES OF PARENT THEMES
+
+  // -- BUTTON
+
+    button, .button {
+      background-color: $blue;
+    }
+
+// PAGE SEARCH
+
+  // FREE TEXT SEARCH
+
+    form#ndabio-ndasearchform-callback{
+      .form-item-ndabio-adv{
+        width: percentage(10/12);
+        float: left;
+        label{
+          display: none;
+        }
+      }
+    }
