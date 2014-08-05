@@ -126,16 +126,24 @@ function ndabio_displayform() {
 }
 
 function ndabio_ndasearchform_callback() {
+  $line_prefix = "<div class='row collapse'>";
+  $line_suffix = "</div>";
+
   $form['ndabio_adv'] = array(
     '#type' => 'textfield',
     '#title' => t('Keywords'),
     '#default_value' => '',
     '#required' => FALSE,
+    '#prefix' => $line_prefix,
   );
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
+    '#suffix' => $line_suffix,
   );
+
+  // ---------------------------------- 
+
   $form['ndabio_advsearch_mm'] = array(
     '#type' => 'fieldset',
     '#title' => t('Multimedia')

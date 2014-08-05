@@ -18,3 +18,12 @@
  */
 function bioportal_theme_preprocess_page(&$variables) {
 }
+
+
+// function bioportal_theme_form_alter(&$form, &$form_state, $form_id) {
+//   switch ($form_id) {
+//     case 'ndabio_ndasearchform_callback':
+//       $form['ndabio_adv']['#prefix'] = "<div class='outline'>";
+//       break;
+//   }
+// } 
