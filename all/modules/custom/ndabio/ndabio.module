@@ -30,7 +30,7 @@ function ndabio_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
   $items['naturalis'] = array(
-    'page callback' => 'ndabio_callback',
+    'page callback' => 'ndabio_naturalis_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -75,7 +75,7 @@ function ndabio_menu() {
 /**
 * Output overview page.
 */
-function ndabio_callback() {
+function ndabio_naturalis_callback() {
   $page = "<a href='/search/species'>Search species</a><br />";
   $page .= "<a href='/search/other'>Search other</a><br />";
   $page .= "<a href='/specific/species'>Specific species</a><br />";
