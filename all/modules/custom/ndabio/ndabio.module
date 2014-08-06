@@ -213,7 +213,7 @@ function ndabio_page_callback() {
 
   $pagecontent = "<div id='map-canvas'></div><div id='areas'>
     <button onclick='postShape();'>Post geometry</button>
-	<form name='geoform' action='/search/ndapass' method='post'><input name=''geometry' type='hidden' /><input type='submit' value='Zoeken' /></form></div>";
+	<form name=""geoform"" action=""/search/ndapass"" method=""post""><input name=""geometry"" type=""hidden"" value=""test""/><input type=""submit"" value=""Zoeken"" /></form></div>";
 
   return $pagecontent;
 }
@@ -227,7 +227,7 @@ function isJson($string) {
 }
 
 function ndabio_pass() {
-  //dpm($_POST);
+  print_r($_POST);
   //dpm($_GET);
   $path = drupal_get_path('module', 'ndabio');
   drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
