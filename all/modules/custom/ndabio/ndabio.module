@@ -29,6 +29,11 @@ function ndabio_menu() {
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
   );
+  $items['naturalis'] = array(
+    'page callback' => 'ndabio_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   $items['naturalis/page'] = array(
     'page callback' => 'ndabio_page_callback',
     'access arguments' => array('access content'),
@@ -68,9 +73,24 @@ function ndabio_menu() {
 }
 
 /**
+* Output overview page.
+*/
+function ndabio_callback() {
+  $page = "<a href='/search/species'>Search species</a><br />";
+  $page .= "<a href='/search/other'>Search other</a><br />";
+  $page .= "<a href='/specific/species'>Specific species</a><br />";
+  $page .= "<a href='/specific/other'>Specific other</a><br />";
+  $page .= "<a href='/detail/species'>Detail species</a><br />";
+  $page .= "<a href='/detail/other'>Detail other</a><br />";
+  $page .= "<a href='/download/species'>Download species</a><br />";
+  $page .= "<a href='/download/other'>Download other</a><br />";
+  return $page;
+}
+
+/**
 * Output detail page.
 */
-function ndabio_ndadetail_callback($myid = "", $myaction = NULL) {
+function ndabio_ndadetail_callback($myid = ', $myaction = NULL) {
   return "<h2>" . t("My ID") . "</h2><pre>" . $myid . " " . $myaction . "</pre>";
 }
 
@@ -196,7 +216,7 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
     "c:" . $form['ndabio_adv']['#value'];
   //drupal_set_message($searchterms);
   return drupal_deliver_page(search_data($searchterms, "ndabio"));
-  //return ""; //ndabio_jsonp_callback($searchterms);
+  //return '; //ndabio_jsonp_callback($searchterms);
 }
 
 /**
@@ -213,7 +233,7 @@ function ndabio_page_callback() {
 
   $pagecontent = "<div id='map-canvas'></div><div id='areas'>
     <button onclick='postShape();'>Post geometry</button>
-	<form name=""geoform"" action=""/search/ndapass"" method=""post""><input name=""geometry"" type=""hidden"" value=""test""/><input type=""submit"" value=""Zoeken"" /></form></div>";
+	<form name='geoform' action='/search/ndapass' method='post'><input name='geometry' type='hidden' value='test' /><input type='submit' value='Zoeken' /></form></div>";
 
   return $pagecontent;
 }
@@ -241,7 +261,7 @@ function ndabio_pass() {
 /**
 * Wrap a JSON for output.
 */
-function ndabio_jsonp_callback($keys = "") {
+function ndabio_jsonp_callback($keys = ') {
   return "<h2>" . t("Result") . "</h2><pre>" . ndabio_jsonpget_callback($keys) . "</pre>";
 }
 
@@ -249,7 +269,7 @@ function ndabio_jsonp_callback($keys = "") {
 /**
 * Get a JOSN string.
 */
-function ndabio_jsonpget_callback($keys = "") {
+function ndabio_jsonpget_callback($keys = ') {
   $service_url = variable_get('ndabio_config_json', NDABIO_JSON) . "&sourceSystemName=CRS"; // . "&key=" . $keys;
 //  dpm($service_url);
   $curl = curl_init($service_url);
