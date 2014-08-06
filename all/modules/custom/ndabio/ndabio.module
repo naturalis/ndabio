@@ -29,11 +29,11 @@ function ndabio_menu() {
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['naturalis'] = array(
+/*  $items['naturalis'] = array(
     'page callback' => 'ndabio_naturalis_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
-  );
+  );*/
   $items['naturalis/page'] = array(
     'page callback' => 'ndabio_page_callback',
     'access arguments' => array('access content'),
@@ -74,7 +74,6 @@ function ndabio_menu() {
 
 /**
 * Output overview page.
-*/
 function ndabio_naturalis_callback() {
   $page = "<a href='/search/species'>Search species</a><br />";
   $page .= "<a href='/search/other'>Search other</a><br />";
@@ -86,6 +85,7 @@ function ndabio_naturalis_callback() {
   $page .= "<a href='/download/other'>Download other</a><br />";
   return $page;
 }
+*/
 
 /**
 * Output detail page.
