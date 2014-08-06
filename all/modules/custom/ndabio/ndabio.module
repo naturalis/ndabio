@@ -212,8 +212,8 @@ function ndabio_page_callback() {
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
   $pagecontent = "<div id='map-canvas'></div><div id='areas'>
-    <button onclick='postShape();'>Post geometry</button></div>
-	<form name='geoform' action='search/ndapass' method='post'><input name=''geometry' type='hidden' /><input type='submit' /></form>";
+    <button onclick='postShape();'>Post geometry</button>
+	<form name='geoform' action='search/ndapass' method='post'><input name=''geometry' type='hidden' /><input type='submit' value='Zoeken' /></form></div>";
 
   return $pagecontent;
 }
