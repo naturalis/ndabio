@@ -252,9 +252,16 @@ function isJson($string) {
 
 function ndabio_pass() {
   $path = drupal_get_path('module', 'ndabio');
-  drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
- 
-  return "Search for map> " . $_GET['geometry'];//ndabio_jsonpget_callback($keys . ";passthrough");
+//  drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
+  $mynode = node_load($_GET['geometry']);
+  $mycontent = "Selected map: " . $mynode->title . "<br />";
+  $mycontent .= "Source: " . $mynode->field_source['und'][0]['value'] . "<br />";
+  $mycontent .= "Type: " . $mynode->field_type['und'][0]['value'] . "<br />";
+  $mycontent .= "JSON: " . substr($mynode->field_geojson['und'][0]['value'], 0, 100) . "... <br />";
+  
+  return $mycontent;
+  
+  //ndabio_jsonpget_callback($keys . ";passthrough");
   //return ndabio_search_execute("passthrough");
   //return drupal_deliver_page(search_data($searchterms, "ndabio"));
 }
