@@ -106,7 +106,7 @@ function ndabio_ajax_callback() {
   $row = db_query($sql)->fetchObject();
   
   if($row) {
-    echo '{"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
   }
   die();
 }
@@ -233,11 +233,10 @@ function ndabio_page_callback() {
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
   $pagecontent = "<div id='map-canvas'></div><div id='areas'>
-	<form name='geoform' action='/search/ndapass' method='post'>
-    <button onclick='postShape();this.form.elements[\"geozoneid\"].value = 12;this.form.elements[\"geometry\"].value = getShapeGeometry();'>Post geometry</button>
-	  <input name='geometry' type='hidden' value='test' />
-	  <input name='geozoneid' type='hidden' value='0' />
-	  <input type='submit' onclick='this.form.elements[\"geozoneid\"].value = 12;this.form.elements[\"geometry\"].value = getShapeGeometry();' value='Zoeken' />
+	<form name='geoform' action='/search/ndapass' method='get'>
+    <button onclick='postShape();'>Post geometry</button>
+	  <input name='geometry' id='geometry' type='hidden' value='0' />
+	  <input type='submit' value='Zoeken' />
 	</form></div>";
 
   return $pagecontent;
@@ -252,12 +251,10 @@ function isJson($string) {
 }
 
 function ndabio_pass() {
-  print_r($_POST);
-  //dpm($_GET);
   $path = drupal_get_path('module', 'ndabio');
   drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
  
-  return "doorsturen :)";//ndabio_jsonpget_callback($keys . ";passthrough");
+  return "Search for map> " . $_GET['geometry'];//ndabio_jsonpget_callback($keys . ";passthrough");
   //return ndabio_search_execute("passthrough");
   //return drupal_deliver_page(search_data($searchterms, "ndabio"));
 }

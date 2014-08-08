@@ -11,10 +11,11 @@ var mapStyle = {
 }
 
 function postShape() {
+//this.form.elements["geometry"].value = getShapeGeometry();
 	if (selectedShape) {
-		alert(getShapeGeometry());
+		alert("a" + getShapeGeometry());
 	} else if (feature) {
-		alert(JSON.stringify(geometry));
+		alert("b" + JSON.stringify(geometry));
 	}
 }
 
@@ -135,6 +136,8 @@ function plotMapArea(gid) {
 				map.data.addGeoJson(feature);
 				map.data.setStyle(mapStyle);
 				zoom(map);
+				document.getElementById('geometry').value = gid;
+
 			} else {
 				alert('Failed to retrieve area data.');
 			}
