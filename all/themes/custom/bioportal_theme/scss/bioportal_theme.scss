@@ -27,12 +27,12 @@ $smoke                   : #F6F6F4;
 
   // FREE TEXT SEARCH
 
-    form#ndabio-ndasearchform-callback{
-      .form-item-ndabio-adv{
-        width: percentage(10/12);
-        float: left;
-        label{
-          display: none;
-        }
-      }
+    #edit-omnisearch{
+      border: 0px solid white;
+      padding: 0;
+
+      button{
+        border: none;
+      }           
+
     }

@@ -147,21 +147,30 @@ function ndabio_displayform() {
 }
 
 function ndabio_ndasearchform_callback() {
-  $line_prefix = "<div class='row collapse'>";
-  $line_suffix = "</div>";
+  $form['omnisearch'] = array(
+    '#type' => 'fieldset',
+    '#theme' => 'ndabio_omnisearch',
+    '#nowrapper' => TRUE
 
-  $form['ndabio_adv'] = array(
+  );
+
+  $form['omnisearch']['ndabio_adv'] = array(
     '#type' => 'textfield',
     '#title' => t('Keywords'),
     '#default_value' => '',
     '#required' => FALSE,
-    '#prefix' => $line_prefix,
-  );
-  $form['submit'] = array(
+    '#title_display' => 'invisible',
+    '#nowrapper' => TRUE
+   );
+
+  $form['omnisearch']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
-    '#suffix' => $line_suffix,
+    '#nowrapper' => TRUE,
+    '#attributes' => array( 'class' => array('postfix'))
   );
+
+
 
   // ---------------------------------- 
 
@@ -197,6 +206,23 @@ function ndabio_ndasearchform_callback() {
   );
   $form['#submit'][] = 'ndabio_ndasearchform_callback_submit';
   return $form;
+}
+
+function _wrap_inner_grid_cols( &$form_element, $n = 6 ){
+  if ( !isset( $form_element['#prefix'])  ){$form_element['#prefix'] = ''; }
+  if ( !isset( $form_element['#suffix'])  ){$form_element['#prefix'] = ''; }
+  $form_element['#prefix'] = $form_element['#suffix']."<div class='small-$n columns'>";
+  $form_element['#suffix'] =                          "</div>".$form_element['#suffix'];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ndabio_theme($existing, $type, $theme, $path) {
+  $data['ndabio_omnisearch'] = array(
+    'render element' => 'element',
+  );
+  return $data;
 }
 
 /**

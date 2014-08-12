@@ -19,11 +19,48 @@
 function bioportal_theme_preprocess_page(&$variables) {
 }
 
+function bioportal_theme_ndabio_omnisearch(&$variables){
+  $element = $variables['element'];
 
-// function bioportal_theme_form_alter(&$form, &$form_state, $form_id) {
-//   switch ($form_id) {
-//     case 'ndabio_ndasearchform_callback':
-//       $form['ndabio_adv']['#prefix'] = "<div class='outline'>";
-//       break;
-//   }
-// } 
+  $output  = "<div class='row collapse'>";
+  $output .= "  <div class='small-9 large-6 large-offset-2 columns'>";
+  $output .= drupal_render( $element['ndabio_adv']);
+  $output .= "  </div>";
+  $output .= "  <div class='small-3 large-2 end columns'>";
+  $output .= drupal_render( $element['submit']);
+  $output .= "  </div>";
+  $output .= "</div>";
+
+  // $output ='<div class="row collapse">
+  //   <div class="small-3 large-2 columns">
+  //     <span class="prefix">http://</span>
+  //   </div>
+  //   <div class="small-9 large-10 columns">
+  //     <input type="text" placeholder="Enter your URL...">
+  //   </div>
+  // </div>
+  // <div class="row">
+  //   <div class="large-6 columns">
+  //     <div class="row collapse">
+  //       <div class="small-10 columns">
+  //         <input type="text" placeholder="Hex Value">
+  //       </div>
+  //       <div class="small-2 columns">
+  //         <a href="#" class="button postfix">Go</a>
+  //       </div>
+  //     </div>
+  //   </div>
+  //   <div class="large-6 columns">
+  //     <div class="row collapse">
+  //       <div class="small-9 columns">
+  //         <input type="text" placeholder="Value">
+  //       </div>
+  //       <div class="small-3 columns">
+  //         <span class="postfix radius">Label</span>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>';
+
+  return $output;
+}

@@ -1,8 +1,8 @@
 button, .button {
   background-color: #009ee0; }
 
-form#ndabio-ndasearchform-callback .form-item-ndabio-adv {
-  width: 83.33333%;
-  float: left; }
-  form#ndabio-ndasearchform-callback .form-item-ndabio-adv label {
-    display: none; }
+#edit-omnisearch {
+  border: 0px solid white;
+  padding: 0; }
+  #edit-omnisearch button {
+    border: none; }
