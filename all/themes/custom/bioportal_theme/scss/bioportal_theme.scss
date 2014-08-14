@@ -41,6 +41,7 @@ $gray-10 : #1a1a1a;
     #edit-omnisearch{
       border: 0px solid white;
       padding: 0;
+      margin-bottom: 0;
 
       button{
         border: none;
@@ -59,6 +60,7 @@ $gray-10 : #1a1a1a;
     background-color: $gray-8;
     color: $white;
     padding: 0.9375rem;
+    padding-top: 1px;
     @media (min-width: 1000px) {
       padding: 0.9375rem percentage(2/12);
     }
@@ -79,6 +81,7 @@ $gray-10 : #1a1a1a;
       font-size: 1.125rem;
       color: $white;
       font-weight: 300;
+      letter-spacing: 0.05em;
       margin: 0;
       padding: 0;
     }
@@ -88,17 +91,29 @@ $gray-10 : #1a1a1a;
       margin-top: 0.5rem;
     }
 
-    input[type='text']{
+    input[type='text'],
+    input[type='radio'] {
       margin: 0;
       padding: 3px;
       height: 26px;
     }
+
 
     #edit-submit--2{
       position: absolute;
       right: 1rem;
       bottom: 1rem;
       background-color: $orange;
+      border-radius: 2px;
     }
 
+    .form-type-radio{
+      float: left;
+      width: 50%;
+      margin-top: 0;
+    }
+
+
   }
+
+// TODO: style radio buttons

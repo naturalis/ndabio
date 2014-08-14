@@ -171,11 +171,23 @@ function ndabio_ndasearchform_callback() {
   );
 
   // Advanced Search
+  $combine = array(0 => t('And'), 1 => t('Or'));
+  $radios = array(
+    '#type' => 'radios',
+    '#title' => t('Combine searches'),
+    '#default_value' => isset($node->active) ? $node->active : 1,
+    '#options' => $combine,
+  );
+
   // -- Fieldset: Multimedia
+
   $form['ndabio_advsearch_mm'] = array(
     '#type' => 'fieldset',
     '#title' => t('Multimedia')
   );
+
+  $form['ndabio_advsearch_mm']['combine'] = $radios;
+
   $form['ndabio_advsearch_mm']['ndabio_advsearch_mmwetenschap'] = array(
     '#type' => 'textfield',
     '#title' => t('Wetenschappelijke naam'),
@@ -195,6 +207,9 @@ function ndabio_ndasearchform_callback() {
     '#type' => 'fieldset',
     '#title' => t('Collectieexemplaren')
   );
+
+  $form['ndabio_advsearch_col']['combine'] = $radios;
+
   $form['ndabio_advsearch_col']['ndabio_advsearch_colwetenschap'] = array(
     '#type' => 'textfield',
     '#title' => t('Wetenschappelijke naam'),
