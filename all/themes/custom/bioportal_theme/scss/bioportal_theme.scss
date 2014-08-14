@@ -1,18 +1,29 @@
 // COLOURS
 
-$yellow                  : #ffed00;
-$orange                  : #f29400;
-$orange                  : #ef6d14;
-$red                     : #e3004a;
-$blue                    : #009ee0;
-$green                   : #009932;
-$purple                  : #3e2782;
-$brown                   : #542e08;
-$gray                    : #b2b1a8;
-$black                   : #000000;
-$white                   : #ffffff;
-$ghost                   : #EEEDE9;
-$smoke                   : #F6F6F4;
+$yellow : #ffed00;
+$orange : #f29400;
+$orange : #ef6d14;
+$red    : #e3004a;
+$blue   : #009ee0;
+$green  : #009932;
+$purple : #3e2782;
+$brown  : #542e08;
+$gray   : #b2b1a8;
+$black  : #000000;
+$white  : #ffffff;
+$ghost  : #EEEDE9;
+$smoke  : #F6F6F4;
+
+$gray-1  : #f2f2f2;
+$gray-2  : #e6e6e6;
+$gray-3  : #cccccc;
+$gray-4  : #b3b3b3;
+$gray-5  : #999999;
+$gray-6  : #808080;
+$gray-7  : #666666;
+$gray-8  : #4d4d4d;
+$gray-9  : #333333;
+$gray-10 : #1a1a1a;
 
 
 // GLOBAL OVERRIDES OF PARENT THEMES
@@ -33,6 +44,61 @@ $smoke                   : #F6F6F4;
 
       button{
         border: none;
-      }           
+      }
 
     }
+
+  // ADVANCED SEARCH
+  #ndabio-ndasearchform-callback{
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+
+  #ndabio-advanced-search{
+    background-color: $gray-8;
+    color: $white;
+    padding: 0.9375rem;
+    @media (min-width: 1000px) {
+      padding: 0.9375rem percentage(2/12);
+    }
+
+    fieldset{
+      font-size: 1.125rem;
+      padding: 0 0 30px 0;
+      border: none;
+      border-bottom: 1px solid $gray-5;
+    }
+
+    legend{
+      background: none;
+      margin: 0;
+    }
+
+    label{
+      font-size: 1.125rem;
+      color: $white;
+      font-weight: 300;
+      margin: 0;
+      padding: 0;
+    }
+
+    .form-item{
+      margin-bottom: 0;
+      margin-top: 0.5rem;
+    }
+
+    input[type='text']{
+      margin: 0;
+      padding: 3px;
+      height: 26px;
+    }
+
+    #edit-submit--2{
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      background-color: $orange;
+    }
+
+  }

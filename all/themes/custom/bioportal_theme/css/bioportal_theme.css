@@ -6,3 +6,42 @@ button, .button {
   padding: 0; }
   #edit-omnisearch button {
     border: none; }
+
+#ndabio-ndasearchform-callback {
+  position: absolute;
+  left: 0;
+  width: 100%; }
+
+#ndabio-advanced-search {
+  background-color: #4d4d4d;
+  color: white;
+  padding: 0.9375rem; }
+  @media (min-width: 1000px) {
+    #ndabio-advanced-search {
+      padding: 0.9375rem 16.66667%; } }
+  #ndabio-advanced-search fieldset {
+    font-size: 1.125rem;
+    padding: 0 0 30px 0;
+    border: none;
+    border-bottom: 1px solid #999999; }
+  #ndabio-advanced-search legend {
+    background: none;
+    margin: 0; }
+  #ndabio-advanced-search label {
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 300;
+    margin: 0;
+    padding: 0; }
+  #ndabio-advanced-search .form-item {
+    margin-bottom: 0;
+    margin-top: 0.5rem; }
+  #ndabio-advanced-search input[type='text'] {
+    margin: 0;
+    padding: 3px;
+    height: 26px; }
+  #ndabio-advanced-search #edit-submit--2 {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    background-color: #ef6d14; }

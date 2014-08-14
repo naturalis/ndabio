@@ -79,8 +79,8 @@ function bioportal_theme_form_element($variables) {
   switch ($element['#title_display']) {
     case 'before':
       $output .= "<div class='row'>\n" ;
-      $output .= "\t<div class='large-2 large-offset-2 small-5 columns'> " . theme('form_element_label', $variables). "</div>\n";
-      $output .= "\t<div class='large-5 small-7 columns end'> " .  $prefix . $element['#children'] . $suffix . "</div>\n";
+      $output .= "\t<div class='large-4 large-offset-1 small-5 columns'> " . theme('form_element_label', $variables). "</div>\n";
+      $output .= "\t<div class='small-7 columns end'> " .  $prefix . $element['#children'] . $suffix . "</div>\n";
       $output .= "</div>\n";
       break;
     case 'invisible':
