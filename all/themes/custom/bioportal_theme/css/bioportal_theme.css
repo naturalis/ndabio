@@ -3,10 +3,38 @@ button, .button {
 
 #edit-omnisearch {
   border: 0px solid white;
-  padding: 0;
-  margin-bottom: 0; }
+  padding: 1rem 0 0 0;
+  margin-bottom: 0;
+  background-color: white;
+  transition: background-color; }
+  #edit-omnisearch.disabled {
+    background-color: #4d4d4d;
+    transition: background-color;
+    border-bottom: 1px solid #999999; }
   #edit-omnisearch button {
-    border: none; }
+    border: none;
+    border-radius: 0 3px 3px 0;
+    text-transform: lowercase; }
+    #edit-omnisearch button[disabled] {
+      background-color: #999999;
+      color: #cccccc; }
+  #edit-omnisearch button, #edit-omnisearch input {
+    height: 50px;
+    font-size: 1.25rem; }
+  #edit-omnisearch input {
+    padding-right: 60px; }
+  #edit-omnisearch .ndabio-omnibox-wrapper {
+    position: relative; }
+  #edit-omnisearch .ndabio-toggle-advanced {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 50px;
+    height: 50px;
+    color: #b2b1a8;
+    font-size: 24px;
+    line-height: 50px;
+    text-aling: center; }
 
 #ndabio-ndasearchform-callback {
   position: absolute;
@@ -45,9 +73,6 @@ button, .button {
     padding: 3px;
     height: 26px; }
   #ndabio-advanced-search #edit-submit--2 {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
     background-color: #ef6d14;
     border-radius: 2px; }
   #ndabio-advanced-search .form-type-radio {
