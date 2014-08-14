@@ -607,18 +607,10 @@ function ndabio_advanced_taxonomysearch() {
 		'#title' => $label,
 		'#collapsible' => TRUE,
 		  // Wrap all fieldsets in a div
-		'#prefix' => "<div id='ndabio-advanced-search'>\n",
-		'#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
-		'searchtype' => array(
-			'#type' => 'radios',
-			'#title' => t('Combine searchterms'),
-			'#default_value' => 1,
-			'#options' => $searchtype,
-		),
 	  );
 	  
       foreach ($children as $child) {
-		$childlabel = $child->name;
+		$childlabel = $child->description;
 		$childsysname = $child->field_system['und'][0]['safe_value'];
 		$subchildren = taxonomy_get_children($child->tid, $child->vid);
 		if ($subchildren) {
@@ -626,17 +618,26 @@ function ndabio_advanced_taxonomysearch() {
 			'#type' => 'fieldset',
 			'#title' => $childlabel,
 			'#collapsible' => TRUE,
+			'#prefix' => "<div id='ndabio-advanced-search'>\n",
+			'#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
+			'searchtype' => array(
+				'#type' => 'radios',
+				'#title' => t('Combine searchterms'),
+				'#default_value' => 1,
+				'#options' => $searchtype,
+			),
 		  );
 		  foreach ($subchildren as $subchild) {
 		    $subchildsysname = $subchild->field_system['und'][0]['safe_value'];
+			$subchildlabel = $subchild->description;
 			$form[$sysname][$childsysname][$subchildsysname]['#type'] = 'textfield';
-			$form[$sysname][$childsysname][$subchildsysname]['#title'] = $subchild->name;
+			$form[$sysname][$childsysname][$subchildsysname]['#title'] = $subchildlabel;
 			$form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
 			$form[$sysname][$childsysname][$subchildsysname]['#required'] =  FALSE; 
 		  }
 		} else {
 			$form[$sysname][$childsysname]['#type'] = 'textfield';
-			$form[$sysname][$childsysname]['#title'] = $child->name;
+			$form[$sysname][$childsysname]['#title'] = $childlabel;
 			$form[$sysname][$childsysname]['#default_value'] = '';
 			$form[$sysname][$childsysname]['#required'] =  FALSE; 
 		
@@ -645,7 +646,7 @@ function ndabio_advanced_taxonomysearch() {
   	  }
 	} else {
 		$form[$sysname]['#type'] = 'textfield';
-		$form[$sysname]['#title'] = $item->name;
+		$form[$sysname]['#title'] = $label;
 		$form[$sysname]['#default_value'] = '';
 		$form[$sysname]['#required'] =  FALSE; 
 	}
