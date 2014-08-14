@@ -24,7 +24,7 @@
       $_omnibox.toggleAttr("disabled").toggleClass("disabled");
       $("#edit-submit").toggleAttr("disabled").toggleClass("disabled");
       $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
-
+      $_advanced_search_form.slideToggle();
     })
 
 
