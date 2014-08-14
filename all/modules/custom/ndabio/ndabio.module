@@ -151,7 +151,6 @@ function ndabio_ndasearchform_callback() {
     '#type' => 'fieldset',
     '#theme' => 'ndabio_omnisearch',
     '#nowrapper' => TRUE
-
   );
 
   $form['omnisearch']['ndabio_adv'] = array(
