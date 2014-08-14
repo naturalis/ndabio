@@ -365,7 +365,7 @@ function ndabio_jsonpget_callback($keys = '') {
 */
 function ndabio_getjson($keys = '') {
   $service_url = variable_get('ndabio_config_json', NDABIO_JSON) .$keys;
-  dpm($service_url);
+  //dpm($service_url);
   $curl = curl_init($service_url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
@@ -698,6 +698,6 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   foreach (array_filter($myvalues) as $key => $val) {
     $myurl .= "$key=$val&";
   }
-  dpm(rtrim($myurl, '&'));  
+  drupal_set_message(rtrim($myurl, '&'));  
   drupal_deliver_page("<h2>" . t("Results") . "</h2><pre>" . ndabio_getjson(rtrim($myurl, '&')) . "</pre>");
 }
