@@ -88,7 +88,9 @@
       <!--.l-header-region -->
       <section class="l-header-region row show-for-medium-up <?php print $header_background; ?>" id="naturalis-header">
 
-        <div class="medium-2 columns <?php print $logo_background; ?>" id="naturalis-logo">
+        <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
+
+        <div class="medium-2 columns" id="naturalis-logo">
           <img src="<?php print $naturalis_logo; ?>"/>
         </div>
 
@@ -104,9 +106,21 @@
             <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
           <?php endif; ?>
 
+          <div class="intro-more hidden">
+            <i class="icon-double-chevron-down"></i>
+            <?php print t('more'); ?>
+          </div>
+
+          <div id="intro">
+              <?php print $intro; ?>
+          </div>
+
         </div>
 
-        <div class="medium-4 columns" id="logo">
+
+
+
+        <div class="medium-4 columns" id="logo"><!-- the photo is used as 'logo' -->
           <img src='<?php print $logo;?>'/>
         </div>
 

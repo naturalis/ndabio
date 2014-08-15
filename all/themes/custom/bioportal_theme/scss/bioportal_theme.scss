@@ -34,9 +34,60 @@ $gray-10 : #1a1a1a;
       background-color   : $blue;
     }
 
+    .hidden{
+      display: none;
+    }
+
+  // BACKGROUND
+
+  .background-gray-9{
+    background-color: $gray-9;
+  }
+
+
+// FRONT PAGE
+
+  // -- INTRO
+
+    #naturalis-header{
+      overflow: hidden;
+
+
+      #title-and-slogan{
+        position: relative;
+        top: 0px;
+        transition: top 300ms;
+        overflow: visible;
+
+        &.off-canvas{
+          top: -100%;
+        }
+
+        #intro{
+          position: absolute;
+          top: 160px;
+          color: $white;
+        }
+
+        .intro-more{
+          color: $white;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          padding: 1em;
+          height: 3em;
+          width: 100%;
+          text-align: right;
+          font-weight: bolder;
+        }
+      }
+    }
+
+
+
 // PAGE SEARCH
 
-  // FREE TEXT SEARCH, OMNISEARCH
+  // -- FREE TEXT SEARCH, OMNISEARCH
 
     #edit-omnisearch{
       border               : 0px solid white;
