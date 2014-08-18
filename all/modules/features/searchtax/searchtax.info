@@ -1,0 +1,12 @@
+name = searchtax
+core = 7.x
+package = Features
+version = 7.x-1.0
+project = searchtax
+dependencies[] = features
+dependencies[] = taxonomy
+dependencies[] = text
+features[features_api][] = api:2
+features[field_base][] = field_system
+features[field_instance][] = taxonomy_term-search-field_system
+features[taxonomy][] = search
