@@ -10,7 +10,6 @@
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
 //define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/RMNH.MAM.50059');
-//define('NDABIO_JSON', 'http://www.nederlandsesoorten.nl/linnaeus_ng/app/views/webservices/lookup_nsr_id.php?pid=1&nsr=11111');
 //define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/?country=Suriname&sex=male');
 define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
 
@@ -35,22 +34,12 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['naturalis/page'] = array(
-    'page callback' => 'ndabio_page_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['naturalis/ajax'] = array(
-    'page callback' => 'ndabio_ajax_callback',
+  $items['search/geosearch'] = array(
+    'page callback' => 'ndabio_geosearch_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
-  $items['naturalis/jsonp'] = array(
-    'page callback' => 'ndabio_jsonp_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
   $items['naturalis/ndadetail'] = array(
     'title' => 'Details',
     'page callback' => 'ndabio_ndadetail_callback',
@@ -94,22 +83,6 @@ function ndabio_naturalis_callback() {
 */
 function ndabio_ndadetail_callback($myid = '', $myaction = NULL) {
   return "<h2>" . t("My ID") . "</h2><pre>" . $myid . " " . $myaction . "</pre>";
-}
-
-/**
-* Output detail page.
-*/
-function ndabio_ajax_callback() {
-  $geonode = (int)$_GET["nid"];
-
-  $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
-
-  $row = db_query($sql)->fetchObject();
-
-  if($row) {
-    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
-  }
-  die();
 }
 
 
@@ -273,13 +246,12 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
     //"c:" . $form['ndabio_adv']['#value'];
   //drupal_set_message($searchterms);
   return drupal_deliver_page(search_data($searchterms, "ndabio"));
-  //return '; //ndabio_jsonp_callback($searchterms);
 }
 
 /**
 *
 */
-function ndabio_page_callback() {
+function ndabio_geosearch_callback() {
   global $base_root, $base_path;
   $path = drupal_get_path('module', 'ndabio');
   drupal_add_css($path . "/css/naturalis.css");
@@ -317,48 +289,8 @@ function ndabio_pass() {
   $mycontent .= "JSON: " . substr($mynode->field_geojson['und'][0]['value'], 0, 100) . "... <br />";
 
   return $mycontent;
-
-  //ndabio_jsonpget_callback($keys . ";passthrough");
-  //return ndabio_search_execute("passthrough");
-  //return drupal_deliver_page(search_data($searchterms, "ndabio"));
 }
 
-
-/**
-* Wrap a JSON for output.
-*/
-function ndabio_jsonp_callback($keys = '') {
-  return "<h2>" . t("Result") . "</h2><pre>" . ndabio_jsonpget_callback($keys) . "</pre>";
-}
-
-
-/**
-* Get a JOSN string.
-*/
-function ndabio_jsonpget_callback($keys = '') {
-  $service_url = variable_get('ndabio_config_json', NDABIO_JSON) . "&sourceSystemName=CRS";
-//  dpm($service_url);
-  $curl = curl_init($service_url);
-//  $curl_post_data = array("keys" => $keys);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//  curl_setopt($curl, CURLOPT_POST, true);
-//  curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
-  $curl_response = curl_exec($curl);
-//  dpm($curl_response);
-  $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  curl_close($curl);
-  if ($http_status >= 400) {
-    drupal_set_message("Curl returned error: " .  $http_status);
-    return " ";
-  }
-  if (!isJson($curl_response)) {
-    drupal_set_message("Curl did not return json: " .  $curl_response);
-    return " ";
-  }
-  return $curl_response;
-  //return (implode(json_decode($curl_response)));
-}
 
 /**
 * Get a JOSN string.
@@ -488,49 +420,6 @@ function ndabio_cron() {
 * DEFINE CUSTOM (BASIC) SEARCH
 */
 
-/**
-* Implements hook_search_info().
-*/
-function ndabio_search_info() {
-  return array(
-    'title' => t('Naturalis Data Search'),
-    'path' => 'nda',
-    'conditions_callback' => 'ndabio_search_conditions_callback',
-  );
-}
-
-/**
-* Implements hook_search_execute().
-*/
-function ndabio_search_execute($keys = NULL, $conditions = NULL) {
-  global $base_url;
-  //drupal_set_message("Naturalis: ndabio_search_execute (" . $keys . ", " . implode($conditions) . ")");
-
-  $ndsearch = json_decode(ndabio_jsonpget_callback($keys));
-  $i = 0;
-  foreach ($ndsearch->specimens as $item) {
-    $result[$i]['link'] = $base_url. "?q=naturalis/ndadetail/" . $item->specimenId;
-    $result[$i]['type'] = $item->sourceSystemName;
-    $result[$i]['title'] = $item->determinations[0]->genusOrMonomial;
-    $result[$i]['user'] = $item->sourceSystemId;
-    $result[$i]['date'] = "xxx1";
-    $result[$i]['node'] = "xxx2";
-    $result[$i]['extra'] = $item->gatheringAgent;
-    $result[$i]['score'] = "xxx3";
-    $result[$i]['snippet'] = $item->genusOrMonomial . " " .  $item->gatheringAgent . " " . $item->specimenId . " " . $item->locality;
-    $result[$i]['language'] = "xxx5";
-    $i += 1;
-  }
-  return $result;
-}
-
-/**
-* Implements hook_search_preprocess().
-*/
-function ndabio_search_preprocess($text) {
-  //drupal_set_message("Naturalis: ndabio_search_preprocess (" . $text . ")");
-  return $text;
-}
 
 /**
 * Implements hook_search_page().
@@ -556,58 +445,6 @@ function ndabio_search_page($results) {
 }
 
 /**
-* Implements hook_form_alter().
-*/
-function ndabio_form_alter(&$form, $form_state, $form_id) {
-  switch($form_id) {
-    case 'search_form':
-/*     $form['extra'] = array(
-        '#type' => 'textfield',
-        '#title' => check_plain('Extra'),
-        '#default_value' => 'defval',
-        '#required' => TRUE,
-        '#weight' => -5,
-      );
-*/
-      $form['#submit'][] = 'ndabio_searchform_submit';
-      break;
-    default:
-      break;
-  }
-}
-
-/**
-*
-*/
-function ndabio_searchform_submit(&$form, &$form_state) {
-  //drupal_set_message("Form submit");
-  $_REQUEST['keys'] = $_REQUEST['keys']; // . " " . $_REQUEST['extra'];
-  $form['basic']['keys']['#value'] = $form['basic']['keys']['#value']; //  . " " . $_REQUEST['extra'];
-  $form['basic']['keys']['#default_value'] = $form['basic']['keys']['#default_value']; //  . " " . $_REQUEST['extra'];
-  //dpm($_REQUEST);
-  //dpm($form);
-}
-
-/**
-*
-*/
-function ndabio_search_conditions_callback($keys) {
-  //drupal_set_message("ndabio_search_conditions_callback (" . $keys . ")");
-  $conditions = array();
-  //dpm($_REQUEST);
-  if (!empty($_REQUEST['keys'])) {
-    $conditions['keys'] = $_REQUEST['keys'];
-  }
-  if (!empty($_REQUEST['sample_search_keys'])) {
-    $conditions['sample_search_keys'] = $_REQUEST['sample_search_keys'];
-  }
-  if ($force_keys = variable_get('sample_search_force_keywords', '')) {
-    $conditions['sample_search_force_keywords'] = $force_keys;
-  }
-  return $conditions;
-}
-
-/**
 * 'search' TAXONOMY TO ADVANCED SEARCH FORM
 */
 function ndabio_advanced_taxonomysearch() {
@@ -624,62 +461,65 @@ function ndabio_advanced_taxonomysearch() {
     $sysname = $item->field_system['und'][0]['safe_value'];
     $children = taxonomy_get_children($item->tid, $item->vid);
     if ($children) {
-      $form[$sysname] = array(
-        '#type' => 'fieldset',
-        '#title' => $label,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
+      $form[$sysname] = array('#type' => 'fieldset', '#title' => $label, '#collapsible' => TRUE, '#collapsed' => TRUE);
       
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->field_system['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren) {
-          $form[$sysname][$childsysname] = array(
-            '#type' => 'fieldset',
-            '#title' => $childlabel,
-            '#collapsible' => TRUE,
-            //Wrap all fieldsets in a div
+          $form[$sysname][$childsysname] = array('#type' => 'fieldset', '#title' => $childlabel, '#collapsible' => TRUE,
             '#prefix' => "<div id='ndabio-advanced-search'>\n",
             '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
-            'searchtype' => array(
-              '#type' => 'radios',
-              '#title' => t('Combine searchterms'),
-              '#default_value' => 1,
-              '#options' => $searchtype,
-            ),
+            'searchtype' => array( '#type' => 'radios', '#title' => t('Combine searchterms'), '#default_value' => 1, '#options' => $searchtype),
           );
           foreach ($subchildren as $subchild) {
             $subchildsysname = $subchild->field_system['und'][0]['safe_value'];
             $subchildlabel = $subchild->description;
-            $form[$sysname][$childsysname][$subchildsysname]['#type'] = 'textfield';
-            $form[$sysname][$childsysname][$subchildsysname]['#title'] = $subchildlabel;
-            $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
-            $form[$sysname][$childsysname][$subchildsysname]['#required'] =  FALSE; 
+            //Special category, hide or pulldown fields
+            if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
+              //--more-- will be grouped in a new fieldset
+              //--hide-- will be ignored (not added to the form)
+              $category = taxonomy_get_children($subchild->tid, $subchild->vid);
+              if ($category && ($subchild->name == "--more--")) {
+                $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array('#type' => 'fieldset', '#title' => t("More"), '#collapsible' => TRUE, '#collapsed' => TRUE,
+                  '#prefix' => "<div id='ndabio-advanced-search'>\n",
+                  '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
+                );
+                
+                //put all children in group
+                foreach ($category as $catitem) {
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type'] = 'textfield';
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title'] = $catitem->description;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#default_value'] = '';
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required'] =  FALSE;
+                }
+              }
+            } else {
+              //Default search fields
+              $form[$sysname][$childsysname][$subchildsysname]['#type'] = 'textfield';
+              $form[$sysname][$childsysname][$subchildsysname]['#title'] = $subchildlabel;
+              $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
+              $form[$sysname][$childsysname][$subchildsysname]['#required'] =  FALSE;
+            }
           }
         } else {
+          //Default seartch fields
           $form[$sysname][$childsysname]['#type'] = 'textfield';
           $form[$sysname][$childsysname]['#title'] = $childlabel;
           $form[$sysname][$childsysname]['#default_value'] = '';
           $form[$sysname][$childsysname]['#required'] =  FALSE; 
         }
-        $form[$sysname][$childsysname]['submit'] = array(
-          '#type' => 'submit',
-          '#value' => t('Search'),
-          '#nowrapper' => TRUE,
-          '#attributes' => array( 'class' => array('postfix'))
-        );
+        //Search button under the fieldset
+        $form[$sysname][$childsysname]['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#nowrapper' => TRUE, '#attributes' => array( 'class' => array('postfix')) );
       }
     } else {
+      //Top field, onmisearch.
       $form[$sysname]['#type'] = 'textfield';
       $form[$sysname]['#title'] = $label;
       $form[$sysname]['#default_value'] = '';
       $form[$sysname]['#required'] =  FALSE; 
-      $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => t('Search'),
-      );
+      $form['submit'] = array( '#type' => 'submit', '#value' => t('Search'));
     }
   }
   $form['#submit'][] = 'ndabio_advanced_taxonomysearch_callback_submit';
