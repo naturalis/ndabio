@@ -95,7 +95,7 @@ function _return_taxonomy(){
           'ingewikkelde_naam' => "eenvoudige naam",
           'meer2'
         ),
-        '--hidden--' => array(
+        '--hide' => array(
           'meer3',
           'meer4'
         )
@@ -107,7 +107,7 @@ function _return_taxonomy(){
           'PlaceOfOrigin' => "Herkomst",
           'Sex' => "Geslacht",
         ),
-        '--hidden--' => array(
+        '--hide--' => array(
           'CollectorsFieldNumber',
           'Country',
           'DatasetID',
@@ -143,7 +143,7 @@ function _return_taxonomy(){
           'meer1',
           'meer2'
         ),
-        '--hidden--' => array(
+        '--hide--' => array(
           'meer3',
           'meer4'
         )
