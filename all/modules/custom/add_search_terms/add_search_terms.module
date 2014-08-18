@@ -1,0 +1,157 @@
+<?php
+
+/**
+ * @file
+ * Module file for add_search_terms_module.
+ */
+
+/**
+ * Implements hook_menu().
+ *
+ */
+function add_search_terms_menu() {
+
+  // This is the minimum information you can provide for a menu item. This menu
+  // item will be created in the default menu, usually Navigation.
+  $items['naturalis/add_search_terms'] = array(
+    'title' => 'Page Example',
+    'page callback' => 'add_search_terms_description',
+    'access callback' => TRUE,
+    'expanded' => TRUE,
+  );
+
+  $items['naturalis/add_search_terms/simple'] = array(
+    'title' => 'Simple - no arguments',
+    'page callback' => 'add_search_terms_simple',
+    'access arguments' => array('access simple page'),
+  );
+
+  return $items;
+}
+
+
+function add_search_terms_simple() {
+  $vocab = taxonomy_vocabulary_machine_name_load('search');
+  
+  foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
+  
+  $arr_terms = _return_taxonomy();
+  // dpm($arr_terms);
+
+  _arr_to_taxonomy($arr_terms);
+
+
+  return array('#markup' => '<p>De hele zooi zit erin, hoor!</p>');
+}
+
+function _arr_to_taxonomy($arr_terms, $parent = 0){
+  
+  foreach ($arr_terms as $key => $value) {
+
+    // If the value of the item is a string, I assume we're looking at an end-point
+    if ( gettype($value) == 'string' ){
+      _term_save(  $value, $parent, $key  );
+      // (We use the $key for the system-name field…)
+
+    // otherwise, we're looking at an array and we can iterate further
+    } elseif (  gettype($value) == 'array'  ){
+      $tid = _term_save($key, $parent);      
+      _arr_to_taxonomy( $value, $tid);
+    }
+
+
+  }
+}
+
+function _term_save($str_term, $parent = 0, $str_system = ''){
+    $obj_term = _return_term( $str_term, $parent, $str_system );
+    taxonomy_term_save( $obj_term ); 
+    return $obj_term->tid;
+}
+
+function _return_term($name, $parent = 0, $str_system = ''){
+  $term = (object) array(
+     'name' => $name,
+     'vid' => 1
+  );
+ 
+  $term->field_system[LANGUAGE_NONE][0]['value'] = ( $str_system != "" ?  $str_system : $name ); 
+
+  if ( $parent != "0"){
+    $term->parent = array($parent);
+  }
+
+
+  return $term;
+}
+
+
+function _return_taxonomy(){
+  return array(
+    'omnisearch' => 'OMNISEARCH',
+    'extended' => array(
+      'multimedia' => array(
+        'name',
+        '--more--' => array(
+          'ingewikkelde_naam' => "eenvoudige naam",
+          'meer2'
+        ),
+        '--hidden--' => array(
+          'meer3',
+          'meer4'
+        )
+      ),
+      'collectie examplaren' => array(
+        'vernicular name',
+        '--more--' => array(
+          'CollectionType' => "Verzameltype",
+          'PlaceOfOrigin' => "Herkomst",
+          'Sex' => "Geslacht",
+        ),
+        '--hidden--' => array(
+          'CollectorsFieldNumber',
+          'Country',
+          'DatasetID',
+          'DateCreation',
+          'DateLastEdited',
+          'FromCaptivity',
+          'KindOfUnit',
+          'Language',
+          'License',
+          'LicenseType',
+          'NumberOfSpecimen',
+          'ObjectPublic',
+          'ObjectType',
+          'OriginCoordinateMethod', 
+          'OriginLatitudeDecimal', 
+          'OriginLongitudeDecimal', 
+          'Owner',
+          'PhaseOrStage',
+          'PreparationType',
+          'ProjectTitle',
+          'RecordBasis',
+          'RecordURI',
+          'SourceID',
+          'SourceInstitutionID',
+          'SpecimenMount',
+          'UnitGUID', 
+          'UnitID'
+        )
+      ),
+      'soorten'  => array(
+        'name',
+        '--more--' => array(
+          'meer1',
+          'meer2'
+        ),
+        '--hidden--' => array(
+          'meer3',
+          'meer4'
+        )
+      )
+    )
+
+  );
+}
+
+
