@@ -45,17 +45,19 @@ function add_search_terms_simple() {
 }
 
 function _arr_to_taxonomy($arr_terms, $parent = 0){
-  
+  static $_weight = 0;
+
   foreach ($arr_terms as $key => $value) {
+    $_weight++;
 
     // If the value of the item is a string, I assume we're looking at an end-point
     if ( gettype($value) == 'string' ){
-      _term_save(  $value, $parent, $key  );
+      _term_save(  $value, $parent, $key, $_weight  );
       // (We use the $key for the system-name field…)
 
     // otherwise, we're looking at an array and we can iterate further
     } elseif (  gettype($value) == 'array'  ){
-      $tid = _term_save($key, $parent);      
+      $tid = _term_save($key, $parent, $key, $_weight);      
       _arr_to_taxonomy( $value, $tid);
     }
 
@@ -63,27 +65,24 @@ function _arr_to_taxonomy($arr_terms, $parent = 0){
   }
 }
 
-function _term_save($str_term, $parent = 0, $str_system = ''){
-    $obj_term = _return_term( $str_term, $parent, $str_system );
-    taxonomy_term_save( $obj_term ); 
-    return $obj_term->tid;
-}
-
-function _return_term($name, $parent = 0, $str_system = ''){
-  $term = (object) array(
-     'name' => $name,
-     'vid' => 1
+function _term_save($str_term, $parent = 0, $str_system = '', $int_weight){
+  $obj_term = (object) array(
+     'name' => $str_term,
+     'vid' => 1,
+     'weight' => $int_weight
   );
  
-  $term->field_system[LANGUAGE_NONE][0]['value'] = ( $str_system != "" ?  $str_system : $name ); 
+  $obj_term->field_system[LANGUAGE_NONE][0]['value'] = ( is_numeric($str_system ) ?   $str_term  : $str_system ); 
 
   if ( $parent != "0"){
-    $term->parent = array($parent);
+    $obj_term->parent = array($parent);
   }
-
-
-  return $term;
+    
+  taxonomy_term_save( $obj_term ); 
+  return $obj_term->tid;
 }
+
+
 
 
 function _return_taxonomy(){
