@@ -51,6 +51,11 @@ $gray-10 : #1a1a1a;
 
     #naturalis-header{
       overflow: hidden;
+      transition: background-color 500ms;
+      &:hover{
+        background-color: mix($purple, $gray-9);
+        transition: background-color 100ms;
+      }
 
 
       #title-and-slogan{
@@ -63,13 +68,14 @@ $gray-10 : #1a1a1a;
           top: -100%;
         }
 
+
         #intro{
           position: absolute;
           top: 160px;
           color: $white;
         }
 
-        .intro-more{
+        .intro-more, .intro-less{
           color: $white;
           position: absolute;
           bottom: 0;
@@ -79,6 +85,9 @@ $gray-10 : #1a1a1a;
           width: 100%;
           text-align: right;
           font-weight: bolder;
+          &:hover{
+            color: $gray-3;
+          }
         }
       }
     }

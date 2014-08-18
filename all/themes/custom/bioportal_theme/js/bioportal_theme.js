@@ -11,18 +11,20 @@
 
   var $_header          = $("#naturalis-header");
   var $_intro_more_link = $(".intro-more", $_header);
+  var $_intro_less_link = $(".intro-less", $_header);
   var $_intro_block     = $(".intro-block", $_header);
   var $_title_slogan    = $("#title-and-slogan", $_header);
 
   $_intro_more_link
     .show()
+
+  $_title_slogan
     .click(function(){
       $_header
         .toggleClass("background-purple")
         .toggleClass("background-gray-9")
-        $_title_slogan.toggleClass("off-canvas");
-    })
-
+      $_title_slogan.toggleClass("off-canvas");
+    });
 
   // ---------------------------------------------------------
 
@@ -60,7 +62,7 @@
 
   // ---------------------------------------------------------
   // PRELOADER
-  // preloader();
+  //preloader();
 
   function preloader(){
     $_overlay = $("<div id='preloader'></div>")
@@ -73,25 +75,43 @@
 
       var b = 0.306349;
 
-      for (var n=0; n<63; n++){
-        var teta  = n * 2.3998277;
-        var r     = 10 * Math.sqrt(n)
-        var num_x = r * Math.cos(teta);
-        var num_y = r * Math.sin(teta);
+      var $_kernel = [];
 
-        $_kernel = $("<div class='kernel' />")
+      for (var n=0; n<63; n++){
+
+        $_kernel[n] = $("<div class='kernel' />")
           .appendTo($_canvas)
           .css({
-            width: "10px",
-            height: "10px",
-            background: "white",
-            position: "absolute",
-            borderRadius: "5px",
-            left: num_x + "px",
-            top: num_y + "px"
+            width        : "10px",
+            height       : "10px",
+            background   : "white",
+            position     : "absolute",
+            borderRadius : "5px",
+            left         : 0,
+            top          : 0
           })
+      }
+
+    var t=-63;
+    window.setInterval(function() {
+      for (var n=0; n<63; n++){
+        k = t + n;
+        t+= 0.002;
+        if (k>0){
+          var teta  = k * 2.3998277;
+          var r     = 10 * Math.sqrt(k);
+          var num_x = r * Math.cos(teta);
+          var num_y = r * Math.sin(teta);
+
+          $_kernel[n].css({
+            left         : num_x,
+            top          : num_y
+          });
+        }
 
       }
+    }, 100);
+
 
   }
   // ---------------------------------------------------------

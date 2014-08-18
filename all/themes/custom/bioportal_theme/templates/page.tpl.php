@@ -108,11 +108,15 @@
 
           <div class="intro-more hidden">
             <i class="icon-double-chevron-down"></i>
-            <?php print t('more'); ?>
+            <?php print t('What-the-fuut…?'); ?>
           </div>
 
           <div id="intro">
               <?php print $intro; ?>
+              <div class="intro-less ">
+                <i class="icon-double-chevron-up"></i>
+                <?php print t('Got it!'); ?>
+              </div>
           </div>
 
         </div>

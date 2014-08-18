@@ -8,7 +8,11 @@ button, .button {
   background-color: #333333; }
 
 #naturalis-header {
-  overflow: hidden; }
+  overflow: hidden;
+  transition: background-color 500ms; }
+  #naturalis-header:hover {
+    background-color: #382d5a;
+    transition: background-color 100ms; }
   #naturalis-header #title-and-slogan {
     position: relative;
     top: 0px;
@@ -20,7 +24,7 @@ button, .button {
       position: absolute;
       top: 160px;
       color: white; }
-    #naturalis-header #title-and-slogan .intro-more {
+    #naturalis-header #title-and-slogan .intro-more, #naturalis-header #title-and-slogan .intro-less {
       color: white;
       position: absolute;
       bottom: 0;
@@ -30,6 +34,8 @@ button, .button {
       width: 100%;
       text-align: right;
       font-weight: bolder; }
+      #naturalis-header #title-and-slogan .intro-more:hover, #naturalis-header #title-and-slogan .intro-less:hover {
+        color: #cccccc; }
 
 #edit-omnisearch {
   border: 0px solid white;
