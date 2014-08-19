@@ -9,6 +9,7 @@
  * Defaults.
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
+define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 //define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/RMNH.MAM.50059');
 //define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/?country=Suriname&sex=male');
 define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
@@ -89,7 +90,7 @@ function ndabio_ndadetail_callback($myid = '', $myaction = NULL) {
 function ndabio_config_form($form, &$form_state) {
   $form['ndabio_config'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Naturalis config')
+    '#title' => t('Naturalis Data API config')
   );
   $form['ndabio_config']['ndabio_config_nda'] = array(
     '#type' => 'textfield',
@@ -109,6 +110,20 @@ function ndabio_config_form($form, &$form_state) {
     '#maxlength' => 200,
     '#description' => t('The URL used for getting JSON data.') . '<br />' .
       t('Default') . ': ' . NDABIO_JSON,
+    '#required' => TRUE,
+  );
+  $form['ndabio_gmap'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Naturalis Geosearch config')
+  );
+  $form['ndabio_gmap']['ndabio_gmapkey'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Google maps key'),
+    '#default_value' => variable_get('ndabio_gmapkey', NDABIO_GMAPKEY),
+    '#size' => 140,
+    '#maxlength' => 200,
+    '#description' => t('The key used by Google maps for a geographic search.') . '<br />' .
+      t('Default') . ': ' . NDABIO_GMAPKEY,
     '#required' => TRUE,
   );
 
@@ -256,7 +271,7 @@ function ndabio_geosearch_callback() {
   $path = drupal_get_path('module', 'ndabio');
   drupal_add_css($path . "/css/naturalis.css");
   drupal_add_js($path . "/js/map.js", array('weight' => 1));
-  drupal_add_js("https://maps.googleapis.com/maps/api/js?key=AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ&libraries=drawing");
+  drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
   drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
@@ -458,7 +473,9 @@ function ndabio_advanced_taxonomysearch() {
   foreach($terms as $item) {
     $name = $item->name;
     $label = $item->description;
-    $sysname = $item->field_system['und'][0]['safe_value'];
+    $sysname = $item->name;
+    if (!empty($item->field_system)) $sysname = $item->field_system['und'][0]['safe_value'];
+    
     $children = taxonomy_get_children($item->tid, $item->vid);
     if ($children) {
       $form[$sysname] = array('#type' => 'fieldset', '#title' => $label, '#collapsible' => TRUE, '#collapsed' => TRUE);
@@ -471,7 +488,7 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname] = array('#type' => 'fieldset', '#title' => $childlabel, '#collapsible' => TRUE,
             '#prefix' => "<div id='ndabio-advanced-search'>\n",
             '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
-            'searchtype' => array( '#type' => 'radios', '#title' => t('Combine searchterms'), '#default_value' => 1, '#options' => $searchtype),
+            'searchtype' => array( '#type' => 'radios', '#title' => t('Combine searchterms'), '#default_value' => 0, '#options' => $searchtype),
           );
           foreach ($subchildren as $subchild) {
             $subchildsysname = $subchild->field_system['und'][0]['safe_value'];
@@ -534,9 +551,14 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   unset($myvalues['op']);
   unset($myvalues['submit']);
   
+//  dpm($myvalues);
   $myurl = "?";
+  //Default search is AND based. Only add the operator if a non-deault is chosen
+  if ($myvalues['searchtype'] == 1) $myurl .= "operator=OR&";
+  unset($myvalues['searchtype']);
+  
   foreach (array_filter($myvalues) as $key => $val) {
-    $myurl .= "$key=$val&";
+    $myurl .= "$key=" . urlencode($val) . "&";
   }
   drupal_set_message(rtrim($myurl, '&'));  
   drupal_deliver_page("<h2>" . t("Results") . "</h2><pre>" . ndabio_getjson(rtrim($myurl, '&')) . "</pre>");
