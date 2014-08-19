@@ -69,7 +69,8 @@ function _term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   $obj_term = (object) array(
      'name' => $str_term,
      'vid' => 1,
-     'weight' => $int_weight
+     'weight' => $int_weight,
+     'description' => $str_term,
   );
  
   $obj_term->field_system[LANGUAGE_NONE][0]['value'] = ( is_numeric($str_system ) ?   $str_term  : $str_system ); 
@@ -95,7 +96,7 @@ function _return_taxonomy(){
           'ingewikkelde_naam' => "eenvoudige naam",
           'meer2'
         ),
-        '--hide' => array(
+        '--hide--' => array(
           'meer3',
           'meer4'
         )

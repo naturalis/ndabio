@@ -175,8 +175,10 @@ $gray-10 : #1a1a1a;
     padding-top        : 1px;
     margin             : 0;
     border-width       : 0;
+    margin-bottom      : 30px;
+
     @media (min-width  : 1000px) {
-      padding          : 0.9375rem percentage(2/12);
+      padding          : 0.9375rem percentage(2/12) 80px;
     }
 
     fieldset{
@@ -214,6 +216,8 @@ $gray-10 : #1a1a1a;
 
 
     #edit-submit--2{
+      position         : absolute;
+      right            : 3rem;
       background-color : $orange;
       border-radius    : 2px;
     }

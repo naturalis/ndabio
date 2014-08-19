@@ -397,7 +397,7 @@ function ndabio_advanced_taxonomysearch() {
     if ($children) {
       $form[$sysname] = array(
         '#type' => 'fieldset',
-        '#title' => $label,
+        //'#title' => $label,
       );
 
       foreach ($children as $child) {
@@ -461,8 +461,6 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname]['#required']      =  FALSE;
           $form[$sysname][$childsysname]['#inline']        =  TRUE;
         }
-        //Search button under the fieldset
-        //$form[$sysname][$childsysname]['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#nowrapper' => TRUE, '#attributes' => array( 'class' => array('postfix')) );
       }
     } else {
       // Omnisearch Box
@@ -491,6 +489,13 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
   $form['#submit'][] = 'ndabio_advanced_taxonomysearch_callback_submit';
+
+  $form[$sysname]['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#nowrapper' => TRUE,
+  );
+
   return ($form);
 }
 

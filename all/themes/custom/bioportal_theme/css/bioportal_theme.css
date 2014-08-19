@@ -96,10 +96,11 @@ button, .button {
   padding: 0.9375rem;
   padding-top: 1px;
   margin: 0;
-  border-width: 0; }
+  border-width: 0;
+  margin-bottom: 30px; }
   @media (min-width: 1000px) {
     #edit-extended {
-      padding: 0.9375rem 16.66667%; } }
+      padding: 0.9375rem 16.66667% 80px; } }
   #edit-extended fieldset {
     font-size: 1.125rem;
     padding: 0 0 30px 0;
@@ -124,6 +125,8 @@ button, .button {
     padding: 3px;
     height: 26px; }
   #edit-extended #edit-submit--2 {
+    position: absolute;
+    right: 3rem;
     background-color: #ef6d14;
     border-radius: 2px; }
   #edit-extended .form-type-radio {
