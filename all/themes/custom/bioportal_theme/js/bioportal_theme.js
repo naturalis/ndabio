@@ -8,6 +8,7 @@
 
   // ---------------------------------------------------------
   // INTRO (more)
+  // ---------------------------------------------------------
 
   var $_header          = $("#naturalis-header");
   var $_intro_more_link = $(".intro-more", $_header);
@@ -31,6 +32,7 @@
 
   // ---------------------------------------------------------
   // SEARCH FORM: hide/show advanced search
+  // ---------------------------------------------------------
 
     var $_advanced_search_form = $("#edit-extended");
     var $_omnibox              = $("#edit-ndabio-adv");
@@ -63,8 +65,45 @@
   // ---------------------------------------------------------
 
 
+
   // ---------------------------------------------------------
-  // SEARCH FORM: hide/show advanced search
+  // SEARCH FORM: prevent submit button from scrolling of the page
+  // ---------------------------------------------------------
+
+  var $_bottom_submit = $("#edit-submit--2");
+  var int_y = $_bottom_submit.offset().top;
+  var int_x = $_bottom_submit.offset().left;
+
+
+  $(window).scroll(function(){
+
+      var objectTop = $_bottom_submit.position().top;
+      var objectHeight = $_bottom_submit.outerHeight();
+      var windowScrollTop = $(window).scrollTop();
+      var windowHeight = $(window).height();
+
+      if ( (int_y - windowHeight  )  > windowScrollTop ){
+        $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
+      } else {
+        $_bottom_submit.removeAttr("style");
+      }
+
+      console.clear();
+      console.log("Window scroll Top", windowScrollTop);
+      console.log("objectTop", objectTop);
+      console.log("windowHeight", windowHeight);
+      console.log("int_y", int_y);
+      console.log("int_y - windowHeight ", int_y - windowHeight);
+  });
+  $(window).trigger('scroll');
+
+  // ---------------------------------------------------------
+
+
+
+  // ---------------------------------------------------------
+  // SEARCH FORM: clear text fields
+  // ---------------------------------------------------------
   $("<div class='ndabio-clear-textfield icon-cross hidden' />")
     .insertAfter("input[data-clear]")
     .click(function(){
@@ -83,7 +122,7 @@
       if ($_me.val() != ""){
         $_me.next().removeClass("hidden");
       }
-         
+
     })
     .on('keypress',function(){
 
@@ -95,6 +134,8 @@
         $_me.next().addClass("hidden");
       }
   });
+  // ---------------------------------------------------------
+
 
   // ---------------------------------------------------------
   // PRELOADER

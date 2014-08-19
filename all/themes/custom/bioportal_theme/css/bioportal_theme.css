@@ -46,7 +46,9 @@ button, .button {
   .fieldset-omnisearch button {
     border: none;
     border-radius: 0 3px 3px 0;
-    text-transform: lowercase; }
+    text-transform: lowercase;
+    font-weight: bolder;
+    letter-spacing: 0.05em; }
     .fieldset-omnisearch button[disabled] {
       background-color: #999999;
       color: #cccccc; }
@@ -67,7 +69,7 @@ button, .button {
   color: #b2b1a8;
   font-size: 24px;
   line-height: 50px;
-  text-aling: center;
+  text-align: center;
   cursor: pointer; }
   .ndabio-toggle-advanced:hover {
     color: #009ee0; }
@@ -81,7 +83,7 @@ button, .button {
   color: #b2b1a8;
   font-size: 24px;
   line-height: 27px;
-  text-aling: center;
+  text-align: center;
   cursor: pointer; }
   .ndabio-clear-textfield:hover {
     color: #ef6d14; }
@@ -106,6 +108,9 @@ button, .button {
     padding: 0 0 30px 0;
     border: none;
     border-bottom: 1px solid #999999; }
+    #edit-extended fieldset fieldset {
+      border: none;
+      padding: 0; }
   #edit-extended legend {
     background: none;
     margin: 0; }
@@ -128,7 +133,10 @@ button, .button {
     position: absolute;
     right: 3rem;
     background-color: #ef6d14;
-    border-radius: 2px; }
+    border-radius: 2px;
+    text-transform: lowercase;
+    font-weight: bolder;
+    letter-spacing: 0.05em; }
   #edit-extended .form-type-radio {
     float: left;
     width: 50%;
