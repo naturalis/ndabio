@@ -33,31 +33,31 @@ button, .button {
       #naturalis-header #title-and-slogan .intro-more:hover, #naturalis-header #title-and-slogan .intro-less:hover {
         color: #cccccc; }
 
-#edit-omnisearch {
+.fieldset-omnisearch {
   border: 0px solid white;
   padding: 1rem 0 0 0;
   margin-bottom: 0;
   background-color: white;
   transition: background-color; }
-  #edit-omnisearch.disabled {
+  .fieldset-omnisearch.disabled {
     background-color: #4d4d4d;
     transition: background-color;
     border-bottom: 1px solid #999999; }
-  #edit-omnisearch button {
+  .fieldset-omnisearch button {
     border: none;
     border-radius: 0 3px 3px 0;
     text-transform: lowercase; }
-    #edit-omnisearch button[disabled] {
+    .fieldset-omnisearch button[disabled] {
       background-color: #999999;
       color: #cccccc; }
-  #edit-omnisearch button, #edit-omnisearch input {
+  .fieldset-omnisearch button, .fieldset-omnisearch input {
     height: 50px;
     font-size: 1.25rem; }
-  #edit-omnisearch input {
+  .fieldset-omnisearch input {
     padding-right: 60px; }
-  #edit-omnisearch .ndabio-omnibox-wrapper {
+  .fieldset-omnisearch .ndabio-omnibox-wrapper {
     position: relative; }
-  #edit-omnisearch .ndabio-toggle-advanced {
+  .fieldset-omnisearch .ndabio-toggle-advanced {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -68,46 +68,48 @@ button, .button {
     line-height: 50px;
     text-aling: center; }
 
-#ndabio-ndasearchform-callback {
+#ndabio-advanced-taxonomysearch {
   position: absolute;
   left: 0;
   width: 100%; }
 
-#ndabio-advanced-search {
+#edit-extended {
   background-color: #4d4d4d;
   color: white;
   padding: 0.9375rem;
-  padding-top: 1px; }
+  padding-top: 1px;
+  margin: 0;
+  border-width: 0; }
   @media (min-width: 1000px) {
-    #ndabio-advanced-search {
+    #edit-extended {
       padding: 0.9375rem 16.66667%; } }
-  #ndabio-advanced-search fieldset {
+  #edit-extended fieldset {
     font-size: 1.125rem;
     padding: 0 0 30px 0;
     border: none;
     border-bottom: 1px solid #999999; }
-  #ndabio-advanced-search legend {
+  #edit-extended legend {
     background: none;
     margin: 0; }
-  #ndabio-advanced-search label {
+  #edit-extended label {
     font-size: 1.125rem;
     color: white;
     font-weight: 300;
     letter-spacing: 0.05em;
     margin: 0;
     padding: 0; }
-  #ndabio-advanced-search .form-item {
+  #edit-extended .form-item {
     margin-bottom: 0;
     margin-top: 0.5rem; }
-  #ndabio-advanced-search input[type='text'],
-  #ndabio-advanced-search input[type='radio'] {
+  #edit-extended input[type='text'],
+  #edit-extended input[type='radio'] {
     margin: 0;
     padding: 3px;
     height: 26px; }
-  #ndabio-advanced-search #edit-submit--2 {
+  #edit-extended #edit-submit--2 {
     background-color: #ef6d14;
     border-radius: 2px; }
-  #ndabio-advanced-search .form-type-radio {
+  #edit-extended .form-type-radio {
     float: left;
     width: 50%;
     margin-top: 0; }

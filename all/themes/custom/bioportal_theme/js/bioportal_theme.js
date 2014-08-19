@@ -32,8 +32,10 @@
   // ---------------------------------------------------------
   // SEARCH FORM: hide/show advanced search
 
-    var $_advanced_search_form = $("#ndabio-advanced-search");
+    var $_advanced_search_form = $("#edit-extended");
     var $_omnibox              = $("#edit-ndabio-adv");
+    var $_submit               = $("#edit-submit");
+    var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
 
     // -- search form: hide advanced search
     $_advanced_search_form.slideUp(0);
@@ -42,22 +44,22 @@
     $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
 
     // -- search form: behaviour for dropdown button
-
     $_omnibox.removeAttr("disabled");
-
-    $("#edit-submit").removeAttr("disabled");
+    $_submit.removeAttr("disabled");
 
     $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
       .insertAfter( $_omnibox )
       .click(function(){
-        $("#edit-omnisearch").toggleClass("disabled");
+        $_fieldset_omnisearch.toggleClass("disabled");
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
-        $("#edit-submit").toggleAttr("disabled").toggleClass("disabled");
+        $_submit.toggleAttr("disabled").toggleClass("disabled");
         $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
         $_advanced_search_form.slideToggle();
       })
 
   // ---------------------------------------------------------
+
+  $(".ndabio-toggle-advanced").trigger("click");
 
 
   // ---------------------------------------------------------

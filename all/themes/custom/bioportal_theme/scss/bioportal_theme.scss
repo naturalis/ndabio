@@ -92,7 +92,7 @@ $gray-10 : #1a1a1a;
 
   // -- FREE TEXT SEARCH, OMNISEARCH
 
-    #edit-omnisearch{
+    .fieldset-omnisearch{
       border               : 0px solid white;
       padding              : 1rem 0 0 0;
       margin-bottom        : 0;
@@ -143,17 +143,19 @@ $gray-10 : #1a1a1a;
     }
 
   // ADVANCED SEARCH
-  #ndabio-ndasearchform-callback{
+  #ndabio-advanced-taxonomysearch{
     position           : absolute;
     left               : 0;
     width              : 100%;
   }
 
-  #ndabio-advanced-search{
+  #edit-extended{
     background-color   : $gray-8;
     color              : $white;
     padding            : 0.9375rem;
     padding-top        : 1px;
+    margin             : 0;
+    border-width       : 0;
     @media (min-width  : 1000px) {
       padding          : 0.9375rem percentage(2/12);
     }
