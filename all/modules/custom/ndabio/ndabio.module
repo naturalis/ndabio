@@ -437,10 +437,11 @@ function ndabio_advanced_taxonomysearch() {
                 //put all children in group
                 foreach ($category as $catitem) {
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type']          = 'textfield';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title']         = $catitem->description;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title']         = 'Titel '.$catitem->description;
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#default_value'] = '';
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required']      =  FALSE;
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#inline']        =  TRUE;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#attributes']    =  array( 'data-clear' => "" );
                 }
               }
             } else {

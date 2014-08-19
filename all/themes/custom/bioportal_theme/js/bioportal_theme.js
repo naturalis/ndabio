@@ -38,7 +38,7 @@
     var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
 
     // -- search form: hide advanced search
-    //$_advanced_search_form.slideUp(0);
+    $_advanced_search_form.slideUp(0);
 
     // -- search form: add dropdown button to omni-search box
     $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
@@ -57,9 +57,44 @@
         $_advanced_search_form.slideToggle();
       })
 
+
+    $(".ndabio-toggle-advanced").trigger("click");
+
   // ---------------------------------------------------------
 
 
+  // ---------------------------------------------------------
+  // SEARCH FORM: hide/show advanced search
+  $("<div class='ndabio-clear-textfield icon-cross hidden' />")
+    .insertAfter("input[data-clear]")
+    .click(function(){
+      $(this)
+        .addClass("hidden")
+        .prev()
+          .val("");
+    })
+    .parent()
+    .addClass("input-clearable")
+
+  $("input[data-clear]")
+    .each(function(){
+      $_me = $(this);
+
+      if ($_me.val() != ""){
+        $_me.next().removeClass("hidden");
+      }
+         
+    })
+    .on('keypress',function(){
+
+      $_me = $(this);
+
+      if ($_me.val() != ""){
+        $_me.next().removeClass("hidden");
+      } else {
+        $_me.next().addClass("hidden");
+      }
+  });
 
   // ---------------------------------------------------------
   // PRELOADER

@@ -57,16 +57,34 @@ button, .button {
     padding-right: 60px; }
   .fieldset-omnisearch .ndabio-omnibox-wrapper {
     position: relative; }
-  .fieldset-omnisearch .ndabio-toggle-advanced {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 50px;
-    height: 50px;
-    color: #b2b1a8;
-    font-size: 24px;
-    line-height: 50px;
-    text-aling: center; }
+
+.ndabio-toggle-advanced {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 50px;
+  height: 50px;
+  color: #b2b1a8;
+  font-size: 24px;
+  line-height: 50px;
+  text-aling: center;
+  cursor: pointer; }
+  .ndabio-toggle-advanced:hover {
+    color: #009ee0; }
+
+.ndabio-clear-textfield {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  width: 27px;
+  height: 27px;
+  color: #b2b1a8;
+  font-size: 24px;
+  line-height: 27px;
+  text-aling: center;
+  cursor: pointer; }
+  .ndabio-clear-textfield:hover {
+    color: #ef6d14; }
 
 #ndabio-advanced-taxonomysearch {
   left: 0;
