@@ -140,90 +140,7 @@ function ndabio_displayform() {
 //  return drupal_render($form);
 }
 
-function ndabio_ndasearchform_callback() {
-  // Omnisearch Box
-  $form['omnisearch'] = array(
-    '#type' => 'fieldset',
-    '#theme' => 'ndabio_omnisearch',
-    '#nowrapper' => TRUE
-  );
-  $form = array();
-  $form['omnisearch']['ndabio_adv'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Keywords'),
-    '#default_value' => '',
-    '#required' => FALSE,
-    '#title_display' => 'invisible',
-    '#nowrapper' => TRUE
-   );
 
-  $form['omnisearch']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-    '#nowrapper' => TRUE,
-    '#attributes' => array( 'class' => array('postfix'))
-  );
-
-  // Advanced Search
-  $combine = array(0 => t('And'), 1 => t('Or'));
-  $radios = array(
-    '#type' => 'radios',
-    '#title' => t('Combine searches'),
-    '#default_value' => isset($node->active) ? $node->active : 1,
-    '#options' => $combine,
-  );
-
-  // -- Fieldset: Multimedia
-
-  $form['ndabio_advsearch_mm'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Multimedia')
-  );
-
-  $form['ndabio_advsearch_mm']['combine'] = $radios;
-
-  $form['ndabio_advsearch_mm']['ndabio_advsearch_mmwetenschap'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Wetenschappelijke naam'),
-    '#default_value' => '',
-    '#required' => FALSE,
-  );
-  $form['ndabio_advsearch_mm']['ndabio_advsearch_mmgangbaar'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Gangbare naam'),
-    '#default_value' => '',
-    '#required' => FALSE,
-  );
-
-  // -- Fieldset: Collectie-exemplaren
-
-  $form['ndabio_advsearch_col'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Collectieexemplaren')
-  );
-
-  $form['ndabio_advsearch_col']['combine'] = $radios;
-
-  $form['ndabio_advsearch_col']['ndabio_advsearch_colwetenschap'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Wetenschappelijke naam'),
-    '#default_value' => '',
-    '#required' => FALSE,
-  );
-
-  // SUBMIT
-  $form['ndabio_advsearch']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-  );
-  $form['#submit'][] = 'ndabio_ndasearchform_callback_submit';
-
-  // Wrap all fieldsets in a div
-  $form['ndabio_advsearch_mm']['#prefix'] = "<div id='ndabio-advanced-search'>\n";
-  $form['ndabio_advsearch']['#suffix'] = "\n</div> <!-- / #ndabio-advanced-search -->";
-
-  return $form;
-}
 
 function _wrap_inner_grid_cols( &$form_element, $n = 6 ){
   if ( !isset( $form_element['#prefix'])  ){$form_element['#prefix'] = ''; }
@@ -282,7 +199,7 @@ function ndabio_geosearch_callback() {
 	  <input type='submit' value='Zoeken' />
 	</form></div>";
 
-	
+
   return $pagecontent;
 }
 
@@ -475,20 +392,26 @@ function ndabio_advanced_taxonomysearch() {
     $label = $item->description;
     $sysname = $item->name;
     if (!empty($item->field_system)) $sysname = $item->field_system['und'][0]['safe_value'];
-    
+
     $children = taxonomy_get_children($item->tid, $item->vid);
     if ($children) {
-      $form[$sysname] = array('#type' => 'fieldset', '#title' => $label, '#collapsible' => TRUE, '#collapsed' => TRUE);
-      
+      $form[$sysname] = array(
+        '#type' => 'fieldset',
+        '#title' => $label,
+        // '#collapsible' => TRUE,
+        // '#collapsed' => TRUE
+        );
+
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
         if (!empty($child->field_system)) $childsysname = $child->field_system['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren) {
-          $form[$sysname][$childsysname] = array('#type' => 'fieldset', '#title' => $childlabel, '#collapsible' => TRUE,
-            '#prefix' => "<div id='ndabio-advanced-search'>\n",
-            '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
+          $form[$sysname][$childsysname] = array(
+            '#type' => 'fieldset',
+            '#title' => 't '.$childlabel,
+            // '#collapsible' => TRUE,
             'searchtype' => array( '#type' => 'radios', '#title' => t('Combine searchterms'), '#default_value' => 0, '#options' => $searchtype),
           );
           foreach ($subchildren as $subchild) {
@@ -501,44 +424,68 @@ function ndabio_advanced_taxonomysearch() {
               //--hide-- will be ignored (not added to the form)
               $category = taxonomy_get_children($subchild->tid, $subchild->vid);
               if ($category && ($subchild->name == "--more--")) {
-                $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array('#type' => 'fieldset', '#title' => t("More"), '#collapsible' => TRUE, '#collapsed' => TRUE,
-                  '#prefix' => "<div id='ndabio-advanced-search'>\n",
-                  '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
+                $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array(
+                  '#type' => 'fieldset',
+                  '#title' => t("More"),
+                  // '#collapsible' => TRUE,
+                  // '#collapsed' => TRUE,
+                  // '#prefix' => "<div id='ndabio-advanced-search'>\n",
+                  // '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
                 );
-                
+
                 //put all children in group
                 foreach ($category as $catitem) {
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type'] = 'textfield';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title'] = $catitem->description;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title'] = 't '.$catitem->description;
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#default_value'] = '';
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required'] =  FALSE;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#inline'] =  TRUE;
                 }
               }
             } else {
               //Default search fields
               $form[$sysname][$childsysname][$subchildsysname]['#type'] = 'textfield';
-              $form[$sysname][$childsysname][$subchildsysname]['#title'] = $subchildlabel;
+              $form[$sysname][$childsysname][$subchildsysname]['#title'] = 't '.$subchildlabel;
               $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
               $form[$sysname][$childsysname][$subchildsysname]['#required'] =  FALSE;
+              $form[$sysname][$childsysname][$subchildsysname]['#inline'] =  TRUE;
             }
           }
         } else {
           //Default seartch fields
           $form[$sysname][$childsysname]['#type'] = 'textfield';
-          $form[$sysname][$childsysname]['#title'] = $childlabel;
+          $form[$sysname][$childsysname]['#title'] = 't '. $childlabel;
           $form[$sysname][$childsysname]['#default_value'] = '';
-          $form[$sysname][$childsysname]['#required'] =  FALSE; 
+          $form[$sysname][$childsysname]['#required'] =  FALSE;
+          $form[$sysname][$childsysname]['#inline'] =  TRUE;
         }
         //Search button under the fieldset
-        $form[$sysname][$childsysname]['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#nowrapper' => TRUE, '#attributes' => array( 'class' => array('postfix')) );
+        //$form[$sysname][$childsysname]['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#nowrapper' => TRUE, '#attributes' => array( 'class' => array('postfix')) );
       }
     } else {
-      //Top field, onmisearch.
-      $form[$sysname]['#type'] = 'textfield';
-      $form[$sysname]['#title'] = $label;
-      $form[$sysname]['#default_value'] = '';
-      $form[$sysname]['#required'] =  FALSE; 
-      $form['submit'] = array( '#type' => 'submit', '#value' => t('Search'));
+      // Omnisearch Box
+      $form[$sysname]['omnisearch'] = array(
+        '#type' => 'fieldset',
+        '#theme' => 'ndabio_omnisearch',
+        '#nowrapper' => TRUE,
+        '#attributes' => array( 'class' => array('fieldset-omnisearch'))
+      );
+
+      $form[$sysname]['omnisearch']['ndabio_adv'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Keywords'),
+        '#default_value' => '',
+        '#required' => FALSE,
+        '#title_display' => 'invisible',
+        '#nowrapper' => TRUE
+       );
+
+      $form[$sysname]['omnisearch']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Search'),
+        '#nowrapper' => TRUE,
+        '#attributes' => array( 'class' => array('postfix'))
+      );
     }
   }
   $form['#submit'][] = 'ndabio_advanced_taxonomysearch_callback_submit';
@@ -552,16 +499,16 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   unset($myvalues['form_id']);
   unset($myvalues['op']);
   unset($myvalues['submit']);
-  
+
 //  dpm($myvalues);
   $myurl = "?";
   //Default search is AND based. Only add the operator if a non-deault is chosen
   if ($myvalues['searchtype'] == 1) $myurl .= "operator=OR&";
   unset($myvalues['searchtype']);
-  
+
   foreach (array_filter($myvalues) as $key => $val) {
     $myurl .= "$key=" . urlencode($val) . "&";
   }
-  drupal_set_message(rtrim($myurl, '&'));  
+  drupal_set_message(rtrim($myurl, '&'));
   drupal_deliver_page("<h2>" . t("Results") . "</h2><pre>" . ndabio_getjson(rtrim($myurl, '&')) . "</pre>");
 }
