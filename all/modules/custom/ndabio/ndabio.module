@@ -398,9 +398,7 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname] = array(
         '#type' => 'fieldset',
         '#title' => $label,
-        // '#collapsible' => TRUE,
-        // '#collapsed' => TRUE
-        );
+      );
 
       foreach ($children as $child) {
         $childlabel = $child->description;
@@ -410,54 +408,57 @@ function ndabio_advanced_taxonomysearch() {
         if ($subchildren) {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
-            '#title' => 't '.$childlabel,
-            // '#collapsible' => TRUE,
-            'searchtype' => array( '#type' => 'radios', '#title' => t('Combine searchterms'), '#default_value' => 0, '#options' => $searchtype),
+            '#title' => $childlabel,
+            'searchtype' => array(
+              '#type' => 'radios',
+              '#title' => t('Combine searchterms'),
+              '#default_value' => 0,
+              '#options' => $searchtype,
+              '#inline' => TRUE
+            ),
           );
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
             $subchildsysname = $subchild->name;
             if (!empty($subchild->field_system)) $subchildsysname = $subchild->field_system['und'][0]['safe_value'];
+
             //Special category, hide or pulldown fields
             if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
               //--more-- will be grouped in a new fieldset
               //--hide-- will be ignored (not added to the form)
+
               $category = taxonomy_get_children($subchild->tid, $subchild->vid);
               if ($category && ($subchild->name == "--more--")) {
                 $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array(
                   '#type' => 'fieldset',
                   '#title' => t("More"),
-                  // '#collapsible' => TRUE,
-                  // '#collapsed' => TRUE,
-                  // '#prefix' => "<div id='ndabio-advanced-search'>\n",
-                  // '#suffix' => "\n</div> <!-- / #ndabio-advanced-search -->",
                 );
 
                 //put all children in group
                 foreach ($category as $catitem) {
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type'] = 'textfield';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title'] = 't '.$catitem->description;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type']          = 'textfield';
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title']         = $catitem->description;
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#default_value'] = '';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required'] =  FALSE;
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#inline'] =  TRUE;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required']      =  FALSE;
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#inline']        =  TRUE;
                 }
               }
             } else {
               //Default search fields
-              $form[$sysname][$childsysname][$subchildsysname]['#type'] = 'textfield';
-              $form[$sysname][$childsysname][$subchildsysname]['#title'] = 't '.$subchildlabel;
+              $form[$sysname][$childsysname][$subchildsysname]['#type']          = 'textfield';
+              $form[$sysname][$childsysname][$subchildsysname]['#title']         = $subchildlabel;
               $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
-              $form[$sysname][$childsysname][$subchildsysname]['#required'] =  FALSE;
-              $form[$sysname][$childsysname][$subchildsysname]['#inline'] =  TRUE;
+              $form[$sysname][$childsysname][$subchildsysname]['#required']      =  FALSE;
+              $form[$sysname][$childsysname][$subchildsysname]['#inline']        =  TRUE;
             }
           }
         } else {
           //Default seartch fields
-          $form[$sysname][$childsysname]['#type'] = 'textfield';
-          $form[$sysname][$childsysname]['#title'] = 't '. $childlabel;
+          $form[$sysname][$childsysname]['#type']          = 'textfield';
+          $form[$sysname][$childsysname]['#title']         = $childlabel;
           $form[$sysname][$childsysname]['#default_value'] = '';
-          $form[$sysname][$childsysname]['#required'] =  FALSE;
-          $form[$sysname][$childsysname]['#inline'] =  TRUE;
+          $form[$sysname][$childsysname]['#required']      =  FALSE;
+          $form[$sysname][$childsysname]['#inline']        =  TRUE;
         }
         //Search button under the fieldset
         //$form[$sysname][$childsysname]['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#nowrapper' => TRUE, '#attributes' => array( 'class' => array('postfix')) );

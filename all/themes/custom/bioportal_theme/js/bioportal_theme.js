@@ -38,7 +38,7 @@
     var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
 
     // -- search form: hide advanced search
-    $_advanced_search_form.slideUp(0);
+    //$_advanced_search_form.slideUp(0);
 
     // -- search form: add dropdown button to omni-search box
     $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
@@ -59,7 +59,6 @@
 
   // ---------------------------------------------------------
 
-  $(".ndabio-toggle-advanced").trigger("click");
 
 
   // ---------------------------------------------------------
