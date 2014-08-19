@@ -51,12 +51,6 @@ $gray-10 : #1a1a1a;
 
     #naturalis-header{
       overflow: hidden;
-      transition: background-color 500ms;
-      &:hover{
-        background-color: mix($purple, $gray-9);
-        transition: background-color 100ms;
-      }
-
 
       #title-and-slogan{
         position: relative;
