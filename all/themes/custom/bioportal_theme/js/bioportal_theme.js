@@ -93,9 +93,6 @@
       var windowScrollTop = $(window).scrollTop();
       var windowHeight = $(window).height();
 
-      console.log(int_y);
-
-
       if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
         $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
       } else {
