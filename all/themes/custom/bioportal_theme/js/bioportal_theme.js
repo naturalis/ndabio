@@ -39,6 +39,9 @@
     var $_submit               = $("#edit-submit");
     var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
     var $_bottom_submit        = $("#edit-submit--2");
+    var int_x                  = $_bottom_submit.offset().left;
+    var int_y                  = $_bottom_submit.offset().top;
+
 
     // -- search form: hide advanced search
     $_advanced_search_form.slideUp(0);
@@ -61,7 +64,11 @@
 
         $_advanced_search_form
           .slideToggle(400, function(){
+            int_x = $_bottom_submit.offset().left;
+            int_y = $_bottom_submit.offset().top;
+
             $(window).trigger('scroll');
+
             $_bottom_submit.css("opacity","1")
           });
       })
@@ -77,8 +84,7 @@
   // ---------------------------------------------------------
 
   //  $_bottom_submit --> see above
-  var int_y = $_bottom_submit.offset().top;
-  var int_x = $_bottom_submit.offset().left;
+
 
   $(window).scroll(function(){
 
@@ -87,14 +93,18 @@
       var windowScrollTop = $(window).scrollTop();
       var windowHeight = $(window).height();
 
-      if ( (int_y - windowHeight  )  > windowScrollTop ){
+      console.log(int_y);
+
+
+      if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
         $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
       } else {
         $_bottom_submit.removeAttr("style");
+        int_y = $_bottom_submit.offset().top;
       }
 
+
   });
-  $(window).trigger('scroll');
 
   // ---------------------------------------------------------
 
