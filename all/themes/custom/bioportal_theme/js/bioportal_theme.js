@@ -38,6 +38,7 @@
     var $_omnibox              = $("#edit-term");
     var $_submit               = $("#edit-submit");
     var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
+    var $_bottom_submit        = $("#edit-submit--2");
 
     // -- search form: hide advanced search
     $_advanced_search_form.slideUp(0);
@@ -56,11 +57,16 @@
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
         $_submit.toggleAttr("disabled").toggleClass("disabled");
         $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
-        $_advanced_search_form.slideToggle();
+        $_bottom_submit.css("opacity","0")
+
+        $_advanced_search_form
+          .slideToggle(400, function(){
+            $(window).trigger('scroll');
+            $_bottom_submit.css("opacity","1")
+          });
       })
 
-
-    $(".ndabio-toggle-advanced").trigger("click");
+    // $(".ndabio-toggle-advanced").trigger("click");
 
   // ---------------------------------------------------------
 
@@ -70,7 +76,7 @@
   // SEARCH FORM: prevent submit button from scrolling of the page
   // ---------------------------------------------------------
 
-  var $_bottom_submit = $("#edit-submit--2");
+  //  $_bottom_submit --> see above
   var int_y = $_bottom_submit.offset().top;
   var int_x = $_bottom_submit.offset().left;
 

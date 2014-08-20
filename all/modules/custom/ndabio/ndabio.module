@@ -450,6 +450,7 @@ function ndabio_advanced_taxonomysearch() {
               $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
               $form[$sysname][$childsysname][$subchildsysname]['#required']      =  FALSE;
               $form[$sysname][$childsysname][$subchildsysname]['#inline']        =  TRUE;
+              $form[$sysname][$childsysname][$subchildsysname]['#attributes']    =  array( 'data-clear' => "" );
             }
           }
         } else {
@@ -459,6 +460,7 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname]['#default_value'] = '';
           $form[$sysname][$childsysname]['#required']      =  FALSE;
           $form[$sysname][$childsysname]['#inline']        =  TRUE;
+          $form[$sysname][$childsysname]['#attributes']    =  array( 'data-clear' => "" );
         }
       }
     } else {

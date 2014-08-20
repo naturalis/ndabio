@@ -69,14 +69,14 @@
 
         <div class="intro-more hidden">
           <i class="icon-double-chevron-down"></i>
-          <?php print t('What-the-fuut…?'); ?>
+          <?php print t('Read more'); ?>
         </div>
 
         <div id="intro">
             <?php print $intro; ?>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
-              <?php print t('Got it!'); ?>
+              <?php print t('Back'); ?>
             </div>
         </div>
 

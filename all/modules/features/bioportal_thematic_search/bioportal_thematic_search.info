@@ -1,0 +1,14 @@
+name = bioportal thematic search
+core = 7.x
+package = Bioportal
+dependencies[] = features
+dependencies[] = menu
+features[features_api][] = api:2
+features[menu_custom][] = main-menu
+features[menu_links][] = main-menu_glaspreparaten:<front>
+features[menu_links][] = main-menu_suriname:<front>
+features[menu_links][] = main-menu_thematisch-zoeken:<front>
+features[menu_links][] = main-menu_type-exemplaren:<front>
+features[menu_links][] = main-menu_uitgestorven:<front>
+features[menu_links][] = main-menu_zangvogels:<front>
+features_exclude[menu_links][devel_variable-editor:devel/variable] = devel_variable-editor:devel/variable
