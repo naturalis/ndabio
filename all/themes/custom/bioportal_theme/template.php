@@ -26,7 +26,7 @@ function bioportal_theme_ndabio_omnisearch(&$variables){
 
   $output  = "<div class='row collapse'>";
   $output .= "  <div class='small-9 large-6 large-offset-2 columns'>";
-  $output .= drupal_render( $element['ndabio_adv']);
+  $output .= drupal_render( $element['term']);
   $output .= "  </div>";
   $output .= "  <div class='small-3 large-2 end columns'>";
   $output .= drupal_render( $element['submit']);
