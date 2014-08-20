@@ -20,4 +20,5 @@ function ndabio_uninstall() {
 
   variable_del('ndabio_config_nda');
   variable_del('ndabio_config_jsonp');
+  variable_del('ndabio_config_gmapkey');
 }

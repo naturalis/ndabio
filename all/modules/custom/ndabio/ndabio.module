@@ -58,6 +58,18 @@ function ndabio_menu() {
     'title' => t('Passthrough'),
     'type' => MENU_LOCAL_TASK,
   );
+  $items['taxonomy/create'] = array(
+    'page callback' => 'ndabio_taxonomy_create',
+    'access arguments' => array('access content'),
+    'title' => t('Taxonomy create'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['taxonomy/remove'] = array(
+    'page callback' => 'ndabio_taxonomy_remove',
+    'access arguments' => array('access content'),
+    'title' => t('Taxonomy remove'),
+    'type' => MENU_LOCAL_TASK,
+  );
 
   return $items;
 }
@@ -74,9 +86,207 @@ function ndabio_naturalis_callback() {
   $page .= "<a href='/detail/other'>Detail other</a><br />";
   $page .= "<a href='/download/species'>Download species</a><br />";
   $page .= "<a href='/download/other'>Download other</a><br />";
+  $page .= "<br /><br /><br /><a href='/taxonomy/create'>Create taxonomy</a><br />";
+  $page .= "<a href='/taxonomy/remove'>Remove taxonomy</a><br />";
   return $page;
 }
 
+function ndabio_taxonomy_create() {
+  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
+  if (empty($vocab)) {
+    $new_vocab = (object) array(
+      'name' => NDABIO_SEARCHTAXONOMY,
+      'description' => 'Search',
+      'machine_name' => NDABIO_SEARCHTAXONOMY,
+    );
+    taxonomy_vocabulary_save($new_vocab);
+    
+  //Create a field
+  $field = array(
+    'field_name' => 'field_ndasystem',
+    'type' => 'text',
+    'label' => 'System',
+  );
+  $field_instance = field_info_field('field_ndasystem');
+  if (empty($field_instance)) {
+    $field = field_create_field($field);
+  }
+  else {
+    $field = $field_instance;
+  }
+ 
+  // Attach the field to our taxonomy entity
+  $instance = array(
+    'field_name' => 'field_ndasystem',
+    'entity_type' => 'taxonomy_term',
+    'bundle' => NDABIO_SEARCHTAXONOMY,
+    'label' => 'System',
+    'description' => 'Description',
+    'required' => true,
+    'widget' => array(
+      'type' => 'text_textfield',
+      'weight' => 3,
+    ),
+  );
+  field_create_instance($instance);
+  // Done
+    
+    $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
+  } else {
+    foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
+  }
+  dpm($vocab->vid);
+  
+  $myterms = _ndabio_return_taxonomy();
+  x_arr_to_taxonomy($myterms);
+  return "done.";
+}
+
+function ndabio_taxonomy_remove() {
+  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
+  foreach(taxonomy_get_tree($vocab->vid) as $term) {
+    taxonomy_term_delete($term->tid);
+  }
+  taxonomy_vocabulary_delete($vocab->vid);
+  return "done.";
+}
+function x_arr_to_taxonomy($arr_terms, $parent = 0){
+  static $_weight = 0;
+
+  foreach ($arr_terms as $key => $value) {
+    $_weight++;
+
+    // If the value of the item is a string, I assume we're looking at an end-point
+    if ( gettype($value) == 'string' ){
+      x_term_save(  $value, $parent, $key, $_weight  );
+      // (We use the $key for the system-name field…)
+
+    // otherwise, we're looking at an array and we can iterate further
+    } elseif (  gettype($value) == 'array'  ){
+      $tid = x_term_save($key, $parent, $key, $_weight);      
+      x_arr_to_taxonomy( $value, $tid);
+    }
+
+
+  }
+}
+
+function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
+  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
+  $sysname = (is_numeric($str_system ) ? $str_term  : $str_system);
+  $obj_term = (object) array(
+     'name' => $sysname,
+     'vid' => $vocab->vid,
+     'weight' => $int_weight,
+     'description' => $str_term,
+  );
+ 
+  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term  : $str_system); 
+
+  if ( $parent != "0"){
+    $obj_term->parent = array($parent);
+  }
+   
+  taxonomy_term_save( $obj_term ); 
+  return $obj_term->tid;
+}
+
+
+function _ndabio_return_taxonomy(){
+  return array(
+    'omnisearch' => 'term',
+    'extended' => array(
+      'multimedia' => array(
+        'name',
+        '--more--' => array(
+          'ingewikkelde_naam' => "Eenvoudige naam",
+        ),
+        '--hide--' => array(
+        )
+      ),
+      'collectie examplaren' => array(
+        'PhaseOrStage' => 'Phase or stage',
+        'Sex' => 'Sex',
+        'CollectionFieldNumber' => 'Collection field number',
+        'SpeciesEpithet' => 'Species epithet',
+        'FullScientificName' => 'Full scientific name',
+        '--hide--' => array(
+          'YoungestChronstratigraphicName' => 'Youngest chronstratigraphic name',
+          'OldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
+          'FirstLithostratigraphicName' => 'First lithostratigraphic name',
+          'SecondLithostratigraphicName' => 'Second lithostratigraphic name',
+          'OldestBiostratigraphicName' => 'Oldest biostratigraphic name',
+          'YoungestBiostratigraphicName' => 'Youngest biostratigraphic name',
+        ),
+        '--more--' => array(
+          'LastEditedDateOfDocument' => 'Last edited date of document',
+          'GenusOrMonomial' => 'Genus or monomial',
+          'SubspeciesEpithet' => 'Subspecies epithet',
+          'Subgenus' => 'Subgenus',
+          'TypeStatus' => 'Type status',
+          'LocalityText' => 'Locality text',
+          'MultimediaTitle' => 'Multimedia title',
+          'Collector' => 'Collector',
+          'CollectingStartDate' => 'Collecting start date',
+          'CollectorsFieldNumber',
+          'Country',
+          'DatasetID',
+          'DateCreation',
+          'DateLastEdited',
+          'FromCaptivity',
+          'KindOfUnit',
+          'Language',
+          'License',
+          'LicenseType',
+          'NumberOfSpecimen',
+          'ObjectPublic',
+          'ObjectType',
+          'OriginCoordinateMethod', 
+          'OriginLatitudeDecimal', 
+          'OriginLongitudeDecimal', 
+          'Owner',
+          'PhaseOrStage',
+          'PreparationType',
+          'ProjectTitle',
+          'RecordBasis',
+          'RecordURI',
+          'SourceID',
+          'SourceInstitutionID',
+          'SpecimenMount',
+          'UnitGUID', 
+          'UnitID'
+        )
+      ),
+      'soorten'  => array(
+        'PhaseOrStage' => 'Phase or stage',
+        'Sex' => 'Sex',
+        'FullScientificName' => 'Full scientific name',
+        'GenusOrMonomial' => 'Genus or monomial',
+        'SubspeciesEpithet' => 'Subspecies epithet',
+        'Subgenus' => 'Subgenus',
+        '--more--' => array(
+          'CollectionFieldNumber' => 'Collection field number',
+          'SpeciesEpithet' => 'Species epithet',
+          'TypeStatus' => 'Type status',
+          'LocalityText' => 'Locality text',
+          'MultimediaTitle' => 'Multimedia title',
+          'Collector' => 'Collector',
+          'CollectingStartDate' => 'Collecting start date',
+        ),
+        '--hide--' => array(
+          'YoungestChronstratigraphicName' => 'Youngest chronstratigraphic name',
+          'OldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
+          'FirstLithostratigraphicName' => 'First lithostratigraphic name',
+          'SecondLithostratigraphicName' => 'Second lithostratigraphic name',
+          'OldestBiostratigraphicName' => 'Oldest biostratigraphic name',
+          'YoungestBiostratigraphicName' => 'Youngest biostratigraphic name',
+          'LastEditedDateOfSocument' => 'Last edited date of document',
+        )
+      )
+    )
+
+  );
+}
 
 /**
 * Output detail page.
