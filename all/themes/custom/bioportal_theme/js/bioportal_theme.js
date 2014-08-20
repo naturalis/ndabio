@@ -60,7 +60,7 @@
       })
 
 
-    $(".ndabio-toggle-advanced").trigger("click");
+    //$(".ndabio-toggle-advanced").trigger("click");
 
   // ---------------------------------------------------------
 
@@ -73,7 +73,6 @@
   var $_bottom_submit = $("#edit-submit--2");
   var int_y = $_bottom_submit.offset().top;
   var int_x = $_bottom_submit.offset().left;
-
 
   $(window).scroll(function(){
 
@@ -88,12 +87,6 @@
         $_bottom_submit.removeAttr("style");
       }
 
-      console.clear();
-      console.log("Window scroll Top", windowScrollTop);
-      console.log("objectTop", objectTop);
-      console.log("windowHeight", windowHeight);
-      console.log("int_y", int_y);
-      console.log("int_y - windowHeight ", int_y - windowHeight);
   });
   $(window).trigger('scroll');
 
