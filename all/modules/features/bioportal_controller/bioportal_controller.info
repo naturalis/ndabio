@@ -1,6 +1,7 @@
 name = Bioportal Controller
 core = 7.x
 package = Bioportal
+dependencies[] = add_search_terms
 dependencies[] = bioportal_theme_settings
 dependencies[] = boxes
 dependencies[] = ctools
