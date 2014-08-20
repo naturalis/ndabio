@@ -4,7 +4,6 @@ package = Bioportal
 dependencies[] = bioportal_theme_settings
 dependencies[] = boxes
 dependencies[] = ctools
-dependencies[] = devel
 dependencies[] = features
 dependencies[] = ndabio
 dependencies[] = search
