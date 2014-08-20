@@ -2,7 +2,7 @@
 <div role="document" class="page">
 
   <!--.l-header region -->
-  <header role="banner" class="l-header">
+  <header role="navigation" class="l-header" id="top-bar-wrapper">
 
     <?php if ($top_bar): ?>
       <!--.top-bar -->
@@ -42,95 +42,56 @@
       <?php endif; ?>
       <!--/.top-bar -->
     <?php endif; ?>
+  </header> <!--/.l-header -->
 
-    <!-- Title, slogan and menu -->
-    <?php if ($alt_header): ?>
-    <section class="row <?php print $alt_header_classes; ?>">
+  <!-- NATURALIS header -->
+  <?php if (  $is_front  ): ?>
+    <!--.l-header-region -->
+    <section class="l-header-region row show-for-medium-up <?php print $header_background; ?>" id="naturalis-header">
 
-      <?php if ($linked_logo): print $linked_logo; endif; ?>
+      <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
 
-      <?php if ($site_name): ?>
-        <?php if ($title): ?>
-          <div id="site-name" class="element-invisible">
-            <strong>
-              <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
-            </strong>
-          </div>
-        <?php else: /* Use h1 when the content title is empty */ ?>
-          <h1 id="site-name">
-            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
+      <div class="medium-2 columns" id="naturalis-logo">
+        <img src="<?php print $naturalis_logo; ?>"/>
+      </div>
+
+      <div class="medium-6 columns" id="title-and-slogan">
+
+        <?php if ($site_name): ?>
+          <h1>
+            <?php print $site_name; ?>
           </h1>
         <?php endif; ?>
-      <?php endif; ?>
 
-      <?php if ($site_slogan): ?>
-        <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
-      <?php endif; ?>
+        <?php if ($site_slogan): ?>
+          <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
+        <?php endif; ?>
 
-      <?php if ($alt_main_menu): ?>
-        <nav id="main-menu" class="navigation" role="navigation">
-          <?php print ($alt_main_menu); ?>
-        </nav> <!-- /#main-menu -->
-      <?php endif; ?>
+        <div class="intro-more hidden">
+          <i class="icon-double-chevron-down"></i>
+          <?php print t('What-the-fuut…?'); ?>
+        </div>
 
-      <?php if ($alt_secondary_menu): ?>
-        <nav id="secondary-menu" class="navigation" role="navigation">
-          <?php print $alt_secondary_menu; ?>
-        </nav> <!-- /#secondary-menu -->
-      <?php endif; ?>
+        <div id="intro">
+            <?php print $intro; ?>
+            <div class="intro-less ">
+              <i class="icon-double-chevron-up"></i>
+              <?php print t('Got it!'); ?>
+            </div>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="medium-4 columns" id="logo"><!-- the photo is used as 'logo' -->
+        <img src='<?php print $logo;?>'/>
+      </div>
 
     </section>
-    <?php endif; ?>
-    <!-- End title, slogan and menu -->
-
-    <!-- NATURALIS header -->
-    <?php if (  $is_front  ): ?>
-      <!--.l-header-region -->
-      <section class="l-header-region row show-for-medium-up <?php print $header_background; ?>" id="naturalis-header">
-
-        <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
-
-        <div class="medium-2 columns" id="naturalis-logo">
-          <img src="<?php print $naturalis_logo; ?>"/>
-        </div>
-
-        <div class="medium-6 columns" id="title-and-slogan">
-
-          <?php if ($site_name): ?>
-            <h1>
-              <?php print $site_name; ?>
-            </h1>
-          <?php endif; ?>
-
-          <?php if ($site_slogan): ?>
-            <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
-          <?php endif; ?>
-
-          <div class="intro-more hidden">
-            <i class="icon-double-chevron-down"></i>
-            <?php print t('What-the-fuut…?'); ?>
-          </div>
-
-          <div id="intro">
-              <?php print $intro; ?>
-              <div class="intro-less ">
-                <i class="icon-double-chevron-up"></i>
-                <?php print t('Got it!'); ?>
-              </div>
-          </div>
-
-        </div>
-
-
-
-
-        <div class="medium-4 columns" id="logo"><!-- the photo is used as 'logo' -->
-          <img src='<?php print $logo;?>'/>
-        </div>
-
-      </section>
-      <!--/.l-header-region -->
-    <?php endif; ?>
+    <!--/.l-header-region -->
+  <?php endif; ?>
 
     <?php if (!empty($page['header'])): ?>
       <!--.l-header-region -->
@@ -142,8 +103,7 @@
       <!--/.l-header-region -->
     <?php endif; ?>
 
-  </header>
-  <!--/.l-header -->
+
 
   <?php if (!empty($page['featured'])): ?>
     <!--/.featured -->
@@ -187,7 +147,7 @@
 
       <?php if ($title && !$is_front): ?>
         <?php print render($title_prefix); ?>
-          <h1 id="page-title" class="title"><?php print $title; ?></h1>
+        <h1 id="page-title" class="title"><?php print $title; ?></h1>
         <?php print render($title_suffix); ?>
       <?php endif; ?>
 
@@ -324,9 +284,6 @@
 
     <?php endif; ?>
     <!-- /#bottom-bar-top -->
-
-
-
 
   </footer>
   <!-- / .bottom bar-->
