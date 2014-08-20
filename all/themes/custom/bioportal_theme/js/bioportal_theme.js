@@ -35,7 +35,7 @@
   // ---------------------------------------------------------
 
     var $_advanced_search_form = $("#edit-extended");
-    var $_omnibox              = $("#edit-ndabio-adv");
+    var $_omnibox              = $("#edit-term");
     var $_submit               = $("#edit-submit");
     var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
 
@@ -60,7 +60,7 @@
       })
 
 
-    //$(".ndabio-toggle-advanced").trigger("click");
+    $(".ndabio-toggle-advanced").trigger("click");
 
   // ---------------------------------------------------------
 
