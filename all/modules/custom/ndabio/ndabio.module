@@ -100,7 +100,7 @@ function ndabio_taxonomy_create() {
       'machine_name' => NDABIO_SEARCHTAXONOMY,
     );
     taxonomy_vocabulary_save($new_vocab);
-    
+
   //Create a field
   $field = array(
     'field_name' => 'field_ndasystem',
@@ -114,7 +114,7 @@ function ndabio_taxonomy_create() {
   else {
     $field = $field_instance;
   }
- 
+
   // Attach the field to our taxonomy entity
   $instance = array(
     'field_name' => 'field_ndasystem',
@@ -130,13 +130,13 @@ function ndabio_taxonomy_create() {
   );
   field_create_instance($instance);
   // Done
-    
+
     $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   } else {
     foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
   }
   dpm($vocab->vid);
-  
+
   $myterms = _ndabio_return_taxonomy();
   x_arr_to_taxonomy($myterms);
   return "done.";
@@ -163,7 +163,7 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
 
     // otherwise, we're looking at an array and we can iterate further
     } elseif (  gettype($value) == 'array'  ){
-      $tid = x_term_save($key, $parent, $key, $_weight);      
+      $tid = x_term_save($key, $parent, $key, $_weight);
       x_arr_to_taxonomy( $value, $tid);
     }
 
@@ -180,14 +180,14 @@ function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
      'weight' => $int_weight,
      'description' => $str_term,
   );
- 
-  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term  : $str_system); 
+
+  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term  : $str_system);
 
   if ( $parent != "0"){
     $obj_term->parent = array($parent);
   }
-   
-  taxonomy_term_save( $obj_term ); 
+
+  taxonomy_term_save( $obj_term );
   return $obj_term->tid;
 }
 
@@ -241,9 +241,9 @@ function _ndabio_return_taxonomy(){
           'NumberOfSpecimen',
           'ObjectPublic',
           'ObjectType',
-          'OriginCoordinateMethod', 
-          'OriginLatitudeDecimal', 
-          'OriginLongitudeDecimal', 
+          'OriginCoordinateMethod',
+          'OriginLatitudeDecimal',
+          'OriginLongitudeDecimal',
           'Owner',
           'PhaseOrStage',
           'PreparationType',
@@ -253,7 +253,7 @@ function _ndabio_return_taxonomy(){
           'SourceID',
           'SourceInstitutionID',
           'SpecimenMount',
-          'UnitGUID', 
+          'UnitGUID',
           'UnitID'
         )
       ),
@@ -645,32 +645,38 @@ function ndabio_advanced_taxonomysearch() {
 
                 //put all children in group
                 foreach ($category as $catitem) {
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#type']          = 'textfield';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#title']         = $catitem->description;
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#default_value'] = '';
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#required']      =  FALSE;
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#inline']        =  TRUE;
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name]['#attributes']    =  array( 'data-clear' => "" );
+                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                    '#type'          => 'textfield',
+                    '#title'         => $catitem->description,
+                    '#default_value' => '',
+                    '#required'      =>  FALSE,
+                    '#inline'        =>  TRUE,
+                    '#attributes'    =>  array( 'data-clear' => "" )
+                  );
                 }
               }
             } else {
               //Default search fields
-              $form[$sysname][$childsysname][$subchildsysname]['#type']          = 'textfield';
-              $form[$sysname][$childsysname][$subchildsysname]['#title']         = $subchildlabel;
-              $form[$sysname][$childsysname][$subchildsysname]['#default_value'] = '';
-              $form[$sysname][$childsysname][$subchildsysname]['#required']      =  FALSE;
-              $form[$sysname][$childsysname][$subchildsysname]['#inline']        =  TRUE;
-              $form[$sysname][$childsysname][$subchildsysname]['#attributes']    =  array( 'data-clear' => "" );
+              $form[$sysname][$childsysname][$subchildsysname] = array(
+                '#type'          => 'textfield',
+                '#title'         => $subchildlabel,
+                '#default_value' => '',
+                '#required'      =>  FALSE,
+                '#inline'        =>  TRUE,
+                '#attributes'    =>  array( 'data-clear' => "" )
+              );
             }
           }
         } else {
           //Default seartch fields
-          $form[$sysname][$childsysname]['#type']          = 'textfield';
-          $form[$sysname][$childsysname]['#title']         = $childlabel;
-          $form[$sysname][$childsysname]['#default_value'] = '';
-          $form[$sysname][$childsysname]['#required']      =  FALSE;
-          $form[$sysname][$childsysname]['#inline']        =  TRUE;
-          $form[$sysname][$childsysname]['#attributes']    =  array( 'data-clear' => "" );
+          $form[$sysname][$childsysname]['#type'] = array(
+            '#type'          => 'textfield',
+            '#title'         => $childlabel,
+            '#default_value' => '',
+            '#required'      =>  FALSE,
+            '#inline'        =>  TRUE,
+            '#attributes'    =>  array( 'data-clear' => "" )
+          );
         }
       }
     } else {
