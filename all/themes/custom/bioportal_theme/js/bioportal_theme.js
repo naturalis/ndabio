@@ -10,22 +10,24 @@
   // INTRO (more)
   // ---------------------------------------------------------
 
-  var $_header          = $("#naturalis-header");
-  var $_intro_more_link = $(".intro-more", $_header);
-  var $_intro_less_link = $(".intro-less", $_header);
-  var $_intro_block     = $(".intro-block", $_header);
-  var $_title_slogan    = $("#title-and-slogan", $_header);
+  if ( $("body").hasClass("front") ){
+    var $_header          = $("#naturalis-header");
+    var $_intro_more_link = $(".intro-more", $_header);
+    var $_intro_less_link = $(".intro-less", $_header);
+    var $_intro_block     = $(".intro-block", $_header);
+    var $_title_slogan    = $("#title-and-slogan", $_header);
 
-  $_intro_more_link
-    .show()
+    $_intro_more_link
+      .show()
 
-  $_title_slogan
-    .click(function(){
-      $_header
-        .toggleClass("background-purple")
-        .toggleClass("background-gray-9")
-      $_title_slogan.toggleClass("off-canvas");
-    });
+    $_title_slogan
+      .click(function(){
+        $_header
+          .toggleClass("background-purple")
+          .toggleClass("background-gray-9")
+        $_title_slogan.toggleClass("off-canvas");
+      });
+  }
 
   // ---------------------------------------------------------
 
@@ -34,6 +36,7 @@
   // SEARCH FORM: hide/show advanced search
   // ---------------------------------------------------------
 
+  if ( $("body").hasClass("front") ){
     var $_advanced_search_form = $("#edit-extended");
     var $_omnibox              = $("#edit-term");
     var $_submit               = $("#edit-submit");
@@ -72,6 +75,7 @@
             $_bottom_submit.css("opacity","1")
           });
       })
+  }
 
     // $(".ndabio-toggle-advanced").trigger("click");
 
@@ -85,24 +89,25 @@
 
   //  $_bottom_submit --> see above
 
+  if ( $("body").hasClass("front") ){
 
-  $(window).scroll(function(){
+    $(window).scroll(function(){
 
-      var objectTop = $_bottom_submit.position().top;
-      var objectHeight = $_bottom_submit.outerHeight();
-      var windowScrollTop = $(window).scrollTop();
-      var windowHeight = $(window).height();
+        var objectTop = $_bottom_submit.position().top;
+        var objectHeight = $_bottom_submit.outerHeight();
+        var windowScrollTop = $(window).scrollTop();
+        var windowHeight = $(window).height();
 
-      if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
-        $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
-      } else {
-        $_bottom_submit.removeAttr("style");
-        int_y = $_bottom_submit.offset().top;
-      }
+        if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
+          $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
+        } else {
+          $_bottom_submit.removeAttr("style");
+          int_y = $_bottom_submit.offset().top;
+        }
 
 
-  });
-
+    });
+  }
   // ---------------------------------------------------------
 
 
@@ -110,6 +115,7 @@
   // ---------------------------------------------------------
   // SEARCH FORM: clear text fields
   // ---------------------------------------------------------
+
   $("<div class='ndabio-clear-textfield icon-cross hidden' />")
     .insertAfter("input[data-clear]")
     .click(function(){
