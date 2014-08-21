@@ -638,8 +638,10 @@ function ndabio_advanced_taxonomysearch() {
               $category = taxonomy_get_children($subchild->tid, $subchild->vid);
               if ($category && ($subchild->name == "--more--")) {
                 $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array(
-                  '#type' => 'fieldset',
-                  '#title' => t("More"),
+                  '#type'            => 'fieldset',
+                  '#title'           => t("More"),
+                  '#collapsible'     => TRUE,
+                  '#collapsed'       => TRUE
                 );
 
                 //put all children in group
