@@ -135,7 +135,6 @@ function ndabio_taxonomy_create() {
   } else {
     foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
   }
-  dpm($vocab->vid);
 
   $myterms = _ndabio_return_taxonomy();
   x_arr_to_taxonomy($myterms);
