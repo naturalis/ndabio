@@ -47,7 +47,7 @@ $gray-10 : #1a1a1a;
 
 // FRONT PAGE
 
-  // -- INTRO
+  // -- front-page : INTRO
 
     #naturalis-header{
       overflow: hidden;
@@ -86,11 +86,38 @@ $gray-10 : #1a1a1a;
       }
     }
 
+  // -- front-page: BANNER GEOGRAPHICAL SEARCH
+    #banner-geographical-search{
+      background-color : $gray-1;
+      text-align       : center;
+      position         : absolute;
+      width            : 100%;
+      left             : 0;
+      top              : 200px;
+      padding-top      : 1em;
+
+      a{
+        display        : block;
+      }
+
+      h3{
+        color          : $gray-7;
+        font-size      : 24px;
+        font-weight    : 300;
+      }
+
+      img{
+        width          : 250px;
+      }
+    }
 
 
-// PAGE SEARCH
 
-  // -- FREE TEXT SEARCH, OMNISEARCH
+
+
+// SEARCH
+
+  // -- search: FREE TEXT SEARCH, OMNISEARCH
 
     .fieldset-omnisearch{
       border               : 0px solid white;
@@ -164,10 +191,12 @@ $gray-10 : #1a1a1a;
 
     }
 
-  // ADVANCED SEARCH
+  // -- search: ADVANCED SEARCH
   #ndabio-advanced-taxonomysearch{
     left               : 0;
     width              : 100%;
+    z-index            : 600;
+    position           : relative;
   }
 
   #edit-extended{
@@ -241,5 +270,3 @@ $gray-10 : #1a1a1a;
 
 
   }
-
-// TODO: style radio buttons

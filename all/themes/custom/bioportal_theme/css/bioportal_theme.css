@@ -33,6 +33,23 @@ button, .button {
       #naturalis-header #title-and-slogan .intro-more:hover, #naturalis-header #title-and-slogan .intro-less:hover {
         color: #cccccc; }
 
+#banner-geographical-search {
+  background-color: #f2f2f2;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 200px;
+  padding-top: 1em; }
+  #banner-geographical-search a {
+    display: block; }
+  #banner-geographical-search h3 {
+    color: #666666;
+    font-size: 24px;
+    font-weight: 300; }
+  #banner-geographical-search img {
+    width: 250px; }
+
 .fieldset-omnisearch {
   border: 0px solid white;
   padding: 1rem 0 0 0;
@@ -90,7 +107,9 @@ button, .button {
 
 #ndabio-advanced-taxonomysearch {
   left: 0;
-  width: 100%; }
+  width: 100%;
+  z-index: 600;
+  position: relative; }
 
 #edit-extended {
   background-color: #4d4d4d;
