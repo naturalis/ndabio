@@ -36,11 +36,12 @@ button, .button {
 #banner-geographical-search {
   background-color: #f2f2f2;
   text-align: center;
-  position: absolute;
+  position: relative;
   width: 100%;
-  left: 0;
-  top: 200px;
-  padding-top: 1em; }
+  left: -1em;
+  padding: 1em 1em 0 1em;
+  box-sizing: content-box;
+  margin: 40px 0; }
   #banner-geographical-search a {
     display: block; }
   #banner-geographical-search h3 {
@@ -108,7 +109,7 @@ button, .button {
 #ndabio-advanced-taxonomysearch {
   left: 0;
   width: 100%;
-  z-index: 600;
+  z-index: 400;
   position: relative; }
 
 #edit-extended {
@@ -160,3 +161,27 @@ button, .button {
     float: left;
     width: 50%;
     margin-top: 0; }
+
+html.js fieldset.collapsed .fieldset-legend {
+  background-image: url("../../misc/menu-collapsed.png");
+  background-position: 5px 50%; }
+html.js fieldset.collapsible .fieldset-legend {
+  background: url("../../misc/menu-expanded.png") no-repeat scroll 5px 65% rgba(0, 0, 0, 0);
+  padding-left: 15px; }
+
+#edit-extended fieldset fieldset.collapsible legend {
+  margin-left: 8.33333%; }
+#edit-extended fieldset fieldset.collapsible .fieldset-legend {
+  margin: 0;
+  padding: 0; }
+#edit-extended fieldset fieldset.collapsible a {
+  color: #ef6d14;
+  text-transform: lowercase;
+  font-weight: 400; }
+  #edit-extended fieldset fieldset.collapsible a:after {
+    font-family: 'App2';
+    position: relative;
+    top: 3px;
+    content: "\e613"; }
+#edit-extended fieldset fieldset.collapsible.collapsed a:after {
+  content: "\e610"; }
