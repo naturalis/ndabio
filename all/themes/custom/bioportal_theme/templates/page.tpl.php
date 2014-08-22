@@ -168,7 +168,7 @@
 
       <?php if ($is_front): ?>
         <div id="banner-geographical-search">
-          <a href="geographic-search">
+          <a href="/geographic-search">
             <h3><?php print t("Geographic Search"); ?></h3>
             <img src='/sites/all/themes/custom/bioportal_theme/img/geographic_search.png' />
           </a>
