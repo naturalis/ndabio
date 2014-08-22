@@ -34,12 +34,23 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['naturalis/ajax'] = array(
+    'page callback' => 'ndabio_ajax_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['search/geosearch'] = array(
     'page callback' => 'ndabio_geosearch_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-
+  $items['geographic-search'] = array(
+    'page callback' => 'ndabio_geosearch_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['naturalis/ndadetail'] = array(
     'title' => 'Details',
     'page callback' => 'ndabio_ndadetail_callback',
@@ -90,6 +101,23 @@ function ndabio_naturalis_callback() {
   $page .= "<a href='/taxonomy/remove'>Remove taxonomy</a><br />";
   return $page;
 }
+
+/**
+* Output detail page.
+*/
+function ndabio_ajax_callback() {
+  $geonode = (int)$_GET["nid"];
+  
+  $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
+  
+  $row = db_query($sql)->fetchObject();
+  
+  if($row) {
+    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+  }
+  die();
+}
+
 
 function ndabio_taxonomy_create() {
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
@@ -599,7 +627,7 @@ function ndabio_advanced_taxonomysearch() {
     $name = $item->name;
     $label = $item->description;
     $sysname = $item->name;
-    if (!empty($item->field_system)) $sysname = $item->field_system['und'][0]['safe_value'];
+    if (!empty($item->field_ndasystem)) $sysname = $item->field_ndasystem['und'][0]['safe_value'];
 
     $children = taxonomy_get_children($item->tid, $item->vid);
     if ($children) {
@@ -611,7 +639,7 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
-        if (!empty($child->field_system)) $childsysname = $child->field_system['und'][0]['safe_value'];
+        if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren) {
           $form[$sysname][$childsysname] = array(
@@ -628,7 +656,7 @@ function ndabio_advanced_taxonomysearch() {
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
             $subchildsysname = $subchild->name;
-            if (!empty($subchild->field_system)) $subchildsysname = $subchild->field_system['und'][0]['safe_value'];
+            if (!empty($subchild->field_ndasystem)) $subchildsysname = $subchild->field_ndasystem['und'][0]['safe_value'];
 
             //Special category, hide or pulldown fields
             if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
