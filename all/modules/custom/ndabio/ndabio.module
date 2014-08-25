@@ -444,7 +444,6 @@ function ndabio_geosearch_callback() {
 	  <input type='submit' value='Zoeken' />
 	</form></div>";
 
-
   return $pagecontent;
 }
 
@@ -456,6 +455,9 @@ function isJson($string) {
  return (json_last_error() == JSON_ERROR_NONE);
 }
 
+/**
+* GEO data is passed to this page as an node id. The node contains all geo data, and should be posted to the NDA
+*/
 function ndabio_pass() {
   $path = drupal_get_path('module', 'ndabio');
 //  drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
@@ -499,8 +501,8 @@ function ndabio_postjson($keys = '') {
 /**
 * Get a JOSN string.
 */
-function ndabio_getjson($keys = '') {
-  $service_url = $keys;
+function ndabio_getjson($url = '') {
+  $service_url = $url;
   drupal_set_message("GET:" . $service_url);
   
   $curl = curl_init($service_url);
@@ -790,7 +792,7 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   unset($myvalues['op']);
   unset($myvalues['submit']);
 
-  $myurl = variable_get('ndabio_config_json', NDABIO_JSON) . "?";
+  $myurl = variable_get('ndabio_config_json', NDABIO_JSON) . "/";
   //Default search is AND based. Only add the operator if a non-default is chosen
   if ($myvalues['searchtype'] == 1) $myurl .= "operator=OR&";
   unset($myvalues['searchtype']);
