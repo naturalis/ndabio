@@ -222,7 +222,7 @@ function _ndabio_return_taxonomy(){
   return array(
     'omnisearch' => 'term',
     'extended' => array(
-      'multimedia' => array(
+      'Multimedia' => array(
         'UnitID' => "Unit",
         'GatheringAgent' => "Collector",
         'CollectingStartDate' => "Collecting start date",
@@ -242,7 +242,7 @@ function _ndabio_return_taxonomy(){
         '--hide--' => array(
         )
       ),
-      'collectie examplaren' => array(
+      'Collectie examplaren' => array(
         'PhaseOrStage' => 'Phase or stage',
         'Sex' => 'Sex',
         'CollectionFieldNumber' => 'Collection field number',
@@ -268,7 +268,7 @@ function _ndabio_return_taxonomy(){
           'CollectingStartDate' => 'Collecting start date',
         )
       ),
-      'soorten'  => array(
+      'Soorten'  => array(
         'PhaseOrStage' => 'Phase or stage',
         'Sex' => 'Sex',
         'FullScientificName' => 'Full scientific name',
