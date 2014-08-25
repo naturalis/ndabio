@@ -228,7 +228,7 @@ function _ndabio_return_taxonomy(){
         'CollectingStartDate' => "Collecting start date",
         'PhaseOrStage' => "Phase or stage",
         'CollectorsFieldNumber' => "Collection field number",
-        'FullScientificNameString' => ""Full scientific name,
+        'FullScientificNameString' => "Full scientific name",
         'NomenclaturalTypeText' => "Type status",
         'LocalityText' => "Locality txt",
         '--more--' => array(
