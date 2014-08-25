@@ -500,7 +500,7 @@ function ndabio_postjson($keys = '') {
 * Get a JOSN string.
 */
 function ndabio_getjson($keys = '') {
-  $service_url = variable_get('ndabio_config_json', NDABIO_JSON) .$keys;
+  $service_url = $keys;
   drupal_set_message("GET:" . $service_url);
   
   $curl = curl_init($service_url);
