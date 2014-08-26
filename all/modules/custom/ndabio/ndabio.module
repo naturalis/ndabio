@@ -128,36 +128,68 @@ function ndabio_taxonomy_create() {
     );
     taxonomy_vocabulary_save($new_vocab);
 
-  //Create a field
-  $field = array(
-    'field_name' => 'field_ndasystem',
-    'type' => 'text',
-    'label' => 'System',
-  );
-  $field_instance = field_info_field('field_ndasystem');
-  if (empty($field_instance)) {
-    $field = field_create_field($field);
-  }
-  else {
-    $field = $field_instance;
-  }
+    //Create a field for nda system name
+    $field = array(
+      'field_name' => 'field_ndasystem',
+      'type' => 'text',
+      'label' => 'System',
+    );
+    $field_instance = field_info_field('field_ndasystem');
+    if (empty($field_instance)) {
+      $field = field_create_field($field);
+    }
+    else {
+      $field = $field_instance;
+    }
 
-  // Attach the field to our taxonomy entity
-  $instance = array(
-    'field_name' => 'field_ndasystem',
-    'entity_type' => 'taxonomy_term',
-    'bundle' => NDABIO_SEARCHTAXONOMY,
-    'label' => 'System',
-    'description' => 'Description',
-    'required' => true,
-    'widget' => array(
-      'type' => 'text_textfield',
-      'weight' => 3,
-    ),
-  );
-  field_create_instance($instance);
-  // Done
+    // Attach the field to our taxonomy entity
+    $instance = array(
+      'field_name' => 'field_ndasystem',
+      'entity_type' => 'taxonomy_term',
+      'bundle' => NDABIO_SEARCHTAXONOMY,
+      'label' => 'System',
+      'description' => 'Description',
+      'required' => true,
+      'widget' => array(
+        'type' => 'text_textfield',
+        'weight' => 3,
+      ),
+    );
+    field_create_instance($instance);
+    // Done
 
+
+    //Create a field for nda taxonomy type name
+    $field = array(
+      'field_name' => 'field_ndadatatype',
+      'type' => 'text',
+      'label' => 'Data type',
+    );
+    $field_instance = field_info_field('field_ndadatatype');
+    if (empty($field_instance)) {
+      $field = field_create_field($field);
+    }
+    else {
+      $field = $field_instance;
+    }
+    // Attach the field to our taxonomy entity
+    $instance = array(
+      'field_name' => 'field_ndadatatype',
+      'entity_type' => 'taxonomy_term',
+      'bundle' => NDABIO_SEARCHTAXONOMY,
+      'label' => 'Datatype',
+      'description' => 'Datatype',
+      'required' => false,
+      'widget' => array(
+        'type' => 'text_textfield',
+        'weight' => 4,
+      ),
+    );
+    field_create_instance($instance);
+    // Done
+
+    
+    
     $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   } else {
     foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
@@ -165,7 +197,7 @@ function ndabio_taxonomy_create() {
 
   $myterms = _ndabio_return_taxonomy();
   x_arr_to_taxonomy($myterms);
-  return "done.";
+  return "create done.";
 }
 
 function ndabio_taxonomy_remove() {
@@ -174,7 +206,7 @@ function ndabio_taxonomy_remove() {
     taxonomy_term_delete($term->tid);
   }
   taxonomy_vocabulary_delete($vocab->vid);
-  return "done.";
+  return "remove done.";
 }
 function x_arr_to_taxonomy($arr_terms, $parent = 0){
   static $_weight = 0;
@@ -192,14 +224,26 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
       $tid = x_term_save($key, $parent, $key, $_weight);
       x_arr_to_taxonomy( $value, $tid);
     }
-
-
   }
 }
 
 function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
-  $sysname = (is_numeric($str_system ) ? $str_term  : $str_system);
+  $sysname = (is_numeric($str_system ) ? $str_term : $str_system);
+  
+  //Clear path information from system name
+  $pos = strpos($sysname, "/");
+  if ($pos !== FALSE) {
+    $sysname = substr($sysname, $pos + 1);
+  }
+  
+  //Get term type from term description. Default is a textfield. Use a semicolon to specify date, int, 
+  $pos = strpos($str_term, ";");
+  if ($pos !== FALSE) {
+    echo "Multiple values!: " . $str_term . " (" . $str_system . ") " . substr($str_term, $pos + 1);
+    $str_term = substr($str_term, 0, $pos);
+  }
+  
   $obj_term = (object) array(
      'name' => $sysname,
      'vid' => $vocab->vid,
@@ -207,7 +251,10 @@ function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
      'description' => $str_term,
   );
 
-  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term  : $str_system);
+  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term : $str_system);
+  if ($pos !== FALSE) {
+    $obj_term->field_ndadatatype[LANGUAGE_NONE][0]['value'] = substr($str_term, $pos + 1);
+  }
 
   if ( $parent != "0"){
     $obj_term->parent = array($parent);
@@ -223,9 +270,9 @@ function _ndabio_return_taxonomy(){
     'omnisearch' => 'term',
     'extended' => array(
       'Multimedia' => array(
-        'UnitID' => "Unit",
-        'GatheringAgent' => "Collector",
-        'CollectingStartDate' => "Collecting start date",
+        '/mm/UnitID' => "Unit",
+        '/mm/GatheringAgent' => "Collector",
+        'CollectingStartDate' => "Collecting start date;date",
         'PhaseOrStage' => "Phase or stage",
         'CollectorsFieldNumber' => "Collection field number",
         'FullScientificNameString' => "Full scientific name",
@@ -248,6 +295,7 @@ function _ndabio_return_taxonomy(){
         'CollectionFieldNumber' => 'Collection field number',
         'SpeciesEpithet' => 'Species epithet',
         'FullScientificName' => 'Full scientific name',
+        'UnitGUID' => 'Registration number',
         '--hide--' => array(
           'YoungestChronstratigraphicName' => 'Youngest chronstratigraphic name',
           'OldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
@@ -363,11 +411,6 @@ function ndabio_config_form($form, &$form_state) {
 function ndabio_displayform() {
 	$form = drupal_get_form('ndabio_advanced_taxonomysearch');
 	return (drupal_render($form));
-//	dpm (($form));
-
-
-//  $form = drupal_get_form('ndabio_ndasearchform_callback');
-//  return drupal_render($form);
 }
 
 
@@ -422,7 +465,30 @@ function ndabio_geosearch_callback() {
   drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
-  $pagecontent = "<div id='map-canvas'></div><div id='areas'>
+  $myform = ndabio_advanced_taxonomysearch();
+  $myform['map'] = array(
+    '#type' => 'textfield',
+    '#title' => "<div id='map-canvas'></div><div id='areas'><form name='geoform' action='/search/ndapass' method='get'>
+    <button onclick='postShape();'>Post geometry</button><input name='geometry' id='geometry' type='hidden' value='0' />
+	  <input type='submit' value='Zoeken' /></form></div>",
+    '#default_value' => '',
+    '#required' => FALSE,
+    '#title_display' => 'invisible',
+    '#nowrapper' => TRUE
+  );
+    $myform['gmap'] = array(
+      '#type' => 'gmap',
+      '#map' => 'gmap',
+      '#settings' => array(
+        'zoom' => 1,
+        'id' => 'gmapx',
+        'behavior' => array(
+          'geocode_leave_marker' => TRUE,
+        ),
+      ),
+    );
+
+  $pagecontent = drupal_render($myform) . "<div id='map-canvas'></div><div id='areas'>
 	<form name='geoform' action='/search/ndapass' method='get'>
     <button onclick='postShape();'>Post geometry</button>
 	  <input name='geometry' id='geometry' type='hidden' value='0' />
@@ -777,7 +843,7 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   unset($myvalues['op']);
   unset($myvalues['submit']);
 
-  $myurl = variable_get('ndabio_config_json', NDABIO_JSON) . "/";
+  $myurl = variable_get('ndabio_config_json', NDABIO_JSON) . "?";
   //Default search is AND based. Only add the operator if a non-default is chosen
   if ($myvalues['searchtype'] == 1) $myurl .= "operator=OR&";
   unset($myvalues['searchtype']);
