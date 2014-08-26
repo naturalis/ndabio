@@ -43,13 +43,21 @@ function ndabioresults_menu() {
 }
 
 function ndabioresults_pass($arg1, $arg2, $arg3) {
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/taxon-detail.json';
 	$searchTerm = 'Malus';
+
+	$file = drupal_get_path('module', 'ndabioresults') . '/json/taxon-detail.json';
   $output = "argument1: $arg1<br />argument2: $arg2 <br />argument3: $arg3<br />Input (used instead of nda): $file<br />";
 	$json = file_get_contents($file);
-	// Taxon
 	$data = parseTaxa($json, $searchTerm);
-//	printTaxa($data);
+  $output .= $data;
+
+	$file = drupal_get_path('module', 'ndabioresults') . '/json/specimen-detail.json';
+  $output .= "<br />argument1: $arg1<br />argument2: $arg2 <br />argument3: $arg3<br />Input (used instead of nda): $file<br />";
+	$json = file_get_contents($file);
+	$data = parseTaxa($json, $searchTerm);
+  $output .= $data;
+
+  //	printTaxa($data);
 	
 //	die();
 	
@@ -90,7 +98,9 @@ function ndabioresults_page_callback() {
 
 
 
-
+/**
+*
+*/
 
 
 	// Returns specimen data

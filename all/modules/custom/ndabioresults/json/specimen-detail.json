@@ -1,0 +1,101 @@
+{
+  "totalSize" : 1,
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://nda.naturalis.nl/specimen/ZMA.RMNH.9299"
+  }, {
+    "rel" : "prev",
+    "href" : "http://nda.naturalis.nl/specimen/ZMA.RMNH.9298"
+  }, {
+    "rel" : "next",
+    "href" : "http://nda.naturalis.nl/specimen/ZMA.RMNH.9300"
+  }, {
+    "rel" : "associated-taxa",
+    "href" : "http://nda.naturalis.nl/taxon/accepted-name/Larus+fuscus"
+  } ],
+  "searchTerms" : null,
+  "searchResults" : [ {
+    "score" : 0.0,
+    "actualType" : null,
+    "links" : null,
+    "matchInfo" : null,
+    "result" : {
+      "sourceSystem" : {
+        "code" : "BRAHMS",
+        "name" : "Brahms"
+      },
+      "sourceSystemId" : "sourceSystemId_92",
+      "unitID" : "ZMA.RMNH.9299",
+      "setID" : "setID_63",
+      "sourceInstitutionID" : "sourceInstitutionID_14",
+      "unitGUID" : "unitGUID_85",
+      "recordBasis" : "recordBasis_81",
+      "kindOfUnit" : "kindOfUnit_7",
+      "collectionType" : "collectionType_91",
+      "sex" : "sex_80",
+      "phaseOrStage" : "phaseOrStage_96",
+      "accessionSpecimenNumbers" : "accessionSpecimenNumbers_58",
+      "altitude" : 294444680,
+      "depth" : -297274905,
+      "gatheringAgent" : "gatheringAgent_87",
+      "worldRegion" : "worldRegion_87",
+      "country" : "country_4",
+      "provinceState" : "provinceState_37",
+      "locality" : "locality_10",
+      "objectPublic" : false,
+      "altitudeUnit" : "altitudeUnit_46",
+      "depthUnit" : "depthUnit_17",
+      "collectingStartDate" : "1970-01-17",
+      "collectingEndDate" : "1969-12-14",
+      "title" : "title_32",
+      "taxonCoverage" : "taxonCoverage_55",
+      "multiMediaPublic" : "multiMediaPublic_54",
+      "latitudeDecimal" : "latitudeDecimal_53",
+      "longitudeDecimal" : "longitudeDecimal_76",
+      "geodeticDatum" : "geodeticDatum_71",
+      "url" : "url_35",
+      "identifications" : [ {
+        "scientificName" : {
+          "fullScientificName" : "Larus fuscus",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_20",
+          "subgenus" : "subgenus_55",
+          "specificEpithet" : "specificEpithet_15",
+          "infraspecificEpithet" : "infraspecificEpithet_12",
+          "infraspecificMarker" : "infraspecificMarker_70",
+          "nameAddendum" : "nameAddendum_97",
+          "authorshipVerbatim" : "authorshipVerbatim_42",
+          "author" : "author_45",
+          "year" : "year_56",
+          "reference" : null,
+          "expert" : null
+        },
+        "defaultClassification" : {
+          "kingdom" : "kingdom_80",
+          "phylum" : "phylum_37",
+          "className" : "className_64",
+          "order" : "order_58",
+          "superFamily" : "superFamily_1",
+          "family" : "family_68",
+          "genus" : "genus_85",
+          "subgenus" : "subgenus_10",
+          "specificEpithet" : "specificEpithet_46",
+          "infraspecificEpithet" : "infraspecificEpithet_70",
+          "infraspecificRank" : "infraspecificRank_93"
+        },
+        "systemClassification" : null,
+        "vernacularNames" : null,
+        "identificationQualifiers" : null,
+        "identifiedBy" : "identifiedBy_58",
+        "dateIdentified" : "1970-01-06",
+        "preferred" : false,
+        "verificationStatus" : "verificationStatus_84",
+        "typeStatus" : "typeStatus_85",
+        "remarks" : "remarks_3",
+        "references" : "references_90"
+      } ],
+      "otherSpecimensInSet" : null,
+      "associatedTaxa" : null
+    }
+  } ]
+}
