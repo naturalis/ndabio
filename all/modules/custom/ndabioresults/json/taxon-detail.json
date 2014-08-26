@@ -1,0 +1,232 @@
+{
+  "totalSize" : 2,
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://nda.naturalis.nl/taxon/53810"
+  }, {
+    "rel" : "prev",
+    "href" : "http://nda.naturalis.nl/taxon/53808"
+  }, {
+    "rel" : "next",
+    "href" : "http://nda.naturalis.nl/taxon/53812"
+  }, {
+    "rel" : "get-specimens",
+    "href" : "http://nda.naturalis.nl/specimen/for-taxon/Larus+fuscus"
+  } ],
+  "searchTerms" : null,
+  "searchResults" : [ {
+    "score" : 0.0,
+    "actualType" : null,
+    "links" : null,
+    "matchInfo" : null,
+    "result" : {
+      "sourceSystem" : {
+        "code" : "COL",
+        "name" : "Catalogue Of Life"
+      },
+      "sourceSystemId" : "53810",
+      "acceptedName" : {
+        "fullScientificName" : "Larus Fuscus",
+        "taxonomicStatus" : null,
+        "genusOrMonomial" : "genusOrMonomial_58",
+        "subgenus" : "subgenus_7",
+        "specificEpithet" : "specificEpithet_41",
+        "infraspecificEpithet" : "infraspecificEpithet_56",
+        "infraspecificMarker" : "infraspecificMarker_33",
+        "nameAddendum" : "nameAddendum_4",
+        "authorshipVerbatim" : "authorshipVerbatim_41",
+        "author" : "author_39",
+        "year" : "year_40",
+        "reference" : null,
+        "expert" : {
+          "name" : "name_22",
+          "organization" : "organization_36"
+        }
+      },
+      "taxonRank" : "taxonRank_72",
+      "defaultClassification" : {
+        "kingdom" : "kingdom_76",
+        "phylum" : "phylum_85",
+        "className" : "className_3",
+        "order" : "order_8",
+        "superFamily" : "superFamily_20",
+        "family" : "family_52",
+        "genus" : "genus_68",
+        "subgenus" : "subgenus_7",
+        "specificEpithet" : "specificEpithet_27",
+        "infraspecificEpithet" : "infraspecificEpithet_95",
+        "infraspecificRank" : "infraspecificRank_9"
+      },
+      "systemClassification" : null,
+      "synonyms" : [ {
+        "scientificName" : {
+          "fullScientificName" : "fullScientificName_41",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_81",
+          "subgenus" : "subgenus_63",
+          "specificEpithet" : "specificEpithet_44",
+          "infraspecificEpithet" : "infraspecificEpithet_19",
+          "infraspecificMarker" : "infraspecificMarker_48",
+          "nameAddendum" : "nameAddendum_7",
+          "authorshipVerbatim" : "authorshipVerbatim_39",
+          "author" : "author_78",
+          "year" : "year_1",
+          "reference" : null,
+          "expert" : {
+            "name" : "name_28",
+            "organization" : "organization_33"
+          }
+        },
+        "taxa" : null
+      } ],
+      "descriptions" : [ ],
+      "commonNames" : [ {
+        "name" : "name_15",
+        "language" : "language_5",
+        "preferred" : true,
+        "expert" : {
+          "name" : "name_39",
+          "organization" : "organization_45"
+        }
+      } ],
+      "occurrences" : null,
+      "validName" : {
+        "fullScientificName" : "Larus Fuscus",
+        "taxonomicStatus" : null,
+        "genusOrMonomial" : "genusOrMonomial_58",
+        "subgenus" : "subgenus_7",
+        "specificEpithet" : "specificEpithet_41",
+        "infraspecificEpithet" : "infraspecificEpithet_56",
+        "infraspecificMarker" : "infraspecificMarker_33",
+        "nameAddendum" : "nameAddendum_4",
+        "authorshipVerbatim" : "authorshipVerbatim_41",
+        "author" : "author_39",
+        "year" : "year_40",
+        "reference" : null,
+        "expert" : {
+          "name" : "name_22",
+          "organization" : "organization_36"
+        }
+      }
+    }
+  }, {
+    "score" : 0.0,
+    "actualType" : null,
+    "links" : null,
+    "matchInfo" : null,
+    "result" : {
+      "sourceSystem" : {
+        "code" : "NSR",
+        "name" : "Nationaal Soortenregister"
+      },
+      "sourceSystemId" : "53811",
+      "acceptedName" : {
+        "fullScientificName" : "Larus Fuscus",
+        "taxonomicStatus" : null,
+        "genusOrMonomial" : "genusOrMonomial_7",
+        "subgenus" : "subgenus_81",
+        "specificEpithet" : "specificEpithet_60",
+        "infraspecificEpithet" : "infraspecificEpithet_15",
+        "infraspecificMarker" : "infraspecificMarker_73",
+        "nameAddendum" : "nameAddendum_97",
+        "authorshipVerbatim" : "authorshipVerbatim_84",
+        "author" : "author_22",
+        "year" : "year_74",
+        "reference" : null,
+        "expert" : {
+          "name" : "name_57",
+          "organization" : "organization_77"
+        }
+      },
+      "taxonRank" : "taxonRank_20",
+      "defaultClassification" : {
+        "kingdom" : "kingdom_28",
+        "phylum" : "phylum_27",
+        "className" : "className_49",
+        "order" : "order_90",
+        "superFamily" : "superFamily_40",
+        "family" : "family_79",
+        "genus" : "genus_98",
+        "subgenus" : "subgenus_4",
+        "specificEpithet" : "specificEpithet_75",
+        "infraspecificEpithet" : "infraspecificEpithet_12",
+        "infraspecificRank" : "infraspecificRank_5"
+      },
+      "systemClassification" : null,
+      "synonyms" : [ {
+        "scientificName" : {
+          "fullScientificName" : "fullScientificName_57",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_6",
+          "subgenus" : "subgenus_47",
+          "specificEpithet" : "specificEpithet_84",
+          "infraspecificEpithet" : "infraspecificEpithet_44",
+          "infraspecificMarker" : "infraspecificMarker_77",
+          "nameAddendum" : "nameAddendum_10",
+          "authorshipVerbatim" : "authorshipVerbatim_86",
+          "author" : "author_97",
+          "year" : "year_75",
+          "reference" : null,
+          "expert" : {
+            "name" : "name_44",
+            "organization" : "organization_72"
+          }
+        },
+        "taxa" : null
+      }, {
+        "scientificName" : {
+          "fullScientificName" : "fullScientificName_1",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_36",
+          "subgenus" : "subgenus_31",
+          "specificEpithet" : "specificEpithet_96",
+          "infraspecificEpithet" : "infraspecificEpithet_0",
+          "infraspecificMarker" : "infraspecificMarker_79",
+          "nameAddendum" : "nameAddendum_69",
+          "authorshipVerbatim" : "authorshipVerbatim_81",
+          "author" : "author_41",
+          "year" : "year_39",
+          "reference" : null,
+          "expert" : {
+            "name" : "name_36",
+            "organization" : "organization_23"
+          }
+        },
+        "taxa" : null
+      } ],
+      "descriptions" : [ {
+        "category" : "category_66",
+        "description" : "description_32",
+        "language" : "language_41"
+      } ],
+      "commonNames" : [ {
+        "name" : "name_45",
+        "language" : "language_82",
+        "preferred" : true,
+        "expert" : {
+          "name" : "name_66",
+          "organization" : "organization_10"
+        }
+      } ],
+      "occurrences" : null,
+      "validName" : {
+        "fullScientificName" : "Larus Fuscus",
+        "taxonomicStatus" : null,
+        "genusOrMonomial" : "genusOrMonomial_7",
+        "subgenus" : "subgenus_81",
+        "specificEpithet" : "specificEpithet_60",
+        "infraspecificEpithet" : "infraspecificEpithet_15",
+        "infraspecificMarker" : "infraspecificMarker_73",
+        "nameAddendum" : "nameAddendum_97",
+        "authorshipVerbatim" : "authorshipVerbatim_84",
+        "author" : "author_22",
+        "year" : "year_74",
+        "reference" : null,
+        "expert" : {
+          "name" : "name_57",
+          "organization" : "organization_77"
+        }
+      }
+    }
+  } ]
+}

@@ -1,0 +1,368 @@
+<?php
+
+/**
+ * @file
+ * Naturalis example module.
+ */
+
+/**
+ * Defaults.
+ */
+define('NATURALIS', 'xxx');
+ 
+/**
+* DEFINE CUSTOM PAGES
+*/
+
+/**
+* Implements hook_menu().
+*/
+function ndabioresults_menu() {
+  $items['admin/config/naturalis/ndaresult'] = array(
+    'title' => 'NDA result config',
+    'description' => 'Configuration for Naturalis module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ndabioresults_config_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['nda/page'] = array(
+    'page callback' => 'ndabioresults_page_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['nda/pass'] = array(
+    'page callback' => 'ndabioresults_pass',
+    'page arguments' => array(2, 3, 4), //0 = nda, 1 = pass, 2 = param, 3 = param2, etc.
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+function ndabioresults_pass($arg1, $arg2, $arg3) {
+	$file = drupal_get_path('module', 'ndabioresults') . '/json/taxon-detail.json';
+	$searchTerm = 'Malus';
+  $output = "argument1: " . $arg1 . "<br />argument2: " . $arg2 . "<br />argument3: " . $arg3 . "<br />";
+	$json = file_get_contents($file);
+	// Taxon
+	$data = parseTaxa($json, $searchTerm);
+//	printTaxa($data);
+	
+//	die();
+	
+//	$data = parseSpecimens($json, $searchTerm);
+	//printSpecimens($data);
+
+  $output .= $data;
+  return $output;
+}
+
+function ndabioresults_config_form($form, &$form_state) {
+  $form['ndabioresults_config'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Naturalis config')
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+* 
+*/
+function ndabioresults_page_callback() {
+  global $base_root, $base_path;
+  return t('Copyright') . ' ' . date("Y") . ' <a href="' . variable_get('ndabioresults_copyright_url', $base_root . $base_path) . '">Naturalis</a>';
+}
+
+
+/**
+* DEFINE CUSTOM BLOCKS
+*/
+
+
+
+/**
+* DEFINE CRON JOB
+*/
+
+
+
+
+
+
+	// Returns specimen data
+	function getSpecimen () {
+	
+	}
+
+
+
+
+
+
+
+
+
+	// Parses taxon/species json response into array
+	function parseTaxa ($json, $searchTerm) {
+		if (!$json || !validJson($json)) {
+			handleError('No or invalid json response');
+		}
+		$data = json_decode($json);
+dpm($data);
+return " "; 
+		$total = getTotalRows($data);
+		if (!$total) {	
+			handleError('Invalid json response');
+		}
+    /*
+		foreach ($data->resultGroups as $row) {
+			$d = array();
+			// Accepted scientific name, synonym, or common name
+			$d['type'] = getResultType($row);
+			if ($d['type'] == 'accepted') {
+				$d['name'] = formatScientificName(
+					$row->searchResults[0]->matchInfo[0]->value, 
+					$row->searchResults[0]->result->acceptedName, 
+					$searchTerm
+				);
+			} else if ($d['type'] == 'synonym') {
+				$d['name'] = formatScientificName(
+					$row->searchResults[0]->matchInfo[0]->value, 		
+					$row->searchResults[0]->result->synonyms[getResultOffset($row)]->scientificName, 
+					$searchTerm
+				);
+			} else if ($d['type'] == 'common') {
+				$d['name'] = highlightMatch(
+					$row->searchResults[0]->matchInfo[0]->value,
+					$searchTerm
+				);
+			}
+			$d['acceptedName'] = (
+				$d['type'] == 'accepted' ? 
+				$d['name'] :
+				formatScientificName(
+					$row->searchResults[0]->result->acceptedName->fullScientificName,
+					$row->searchResults[0]->result->acceptedName
+				)
+			);
+			$d['rank'] = $row->searchResults[0]->result->taxonRank;
+			$d['url'] = $row->links[0]->href;
+			$d['sources'] = getSources($row);
+			$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row) : array());
+			$d['score'] = $row->searchResults[0]->score;
+			dpm($d);
+      //$output[] = $d;
+		}
+    */
+
+
+//		return $output;
+
+	}
+	
+	
+	
+	
+	/* Prints taxon result set on screen. Parameters $p should contain:
+	   'sortColumn', 'sortDirection'
+	   
+	   TODO: 
+	   1. Set truncated (for overview)/non-truncated 
+	   2. Pass $p['total'] dynamically
+	
+	*/
+	function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
+		$resultLabel = t('Species names');
+		$headers = array(
+			array(
+				'label' => t('Name'),
+				'sort' => 1,
+				'icon' => 'icon-sort-by-alphabet',
+				'url' => '#'
+			),
+			array(
+				'label' => t('Description'),
+				'sort' => 0
+			),
+			array(
+				'label' => t('Found in'),
+				'sort' => 0
+			),
+			array(
+				'label' => t('Match'),
+				'sort' => 1,
+				'icon' => 'icon-sort-by-attributes',
+				'url' => '#'
+			)
+		);
+		$output = "<table class='table'>\n<thead>\n<tr>";
+		foreach ($headers as $i => $header) {
+    		$output .= "<th class='col-no-" . ($i + 1) . "'>";
+    		if ($header['sort'] == 1) {
+    			// Selected header
+    			if ($i == $p['sortColumn']) {
+    				$header['url'] .= ($p['sortDirection'] == 'asc' ? '&desc' : '&asc');
+    				$output .= "<a href='" . $header['url'] . "'>" . $header['label'] . "</a>\n" .
+    					"<a href='" . $header['url'] . "'>" .
+    					"<span class='sortable glyphicon " . $header['icon'] . 
+    					($p['sortDirection'] == 'desc' ? "-alt" : "") . "'></span>\n</a>";
+    			// Other headers
+    			} else {
+    				$header['url'] .= '&desc';
+    				$output .= "<a href='" . $header['url'] . "'>" . $header['label'] . "</a>\n" .
+    					"<a href='" . $header['url'] . "'>" .
+    					"<span class='sortable glyphicon icon-sort'></span>\n</a>";
+    			}
+    		} else {
+    			$output .= $header['label'];
+    		}
+    		$output .= "</th>\n"; 
+		}
+		$output .= "</thead>\n<tbody>\n";
+		foreach ($data as $i => $row) {
+			$output .= "<tr>\n";
+			// Name
+			$output .= "<td><a href='" . $row['url'] . "'>" . $row['name'] . "</a>" . 
+				(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') .
+				"</td>\n";
+			// Description
+			$output .= "<td>" . decorateDescription($row) . "</td>\n";
+			// Source(s)
+			$output .= "<td>" . implode('</br>', $row['sources']) . "</td>\n";
+			// Match 
+			$output .= "<td>" . decorateScore($row['score']) . "</td>\n";
+			$output .= "</tr>\n"; 
+		}
+		echo $output . "</tbody>\n</table>\n";
+	}
+
+	// Validates json string
+	function validJson ($string) {
+		return is_object(json_decode($string));
+	}
+	
+	// Returns type of result:
+	// acceptedName.fullScientificName
+	// acceptedName.synonyms[0].scientificName.fullScientificName
+	// acceptedName.commonNames[0].name
+ 	function getResultType ($row) {
+ 		$path = $row->searchResults[0]->matchInfo[0]->path;
+ 		return strpos($path, 'synonym') !== false ? 'synonym' :
+ 			(strpos($path, 'commonName') !== false ? 'common' : 'accepted');
+	}
+	
+	// Returns offset of result; used only for synonyms and common names
+	// to determine the array key containing the hit
+	function getResultOffset ($row) {
+		preg_match('/\[(.*?)\]/', $row->searchResults[0]->matchInfo[0]->path, $m);
+		return $m[1];
+	}	
+	
+	// Returns total number of results
+	function getTotalRows ($data) {
+		if (isset($data->totalSize)) {
+			return (int)$data->totalSize;
+		}
+		return false;
+	}
+	
+	// Results formatted accepted name with proper use of italics
+	function formatScientificName ($scientificname, $nameObject, $searchTerm = false) {
+		$output = $scientificname;
+		$elements = getScientificNameElements($nameObject);
+		foreach ($elements as $e) {
+			if (!empty($e)) {
+				$output = str_replace($e, '<span class="italic">' . $e . '</span>', $output);
+			}
+		}
+		// Highlight the formatted output
+		return $searchTerm ? highlightMatch($output, $searchTerm) : $output;
+	}
+	
+	// Returns scientific name elements from name object
+	// Store as keys and flip to avoid duplicates (as in Larus fuscus fuscus)
+	function getScientificNameElements ($name) {
+		$elements = array(
+			$name->genusOrMonomial => 0,
+			$name->subgenus => 1,
+			$name->specificEpithet => 2,
+			$name->infraspecificEpithet => 3
+		);
+		return array_flip($elements);
+	}
+	
+	// Returns all sources
+	function getSources ($row) {
+		foreach ($row->searchResults as $i => $taxon) {
+			$output[$i] = $taxon->result->sourceSystem->name;
+		}
+		return isset($output) ? $output : false;
+	}
+		
+	// Returns common names for the current interface language;
+	// format is array(name => language), so duplicates will be avoided
+	function getCommonNames ($row, $language = false) {
+		foreach ($row->searchResults as $i => $taxon) {
+			if (isset($taxon->result->commonNames)) {			
+				foreach ($taxon->result->commonNames as $name) {
+					// If language is set, only store when language of
+					// common name matches that of interface...
+					if ($language) {
+						if ($name->language == $language) {
+							$output[$name->name] = $name->language;
+						}
+					// ... else always return all names
+					} else {
+						$output[$name->name] = $name->language;
+					}
+				}
+			}
+		}
+		return isset($output) ? $output : false;
+	}
+
+
+	// Decorate description in taxon result table 
+	function decorateDescription ($row) {
+		return ($row['type'] != 'accepted' ? 
+			t(ucfirst($row['type'])) . ($row['type'] == 'common' ? ' ' . t('name') : '') . 
+			' ' . t('for') . ' ' :  '') . ($row['type'] == 'accepted' ? t(ucfirst($row['rank'])) : 
+			t($row['rank'])) . ' ' . $row['acceptedName'];
+	}
+
+	// Decorate score in result table
+	function decorateScore ($score) {
+    	$score = round($score * 100);
+    	return "<div class='score text-hide'>\n<div class='score-bar' style='width: $score%'>".
+    		"$score%</div>\n</div>\n";
+    }
+
+
+	// Highlight match
+	function highlightMatch($haystack, $needle) {
+		if (stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
+			return $haystack;
+		}
+		$q = str_split($needle);
+		$x = ')(\<[^<]*\>)*(';
+		$q = str_replace('( )','(\s*)','('.implode($x, $q).')');
+		return preg_replace_callback('/'.$q.'/i','_fsub1', $haystack);
+	}
+
+	function _fsub1($m) {
+		return "<span class='result-query'>".preg_replace_callback('(<(.*?)>)','_fsub2',$m[0])."</span>";
+	}
+	
+	function _fsub2($m) {
+		return '</span>'.$m[0]."<span class='result-query'>";
+	}
+
+
+	// Wrapper for Drupal error handler
+	function handleError ($message) {
+		die($message);
+	}
