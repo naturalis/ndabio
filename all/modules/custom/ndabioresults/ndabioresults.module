@@ -14,6 +14,16 @@ define('NATURALIS', 'xxx');
 * DEFINE CUSTOM PAGES
 */
 
+function gettaxonomyidbysystem($systemname) {
+  $sql = "SELECT entity_id FROM {field_data_field_ndasystem} WHERE field_ndasystem_value = '$systemname'";
+  return db_query($sql)->fetchField();
+}
+function gettaxonomybysystem($systemname) {
+  //$sql = "SELECT description FROM {taxonomy_term_data} WHERE tid = " . gettaxonomyidbysystem($systemname) . "";
+  $sql = "SELECT description FROM {taxonomy_term_data} WHERE name = '$systemname'";
+  return t(db_query($sql)->fetchField());
+}
+
 /**
 * Implements hook_menu().
 */
@@ -33,7 +43,7 @@ function ndabioresults_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['nda/pass/%map'] = array(
+  $items['nda/pass/%'] = array(
     'page callback' => 'ndabioresults_pass',
     //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
@@ -43,7 +53,7 @@ function ndabioresults_menu() {
   return $items;
 }
 
-function ndabioresults_pass($args, $map, $index) {
+function ndabioresults_pass($args) {
   dpm(explode('/', $_GET['q']));
 	$searchTerm = 'Malus';
 

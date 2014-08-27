@@ -1,7 +1,6 @@
 name = Bioportal Controller
 core = 7.x
 package = Bioportal
-dependencies[] = add_search_terms
 dependencies[] = bioportal_theme_settings
 dependencies[] = boxes
 dependencies[] = ctools
@@ -11,7 +10,6 @@ dependencies[] = search
 dependencies[] = searchtax
 dependencies[] = strongarm
 dependencies[] = taxonomy
-features[box][] = site_explanation
 features[ctools][] = boxes:box:1
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
