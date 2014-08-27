@@ -53,10 +53,11 @@ function ndabioresults_menu() {
   return $items;
 }
 
-function ndabioresults_pass($args) {
+function ndabioresults_pass($args = "") {
   dpm(explode('/', $_GET['q']));
 	$searchTerm = 'Malus';
-
+  $output = "";
+  
  	$file = drupal_get_path('module', 'ndabioresults') . '/json/group-taxa-by-name.json'; 
 	$json = file_get_contents($file);
 	$data = parseTaxa($json);
