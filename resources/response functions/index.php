@@ -5,15 +5,21 @@
 	- Pass searchterm as $searchTerm. This is not necessary anymore if the NDA returns the
 	search term with the result (as promised by Ayco! ;), but this script will need further modifications
 	if this happens.
-	- Common names in taxon result are not yet interface dependent. Set $language in getCommonNames.
 	- Check formatting and highlighting of scientific name with real world result
 	- Wrapper functions t, handleError and translateNdaField should be replaced
 	- Get multimedia and species names urls in specimen details (not yet present in mockup)
-	
-	
-	
+
+
+
 */
-/*	
+
+	// Set Drupal global
+	$language = array(
+		'language' => 'en'
+	);
+
+
+/*
 	// Taxon
 	$file = 'json/group-taxa-by-name.json';
 	$json = file_get_contents($file);
@@ -29,7 +35,7 @@
 	$json = file_get_contents($file);
 	$data = parseSpecimens($json);
 	printSpecimens($data);
-	
+
 	$file = 'json/getMediaObjects.json';
 	$json = file_get_contents($file);
 	$data = parseMultimedia($json);
@@ -40,15 +46,123 @@
 	$data = parseSpecimenDetail($json);
 	printSpecimenDetail($data);
 
-*/	
-
 	$file = 'json/taxon-detail.json';
 	$json = file_get_contents($file);
 	$data = parseTaxonDetail($json);
 	printTaxonDetail($data);
 
+	$file = 'json/taxon-media-detail.json';
+	$json = file_get_contents($file);
+	$data = parseTaxonMediaDetail($json);
+	printTaxonMediaDetail($data);
+
+*/
+
+	$file = 'json/specimen-media-detail.json';
+	$json = file_get_contents($file);
+	$data = parseSpecimenMediaDetail($json);
+	printSpecimenMediaDetail($data);
+	
 
 
+	function parseSpecimenMediaDetail ($json) {
+		if (!$json || !validJson($json)) {
+			handleError('No or invalid json response');
+		}
+		$data = json_decode($json);
+		$row = $data->searchResults[0];
+
+		$output['source'] = $row->result->specimen->sourceSystem->name;
+		$output['navigation'] = getNavigation($data);
+		$output['names'] = getSpecimenMediaTaxonNames($row);
+		$output['unitID'] = $row->result->specimen->unitID;
+		$output['title'] = $row->result->title;
+		$output['caption'] = $row->result->caption;
+		$output['imgSrc'] = getImageUrl($row);
+
+//echo '<pre>'; print_r($output); echo '</pre>';
+		return $output;
+	}
+
+
+	function getSpecimenMediaTaxonNames ($row) {
+		foreach ($row->result->scientificNames as $i => $name) {
+			$output[] = array(
+				'name' => formatScientificName(
+					$name->fullScientificName,
+					$name
+				),
+				'url' => getSpecimenMediaTaxonUrl($row, $i)
+			);
+		}
+		return isset($output) ? $output : false;
+	}
+
+
+	function getSpecimenMediaTaxonUrl ($row, $i) {
+		if (!empty($row->links)) {
+			foreach ($row->links as $link) {
+				if ($link->rel == "scientificnames[{$i}].fullScientificName") {
+					return $link->href;
+				}
+			}
+		}
+		return null;
+	}
+
+
+	function printSpecimenMediaDetail ($data) {
+		$output = "<h2>" . $data['title'] . "</h2>\n";
+		$output .= printNavigation($data);
+		$output .="<img scr='" . $data['imgSrc'] . "' alt='" . $data['title'] . 
+			"' title=''" . $data['title'] . ">\n";
+		$output .= "<table class='table-property-list'>\n<tbody>\n";
+		$fields = array('source', 'title', 'caption');
+		if (isset($data['acceptedName'])) {
+			array_unshift($fields, 'acceptedName');
+		} else if (isset($data['names'])) {
+			$output .= printSpecimenDetails($data['names'], 'species');
+		}
+		foreach ($fields as $field) {
+			if ($data[$field] != '') {
+		 		$output .= printTableRow($field, $data[$field]);
+		 	}
+		}
+		echo $output . "</tbody>\n</table>\n";
+	}
+
+	function parseTaxonMediaDetail ($json) {
+		if (!$json || !validJson($json)) {
+			handleError('No or invalid json response');
+		}
+		$data = json_decode($json);
+		$row = $data->searchResults[0];
+		$output['source'] = $row->result->taxon->sourceSystem->name;
+		$output['acceptedName'] = formatScientificName(
+			$row->result->scientificNames[0]->fullScientificName,
+			$row->result->scientificNames[0]
+		);		
+		$output['navigation'] = getNavigation($data);
+		$output['title'] = $row->result->title;
+		$output['caption'] = $row->result->caption;
+		$output['imgSrc'] = getImageUrl($row);
+//echo '<pre>'; print_r($output); echo '</pre>';
+		return $output;
+	}
+
+
+
+	function printTaxonMediaDetail ($data) {
+		$output = "<h2>" . $data['title'] . "</h2>\n";
+		$output .= printNavigation($data);
+		$output .="<img scr='" . $data['imgSrc'] . "' alt='" . $data['title'] . 
+			"' title=''" . $data['title'] . ">\n";
+		$output .= "<table class='table-property-list'>\n<tbody>\n";
+		foreach (array('acceptedName', 'source', 'title', 'caption') as $field) {
+		 	$output .= printTableRow($field, $data[$field]);
+		}
+		echo $output . "</tbody>\n</table>\n";
+	}
 
 
 	// Parses taxon detail json response into array
@@ -62,19 +176,20 @@
 		}
 		$data = json_decode($json);
 //print_r($data);
-
+		$output['acceptedName'] = formatScientificName(
+			$data->searchResults[0]->result->acceptedName->fullScientificName,
+			$data->searchResults[0]->result->acceptedName
+		);		
+		$output['navigation'] = getNavigation($data);
 		foreach ($data->searchResults as $row) {
 			$source = $row->result->sourceSystem->name;
-			$output['acceptedNames'][$source] = formatScientificName(
-				$row->result->acceptedName->fullScientificName,
-				$row->result->acceptedName
-			);
+
 			if (!empty($row->result->defaultClassification)) {
-				$output['classifications']['default'][$source] = 
+				$output['classifications']['default'][$source] =
 					$row->result->defaultClassification;
 			}
 			if (!empty($row->result->systemClassification)) {
-				$output['classifications']['system'][$source] = 
+				$output['classifications']['system'][$source] =
 					$row->result->systemClassification;
 			}
 			if (!empty($row->result->synonyms)) {
@@ -87,31 +202,124 @@
 			}
 			if (!empty($row->result->descriptions)) {
 				foreach ($row->result->descriptions as $i => $description) {
-					$output['descriptions'][$description->language][$source] = 
+					$output['descriptions'][$description->language][$source] =
 						$description->description;
 				}
 			}
 			if (!empty($row->result->commonNames)) {
 				foreach ($row->result->commonNames as $i => $name) {
-					$output['commonNames'][$name->language][$source] = 
+					$output['commonNames'][$name->language][$source] =
 						$name->name;
 				}
-			
+
 			}
 		}
-
-print_r($output);
-
-
+//echo '<pre>'; print_r($output); echo '</pre>';
 		return $output;
 	}
 
 
 	function printTaxonDetail ($data) {
+		global $language;
+		$output = "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
+			(isset($data['commonNames'][$language['language']]) ? 
+				implode(', ', $data['commonNames'][$language['language']]) : '') .
+			"</span>\n</h2>\n";
+		$output .= printNavigation($data) .
+			printCommonNames($data) .
+			printDescriptions($data) .
+			printClassifications($data);
+		echo $output;
+	}
 
+
+
+	// Transposes common names array and prints common names
+	function printCommonNames ($data) {
+		$output = '';
+		$header = "<h3>" . t('Common names') . "</h3>\n";
+		if (isset($data['commonNames']) && !empty($data['commonNames'])) {
+			// Transpose first 
+			foreach ($data['commonNames'] as $lan => $name) {
+				$source = key($name);
+				$names[$source][$name[$source]] = $lan;
+			}
+			foreach ($names as $source => $t) {
+				$output .= "<h4 class='source'>$source</h4>\n" .
+					"<table class='property-list'>\n<tbody>\n";
+				foreach ($t as $name => $lan) {
+					$output .= "<tr>\n<td>" . t($lan) . "</td>\n<td>$name</td>\n</tr>\n";
+				}
+				$output .= "</tbody>\n</table>\n";
+			}
+		}
+		return $header . (!empty($output) ? $output : t('No common names available'));
 	}
 	
+	function printDescriptions ($data) {
+		global $language;
+		$output = '';
+		$header = "<h3>" . t('Descriptions') . "</h3>\n";
+		if (isset($data['descriptions']) && !empty($data['descriptions'])) {
+			// Transpose first 
+			foreach ($data['descriptions'] as $lan => $description) {
+				$source = key($description);
+				$descriptions[$source][$description[$source]] = $lan;
+			}
+			foreach ($descriptions as $source => $t) {
+				foreach ($t as $description => $lan) {
+					if ($lan == $language['language']) {
+						$output .= "<p>$description</p>\n";
+					}
+				}
+			}
+		}
+		return $header . (!empty($output) ? $output : t('No descriptions available'));
+	}
 	
+	function printClassifications ($data) {
+		global $language;
+		$output = '';
+		$header = "<h3>" . t('Classifications') . "</h3>\n";
+		$printClassifications = array();
+		// First merge two separate classification arrays
+		foreach ($data['classifications']['default'] as $source => $classification) {
+			$classifications[] =array(
+				'source' => $source, 
+				'classification' => $classification
+			);
+		}
+		foreach ($data['classifications']['system'] as $source => $classification) {
+			$classifications[] = array(
+				'source' => $source, 
+				'classification' => $classification
+			);
+		}
+		// Check for duplicates; change key if necessary
+		foreach ($classifications as $classification) {
+			// Classification does not exist yet; add it
+			if (!in_array(serialize($classification['classification']), $printClassifications)) {
+				$printClassifications[$classification['source']] = serialize($classification['classification']);
+			// Classification does exist; adapt its key
+			} else {
+				$printSource = array_search(serialize($classification['classification']), $printClassifications);
+				$newSource = $printSource . ', ' . $classification['source'];
+				$printClassifications[$newSource] = serialize($classification['classification']);
+				unset($printClassifications[$printSource]);
+			}
+		}
+		// Finally we can print the lot...
+		foreach ($printClassifications as $source => $sClassification) {
+			$output .= "<h4 class='source'>$source</h4>\n" .
+				"<table class='property-list'>\n<tbody>\n";
+			$classification = unserialize($sClassification);
+			foreach ($classification as $rank => $name) {
+				$output .= "<tr>\n<td>" . t($rank) . "</td>\n<td>$name</td>\n</tr>\n";
+			}
+			$output .= "</tbody>\n</table>\n";
+		}
+		return $header . (!empty($output) ? $output : t('No classifications available'));
+	}
 
 	// Parses specimen detail json response into array
 	function parseSpecimenDetail ($json) {
@@ -125,7 +333,7 @@ print_r($output);
 		$data = json_decode($json);
 //print_r($data);
 		foreach ($data->searchResults[0]->result as $field => $value) {
-			if (!is_array($value) && !is_object($value) && 
+			if (!is_array($value) && !is_object($value) &&
 				!in_array($field, $skipFields) && $value != '') {
 				$output[t(translateNdaField($field))] = $value;
 			}
@@ -137,8 +345,8 @@ print_r($output);
 //print_r($output);
 		return $output;
 	}
-	
-	
+
+
 	// Return previous/next links from result set
 	function  getNavigation ($data) {
 		if (isset($data->links) && !empty($data->links)) {
@@ -186,7 +394,7 @@ print_r($output);
 		}
 		echo $output . "</tbody>\n</table>\n";
 	}
-	
+
 	// Prints navigation on details page
 	function printNavigation ($data) {
 		$output = "<div class='navigation'>\n";
@@ -194,30 +402,26 @@ print_r($output);
 			$links = array_merge(array_flip(array('prev', 'next')), $data['navigation']);
 			foreach ($links as $direction => $url) {
 				$t = "<div class='$direction";
-				$t .= !empty($url) ? 
-					"'><a href='" . printDrupalLink($url) . "'>" . $direction . "</a></div>\n" : 
+				$t .= !empty($url) ?
+					"'><a href='" . printDrupalLink($url) . "'>" . $direction . "</a></div>\n" :
 					"-disabled'></div>\n";
 				$output .= $t;
 			}
 		}
 		return $output . "</div>\n";
 	}
-	
-
 
 	// Prints taxon identifications for specimen (used only for non-name search)
 	function printSpecimenDetails ($details, $fieldLabel) {
 		$output = '';
 		foreach ($details as $i => $detail) {
 			$t = $detail['name'];
-			$t = !empty($detail['url']) ? 
+			$t = !empty($detail['url']) ?
 				'<a href="' . printDrupalLink($detail['url']) . '">' . $detail['name'] . '</a>' : $t;
 			$output .= printTableRow(($i == 0 ? t($fieldLabel) : ''), $t);
 		}
 		return !empty($output) ? $output : null;
 	}
-	
-
 
 	// Return other specimens for detail page
 	function getOtherSpecimens ($row) {
@@ -232,13 +436,13 @@ print_r($output);
 		}
 		return isset($c) ? $c : null;
 	}
-	
+
 	function printTableRow ($field, $value) {
 		return "<tr>\n<td>" . ($field != '' ? t(translateNdaField($field)) : '') . "</td>\n<td>" .
 			($value != '' ? $value : '') . "</td>\n</tr>\n";
 	}
 
-	
+
 	// Parses multimedia json response into array
 	function parseMultimedia ($json) {
 		if (!$json || !validJson($json)) {
@@ -248,12 +452,11 @@ print_r($output);
 //print_r($data);
 		$output['searchTerms'] = getSearchTerms($data);
 		$output['total'] = getTotalRows($data);
-		if (!$output['searchTerms'] || !$output['total']) {	
+		if (!$output['searchTerms'] || !$output['total']) {
 			handleError('Invalid json response');
 		}
 		foreach ($data->searchResults as $row) {
 			$type = isset($row->result->taxon) ? 'taxon' : 'specimen';
-		
 			$d['title'] = $row->result->title;
 			$d['caption'] = $row->result->caption;
 			$d['score'] = $row->score;
@@ -264,14 +467,14 @@ print_r($output);
 			$output['results'][] = $d;
 		}
 		return isset($output) ? $output : false;
-	}	
-	
-	
+	}
+
+
 	// Prints multimedia on screen
 	function printMultimedia ($data) {
-		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) . 
+		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
 			' ' . t('returned') . ' ' . $data['total'] . ' ' . t('images') . ".</h2>\n" .
-			"<h3 class='results-set-header'>" . t('Multimedia') . "</h3>\n" . 
+			"<h3 class='results-set-header'>" . t('Multimedia') . "</h3>\n" .
 			"<div class='col-results-set'>\n";
 		foreach ($data['results'] as $i => $row) {
 			$output .= "<div class='image'>\n" .
@@ -279,12 +482,12 @@ print_r($output);
 				"<img src='" . $row['imgSrc']. "' alt='" . $row['title'] . "' ></a>\n" .
 				"<div class='image-title'>\n" . $row['caption'] . "</div>\n" .
 				"<div class='image-hits'>\n" . printHits($row) . "</div>\n" .
-				"<div class='image-source'>" . $row['source'] . "</div>\n</div>\n";	
+				"<div class='image-source'>" . $row['source'] . "</div>\n</div>\n";
 		}
 		echo $output . "</div>\n";
 	}
-	
-	
+
+
 	// Prints matches on screen
 	function printMatches ($data) {
 		$output = '';
@@ -295,7 +498,7 @@ print_r($output);
 		}
 		return substr($output, 0, -2);
 	}
-	
+
 	// Returns specimens searched for other fields but taxon
 	function parseSpecimens ($json) {
 		if (!$json || !validJson($json)) {
@@ -304,7 +507,7 @@ print_r($output);
 		$data = json_decode($json);
 		$output['searchTerms'] = getSearchTerms($data);
 		$output['total'] = getTotalRows($data);
-		if (!$output['searchTerms'] || !$output['total']) {	
+		if (!$output['searchTerms'] || !$output['total']) {
 			handleError('Invalid json response');
 		}
 		foreach ($data->searchResults as $row) {
@@ -319,10 +522,10 @@ print_r($output);
 		}
 		return isset($output) ? $output : false;
 	}
-	
-	
-	
-	// Prints specimen result set on screen. 
+
+
+
+	// Prints specimen result set on screen.
 	function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
 		$headers = array(
 			array(
@@ -348,64 +551,64 @@ print_r($output);
 				'url' => '#'
 			)
 		);
-		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) . 
+		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
 			' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
-			"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" . 
-			"<table class='table'>\n<thead>\n" . printHeaders($headers, $p) . 
+			"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
+			"<table class='table'>\n<thead>\n" . printHeaders($headers, $p) .
 			"</thead>\n<tbody>\n";
 		foreach ($data['results'] as $i => $row) {
 			$output .= "<tr>\n";
 			// Registration number plus hits
-			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['registrationNumber'] . "</a>" . 
+			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['registrationNumber'] . "</a>" .
 				(!empty($row['hits']) ? '</br>' . printHits($row) : '') .
 				"</td>\n";
 			// Species
 			$output .= "<td>" . printSpecimenTaxa($row['names']) . "</td>\n";
 			// Source(s)
 			$output .= "<td>" . $row['source'] . "</td>\n";
-			// Match 
+			// Match
 			$output .= "<td>" . decorateScore($row['score']) . "</td>\n";
-			$output .= "</tr>\n"; 
+			$output .= "</tr>\n";
 		}
 		echo $output . "</tbody>\n</table>\n";
-	}	
-	
-	
+	}
+
+
 	// Prints hits as field: hits;
 	// replaces default <span> with <span class="highlight">
 	function printHits ($row) {
 		$output = '';
 		if (isset($row['hits']) && !empty($row['hits'])) {
 			foreach ($row['hits'] as $field => $hit) {
-				$output .= t(translateNdaField($field)) . ': ' . 
+				$output .= t(translateNdaField($field)) . ': ' .
 					str_replace('<span>', '<span class="highlight">', $hit) . '</br>';
 			}
 		}
 		return !empty($output) ? substr($output, 0, -5) : null;
 	}
-	
-	
+
+
 	// Prints taxon identifications for specimen (used only for non-name search)
 	function printSpecimenTaxa ($names) {
 		$output = '';
 		foreach ($names as $name) {
 			$t = $name['name'];
-			$t = !empty($name['url']) ? 
-				'<a href="' . printDrupalLink($name['url']) . '">' . $name['name'] . '</a>, ' : 
+			$t = !empty($name['url']) ?
+				'<a href="' . printDrupalLink($name['url']) . '">' . $name['name'] . '</a>, ' :
 				$t . ', ';
 			$output .= $t;
 		}
 		return !empty($output) ? substr($output, 0, -2) : null;
 	}
-	
-	
+
+
 	// Returns taxon names for specimens plus their url found by other fields but name
 	// (for specimens found by taxon name only a single name is returned!)
 	function getSpecimenTaxonNames ($row) {
 		foreach ($row->result->identifications as $i => $id) {
 			$output[] = array(
 				'name' => formatScientificName(
-					$id->scientificName->fullScientificName, 
+					$id->scientificName->fullScientificName,
 					$id->scientificName
 				),
 				'url' => getSpecimenTaxonUrl($row, $i)
@@ -413,8 +616,8 @@ print_r($output);
 		}
 		return isset($output) ? $output : false;
 	}
-	
-	
+
+
 	// Returns url for a taxon associated with the specimen
 	function getSpecimenTaxonUrl ($row, $i) {
 		if (!empty($row->links)) {
@@ -428,7 +631,7 @@ print_r($output);
 	}
 
 
-	
+
 	// Parses specimen json response into array; searched by taxon
 	function parseSpecimensByTaxon ($json) {
 		if (!$json || !validJson($json)) {
@@ -438,22 +641,22 @@ print_r($output);
 //print_r($data);
 		$output['searchTerms'] = getSearchTerms($data);
 		$output['total'] = getTotalRows($data);
-		if (!$output['searchTerms'] || !$output['total']) {	
+		if (!$output['searchTerms'] || !$output['total']) {
 			handleError('Invalid json response');
 		}
 		foreach ($data->resultGroups as $row) {
 			$d = array();
 			$d['name'] = formatScientificName(
-				$row->searchResults[0]->matchInfo[0]->value, 
-				$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName, 
+				$row->searchResults[0]->matchInfo[0]->value,
+				$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
 				$output['searchTerms']
 			);
 			$d['url'] = $row->links[0]->href;
 			$d['count'] = count($row->searchResults);
 			$d['sources'] = getSources($row);
 			$d['score'] = $row->searchResults[0]->score;
-			
-			// Specimens are stored in a subarray. Brahms may feature "specimen collections" 
+
+			// Specimens are stored in a subarray. Brahms may feature "specimen collections"
 			// (or, in other words, a set),  which are virtual entities collecting different parts of the same individual,
 			// e.g. leaves, fruits and flowers of the same plant. If the "collection" contains just
 			// one specimen (as in CRS), there's only a single specimen in the "collection".
@@ -479,8 +682,8 @@ print_r($output);
 		$key = key(get_object_vars($row->result->serviceAccessPoints));
 		return $row->result->serviceAccessPoints->{$key}->accessUri;
 	}
-	
-	
+
+
 	// Return the field containing the hit
 	function getHits ($row) {
 		foreach ($row->matchInfo as $info) {
@@ -489,9 +692,9 @@ print_r($output);
 		}
 		return isset($hits) ? $hits : array();
 	}
-	
-	
-	// Prints specimen result set on screen. 
+
+
+	// Prints specimen result set on screen.
 	function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
 		$headers = array(
 			array(
@@ -517,24 +720,24 @@ print_r($output);
 				'url' => '#'
 			)
 		);
-		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) . 
+		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
 			' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
-			"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" . 
-			"<table class='table'>\n<thead>\n" . printHeaders($headers, $p) . 
+			"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
+			"<table class='table'>\n<thead>\n" . printHeaders($headers, $p) .
 			"</thead>\n<tbody>\n";
 		foreach ($data['results'] as $i => $row) {
 			$output .= "<tr>\n";
 			// Name
-			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" . 
+			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" .
 				(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') .
 				"</td>\n";
 			// Number (and collection type)
 			$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>\n";
 			// Source(s)
 			$output .= "<td>" . implode('</br>', $row['sources']) . "</td>\n";
-			// Match 
+			// Match
 			$output .= "<td>" . decorateScore($row['score']) . "</td>\n";
-			$output .= "</tr>\n"; 
+			$output .= "</tr>\n";
 			$output .= printSpecimenCollection($row);
 		}
 		echo $output . "</tbody>\n</table>\n";
@@ -547,14 +750,14 @@ print_r($output);
 	function printSpecimenCollection ($row) {
 		// Single specimen
 		if (empty($row['set']['setId'])) {
-			return "<tr>\n<td><a href='" . printDrupalLink($row['set']['specimens'][0]['url']) . "'>" . 
+			return "<tr>\n<td><a href='" . printDrupalLink($row['set']['specimens'][0]['url']) . "'>" .
 				$row['set']['specimens'][0]['registrationNumber'] . "</a></td>\n" . padTds(3) . "</tr>\n";
 		}
 		// Specimen collection/set
 		$output = "<tr>\n<td>Brahms " . $row['set']['setId'] . "</td>\n" . padTds(3) . "</tr>\n";
 		foreach ($row['set']['specimens'] as $specimen) {
-			$output .= "<tr>\n<td><a href='" . printDrupalLink($specimen['url']) . "'>" . 
-				$specimen['registrationNumber'] . "</a></td>\n" . padTds(1) . "<td>" . 
+			$output .= "<tr>\n<td><a href='" . printDrupalLink($specimen['url']) . "'>" .
+				$specimen['registrationNumber'] . "</a></td>\n" . padTds(1) . "<td>" .
 				t(translateNdaField($specimen['collectionType'])) . "</td>\n" . padTds(1) . "</tr>\n";
 		}
 		return $output;
@@ -565,11 +768,6 @@ print_r($output);
 		if ((int)$i > 0) {
 			return str_repeat("<td></td>\n", $i);
 		}
-	}
-	
-	// Create Drupal specific link
-	function printDrupalLink ($url) {
-		return "http://drupal/?nda_request=" . urlencode($url);
 	}
 
 	// Return url for specimens in "collection"/set
@@ -583,7 +781,7 @@ print_r($output);
 		}
 		return null;
 	}
-	
+
 	// Prints headers of result table on screen
 	function printHeaders ($headers, $p) {
 		$output = "<tr>\n";
@@ -593,15 +791,15 @@ print_r($output);
     			// Selected header
     			if ($i == $p['sortColumn']) {
     				$header['url'] .= ($p['sortDirection'] == 'asc' ? '&desc' : '&asc');
-    				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" . 
+    				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
     					$header['label'] . "</a>\n" .
     					"<a href='" . printDrupalLink($header['url']) . "'>" .
-    					"<span class='sortable glyphicon " . $header['icon'] . 
+    					"<span class='sortable glyphicon " . $header['icon'] .
     					($p['sortDirection'] == 'desc' ? "-alt" : "") . "'></span>\n</a>";
     			// Other headers
     			} else {
     				$header['url'] .= '&desc';
-    				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" . 
+    				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
     					$header['label'] . "</a>\n" .
     					"<a href='" . printDrupalLink($header['url']) . "'>" .
     					"<span class='sortable glyphicon icon-sort'></span>\n</a>";
@@ -609,7 +807,7 @@ print_r($output);
     		} else {
     			$output .= $header['label'];
     		}
-    		$output .= "</th>\n"; 
+    		$output .= "</th>\n";
 		}
 		return $output . "</tr>\n";
 	}
@@ -622,7 +820,7 @@ print_r($output);
 		$data = json_decode($json);
 		$output['total'] = getTotalRows($data);
 		$output['searchTerms'] = getSearchTerms($data);
-		if (!$output['searchTerms'] || !$output['total']) {	
+		if (!$output['searchTerms'] || !$output['total']) {
 			handleError('Invalid json response');
 		}
 		foreach ($data->resultGroups as $row) {
@@ -631,14 +829,14 @@ print_r($output);
 			$d['type'] = getResultType($row);
 			if ($d['type'] == 'accepted') {
 				$d['name'] = formatScientificName(
-					$row->searchResults[0]->matchInfo[0]->value, 
-					$row->searchResults[0]->result->acceptedName, 
+					$row->searchResults[0]->matchInfo[0]->value,
+					$row->searchResults[0]->result->acceptedName,
 					$output['searchTerms']
 				);
 			} else if ($d['type'] == 'synonym') {
 				$d['name'] = formatScientificName(
-					$row->searchResults[0]->matchInfo[0]->value, 		
-					$row->searchResults[0]->result->synonyms[getResultOffset($row)]->scientificName, 
+					$row->searchResults[0]->matchInfo[0]->value,
+					$row->searchResults[0]->result->synonyms[getResultOffset($row)]->scientificName,
 					$output['searchTerms']
 				);
 			} else if ($d['type'] == 'common') {
@@ -648,7 +846,7 @@ print_r($output);
 				);
 			}
 			$d['acceptedName'] = (
-				$d['type'] == 'accepted' ? 
+				$d['type'] == 'accepted' ?
 				$d['name'] :
 				formatScientificName(
 					$row->searchResults[0]->result->acceptedName->fullScientificName,
@@ -664,17 +862,17 @@ print_r($output);
 		}
 		return isset($output) ? $output : false;
 	}
-	
-	
-	
-	
+
+
+
+
 	/* Prints taxon result set on screen. Parameters $p should contain:
 	   'sortColumn', 'sortDirection'
-	   
-	   TODO: 
-	   1. Set truncated (for overview)/non-truncated 
+
+	   TODO:
+	   1. Set truncated (for overview)/non-truncated
 	   2. Pass $p['total'] dynamically
-	
+
 	*/
 	function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
 		$headers = array(
@@ -699,24 +897,24 @@ print_r($output);
 				'url' => '#'
 			)
 		);
-		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) . 
+		$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
 			' ' . t('returned') . ' ' . $data['total'] . ' ' . t('species') . ".</h2>\n" .
-			"<h3 class='results-set-header'>" . t('Species names') . "</h3>\n" . 
-			"<table class='table'>\n<thead>\n". printHeaders($headers, $p) . 
+			"<h3 class='results-set-header'>" . t('Species names') . "</h3>\n" .
+			"<table class='table'>\n<thead>\n". printHeaders($headers, $p) .
 			"</thead>\n<tbody>\n";
 		foreach ($data['results'] as $i => $row) {
 			$output .= "<tr>\n";
 			// Name
-			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" . 
+			$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" .
 				(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') .
 				"</td>\n";
 			// Description
 			$output .= "<td>" . decorateDescription($row) . "</td>\n";
 			// Source(s)
 			$output .= "<td>" . implode('</br>', $row['sources']) . "</td>\n";
-			// Match 
+			// Match
 			$output .= "<td>" . decorateScore($row['score']) . "</td>\n";
-			$output .= "</tr>\n"; 
+			$output .= "</tr>\n";
 		}
 		echo $output . "</tbody>\n</table>\n";
 	}
@@ -725,7 +923,7 @@ print_r($output);
 	function validJson ($string) {
 		return is_object(json_decode($string));
 	}
-	
+
 	// Returns type of result:
 	// acceptedName.fullScientificName
 	// acceptedName.synonyms[0].scientificName.fullScientificName
@@ -735,15 +933,15 @@ print_r($output);
  		return strpos($path, 'synonym') !== false ? 'synonym' :
  			(strpos($path, 'commonName') !== false ? 'common' : 'accepted');
 	}
-	
+
 	// Returns offset of result; used only for synonyms and common names
 	// to determine the array key containing the hit
 	// Used for taxon/specimenByTaxon
 	function getResultOffset ($row) {
 		preg_match('/\[(.*?)\]/', $row->searchResults[0]->matchInfo[0]->path, $m);
 		return $m[1];
-	}	
-	
+	}
+
 	// Returns total number of results
 	function getTotalRows ($data) {
 		if (isset($data->totalSize)) {
@@ -751,7 +949,7 @@ print_r($output);
 		}
 		return false;
 	}
-	
+
 	// Returns total number of results
 	function getSearchTerms ($data) {
 		if (isset($data->searchTerms)) {
@@ -759,7 +957,7 @@ print_r($output);
 		}
 		return false;
 	}
-	
+
 	// Results formatted accepted name with proper use of italics
 	function formatScientificName ($scientificname, $nameObject, $searchTerm = false) {
 		$output = $scientificname;
@@ -772,7 +970,7 @@ print_r($output);
 		// Highlight the formatted output
 		return $searchTerm ? highlightMatch($output, $searchTerm) : $output;
 	}
-	
+
 	// Returns scientific name elements from name object
 	// Store as keys and flip to avoid duplicates (as in Larus fuscus fuscus)
 	function getScientificNameElements ($name) {
@@ -784,7 +982,7 @@ print_r($output);
 		);
 		return array_flip($elements);
 	}
-	
+
 	// Returns all sources for taxon/specimen
 	function getSources ($row) {
 		foreach ($row->searchResults as $i => $obj) {
@@ -792,17 +990,18 @@ print_r($output);
 		}
 		return isset($output) ? array_flip($output) : false;
 	}
-		
+
 	// Returns common names for the current interface language;
 	// format is array(name => language), so duplicates will be avoided
-	function getCommonNames ($row, $language = false) {
+	function getCommonNames ($row, $languageCheck = false) {
+		global $language;
 		foreach ($row->searchResults as $i => $taxon) {
-			if (isset($taxon->result->commonNames)) {			
+			if (isset($taxon->result->commonNames)) {
 				foreach ($taxon->result->commonNames as $name) {
 					// If language is set, only store when language of
 					// common name matches that of interface...
-					if ($language) {
-						if ($name->language == $language) {
+					if ($languageCheck) {
+						if ($name->language == $language['language']) {
 							$output[$name->name] = $name->language;
 						}
 					// ... else always return all names
@@ -816,11 +1015,11 @@ print_r($output);
 	}
 
 
-	// Decorate description in taxon result table 
+	// Decorate description in taxon result table
 	function decorateDescription ($row) {
-		return ($row['type'] != 'accepted' ? 
-			t(ucfirst($row['type'])) . ($row['type'] == 'common' ? ' ' . t('name') : '') . 
-			' ' . t('for') . ' ' :  '') . ($row['type'] == 'accepted' ? t(ucfirst($row['rank'])) : 
+		return ($row['type'] != 'accepted' ?
+			t(ucfirst($row['type'])) . ($row['type'] == 'common' ? ' ' . t('name') : '') .
+			' ' . t('for') . ' ' :  '') . ($row['type'] == 'accepted' ? t(ucfirst($row['rank'])) :
 			t($row['rank'])) . ' ' . $row['acceptedName'];
 	}
 
@@ -848,7 +1047,7 @@ print_r($output);
 	function _fsub1($m) {
 		return "<span class='result-query'>".preg_replace_callback('(<(.*?)>)','_fsub2',$m[0])."</span>";
 	}
-	
+
 	function _fsub2($m) {
 		return '</span>'.$m[0]."<span class='result-query'>";
 	}
@@ -858,16 +1057,21 @@ print_r($output);
 	function handleError ($message) {
 		die($message);
 	}
-	
+
 	// Should be replaced with Drupal translate function
 	function t ($str) {
-		return $str;	
+		return $str;
 	}
-	
+
 	// Should be replaced with a function that translates NDS field labels to proper English
 	function translateNdaField ($str) {
 		return $str;
-	} 
+	}
+
+	// Create Drupal specific link
+	function printDrupalLink ($url) {
+		return "http://drupal/?nda_request=" . urlencode($url);
+	}
 
 
 ?>
