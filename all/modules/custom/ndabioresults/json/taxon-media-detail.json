@@ -103,7 +103,15 @@
         "systemClassification" : null,
         "synonyms" : null,
         "descriptions" : null,
-        "commonNames" : null,
+        "commonNames" : [ {
+        "name" : "name_28",
+        "language" : "en",
+        "preferred" : true,
+        "expert" : {
+          "name" : "name_89",
+          "organization" : "organization_11"
+        }
+      } ],
         "occurrences" : null,
         "validName" : {
           "fullScientificName" : "fullScientificName_24",
