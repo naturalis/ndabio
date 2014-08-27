@@ -302,8 +302,8 @@ function ndabioresults_page_callback() {
 	function printTaxonDetail ($data) {
 		global $language;
 		$output = "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
-			(isset($data['commonNames'][$language['language']]) ? 
-				implode(', ', $data['commonNames'][$language['language']]) : '') .
+			(isset($data['commonNames'][$language->language]) ? 
+				implode(', ', $data['commonNames'][$language->language]) : '') .
 			"</span>\n</h2>\n";
 		$output .= printNavigation($data) .
 			printCommonNames($data) .
@@ -348,7 +348,7 @@ function ndabioresults_page_callback() {
 			}
 			foreach ($descriptions as $source => $t) {
 				foreach ($t as $description => $lan) {
-					if ($lan == $language['language']) {
+					if ($lan == $language->language) {
 						$output .= "<p>$description</p>\n";
 					}
 				}
@@ -1081,7 +1081,7 @@ function ndabioresults_page_callback() {
 					// If language is set, only store when language of
 					// common name matches that of interface...
 					if ($languageCheck) {
-						if ($name->language == $language['language']) {
+						if ($name->language == $language->language) {
 							$output[$name->name] = $name->language;
 						}
 					// ... else always return all names
