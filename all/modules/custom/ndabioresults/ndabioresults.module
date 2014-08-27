@@ -54,7 +54,7 @@ function ndabioresults_menu() {
 }
 
 function ndabioresults_pass($args = "") {
-  dpm(explode('/', $_GET['q']));
+  //dpm(explode('/', $_GET['q']));
 	$searchTerm = 'Malus';
   $output = "";
   
