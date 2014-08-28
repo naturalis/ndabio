@@ -54,52 +54,7 @@ function ndabioresults_menu() {
 }
 
 function ndabioresults_pass($args = "") {
-  //dpm(explode('/', $_GET['q']));
-  $output = "";
-
-	// Taxon
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/group-taxa-by-name.json';
-	$json = file_get_contents($file);
-	$data = parseTaxa($json);
-	$output .= printTaxa($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/groupSpecimenBySpecificName.json';
-	$json = file_get_contents($file);
-	$data = parseSpecimensByTaxon($json);
-	$output .= printSpecimensByTaxon($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/getSpecimensForOtherSearchTerms.json';
-	$json = file_get_contents($file);
-	$data = parseSpecimens($json);
-	$output .= printSpecimens($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/getMediaObjects.json';
-	$json = file_get_contents($file);
-	$data = parseMultimedia($json);
-	$output .= printMultimedia($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/specimen-detail.json';
-	$json = file_get_contents($file);
-	$data = parseSpecimenDetail($json);
-	$output .= printSpecimenDetail($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/taxon-detail.json';
-	$json = file_get_contents($file);
-	$data = parseTaxonDetail($json);
-	$output .= printTaxonDetail($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/taxon-media-detail.json';
-	$json = file_get_contents($file);
-	$data = parseTaxonMediaDetail($json);
-	$output .= printTaxonMediaDetail($data);
-
-	$file = drupal_get_path('module', 'ndabioresults') . '/json/specimen-media-detail.json';
-	$json = file_get_contents($file);
-	$data = parseSpecimenMediaDetail($json);
-	$output .= printSpecimenMediaDetail($data);
-
-
-  return $output;
+   return performNdaRequest('all');
 }
 
 function ndabioresults_config_form($form, &$form_state) {
@@ -135,63 +90,83 @@ function ndabioresults_page_callback() {
 /**
 *
 */
-$mapNdaRequests = array(
-	'all' => 'group-taxa-by-name.json|groupSpecimenBySpecificName.json|getSpecimensForOtherSearchTerms.json|getMediaObjects.json',
-	'taxa' => 'group-taxa-by-name.json',
-	'specimensByTaxon' => 'groupSpecimenBySpecificName.json',
-	'specimens' => 'groupSpecimenBySpecificName.json',
-	'multimedia' => 'getMediaObjects.json',
-	'taxonDetail' => 'taxon-detail.json',
-	'specimenDetail' => 'specimen-detail.json',
-	'taxonMediaDetail' => 'taxon-media-detail.json',
-	'specimenMediaDetail' => 'specimen-media-detail.json'
-);
 
-$resultOrder = array(
-	'getMediaObjects.json',
-	'group-taxa-by-name.json',
-	'groupSpecimenBySpecificName.json',
-	'getSpecimensForOtherSearchTerms.json'
-);
+// Drupal constants
+function mapNdaRequests() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'all' => 'group-taxa-by-name.json|groupSpecimenBySpecificName.json|getSpecimensForOtherSearchTerms.json|getMediaObjects.json',
+        	'taxa' => 'group-taxa-by-name.json',
+        	'specimensByTaxon' => 'groupSpecimenBySpecificName.json',
+        	'specimens' => 'groupSpecimenBySpecificName.json',
+        	'multimedia' => 'getMediaObjects.json',
+        	'taxonDetail' => 'taxon-detail.json',
+        	'specimenDetail' => 'specimen-detail.json',
+        	'taxonMediaDetail' => 'taxon-media-detail.json',
+        	'specimenMediaDetail' => 'specimen-media-detail.json'
+        );
+    }
+    return $var;
+}
 
-$serviceToFunctions = array(
-	'group-taxa-by-name.json' => array(
-		'parse' => 'parseTaxa',
-		'print' => 'printTaxa'
-	),
-	'groupSpecimenBySpecificName.json' => array(
-		'parse' => 'parseSpecimensByTaxon',
-		'print' => 'printSpecimensByTaxon'
-	),
-	'getMediaObjects.json' => array(
-		'parse' => 'parseMultimedia',
-		'print' => 'printMultimedia'
-	),
-	'getSpecimensForOtherSearchTerms.json' => array(
-		'parse' => 'parseSpecimens',
-		'print' => 'printSpecimens'
-	),
-	'specimen-detail.json' => array(
-		'parse' => 'parseSpecimenDetail',
-		'print' => 'printSpecimenDetail'
-	),
-	'taxon-detail.json' => array(
-		'parse' => 'parseTaxonDetail',
-		'print' => 'printTaxonDetail'
-	),
-	'taxon-media-detail.json' => array(
-		'parse' => 'parseTaxonMediaDetail',
-		'print' => 'printTaxonMediaDetail'
-	),
-	'specimen-media-detail.json' => array(
-		'parse' => 'parseSpecimenMediaDetail',
-		'print' => 'printSpecimenMediaDetail'
-	)
-);
+function resultOrder() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'getMediaObjects.json',
+        	'group-taxa-by-name.json',
+        	'groupSpecimenBySpecificName.json',
+        	'getSpecimensForOtherSearchTerms.json'
+        );
+    }
+    return $var;
+}
 
+function serviceToFunctions() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'group-taxa-by-name.json' => array(
+        		'parse' => 'parseTaxa',
+        		'print' => 'printTaxa'
+        	),
+        	'groupSpecimenBySpecificName.json' => array(
+        		'parse' => 'parseSpecimensByTaxon',
+        		'print' => 'printSpecimensByTaxon'
+        	),
+        	'getMediaObjects.json' => array(
+        		'parse' => 'parseMultimedia',
+        		'print' => 'printMultimedia'
+        	),
+        	'getSpecimensForOtherSearchTerms.json' => array(
+        		'parse' => 'parseSpecimens',
+        		'print' => 'printSpecimens'
+        	),
+        	'specimen-detail.json' => array(
+        		'parse' => 'parseSpecimenDetail',
+        		'print' => 'printSpecimenDetail'
+        	),
+        	'taxon-detail.json' => array(
+        		'parse' => 'parseTaxonDetail',
+        		'print' => 'printTaxonDetail'
+        	),
+        	'taxon-media-detail.json' => array(
+        		'parse' => 'parseTaxonMediaDetail',
+        		'print' => 'printTaxonMediaDetail'
+        	),
+        	'specimen-media-detail.json' => array(
+        		'parse' => 'parseSpecimenMediaDetail',
+        		'print' => 'printSpecimenMediaDetail'
+        	)
+        );
+    }
+    return $var;
+}
 
 function performNdaRequest ($request = false) {
-	global $resultOrder, $serviceToFunctions;
+    $resultOrder = resultOrder();
+    $serviceToFunctions = serviceToFunctions();
 	// Translate request url to curl channels
 	$channels = setChannels($request);
 	if (empty($channels)) {
@@ -217,7 +192,7 @@ function performNdaRequest ($request = false) {
 
 
 function setChannels ($request = false) {
-	global $mapNdaRequests;
+	$mapNdaRequests = mapNdaRequests();
 	if (!$request || !isset($mapNdaRequests[$request])) {
 		return false;
 	}
