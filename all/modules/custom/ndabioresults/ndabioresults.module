@@ -154,7 +154,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['source'] = $row->result->specimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimenMediaTaxonNames($row);
-	$output['unitID'] = $row->result->specimen->unitID;
+	$output['unitGUID'] = $row->result->specimen->unitGUID;
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
@@ -200,7 +200,7 @@ function printSpecimenMediaDetail ($data) {
 	if (isset($data['acceptedName'])) {
 		array_unshift($fields, 'acceptedName');
 	} else if (isset($data['names'])) {
-		$output .= printSpecimenDetails($data['names'], 'species');
+		$output .= printNamesWithLinks($data['names'], 'species');
 	}
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
@@ -443,7 +443,7 @@ function printSpecimenDetail ($data) {
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
 	$fieldOrder = array(
-		'unitID',
+		'unitGUID',
 		'names'
 		// etc
 	);
@@ -458,7 +458,7 @@ function printSpecimenDetail ($data) {
 		if (is_array($value)) {
 			// Taxon name
 			if ($field == 'names') {
-				$output .= printSpecimenDetails($value, 'species');
+				$output .= printNamesWithLinks($value, 'species');
 			}
 		} else {
 			$output .= printTableRow($field, $value);
@@ -468,7 +468,7 @@ function printSpecimenDetail ($data) {
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
 		$output .= "</tbody>\n</table>\n" .
 			"<table class='table-property-list'>\n<tbody>\n";
-		$output .= printSpecimenDetails($data['otherSpecimens'], 'other');
+		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
 	}
 	return $output . "</tbody>\n</table>\n";
 }
@@ -490,12 +490,12 @@ function printNavigation ($data) {
 }
 
 // Prints taxon identifications for specimen (used only for non-name search)
-function printSpecimenDetails ($details, $fieldLabel) {
+function printNamesWithLinks ($details, $fieldLabel) {
 	$output = '';
 	foreach ($details as $i => $detail) {
-		$t = $detail['registrationNumber'];
+		$name = isset($detail['unitGUID']) ? $detail['unitGUID'] : $detail['name'];
 		$t = !empty($detail['url']) ?
-			'<a href="' . printDrupalLink($detail['url']) . '">' . $detail['registrationNumber'] . '</a>' : $t;
+			'<a href="' . printDrupalLink($detail['url']) . '">$name</a>' : $name;
 		$output .= printTableRow(($i == 0 ? t($fieldLabel) : ''), $t);
 	}
 	return !empty($output) ? $output : null;
@@ -506,7 +506,7 @@ function getOtherSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->otherSpecimensInSet)) {
 		foreach ($row->searchResults[0]->result->otherSpecimensInSet as $i => $specimen) {
 			$s = array();
-			$s['registrationNumber'] = $specimen->unitID;
+			$s['unitGUID'] = $specimen->unitGUID;
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = getSpecimenInCollectionUrl($row, $i);
 			$c[] = $s;
@@ -590,7 +590,7 @@ function parseSpecimens ($json) {
 	}
 	foreach ($data->searchResults as $row) {
 		$d = array();
-		$d['registrationNumber'] = $row->result->unitID;
+		$d['unitGUID'] = $row->result->unitGUID;
 		$d['url'] = $row->links[0]->href;
 		$d['names'] = getSpecimenTaxonNames($row);
 		$d['hits'] = getHits($row);
@@ -637,7 +637,7 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
 	foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>\n";
 		// Registration number plus hits
-		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['registrationNumber'] . "</a>" .
+		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['unitGUID'] . "</a>" .
 			(!empty($row['hits']) ? '</br>' . printHits($row) : '') .
 			"</td>\n";
 		// Species
@@ -742,7 +742,7 @@ function parseSpecimensByTaxon ($json) {
 		// Collection/set
 		$c['setId'] = $row->searchResults[0]->result->setID;
 		// Specimen(s)
-		$s['unitID'] = $row->searchResults[0]->result->unitID;
+		$s['unitGUID'] = $row->searchResults[0]->result->unitGUID;
 		$s['collectionType'] = $row->searchResults[0]->result->collectionType;
 		$s['url'] = $row->searchResults[0]->links[0]->href;
 		$otherSpecimens = getOtherSpecimens($row);
@@ -829,13 +829,13 @@ function printSpecimenCollection ($row) {
 	// Single specimen
 	if (empty($row['set']['setId'])) {
 		return "<tr>\n<td><a href='" . printDrupalLink($row['set']['specimens'][0]['url']) . "'>" .
-			$row['set']['specimens'][0]['registrationNumber'] . "</a></td>\n" . padTds(3) . "</tr>\n";
+			$row['set']['specimens'][0]['unitGUID'] . "</a></td>\n" . padTds(3) . "</tr>\n";
 	}
 	// Specimen collection/set
 	$output = "<tr>\n<td>Brahms " . $row['set']['setId'] . "</td>\n" . padTds(3) . "</tr>\n";
 	foreach ($row['set']['specimens'] as $specimen) {
 		$output .= "<tr>\n<td><a href='" . printDrupalLink($specimen['url']) . "'>" .
-			$specimen['registrationNumber'] . "</a></td>\n" . padTds(1) . "<td>" .
+			$specimen['unitGUID'] . "</a></td>\n" . padTds(1) . "<td>" .
 			t(translateNdaField($specimen['collectionType'])) . "</td>\n" . padTds(1) . "</tr>\n";
 	}
 	return $output;
