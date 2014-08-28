@@ -101,7 +101,7 @@
           "name" : "Naturalis Collectie Registratie Systeem"
         },
         "sourceSystemId" : "sourceSystemId_69",
-        "unitID" : "unitID_25",
+        "unitGUID" : "unitGUID_25",
         "setID" : "setID_85",
         "sourceInstitutionID" : "sourceInstitutionID_64",
         "unitGUID" : "unitGUID_1",

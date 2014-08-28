@@ -27,7 +27,7 @@
         "name" : "Brahms"
       },
       "sourceSystemId" : "sourceSystemId_64",
-      "unitID" : "ZMA.RMNH.2013196409",
+      "unitGUID" : "ZMA.RMNH.2013196409",
       "setID" : "setID_21",
       "sourceInstitutionID" : "sourceInstitutionID_39",
       "unitGUID" : "unitGUID_52",
@@ -120,7 +120,7 @@
         "name" : "Naturalis Collectie Registratie Systeem"
       },
       "sourceSystemId" : "sourceSystemId_97",
-      "unitID" : "ZMA.RMNH.1351994506",
+      "unitGUID" : "ZMA.RMNH.1351994506",
       "setID" : "setID_89",
       "sourceInstitutionID" : "sourceInstitutionID_93",
       "unitGUID" : "unitGUID_36",
@@ -255,7 +255,7 @@
         "name" : "Naturalis Collectie Registratie Systeem"
       },
       "sourceSystemId" : "sourceSystemId_47",
-      "unitID" : "ZMA.RMNH.-1708401174",
+      "unitGUID" : "ZMA.RMNH.-1708401174",
       "setID" : "setID_94",
       "sourceInstitutionID" : "sourceInstitutionID_65",
       "unitGUID" : "unitGUID_54",
@@ -387,7 +387,7 @@
         "name" : "Naturalis Collectie Registratie Systeem"
       },
       "sourceSystemId" : "sourceSystemId_14",
-      "unitID" : "ZMA.RMNH.1667248927",
+      "unitGUID" : "ZMA.RMNH.1667248927",
       "setID" : "setID_76",
       "sourceInstitutionID" : "sourceInstitutionID_16",
       "unitGUID" : "unitGUID_48",
@@ -522,7 +522,7 @@
         "name" : "Naturalis Collectie Registratie Systeem"
       },
       "sourceSystemId" : "sourceSystemId_22",
-      "unitID" : "ZMA.RMNH.-826650022",
+      "unitGUID" : "ZMA.RMNH.-826650022",
       "setID" : "setID_0",
       "sourceInstitutionID" : "sourceInstitutionID_69",
       "unitGUID" : "unitGUID_20",

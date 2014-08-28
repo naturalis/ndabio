@@ -22,7 +22,7 @@
         "name" : "Brahms"
       },
       "sourceSystemId" : "sourceSystemId_92",
-      "unitID" : "ZMA.RMNH.69601",
+      "unitGUID" : "ZMA.RMNH.69601",
       "setID" : "setID_21",
       "sourceInstitutionID" : "sourceInstitutionID_41",
       "unitGUID" : "unitGUID_15",
@@ -112,7 +112,7 @@
             "name" : "Brahms"
           },
           "sourceSystemId" : "sourceSystemId_48",
-          "unitID" : "unitID_18",
+          "unitGUID" : "unitGUID_18",
           "setID" : "0000000003",
           "sourceInstitutionID" : "sourceInstitutionID_28",
           "unitGUID" : "unitGUID_74",
@@ -203,7 +203,7 @@
             "name" : "Brahms"
           },
           "sourceSystemId" : "sourceSystemId_18",
-          "unitID" : "unitID_43",
+          "unitGUID" : "unitGUID_43",
           "setID" : "0000000003",
           "sourceInstitutionID" : "sourceInstitutionID_59",
           "unitGUID" : "unitGUID_75",
