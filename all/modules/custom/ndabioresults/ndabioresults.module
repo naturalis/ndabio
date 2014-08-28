@@ -54,7 +54,7 @@ function ndabioresults_menu() {
 }
 
 function ndabioresults_pass($args = "") {
-   return performNdaRequest('all');
+   return performNdaRequest('taxa');
 }
 
 function ndabioresults_config_form($form, &$form_state) {
@@ -165,7 +165,6 @@ function serviceToFunctions() {
 }
 
 function performNdaRequest ($request = false) {
-    $resultOrder = resultOrder();
     $serviceToFunctions = serviceToFunctions();
 	// Translate request url to curl channels
 	$channels = setChannels($request);
@@ -174,13 +173,15 @@ function performNdaRequest ($request = false) {
 	}
 	// Get json response(s) with curl
 	$remoteData = queryNda($channels);
-	// Reorder responses in print order
-	$remoteData = array_merge(array_flip($resultOrder), $remoteData);
+	// Reorder responses in print order if more than one response
+	if (count($remoteData) > 1) {
+	   $remoteData = sortArrayByArray($remoteData, resultOrder());
+	}
 	// Map functions to each channel result:
 	// parses and prints data
 	$output = '';
 	foreach ($remoteData as $service => $json) {
-		if (!isset($serviceToFunctions[$service])) {
+		if (!isset($serviceToFunctions[$service]) || empty($json)) {
 			continue;
 		}
 		$parseFunction = $serviceToFunctions[$service]['parse'];
@@ -1229,6 +1230,17 @@ function _fsub1($m) {
 
 function _fsub2($m) {
 	return '</span>'.$m[0]."<span class='result-query'>";
+}
+
+function sortArrayByArray ($array, $orderArray) {
+    $ordered = array();
+    foreach ($orderArray as $key) {
+        if (array_key_exists($key,$array)) {
+            $ordered[$key] = $array[$key];
+            unset($array[$key]);
+        }
+    }
+    return $ordered + $array;
 }
 
 
