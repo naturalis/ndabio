@@ -19,7 +19,7 @@ function geozones_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
       ),
       'display' => array(),

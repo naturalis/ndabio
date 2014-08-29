@@ -26,13 +26,14 @@ function geozones_views_api($module = NULL, $api = NULL) {
 function geozones_node_info() {
   $items = array(
     'national_search_area' => array(
-      'name' => t('National search area'),
+      'name' => t('Search area'),
       'base' => 'node_content',
-      'description' => t('Search areas within the Netherlands'),
+      'description' => t('Predefined search areas to use with NDA services. Areas are defined as geoJson.'),
       'has_title' => '1',
       'title_label' => t('Locality'),
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
