@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Naturalis module.
+ */
+ 
+/**
+ * Implements hook_install().
+ */
+function bioportal_geo_install() {
+  global $user;
+	ini_set('auto_detect_line_endings', true);
+  set_time_limit(0);
+	
+	$csvFile = drupal_get_path('module', 'bioportal_geo') . '/data/bioportal_areas.csv';
+	if (!file_exists($csvFile)) {
+		handleError('Cannot read file ' . $csvFile);
+	}
+	$fh = fopen($csvFile, 'r');
+	if (!$fh) {
+		handleError('Cannot open file ' . $csvFile);
+	}
+  $i = 0;
+	while (($row = fgetcsv($fh)) !== false) {
+			$node = new stdClass();
+			$node->title = $row[1];
+			$node->type = "national_search_area";
+
+			node_object_prepare($node); 
+			$node->language = LANGUAGE_NONE; // Or 'en' if locale is enabled
+			$node->uid = $user->uid;
+			$node->status = 1; //(1 or 0): published or not
+			$node->promote = 0; //(1 or 0): promoted to front page
+			$node->comment = 0; // 0 = comments disabled
+
+			$node->field_geojson[$node->language][0]['value'] = $row[2];
+			$node->field_iso[$node->language][0]['value'] = $row[3];
+			$node->field_source[$node->language][0]['value'] = $row[4];
+			$node->field_type[$node->language][0]['value'] = $row[5];
+
+			$node = node_submit($node); // Prepare node for saving
+			node_save($node);
+      $i++;
+		
+	}
+	fclose($fh);
+	watchdog('bioportal_geo', 'Created ' . $i . ' nodes', array(), WATCHDOG_INFO);
+	ini_set('auto_detect_line_endings', false);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bioportal_geo_uninstall() {
+	$node_type = "national_search_area";
+	// Select the nodes that we want to delete.
+	$result = db_select('node', 'n')
+		->fields('n', array('nid'))
+		->condition('type', $node_type, '=')
+		->execute();
+	$i = 0;
+	foreach ($result as $record) {
+		node_delete($record->nid);
+		$i++;
+	}
+	watchdog('bioportal_geo', 'Deleted ' . $i . ' nodes', array(), WATCHDOG_INFO);
+}
