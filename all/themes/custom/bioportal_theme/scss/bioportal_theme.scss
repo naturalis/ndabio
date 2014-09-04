@@ -29,9 +29,33 @@ $icon-double-chevron-down:  "\e610";
 $icon-double-chevron-left:  "\e611";
 $icon-double-chevron-right:  "\e612";
 $icon-double-chevron-up:  "\e613";
+$icon-arrow-right:  "\e613";
+
+// GLOBAL SEMANTIC CLASSES
+
+  .scientific{
+    font-style: italic;
+  }
 
 
-// GLOBAL OVERRIDES OF PARENT THEMES
+ // GLOBAL OVERRIDES OF PARENT THEMES
+
+
+
+  // -- HEADERS
+
+  .not-front{
+    h2{
+      font-size: 20px;
+      font-weight: bolder;
+      margin-top: 1em;
+
+      .count{
+        font-weight: 300;
+      }
+
+    }
+  }
 
   // -- BUTTON
 
@@ -315,4 +339,51 @@ $icon-double-chevron-up:  "\e613";
           content: $icon-double-chevron-down;
         }
       }
+    }
+
+// RESULTS
+
+  // -- results : LAYOUT
+
+    .page-nda-pass{
+      main {
+        table{
+          margin-left      : percentage(1/12);
+          width            : percentage(11/12);
+        }
+      }
+
+      .column-first{ width : 30% }
+      .column-match{ width : 8% }
+
+      .result-query{
+        text-decoration    : underline;
+      }
+
+      .score, .score-bar{
+        position         : absolute;
+        display            : block;
+      }
+
+      .score{
+        border-top         : 1px solid black;
+        width: 50px;
+        height: 5px;
+      }
+
+      .score-bar{
+        border             : 2px solid black;
+        border-radius      : 5px;
+        left               : 0;
+        top                : -3px;
+        height             : 5px;
+
+      }
+
+      .score-text{
+        display            : none;
+      }
+
+
+
     }

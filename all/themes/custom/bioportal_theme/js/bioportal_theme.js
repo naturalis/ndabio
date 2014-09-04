@@ -36,7 +36,7 @@
   // SEARCH FORM: hide/show advanced search
   // ---------------------------------------------------------
 
-  if ( $("body").hasClass("front") ){
+  if ( $("body").hasClass("front")  ){
     var $_advanced_search_form = $("#edit-extended");
     var $_omnibox              = $("#edit-term");
     var $_submit               = $("#edit-submit");
@@ -44,6 +44,12 @@
     var $_bottom_submit        = $("#edit-submit--2");
     var int_x                  = $_bottom_submit.offset().left;
     var int_y                  = $_bottom_submit.offset().top;
+
+    // console.log($_advanced_search_form.length);
+    // console.log($_omnibox             .length);
+    // console.log($_submit              .length);
+    // console.log($_fieldset_omnisearch .length);
+    // console.log($_bottom_submit       .length);
 
 
     // -- search form: hide advanced search

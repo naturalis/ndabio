@@ -1,3 +1,13 @@
+.scientific {
+  font-style: italic; }
+
+.not-front h2 {
+  font-size: 20px;
+  font-weight: bolder;
+  margin-top: 1em; }
+  .not-front h2 .count {
+    font-weight: 300; }
+
 button, .button {
   background-color: #009ee0; }
 
@@ -185,3 +195,28 @@ html.js fieldset.collapsible .fieldset-legend {
     content: "\e613"; }
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
   content: "\e610"; }
+
+.page-nda-pass main table {
+  margin-left: 8.33333%;
+  width: 91.66667%; }
+.page-nda-pass .column-first {
+  width: 30%; }
+.page-nda-pass .column-match {
+  width: 8%; }
+.page-nda-pass .result-query {
+  text-decoration: underline; }
+.page-nda-pass .score, .page-nda-pass .score-bar {
+  position: absolute;
+  display: block; }
+.page-nda-pass .score {
+  border-top: 1px solid black;
+  width: 50px;
+  height: 5px; }
+.page-nda-pass .score-bar {
+  border: 2px solid black;
+  border-radius: 5px;
+  left: 0;
+  top: -3px;
+  height: 5px; }
+.page-nda-pass .score-text {
+  display: none; }
