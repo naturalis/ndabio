@@ -1,8 +1,8 @@
 // COLOURS
 
 $yellow : #ffed00;
-$orange : #f29400;
 $orange : #ef6d14;
+$orange-2:#f29400;
 $red    : #e3004a;
 $blue   : #009ee0;
 $green  : #009932;
@@ -48,7 +48,7 @@ $icon-arrow-right:  "\e613";
     h2{
       font-size: 20px;
       font-weight: bolder;
-      margin-top: 1em;
+      margin-top: 2em;
 
       .count{
         font-weight: 300;
@@ -360,30 +360,58 @@ $icon-arrow-right:  "\e613";
         text-decoration    : underline;
       }
 
-      .score, .score-bar{
-        position         : absolute;
-        display            : block;
-      }
-
       .score{
-        border-top         : 1px solid black;
-        width: 50px;
-        height: 5px;
-      }
-
-      .score-bar{
-        border             : 2px solid black;
-        border-radius      : 5px;
-        left               : 0;
-        top                : -3px;
-        height             : 5px;
+        font-size: 1.2em;
+        position: relative;
+        top: -3px;
 
       }
+    }
 
-      .score-text{
-        display            : none;
+    .square-empty{
+      color: $gray-3;
+    }
+
+    .square-filled{
+      color: $orange-2;
+    }
+
+    .multimedia-wrapper{
+      margin-left          : percentage(1/12);
+      width                : percentage(11/12);
+      overflow             : hidden;
+    }
+
+    .polaroid{
+      display              : block;
+      width                : 18%;
+      margin-left          : 1%;
+      margin-right         : 1%;
+      background-color     : $ghost;
+      float                : left;
+    }
+
+    .polaroid-image{
+      padding              : 80% 0 0 0; //80% determines the aspect ratio
+      position             : relative;
+      background           :{
+        color              : $gray-3;
+        position           : center center;
+        size               : contain;
+        repeat : no-repeat;
       }
 
 
+    }
+
+    .polaroid-caption{
+      min-height           : 60px;
+      padding              : 5px;
+      font-size            : 12px;
+      line-height          : 14px;
+
+      .image-title{
+        font-weight: bolder;
+      }
 
     }

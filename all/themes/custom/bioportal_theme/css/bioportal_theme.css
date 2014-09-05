@@ -4,7 +4,7 @@
 .not-front h2 {
   font-size: 20px;
   font-weight: bolder;
-  margin-top: 1em; }
+  margin-top: 2em; }
   .not-front h2 .count {
     font-weight: 300; }
 
@@ -205,18 +205,42 @@ html.js fieldset.collapsible .fieldset-legend {
   width: 8%; }
 .page-nda-pass .result-query {
   text-decoration: underline; }
-.page-nda-pass .score, .page-nda-pass .score-bar {
-  position: absolute;
-  display: block; }
 .page-nda-pass .score {
-  border-top: 1px solid black;
-  width: 50px;
-  height: 5px; }
-.page-nda-pass .score-bar {
-  border: 2px solid black;
-  border-radius: 5px;
-  left: 0;
-  top: -3px;
-  height: 5px; }
-.page-nda-pass .score-text {
-  display: none; }
+  font-size: 1.2em;
+  position: relative;
+  top: -3px; }
+
+.square-empty {
+  color: #cccccc; }
+
+.square-filled {
+  color: #f29400; }
+
+.multimedia-wrapper {
+  margin-left: 8.33333%;
+  width: 91.66667%;
+  overflow: hidden; }
+
+.polaroid {
+  display: block;
+  width: 18%;
+  margin-left: 1%;
+  margin-right: 1%;
+  background-color: #eeede9;
+  float: left; }
+
+.polaroid-image {
+  padding: 80% 0 0 0;
+  position: relative;
+  background-color: #cccccc;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat; }
+
+.polaroid-caption {
+  min-height: 60px;
+  padding: 5px;
+  font-size: 12px;
+  line-height: 14px; }
+  .polaroid-caption .image-title {
+    font-weight: bolder; }

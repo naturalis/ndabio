@@ -652,19 +652,36 @@ function parseMultimedia ($json) {
 
 // Prints multimedia on screen
 function printMultimedia ($data) {
-	$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
-		' ' . t('returned') . ' ' . $data['total'] . ' ' . t('images') . ".</h2>\n" .
-		"<h3 class='results-set-header'>" . t('Multimedia') . "</h3>\n" .
-		"<div class='col-results-set'>\n";
-	foreach ($data['results'] as $i => $row) {
-		$output .= "<div class='image'>\n" .
-			"<a href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>\n" .
-			"<img src='" . $row['imgSrc']. "' alt='" . $row['title'] . "' ></a>\n" .
-			"<div class='image-title'>\n" . $row['caption'] . "</div>\n" .
-			"<div class='image-hits'>\n" . printHits($row) . "</div>\n" .
-			"<div class='image-source'>" . $row['source'] . "</div>\n</div>\n";
+
+  // $output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
+	// 	' ' . t('returned') . ' ' . $data['total'] . ' ' . t('images') . ".</h2>\n" .
+	// 	"<h3 class='results-set-header'>" . t('Multimedia') . "</h3>\n" .
+	// 	"<div class='col-results-set'>\n";
+
+  $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Multimedia'), $data['total'] );
+  $output  .= "<div class='multimedia-wrapper'>";
+
+
+  foreach ($data['results'] as $i => $row) {
+		$w = "240";
+    $h = 100 + $i * 50;
+
+    $row['imgSrc'] = "http://lorempixel.com/$w/$h/nature";
+
+    $output .=
+      "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .
+      "  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
+      "  <div class='polaroid-caption'>".
+      "    <div class='image-title'>" . $row['caption'] . "</div>" .
+			"    <div class='image-hits'>" . printHits($row) . "</div>" .
+			// "    <div class='image-source'>" . $row['source'] . "</div>".
+      "  </div>".
+      "</a>";
 	}
-	return $output . "</div>\n";
+
+  $output .=  "</div>";
+
+  return _markUp($output);
 }
 
 
@@ -731,12 +748,11 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
 			'url' => '#'
 		)
 	);
-	$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
-		' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
-		"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
-		"<table class='table'><thead>" . printHeaders($headers, $p) .
-		"</thead><tbody>";
-	foreach ($data['results'] as $i => $row) {
+
+  $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Specimens'), $data['total'] );
+  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $p) );
+
+  foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";
 		// Registration number plus hits
 		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['unitGUID'] . "</a>" .
@@ -755,13 +771,13 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
 
 
 // Prints hits as field: hits;
-// replaces default <span> with <span class="highlight">
+// replaces default <span> with <span class="result-query">
 function printHits ($row) {
 	$output = '';
 	if (isset($row['hits']) && !empty($row['hits'])) {
 		foreach ($row['hits'] as $field => $hit) {
 			$output .= t(translateNdaField($field)) . ': ' .
-				str_replace('<span>', '<span class="highlight">', $hit) . '</br>';
+				str_replace('<span>', '<span class="result-query">', $hit) . '</br>';
 		}
 	}
 	return !empty($output) ? substr($output, 0, -5) : null;
@@ -900,12 +916,18 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 			'url' => '#'
 		)
 	);
-	$output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
-		' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
-		"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
-		"<table class='table'><thead>" . printHeaders($headers, $p) .
-		"</thead><tbody>";
-	foreach ($data['results'] as $i => $row) {
+
+  // $output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
+	// 	' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
+	// 	"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
+	// 	"<table class='table'><thead>" . printHeaders($headers, $p) .
+	// 	"</thead><tbody>";
+
+  $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Specimens'), $data['total'] );
+
+  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $p) );
+
+  foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";
 		// Name
 		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" .
@@ -920,7 +942,9 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 		$output .= "</tr>";
 		$output .= printSpecimenCollection($row);
 	}
-	return $output . "</tbody></table>";
+
+  $output .= "</tbody></table>";
+  return _markUp($output);
 }
 
 
@@ -1231,7 +1255,21 @@ function decorateDescription ($row) {
 // Decorate score in result table
 function decorateScore ($score) {
 	$score = round($score * 100);
-	return "<span class='score'><span class='score-bar' style='width: $score%'></span><span class='score-text'>$score%</span></span>";
+	$roundScore = round( $score / 20 );
+  $result = "<span class='score' title='$score %'>";
+
+  for ( $i=1; $i<=5; $i++ ){
+    if ( $i <= $roundScore ){
+      $result.= "<span class='square-filled'>&FilledSmallSquare;</span>";
+    } else {
+      $result.= "<span class='square-empty'>&EmptySmallSquare;</span>";
+    }
+  }
+
+  $result .= "</span>";
+  return $result;
+
+  //return "<span class='score'><span class='score-bar' style='width: $score%'></span><span class='score-text'>$score%</span></span>";
 }
 
 // Highlight match
@@ -1289,14 +1327,14 @@ function _markUp($string){
   $result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
 
   $result = str_replace(
-    array(  "<table",    "<thead",    "<tbody",     "<tr",        "<td",        "<th"),
-    array("\n<table","\n\t<thead","\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th"),
+    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'"),
+    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' "),
     $result
   );
 
   $result = str_replace(
-    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th"),
-    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th"),
+    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>"),
+    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>"),
     $result
   );
 
