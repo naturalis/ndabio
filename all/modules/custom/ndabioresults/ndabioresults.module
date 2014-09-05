@@ -928,7 +928,7 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
   $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $p) );
 
   foreach ($data['results'] as $i => $row) {
-		$output .= "<tr>";
+		$output .= "<tr class='indent-0' id='taxon-$i'>";
 		// Name
 		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" .
 			(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') .
@@ -940,7 +940,7 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 		// Match
 		$output .= "<td>" . decorateScore($row['score']) . "</td>";
 		$output .= "</tr>";
-		$output .= printSpecimenCollection($row);
+		$output .= printSpecimenCollection($row, $i);
 	}
 
   $output .= "</tbody></table>";
@@ -951,16 +951,19 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 
 
 // Returns collection/set of specimens or just a specimen if a collection contains a single entry
-function printSpecimenCollection ($row) {
+function printSpecimenCollection ($row, $i) {
 	// Single specimen
 	if (empty($row['set']['setId'])) {
-		return "<tr><td><a href='" . printDrupalLink($row['set']['specimens'][0]['url']) . "'>" .
+		return "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
+		    printDrupalLink($row['set']['specimens'][0]['url']) . "'>" .
 			$row['set']['specimens'][0]['unitGUID'] . "</a></td>" . padTds(3) . "</tr>";
 	}
 	// Specimen collection/set
-	$output = "<tr><td>Brahms " . $row['set']['setId'] . "</td>" . padTds(3) . "</tr>";
-	foreach ($row['set']['specimens'] as $specimen) {
-		$output .= "<tr><td><a href='" . printDrupalLink($specimen['url']) . "'>" .
+	$output = "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>Brahms " .
+	   $row['set']['setId'] . "</td>" . padTds(3) . "</tr>";
+	foreach ($row['set']['specimens'] as $j => $specimen) {
+		$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" .
+		    "<td><a href='" . printDrupalLink($specimen['url']) . "'>" .
 			$specimen['unitGUID'] . "</a></td>" . padTds(1) . "<td>" .
 			t(translateNdaField($specimen['collectionType'])) . "</td>" . padTds(1) . "</tr>";
 	}
