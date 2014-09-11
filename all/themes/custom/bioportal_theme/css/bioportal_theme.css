@@ -244,3 +244,17 @@ html.js fieldset.collapsible .fieldset-legend {
   line-height: 14px; }
   .polaroid-caption .image-title {
     font-weight: bolder; }
+
+tr:hover {
+  background-color: #f6f6f4; }
+
+.indent-1 td:first-child {
+  padding-left: 3em; }
+
+.indent-2 td:first-child {
+  padding-left: 6em; }
+
+i {
+  font-size: 24px;
+  position: relative;
+  top: 3px; }

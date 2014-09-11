@@ -32,30 +32,27 @@ $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
 
 // GLOBAL SEMANTIC CLASSES
-
-  .scientific{
-    font-style: italic;
-  }
+    .scientific{
+      font-style: italic;
+    }
 
 
  // GLOBAL OVERRIDES OF PARENT THEMES
 
-
-
   // -- HEADERS
 
-  .not-front{
-    h2{
-      font-size: 20px;
-      font-weight: bolder;
-      margin-top: 2em;
+    .not-front{
+      h2{
+        font-size: 20px;
+        font-weight: bolder;
+        margin-top: 2em;
 
-      .count{
-        font-weight: 300;
+        .count{
+          font-weight: 300;
+        }
+
       }
-
     }
-  }
 
   // -- BUTTON
 
@@ -69,9 +66,9 @@ $icon-arrow-right:  "\e613";
 
   // BACKGROUND
 
-  .background-gray-9{
-    background-color: $gray-9;
-  }
+    .background-gray-9{
+      background-color: $gray-9;
+    }
 
 
 // FRONT PAGE
@@ -142,10 +139,6 @@ $icon-arrow-right:  "\e613";
         width          : 250px;
       }
     }
-
-
-
-
 
 // SEARCH
 
@@ -415,3 +408,29 @@ $icon-arrow-right:  "\e613";
       }
 
     }
+
+  // -- results: SPECIMEN
+    tr:hover{
+      background-color: $smoke;
+    }
+
+    .indent-1{
+      td:first-child {
+        padding-left: 3em;
+      }
+
+    }    
+
+    .indent-2{
+      td:first-child {
+        padding-left: 6em;
+      }
+    }
+
+    i{
+      font-size: 24px;
+      position: relative;
+      top: 3px;
+    }
+
+

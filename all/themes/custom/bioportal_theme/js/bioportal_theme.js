@@ -212,6 +212,33 @@
   // ---------------------------------------------------------
 
 
+  // ---------------------------------------------------------
+  // SEARCH FORM: IMPLODE/EXPLODE RESULTS TABLE
+  // ---------------------------------------------------------
+
+  $("#specimensByTaxon .indent-0")
+    .each(function(){
+      $(this).find("a").first().prepend("<i class='icon-triangle-right'></i>");
+    })
+    .click( function(){
+      $_me = $(this);
+      str_id = $_me.attr('id');
+
+      $_me.find("i")
+        .toggleClass("icon-triangle-right")
+        .toggleClass("icon-triangle-down");
+      
+      $("[data-parent='"+ str_id +"']")
+        .toggleClass("hidden");
+
+      $("[data-parent='"+ str_id +"-collection']")
+        .toggleClass("hidden");
+
+      return false;
+    });
+  
+  $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
+
 } }; })(jQuery, Drupal);
 
 jQuery.fn.toggleAttr = function(a, b) {
