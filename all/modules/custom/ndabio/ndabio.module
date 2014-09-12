@@ -51,7 +51,7 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['naturalis/ndadetail'] = array(
     'title' => 'Details',
     'page callback' => 'ndabio_ndadetail_callback',
@@ -106,11 +106,11 @@ function ndabio_naturalis_callback() {
 */
 function ndabio_ajax_callback() {
   $geonode = (int)$_GET["nid"];
-  
+
   $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
-  
+
   $row = db_query($sql)->fetchObject();
-  
+
   if($row) {
     echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
   }
@@ -188,8 +188,8 @@ function ndabio_taxonomy_create() {
     field_create_instance($instance);
     // Done
 
-    
-    
+
+
     $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   } else {
     foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
@@ -230,20 +230,20 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
 function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   $sysname = (is_numeric($str_system ) ? $str_term : $str_system);
-  
+
   //Clear path information from system name
   $pos = strpos($sysname, "/");
   if ($pos !== FALSE) {
     $sysname = substr($sysname, $pos + 1);
   }
-  
-  //Get term type from term description. Default is a textfield. Use a semicolon to specify date, int, 
+
+  //Get term type from term description. Default is a textfield. Use a semicolon to specify date, int,
   $pos = strpos($str_term, ";");
   if ($pos !== FALSE) {
     echo "Multiple values!: " . $str_term . " (" . $str_system . ") " . substr($str_term, $pos + 1);
     $str_term = substr($str_term, 0, $pos);
   }
-  
+
   $obj_term = (object) array(
      'name' => $sysname,
      'vid' => $vocab->vid,
@@ -264,7 +264,7 @@ function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   return $obj_term->tid;
 }
 
-
+/*
 function _ndabio_return_taxonomy(){
   return array(
     'omnisearch' => 'term',
@@ -346,6 +346,97 @@ function _ndabio_return_taxonomy(){
 
   );
 }
+*/
+
+
+function _ndabio_return_taxonomy(){
+  return array(
+    'omnisearch' => 'Registration number',
+    'extended' => array(
+      'Multimedia' => array(
+        'unitID' => "Unit",
+        'vernacularName' => 'Vernacular name',
+        'genusOrMonomial' => 'Genus or monomial',
+        'speciesEpithet' => 'Species epithet',
+        'localityText' => 'Locality text',
+      '--more--' => array(
+            'kingdom' => 'Kingdom',
+            'phylum' => 'Phylum',
+            'className' => 'Class',
+            'order' => 'Order',
+            'family' => 'Family',
+            'subspeciesEpithet' => 'Subspecies epithet',
+            'typeStatus' => 'Type status',
+            'phaseOrStage' => 'Phase or stage',
+            'sex' => 'Sex',
+            'gatheringAgent' => 'Collector',
+            'collectingStartDate' => 'Collecting start date',
+            'collectionFieldNumber' => 'Collection field number',
+            'expert' => 'Expert name',
+            'expertOrganisation' => 'Expert organisation',
+            'taxonomicStatus' => 'Taxonomic status',
+        ),
+        '--hide--' => array(
+            'chronostratigraphicAttributiontTypeYoung' => "Youngest chronostratigraphic name",
+            'chronostratigraphicAttributiontTypeOld' => "Oldest chronostratigraphic name",
+            'lithostratigraphicAttributionType' => "First lithostratigraphic name",
+            'lithostratigraphicAttributionType2' => "Second lithostratigraphic name",
+            'biostratigraphicAttributionTypeOld' => "Oldest biostratigraphic name",
+            'biostratigraphicAttributionTypeYoung' => "Younest biostratigraphic name",
+        )
+      ),
+      'Collection specimens' => array(
+        'unitID' => 'Registration number',
+        'className' => 'Class',
+        'order' => 'Order',
+        'family' => 'Family',
+        'genusOrMonomial' => 'Genus or monomial',
+        'speciesEpithet' => 'Species epithet',
+        'subspeciesEpithet' => 'Subspecies epithet',
+        'typeStatus' => 'Type status',
+        'localityText' => 'Locality text',
+        'phaseOrStage' => 'Phase or stage',
+        'sex' => 'Sex',
+        '--hide--' => array(
+            'subgenus' => 'Subgenus',
+            'youngestChronstratigraphicName' => 'Youngest chronstratigraphic name',
+            'oldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
+            'firstLithostratigraphicName' => 'First lithostratigraphic name',
+            'secondLithostratigraphicName' => 'Second lithostratigraphic name',
+            'oldestBiostratigraphicName' => 'Oldest biostratigraphic name',
+            'youngestBiostratigraphicName' => 'Youngest biostratigraphic name',
+        ),
+        '--more--' => array(
+            'kingdom' => 'Kingdom',
+            'phylum' => 'Phylum',
+            'gatheringAgent' => 'Collector',
+            'collectingStartDate' => 'Collecting start date',
+            'collectionFieldNumber' => 'Collection field number',
+        )
+      ),
+      'Species'  => array(
+        'vernacularName' => 'Vernacular name',
+        'kingdom' => 'Kingdom',
+        'phylum' => 'Phylum',
+        'className' => 'Class',
+        'family' => 'Family',
+        'genusOrMonomial' => 'Genus or monomial',
+        'subgenus' => 'Subgenus',
+        'speciesEpithet' => 'Species epithet',
+        'subspeciesEpithet' => 'Subspecies epithet',
+        '--more--' => array(
+            'expert' => 'Expert name',
+            'expertOrganisation' => 'Expert organisation',
+            'taxonomicStatus' => 'Taxonomic status',
+        ),
+        '--hide--' => array(
+        )
+      )
+    )
+
+  );
+}
+
 
 /**
 * Output detail page.
@@ -527,7 +618,7 @@ function ndabio_pass() {
 function ndabio_postjson($keys = '') {
   $service_url = variable_get('ndabio_config_jsonpost', NDABIO_JSONPOST);
   drupal_set_message("POST:" . $service_url);
-  
+
   $curl = curl_init($service_url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_POST, 1);
@@ -555,7 +646,7 @@ function ndabio_postjson($keys = '') {
 function ndabio_getjson($url = '') {
   $service_url = $url;
   drupal_set_message("GET:" . $service_url);
-  
+
   $curl = curl_init($service_url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
