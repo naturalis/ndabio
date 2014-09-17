@@ -1,10 +1,16 @@
 <?php
+/*
+Import takes csv file with columns gid, locality, geojson, iso, source, type
+Header should be included
+*/
+
+
 
 /**
  * @file
  * Install, update and uninstall functions for the Naturalis module.
  */
- 
+
 /**
  * Implements hook_install().
  */
@@ -12,7 +18,7 @@ function bioportal_geo_install() {
   global $user;
 	ini_set('auto_detect_line_endings', true);
   set_time_limit(0);
-	
+
 	$csvFile = drupal_get_path('module', 'bioportal_geo') . '/data/bioportal_areas.csv';
 	if (!file_exists($csvFile)) {
 		handleError('Cannot read file ' . $csvFile);
@@ -27,7 +33,7 @@ function bioportal_geo_install() {
 			$node->title = $row[1];
 			$node->type = "national_search_area";
 
-			node_object_prepare($node); 
+			node_object_prepare($node);
 			$node->language = LANGUAGE_NONE; // Or 'en' if locale is enabled
 			$node->uid = $user->uid;
 			$node->status = 1; //(1 or 0): published or not
@@ -42,7 +48,7 @@ function bioportal_geo_install() {
 			$node = node_submit($node); // Prepare node for saving
 			node_save($node);
       $i++;
-		
+
 	}
 	fclose($fh);
 	watchdog('bioportal_geo', 'Created ' . $i . ' nodes', array(), WATCHDOG_INFO);
