@@ -40,7 +40,7 @@
   var $_omnibox              = $("#edit-term");
   var $_submit               = $("#edit-submit-top");
   var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
-  var $_bottom_submit        = $("[name='op']");
+  var $_bottom_submit        = $("#edit-submit-bottom");
   var int_x                  = $_bottom_submit.offset().left;
   var int_y                  = $_bottom_submit.offset().top;
 

@@ -928,6 +928,7 @@ function ndabio_advanced_taxonomysearch() {
     '#type' => 'submit',
     '#value' => t('Search'),
     '#nowrapper' => TRUE,
+    '#id' => 'edit-submit-bottom'
   );
 
   return ($form);

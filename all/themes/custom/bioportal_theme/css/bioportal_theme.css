@@ -168,9 +168,9 @@ button, .button {
     background: none;
     margin: 0; }
   #edit-extended label {
-    font-size: 1.125rem;
+    font-size: 1rem;
     color: white;
-    font-weight: 300;
+    line-height: 0.9em;
     letter-spacing: 0.05em;
     margin: 0;
     padding: 0; }
