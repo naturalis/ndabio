@@ -855,7 +855,7 @@ function ndabio_advanced_taxonomysearch() {
                   '#title'           => t("More"),
                   '#collapsible'     => TRUE,
                   '#collapsed'       => TRUE,
-                  '#attributes'    =>  array( 'collapsed' => "true", 'collapsible' => 'true' )
+                  '#attributes'    =>  array( 'collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible","collapsed", "form-wrapper") )
                 );
 
                 //put all children in group

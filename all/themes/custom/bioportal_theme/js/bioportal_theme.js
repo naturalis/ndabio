@@ -81,7 +81,6 @@
         });
     })
 
-
     // $(".ndabio-toggle-advanced").trigger("click");
 
   // ---------------------------------------------------------
@@ -93,6 +92,8 @@
   // ---------------------------------------------------------
 
   $(window).scroll(function(){
+
+      console.log($_bottom_submit);
 
       var objectTop = $_bottom_submit.position().top;
       var objectHeight = $_bottom_submit.outerHeight();
