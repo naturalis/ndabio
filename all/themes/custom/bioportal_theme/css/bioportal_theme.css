@@ -1,3 +1,26 @@
+/* gray-10 : #1a1a1a; */
+/* gray-9  : #333333; */
+/* gray-8  : #4d4d4d; */
+/* gray-7  : #666666; */
+/* gray-6  : #808080; */
+/* gray-5  : #999999; */
+/* gray-4  : #b3b3b3; */
+/* gray-3  : #cccccc; */
+/* gray-2  : #e6e6e6; */
+/* gray-1  : #f2f2f2; */
+/* smoke  : #F6F6F4;  */
+/* ghost  : #EEEDE9;  */
+/* white  : #ffffff;  */
+/* black  : #000000;  */
+/* gray   : #b2b1a8;  */
+/* brown  : #542e08;  */
+/* purple : #3e2782;  */
+/* green  : #009932;  */
+/* blue   : #009ee0;  */
+/* red    : #e3004a;  */
+/* orange-2:#f29400;  */
+/* orange : #ef6d14;  */
+/* yellow : #ffed00;  */
 .scientific {
   font-style: italic; }
 
@@ -159,7 +182,7 @@ button, .button {
     margin: 0;
     padding: 3px;
     height: 26px; }
-  #edit-extended #edit-submit--2 {
+  #edit-extended button[name='op'] {
     position: absolute;
     right: 3rem;
     background-color: #ef6d14;

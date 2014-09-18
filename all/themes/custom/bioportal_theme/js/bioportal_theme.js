@@ -36,52 +36,51 @@
   // SEARCH FORM: hide/show advanced search
   // ---------------------------------------------------------
 
-  if ( $("body").hasClass("front")  ){
-    var $_advanced_search_form = $("#edit-extended");
-    var $_omnibox              = $("#edit-term");
-    var $_submit               = $("#edit-submit");
-    var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
-    var $_bottom_submit        = $("#edit-submit--2");
-    var int_x                  = $_bottom_submit.offset().left;
-    var int_y                  = $_bottom_submit.offset().top;
+  var $_advanced_search_form = $("#edit-extended");
+  var $_omnibox              = $("#edit-term");
+  var $_submit               = $("#edit-submit-top");
+  var $_fieldset_omnisearch  = $(".fieldset-omnisearch");
+  var $_bottom_submit        = $("[name='op']");
+  var int_x                  = $_bottom_submit.offset().left;
+  var int_y                  = $_bottom_submit.offset().top;
 
-    // console.log($_advanced_search_form.length);
-    // console.log($_omnibox             .length);
-    // console.log($_submit              .length);
-    // console.log($_fieldset_omnisearch .length);
-    // console.log($_bottom_submit       .length);
+  // console.log($_advanced_search_form.length);
+  // console.log($_omnibox             .length);
+  // console.log($_submit              .length);
+  // console.log($_fieldset_omnisearch .length);
+  // console.log($_bottom_submit       .length);
 
 
-    // -- search form: hide advanced search
-    $_advanced_search_form.slideUp(0);
+  // -- search form: hide advanced search
+  $_advanced_search_form.slideUp(0);
 
-    // -- search form: add dropdown button to omni-search box
-    $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
+  // -- search form: add dropdown button to omni-search box
+  $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
 
-    // -- search form: behaviour for dropdown button
-    $_omnibox.removeAttr("disabled");
-    $_submit.removeAttr("disabled");
+  // -- search form: behaviour for dropdown button
+  $_omnibox.removeAttr("disabled");
+  $_submit.removeAttr("disabled");
 
-    $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
-      .insertAfter( $_omnibox )
-      .click(function(){
-        $_fieldset_omnisearch.toggleClass("disabled");
-        $_omnibox.toggleAttr("disabled").toggleClass("disabled");
-        $_submit.toggleAttr("disabled").toggleClass("disabled");
-        $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
-        $_bottom_submit.css("opacity","0")
+  $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
+    .insertAfter( $_omnibox )
+    .click(function(){
+      $_fieldset_omnisearch.toggleClass("disabled");
+      $_omnibox.toggleAttr("disabled").toggleClass("disabled");
+      $_submit.toggleAttr("disabled").toggleClass("disabled");
+      $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
+      $_bottom_submit.css("opacity","0")
 
-        $_advanced_search_form
-          .slideToggle(400, function(){
-            int_x = $_bottom_submit.offset().left;
-            int_y = $_bottom_submit.offset().top;
+      $_advanced_search_form
+        .slideToggle(400, function(){
+          int_x = $_bottom_submit.offset().left;
+          int_y = $_bottom_submit.offset().top;
 
-            $(window).trigger('scroll');
+          $(window).trigger('scroll');
 
-            $_bottom_submit.css("opacity","1")
-          });
-      })
-  }
+          $_bottom_submit.css("opacity","1")
+        });
+    })
+
 
     // $(".ndabio-toggle-advanced").trigger("click");
 
@@ -93,27 +92,23 @@
   // SEARCH FORM: prevent submit button from scrolling of the page
   // ---------------------------------------------------------
 
-  //  $_bottom_submit --> see above
+  $(window).scroll(function(){
 
-  if ( $("body").hasClass("front") ){
+      var objectTop = $_bottom_submit.position().top;
+      var objectHeight = $_bottom_submit.outerHeight();
+      var windowScrollTop = $(window).scrollTop();
+      var windowHeight = $(window).height();
 
-    $(window).scroll(function(){
-
-        var objectTop = $_bottom_submit.position().top;
-        var objectHeight = $_bottom_submit.outerHeight();
-        var windowScrollTop = $(window).scrollTop();
-        var windowHeight = $(window).height();
-
-        if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
-          $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
-        } else {
-          $_bottom_submit.removeAttr("style");
-          int_y = $_bottom_submit.offset().top;
-        }
+      if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
+        $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
+      } else {
+        $_bottom_submit.removeAttr("style");
+        int_y = $_bottom_submit.offset().top;
+      }
 
 
-    });
-  }
+  });
+
   // ---------------------------------------------------------
 
 

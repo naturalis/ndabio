@@ -300,7 +300,7 @@ $icon-arrow-right:  "\e613";
         height           : 26px;
       }
 
-      #edit-submit--2{
+      button[name='op']{
         position         : absolute;
         right            : 3rem;
         background-color : $orange;
