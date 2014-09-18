@@ -162,7 +162,7 @@
   function preloader(){
     $_overlay = $("<div id='preloader'></div>")
       .appendTo("body")
-      .css({ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)", position: "absolute", top: 0, left: 0, zIndex: 1000 } );
+      .css({ width: "200px", height: "200px", backgroundColor: "#b2b1a8", borderRadius:"5px", position: "absolute", top: "50%", left: "50%", marginLeft: "-100px", zIndex: 1000 } );
 
     $_canvas = $("<div id='canvas' />")
       .appendTo($_overlay)
@@ -188,15 +188,25 @@
       }
 
     var t=-63;
+    var go_up = true;
+
     window.setInterval(function() {
+      if (go_up ){
+        t += 0.2;
+        if ( t> 0 ) go_up = false;
+      } else {
+        t -= 0.2;
+        if ( t < -63 ) go_up = true;
+      }
+
       for (var n=0; n<63; n++){
         k = t + n;
-        t+= 0.002;
         if (k>0){
           var teta  = k * 2.3998277;
-          var r     = 10 * Math.sqrt(k);
-          var num_x = r * Math.cos(teta);
-          var num_y = r * Math.sin(teta);
+          var omega = n * 2.3998277
+          var r     = Math.round( 7 * Math.sqrt(k) );
+          var num_x = Math.round( r * Math.cos(omega) );
+          var num_y = Math.round(r * Math.sin(omega));
 
           $_kernel[n].css({
             left         : num_x,
@@ -205,7 +215,7 @@
         }
 
       }
-    }, 100);
+    }, 25);
 
 
   }
@@ -227,7 +237,7 @@
       $_me.find("i")
         .toggleClass("icon-triangle-right")
         .toggleClass("icon-triangle-down");
-      
+
       $("[data-parent='"+ str_id +"']")
         .toggleClass("hidden");
 
@@ -236,7 +246,7 @@
 
       return false;
     });
-  
+
   $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
 
 } }; })(jQuery, Drupal);
