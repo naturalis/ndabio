@@ -922,7 +922,6 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
   //$form['#submit'][] = 'ndabio_advanced_taxonomysearch_callback_submit';
-  $form['#submit'][] = 'ndabio_submit';
 
   $form[$sysname]['submit'] = array(
     '#type' => 'submit',
@@ -931,11 +930,10 @@ function ndabio_advanced_taxonomysearch() {
     '#id' => 'edit-submit-bottom'
   );
 
-  return ($form);
-}
+  $form['#action'] = url('nda/pass/test');
 
-function ndabio_submit($form, &$form_state) {
-    $form_state['redirect'] = url('../../nda/pass/test');
+
+  return ($form);
 }
 
 function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
