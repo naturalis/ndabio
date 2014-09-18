@@ -384,6 +384,43 @@ $icon-arrow-right:  "\e613";
         top: -3px;
 
       }
+
+      h2{
+
+      }
+
+      h3{
+        color: $blue;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      h4{
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      h5{
+        font-size: 14px;
+        color: $gray;
+      }
+
+      dl{
+        clear: both;
+      }
+
+      dt{
+        float: left;
+        width: percentage(2/7);
+        font-weight: normal;
+      }
+
+      dd{
+        float: left;
+        width: percentage(4/7);
+        font-weight: bold;
+      }
+
     }
 
     .square-empty{

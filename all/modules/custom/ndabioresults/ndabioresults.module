@@ -446,12 +446,14 @@ function printCommonNames ($data) {
 			$names[$source][$name[$source]] = $lan;
 		}
 		foreach ($names as $source => $t) {
-			$output .= "<h5 class='source'>$source</h5>" .
-				"<dl>";
-			foreach ($t as $name => $lan) {
-				$output .= "<dt>" . t($lan) . "</dt><dd>$name</dd>";
+			$output .=
+        "<h5 class='source'>$source</h5>" .
+				    "<dl>";
+
+      foreach ($t as $name => $lan) {
+				$output .= "<dl><dt>" . t($lan) . "</dt><dd>$name</dd></dl>";
 			}
-			$output .= "</dl>";
+
 		}
 	}
 	return $header . (!empty($output) ? $output : t('No common names available'));
@@ -511,13 +513,12 @@ function printClassifications ($data) {
 	}
 	// Finally we can print the lot...
 	foreach ($printClassifications as $source => $sClassification) {
-		$output .= "<h5 class='source'>$source</h5>" .
-			"<dl class='property-list'>";
+		$output .= "<h5 class='source'>$source</h5>";
+
 		$classification = unserialize($sClassification);
 		foreach ($classification as $rank => $name) {
-			$output .= "<dt>" . t($rank) . "</td><dd>$name</dd>";
+			$output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
 		}
-		$output .= "</dd>";
 	}
 	return $header . (!empty($output) ? $output : t('No classifications available'));
 }

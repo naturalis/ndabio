@@ -232,6 +232,26 @@ html.js fieldset.collapsible .fieldset-legend {
   font-size: 1.2em;
   position: relative;
   top: -3px; }
+.page-nda-pass h3 {
+  color: #009ee0;
+  font-size: 18px;
+  font-weight: bold; }
+.page-nda-pass h4 {
+  font-size: 18px;
+  font-weight: bold; }
+.page-nda-pass h5 {
+  font-size: 14px;
+  color: #b2b1a8; }
+.page-nda-pass dl {
+  clear: both; }
+.page-nda-pass dt {
+  float: left;
+  width: 28.57143%;
+  font-weight: normal; }
+.page-nda-pass dd {
+  float: left;
+  width: 57.14286%;
+  font-weight: bold; }
 
 .square-empty {
   color: #cccccc; }
