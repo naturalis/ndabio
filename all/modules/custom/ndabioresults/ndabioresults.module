@@ -407,17 +407,54 @@ function parseTaxonDetail ($json) {
 
 function printTaxonDetail ($data) {
 	global $language;
-	$output = "<h2>H2" . $data['acceptedName'] . " <span class='populair-name'>" .
+
+  $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>zoekresultaten</a></div>";
+
+  $output .= "<div class='large-7 columns'>";
+
+  $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
 		(isset($data['commonNames'][$language->language]) ?
 			implode(', ', $data['commonNames'][$language->language]) : '') .
 		"</span></h2>";
-	$output .= printNavigation($data) .
+
+
+  $output .=
 		printCommonNames($data) .
 		printDescriptions($data) .
 		printClassifications($data);
-	return $output;
+
+  $output .= "</div>";
+  $output .= "<div class='large-3 columns'>";
+  $output .= printNavigation($data);
+  $output .= "</div>";
+
+
+  return $output;
 }
 
+// function printTaxonDetail ($data) {
+//   global $language;
+//
+//   $output .= "<div class='large-7 columns'>";
+//
+//   $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
+//     (isset($data['commonNames'][$language->language]) ?
+//       implode(', ', $data['commonNames'][$language->language]) : '') .
+//     "</span></h2>";
+//
+//   $output .=
+//      printCommonNames($data)
+//     .printDescriptions($data)
+//     .printClassifications($data);
+//
+//   $output .= "</div>";
+//
+//   $output .= "<div class='large-3 columns'>";
+//   $output .=    printNavigation($data) .
+//   $output .= "</div>";
+//
+//   return $output;
+// }
 
 
 // Transposes common names array and prints common names
