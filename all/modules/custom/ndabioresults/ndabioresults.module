@@ -417,6 +417,7 @@ function printTaxonDetail ($data) {
 			implode(', ', $data['commonNames'][$language->language]) : '') .
 		"</span></h2>";
 
+  $output .= "<h3>Naam, beschrijving, classificatie</h3>";
 
   $output .=
 		printCommonNames($data) .
@@ -425,42 +426,19 @@ function printTaxonDetail ($data) {
 
   $output .= "</div>";
   $output .= "<div class='large-3 columns'>";
-  $output .= printNavigation($data);
+  $output .=    printNavigation($data);
   $output .= "</div>";
-
 
   return $output;
 }
 
-// function printTaxonDetail ($data) {
-//   global $language;
-//
-//   $output .= "<div class='large-7 columns'>";
-//
-//   $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
-//     (isset($data['commonNames'][$language->language]) ?
-//       implode(', ', $data['commonNames'][$language->language]) : '') .
-//     "</span></h2>";
-//
-//   $output .=
-//      printCommonNames($data)
-//     .printDescriptions($data)
-//     .printClassifications($data);
-//
-//   $output .= "</div>";
-//
-//   $output .= "<div class='large-3 columns'>";
-//   $output .=    printNavigation($data) .
-//   $output .= "</div>";
-//
-//   return $output;
-// }
+
 
 
 // Transposes common names array and prints common names
 function printCommonNames ($data) {
 	$output = '';
-	$header = "<h3>" . t('Common names') . "</h3>";
+	$header = "<h4>" . t('Common names') . "</h4>";
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
 		// Transpose first
 		foreach ($data['commonNames'] as $lan => $name) {
@@ -468,12 +446,12 @@ function printCommonNames ($data) {
 			$names[$source][$name[$source]] = $lan;
 		}
 		foreach ($names as $source => $t) {
-			$output .= "<h4 class='source'>$source</h4>" .
-				"<table class='property-list'><tbody>";
+			$output .= "<h5 class='source'>$source</h5>" .
+				"<dl>";
 			foreach ($t as $name => $lan) {
-				$output .= "<tr><td>" . t($lan) . "</td><td>$name</td></tr>";
+				$output .= "<dt>" . t($lan) . "</dt><dd>$name</dd>";
 			}
-			$output .= "</tbody></table>";
+			$output .= "</dl>";
 		}
 	}
 	return $header . (!empty($output) ? $output : t('No common names available'));
@@ -482,7 +460,7 @@ function printCommonNames ($data) {
 function printDescriptions ($data) {
 	global $language;
 	$output = '';
-	$header = "<h3>" . t('Descriptions') . "</h3>";
+	$header = "<h4>" . t('Descriptions') . "</h4>";
 	if (isset($data['descriptions']) && !empty($data['descriptions'])) {
 		// Transpose first
 		foreach ($data['descriptions'] as $lan => $description) {
@@ -503,7 +481,7 @@ function printDescriptions ($data) {
 function printClassifications ($data) {
 	global $language;
 	$output = '';
-	$header = "<h3>" . t('Classifications') . "</h3>";
+	$header = "<h4>" . t('Classifications') . "</h4>";
 	$printClassifications = array();
 	// First merge two separate classification arrays
 	foreach ($data['classifications']['default'] as $source => $classification) {
@@ -533,13 +511,13 @@ function printClassifications ($data) {
 	}
 	// Finally we can print the lot...
 	foreach ($printClassifications as $source => $sClassification) {
-		$output .= "<h4 class='source'>$source</h4>" .
-			"<table class='property-list'><tbody>";
+		$output .= "<h5 class='source'>$source</h5>" .
+			"<dl class='property-list'>";
 		$classification = unserialize($sClassification);
 		foreach ($classification as $rank => $name) {
-			$output .= "<tr><td>" . t($rank) . "</td><td>$name</td></tr>";
+			$output .= "<dt>" . t($rank) . "</td><dd>$name</dd>";
 		}
-		$output .= "</tbody></table>";
+		$output .= "</dd>";
 	}
 	return $header . (!empty($output) ? $output : t('No classifications available'));
 }
