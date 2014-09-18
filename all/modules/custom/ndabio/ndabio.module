@@ -817,6 +817,7 @@ function ndabio_advanced_taxonomysearch() {
     if ($children) {
       $form[$sysname] = array(
         '#type' => 'fieldset',
+        '#id' => "edit-$sysname"
         //'#title' => $label,
       );
 
@@ -853,7 +854,8 @@ function ndabio_advanced_taxonomysearch() {
                   '#type'            => 'fieldset',
                   '#title'           => t("More"),
                   '#collapsible'     => TRUE,
-                  '#collapsed'       => TRUE
+                  '#collapsed'       => TRUE,
+                  '#attributes'    =>  array( 'collapsed' => "true", 'collapsible' => 'true' )
                 );
 
                 //put all children in group
@@ -864,7 +866,6 @@ function ndabio_advanced_taxonomysearch() {
                     '#default_value' => '',
                     '#required'      =>  FALSE,
                     '#inline'        =>  TRUE,
-                    '#attributes'    =>  array( 'data-clear' => "" )
                   );
                 }
               }
@@ -907,14 +908,16 @@ function ndabio_advanced_taxonomysearch() {
         '#default_value' => '',
         '#required' => FALSE,
         '#title_display' => 'invisible',
-        '#nowrapper' => TRUE
+        '#nowrapper' => TRUE,
+        '#id' => "edit-term"
        );
 
       $form[$sysname]['omnisearch']['submit'] = array(
         '#type' => 'submit',
         '#value' => t('Search'),
         '#nowrapper' => TRUE,
-        '#attributes' => array( 'class' => array('postfix'))
+        '#attributes' => array( 'class' => array('postfix')),
+        '#id' => 'edit-submit-top'
       );
     }
   }
