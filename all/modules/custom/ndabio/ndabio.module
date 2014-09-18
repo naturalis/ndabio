@@ -829,7 +829,7 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => $childlabel,
-            strtolower($childsysname[0]) . '_searchtype' => array(
+            strtolower($childsysname[0]) . '_andOr' => array(
               '#type' => 'radios',
               '#title' => t('Combine searchterms'),
               '#default_value' => 0,
