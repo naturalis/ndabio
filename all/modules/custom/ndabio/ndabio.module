@@ -351,32 +351,33 @@ function _ndabio_return_taxonomy(){
 
 function _ndabio_return_taxonomy(){
   return array(
-    'omnisearch' => 'Registration number',
+    'omnisearch' => 'term',
     'extended' => array(
       'Multimedia' => array(
-        'unitID' => "Unit",
+        'unitID' => "Registration number",
         'vernacularName' => 'Vernacular name',
+        'family' => 'Family',
         'genusOrMonomial' => 'Genus or monomial',
         'speciesEpithet' => 'Species epithet',
+        'typeStatus' => 'Type status',
         'localityText' => 'Locality text',
       '--more--' => array(
             'kingdom' => 'Kingdom',
             'phylum' => 'Phylum',
             'className' => 'Class',
             'order' => 'Order',
-            'family' => 'Family',
             'subspeciesEpithet' => 'Subspecies epithet',
-            'typeStatus' => 'Type status',
             'phaseOrStage' => 'Phase or stage',
             'sex' => 'Sex',
+            'collectionFieldNumber' => 'Collection field number',
+        ),
+        '--hide--' => array(
             'gatheringAgent' => 'Collector',
             'collectingStartDate' => 'Collecting start date',
-            'collectionFieldNumber' => 'Collection field number',
             'expert' => 'Expert name',
             'expertOrganisation' => 'Expert organisation',
             'taxonomicStatus' => 'Taxonomic status',
-        ),
-        '--hide--' => array(
+            'subgenus' => 'subgenus',
             'chronostratigraphicAttributiontTypeYoung' => "Youngest chronostratigraphic name",
             'chronostratigraphicAttributiontTypeOld' => "Oldest chronostratigraphic name",
             'lithostratigraphicAttributionType' => "First lithostratigraphic name",
@@ -387,12 +388,10 @@ function _ndabio_return_taxonomy(){
       ),
       'Collection specimens' => array(
         'unitID' => 'Registration number',
-        'className' => 'Class',
-        'order' => 'Order',
+        'vernacularName' => 'Vernacular name',
         'family' => 'Family',
         'genusOrMonomial' => 'Genus or monomial',
         'speciesEpithet' => 'Species epithet',
-        'subspeciesEpithet' => 'Subspecies epithet',
         'typeStatus' => 'Type status',
         'localityText' => 'Locality text',
         'phaseOrStage' => 'Phase or stage',
@@ -409,22 +408,26 @@ function _ndabio_return_taxonomy(){
         '--more--' => array(
             'kingdom' => 'Kingdom',
             'phylum' => 'Phylum',
+            'className' => 'Class',
+            'order' => 'Order',
+            'subspeciesEpithet' => 'Subspecies epithet',
             'gatheringAgent' => 'Collector',
             'collectingStartDate' => 'Collecting start date',
             'collectionFieldNumber' => 'Collection field number',
         )
       ),
-      'Species'  => array(
+      'Taxa'  => array(
         'vernacularName' => 'Vernacular name',
-        'kingdom' => 'Kingdom',
-        'phylum' => 'Phylum',
-        'className' => 'Class',
         'family' => 'Family',
         'genusOrMonomial' => 'Genus or monomial',
-        'subgenus' => 'Subgenus',
         'speciesEpithet' => 'Species epithet',
         'subspeciesEpithet' => 'Subspecies epithet',
         '--more--' => array(
+            'kingdom' => 'Kingdom',
+            'phylum' => 'Phylum',
+            'className' => 'Class',
+            'order' => 'Order',
+            'subgenus' => 'Subgenus',
             'expert' => 'Expert name',
             'expertOrganisation' => 'Expert organisation',
             'taxonomicStatus' => 'Taxonomic status',
@@ -641,7 +644,7 @@ function ndabio_postjson($keys = '') {
 
 
 /**
-* Get a JOSN string.
+* Get a JSON string.
 */
 function ndabio_getjson($url = '') {
   $service_url = $url;
@@ -826,7 +829,7 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => $childlabel,
-            'searchtype' => array(
+            strtolower($childsysname[0]) . '_searchtype' => array(
               '#type' => 'radios',
               '#title' => t('Combine searchterms'),
               '#default_value' => 0,
