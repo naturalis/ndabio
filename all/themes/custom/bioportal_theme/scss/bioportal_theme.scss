@@ -400,25 +400,37 @@ $icon-arrow-right:  "\e613";
         font-weight: bold;
       }
 
-      h5{
+      h5.source{
         font-size: 14px;
         color: $gray;
+        margin-top: 1em;
+        clear: both;
+
+      }
+
+      .definition-list{
+        margin-bottom: 3em;
+        display: table;
       }
 
       dl{
         clear: both;
+        display: table-row;
       }
 
       dt{
-        float: left;
-        width: percentage(2/7);
+        // float: left;
+        // width: percentage(2/7);
         font-weight: normal;
+        display: table-cell;
+        padding-right: 3em;
       }
 
       dd{
-        float: left;
-        width: percentage(4/7);
+        // float: left;
+        // width: percentage(4/7);
         font-weight: bold;
+        display: table-cell;
       }
 
     }

@@ -239,19 +239,24 @@ html.js fieldset.collapsible .fieldset-legend {
 .page-nda-pass h4 {
   font-size: 18px;
   font-weight: bold; }
-.page-nda-pass h5 {
+.page-nda-pass h5.source {
   font-size: 14px;
-  color: #b2b1a8; }
-.page-nda-pass dl {
+  color: #b2b1a8;
+  margin-top: 1em;
   clear: both; }
+.page-nda-pass .definition-list {
+  margin-bottom: 3em;
+  display: table; }
+.page-nda-pass dl {
+  clear: both;
+  display: table-row; }
 .page-nda-pass dt {
-  float: left;
-  width: 28.57143%;
-  font-weight: normal; }
+  font-weight: normal;
+  display: table-cell;
+  padding-right: 3em; }
 .page-nda-pass dd {
-  float: left;
-  width: 57.14286%;
-  font-weight: bold; }
+  font-weight: bold;
+  display: table-cell; }
 
 .square-empty {
   color: #cccccc; }

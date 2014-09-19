@@ -445,17 +445,22 @@ function printCommonNames ($data) {
 			$source = key($name);
 			$names[$source][$name[$source]] = $lan;
 		}
-		foreach ($names as $source => $t) {
-			$output .=
-        "<h5 class='source'>$source</h5>" .
-				    "<dl>";
+
+    foreach ($names as $source => $t) {
+			$output .= "<h5 class='source'>$source</h5>";
+			$output	.= "<section class='definition-list'>";
 
       foreach ($t as $name => $lan) {
 				$output .= "<dl><dt>" . t($lan) . "</dt><dd>$name</dd></dl>";
 			}
 
+      $output .= "</section>";
+
 		}
 	}
+
+  $output = _markUp($output);
+
 	return $header . (!empty($output) ? $output : t('No common names available'));
 }
 
@@ -514,12 +519,19 @@ function printClassifications ($data) {
 	// Finally we can print the lot...
 	foreach ($printClassifications as $source => $sClassification) {
 		$output .= "<h5 class='source'>$source</h5>";
+		$output .= "<section class='definition-list'>";
+
 
 		$classification = unserialize($sClassification);
 		foreach ($classification as $rank => $name) {
 			$output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
 		}
+
+    $output .= "</section>";
 	}
+
+  $output = _markUp($output);
+
 	return $header . (!empty($output) ? $output : t('No classifications available'));
 }
 
@@ -1346,14 +1358,14 @@ function _markUp($string){
   $result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
 
   $result = str_replace(
-    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'"),
-    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' "),
+    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'","<h"    , "<dl"  ,    "<section"),
+    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' ", "\n\n<h","\n\t<dl", "\n<section"),
     $result
   );
 
   $result = str_replace(
-    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>"),
-    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>"),
+    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>",   "</section>"),
+    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>","\n</section>"),
     $result
   );
 
