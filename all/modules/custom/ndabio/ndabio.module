@@ -824,13 +824,14 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
+        $fieldsetPrefix = strtolower(substr(end(explode(" ", $childsysname)), 0, 1));
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren) {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => $childlabel,
-            strtolower($childsysname[0]) . '_andOr' => array(
+            $fieldsetPrefix . '_andOr' => array(
               '#type' => 'radios',
               '#title' => t('Combine searchterms'),
               '#default_value' => 0,
