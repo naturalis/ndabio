@@ -77,21 +77,20 @@ function ndabioresults_config_form($form, &$form_state) {
 
 function ndabioresults_pass ($args = "") {
     // Do we have POST data? If so, add to SESSION or replace existing SESSION data
-    if (!empty($_POST) && isset($_POST['form_id']) &&
-        $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
+    if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
     }
     // If both POST and SESSION are empty we have a problem...
-    if (!isset($_SESSION['ndaSearch'])) {
+    if (!isset($_SESSION['ndaSearch']) || empty($_SESSION['ndaSearch'])) {
         // Probably best to redirect gracefully to search page?
-        $m = 'No POST data received!';
+        handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
     }
     // Redirect to distinct services
     empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 
     // This line returns mock data
     // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
-    return (isset($m) ? $m : '') . DUMMYperformNdaRequest('all');
+    return DUMMYperformNdaRequest('all');
 }
 
 
@@ -263,7 +262,7 @@ function setChannels (array $services) {
 		    $i++;
 	    }
 	}
-	return $channels;
+	return isset($channels) ? $channels : array();
 }
 
 function setParameters ($p) {
