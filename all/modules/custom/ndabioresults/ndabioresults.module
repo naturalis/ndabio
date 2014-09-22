@@ -18,15 +18,13 @@ function gettaxonomyidbysystem($systemname) {
   $sql = "SELECT entity_id FROM {field_data_field_ndasystem} WHERE field_ndasystem_value = '$systemname'";
   return db_query($sql)->fetchField();
 }
+
 function gettaxonomybysystem($systemname) {
   //$sql = "SELECT description FROM {taxonomy_term_data} WHERE tid = " . gettaxonomyidbysystem($systemname) . "";
   $sql = "SELECT description FROM {taxonomy_term_data} WHERE name = '$systemname'";
   return t(db_query($sql)->fetchField());
 }
 
-/**
-* Implements hook_menu().
-*/
 function ndabioresults_menu() {
   global $language;
 
@@ -53,11 +51,9 @@ function ndabioresults_menu() {
   return $items;
 }
 
-/*
- *
- */
-function ndabioresults_pass($args = "") {
-   return performNdaRequest('taxonDetail');
+function ndabioresults_page_callback() {
+  global $base_root, $base_path;
+  return t('Copyright') . ' ' . date("Y") . ' <a href="' . variable_get('ndabioresults_copyright_url', $base_root . $base_path) . '">Naturalis</a>';
 }
 
 function ndabioresults_config_form($form, &$form_state) {
@@ -65,50 +61,141 @@ function ndabioresults_config_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Naturalis config')
   );
-
   return system_settings_form($form);
 }
 
-/**
-*
-*/
-function ndabioresults_page_callback() {
-  global $base_root, $base_path;
-  return t('Copyright') . ' ' . date("Y") . ' <a href="' . variable_get('ndabioresults_copyright_url', $base_root . $base_path) . '">Naturalis</a>';
+
+
+
+
+
+
+
+// This is the main function that actually processes the incoming POST data
+// For the time being it just prints the appropriate NDA request urls on screen
+// plus displays mock data using DUMMYperformNdaRequest()
+
+function ndabioresults_pass ($args = "") {
+    // Do we have POST data? If so, add to SESSION or replace existing SESSION data
+    if (!empty($_POST) && isset($_POST['form_id']) &&
+        $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        $_SESSION['ndaSearch'] = $_POST;
+    }
+    // If both POST and SESSION are empty we have a problem...
+    if (!isset($_SESSION['ndaSearch'])) {
+        // Probably best to redirect gracefully to search page?
+        $m = 'No POST data received!';
+    }
+    // Redirect to distinct services
+    empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+
+    // This line returns mock data
+    // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
+    return (isset($m) ? $m : '') . DUMMYperformNdaRequest('all');
 }
 
 
-/**
-* DEFINE CUSTOM BLOCKS
-*/
+function ndaAdvancedSearch () {
+    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    // Subdivide specimen parameters for both result types
+    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+    return performNdaRequest(setChannels($services));
+
+//    drupal_set_message('<pre>' . print_r($specimenParameters, true) . '</pre>');
+//    return;
+}
+
+function ndaSimpleSearch () {
+    $p = array(
+        '_search' => $_SESSION['ndaSearch']['term']
+    );
+    $services = array(
+        specimenService() => $p,
+        specimenNamesService() => $p,
+        taxonService() => $p,
+        multimediaService() => $p
+    );
+    return performNdaRequest(setChannels($services));
+}
 
 
 
-/**
-* DEFINE CRON JOB
-*/
 
-
-
-/**
-*
-*/
 
 // Drupal constants
-function mapNdaRequests() {
+
+// TODO: Probably should be config setting?
+function ndaBaseUrl() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = array(
-        	'all' => 'group-taxa-by-name.json|groupSpecimenBySpecificName.json|getSpecimensForOtherSearchTerms.json|getMediaObjects.json',
-        	'taxa' => 'group-taxa-by-name.json',
-        	'specimensByTaxon' => 'groupSpecimenBySpecificName.json',
-        	'specimens' => 'groupSpecimenBySpecificName.json',
-        	'multimedia' => 'getMediaObjects.json',
-        	'taxonDetail' => 'taxon-detail.json',
-        	'specimenDetail' => 'specimen-detail.json',
-        	'taxonMediaDetail' => 'taxon-media-detail.json',
-        	'specimenMediaDetail' => 'specimen-media-detail.json'
-        );
+         $var = 'http://nba.naturalis.nl/';
+    }
+    return $var;
+}
+
+function specimenService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'specimen-search';
+    }
+    return $var;
+}
+
+function specimenNamesService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'specimen-name-search';
+    }
+    return $var;
+}
+
+function specimenDetailService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'get-specimen-detail';
+    }
+    return $var;
+}
+
+function specimenMultimediaService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'get-specimen-multimedia-object-detail-within-result-set';
+    }
+    return $var;
+}
+
+function taxonService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'taxon-search';
+    }
+    return $var;
+}
+
+function taxonDetailService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'get-taxon-detail';
+    }
+    return $var;
+}
+
+function taxonMultimediaService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'get-taxon-multimedia-object-detail-within-result-set';
+    }
+    return $var;
+}
+
+function multimediaService() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'multimedia-object-search';
     }
     return $var;
 }
@@ -117,10 +204,10 @@ function resultOrder() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
-        	'getMediaObjects.json',
-        	'group-taxa-by-name.json',
-        	'groupSpecimenBySpecificName.json',
-        	'getSpecimensForOtherSearchTerms.json'
+        	multimediaService(),
+        	taxonService(),
+        	specimenNamesService(),
+        	specimenService()
         );
     }
     return $var;
@@ -130,35 +217,35 @@ function serviceToFunctions() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
-        	'group-taxa-by-name.json' => array(
+        	taxonService() => array(
         		'parse' => 'parseTaxa',
         		'print' => 'printTaxa'
         	),
-        	'groupSpecimenBySpecificName.json' => array(
+        	specimenNamesService() => array(
         		'parse' => 'parseSpecimensByTaxon',
         		'print' => 'printSpecimensByTaxon'
         	),
-        	'getMediaObjects.json' => array(
+        	multimediaService() => array(
         		'parse' => 'parseMultimedia',
         		'print' => 'printMultimedia'
         	),
-        	'getSpecimensForOtherSearchTerms.json' => array(
+        	specimenService() => array(
         		'parse' => 'parseSpecimens',
         		'print' => 'printSpecimens'
         	),
-        	'specimen-detail.json' => array(
+        	specimenDetailService() => array(
         		'parse' => 'parseSpecimenDetail',
         		'print' => 'printSpecimenDetail'
         	),
-        	'taxon-detail.json' => array(
+        	taxonDetailService() => array(
         		'parse' => 'parseTaxonDetail',
         		'print' => 'printTaxonDetail'
         	),
-        	'taxon-media-detail.json' => array(
+        	taxonMultimediaService() => array(
         		'parse' => 'parseTaxonMediaDetail',
         		'print' => 'printTaxonMediaDetail'
         	),
-        	'specimen-media-detail.json' => array(
+        	specimenMultimediaService() => array(
         		'parse' => 'parseSpecimenMediaDetail',
         		'print' => 'printSpecimenMediaDetail'
         	)
@@ -167,10 +254,93 @@ function serviceToFunctions() {
     return $var;
 }
 
-function performNdaRequest ($request = false) {
-    $serviceToFunctions = serviceToFunctions();
-	// Translate request url to curl channels
-	$channels = setChannels($request);
+function setChannels (array $services) {
+    $i = 0;
+	foreach ($services as $s => $p) {
+	    if (!empty($p)) {
+    		$channels[$i]['request'] = $s;
+    		$channels[$i]['url'] = ndaBaseUrl() . $s . setParameters($p);
+		    $i++;
+	    }
+	}
+	return $channels;
+}
+
+function setParameters ($p) {
+    $url = '';
+    foreach (array_filter($p, 'strlen') as $k => $v) {
+        $url .= $k . '=' . urlencode($v) . '&';
+    }
+    return '?' . rtrim($url, '&');
+}
+
+// Filters input parameters from advanced search
+// $typeId is the prefix in the form (_s, _t, _m)
+function setSectionParameters (array $post, $typeId = '') {
+    if ($typeId == '') {
+        return $post;
+    }
+    $d = array();
+    foreach ($post as $k => $v) {
+        if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
+            $d[str_replace($typeId, '', $k)] = $v;
+        }
+    }
+    // Reset andOr parameter to _andOr and values to and/or
+    if (count($d) > 1) {
+         $d['_andOr'] = $d['andOr'] == 0 ? 'and' : 'or';
+         unset($d['andOr']);
+         return $d;
+    }
+    // If only andOr flag is set, nothing has been entered;
+    // return empty array
+    return array();
+}
+
+// Separates between specimen and specimen-name
+// The list of parameters should be complete!
+function setSpecimenParameters (array $sP, $type) {
+    $parameters = array(
+        specimenService() => array(
+            'collectingStartDate',
+            'collectionFieldNumber',
+            'gatheringAgent',
+            'localityText',
+            'phaseOrStage',
+            'unitID',
+            'sex',
+            'taxonomicStatus',
+            'typeStatus',
+
+        ),
+        specimenNamesService() => array(
+            'className',
+            'family',
+            'genusOrMonomial',
+            'kingdom',
+            'order',
+            'phylum',
+            'speciesEpithet',
+            'subspeciesEpithet',
+            'vernacularName'
+        )
+    );
+    foreach ($parameters[$type] as $p) {
+        if (isset($sP[$p]) && (!empty($sP[$p]) || is_numeric($sP[$p]))) {
+            $d[$p] = $sP[$p];
+        }
+    }
+    if (isset($d)) {
+        $d['_andOr'] = $sP['_andOr'];
+    }
+    return isset($d) ? $d : null;
+}
+
+function performNdaRequest (array $channels) {
+    // As long as the NDA services are inoperable, just return the channels
+    drupal_set_message('<pre>' . print_r($channels, true) . '</pre>');
+    return;
+
 	if (empty($channels)) {
 		handleError('Cannot set curl channels');
 	}
@@ -183,6 +353,7 @@ function performNdaRequest ($request = false) {
 	// Map functions to each channel result:
 	// parses and prints data
 	$output = '';
+    $serviceToFunctions = serviceToFunctions();
 	foreach ($remoteData as $service => $json) {
 		if (!isset($serviceToFunctions[$service]) || empty($json)) {
 			continue;
@@ -194,19 +365,6 @@ function performNdaRequest ($request = false) {
 	return $output;
 }
 
-
-function setChannels ($request = false) {
-	$mapNdaRequests = mapNdaRequests();
-	if (!$request || !isset($mapNdaRequests[$request])) {
-		return false;
-	}
-	$t = explode('|', $mapNdaRequests[$request]);
-	foreach ($t as $i => $url) {
-		$channels[$i]['request'] = $url;
-		$channels[$i]['url'] = 'http://dev2.etibioinformatics.nl/nda/' . $url;
-	}
-	return $channels;
-}
 
 function queryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
@@ -417,7 +575,6 @@ function printTaxonDetail ($data) {
 			implode(', ', $data['commonNames'][$language->language]) : '') .
 		"</span></h2>";
 
-  $output .= "<h3>Naam, beschrijving, classificatie</h3>";
 
   $output .=
 		printCommonNames($data) .
@@ -426,48 +583,64 @@ function printTaxonDetail ($data) {
 
   $output .= "</div>";
   $output .= "<div class='large-3 columns'>";
-  $output .=    printNavigation($data);
+  $output .= printNavigation($data);
   $output .= "</div>";
+
 
   return $output;
 }
 
-
+// function printTaxonDetail ($data) {
+//   global $language;
+//
+//   $output .= "<div class='large-7 columns'>";
+//
+//   $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
+//     (isset($data['commonNames'][$language->language]) ?
+//       implode(', ', $data['commonNames'][$language->language]) : '') .
+//     "</span></h2>";
+//
+//   $output .=
+//      printCommonNames($data)
+//     .printDescriptions($data)
+//     .printClassifications($data);
+//
+//   $output .= "</div>";
+//
+//   $output .= "<div class='large-3 columns'>";
+//   $output .=    printNavigation($data) .
+//   $output .= "</div>";
+//
+//   return $output;
+// }
 
 
 // Transposes common names array and prints common names
 function printCommonNames ($data) {
 	$output = '';
-	$header = "<h4>" . t('Common names') . "</h4>";
+	$header = "<h3>" . t('Common names') . "</h3>";
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
 		// Transpose first
 		foreach ($data['commonNames'] as $lan => $name) {
 			$source = key($name);
 			$names[$source][$name[$source]] = $lan;
 		}
-
-    foreach ($names as $source => $t) {
-			$output .= "<h5 class='source'>$source</h5>";
-			$output	.= "<section class='definition-list'>";
-
-      foreach ($t as $name => $lan) {
-				$output .= "<dl><dt>" . t($lan) . "</dt><dd>$name</dd></dl>";
+		foreach ($names as $source => $t) {
+			$output .= "<h4 class='source'>$source</h4>" .
+				"<table class='property-list'><tbody>";
+			foreach ($t as $name => $lan) {
+				$output .= "<tr><td>" . t($lan) . "</td><td>$name</td></tr>";
 			}
-
-      $output .= "</section>";
-
+			$output .= "</tbody></table>";
 		}
 	}
-
-  $output = _markUp($output);
-
 	return $header . (!empty($output) ? $output : t('No common names available'));
 }
 
 function printDescriptions ($data) {
 	global $language;
 	$output = '';
-	$header = "<h4>" . t('Descriptions') . "</h4>";
+	$header = "<h3>" . t('Descriptions') . "</h3>";
 	if (isset($data['descriptions']) && !empty($data['descriptions'])) {
 		// Transpose first
 		foreach ($data['descriptions'] as $lan => $description) {
@@ -488,7 +661,7 @@ function printDescriptions ($data) {
 function printClassifications ($data) {
 	global $language;
 	$output = '';
-	$header = "<h4>" . t('Classifications') . "</h4>";
+	$header = "<h3>" . t('Classifications') . "</h3>";
 	$printClassifications = array();
 	// First merge two separate classification arrays
 	foreach ($data['classifications']['default'] as $source => $classification) {
@@ -518,20 +691,14 @@ function printClassifications ($data) {
 	}
 	// Finally we can print the lot...
 	foreach ($printClassifications as $source => $sClassification) {
-		$output .= "<h5 class='source'>$source</h5>";
-		$output .= "<section class='definition-list'>";
-
-
+		$output .= "<h4 class='source'>$source</h4>" .
+			"<table class='property-list'><tbody>";
 		$classification = unserialize($sClassification);
 		foreach ($classification as $rank => $name) {
-			$output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
+			$output .= "<tr><td>" . t($rank) . "</td><td>$name</td></tr>";
 		}
-
-    $output .= "</section>";
+		$output .= "</tbody></table>";
 	}
-
-  $output = _markUp($output);
-
 	return $header . (!empty($output) ? $output : t('No classifications available'));
 }
 
@@ -1358,16 +1525,176 @@ function _markUp($string){
   $result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
 
   $result = str_replace(
-    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'","<h"    , "<dl"  ,    "<section"),
-    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' ", "\n\n<h","\n\t<dl", "\n<section"),
+    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'"),
+    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' "),
     $result
   );
 
   $result = str_replace(
-    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>",   "</section>"),
-    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>","\n</section>"),
+    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>"),
+    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>"),
     $result
   );
 
   return $result;
 }
+
+
+
+
+
+
+/*
+ * DUMMY functions to print mock data on screen. Please keep this at the bottom of this document
+ * so these can removed easily once markup has been completed and NDA services run properly
+ */
+function DUMMYmapNdaRequests() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'all' => 'group-taxa-by-name.json|groupSpecimenBySpecificName.json|getSpecimensForOtherSearchTerms.json|getMediaObjects.json',
+        	'taxa' => 'group-taxa-by-name.json',
+        	'specimensByTaxon' => 'groupSpecimenBySpecificName.json',
+        	'specimens' => 'groupSpecimenBySpecificName.json',
+        	'multimedia' => 'getMediaObjects.json',
+        	'taxonDetail' => 'taxon-detail.json',
+        	'specimenDetail' => 'specimen-detail.json',
+        	'taxonMediaDetail' => 'taxon-media-detail.json',
+        	'specimenMediaDetail' => 'specimen-media-detail.json'
+        );
+    }
+    return $var;
+}
+
+function DUMMYresultOrder() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'getMediaObjects.json',
+        	'group-taxa-by-name.json',
+        	'groupSpecimenBySpecificName.json',
+        	'getSpecimensForOtherSearchTerms.json'
+        );
+    }
+    return $var;
+}
+
+function DUMMYserviceToFunctions() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'group-taxa-by-name.json' => array(
+        		'parse' => 'parseTaxa',
+        		'print' => 'printTaxa'
+        	),
+        	'groupSpecimenBySpecificName.json' => array(
+        		'parse' => 'parseSpecimensByTaxon',
+        		'print' => 'printSpecimensByTaxon'
+        	),
+        	'getMediaObjects.json' => array(
+        		'parse' => 'parseMultimedia',
+        		'print' => 'printMultimedia'
+        	),
+        	'getSpecimensForOtherSearchTerms.json' => array(
+        		'parse' => 'parseSpecimens',
+        		'print' => 'printSpecimens'
+        	),
+        	'specimen-detail.json' => array(
+        		'parse' => 'parseSpecimenDetail',
+        		'print' => 'printSpecimenDetail'
+        	),
+        	'taxon-detail.json' => array(
+        		'parse' => 'parseTaxonDetail',
+        		'print' => 'printTaxonDetail'
+        	),
+        	'taxon-media-detail.json' => array(
+        		'parse' => 'parseTaxonMediaDetail',
+        		'print' => 'printTaxonMediaDetail'
+        	),
+        	'specimen-media-detail.json' => array(
+        		'parse' => 'parseSpecimenMediaDetail',
+        		'print' => 'printSpecimenMediaDetail'
+        	)
+        );
+    }
+    return $var;
+}
+
+function DUMMYperformNdaRequest ($request = false) {
+    $serviceToFunctions = DUMMYserviceToFunctions();
+	// Translate request url to curl channels
+	$channels = DUMMYsetChannels($request);
+	if (empty($channels)) {
+		handleError('Cannot set curl channels');
+	}
+	// Get json response(s) with curl
+	$remoteData = DUMMYqueryNda($channels);
+	// Reorder responses in print order if more than one response
+	if (count($remoteData) > 1) {
+	   $remoteData = sortArrayByArray($remoteData, DUMMYresultOrder());
+	}
+	// Map functions to each channel result:
+	// parses and prints data
+	$output = '';
+	foreach ($remoteData as $service => $json) {
+		if (!isset($serviceToFunctions[$service]) || empty($json)) {
+			continue;
+		}
+		$parseFunction = $serviceToFunctions[$service]['parse'];
+		$printFunction = $serviceToFunctions[$service]['print'];
+		$output .= $printFunction($parseFunction($json));
+	}
+	return $output;
+}
+
+
+function DUMMYsetChannels ($request = false) {
+	$mapNdaRequests = DUMMYmapNdaRequests();
+	if (!$request || !isset($mapNdaRequests[$request])) {
+		return false;
+	}
+	$t = explode('|', $mapNdaRequests[$request]);
+	foreach ($t as $i => $url) {
+		$channels[$i]['request'] = $url;
+		$channels[$i]['url'] = 'http://dev2.etibioinformatics.nl/nda/' . $url;
+	}
+	return $channels;
+}
+
+function DUMMYqueryNda ($channels = array(), $timeout = false) {
+    $mh = curl_multi_init();
+    for ($i = 0; $i < count($channels); $i++) {
+        $ch[$i] = curl_init();
+        curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+        curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch[$i], CURLOPT_HEADER, false);
+        if ($timeout) {
+       		curl_setopt($ch[$i], CURLOPT_TIMEOUT, $timeout);
+        }
+        curl_multi_add_handle($mh, $ch[$i]);
+    }
+    // While we're still active, execute curl
+	do {
+		$mrc = curl_multi_exec($mh, $active);
+	} while ($mrc == CURLM_CALL_MULTI_PERFORM);
+
+    while ($active && $mrc == CURLM_OK) {
+        // Wait for activity on any curl-connection
+        if (curl_multi_select($mh) == -1) {
+            usleep(1);
+        }
+        // Continue to exec until curl is ready to
+        // give us more data
+        do {
+            $mrc = curl_multi_exec($mh, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+    }
+    // Place results in results array and close handlers
+    for ($i = 0; $i < count($channels); $i++) {
+        $remoteData[$channels[$i]['request']] = curl_multi_getcontent($ch[$i]);
+        curl_multi_remove_handle($mh, $ch[$i]);
+    }
+    curl_multi_close($mh);
+    return $remoteData;
+}
+
