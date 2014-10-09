@@ -6,12 +6,18 @@
  */
 
 /**
- * Defaults.
+ * Default values for module configuration. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
-define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
 define('NDABIO_JSONPOST', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
+define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
+
+/**
+ * Advanced search used a drupal taxonomy. This is the systemname of the taxonomy used for
+ * building the advances search form.
+ */
 define('NDABIO_SEARCHTAXONOMY', 'search');
 
 /**
@@ -29,16 +35,6 @@ function ndabio_menu() {
     'page arguments' => array('ndabio_config_form'),
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
-  );
-  $items['naturalis'] = array(
-    'page callback' => 'ndabio_naturalis_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['naturalis/ajax'] = array(
-    'page callback' => 'ndabio_ajax_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
   );
 
   $items['search/geosearch'] = array(
@@ -58,6 +54,7 @@ function ndabio_menu() {
     'page arguments' => array(2, 3),
     'access arguments' => array('access content'),
   );
+  //Currently used as front page
   $items['search/advancednda'] = array(
     'page callback' => 'ndabio_displayform',
     'access arguments' => array('access content'),
@@ -82,39 +79,6 @@ function ndabio_menu() {
   );
 
   return $items;
-}
-
-/**
- * Output overview page.
- */
-function ndabio_naturalis_callback() {
-  $page = "<a href='/search/species'>Search species</a><br />";
-  $page .= "<a href='/search/other'>Search other</a><br />";
-  $page .= "<a href='/specific/species'>Specific species</a><br />";
-  $page .= "<a href='/specific/other'>Specific other</a><br />";
-  $page .= "<a href='/detail/species'>Detail species</a><br />";
-  $page .= "<a href='/detail/other'>Detail other</a><br />";
-  $page .= "<a href='/download/species'>Download species</a><br />";
-  $page .= "<a href='/download/other'>Download other</a><br />";
-  $page .= "<br /><br /><br /><a href='/taxonomy/create'>Create taxonomy</a><br />";
-  $page .= "<a href='/taxonomy/remove'>Remove taxonomy</a><br />";
-  return $page;
-}
-
-/**
- * Output detail page.
- */
-function ndabio_ajax_callback() {
-  $geonode = (int)$_GET["nid"];
-
-  $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
-
-  $row = db_query($sql)->fetchObject();
-
-  if($row) {
-    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
-  }
-  die();
 }
 
 
@@ -278,9 +242,9 @@ function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
 
 
 /**
- *
+ * Define the initial taxonomy used for buiding the advanced search form.
  */
-function _ndabio_return_taxonomy(){
+function _ndabio_return_taxonomy() {
   return array(
     'omnisearch' => 'term',
     'extended' => array(
@@ -475,7 +439,7 @@ function ndabio_ndasearchform_callback_validate($form, &$form_state) {
  * Execute search
  */
 function ndabio_ndasearchform_callback_submit($form, &$form_state) {
-  //drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
+  drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
   //Build search query
   $searchterms = "species=test"; // . $form['ndabio_advsearch']['ndabio_advsearch_species']['#value'] . ";" .
     //"taxon=" . $form['ndabio_advsearch']['ndabio_advsearch_taxon']['#value'] . ";" .
@@ -497,34 +461,45 @@ function ndabio_geosearch_callback() {
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
   $myform = ndabio_advanced_taxonomysearch();
-  $myform['map'] = array(
+/*  $myform['map'] = array(
     '#type' => 'textfield',
-    '#title' => "<div id='map-canvas'></div><div id='areas'><form name='geoform' action='/search/ndapass' method='get'>
-    <button onclick='postShape();'>Post geometry</button><input name='geometry' id='geometry' type='hidden' value='0' />
-	  <input type='submit' value='Zoeken' /></form></div>",
+    '#title' => 'Geographic search',
     '#default_value' => '',
     '#required' => FALSE,
     '#title_display' => 'invisible',
     '#nowrapper' => TRUE
-  );
-    $myform['gmap'] = array(
-      '#type' => 'gmap',
-      '#map' => 'gmap',
-      '#settings' => array(
-        'zoom' => 1,
-        'id' => 'gmapx',
-        'behavior' => array(
-          'geocode_leave_marker' => TRUE,
-        ),
+  );*/
+  $myform['gmap'] = array(
+    '#type' => 'gmap',
+    '#map' => 'gmap',
+    '#settings' => array(
+      'zoom' => 1,
+      'id' => 'gmapx',
+      'behavior' => array(
+        'geocode_leave_marker' => TRUE,
       ),
-    );
-
+    ),
+    '#prefix' => '',
+    '#suffix' => '<div id=\'map-canvas\'></div>',
+  );
+  $myform['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Search',
+    '#attributes' => array(
+      'onclick' => 'postShape();', 
+      'onsubmit' => 'return false',
+    ),
+  ); 
+ 
+/*
   $pagecontent = drupal_render($myform) . "<div id='map-canvas'></div><div id='areas'>
     <form name='geoform' action='/search/ndapass' method='get'>
-      <button onclick='postShape();'>Post geometry</button>
+      <button onclick='postShape();'>" . t('Search') . "</button>
       <input name='geometry' id='geometry' type='hidden' value='0' />
       <input type='submit' value='Zoeken' />
     </form></div>";
+ */
+  $pagecontent = drupal_render($myform);
 
   return $pagecontent;
 }
