@@ -15,12 +15,12 @@ define('NDABIO_JSONPOST', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest
 define('NDABIO_SEARCHTAXONOMY', 'search');
 
 /**
-* DEFINE CUSTOM PAGES
-*/
+ * DEFINE CUSTOM PAGES
+ */
 
 /**
-* Implements hook_menu().
-*/
+ * Implements hook_menu().
+ */
 function ndabio_menu() {
   $items['admin/config/naturalis'] = array(
     'title' => 'Naturalis config',
@@ -85,8 +85,8 @@ function ndabio_menu() {
 }
 
 /**
-* Output overview page.
-*/
+ * Output overview page.
+ */
 function ndabio_naturalis_callback() {
   $page = "<a href='/search/species'>Search species</a><br />";
   $page .= "<a href='/search/other'>Search other</a><br />";
@@ -102,8 +102,8 @@ function ndabio_naturalis_callback() {
 }
 
 /**
-* Output detail page.
-*/
+ * Output detail page.
+ */
 function ndabio_ajax_callback() {
   $geonode = (int)$_GET["nid"];
 
@@ -118,6 +118,9 @@ function ndabio_ajax_callback() {
 }
 
 
+/**
+ *
+ */
 function ndabio_taxonomy_create() {
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   if (empty($vocab)) {
@@ -200,6 +203,9 @@ function ndabio_taxonomy_create() {
   return "create done.";
 }
 
+/**
+ *
+ */
 function ndabio_taxonomy_remove() {
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   foreach(taxonomy_get_tree($vocab->vid) as $term) {
@@ -208,6 +214,9 @@ function ndabio_taxonomy_remove() {
   taxonomy_vocabulary_delete($vocab->vid);
   return "remove done.";
 }
+/**
+ *
+ */
 function x_arr_to_taxonomy($arr_terms, $parent = 0){
   static $_weight = 0;
 
@@ -227,6 +236,9 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
   }
 }
 
+/**
+ *
+ */
 function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   $sysname = (is_numeric($str_system ) ? $str_term : $str_system);
@@ -264,91 +276,10 @@ function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   return $obj_term->tid;
 }
 
-/*
-function _ndabio_return_taxonomy(){
-  return array(
-    'omnisearch' => 'term',
-    'extended' => array(
-      'Multimedia' => array(
-        'unitID' => "Unit",
-        'gatheringAgent' => "Collector",
-        'collectingStartDate' => "Collecting start date;date",
-        'phaseOrStage' => "Phase or stage",
-        'collectorsFieldNumber' => "Collection field number",
-        'fullScientificNameString' => "Full scientific name",
-        'nomenclaturalTypeText' => "Type status",
-        'localityText' => "Locality txt",
-        '--more--' => array(
-          'chronostratigraphicAttributiontTypeYoung' => "Youngest chronostratigraphic name",
-          'chronostratigraphicAttributiontTypeOld' => "Oldest chronostratigraphic name",
-          'lithostratigraphicAttributionType' => "First lithostratigraphic name",
-          'lithostratigraphicAttributionType2' => "Second lithostratigraphic name",
-          'biostratigraphicAttributionTypeOld' => "Oldest biostratigraphic name",
-          'biostratigraphicAttributionTypeYoung' => "Younest biostratigraphic name",
-        ),
-        '--hide--' => array(
-        )
-      ),
-      'Collectie examplaren' => array(
-        'phaseOrStage' => 'Phase or stage',
-        'sex' => 'Sex',
-        'collectionFieldNumber' => 'Collection field number',
-        'speciesEpithet' => 'Species epithet',
-        'fullScientificName' => 'Full scientific name',
-        'unitGUID' => 'Registration number',
-        '--hide--' => array(
-          'youngestChronstratigraphicName' => 'Youngest chronstratigraphic name',
-          'oldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
-          'firstLithostratigraphicName' => 'First lithostratigraphic name',
-          'secondLithostratigraphicName' => 'Second lithostratigraphic name',
-          'oldestBiostratigraphicName' => 'Oldest biostratigraphic name',
-          'youngestBiostratigraphicName' => 'Youngest biostratigraphic name',
-        ),
-        '--more--' => array(
-          'lastEditedDateOfDocument' => 'Last edited date of document',
-          'genusOrMonomial' => 'Genus or monomial',
-          'subspeciesEpithet' => 'Subspecies epithet',
-          'subgenus' => 'Subgenus',
-          'typeStatus' => 'Type status',
-          'localityText' => 'Locality text',
-          'multimediaTitle' => 'Multimedia title',
-          'collector' => 'Collector',
-          'collectingStartDate' => 'Collecting start date',
-        )
-      ),
-      'Soorten'  => array(
-        'phaseOrStage' => 'Phase or stage',
-        'sex' => 'Sex',
-        'fullScientificName' => 'Full scientific name',
-        'genusOrMonomial' => 'Genus or monomial',
-        'subspeciesEpithet' => 'Subspecies epithet',
-        'subgenus' => 'Subgenus',
-        '--more--' => array(
-          'collectionFieldNumber' => 'Collection field number',
-          'speciesEpithet' => 'Species epithet',
-          'typeStatus' => 'Type status',
-          'localityText' => 'Locality text',
-          'multimediaTitle' => 'Multimedia title',
-          'collector' => 'Collector',
-          'collectingStartDate' => 'Collecting start date',
-        ),
-        '--hide--' => array(
-          'youngestChronstratigraphicName' => 'Youngest chronstratigraphic name',
-          'oldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
-          'firstLithostratigraphicName' => 'First lithostratigraphic name',
-          'secondLithostratigraphicName' => 'Second lithostratigraphic name',
-          'oldestBiostratigraphicName' => 'Oldest biostratigraphic name',
-          'youngestBiostratigraphicName' => 'Youngest biostratigraphic name',
-          'lastEditedDateOfSocument' => 'Last edited date of document',
-        )
-      )
-    )
 
-  );
-}
-*/
-
-
+/**
+ *
+ */
 function _ndabio_return_taxonomy(){
   return array(
     'omnisearch' => 'term',
@@ -442,13 +373,15 @@ function _ndabio_return_taxonomy(){
 
 
 /**
-* Output detail page.
-*/
+ * Output detail page.
+ */
 function ndabio_ndadetail_callback($myid = '', $myaction = NULL) {
   return "<h2>" . t("My ID") . "</h2><pre>" . $myid . " " . $myaction . "</pre>";
 }
 
-
+/**
+ *
+ */
 function ndabio_config_form($form, &$form_state) {
   $form['ndabio_config'] = array(
     '#type' => 'fieldset',
@@ -502,25 +435,29 @@ function ndabio_config_form($form, &$form_state) {
   return system_settings_form($form);
 }
 
+/**
+ *
+ */
 function ndabio_displayform() {
-	$form = drupal_get_form('ndabio_advanced_taxonomysearch');
-	return (drupal_render($form));
-}
-
-
-
-function _wrap_inner_grid_cols( &$form_element, $n = 6 ){
-  if ( !isset( $form_element['#prefix'])  ){$form_element['#prefix'] = ''; }
-  if ( !isset( $form_element['#suffix'])  ){$form_element['#prefix'] = ''; }
-  $form_element['#prefix'] = $form_element['#suffix']."<div class='small-$n columns'>";
-  $form_element['#suffix'] =                          "</div>".$form_element['#suffix'];
+  $form = drupal_get_form('ndabio_advanced_taxonomysearch');
+  return (drupal_render($form));
 }
 
 /**
-* Implements hook_theme().
-*/
-// Provide a theme function for the 'omnisearch' field
+ *
+ */
+function _wrap_inner_grid_cols( &$form_element, $n = 6 ){
+  if (!isset($form_element['#prefix']) ) $form_element['#prefix'] = '';
+  if (!isset($form_element['#suffix']) ) $form_element['#prefix'] = '';
+  $form_element['#prefix'] = $form_element['#suffix'] . "<div class='small-$n columns'>";
+  $form_element['#suffix'] = "</div>" . $form_element['#suffix'];
+}
+
+/**
+ * Implements hook_theme().
+ */
 function ndabio_theme($existing, $type, $theme, $path) {
+  //Provide a theme function for the 'omnisearch' field
   $data['ndabio_omnisearch'] = array(
     'render element' => 'element',
   );
@@ -528,15 +465,15 @@ function ndabio_theme($existing, $type, $theme, $path) {
 }
 
 /**
-* Form validation logic
-*/
+ * Form validation logic
+ */
 function ndabio_ndasearchform_callback_validate($form, &$form_state) {
   //drupal_set_message("Naturalis: ndabio_ndasearchform_callback_validate");
 }
 
 /**
-* Execute search
-*/
+ * Execute search
+ */
 function ndabio_ndasearchform_callback_submit($form, &$form_state) {
   //drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
   //Build search query
@@ -548,8 +485,8 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
 }
 
 /**
-*
-*/
+ *
+ */
 function ndabio_geosearch_callback() {
   global $base_root, $base_path;
   $path = drupal_get_path('module', 'ndabio');
@@ -583,29 +520,29 @@ function ndabio_geosearch_callback() {
     );
 
   $pagecontent = drupal_render($myform) . "<div id='map-canvas'></div><div id='areas'>
-	<form name='geoform' action='/search/ndapass' method='get'>
-    <button onclick='postShape();'>Post geometry</button>
-	  <input name='geometry' id='geometry' type='hidden' value='0' />
-	  <input type='submit' value='Zoeken' />
-	</form></div>";
+    <form name='geoform' action='/search/ndapass' method='get'>
+      <button onclick='postShape();'>Post geometry</button>
+      <input name='geometry' id='geometry' type='hidden' value='0' />
+      <input type='submit' value='Zoeken' />
+    </form></div>";
 
   return $pagecontent;
 }
 
 /**
-* Check if a string is JOSN.
-*/
+ * Check if a string is JOSN.
+ */
 function isJson($string) {
- json_decode($string);
- return (json_last_error() == JSON_ERROR_NONE);
+  json_decode($string);
+  return (json_last_error() == JSON_ERROR_NONE);
 }
 
 /**
-* GEO data is passed to this page as an node id. The node contains all geo data, and should be posted to the NDA
-*/
+ * GEO data is passed to this page as an node id. The node contains all geo data, and should be posted to the NDA
+ */
 function ndabio_pass() {
   $path = drupal_get_path('module', 'ndabio');
-//  drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
+  //drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
   $mynode = node_load($_GET['geometry']);
   $mycontent = "Selected map: " . $mynode->title . "<br />";
   $mycontent .= "Source: " . $mynode->field_source['und'][0]['value'] . "<br />";
@@ -616,8 +553,8 @@ function ndabio_pass() {
 }
 
 /**
-* Post a query to the NDA.
-*/
+ * Post a query to the NDA.
+ */
 function ndabio_postjson($keys = '') {
   $service_url = variable_get('ndabio_config_jsonpost', NDABIO_JSONPOST);
   drupal_set_message("POST:" . $service_url);
@@ -644,8 +581,8 @@ function ndabio_postjson($keys = '') {
 
 
 /**
-* Get a JSON string.
-*/
+ * Get a JSON string.
+ */
 function ndabio_getjson($url = '') {
   $service_url = $url;
   drupal_set_message("GET:" . $service_url);
@@ -668,12 +605,12 @@ function ndabio_getjson($url = '') {
 }
 
 /**
-* DEFINE CUSTOM BLOCKS
-*/
+ * DEFINE CUSTOM BLOCKS
+ */
 
 /**
-* Implements hook_block_info().
-*/
+ * Implements hook_block_info().
+ */
 function ndabio_block_info() {
  $blocks['ndabio_copyright_block'] = array(
   'info' => t('Naturalis: Copyright'),
@@ -699,8 +636,8 @@ function ndabio_block_info() {
 }
 
 /**
-* Implements hook_block_view().
-*/
+ * Implements hook_block_view().
+ */
 function ndabio_block_view($delta = '') {
   global $base_root, $base_path;
   $block = array();
@@ -721,8 +658,8 @@ function ndabio_block_view($delta = '') {
 }
 
 /**
-* Implements hook_block_configure().
-*/
+ * Implements hook_block_configure().
+ */
 function ndabio_block_configure($delta = '') {
   global $base_root, $base_path;
   $form = array();
@@ -748,8 +685,8 @@ function ndabio_block_configure($delta = '') {
 }
 
 /**
-* Implements hook_block_save().
-*/
+ * Implements hook_block_save().
+ */
 function ndabio_block_save($delta = '', $edit = array()) {
   if ($delta == 'ndabio_copyright_block') {
     variable_set('ndabio_copyright_url', $edit['ndabio_copyright_url']);
@@ -758,8 +695,8 @@ function ndabio_block_save($delta = '', $edit = array()) {
 }
 
 /**
-* DEFINE CRON JOB
-*/
+ * DEFINE CRON JOB
+ */
 
 /**
  * Implements hook_cron().
@@ -769,13 +706,13 @@ function ndabio_cron() {
 }
 
 /**
-* DEFINE CUSTOM (BASIC) SEARCH
-*/
+ * DEFINE CUSTOM (BASIC) SEARCH
+ */
 
 
 /**
-* Implements hook_search_page().
-*/
+ * Implements hook_search_page().
+ */
 function ndabio_search_page($results) {
   //drupal_set_message("Naturalis: ndabio_search_page");
 
@@ -797,8 +734,8 @@ function ndabio_search_page($results) {
 }
 
 /**
-* 'search' TAXONOMY TO ADVANCED SEARCH FORM
-*/
+ * 'search' TAXONOMY TO ADVANCED SEARCH FORM
+ */
 function ndabio_advanced_taxonomysearch() {
   $searchtype = array(0 => t('And'), 1 => t('Or'));
 
@@ -922,21 +859,20 @@ function ndabio_advanced_taxonomysearch() {
       );
     }
   }
-  //$form['#submit'][] = 'ndabio_advanced_taxonomysearch_callback_submit';
-
   $form[$sysname]['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
     '#nowrapper' => TRUE,
     '#id' => 'edit-submit-bottom'
   );
-
   $form['#action'] = url('nda/pass/test');
-
 
   return ($form);
 }
 
+/**
+ *
+ */
 function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   $myvalues = array_diff($form_state['values'], array('form_build_id', 'form_token', 'form_id', 'op', 'submit'));
   unset($myvalues['form_build_id']);
