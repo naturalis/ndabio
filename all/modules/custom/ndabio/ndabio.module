@@ -8,6 +8,7 @@
 /**
  * Default values for module configuration. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
+ *
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
 define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
@@ -28,6 +29,7 @@ define('NDABIO_SEARCHTAXONOMY', 'search');
  * Implements hook_menu().
  */
 function ndabio_menu() {
+  //Configuration page
   $items['admin/config/naturalis'] = array(
     'title' => 'Naturalis config',
     'description' => 'Configuration for Naturalis module',
@@ -54,6 +56,7 @@ function ndabio_menu() {
     'page arguments' => array(2, 3),
     'access arguments' => array('access content'),
   );
+
   //Currently used as front page
   $items['search/advancednda'] = array(
     'page callback' => 'ndabio_displayform',
@@ -65,12 +68,23 @@ function ndabio_menu() {
     'page callback' => 'ndabio_pass',
     'access arguments' => array('access content'),
   );
+
+  //Page used by javascript to retrieve geo coordinates based on a nid
+  $items['naturalis/ajax'] = array(
+   'page callback' => 'ndabio_ajax_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
+
+  //Page used to manually create search taxonomy
   $items['taxonomy/create'] = array(
     'page callback' => 'ndabio_taxonomy_create',
     'access arguments' => array('access content'),
     'title' => t('Taxonomy create'),
     'type' => MENU_LOCAL_TASK,
   );
+  //Page used to manually delete search taxonomy
   $items['taxonomy/remove'] = array(
     'page callback' => 'ndabio_taxonomy_remove',
     'access arguments' => array('access content'),
@@ -81,8 +95,24 @@ function ndabio_menu() {
   return $items;
 }
 
+/**
+* Output a json formatted detail page with geocoordinates based on the nid passed in the url.
+*/
+function ndabio_ajax_callback() {
+  $geonode = (int)$_GET["nid"];
+  
+  $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
+  
+  $row = db_query($sql)->fetchObject();
+  
+  if($row) {
+    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+  }
+  die();
+}
 
 /**
+ * Create a new taxonomy named NDABIO_SEARCHTAXONOMY used to create the advanced search form
  *
  */
 function ndabio_taxonomy_create() {
@@ -461,14 +491,6 @@ function ndabio_geosearch_callback() {
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
 
   $myform = ndabio_advanced_taxonomysearch();
-/*  $myform['map'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Geographic search',
-    '#default_value' => '',
-    '#required' => FALSE,
-    '#title_display' => 'invisible',
-    '#nowrapper' => TRUE
-  );*/
   $myform['gmap'] = array(
     '#type' => 'gmap',
     '#map' => 'gmap',
@@ -479,10 +501,10 @@ function ndabio_geosearch_callback() {
         'geocode_leave_marker' => TRUE,
       ),
     ),
-    '#prefix' => '',
-    '#suffix' => '<div id=\'map-canvas\'></div>',
+    '#prefix' => '<div id=\'banner-geographical-search\'>',
+    '#suffix' => '<div id=\'map-canvas\'></div></div>',
   );
-  $myform['submit'] = array(
+  $myform['gmap']['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Search',
     '#attributes' => array(
@@ -490,22 +512,14 @@ function ndabio_geosearch_callback() {
       'onsubmit' => 'return false',
     ),
   ); 
- 
-/*
-  $pagecontent = drupal_render($myform) . "<div id='map-canvas'></div><div id='areas'>
-    <form name='geoform' action='/search/ndapass' method='get'>
-      <button onclick='postShape();'>" . t('Search') . "</button>
-      <input name='geometry' id='geometry' type='hidden' value='0' />
-      <input type='submit' value='Zoeken' />
-    </form></div>";
- */
   $pagecontent = drupal_render($myform);
-
   return $pagecontent;
 }
 
 /**
  * Check if a string is JOSN.
+ * @param string
+ * @return boolean
  */
 function isJson($string) {
   json_decode($string);
