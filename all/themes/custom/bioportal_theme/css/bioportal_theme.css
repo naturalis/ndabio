@@ -21,8 +21,11 @@
 /* orange-2:#f29400;  */
 /* orange : #ef6d14;  */
 /* yellow : #ffed00;  */
-.scientific {
+.scientific-name {
   font-style: italic; }
+
+.vernacular-name {
+  font-style: normal; }
 
 .not-front h2 {
   font-size: 20px;
@@ -232,29 +235,42 @@ html.js fieldset.collapsible .fieldset-legend {
   font-size: 1.2em;
   position: relative;
   top: -3px; }
+.page-nda-pass h2 {
+  font-size: 24px;
+  font-weight: bold; }
+  .page-nda-pass h2 .scientific-name {
+    color: black; }
+  .page-nda-pass h2 .vernacular-name {
+    color: #b2b1a8; }
 .page-nda-pass h3 {
   color: #009ee0;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold; }
 .page-nda-pass h4 {
   font-size: 18px;
   font-weight: bold; }
 .page-nda-pass h5.source {
-  font-size: 14px;
+  font-size: 18px;
   color: #b2b1a8;
   margin-top: 1em;
-  clear: both; }
+  clear: both;
+  font-weight: bold; }
 .page-nda-pass .definition-list {
   margin-bottom: 3em;
-  display: table; }
+  display: table;
+  width: 100%; }
 .page-nda-pass dl {
   clear: both;
   display: table-row; }
+  .page-nda-pass dl:hover {
+    background-color: #eeede9; }
 .page-nda-pass dt {
+  width: 42.85714%;
   font-weight: normal;
   display: table-cell;
   padding-right: 3em; }
 .page-nda-pass dd {
+  width: 57.14286%;
   font-weight: bold;
   display: table-cell; }
 

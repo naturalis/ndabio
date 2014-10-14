@@ -8,7 +8,7 @@
 /**
  * Defaults.
  */
-define('NATURALIS', 'xxx');
+define('NATURALIS', 'taxonDetail');
 
 /**
 * DEFINE CUSTOM PAGES
@@ -569,11 +569,16 @@ function printTaxonDetail ($data) {
 
   $output .= "<div class='large-7 columns'>";
 
-  $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
-		(isset($data['commonNames'][$language->language]) ?
-			implode(', ', $data['commonNames'][$language->language]) : '') .
-		"</span></h2>";
+  $output .=   "<h2>";
+  $output .=   "  <span class='scientific-name'>";
+  $output .=        $data['acceptedName'];
+  $output .=   "  </span>";
 
+  if ( isset($data['commonNames'][$language->language]) ){
+    $output .= "  <span class='vernacular-name'>";
+    $output .= implode(', ', $data['commonNames'][$language->language]);
+    $output .= "  </span>";
+  }
 
   $output .=
 		printCommonNames($data) .
@@ -1696,4 +1701,3 @@ function DUMMYqueryNda ($channels = array(), $timeout = false) {
     curl_multi_close($mh);
     return $remoteData;
 }
-

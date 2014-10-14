@@ -56,8 +56,12 @@ $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
 
 // GLOBAL SEMANTIC CLASSES
-    .scientific{
+    .scientific-name{
       font-style: italic;
+    }
+
+    .vernacular-name{
+      font-style: normal;
     }
 
 
@@ -386,12 +390,21 @@ $icon-arrow-right:  "\e613";
       }
 
       h2{
+        font-size: 24px;
+        font-weight: bold;
 
+        .scientific-name{
+          color: $black;
+        }
+
+        .vernacular-name{
+          color: $gray;
+        }
       }
 
       h3{
         color: $blue;
-        font-size: 18px;
+        font-size: 24px;
         font-weight: bold;
       }
 
@@ -401,36 +414,41 @@ $icon-arrow-right:  "\e613";
       }
 
       h5.source{
-        font-size: 14px;
+        font-size: 18px;
         color: $gray;
         margin-top: 1em;
         clear: both;
+        font-weight: bold;
 
       }
 
       .definition-list{
         margin-bottom: 3em;
         display: table;
+        width: 100%;
       }
 
       dl{
         clear: both;
         display: table-row;
+        &:hover{
+          background-color: $ghost;
+        }
       }
 
       dt{
-        // float: left;
-        // width: percentage(2/7);
+        width: percentage(3/7);
         font-weight: normal;
         display: table-cell;
         padding-right: 3em;
+
       }
 
       dd{
-        // float: left;
-        // width: percentage(4/7);
+        width: percentage(4/7);
         font-weight: bold;
         display: table-cell;
+
       }
 
     }
