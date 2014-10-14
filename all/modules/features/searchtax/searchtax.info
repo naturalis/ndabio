@@ -1,6 +1,6 @@
 name = searchtax
 core = 7.x
-package = Features
+package = Bioportal
 version = 7.x-1.0
 project = searchtax
 dependencies[] = features

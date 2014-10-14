@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the bioportal_geoview feature.
+ */
+
+include_once 'bioportal_geoview.features.inc';
