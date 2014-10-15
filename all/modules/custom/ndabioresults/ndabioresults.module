@@ -65,68 +65,13 @@ function ndabioresults_config_form($form, &$form_state) {
 }
 
 
-
-
-
-
-
-
-// This is the main function that actually processes the incoming POST data
-// For the time being it just prints the appropriate NDA request urls on screen
-// plus displays mock data using DUMMYperformNdaRequest()
-
-function ndabioresults_pass ($args = "") {
-    // Do we have POST data? If so, add to SESSION or replace existing SESSION data
-    if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
-        $_SESSION['ndaSearch'] = $_POST;
-    }
-    // If both POST and SESSION are empty we have a problem...
-    if (!isset($_SESSION['ndaSearch']) || empty($_SESSION['ndaSearch'])) {
-        // Probably best to redirect gracefully to search page?
-        handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
-    }
-    // Redirect to distinct services
-    empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
-
-    // This line returns mock data
-    // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
-    return DUMMYperformNdaRequest('all');
-}
-
-
-function ndaAdvancedSearch () {
-    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
-    // Subdivide specimen parameters for both result types
-    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
-    return performNdaRequest(setChannels($services));
-
-//    drupal_set_message('<pre>' . print_r($specimenParameters, true) . '</pre>');
-//    return;
-}
-
-function ndaSimpleSearch () {
-    $p = array(
-        '_search' => $_SESSION['ndaSearch']['term']
-    );
-    $services = array(
-        specimenService() => $p,
-        specimenNamesService() => $p,
-        taxonService() => $p,
-        multimediaService() => $p
-    );
-    return performNdaRequest(setChannels($services));
-}
-
-
-
-
-
-// Drupal constants
-
-// TODO: Probably should be config setting?
+/**
+ * Constant: base url of NBA service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function ndaBaseUrl() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -135,6 +80,13 @@ function ndaBaseUrl() {
     return $var;
 }
 
+/**
+ * Constant: name of specimen service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function specimenService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -143,6 +95,13 @@ function specimenService() {
     return $var;
 }
 
+/**
+ * Constant: name of specimen name service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function specimenNamesService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -151,6 +110,13 @@ function specimenNamesService() {
     return $var;
 }
 
+/**
+ * Constant: name of specimen detail service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function specimenDetailService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -159,6 +125,13 @@ function specimenDetailService() {
     return $var;
 }
 
+/**
+ * Constant: name of multimedia per specimen service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function specimenMultimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -167,6 +140,13 @@ function specimenMultimediaService() {
     return $var;
 }
 
+/**
+ * Constant: name of taxon service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function taxonService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -175,6 +155,13 @@ function taxonService() {
     return $var;
 }
 
+/**
+ * Constant: name of taxon detail service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function taxonDetailService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -183,6 +170,13 @@ function taxonDetailService() {
     return $var;
 }
 
+/**
+ * Constant: name of multimedia per taxon service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function taxonMultimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -191,6 +185,13 @@ function taxonMultimediaService() {
     return $var;
 }
 
+/**
+ * Constant: name of multimedia service
+ *
+ * @todo Config option in module?
+ *
+ * @return string
+ */
 function multimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -199,6 +200,14 @@ function multimediaService() {
     return $var;
 }
 
+/**
+ * Constant: order of search results output
+ *
+ * Determines print order of search result, currently
+ * multimedia, taxon, specimen name, specimen.
+ *
+ * @return array
+ */
 function resultOrder() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -212,6 +221,14 @@ function resultOrder() {
     return $var;
 }
 
+/**
+ * Mapping function: maps service to parse/print functions
+ *
+ * Each service response is handled by distinct parse and
+ * print functions. This function provides the mapping.
+ *
+ * @return array Names of parse and print function for the service of choice
+ */
 function serviceToFunctions() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -253,51 +270,17 @@ function serviceToFunctions() {
     return $var;
 }
 
-function setChannels (array $services) {
-    $i = 0;
-	foreach ($services as $s => $p) {
-	    if (!empty($p)) {
-    		$channels[$i]['request'] = $s;
-    		$channels[$i]['url'] = ndaBaseUrl() . $s . setParameters($p);
-		    $i++;
-	    }
-	}
-	return isset($channels) ? $channels : array();
-}
-
-function setParameters ($p) {
-    $url = '';
-    foreach (array_filter($p, 'strlen') as $k => $v) {
-        $url .= $k . '=' . urlencode($v) . '&';
-    }
-    return '?' . rtrim($url, '&');
-}
-
-// Filters input parameters from advanced search
-// $typeId is the prefix in the form (_s, _t, _m)
-function setSectionParameters (array $post, $typeId = '') {
-    if ($typeId == '') {
-        return $post;
-    }
-    $d = array();
-    foreach ($post as $k => $v) {
-        if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
-            $d[str_replace($typeId, '', $k)] = $v;
-        }
-    }
-    // Reset andOr parameter to _andOr and values to and/or
-    if (count($d) > 1) {
-         $d['_andOr'] = $d['andOr'] == 0 ? 'and' : 'or';
-         unset($d['andOr']);
-         return $d;
-    }
-    // If only andOr flag is set, nothing has been entered;
-    // return empty array
-    return array();
-}
-
-// Separates between specimen and specimen-name
-// The list of parameters should be complete!
+/**
+ * Mapping function: distributes parameters to appropriate specimen service
+ *
+ * Distributes specimens search parameters between specimen and specimen name
+ * services. Important: list of parameters hould be complete!
+ *
+ * @param array $sP Search parameters
+ * @param string $type Service type
+ *
+ * @return array Reduced array of search criteria for the service of choice
+ */
 function setSpecimenParameters (array $sP, $type) {
     $parameters = array(
         specimenService() => array(
@@ -335,7 +318,162 @@ function setSpecimenParameters (array $sP, $type) {
     return isset($d) ? $d : null;
 }
 
-function performNdaRequest (array $channels) {
+/**
+ * Accepts search form data and returns formatted result
+ *
+ * The main function that actually processes the incoming POST data, stores the
+ * POST data in a SESSION, distributes the search to the appropriate channels
+ * and returns the formatted output.
+ *
+ * @todo For the time being it just prints the appropriate NDA request urls on screen
+ * plus displays mock data using DUMMYperformNdaRequest(). Adapt performNdaRequest() and
+ * delete DUMMY functions.
+ *
+ * @return string The formatted output
+*/
+function ndabioresults_pass ($args = "") {
+    // Do we have POST data? If so, add to SESSION or replace existing SESSION data
+    if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        $_SESSION['ndaSearch'] = $_POST;
+    }
+    // If both POST and SESSION are empty we have a problem...
+    if (!isset($_SESSION['ndaSearch']) || empty($_SESSION['ndaSearch'])) {
+        // Probably best to redirect gracefully to search page?
+        handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
+    }
+    // Redirect to distinct services
+    empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+
+    // This line returns mock data
+    // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
+    return DUMMYperformNdaRequest('all');
+}
+
+/**
+ * Distributes search parameters of the advanced search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function ndaAdvancedSearch () {
+    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    // Subdivide specimen parameters for both result types
+    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+    return performNdaRequest(setChannels($services));
+}
+
+/**
+ * Distributes search parameter of the simple search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function ndaSimpleSearch () {
+    $p = array(
+        '_search' => $_SESSION['ndaSearch']['term']
+    );
+    $services = array(
+        specimenService() => $p,
+        specimenNamesService() => $p,
+        taxonService() => $p,
+        multimediaService() => $p
+    );
+    return performNdaRequest(setChannels($services));
+}
+
+/**
+ * Sets curl channels
+ *
+ * Sets request and url parameters for curl channels
+ *
+ * @param array Service array (service name => search parameters)
+ *
+ * @return void|array Channels for curl
+ */
+function setChannels (array $services) {
+    $i = 0;
+	foreach ($services as $s => $p) {
+	    if (!empty($p)) {
+    		$channels[$i]['request'] = $s;
+    		$channels[$i]['url'] = ndaBaseUrl() . $s . setParameters($p);
+		    $i++;
+	    }
+	}
+	return isset($channels) ? $channels : array();
+}
+
+/**
+ * Creates string of GET parameters
+ *
+ * @param array Array with key => value pairs
+ *
+ * @return string Formatted string
+ */
+function setParameters ($p) {
+    $url = '';
+    foreach (array_filter($p, 'strlen') as $k => $v) {
+        $url .= $k . '=' . urlencode($v) . '&';
+    }
+    return '?' . rtrim($url, '&');
+}
+
+/**
+ * Filters input parameters from advanced search
+ *
+ * Input parameters in advanced search form are prefixed with _s, _t, or _m
+ * to differentiate between specimen, taxon and multimedia searches. This function
+ * creates a new array of input parameters, filtering empty values and stripping
+ * the prefix from the input.
+ *
+ * @param array $post The input as key => value pairs
+ * @param string $typeId The input prefix (_s, _t, _m)
+ *
+ * @return void|array Filtered key => value pairs
+ */
+function setSectionParameters (array $post, $typeId = '') {
+    if ($typeId == '') {
+        return $post;
+    }
+    $d = array();
+    foreach ($post as $k => $v) {
+        if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
+            $d[str_replace($typeId, '', $k)] = $v;
+        }
+    }
+    // Reset andOr parameter to _andOr and values to and/or
+    if (count($d) > 1) {
+         $d['_andOr'] = $d['andOr'] == 0 ? 'and' : 'or';
+         unset($d['andOr']);
+         return $d;
+    }
+    // If only andOr flag is set, nothing has been entered;
+    // return empty array
+    return array();
+}
+
+
+/**
+ * Performs curl requests and formats results
+ *
+ * Performs curl queries through multicurl. For each channel, resulting json is
+ * parsed to an array by one function and subsequently printed by another.
+ *
+ * @todo Remove drupal_set_message() that temporarily simply prints the resulting
+ * NBA urls
+ *
+ * @param array $channels Service channels
+ * @return void|string
+ */
+function performNdaRequest (array $channels = array()) {
     // As long as the NDA services are inoperable, just return the channels
     drupal_set_message('<pre>' . print_r($channels, true) . '</pre>');
     return;
@@ -364,7 +502,16 @@ function performNdaRequest (array $channels) {
 	return $output;
 }
 
-
+/**
+ * Performs multicurl queries
+ *
+ * Core function for multicurl requests
+ *
+ * @param unknown $channels Service channels
+ * @param integer $timeout Optional timeout
+ *
+ * @return array Results as key => value pairs for each channel
+ */
 function queryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
     for ($i = 0; $i < count($channels); $i++) {
