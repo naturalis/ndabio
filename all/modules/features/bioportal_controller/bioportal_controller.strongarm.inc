@@ -81,14 +81,14 @@ function bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'ictsupport@naturalis.nl';
+  $strongarm->value = 'niemand@nergens.nl';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_name';
-  $strongarm->value = 'Bioportaal';
+  $strongarm->value = 'bioportal.local';
   $export['site_name'] = $strongarm;
 
   $strongarm = new stdClass();
