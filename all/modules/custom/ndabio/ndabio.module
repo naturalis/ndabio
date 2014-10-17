@@ -875,7 +875,7 @@ function ndabio_advanced_taxonomysearch() {
     '#nowrapper' => TRUE,
     '#id' => 'edit-submit-bottom'
   );
-  $form['#action'] = url('nda/pass/test');
+  $form['#action'] = url('nba/result');
 
   return ($form);
 }
