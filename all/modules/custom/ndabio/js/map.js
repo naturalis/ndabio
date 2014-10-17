@@ -136,8 +136,6 @@ function plotMapArea(gid, baseurl) {
 				map.data.addGeoJson(feature);
 				map.data.setStyle(mapStyle);
 				zoom(map);
-				document.getElementById('geometry').value = gid;
-
 			} else {
 				alert('Failed to retrieve area data.');
 			}
