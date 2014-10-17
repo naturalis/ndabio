@@ -113,12 +113,12 @@ function clearSelection() {
   }
 
 
-function plotMapArea(gid) {
+function plotMapArea(gid, baseurl) {
 
 	if (!gid) return;
 
 	jQuery.ajax({
-		url: '/naturalis/ajax',
+		url: baseurl + 'naturalis/ajax',
 		type: "GET",
 		dataType: "json",
 		data: ( {nid: gid} ),

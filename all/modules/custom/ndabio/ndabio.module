@@ -2,27 +2,46 @@
 
 /**
  * @file
- * Naturalis example module.
+ * Naturalis bioportal module used to integrate Drupal with the Naturalis Data API formally
+ * known as the NDA.
+ * @version 0.1
+ * @author Naturalis
+ * @package Bioportal
  */
 
 /**
- * Default values for module configuration. Can be overridden in the module config page.
+ * Default value for the NDA. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
- *
  */
 define('NDABIO_NDA', 'http://nda.naturalis.nl');
+/**
+ * Default value for the NDA GET service. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
 define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
+/**
+ * Default value for the NDA POST service. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
 define('NDABIO_JSONPOST', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
+/**
+ * Default value for the GMAP key. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
 define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 
 /**
  * Advanced search used a drupal taxonomy. This is the systemname of the taxonomy used for
  * building the advances search form.
+ * <siteroot>/admin/config/naturalis
  */
 define('NDABIO_SEARCHTAXONOMY', 'search');
 
 /**
  * DEFINE CUSTOM PAGES
+ * Module administration and all custom pages. Each page includes a callback where the
+ * page functionality is defined.
+ * @package custompages
  */
 
 /**
@@ -208,8 +227,10 @@ function ndabio_taxonomy_remove() {
   taxonomy_vocabulary_delete($vocab->vid);
   return "remove done.";
 }
+
 /**
- *
+ * Create a taxonomy tree based on a predefined array, used for initialising
+ * the advanced search fields
  */
 function x_arr_to_taxonomy($arr_terms, $parent = 0){
   static $_weight = 0;
@@ -218,7 +239,7 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
     $_weight++;
 
     // If the value of the item is a string, I assume we're looking at an end-point
-    if ( gettype($value) == 'string' ){
+    if (( gettype($value) == 'string' ) || (!empty($value->label))) {
       x_term_save(  $value, $parent, $key, $_weight  );
       // (We use the $key for the system-name field…)
 
@@ -231,7 +252,7 @@ function x_arr_to_taxonomy($arr_terms, $parent = 0){
 }
 
 /**
- *
+ * Create a single taxonomy entry
  */
 function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
   $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
@@ -312,10 +333,10 @@ function _ndabio_return_taxonomy() {
         )
       ),
       'Collection specimens' => array(
-        's_unitID' => 'Registration number',
+        's_unitID' => array('label' => 'Registration number','georelevant' => TRUE ),
         's_vernacularName' => 'Vernacular name',
         's_family' => 'Family',
-        's_genusOrMonomial' => 'Genus or monomial',
+        's_genusOrMonomial' => array('label' => 'Genus or monomial', 'georelevant' => TRUE, 'values' => 'Genus|Monomial'),
         's_speciesEpithet' => 'Species epithet',
         's_typeStatus' => 'Type status',
         's_localityText' => 'Locality text',
@@ -488,7 +509,7 @@ function ndabio_geosearch_callback() {
   drupal_add_js($path . "/js/map.js", array('weight' => 1));
   drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
   drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
-  drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
+  drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
 
   $myform = ndabio_advanced_taxonomysearch();
   $myform['gmap'] = array(
