@@ -1,11 +1,11 @@
 name = Bioportal Controller
 core = 7.x
 package = Bioportal
-dependencies[] = bioportal_geo
 dependencies[] = bioportal_geoview
 dependencies[] = bioportal_thematic_search
 dependencies[] = bioportal_theme_settings
 dependencies[] = boxes
+dependencies[] = context_ui
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = geozones
