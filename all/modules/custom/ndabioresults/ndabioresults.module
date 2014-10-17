@@ -41,7 +41,13 @@ function ndabioresults_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['nda/pass/%'] = array(
+  $items['nba/result/%'] = array(
+    'page callback' => 'ndabioresults_pass',
+    //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
+    'load arguments' => array('%map', '%index'),
+    'access callback' => TRUE,
+  );
+  $items['nba/result'] = array(
     'page callback' => 'ndabioresults_pass',
     //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
