@@ -197,13 +197,35 @@ function processPoints(geometry, callback, thisArg) {
   // ---------------------------------------------------------
 
 (function ($, Drupal) { Drupal.behaviors.ndabio = { attach: function(context, settings) {
-	$("a[data-rel='ajax']").click(function(){
-		str_url = $(this).attr("href");
+
+
+	$("a[data-rel='ajax']").click(function(){ str_url = $(this).attr("href");
+
+		var $_active_link = $(this);
+
+		$_active_link.css( 'cursor', 'wait' );
+
+		$("a[data-rel='ajax']").parent().removeClass("active");
+		$_active_link.parent().addClass("active");
 
 		$.get( str_url, function( data ) {
+
+			$_active_link.css( 'cursor', 'pointer' );
+
 			$( "#search-areas-list" ).html( data );
+
+			$('#search-areas-list .row-area a').click(function() {
+
+				plotMapArea(this.id.substr(4),str_base_path);
+				return false;
+			});
+
 		});
 
 		return false;
 	})
+
+	$("a[data-rel='ajax']")
+		.first()
+			.trigger("click");
 } }; })(jQuery, Drupal);

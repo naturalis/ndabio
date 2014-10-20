@@ -509,25 +509,26 @@ function ndabio_geosearch_callback() {
   drupal_add_js($path . "/js/map.js", array('weight' => 1));
   drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
   drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
-  drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
+  drupal_add_js("var str_base_path = '$base_path' ",'inline');
+  // drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
 
   $links =
-     "<div id='search-areas-types' class='small-12 medium-2 columns'>"
+     "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
     ."  <ul>"
     ."    <li>"
-    ."      <a data-rel='ajax' href='areas?response_type=embed'>Landen</a>"
+    ."      <a data-rel='ajax' href='areas/country?response_type=embed'>Landen</a>"
     ."    </li>"
     ."    <li>"
-    ."      <a data-rel='ajax' href='areas?response_type=embed'>Gemeentes</a>"
+    ."      <a data-rel='ajax' href='areas/municipality?response_type=embed'>Gemeentes</a>"
     ."    </li>"
     ."    <li>"
-    ."      <a data-rel='ajax' href='areas?response_type=embed'>Natuurgebieden</a>"
+    ."      <a data-rel='ajax' href='areas/nature?response_type=embed'>Natuurgebieden</a>"
     ."    </li>"
     ."  </ul>"
     ."</div>";
 
   $list =
-     "<div id='search-areas-list' class='small-12 medium-2 columns'>"
+     "<div id='search-areas-list' class='small-12 medium-3 columns'>"
     ."</div>";
 
 
@@ -572,7 +573,6 @@ function isJson($string) {
  */
 function ndabio_pass() {
   $path = drupal_get_path('module', 'ndabio');
-  //drupal_add_js($path . "/js/naturalis.js", array('weight' => 1));
   $mynode = node_load($_GET['geometry']);
   $mycontent = "Selected map: " . $mynode->title . "<br />";
   $mycontent .= "Source: " . $mynode->field_source['und'][0]['value'] . "<br />";

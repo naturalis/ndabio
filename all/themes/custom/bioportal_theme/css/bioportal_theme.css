@@ -222,6 +222,43 @@ html.js fieldset.collapsible .fieldset-legend {
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
   content: "\e610"; }
 
+.chained-select ul {
+  list-style: none inside none;
+  margin: 0; }
+
+.chained-select-level-1 li {
+  border-bottom: 1px solid #e6e6e6;
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  margin: 0 -0.9rem 0 -1.8rem;
+  padding: 0 0.937rem; }
+  .chained-select-level-1 li.active a {
+    color: #009ee0; }
+  .chained-select-level-1 li.active:after {
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: -0.9rem;
+    bottom: 0;
+    color: #009ee0;
+    content: "\e60c";
+    font-family: App2;
+    font-size: 24px; }
+.chained-select-level-1 a {
+  color: #542e08; }
+
+#search-areas-list {
+  height: 600px;
+  overflow: scroll;
+  font-weight: 14px; }
+  #search-areas-list ul {
+    list-style: none inside none; }
+  #search-areas-list h3 {
+    color: #b2b1a8;
+    font-weight: bold; }
+
 .page-nda-pass main table {
   margin-left: 8.33333%;
   width: 91.66667%; }

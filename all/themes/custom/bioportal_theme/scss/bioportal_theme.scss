@@ -54,6 +54,7 @@ $icon-double-chevron-left:  "\e611";
 $icon-double-chevron-right:  "\e612";
 $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
+$icon-chevron-right: "\e60c";
 
 // GLOBAL SEMANTIC CLASSES
     .scientific-name{
@@ -360,6 +361,67 @@ $icon-arrow-right:  "\e613";
         a:after{
           content: $icon-double-chevron-down;
         }
+      }
+    }
+
+// GEOSEARCH
+
+  // -- geoserach: chained-select
+
+    .chained-select{
+      ul{
+        list-style: none inside none;
+        margin: 0;
+      }
+    }
+
+    .chained-select-level-1{
+      li{
+        border-bottom: 1px solid $gray-2;
+        height: 50px;
+        line-height: 50px;
+        position: relative;
+        margin: 0 -0.9rem 0 -1.8rem; // TODO: find proper solution;
+        padding: 0 0.937rem; // TODO: find proper solution;
+
+        &.active a{
+          color: $blue;
+        }
+
+        &.active:after{
+
+          display: block;
+          width: 50px;
+          height: 50px;
+          position: absolute;
+          right: -0.9rem;
+          bottom: 0;
+          color: $blue;
+          content: $icon-chevron-right;
+          font-family: App2;
+          font-size: 24px;
+        }
+      }
+
+      a{
+        color: $brown;
+      }
+
+    }
+
+    #search-areas-list{
+      height: 600px;
+      overflow: scroll;
+
+      ul{
+        list-style: none inside none;
+      }
+
+      font-weight: 14px;
+
+      h3{
+        color: $gray;
+        font-weight: bold;
       }
     }
 
