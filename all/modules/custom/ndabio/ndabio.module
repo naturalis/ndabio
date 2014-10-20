@@ -119,11 +119,11 @@ function ndabio_menu() {
 */
 function ndabio_ajax_callback() {
   $geonode = (int)$_GET["nid"];
-  
+
   $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
-  
+
   $row = db_query($sql)->fetchObject();
-  
+
   if($row) {
     echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
   }
@@ -505,11 +505,27 @@ function ndabio_ndasearchform_callback_submit($form, &$form_state) {
 function ndabio_geosearch_callback() {
   global $base_root, $base_path;
   $path = drupal_get_path('module', 'ndabio');
-  drupal_add_css($path . "/css/naturalis.css");
+  drupal_add_css($path . "/css/ndabio_style.css");
   drupal_add_js($path . "/js/map.js", array('weight' => 1));
   drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
   drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
+
+$links =
+   "<div id='search-areas-types' class=\'small-12 medium-2 columns\'>"
+  ."  <ul>"
+  ."    <li>"
+  ."      <a href='#'>Landen</a>"
+  ."    </li>"
+  ."    <li>"
+  ."      <a href='#'>Gemeentes</a>"
+  ."    </li>"
+  ."    <li>"
+  ."      <a href='#'>Natuurgebieden</a>"
+  ."    </li>"
+  ."  </ul>"
+  ."</div>";
+
 
   $myform = ndabio_advanced_taxonomysearch();
   $myform['gmap'] = array(
@@ -522,17 +538,17 @@ function ndabio_geosearch_callback() {
         'geocode_leave_marker' => TRUE,
       ),
     ),
-    '#prefix' => '<div id=\'banner-geographical-search\'>',
-    '#suffix' => '<div id=\'map-canvas\'></div></div>',
+    '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
+    '#suffix' => '<div id=\'map-canvas\'></div></div>'.$links,
   );
-  $myform['gmap']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => 'Search',
-    '#attributes' => array(
-      'onclick' => 'postShape();', 
-      'onsubmit' => 'return false',
-    ),
-  ); 
+  // $myform['gmap']['submit'] = array(
+  //   '#type' => 'submit',
+  //   '#value' => 'Search',
+  //   '#attributes' => array(
+  //     'onclick' => 'postShape();',
+  //     'onsubmit' => 'return false',
+  //   ),
+  // );
   $pagecontent = drupal_render($myform);
   return $pagecontent;
 }
