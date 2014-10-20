@@ -21,6 +21,24 @@
 /* orange-2:#f29400;  */
 /* orange : #ef6d14;  */
 /* yellow : #ffed00;  */
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #cccccc; }
+
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #cccccc;
+  opacity: 1; }
+
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #cccccc;
+  opacity: 1; }
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #cccccc; }
+
 .scientific-name {
   font-style: italic; }
 
@@ -240,7 +258,7 @@ html.js fieldset.collapsible .fieldset-legend {
     width: 50px;
     height: 50px;
     position: absolute;
-    right: -0.9rem;
+    right: -2rem;
     bottom: 0;
     color: #009ee0;
     content: "\e60c";
@@ -249,13 +267,18 @@ html.js fieldset.collapsible .fieldset-legend {
 .chained-select-level-1 a {
   color: #542e08; }
 
-#search-areas-list {
-  height: 600px;
+#search-areas-filter {
+  heigth: 40px;
+  margin: 0 0 15px 0;
+  width: 100%; }
+
+#search-areas-target {
+  height: 540px;
   overflow: scroll;
   font-weight: 14px; }
-  #search-areas-list ul {
+  #search-areas-target ul {
     list-style: none inside none; }
-  #search-areas-list h3 {
+  #search-areas-target h3 {
     color: #b2b1a8;
     font-weight: bold; }
 

@@ -198,10 +198,16 @@ function processPoints(geometry, callback, thisArg) {
 
 (function ($, Drupal) { Drupal.behaviors.ndabio = { attach: function(context, settings) {
 
+	$_geo_filter          = $("#search-areas-filter"); 	 // input for filtering areas
+	$_search_areas_target = $( "#search-areas-target" ); // target div for list of areas
 
+
+	// Load VIEWS with areas upon clikc
 	$("a[data-rel='ajax']").click(function(){ str_url = $(this).attr("href");
 
 		var $_active_link = $(this);
+
+		$_geo_filter.val("");
 
 		$_active_link.css( 'cursor', 'wait' );
 
@@ -212,9 +218,9 @@ function processPoints(geometry, callback, thisArg) {
 
 			$_active_link.css( 'cursor', 'pointer' );
 
-			$( "#search-areas-list" ).html( data );
+			$_search_areas_target.html( data );
 
-			$('#search-areas-list .row-area a').click(function() {
+			$_search_areas_target.find('.row-area a').click(function() {
 
 				plotMapArea(this.id.substr(4),str_base_path);
 				return false;
@@ -225,7 +231,41 @@ function processPoints(geometry, callback, thisArg) {
 		return false;
 	})
 
+	// Simulate click on first area-type
 	$("a[data-rel='ajax']")
 		.first()
 			.trigger("click");
+
+
+	// Filter results when typing
+	$_geo_filter.on("keyup", function(){
+
+		var str_value = $(this).val();
+
+				// Search through alphabetic groups
+				$_search_areas_target.find("ul").each(function() {
+						str_titel = $(this).text();
+
+						if (str_titel.toLowerCase().search(str_value.toLowerCase()) > -1) {
+								$(this).parent().show();
+						}
+						else {
+								$(this).parent().hide();
+						}
+				});
+
+				// Search through individual text items
+				$_search_areas_target.find("li a").each(function() {
+            str_titel = $(this).text();
+
+						if (str_titel.toLowerCase().search(str_value.toLowerCase()) > -1) {
+                $(this).parent().show();
+            }
+            else {
+                $(this).parent().hide();
+            }
+        });
+	});
+
+
 } }; })(jQuery, Drupal);

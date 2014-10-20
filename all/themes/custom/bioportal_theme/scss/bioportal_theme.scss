@@ -56,6 +56,21 @@ $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
 $icon-chevron-right: "\e60c";
 
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:   $gray-3;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    $gray-3;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    $gray-3;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    $gray-3;
+}
+
 // GLOBAL SEMANTIC CLASSES
     .scientific-name{
       font-style: italic;
@@ -394,7 +409,7 @@ $icon-chevron-right: "\e60c";
           width: 50px;
           height: 50px;
           position: absolute;
-          right: -0.9rem;
+          right: -2rem;
           bottom: 0;
           color: $blue;
           content: $icon-chevron-right;
@@ -409,8 +424,14 @@ $icon-chevron-right: "\e60c";
 
     }
 
-    #search-areas-list{
-      height: 600px;
+    #search-areas-filter{
+      heigth: 40px;
+      margin: 0 0 15px 0;
+      width: 100%;
+    }
+
+    #search-areas-target{
+      height: 540px;
       overflow: scroll;
 
       ul{
