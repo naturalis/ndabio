@@ -48,8 +48,8 @@ function getRectangleGeometry() {
 	var bounds = selectedShape.getBounds();
 	var NE = bounds.getNorthEast();
 	var SW = bounds.getSouthWest();
-	
-	return '{"type":"Polygon","coordinates":[[' + 
+
+	return '{"type":"Polygon","coordinates":[[' +
 		'[' + SW.lng() + ',' + NE.lat() + '],' +
 		'[' + NE.lng() + ',' + NE.lat() + '],' +
 		'[' + NE.lng() + ',' + SW.lat() + '],' +
@@ -78,7 +78,7 @@ function initialize() {
     rectangleOptions: mapStyle
   });
   drawingManager.setMap(map);
-  
+
   google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
      if (e.type != google.maps.drawing.OverlayType.MARKER) {
         // Switch back to non-drawing mode after drawing a shape.
@@ -96,7 +96,7 @@ function initialize() {
 
  	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
     //google.maps.event.addListener(map, 'click', clearMap);
-    //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', clearMap);    
+    //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', clearMap);
 }
 
 function clearSelection() {
@@ -127,19 +127,19 @@ function plotMapArea(gid, baseurl) {
 			if (json) {
 				geometry = json.geometry;
 				feature = {
-					type: "Feature", 
+					type: "Feature",
 					locality: json.locality,
 					source: json.source,
 					geometry: geometry
 				};
-				
+
 				map.data.addGeoJson(feature);
 				map.data.setStyle(mapStyle);
 				zoom(map);
 			} else {
 				alert('Failed to retrieve area data.');
 			}
-		
+
 		}
 	});
 }
@@ -191,3 +191,19 @@ function processPoints(geometry, callback, thisArg) {
     });
   }
 }
+
+  // ---------------------------------------------------------
+  // Load VIEWS as AJAX upon click into #search-areas-list
+  // ---------------------------------------------------------
+
+(function ($, Drupal) { Drupal.behaviors.ndabio = { attach: function(context, settings) {
+	$("a[data-rel='ajax']").click(function(){
+		str_url = $(this).attr("href");
+
+		$.get( str_url, function( data ) {
+			$( "#search-areas-list" ).html( data );
+		});
+
+		return false;
+	})
+} }; })(jQuery, Drupal);

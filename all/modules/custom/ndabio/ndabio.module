@@ -512,22 +512,22 @@ function ndabio_geosearch_callback() {
   drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
 
   $links =
-     "<div id='search-areas-types' class=\'small-12 medium-2 columns\'>"
+     "<div id='search-areas-types' class='small-12 medium-2 columns'>"
     ."  <ul>"
     ."    <li>"
-    ."      <a href='#'>Landen</a>"
+    ."      <a data-rel='ajax' href='areas?response_type=embed'>Landen</a>"
     ."    </li>"
     ."    <li>"
-    ."      <a href='#'>Gemeentes</a>"
+    ."      <a data-rel='ajax' href='areas?response_type=embed'>Gemeentes</a>"
     ."    </li>"
     ."    <li>"
-    ."      <a href='#'>Natuurgebieden</a>"
+    ."      <a data-rel='ajax' href='areas?response_type=embed'>Natuurgebieden</a>"
     ."    </li>"
     ."  </ul>"
     ."</div>";
 
   $list =
-     "<div id='search-areas-list' class=\'small-12 medium-2 columns\'>"
+     "<div id='search-areas-list' class='small-12 medium-2 columns'>"
     ."</div>";
 
 
