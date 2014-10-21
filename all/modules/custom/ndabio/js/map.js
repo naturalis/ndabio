@@ -2,7 +2,7 @@
 var map, feature, geometry, drawingManager, selectedShape;
 var mapStyle = {
 	fillColor: '#fff',
-	fillOpacity: 0.35,
+	fillOpacity: 0.25,
 	strokeWeight: 2,
 	strokeColor: '#fff',
 	clickable: false,

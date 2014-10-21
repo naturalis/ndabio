@@ -249,6 +249,13 @@ html.js fieldset.collapsible .fieldset-legend {
   font-weight: 300;
   padding-right: 1em; }
 
+#map-canvas img {
+  max-width: none; }
+
+#map-canvas {
+  width: 640px;
+  height: 600px; }
+
 .chained-select ul {
   list-style: none inside none;
   margin: 0; }
@@ -291,6 +298,9 @@ html.js fieldset.collapsible .fieldset-legend {
     color: #b2b1a8;
     font-weight: bold; }
 
+.item-list ul .row-area {
+  line-height: 1.1;
+  margin-bottom: 10px; }
 .row-area a {
   color: #542e08; }
   .row-area a.active, .row-area a:hover {
