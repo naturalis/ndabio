@@ -1,1 +1,1 @@
-select  gid, case when  type = 'Nature' then concat( locality, ' (',  source, ')') else  locality end as locality,  st_asgeojson(the_geom) as geojson,  iso,  source,  type, country_nl from bp_areas
+select  gid, case when  type = 'Nature' then concat( locality, ' (',  source, ')') else  locality end as locality,  st_asgeojson(the_geom, 6) as geojson,  iso,  source,  type, country_nl from bp_areas
