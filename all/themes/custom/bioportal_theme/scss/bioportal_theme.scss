@@ -71,6 +71,16 @@ $icon-chevron-right: "\e60c";
    color:    $gray-3;
 }
 
+.row.collapse .geo-search-label{
+  height: 50px;
+  line-height: 50px;
+  text-align: right;
+  color: $gray-8;
+  font-size: 1.2em;
+  font-weight: 300;
+  padding-right: 1em;
+}
+
 // GLOBAL SEMANTIC CLASSES
     .scientific-name{
       font-style: italic;

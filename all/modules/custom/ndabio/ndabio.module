@@ -531,7 +531,7 @@ function ndabio_geosearch_callback() {
 
   $list =
      "<div id='search-areas-list' class='small-12 medium-3 columns'>"
-    ."  <input id='search-areas-filter' placeholder='«filter»' />"
+    ."  <input id='search-areas-filter' placeholder='« filter »' />"
     ."  <div id='search-areas-target'></div>"
     ."</div>";
 

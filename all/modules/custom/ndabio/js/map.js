@@ -267,5 +267,16 @@ function processPoints(geometry, callback, thisArg) {
         });
 	});
 
+	// Add labels to the omnibox
+	// A bit dirty, but where else to put it?
+	$("#edit-term")
+		.attr("placeholder","« Alles »");
+
+	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
+		.removeClass("large-offset-2")
+		.before("<div class='small-2 large-2 columns geo-search-label'>Zoek:</div>");
+
+	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>Binnen:</div></div");
 
 } }; })(jQuery, Drupal);
