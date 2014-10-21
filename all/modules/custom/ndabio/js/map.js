@@ -202,7 +202,7 @@ function processPoints(geometry, callback, thisArg) {
 	$_search_areas_target = $( "#search-areas-target" ); // target div for list of areas
 
 
-	// Load VIEWS with areas upon clikc
+	// Load VIEWS with areas upon click on area-type
 	$("a[data-rel='ajax']").click(function(){ str_url = $(this).attr("href");
 
 		var $_active_link = $(this);
@@ -210,20 +210,24 @@ function processPoints(geometry, callback, thisArg) {
 		$_geo_filter.val("");
 
 		$_active_link.css( 'cursor', 'wait' );
-
 		$("a[data-rel='ajax']").parent().removeClass("active");
 		$_active_link.parent().addClass("active");
 
+		// AJAX
 		$.get( str_url, function( data ) {
 
 			$_active_link.css( 'cursor', 'pointer' );
 
 			$_search_areas_target.html( data );
 
+			// Hangle click on area
 			$_search_areas_target.find('.row-area a').click(function() {
 
+				$(".row-area a").removeClass("active");
+				$(this).addClass("active");
 				plotMapArea(this.id.substr(4),str_base_path);
 				return false;
+
 			});
 
 		});

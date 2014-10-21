@@ -39,15 +39,6 @@
   /* Internet Explorer 10+ */
   color: #cccccc; }
 
-.row.collapse .geo-search-label {
-  height: 50px;
-  line-height: 50px;
-  text-align: right;
-  color: #4d4d4d;
-  font-size: 1.2em;
-  font-weight: 300;
-  padding-right: 1em; }
-
 .scientific-name {
   font-style: italic; }
 
@@ -249,6 +240,15 @@ html.js fieldset.collapsible .fieldset-legend {
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
   content: "\e610"; }
 
+.row.collapse .geo-search-label {
+  height: 50px;
+  line-height: 50px;
+  text-align: right;
+  color: #4d4d4d;
+  font-size: 1.2em;
+  font-weight: 300;
+  padding-right: 1em; }
+
 .chained-select ul {
   list-style: none inside none;
   margin: 0; }
@@ -290,6 +290,11 @@ html.js fieldset.collapsible .fieldset-legend {
   #search-areas-target h3 {
     color: #b2b1a8;
     font-weight: bold; }
+
+.row-area a {
+  color: #542e08; }
+  .row-area a.active, .row-area a:hover {
+    color: #009ee0; }
 
 .page-nda-pass main table {
   margin-left: 8.33333%;
