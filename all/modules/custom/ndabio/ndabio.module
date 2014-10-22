@@ -550,15 +550,17 @@ function ndabio_geosearch_callback() {
     '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
     '#suffix' => '<div id=\'map-canvas\'></div></div>'.$links.$list,
   );
-  // $myform['gmap']['submit'] = array(
-  //   '#type' => 'submit',
-  //   '#value' => 'Search',
-  //   '#attributes' => array(
-  //     'onclick' => 'postShape();',
-  //     'onsubmit' => 'return false',
-  //   ),
-  // );
-  $pagecontent = drupal_render($myform);
+  $myform['gmap']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Search',
+    '#attributes' => array(
+      'onclick' => 'postShape();', 
+      'onsubmit' => 'return false',
+    ),
+  );
+  $pagecontent = '<form id="ndabio-advanced-taxonomysearch" accept-charset="UTF-8" method="post" action="/nba/result">' . 
+    drupal_render(($myform)) . 
+    "</form>";
   return $pagecontent;
 }
 
