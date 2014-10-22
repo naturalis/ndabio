@@ -558,7 +558,7 @@ function ndabio_geosearch_callback() {
   //     'onsubmit' => 'return false',
   //   ),
   // );
-  $pagecontent = '<form id="ndabio-advanced-taxonomysearch" accept-charset="UTF-8" method="post" action="' . $base_path . 'nba/result">' .
+  $pagecontent = '<form id="ndabio-advanced-taxonomysearch" accept-charset="UTF-8" method="post" action="' . $base_path . 'nba/result" onsubmit="postShape();">' .
     drupal_render($myform) . "</form>";
   return $pagecontent;
 }
