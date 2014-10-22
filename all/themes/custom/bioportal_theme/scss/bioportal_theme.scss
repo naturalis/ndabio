@@ -464,7 +464,7 @@ $icon-chevron-right: "\e60c";
 
     #search-areas-target{
       height: 540px;
-      overflow: scroll;
+      overflow: auto;
 
       ul{
         list-style: none inside none;

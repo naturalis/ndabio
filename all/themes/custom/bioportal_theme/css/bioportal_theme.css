@@ -296,7 +296,7 @@ html.js fieldset.collapsible .fieldset-legend {
 
 #search-areas-target {
   height: 540px;
-  overflow: scroll;
+  overflow: auto;
   font-weight: 14px; }
   #search-areas-target ul {
     list-style: none inside none; }
