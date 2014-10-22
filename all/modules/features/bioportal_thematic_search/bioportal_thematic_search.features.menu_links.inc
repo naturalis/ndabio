@@ -27,7 +27,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'external' => 1,
     'has_children' => 1,
     'expanded' => 0,
-    'weight' => 0,
+    'weight' => -50,
     'customized' => 1,
   );
   // Exported menu link: main-menu_extinct:<front>
