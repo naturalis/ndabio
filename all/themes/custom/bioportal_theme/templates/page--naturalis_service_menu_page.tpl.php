@@ -44,52 +44,6 @@
     <?php endif; ?>
   </header> <!--/.l-header -->
 
-  <!-- NATURALIS header -->
-  <?php if (  $is_front  ): ?>
-    <!--.l-header-region -->
-    <section class="l-header-region row show-for-medium-up <?php print $header_background; ?>" id="naturalis-header">
-
-      <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
-
-      <div class="medium-2 columns" id="naturalis-logo">
-        <img src="<?php print $naturalis_logo; ?>"/>
-      </div>
-
-      <div class="medium-6 columns" id="title-and-slogan">
-
-        <?php if ($site_name): ?>
-          <h1>
-            <?php print $site_name; ?>
-          </h1>
-        <?php endif; ?>
-
-        <?php if ($site_slogan): ?>
-          <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
-        <?php endif; ?>
-
-        <div class="intro-more hidden">
-          <i class="icon-double-chevron-down"></i>
-          <?php print t('Read more'); ?>
-        </div>
-
-        <div id="intro">
-            <?php print $intro; ?>
-            <div class="intro-less ">
-              <i class="icon-double-chevron-up"></i>
-              <?php print t('Back'); ?>
-            </div>
-        </div>
-
-      </div>
-
-      <div class="medium-4 columns" id="logo"><!-- the photo is used as 'logo' -->
-        <img src='<?php print $logo;?>'/>
-      </div>
-
-    </section>
-    <!--/.l-header-region -->
-  <?php endif; ?>
-
     <?php if (!empty($page['header'])): ?>
       <!--.l-header-region -->
       <section class="l-header-region row">
@@ -133,7 +87,16 @@
   <?php endif; ?>
 
   <main role="main" class="row l-main">
-    <div class="<?php print $main_grid; ?> main columns">
+
+    <aside role="complementary" class="medium-3 columns"><?php // TODO: Remove this .tpl file and solve everything using display suite or boxes ?>
+      <img id="large-logo" src='/profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/logo-large-black.png' />
+      <?php print render($page['sidebar_first']); ?>
+    </aside>
+
+    <div class="medium-6 columns">
+
+      <h1 id="page-title" class="title"><?php print $title; ?></h1>
+
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlight panel callout">
           <?php print render($page['highlighted']); ?>
@@ -141,12 +104,6 @@
       <?php endif; ?>
 
       <a id="main-content"></a>
-
-      <?php if ($title && !$is_front): ?>
-        <?php print render($title_prefix); ?>
-        <h1 id="page-title" class="title"><?php print $title; ?></h1>
-        <?php print render($title_suffix); ?>
-      <?php endif; ?>
 
       <?php if (!empty($tabs)): ?>
         <div class="tabs">
@@ -163,29 +120,12 @@
 
       <?php print render($page['content']); ?>
 
-      <?php if ($is_front): ?>
-        <div id="banner-geographical-search">
-          <a href="/geographic-search">
-            <h3><?php print t("Geographic Search"); ?><i class="icon-arrow-right"></i></h3>
-            <img src='/sites/all/themes/custom/bioportal_theme/img/geographic_search.png' />
-          </a>
-        </div>
-      <?php endif; ?>
-
     </div>
-    <!--/.main region -->
 
-    <?php if (!empty($page['sidebar_first'])): ?>
-      <aside role="complementary" class="<?php print $sidebar_first_grid; ?> sidebar-first columns sidebar">
-        <?php print render($page['sidebar_first']); ?>
-      </aside>
-    <?php endif; ?>
+    <aside role="complementary" class="medium-3 columns">
+      <?php print render($page['sidebar_second']); ?>
+    </aside>
 
-    <?php if (!empty($page['sidebar_second'])): ?>
-      <aside role="complementary" class="<?php print $sidebar_sec_grid; ?> sidebar-second columns sidebar">
-        <?php print render($page['sidebar_second']); ?>
-      </aside>
-    <?php endif; ?>
   </main>
   <!--/.main-->
 
@@ -253,7 +193,7 @@
         <div class="row" id="bottom-bar-top">
           <?php if ($show_crumble && $breadcrumb): ?>
             <div class="medium-9 columns crumble">
-              <?php echo t('U bevindt zich hier'); ?>
+              U bevindt zich hier:
               <?php print $breadcrumb; ?>
             </div>
           <?php endif; ?>

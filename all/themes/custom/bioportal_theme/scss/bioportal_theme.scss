@@ -654,3 +654,30 @@ $icon-chevron-right: "\e60c";
       position: relative;
       top: 3px;
     }
+
+// USER MENU PAGES
+
+  // user menu pages: LOGO
+
+    .node-type-naturalis-service-menu-page{
+      #large-logo{
+        padding: 35px;
+      }
+
+      .body{
+        p:first-child{
+          border-bottom: 1px solid $gray-2;
+          color: $blue;
+          font-size: 1.66667em;
+          font-weight: bold;
+          margin-bottom: 25px;
+          padding-bottom: 25px;
+        }
+      }
+    }
+
+    .page-node-edit{
+      main {
+        background-color: #FFFFF8;
+      }
+    }

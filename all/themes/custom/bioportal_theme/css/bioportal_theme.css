@@ -412,3 +412,16 @@ i {
   font-size: 24px;
   position: relative;
   top: 3px; }
+
+.node-type-naturalis-service-menu-page #large-logo {
+  padding: 35px; }
+.node-type-naturalis-service-menu-page .body p:first-child {
+  border-bottom: 1px solid #e6e6e6;
+  color: #009ee0;
+  font-size: 1.66667em;
+  font-weight: bold;
+  margin-bottom: 25px;
+  padding-bottom: 25px; }
+
+.page-node-edit main {
+  background-color: #FFFFF8; }
