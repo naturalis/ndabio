@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bioportal Serrvice Menu Pages feature.
+ */
+
+include_once 'bioportal_serrvice_menu_pages.features.inc';
