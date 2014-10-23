@@ -11,11 +11,11 @@ var mapStyle = {
 }
 
 function postShape() {
-//this.form.elements["geometry"].value = getShapeGeometry();
 	if (selectedShape) {
-		alert("a" + getShapeGeometry());
+		alert(getShapeGeometry());
 	} else if (feature) {
-		alert("b" + JSON.stringify(geometry));
+		//var g = $("#search-areas-target").find("a.active");
+		alert(JSON.stringify(geometry));
 	}
 }
 
@@ -284,3 +284,28 @@ function processPoints(geometry, callback, thisArg) {
 		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>Binnen:</div></div");
 
 } }; })(jQuery, Drupal);
+
+
+(function ($) {
+	$(function() {
+		$("#ndabio-advanced-taxonomysearch").submit(function(e) {
+			var gid = '';
+			var location = '';
+			var geoShape = '';
+			// Rectangle/polygon
+			if (selectedShape) {
+				var geoShape = getShapeGeometry();
+			// Selected area
+			} else if (feature) {
+				var a = $("#search-areas-target a.active");
+				var gid = a.attr("id").substr(4) ;
+				var location = a.text();
+				var geoShape = JSON.stringify(geometry);
+			}
+			$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
+			$(this).append("<input name='location' value='" + location + "' type='hidden'>");
+			$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
+			return true;
+		});
+	});
+})(jQuery);
