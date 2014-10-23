@@ -338,6 +338,8 @@ function setSpecimenParameters (array $sP, $type) {
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
+
+print_r($_POST); die();
     // Do we have POST data? If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
