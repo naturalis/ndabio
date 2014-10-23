@@ -850,7 +850,7 @@ function ndabio_advanced_taxonomysearch() {
                 '#default_value' => '',
                 '#required'      =>  FALSE,
                 '#inline'        =>  TRUE,
-                '#attributes'    =>  array( 'data-clear' => "" )
+                '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
               );
             }
           }
@@ -862,7 +862,7 @@ function ndabio_advanced_taxonomysearch() {
             '#default_value' => '',
             '#required'      =>  FALSE,
             '#inline'        =>  TRUE,
-            '#attributes'    =>  array( 'data-clear' => "" )
+            '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
           );
         }
       }
