@@ -766,12 +766,11 @@ function ndabio_advanced_taxonomysearch() {
   if($geosearch) {
     global $base_root, $base_path;
     $path = drupal_get_path('module', 'ndabio');
-    drupal_add_css($path . "/css/naturalis.css");
+    drupal_add_css($path . "/css/ndabio_style.css");
     drupal_add_js($path . "/js/map.js", array('weight' => 1));
     drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
     drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
-
-    drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4)); }); });", 'inline');
+    drupal_add_js("var str_base_path = '$base_path' ",'inline');
   }
   $searchtype = array(0 => t('And'), 1 => t('Or'));
 
@@ -799,9 +798,11 @@ function ndabio_advanced_taxonomysearch() {
         $childlabel = $child->description;
         $childsysname = $child->name;
         $fieldsetPrefix = strtolower(substr(end(explode(" ", $childsysname)), 0, 1));
+        $childgeorelevance = 0;
+        if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
-        if ($subchildren) {
+        if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => $childlabel,
@@ -899,6 +900,28 @@ function ndabio_advanced_taxonomysearch() {
   }
   
   if($geosearch) {
+    $links =
+       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
+      ."  <ul>"
+      ."    <li>"
+      ."      <a data-rel='ajax' href='areas/country?response_type=embed'>Landen</a>"
+      ."    </li>"
+      ."    <li>"
+      ."      <a data-rel='ajax' href='areas/municipality?response_type=embed'>Gemeentes</a>"
+      ."    </li>"
+      ."    <li>"
+      ."      <a data-rel='ajax' href='areas/nature?response_type=embed'>Natuurgebieden</a>"
+      ."    </li>"
+      ."  </ul>"
+      ."</div>";
+
+
+
+    $list =
+       "<div id='search-areas-list' class='small-12 medium-3 columns'>"
+      ."  <input id='search-areas-filter' placeholder='« filter »' />"
+      ."  <div id='search-areas-target'></div>"
+      ."</div>";
     $form[$sysname]['gmap'] = array(
       '#type' => 'gmap',
       '#map' => 'gmap',
@@ -909,11 +932,10 @@ function ndabio_advanced_taxonomysearch() {
           'geocode_leave_marker' => TRUE,
         ),
       ),
-      '#prefix' => '<div id=\'banner-geographical-search\'>',
-      '#suffix' => '<div id=\'map-canvas\'></div></div>',
+      '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
+      '#suffix' => '<div id=\'map-canvas\' style=\'height:600px;\'></div></div>'.$links.$list,
     );
   }
-  
   $form[$sysname]['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
