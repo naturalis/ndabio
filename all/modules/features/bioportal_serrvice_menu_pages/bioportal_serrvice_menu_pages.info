@@ -16,7 +16,6 @@ features[features_api][] = api:2
 features[menu_links][] = main-menu_about:node/1667
 features[menu_links][] = main-menu_for-developers:node/1666
 features[menu_links][] = menu-naturalis-service-menu_colophon:node/1663
-features[menu_links][] = menu-naturalis-service-menu_contact:contact
 features[menu_links][] = menu-naturalis-service-menu_disclaimer:node/1664
 features[uuid_node][] = 1dfa43fc-f62c-4d40-a016-4e4f40952954
 features[uuid_node][] = 3fbad984-3780-4e5e-b2a9-71488272d5b7
