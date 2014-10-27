@@ -5,7 +5,6 @@ dependencies[] = bioportal_geoview
 dependencies[] = bioportal_thematic_search
 dependencies[] = bioportal_theme_settings
 dependencies[] = boxes
-dependencies[] = context_ui
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = geozones
