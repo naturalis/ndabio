@@ -86,17 +86,23 @@ function ndabioresults_block_info() {
   $blocks['ndabioresults_verzameld'] = array(
     'info' => t('NBA: Zoekresultaten verzameld'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'nba/result\nnba/result*'
+    'pages' => "nba/result\nnba/result*",
+    'region' => "sidebar_first",
+    'status' => TRUE,
   );
   $blocks['ndabioresults_gegevens'] = array(
     'info' => t('NBA: Zoekresultaten gegevens'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'nba/result\nnba/result*'
+    'pages' => "nba/result",
+    'region' => "sidebar_first",
+    'status' => TRUE,
   );
   $blocks['ndabioresults_categorien'] = array(
     'info' => t('NBA: Zoekresultaten categorien'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'nba/result\nnba/result*'
+    'pages' => "nba/result\nnba/result*",
+    'region' => "sidebar_first",
+    'status' => TRUE,
   );
   return $blocks;
 }
@@ -116,12 +122,12 @@ function ndabioresults_block_view($delta = '') {
       break;
     case 'ndabioresults_gegevens':
       $block['subject'] = t('Data');
-      $block['content'] = 'Toon gegevens van:' . 
+      $block['content'] = 'Toon gegevens van:' .
         '';
       break;
     case 'ndabioresults_categorien':
       $block['subject'] = t('Categories');
-      $block['content'] = 'Toon categorien:' . 
+      $block['content'] = 'Toon categorien:' .
         '';
       break;
   }
