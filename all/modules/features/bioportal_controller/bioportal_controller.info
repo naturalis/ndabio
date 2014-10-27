@@ -9,6 +9,7 @@ dependencies[] = ctools
 dependencies[] = features
 dependencies[] = geozones
 dependencies[] = ndabio
+dependencies[] = ndabioresults
 dependencies[] = search
 dependencies[] = searchtax
 dependencies[] = strongarm
