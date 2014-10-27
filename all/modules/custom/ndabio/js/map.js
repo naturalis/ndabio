@@ -198,8 +198,8 @@ function processPoints(geometry, callback, thisArg) {
 
 (function ($, Drupal) { Drupal.behaviors.ndabio = { attach: function(context, settings) {
 
-	$_geo_filter          = $("#search-areas-filter"); 	 // input for filtering areas
-	$_search_areas_target = $( "#search-areas-target" ); // target div for list of areas
+	$_geo_filter          = $("#search-areas-filter"); // input for filtering areas
+	$_search_areas_target = $("#search-areas-target"); // target div for list of areas
 
 
 	// Load VIEWS with areas upon click on area-type
@@ -309,3 +309,4 @@ function processPoints(geometry, callback, thisArg) {
 		});
 	});
 })(jQuery);
+

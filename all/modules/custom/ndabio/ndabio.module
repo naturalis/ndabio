@@ -66,13 +66,13 @@ function ndabio_menu() {
 
   $items['search/geosearch'] = array(
     'page callback' => 'ndabio_displayform',
-    'page arguments' => array(0),
+    'page arguments' => array('geo'),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
   $items['geographic-search'] = array(
     'page callback' => 'ndabio_displayform',
-    'page arguments' => array(0),
+    'page arguments' => array('geo'),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -462,9 +462,8 @@ function ndabio_config_form($form, &$form_state) {
  *
  */
 function ndabio_displayform($arg1) {
-  global $geosearch;
-  if (!empty($arg1)) $geosearch = 1;
-  else $geosearch = 0;
+  if ($arg1 == "geo") variable_set("geosearch", "1");
+  else variable_set("geosearch", "0");
   $form = drupal_get_form('ndabio_advanced_taxonomysearch');
   return (drupal_render($form));
 }
@@ -488,69 +487,6 @@ function ndabio_theme($existing, $type, $theme, $path) {
     'render element' => 'element',
   );
   return $data;
-}
-
-/**
- * Form validation logic
- */
-function ndabio_ndasearchform_callback_validate($form, &$form_state) {
-  //drupal_set_message("Naturalis: ndabio_ndasearchform_callback_validate");
-}
-
-/**
- * Execute search
- */
-function ndabio_ndasearchform_callback_submit($form, &$form_state) {
-  drupal_set_message("Naturalis: ndabio_ndasearchform_callback_submit");
-  //Build search query
-  $searchterms = "species=test"; // . $form['ndabio_advsearch']['ndabio_advsearch_species']['#value'] . ";" .
-    //"taxon=" . $form['ndabio_advsearch']['ndabio_advsearch_taxon']['#value'] . ";" .
-    //"c:" . $form['ndabio_adv']['#value'];
-  //drupal_set_message($searchterms);
-  return drupal_deliver_page(search_data($searchterms, "ndabio"));
-}
-
-/**
- *
- */
-function ndabio_geosearch_callback() {
-  global $base_root, $base_path;
-  $path = drupal_get_path('module', 'ndabio');
-  drupal_add_css($path . "/css/ndabio_style.css");
-  drupal_add_js($path . "/js/map.js", array('weight' => 1));
-  drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
-  drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
-  drupal_add_js("var str_base_path = '$base_path' ",'inline');
-  // drupal_add_js("jQuery(document).ready(function($) { $('.view-geographic-areas li').click(function() { plotMapArea(this.id.substr(4), '" . $base_path . "'); }); });", 'inline');
-
-  $links =
-     "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
-    ."  <ul>"
-    ."    <li>"
-    ."      <a data-rel='ajax' href='areas/country?response_type=embed'>Landen</a>"
-    ."    </li>"
-    ."    <li>"
-    ."      <a data-rel='ajax' href='areas/municipality?response_type=embed'>Gemeentes</a>"
-    ."    </li>"
-    ."    <li>"
-    ."      <a data-rel='ajax' href='areas/nature?response_type=embed'>Natuurgebieden</a>"
-    ."    </li>"
-    ."  </ul>"
-    ."</div>";
-
-
-
-  $list =
-     "<div id='search-areas-list' class='small-12 medium-3 columns'>"
-    ."  <input id='search-areas-filter' placeholder='« filter »' />"
-    ."  <div id='search-areas-target'></div>"
-    ."</div>";
-
-
-  $myform = ndabio_advanced_taxonomysearch($geoonly = 1);
-  $pagecontent = '<form id="ndabio-advanced-taxonomysearch" accept-charset="UTF-8" method="post" action="' . $base_path . 'nba/result">' .
-    drupal_render($myform) . "</form>";
-  return $pagecontent;
 }
 
 /**
@@ -673,10 +609,6 @@ function ndabio_block_view($delta = '') {
         '<a href="' . variable_get('ndabio_copyright_url', $base_root . $base_path) . '">' .
         variable_get('ndabio_copyright_label', 'Naturalis') . '</a>';
       break;
-    case 'ndabio_search_block':
-      $form = drupal_get_form('ndabio_ndasearchform_callback');
-      $block['content'] = drupal_render($form);
-      break;
   }
 
   return $block;
@@ -762,8 +694,7 @@ function ndabio_search_page($results) {
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch() {
-  global $geosearch;
-  if($geosearch) {
+  if(variable_get('geosearch') == '1') {
     global $base_root, $base_path;
     $path = drupal_get_path('module', 'ndabio');
     drupal_add_css($path . "/css/ndabio_style.css");
@@ -899,7 +830,7 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
   
-  if($geosearch) {
+  if(variable_get('geosearch') == '1') {
     $links =
        "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
       ."  <ul>"
@@ -922,7 +853,7 @@ function ndabio_advanced_taxonomysearch() {
       ."  <input id='search-areas-filter' placeholder='« filter »' />"
       ."  <div id='search-areas-target'></div>"
       ."</div>";
-    $form[$sysname]['gmap'] = array(
+    $form['gmap'] = array(
       '#type' => 'gmap',
       '#map' => 'gmap',
       '#settings' => array(
