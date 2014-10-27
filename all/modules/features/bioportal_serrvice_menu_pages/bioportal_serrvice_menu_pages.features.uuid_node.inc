@@ -146,10 +146,15 @@ Crizzle aliquizzle pede stuff mi. Pot socizzle natoque fo shizzle izzle magnizzl
     'und' => array(
       0 => array(
         'value' => '<h2>waar gaat deze site over?</h2>
-<h2>bronsystemen </h2>
+
+<h2>bronsystemen</h2>
+
 <h2>over collectie</h2>
+
 <h3>over brahms</h3>
+
 <h3>over CRS</h3>
+
 <h3>over NSR</h3>
 ',
         'summary' => '',
@@ -178,48 +183,47 @@ Crizzle aliquizzle pede stuff mi. Pot socizzle natoque fo shizzle izzle magnizzl
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<table width="416" border="0" style="height: 146px;">
-  <tbody>
-    <tr>
-      <td>Visiting address</td>
-      <td>Darwinweg 2, 2333 CR Leiden</td>
-    </tr>
-    <tr>
-      <td>Postadres</td>
-      <td>Postbus 9517, 2300 RA Leiden</td>
-    </tr>
-    <tr>
-      <td>Postal address</td>
-      <td>+ 31-(0)71 568 7600</td>
-    </tr>
-    <tr>
-      <td>Fax</td>
-      <td>+ 31-(0)71 568 7666</td>
-    </tr>
-    <tr>
-      <td>E-mail</td>
-      <td>
-        <a target="_blank" href="mailto:contact@naturalis.nl">contact@naturalis.nl</a>
-      </td>
-    </tr>
-    <tr>
-      <td>Office address</td>
-      <td>Darwinweg 2, 2333 CR Leiden</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Chamber of Commerce</td>
-      <td>41169515</td>
-    </tr>
-    <tr>
-      <td>VAT-number</td>
-      <td>NL803595943B01</td>
-    </tr>
-  </tbody>
-</table>',
+        'value' => '<table border="0" style="height:146px; width:416px">
+	<tbody>
+		<tr>
+			<td>Visiting address</td>
+			<td>Darwinweg 2, 2333 CR Leiden</td>
+		</tr>
+		<tr>
+			<td>Postadres</td>
+			<td>Postbus 9517, 2300 RA Leiden</td>
+		</tr>
+		<tr>
+			<td>Postal address</td>
+			<td>+ 31-(0)71 568 7600</td>
+		</tr>
+		<tr>
+			<td>Fax</td>
+			<td>+ 31-(0)71 568 7666</td>
+		</tr>
+		<tr>
+			<td>E-mail</td>
+			<td><a href="mailto:contact@naturalis.nl" target="_blank">contact@naturalis.nl</a></td>
+		</tr>
+		<tr>
+			<td>Office address</td>
+			<td>Darwinweg 2, 2333 CR Leiden</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Chamber of Commerce</td>
+			<td>41169515</td>
+		</tr>
+		<tr>
+			<td>VAT-number</td>
+			<td>NL803595943B01</td>
+		</tr>
+	</tbody>
+</table>
+',
         'summary' => '',
         'format' => 'full_html',
         'safe_summary' => '',
