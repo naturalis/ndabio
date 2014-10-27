@@ -84,13 +84,19 @@ function ndabioresults_config_form($form, &$form_state) {
  */
 function ndabioresults_block_info() {
   $blocks['ndabioresults_verzameld'] = array(
-    'info' => t('NBA: Zoekresultaten verzameld')
+    'info' => t('NBA: Zoekresultaten verzameld'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'nba/result\nnba/result*'
   );
   $blocks['ndabioresults_gegevens'] = array(
-    'info' => t('NBA: Zoekresultaten gegevens')
+    'info' => t('NBA: Zoekresultaten gegevens'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'nba/result\nnba/result*'
   );
   $blocks['ndabioresults_categorien'] = array(
-    'info' => t('NBA: Zoekresultaten categorien')
+    'info' => t('NBA: Zoekresultaten categorien'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'nba/result\nnba/result*'
   );
   return $blocks;
 }
