@@ -25,6 +25,9 @@ function gettaxonomybysystem($systemname) {
   return t(db_query($sql)->fetchField());
 }
 
+/**
+ * Implements hook_menu().
+ */
 function ndabioresults_menu() {
   global $language;
 
@@ -35,11 +38,6 @@ function ndabioresults_menu() {
     'page arguments' => array('ndabioresults_config_form'),
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
-  );
-  $items['nda/page'] = array(
-    'page callback' => 'ndabioresults_page_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
   );
   $items['nba/result/%'] = array(
     'page callback' => 'ndabioresults_pass',
@@ -57,18 +55,70 @@ function ndabioresults_menu() {
   return $items;
 }
 
-function ndabioresults_page_callback() {
-  global $base_root, $base_path;
-  return t('Copyright') . ' ' . date("Y") . ' <a href="' . variable_get('ndabioresults_copyright_url', $base_root . $base_path) . '">Naturalis</a>';
-}
 
 function ndabioresults_config_form($form, &$form_state) {
   $form['ndabioresults_config'] = array(
     '#type' => 'fieldset',
     '#title' => t('Naturalis config')
   );
+
+  //NBA Base URL
+  $form['ndabioresults_config']['ndabioresults_config_baseurl'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA base URL'),
+    '#default_value' => variable_get('ndabioresults_config_baseurl', "http://nba.naturalis.nl/"),
+    '#size' => 140,
+    '#maxlength' => 200,
+    '#description' => t('The base URL of the NBA.'),
+    '#required' => TRUE
+  );
+
+
+
   return system_settings_form($form);
 }
+
+
+/**
+ * Implements hook_block_info().
+ */
+function ndabioresults_block_info() {
+  $blocks['ndabioresults_verzameld'] = array(
+    'info' => t('NBA: Zoekresultaten verzameld')
+  );
+  $blocks['ndabioresults_gegevens'] = array(
+    'info' => t('NBA: Zoekresultaten gegevens')
+  );
+  $blocks['ndabioresults_categorien'] = array(
+    'info' => t('NBA: Zoekresultaten categorien')
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ndabioresults_block_view($delta = '') {
+  global $base_root, $base_path;
+  $block = array();
+
+  switch ($delta) {
+    case 'ndabioresults_verzameld':
+      $block['content'] = 'Gegevens verzameld op:' .
+        '';
+      break;
+    case 'ndabioresults_gegevens':
+      $block['content'] = 'Toon gegevens van:' . 
+        '';
+      break;
+    case 'ndabioresults_categorien':
+      $block['content'] = 'Toon categorien:' . 
+        '';
+      break;
+  }
+  return $block;
+}
+
 
 
 /**
@@ -718,10 +768,9 @@ function parseTaxonDetail ($json) {
 
 
 function printTaxonDetail ($data) {
-	global $language;
+  global $language;
 
-  $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>zoekresultaten</a></div>";
-
+  $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>" . t("zoekresultaten") . "</a></div>";
   $output .= "<div class='large-7 columns'>";
 
   $output .=   "<h2>";
