@@ -44,30 +44,6 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'weight' => -49,
     'customized' => 1,
   );
-  // Exported menu link: main-menu_type-exemplaren:<front>
-  $menu_links['main-menu_type-exemplaren:<front>'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => '<front>',
-    'router_path' => '',
-    'link_title' => 'Type-exemplaren',
-    'options' => array(
-      'query' => array(
-        'thematic_search' => 'type_exemplaren',
-      ),
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'main-menu_type-exemplaren:<front>',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 1,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
-  );
   // Exported menu link: menu-naturalis-service-menu_colophon:node/1663
   $menu_links['menu-naturalis-service-menu_colophon:node/1663'] = array(
     'menu_name' => 'menu-naturalis-service-menu',
@@ -129,7 +105,6 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
   t('Contact');
   t('Disclaimer');
   t('For developers');
-  t('Type-exemplaren');
 
 
   return $menu_links;
