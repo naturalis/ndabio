@@ -103,22 +103,6 @@ function ndabio_menu() {
    'type' => MENU_CALLBACK,
   );
 
-
-  //Page used to manually create search taxonomy
-  $items['taxonomy/create'] = array(
-    'page callback' => 'ndabio_taxonomy_create',
-    'access arguments' => array('access content'),
-    'title' => t('Taxonomy create'),
-    'type' => MENU_LOCAL_TASK,
-  );
-  //Page used to manually delete search taxonomy
-  $items['taxonomy/remove'] = array(
-    'page callback' => 'ndabio_taxonomy_remove',
-    'access arguments' => array('access content'),
-    'title' => t('Taxonomy remove'),
-    'type' => MENU_LOCAL_TASK,
-  );
-
   return $items;
 }
 
@@ -136,260 +120,6 @@ function ndabio_ajax_callback() {
     echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
   }
   die();
-}
-
-/**
- * Create a new taxonomy named NDABIO_SEARCHTAXONOMY used to create the advanced search form
- *
- */
-function ndabio_taxonomy_create() {
-  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
-  if (empty($vocab)) {
-    $new_vocab = (object) array(
-      'name' => NDABIO_SEARCHTAXONOMY,
-      'description' => 'Search',
-      'machine_name' => NDABIO_SEARCHTAXONOMY,
-    );
-    taxonomy_vocabulary_save($new_vocab);
-
-    //Create a field for nda system name
-    $field = array(
-      'field_name' => 'field_ndasystem',
-      'type' => 'text',
-      'label' => 'System',
-    );
-    $field_instance = field_info_field('field_ndasystem');
-    if (empty($field_instance)) {
-      $field = field_create_field($field);
-    }
-    else {
-      $field = $field_instance;
-    }
-
-    // Attach the field to our taxonomy entity
-    $instance = array(
-      'field_name' => 'field_ndasystem',
-      'entity_type' => 'taxonomy_term',
-      'bundle' => NDABIO_SEARCHTAXONOMY,
-      'label' => 'System',
-      'description' => 'Description',
-      'required' => true,
-      'widget' => array(
-        'type' => 'text_textfield',
-        'weight' => 3,
-      ),
-    );
-    field_create_instance($instance);
-    // Done
-
-
-    //Create a field for nda taxonomy type name
-    $field = array(
-      'field_name' => 'field_ndadatatype',
-      'type' => 'text',
-      'label' => 'Data type',
-    );
-    $field_instance = field_info_field('field_ndadatatype');
-    if (empty($field_instance)) {
-      $field = field_create_field($field);
-    }
-    else {
-      $field = $field_instance;
-    }
-    // Attach the field to our taxonomy entity
-    $instance = array(
-      'field_name' => 'field_ndadatatype',
-      'entity_type' => 'taxonomy_term',
-      'bundle' => NDABIO_SEARCHTAXONOMY,
-      'label' => 'Datatype',
-      'description' => 'Datatype',
-      'required' => false,
-      'widget' => array(
-        'type' => 'text_textfield',
-        'weight' => 4,
-      ),
-    );
-    field_create_instance($instance);
-    // Done
-
-    $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
-  } else {
-    foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
-  }
-
-  $myterms = _ndabio_return_taxonomy();
-  x_arr_to_taxonomy($myterms);
-  return "create done.";
-}
-
-/**
- *
- */
-function ndabio_taxonomy_remove() {
-  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
-  foreach(taxonomy_get_tree($vocab->vid) as $term) {
-    taxonomy_term_delete($term->tid);
-  }
-  taxonomy_vocabulary_delete($vocab->vid);
-  return "remove done.";
-}
-
-/**
- * Create a taxonomy tree based on a predefined array, used for initialising
- * the advanced search fields
- */
-function x_arr_to_taxonomy($arr_terms, $parent = 0){
-  static $_weight = 0;
-
-  foreach ($arr_terms as $key => $value) {
-    $_weight++;
-
-    // If the value of the item is a string, I assume we're looking at an end-point
-    if (( gettype($value) == 'string' ) || (!empty($value->label))) {
-      x_term_save(  $value, $parent, $key, $_weight  );
-      // (We use the $key for the system-name field…)
-
-    // otherwise, we're looking at an array and we can iterate further
-    } elseif (  gettype($value) == 'array'  ){
-      $tid = x_term_save($key, $parent, $key, $_weight);
-      x_arr_to_taxonomy( $value, $tid);
-    }
-  }
-}
-
-/**
- * Create a single taxonomy entry
- */
-function x_term_save($str_term, $parent = 0, $str_system = '', $int_weight){
-  $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
-  $sysname = (is_numeric($str_system ) ? $str_term : $str_system);
-
-  //Clear path information from system name
-  $pos = strpos($sysname, "/");
-  if ($pos !== FALSE) {
-    $sysname = substr($sysname, $pos + 1);
-  }
-
-  //Get term type from term description. Default is a textfield. Use a semicolon to specify date, int,
-  $pos = strpos($str_term, ";");
-  if ($pos !== FALSE) {
-    echo "Multiple values!: " . $str_term . " (" . $str_system . ") " . substr($str_term, $pos + 1);
-    $str_term = substr($str_term, 0, $pos);
-  }
-
-  $obj_term = (object) array(
-     'name' => $sysname,
-     'vid' => $vocab->vid,
-     'weight' => $int_weight,
-     'description' => $str_term,
-  );
-
-  $obj_term->field_ndasystem[LANGUAGE_NONE][0]['value'] = (is_numeric($str_system ) ? $str_term : $str_system);
-  if ($pos !== FALSE) {
-    $obj_term->field_ndadatatype[LANGUAGE_NONE][0]['value'] = substr($str_term, $pos + 1);
-  }
-
-  if ( $parent != "0"){
-    $obj_term->parent = array($parent);
-  }
-
-  taxonomy_term_save( $obj_term );
-  return $obj_term->tid;
-}
-
-
-/**
- * Define the initial taxonomy used for buiding the advanced search form.
- */
-function _ndabio_return_taxonomy() {
-  return array(
-    'omnisearch' => 'term',
-    'extended' => array(
-      'Multimedia' => array(
-        'm_unitID' => "Registration number",
-        'm_vernacularName' => 'Vernacular name',
-        'm_family' => 'Family',
-        'm_genusOrMonomial' => 'Genus or monomial',
-        'm_speciesEpithet' => 'Species epithet',
-        'm_typeStatus' => 'Type status',
-        'm_localityText' => 'Locality text',
-      '--more--' => array(
-            'm_kingdom' => 'Kingdom',
-            'm_phylum' => 'Phylum',
-            'm_className' => 'Class',
-            'm_order' => 'Order',
-            'm_subspeciesEpithet' => 'Subspecies epithet',
-            'm_phaseOrStage' => array('label' => 'Phase or stage', 'values' => $phaseOrStage),
-            'm_sex' => array('label' => 'Sex', 'values' => $sex),
-            'm_collectionFieldNumber' => 'Collection field number',
-        ),
-        '--hide--' => array(
-            'm_gatheringAgent' => 'Collector',
-            'm_collectingStartDate' => 'Collecting start date',
-            'm_expert' => 'Expert name',
-            'm_expertOrganisation' => 'Expert organisation',
-            'm_taxonomicStatus' => 'Taxonomic status',
-            'm_subgenus' => 'subgenus',
-            'm_chronostratigraphicAttributiontTypeYoung' => "Youngest chronostratigraphic name",
-            'm_chronostratigraphicAttributiontTypeOld' => "Oldest chronostratigraphic name",
-            'm_lithostratigraphicAttributionType' => "First lithostratigraphic name",
-            'm_lithostratigraphicAttributionType2' => "Second lithostratigraphic name",
-            'm_biostratigraphicAttributionTypeOld' => "Oldest biostratigraphic name",
-            'm_biostratigraphicAttributionTypeYoung' => "Younest biostratigraphic name",
-        )
-      ),
-      'Collection specimens' => array(
-        's_unitID' => array('label' => 'Registration number','georelevant' => TRUE ),
-        's_vernacularName' => 'Vernacular name',
-        's_family' => 'Family',
-        's_genusOrMonomial' => array('label' => 'Genus or monomial', 'georelevant' => TRUE, 'values' => 'Genus|Monomial'),
-        's_speciesEpithet' => 'Species epithet',
-        's_typeStatus' => 'Type status',
-        's_localityText' => 'Locality text',
-        's_phaseOrStage' => array('label' => 'Phase or stage', 'values' => $phaseOrStage),
-        's_sex' => array('label' => 'Sex', 'values' => $sex),
-        '--hide--' => array(
-            's_subgenus' => 'Subgenus',
-            's_youngestChronstratigraphicName' => 'Youngest chronstratigraphic name',
-            's_oldestChronstratigraphicName' => 'Oldest chronstratigraphic name',
-            's_firstLithostratigraphicName' => 'First lithostratigraphic name',
-            's_secondLithostratigraphicName' => 'Second lithostratigraphic name',
-            's_oldestBiostratigraphicName' => 'Oldest biostratigraphic name',
-            's_youngestBiostratigraphicName' => 'Youngest biostratigraphic name',
-        ),
-        '--more--' => array(
-            's_kingdom' => 'Kingdom',
-            's_phylum' => 'Phylum',
-            's_className' => 'Class',
-            's_order' => 'Order',
-            's_subspeciesEpithet' => 'Subspecies epithet',
-            's_gatheringAgent' => 'Collector',
-            's_collectingStartDate' => 'Collecting start date',
-            's_collectionFieldNumber' => 'Collection field number',
-        )
-      ),
-      'Taxa'  => array(
-        't_vernacularName' => 'Vernacular name',
-        't_family' => 'Family',
-        't_genusOrMonomial' => 'Genus or monomial',
-        't_speciesEpithet' => 'Species epithet',
-        't_subspeciesEpithet' => 'Subspecies epithet',
-        '--more--' => array(
-            't_kingdom' => 'Kingdom',
-            't_phylum' => 'Phylum',
-            't_className' => 'Class',
-            't_order' => 'Order',
-            't_subgenus' => 'Subgenus',
-            't_expert' => 'Expert name',
-            't_expertOrganisation' => 'Expert organisation',
-            't_taxonomicStatus' => 'Taxonomic status',
-        ),
-        '--hide--' => array(
-        )
-      )
-    )
-
-  );
 }
 
 
@@ -769,6 +499,25 @@ function ndabio_advanced_taxonomysearch() {
 
                 //put all children in group
                 foreach ($category as $catitem) {
+				$lvalues = "";
+				  if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
+				  if ($lvalues != "") {
+ 			    unset($optionarray);
+				$optionarray[""] = ""; //First entry is an empty string 
+                foreach(explode("|", $lvalues) as $optionitem ) {
+                  $optionarray[$optionitem] = $optionitem;
+                }
+                 $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                    '#type'          => 'select',
+                    '#title'         => $catitem->description,
+                    '#options'       =>  $optionarray,
+                    '#default_value' => '',
+                    '#required'      =>  FALSE,
+                    '#inline'        =>  TRUE,
+                  );
+				  
+				  }
+				  else {
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                     '#type'          => 'textfield',
                     '#title'         => $catitem->description,
@@ -776,21 +525,22 @@ function ndabio_advanced_taxonomysearch() {
                     '#required'      =>  FALSE,
                     '#inline'        =>  TRUE,
                   );
+				  }
                 }
               }
             } else {
               //Default search fields
               if ($subchildvalues != "") {
+			    unset($optionarray);
+				$optionarray[""] = ""; //First entry is an empty string 
                 foreach(explode("|", $subchildvalues) as $optionitem ) {
                   $optionarray[$optionitem] = $optionitem;
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          =>  'select',
                   '#title'         =>  $subchildlabel,
-                  '#default_value' =>  '',
-                  '#required'      =>  FALSE,
-                  '#inline'        =>  TRUE,
                   '#options'       =>  $optionarray,
+                  '#inline'        =>  TRUE,
                   '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
                 );
                 $subchildvalues = "";
@@ -809,6 +559,24 @@ function ndabio_advanced_taxonomysearch() {
           }
         } else {
           //Default search fields
+		  $childvalues = "";
+	      if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
+              if ($childvalues != "") {
+			    unset($optionarray);
+				$optionarray[""] = ""; //First entry is an empty string 
+                foreach(explode("|", $childvalues) as $optionitem ) {
+                  $optionarray[$optionitem] = $optionitem;
+                }
+                $form[$sysname][$childsysname] = array(
+                  '#type'          =>  'select',
+                  '#title'         =>  $childlabel,
+                  '#options'       =>  $optionarray,
+                  '#inline'        =>  TRUE,
+                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
+                );
+                $subchildvalues = "";
+              }
+              else {
           $form[$sysname][$childsysname]['#type'] = array(
             '#type'          => 'textfield',
             '#title'         => $childlabel,
@@ -817,6 +585,7 @@ function ndabio_advanced_taxonomysearch() {
             '#inline'        =>  TRUE,
             '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
           );
+		  }
         }
       }
     } else {
@@ -849,7 +618,7 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
   
-  if(variable_get('geosearch') == '1') {
+  if($geosearch) {
     $links =
        "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
       ."  <ul>"
@@ -865,13 +634,12 @@ function ndabio_advanced_taxonomysearch() {
       ."  </ul>"
       ."</div>";
 
-
-
     $list =
        "<div id='search-areas-list' class='small-12 medium-3 columns'>"
       ."  <input id='search-areas-filter' placeholder='« filter »' />"
       ."  <div id='search-areas-target'></div>"
       ."</div>";
+	  
     $form['gmap'] = array(
       '#type' => 'gmap',
       '#map' => 'gmap',
