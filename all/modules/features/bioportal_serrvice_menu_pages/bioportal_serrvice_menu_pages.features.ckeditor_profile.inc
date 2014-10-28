@@ -68,9 +68,7 @@ function bioportal_serrvice_menu_pages_ckeditor_profile_defaults() {
         'js_conf' => '',
         'loadPlugins' => array(),
       ),
-      'input_formats' => array(
-        'rich_text' => 'Rich text',
-      ),
+      'input_formats' => array(),
     ),
   );
   return $data;
