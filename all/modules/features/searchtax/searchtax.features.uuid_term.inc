@@ -321,7 +321,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 't_kingdom',
     'description' => 'Kingdom',
-    'format' => NULL,
+    'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '32fc861e-68f3-4816-afba-4a4c6329fe4b',
     'vocabulary_machine_name' => 'search',
@@ -333,8 +333,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'kingdom',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'allotype|epitype|holotype|isoepitype|isolectotype|isoneotype|isosyntype|isotype|lectotype|neotype|paralectotype|paratype|syntype|topotype',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -650,7 +664,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_phaseOrStage',
     'description' => 'Phase or stage',
-    'format' => NULL,
+    'format' => 'plain_text',
     'weight' => 7,
     'uuid' => '56d49d5a-2348-4289-a578-61bb5c947bd9',
     'vocabulary_machine_name' => 'search',
@@ -662,8 +676,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'phaseOrStage',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'adult|egg|embryo|immature|juvenile|larva|nymph|subadult',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -941,7 +969,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_sex',
     'description' => 'Sex',
-    'format' => NULL,
+    'format' => 'plain_text',
     'weight' => 8,
     'uuid' => '93f35ff9-dd82-4884-ba0b-efdaf8fdfbea',
     'vocabulary_machine_name' => 'search',
@@ -953,8 +981,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'sex',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'female|hermaphrodite|male|mixed',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -983,7 +1025,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 't_taxonomicStatus',
     'description' => 'Taxonomic status',
-    'format' => NULL,
+    'format' => 'plain_text',
     'weight' => 7,
     'uuid' => '9a975141-7129-41cc-8a1c-a55c118f5948',
     'vocabulary_machine_name' => 'search',
@@ -995,8 +1037,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'taxonomicStatus',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'basionym|homonym|synonym|valid name',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -1351,7 +1407,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_kingdom',
     'description' => 'Kingdom',
-    'format' => NULL,
+    'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'd1179982-7bc2-44de-82c6-a70eeccefe9c',
     'vocabulary_machine_name' => 'search',
@@ -1363,8 +1419,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'kingdom',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'allotype|epitype|holotype|isoepitype|isolectotype|isoneotype|isosyntype|isotype|lectotype|neotype|paralectotype|paratype|syntype|topotype',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
