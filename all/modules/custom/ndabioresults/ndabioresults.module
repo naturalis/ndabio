@@ -406,14 +406,6 @@ function setSpecimenParameters (array $sP, $type) {
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
-
-$_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
-$_POST['t_andOr'] = 0;
-$_POST['m_andOr'] = 0;
-$_POST['s_andOr'] = 0;
- /* temp fix for corrupt form
-$_POST['t_vernacularName'] = 'henk';
-*/
 //    echo '<pre>'; print_r($_POST); echo '</pre>';
 
     // Do we have POST data? If so, add to SESSION or replace existing SESSION data
@@ -426,31 +418,11 @@ $_POST['t_vernacularName'] = 'henk';
         handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
     }
     // Redirect to distinct services
-    empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+    return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 
     // This line returns mock data
     // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
     // return DUMMYperformNdaRequest('all');
-}
-
-/**
- * Distributes search parameters of the advanced search to appropiate services and returns
- * formatted output
- *
- * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
- * the appropriate channels and returns formatted result
- *
- * @return string Formatted output
- */
-function ndaAdvancedSearch () {
-    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
-    // Subdivide specimen parameters for both result types
-    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
-//echo '<pre>'; print_r($services); echo '</pre>';
-    return performNdaRequest(setChannels($services));
 }
 
 /**
@@ -475,6 +447,26 @@ function ndaSimpleSearch () {
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
         $services[$request] = $p;
     }
+    return performNdaRequest(setChannels($services));
+}
+
+/**
+ * Distributes search parameters of the advanced search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function ndaAdvancedSearch () {
+    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    // Subdivide specimen parameters for both result types
+    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+//echo '<pre>'; print_r($services); echo '</pre>';
     return performNdaRequest(setChannels($services));
 }
 
@@ -571,9 +563,9 @@ function countSearchParamaters ($d) {
  * @return void|string
  */
 function performNdaRequest (array $channels = array()) {
-    // As long as the NDA services are inoperable, just return the channels
+    // Debug: print queries
     drupal_set_message('<pre>' . print_r($channels, true) . '</pre>');
-   // return;
+    //return;
 
 	if (empty($channels)) {
 		handleError('Cannot set curl channels');
@@ -587,7 +579,7 @@ function performNdaRequest (array $channels = array()) {
 	// Map functions to each channel result:
 	// parses and prints data
 	$output = '';
-    $serviceToFunctions = serviceToFunctions();
+	$serviceToFunctions = serviceToFunctions();
 	foreach ($remoteData as $service => $json) {
 		if (!isset($serviceToFunctions[$service]) || empty($json)) {
 			continue;
@@ -656,7 +648,7 @@ function queryNda ($channels = array(), $timeout = false) {
         curl_multi_remove_handle($mh, $ch[$i]);
     }
     curl_multi_close($mh);
-echo '<pre>'; print_r($remoteData); echo '</pre>';
+//echo '<pre>'; print_r($remoteData); echo '</pre>';
     return $remoteData;
 }
 
@@ -1088,15 +1080,15 @@ function printTableRow ($field, $value) {
 // Parses multimedia json response into array
 function parseMultimedia ($json) {
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-//print_r($data);
+//echo '<pre>'; print_r($data); echo '</pre>';
 	$output['searchTerms'] = getSearchTerms($data);
-	$output['total'] = getTotalRows($data);
-	if (!$output['searchTerms'] || !$output['total']) {
-		handleError('Invalid json response');
+	if (!$output['searchTerms']) {
+		handleError('parseMultimedia: invalid json response');
 	}
+	$output['total'] = getTotalRows($data);
 	foreach ($data->searchResults as $row) {
 		$type = isset($row->result->taxon) ? 'taxon' : 'specimen';
 		$d['title'] = $row->result->title;
@@ -1108,6 +1100,7 @@ function parseMultimedia ($json) {
 		$d['hits'] = getHits($row);
 		$output['results'][] = $d;
 	}
+//echo '<pre>'; print_r($output); echo '</pre>';
 	return isset($output) ? $output : false;
 }
 
@@ -1123,6 +1116,7 @@ function printMultimedia ($data) {
   $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Multimedia'), $data['total'] );
   $output  .= "<div class='multimedia-wrapper'>";
 
+//echo '<pre>'; print_r($data); echo '</pre>';
 
   foreach ($data['results'] as $i => $row) {
 		$w = "240";
@@ -1499,7 +1493,7 @@ function parseTaxa ($json) {
 
 	$output['total'] = getTotalRows($data);
 	$output['searchTerms'] = getSearchTerms($data);
-	if (!$output['searchTerms'] || !$output['total']) {
+	if (!$output['searchTerms']) {
 		handleError('parseTaxon: invalid json response');
 	}
 	foreach ($data->resultGroups as $row) {
@@ -1533,13 +1527,14 @@ function parseTaxa ($json) {
 			)
 		);
 		$d['rank'] = $row->searchResults[0]->result->taxonRank;
-		$d['url'] = $row->links[0]->href;
+		$d['url'] = url_decode($row->links[0]->href);
 		$d['sources'] = getSources($row);
 		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row) : array());
 		$d['score'] = $row->searchResults[0]->score;
 		$output['results'][] = $d;
 	}
-echo '<pre>'; print_r($data); echo '</pre>';
+echo 'Taxon object has to be changed in order to parse...<pre>'; print_r($data); echo '</pre>';
+die();
 	return isset($output) ? $output : false;
 }
 
