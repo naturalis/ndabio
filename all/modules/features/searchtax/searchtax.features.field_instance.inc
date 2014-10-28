@@ -113,8 +113,8 @@ function searchtax_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-search-field_system'
-  $field_instances['taxonomy_term-search-field_system'] = array(
+  // Exported field_instance: 'taxonomy_term-search-field_ndavalues'
+  $field_instances['taxonomy_term-search-field_ndavalues'] = array(
     'bundle' => 'search',
     'default_value' => NULL,
     'deleted' => 0,
@@ -125,12 +125,12 @@ function searchtax_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_system',
-    'label' => 'System',
+    'field_name' => 'field_ndavalues',
+    'label' => 'Values',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -143,7 +143,7 @@ function searchtax_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 7,
     ),
   );
 
@@ -153,6 +153,7 @@ function searchtax_field_default_field_instances() {
   t('Description');
   t('Geo relevance');
   t('System');
+  t('Values');
 
   return $field_instances;
 }
