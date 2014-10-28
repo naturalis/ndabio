@@ -146,7 +146,7 @@ function ndabioresults_block_view($delta = '') {
 function ndaBaseUrl() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'http://nba.naturalis.nl/';
+         $var = 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/';
     }
     return $var;
 }
@@ -161,7 +161,7 @@ function ndaBaseUrl() {
 function specimenService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'specimen-search';
+         $var = 'specimen/search';
     }
     return $var;
 }
@@ -176,7 +176,7 @@ function specimenService() {
 function specimenNamesService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'specimen-name-search';
+         $var = 'specimen/name-search';
     }
     return $var;
 }
@@ -191,7 +191,7 @@ function specimenNamesService() {
 function specimenDetailService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'get-specimen-detail';
+         $var = 'specimen/get-specimen';
     }
     return $var;
 }
@@ -206,7 +206,7 @@ function specimenDetailService() {
 function specimenMultimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'get-specimen-multimedia-object-detail-within-result-set';
+         $var = 'multimedia/get-multimedia-object-for-specimen-within-result-set';
     }
     return $var;
 }
@@ -221,7 +221,7 @@ function specimenMultimediaService() {
 function taxonService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'taxon-search';
+         $var = 'taxon/search';
     }
     return $var;
 }
@@ -236,7 +236,7 @@ function taxonService() {
 function taxonDetailService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'get-taxon-detail';
+         $var = 'taxon/get-taxon';
     }
     return $var;
 }
@@ -251,7 +251,7 @@ function taxonDetailService() {
 function taxonMultimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'get-taxon-multimedia-object-detail-within-result-set';
+         $var = 'multimedia/get-multimedia-object-for-taxon-within-result-set';
     }
     return $var;
 }
@@ -266,7 +266,7 @@ function taxonMultimediaService() {
 function multimediaService() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'multimedia-object-search';
+         $var = 'multimedia/search';
     }
     return $var;
 }
@@ -363,8 +363,7 @@ function setSpecimenParameters (array $sP, $type) {
             'unitID',
             'sex',
             'taxonomicStatus',
-            'typeStatus',
-
+            'typeStatus'
         ),
         specimenNamesService() => array(
             'className',
@@ -383,8 +382,12 @@ function setSpecimenParameters (array $sP, $type) {
             $d[$p] = $sP[$p];
         }
     }
+    // If any parameters are found, append andOr and geoShape (if applicable)
     if (isset($d)) {
         $d['_andOr'] = $sP['_andOr'];
+        if (!empty($sP['geoShape'])) {
+            $d['geoShape'] = $sP['geoShape'];
+        }
     }
     return isset($d) ? $d : null;
 }
@@ -404,7 +407,15 @@ function setSpecimenParameters (array $sP, $type) {
 */
 function ndabioresults_pass ($args = "") {
 
-//print_r($_POST); die();
+$_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+$_POST['t_andOr'] = 0;
+$_POST['m_andOr'] = 0;
+$_POST['s_andOr'] = 0;
+ /* temp fix for corrupt form
+$_POST['t_vernacularName'] = 'henk';
+*/
+//    echo '<pre>'; print_r($_POST); echo '</pre>';
+
     // Do we have POST data? If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
@@ -419,7 +430,7 @@ function ndabioresults_pass ($args = "") {
 
     // This line returns mock data
     // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
-    return DUMMYperformNdaRequest('all');
+    // return DUMMYperformNdaRequest('all');
 }
 
 /**
@@ -438,6 +449,7 @@ function ndaAdvancedSearch () {
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+//echo '<pre>'; print_r($services); echo '</pre>';
     return performNdaRequest(setChannels($services));
 }
 
@@ -452,14 +464,17 @@ function ndaAdvancedSearch () {
  */
 function ndaSimpleSearch () {
     $p = array(
-        '_search' => $_SESSION['ndaSearch']['term']
+        '_search' => $_SESSION['ndaSearch']['term'],
     );
-    $services = array(
-        specimenService() => $p,
-        specimenNamesService() => $p,
-        taxonService() => $p,
-        multimediaService() => $p
-    );
+    // Taxon search does not include geoShape
+    $services[taxonService()] = $p;
+    // Other searches do include geoShape if entered
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $p['geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+    };
+    foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
+        $services[$request] = $p;
+    }
     return performNdaRequest(setChannels($services));
 }
 
@@ -476,39 +491,27 @@ function setChannels (array $services) {
     $i = 0;
 	foreach ($services as $s => $p) {
 	    if (!empty($p)) {
+	        $p = array_filter($p, 'strlen');
     		$channels[$i]['request'] = $s;
-    		$channels[$i]['url'] = ndaBaseUrl() . $s . setParameters($p);
-		    $i++;
+    		$channels[$i]['url'] = ndaBaseUrl() . $s;
+    		$channels[$i]['post'] = count($p);
+    		$channels[$i]['postfields'] =  http_build_query($p);
+    		$i++;
 	    }
 	}
 	return isset($channels) ? $channels : array();
 }
 
 /**
- * Creates string of GET parameters
- *
- * @param array Array with key => value pairs
- *
- * @return string Formatted string
- */
-function setParameters ($p) {
-    $url = '';
-    foreach (array_filter($p, 'strlen') as $k => $v) {
-        $url .= $k . '=' . urlencode($v) . '&';
-    }
-    return '?' . rtrim($url, '&');
-}
-
-/**
  * Filters input parameters from advanced search
  *
- * Input parameters in advanced search form are prefixed with _s, _t, or _m
+ * Input parameters in advanced search form are prefixed with s_, t_, or m_
  * to differentiate between specimen, taxon and multimedia searches. This function
  * creates a new array of input parameters, filtering empty values and stripping
  * the prefix from the input.
  *
  * @param array $post The input as key => value pairs
- * @param string $typeId The input prefix (_s, _t, _m)
+ * @param string $typeId The input prefix (s_, t_, m_)
  *
  * @return void|array Filtered key => value pairs
  */
@@ -522,15 +525,36 @@ function setSectionParameters (array $post, $typeId = '') {
             $d[str_replace($typeId, '', $k)] = $v;
         }
     }
-    // Reset andOr parameter to _andOr and values to and/or
-    if (count($d) > 1) {
-         $d['_andOr'] = $d['andOr'] == 0 ? 'and' : 'or';
-         unset($d['andOr']);
-         return $d;
+    if (countSearchParamaters($d) >= 1) {
+        // Reset andOr parameter to _andOr and values to and/or
+        $d['_andOr'] = $d['andOr'] == 0 ? 'AND' : 'OR';
+        unset($d['andOr']);
+        // Append geoShape if entered
+        if (isset($post['geoShape']) && !empty($post['geoShape']) &&
+            in_array($typeId, array('m_', 's_'))) {
+            $d['geoShape'] = $post['geoShape'];
+        }
+        return $d;
     }
     // If only andOr flag is set, nothing has been entered;
     // return empty array
     return array();
+}
+
+/**
+ * Calculates the number of search parameters excluding flags (andOr etc)
+ *
+ * @param array $d Search parameter
+ * @return Number of search items
+ */
+function countSearchParamaters ($d) {
+    $flags = array('andOr', 'sort', 'sortDirection', 'maxResults');
+    foreach ($d as $k => $v) {
+        if (in_array($k, $flags)) {
+            unset($d[$k]);
+        }
+    }
+    return count($d);
 }
 
 
@@ -549,7 +573,7 @@ function setSectionParameters (array $post, $typeId = '') {
 function performNdaRequest (array $channels = array()) {
     // As long as the NDA services are inoperable, just return the channels
     drupal_set_message('<pre>' . print_r($channels, true) . '</pre>');
-    return;
+   // return;
 
 	if (empty($channels)) {
 		handleError('Cannot set curl channels');
@@ -589,6 +613,19 @@ function queryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
     for ($i = 0; $i < count($channels); $i++) {
         $ch[$i] = curl_init();
+        /*
+         * POST did not return data, currently switching to GET
+         * @todo: check if posting large areas does not break GET
+         *
+        curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+        curl_setopt($ch[$i], CURLOPT_POST, $channels[$i]['post']);
+        curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
+        */
+        $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
+
+//echo '<pre>'; print_r( $channels[$i]); echo '</pre>';
+
+
         curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch[$i], CURLOPT_HEADER, false);
@@ -619,6 +656,7 @@ function queryNda ($channels = array(), $timeout = false) {
         curl_multi_remove_handle($mh, $ch[$i]);
     }
     curl_multi_close($mh);
+echo '<pre>'; print_r($remoteData); echo '</pre>';
     return $remoteData;
 }
 
@@ -1123,13 +1161,13 @@ function printMatches ($data) {
 // Returns specimens searched for other fields but taxon
 function parseSpecimens ($json) {
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseSpecimens: no or invalid json response');
 	}
 	$data = json_decode($json);
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms'] || !$output['total']) {
-		handleError('Invalid json response');
+		handleError('parseSpecimens: invalid json response');
 	}
 	foreach ($data->searchResults as $row) {
 		$d = array();
@@ -1455,14 +1493,14 @@ function printHeaders ($headers, $p) {
 // Parses taxon/species json response into array
 function parseTaxa ($json) {
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseTaxon: no or invalid json response');
 	}
 	$data = json_decode($json);
 
 	$output['total'] = getTotalRows($data);
 	$output['searchTerms'] = getSearchTerms($data);
 	if (!$output['searchTerms'] || !$output['total']) {
-		handleError('Invalid json response');
+		handleError('parseTaxon: invalid json response');
 	}
 	foreach ($data->resultGroups as $row) {
 		$d = array();
@@ -1501,6 +1539,7 @@ function parseTaxa ($json) {
 		$d['score'] = $row->searchResults[0]->score;
 		$output['results'][] = $d;
 	}
+echo '<pre>'; print_r($data); echo '</pre>';
 	return isset($output) ? $output : false;
 }
 
@@ -1602,8 +1641,8 @@ function getTotalRows ($data) {
 
 // Returns total number of results
 function getSearchTerms ($data) {
-	if (isset($data->searchTerms)) {
-		return (array)$data->searchTerms;
+	if (isset($data->queryParameters)) {
+		return (array)$data->queryParameters;
 	}
 	return false;
 }
@@ -1729,7 +1768,7 @@ function sortArrayByArray ($array, $orderArray) {
 
 // Wrapper for Drupal error handler
 function handleError ($message) {
-	die($message);
+    die($message);
 }
 
 
@@ -1888,7 +1927,11 @@ function DUMMYqueryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
     for ($i = 0; $i < count($channels); $i++) {
         $ch[$i] = curl_init();
-        curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+
+$url = $channels[$i]['url'] . '/?'  . $channels[$i]['postfields'];
+echo $url . "<br>";
+
+        curl_setopt($ch[$i], CURLOPT_URL, $url);
         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch[$i], CURLOPT_HEADER, false);
         if ($timeout) {
@@ -1918,5 +1961,8 @@ function DUMMYqueryNda ($channels = array(), $timeout = false) {
         curl_multi_remove_handle($mh, $ch[$i]);
     }
     curl_multi_close($mh);
+
+ print_r($remoteData); die();
+
     return $remoteData;
 }
