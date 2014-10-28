@@ -301,7 +301,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'sex',
+          'value' => 'm_sex',
           'format' => NULL,
         ),
       ),
@@ -518,7 +518,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'phaseOrStage',
+          'value' => 'm_phaseOrStage',
           'format' => NULL,
         ),
       ),
@@ -679,7 +679,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'phaseOrStage',
+          'value' => 's_phaseOrStage',
           'format' => NULL,
         ),
       ),
@@ -984,7 +984,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'sex',
+          'value' => 's_sex',
           'format' => NULL,
         ),
       ),
@@ -1040,7 +1040,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'taxonomicStatus',
+          'value' => 't_taxonomicStatus',
           'format' => NULL,
         ),
       ),
@@ -1422,7 +1422,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'kingdom',
+          'value' => 's_kingdom',
           'format' => NULL,
         ),
       ),
@@ -1646,7 +1646,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'typeStatus',
+          'value' => 'm_typeStatus',
           'format' => NULL,
         ),
       ),
