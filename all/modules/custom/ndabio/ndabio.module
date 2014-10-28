@@ -747,8 +747,10 @@ function ndabio_advanced_taxonomysearch() {
           );
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
-            $subchildsysname = $subchild->name;
+	    $subchildsysname = $subchild->name;
+	    $subchildvalues = "";
             if (!empty($subchild->field_ndasystem)) $subchildsysname = $subchild->field_ndasystem['und'][0]['safe_value'];
+	    if (!empty($subchild->field_ndavalues)) $subchildvalues = $subchild->field_ndavalues['und'][0]['safe_value'];
 
             //Special category, hide or pulldown fields
             if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
@@ -778,14 +780,31 @@ function ndabio_advanced_taxonomysearch() {
               }
             } else {
               //Default search fields
-              $form[$sysname][$childsysname][$subchildsysname] = array(
-                '#type'          => 'textfield',
-                '#title'         => $subchildlabel,
-                '#default_value' => '',
-                '#required'      =>  FALSE,
-                '#inline'        =>  TRUE,
-                '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
-              );
+              if ($subchildvalues != "") {
+                foreach(explode("|", $subchildvalues) as $optionitem ) {
+                  $optionarray[$optionitem] = $optionitem;
+                }
+                $form[$sysname][$childsysname][$subchildsysname] = array(
+                  '#type'          =>  'select',
+                  '#title'         =>  $subchildlabel,
+                  '#default_value' =>  '',
+                  '#required'      =>  FALSE,
+                  '#inline'        =>  TRUE,
+                  '#options'       =>  $optionarray,
+                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
+                );
+                $subchildvalues = "";
+              }
+              else {
+                $form[$sysname][$childsysname][$subchildsysname] = array(
+                  '#type'          => 'textfield',
+                  '#title'         => $subchildlabel,
+                  '#default_value' => '',
+                  '#required'      =>  FALSE,
+                  '#inline'        =>  TRUE,
+                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
+                );
+              }
             }
           }
         } else {
