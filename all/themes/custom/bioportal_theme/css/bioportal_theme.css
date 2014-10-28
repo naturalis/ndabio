@@ -399,6 +399,25 @@ html.js fieldset.collapsible .fieldset-legend {
   .polaroid-caption .image-title {
     font-weight: bolder; }
 
+.block-filter h2, .block-filter li {
+  font-size: 13px; }
+
+.no-bullets {
+  list-style: none inside none;
+  margin-left: 0; }
+  .no-bullets input[type="checkbox"], .no-bullets input[type="radio"] {
+    margin-right: 1em;
+    margin-bottom: 0; }
+
+.filter-disabled {
+  color: #e6e6e6; }
+
+.filter-enabled {
+  color: #666666; }
+
+.filter-selected {
+  color: #009ee0; }
+
 tr:hover {
   background-color: #f6f6f4; }
 

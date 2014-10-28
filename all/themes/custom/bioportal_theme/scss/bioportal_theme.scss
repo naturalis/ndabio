@@ -631,6 +631,39 @@ $icon-chevron-right: "\e60c";
 
     }
 
+  // -- results: FILTER
+    .block-filter{
+        h2, li{
+          font-size: 13px;
+        }
+
+
+    }
+
+    .no-bullets{
+      list-style: none inside none;
+      margin-left: 0;
+
+      input[type="checkbox"], input[type="radio"] {
+        margin-right: 1em;
+        margin-bottom: 0;
+      }
+
+    }
+
+  .filter-disabled{
+    color: $gray-2;
+  }
+
+  .filter-enabled{
+    color: $gray-7;
+  }
+
+  .filter-selected{
+    color: $blue;
+  }
+
+
   // -- results: SPECIMEN
     tr:hover{
       background-color: $smoke;

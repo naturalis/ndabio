@@ -22,6 +22,35 @@ function bioportal_theme_preprocess_page(&$variables) {
 
   _embeded_view($variables);
 
+  // Override ZURB's dynamic sidebars
+
+  // Convenience variables
+  if (!empty($variables['page']['sidebar_first'])){
+    $left = $variables['page']['sidebar_first'];
+  }
+
+  if (!empty($variables['page']['sidebar_second'])) {
+    $right = $variables['page']['sidebar_second'];
+  }
+
+  if (!empty($left) && !empty($right)) {
+    $variables['main_grid'] = 'large-7 large-push-2';
+    $variables['sidebar_first_grid'] = 'large-2 large-pull-7';
+    $variables['sidebar_sec_grid'] = 'large-3';
+  } elseif (empty($left) && !empty($right)) {
+    $variables['main_grid'] = 'large-10';
+    $variables['sidebar_first_grid'] = '';
+    $variables['sidebar_sec_grid'] = 'large-1';
+  } elseif (!empty($left) && empty($right)) {
+    $variables['main_grid'] = 'large-10 large-push-2';
+    $variables['sidebar_first_grid'] = 'large-2 large-pull-10';
+    $variables['sidebar_sec_grid'] = '';
+  } else {
+    $variables['main_grid'] = 'large-12';
+    $variables['sidebar_first_grid'] = '';
+    $variables['sidebar_sec_grid'] = '';
+  }
+
 }
 
 function bioportal_theme_ndabio_omnisearch(&$variables){
