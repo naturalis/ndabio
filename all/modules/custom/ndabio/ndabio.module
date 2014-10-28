@@ -212,8 +212,6 @@ function ndabio_taxonomy_create() {
     field_create_instance($instance);
     // Done
 
-
-
     $vocab = taxonomy_vocabulary_machine_name_load(NDABIO_SEARCHTAXONOMY);
   } else {
     foreach(taxonomy_get_tree($vocab->vid) as $term) { taxonomy_term_delete($term->tid); }
@@ -461,8 +459,8 @@ function ndabio_config_form($form, &$form_state) {
 /**
  *
  */
-function ndabio_displayform($arg1) {
-  if ($arg1 == "geo") variable_set("geosearch", "1");
+function ndabio_displayform($arg1 = "") {
+  if ($arg1 === "geo") variable_set("geosearch", "1");
   else variable_set("geosearch", "0");
   $form = drupal_get_form('ndabio_advanced_taxonomysearch');
   return (drupal_render($form));
