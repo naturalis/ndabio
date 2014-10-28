@@ -1107,19 +1107,22 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-//echo '<pre>'; print_r($data); echo '</pre>';
+echo '<pre>'; print_r($data); echo '</pre>';
 	$output['searchTerms'] = getSearchTerms($data);
 	if (!$output['searchTerms']) {
 		handleError('parseMultimedia: invalid json response');
 	}
 	$output['total'] = getTotalRows($data);
 	foreach ($data->searchResults as $row) {
-		$type = isset($row->result->taxon) ? 'taxon' : 'specimen';
+		$type = !empty($row->result->associatedTaxon) ? 'associatedTaxon' :
+            'associatedSpecimen';
 		$d['title'] = $row->result->title;
 		$d['caption'] = $row->result->caption;
 		$d['score'] = $row->score;
 		$d['url'] = $row->links[0]->href;
-		$d['source'] = $row->result->{$type}->sourceSystem->name;
+		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
+            $row->result->{$type}->sourceSystem->name : '';
+		//$d['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 		$d['imgSrc'] = getImageUrl($row);
 		$d['hits'] = getHits($row);
 		$output['results'][] = $d;
@@ -1146,7 +1149,8 @@ function printMultimedia ($data) {
 		$w = "240";
     $h = 100 + $i * 50;
 
-    $row['imgSrc'] = "http://lorempixel.com/$w/$h/nature";
+    // @todo temp fix for medialib
+    $row['imgSrc'] = str_replace('file://', '', $row['imgSrc']);
 
     $output .=
       "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .
