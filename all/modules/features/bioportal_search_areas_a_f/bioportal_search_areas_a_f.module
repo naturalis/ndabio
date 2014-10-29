@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bioportal Search Areas A-F feature.
+ */
+
+include_once 'bioportal_search_areas_a_f.features.inc';
