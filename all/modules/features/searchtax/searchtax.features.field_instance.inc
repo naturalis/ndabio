@@ -73,7 +73,7 @@ function searchtax_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(
-        'display_label' => 0,
+        'display_label' => 1,
       ),
       'type' => 'options_onoff',
       'weight' => 6,
@@ -85,7 +85,7 @@ function searchtax_field_default_field_instances() {
     'bundle' => 'search',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Description',
+    'description' => 'System name used for searching in the NBA',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -98,12 +98,13 @@ function searchtax_field_default_field_instances() {
     'entity_type' => 'taxonomy_term',
     'field_name' => 'field_ndasystem',
     'label' => 'System',
-    'required' => TRUE,
+    'required' => 0,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
         'size' => 60,
@@ -150,9 +151,9 @@ function searchtax_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Datatype');
-  t('Description');
   t('Geo relevance');
   t('System');
+  t('System name used for searching in the NBA');
   t('Values');
 
   return $field_instances;
