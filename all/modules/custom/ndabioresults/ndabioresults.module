@@ -432,12 +432,19 @@ function setSpecimenParameters (array $sP, $type) {
 function ndabioresults_pass ($args = "") {
 //    echo '<pre>'; print_r($_POST); echo '</pre>';
 
-    // Do we have POST data? If so, add to SESSION or replace existing SESSION data
+    // POST data from the search form?
+    // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
     }
+    // GET data from within NDA response?
+    // Forward directly to appropriate service
+    else if (isset($_GET['nba_request'])) {
+
+        return ndaDirectRequest(urldecode($_GET['nba_request']));
+    }
     // If both POST and SESSION are empty we have a problem...
-    if (!isset($_SESSION['ndaSearch']) || empty($_SESSION['ndaSearch'])) {
+    else {
         // Probably best to redirect gracefully to search page?
         handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
     }
@@ -493,6 +500,26 @@ function ndaAdvancedSearch () {
 //echo '<pre>'; print_r($services); echo '</pre>';
     return performNdaRequest(setChannels($services));
 }
+
+/**
+ * @todo: check base url!!
+ * @param unknown $r
+ */
+function ndaDirectRequest ($r) {
+    foreach (serviceToFunctions() as $service => $d) {
+        if (strpos($r, $service) !== false) {
+            $url = parse_url($r);
+            parse_str($url['query'], $q);
+            $channels[0]['request'] = $service;
+    		$channels[0]['url'] = ndaBaseUrl() . $service;
+    		$channels[0]['post'] = 1;
+    		$channels[0]['postfields'] = http_build_query($q);
+    		return performNdaRequest($channels);
+        }
+    }
+    return array();
+}
+
 
 /**
  * Sets curl channels
@@ -790,10 +817,10 @@ function parseTaxonDetail ($json) {
 		// etc
 	);
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
-//print_r($data);
+p($data);
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
@@ -813,8 +840,8 @@ function parseTaxonDetail ($json) {
 		if (!empty($row->result->synonyms)) {
 			foreach ($row->result->synonyms as $i => $synonym) {
 				$output['synonyms'][$source] = formatScientificName(
-					$row->result->synonyms[$i]->scientificName->fullScientificName,
-					$row->result->synonyms[$i]->scientificName
+					$row->result->synonyms[$i]->fullScientificName,
+					$row->result->synonyms[$i]
 				);
 			}
 		}
@@ -838,6 +865,8 @@ function parseTaxonDetail ($json) {
 
 function printTaxonDetail ($data) {
   global $language;
+
+  p($data);
 
   $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>" . t("zoekresultaten") . "</a></div>";
   $output .= "<div class='large-7 columns'>";
@@ -986,27 +1015,28 @@ function parseSpecimenDetail ($json) {
 		// etc
 	);
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseSpecimenDetail : no or invalid json response');
 	}
 	$data = json_decode($json);
-//print_r($data);
 	foreach ($data->searchResults[0]->result as $field => $value) {
 		if (!is_array($value) && !is_object($value) &&
 			!in_array($field, $skipFields) && $value != '') {
 			$output[t(translateNdaField($field))] = $value;
 		}
 	}
-	$output['source'] = $data->searchResults[0]->result->sourceSystem->name;
+	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
+	   $data->searchResults[0]->result->sourceSystem->name : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0]);
+	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 	$output['navigation'] = getNavigation($data);
-//print_r($output);
-	return $output;
+//p($output);
+    return $output;
 }
 
 
 // Return previous/next links from result set
-function  getNavigation ($data) {
+function getNavigation ($data) {
 	if (isset($data->links) && !empty($data->links)) {
 		foreach ($data->links as $link) {
 			if ($link->rel == 'prev' || $link->rel == 'next') {
@@ -1023,12 +1053,16 @@ function printSpecimenDetail ($data) {
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
 	$fieldOrder = array(
-		'unitGUID',
-		'names'
+	   'unitID',
+	   'names',
+	   'source',
+	   'assemblageID',
+	   'otherSpecimens'
 		// etc
 	);
 	// Reorder input array
 	$data = array_merge(array_flip($fieldOrder), $data);
+//p($data);
 	$output = "<h3>" . t('Specimen details') . "</h3>" .
 		"<h5 class='source'>" . $data['source'] . "</h5>";
 	// Navigation
@@ -1039,6 +1073,18 @@ function printSpecimenDetail ($data) {
 			// Taxon name
 			if ($field == 'names') {
 				$output .= printNamesWithLinks($value, 'species');
+			}
+			// Gathering event
+			if ($field == 'gatheringEvent') {
+                $output .= printTableRow('dateTimeBegin', isset($value['dateTimeBegin']) ?
+                    date('Y-m-d', $value['dateTimeBegin'] / 1000) : '');
+                $output .= printTableRow('gatheringAgents', isset($value['gatheringAgents']) ?
+                    implode(', ', $value['gatheringAgents']) : '');
+			    $output .= printTableRow('localityText', isset($value['localityText']) ?
+                     $value['localityText'] : '');
+                $output .= printTableRow('siteCoordinates', isset($value['siteCoordinates']) ?
+                    '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
+                    $value['siteCoordinates']['lon'] . ']' : '');
 			}
 		} else {
 			$output .= printTableRow($field, $value);
@@ -1073,7 +1119,7 @@ function printNavigation ($data) {
 function printNamesWithLinks ($details, $fieldLabel) {
 	$output = '';
 	foreach ($details as $i => $detail) {
-		$name = isset($detail['unitGUID']) ? $detail['unitGUID'] : $detail['name'];
+		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
 		$t = !empty($detail['url']) ?
 			'<a href="' . printDrupalLink($detail['url']) . '">$name</a>' : $name;
 		$output .= printTableRow(($i == 0 ? t($fieldLabel) : ''), $t);
@@ -1094,6 +1140,38 @@ function getOtherSpecimens ($row) {
 	}
 	return isset($c) ? $c : null;
 }
+
+// Return gathering event data for detail page
+function getGatheringEventSpecimens ($row) {
+	if (!empty($row->searchResults[0]->result->gatheringEvent)) {
+        $event = $row->searchResults[0]->result->gatheringEvent;
+		foreach ($event as $k => $v) {
+		    if (!is_array($v) && !is_object($k) && $v != '') {
+                $d[$k] = $v;
+		    }
+		}
+		if (!empty($event->gatheringAgents)) {
+		    foreach ($event->gatheringAgents as $a) {
+                $agent[] = $a->fullName . (!empty($a->organization) ?
+                    ' (' . $a->organization . ')' : '');
+		    }
+		    $d['gatheringAgents'] = $agent;
+		}
+		if (!empty($event->siteCoordinates)) {
+		    foreach ($event->siteCoordinates as $c) {
+                if ($c->longitudeDecimal != 0 && $c->latitudeDecimal != 0) {
+                    $coordinates['lat'] = $c->latitudeDecimal;
+                    $coordinates['lon'] = $c->longitudeDecimal;
+                }
+		    }
+		    $d['siteCoordinates'] = isset($coordinates) ?
+		        $coordinates : null;
+		}
+	}
+	return isset($d) ? $d : null;
+}
+
+
 
 function printTableRow ($field, $value) {
 	return "<tr><td>" . ($field != '' ? t(translateNdaField($field)) : '') . "</td><td>" .
@@ -1119,16 +1197,24 @@ echo '<pre>'; print_r($data); echo '</pre>';
 		$d['title'] = $row->result->title;
 		$d['caption'] = $row->result->caption;
 		$d['score'] = $row->score;
-		$d['url'] = $row->links[0]->href;
+		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
             $row->result->{$type}->sourceSystem->name : '';
-		//$d['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 		$d['imgSrc'] = getImageUrl($row);
 		$d['hits'] = getHits($row);
 		$output['results'][] = $d;
 	}
 //echo '<pre>'; print_r($output); echo '</pre>';
 	return isset($output) ? $output : false;
+}
+
+
+function getMultimediaDetailLink ($row) {
+    foreach ($row->links as $link) {
+        if ($link->rel == '_multimedia') {
+            return $link->href;
+        }
+    }
 }
 
 
@@ -1158,7 +1244,7 @@ function printMultimedia ($data) {
       "  <div class='polaroid-caption'>".
       "    <div class='image-title'>" . $row['caption'] . "</div>" .
 			"    <div class='image-hits'>" . printHits($row) . "</div>" .
-			// "    <div class='image-source'>" . $row['source'] . "</div>".
+		    "    <div class='image-source'>" . $row['source'] . "</div>".
       "  </div>".
       "</a>";
 	}
@@ -1802,7 +1888,8 @@ function translateNdaField ($str) {
 
 // Create Drupal specific link
 function printDrupalLink ($url) {
-	return "http://drupal/?nda_request=" . urlencode($url);
+    global $base_root, $base_path;
+    return $base_root . $base_path . 'nba/result?nba_request=' . urlencode($url);
 }
 
 function _markUp($string){
@@ -1988,4 +2075,8 @@ echo $url . "<br>";
  print_r($remoteData); die();
 
     return $remoteData;
+}
+
+function p ($a) {
+    echo '<pre>'; print_r($a); echo '</pre>';
 }
