@@ -77,23 +77,12 @@ function ndabio_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['naturalis/ndadetail'] = array(
-    'title' => 'Details',
-    'page callback' => 'ndabio_ndadetail_callback',
-    'page arguments' => array(2, 3),
-    'access arguments' => array('access content'),
-  );
-
   //Currently used as front page
   $items['search/advancednda'] = array(
     'page callback' => 'ndabio_displayform',
     'access arguments' => array('access content'),
     'title' => t('Advanced Naturalis Data Search'),
     'type' => MENU_LOCAL_TASK,
-  );
-  $items['search/ndapass'] = array(
-    'page callback' => 'ndabio_pass',
-    'access arguments' => array('access content'),
   );
 
   //Page used by javascript to retrieve geo coordinates based on a nid
@@ -108,27 +97,22 @@ function ndabio_menu() {
 
 /**
 * Output a json formatted detail page with geocoordinates based on the nid passed in the url.
+* The resulting pae is used as input for he map, so no additional Drupal processing should take place. 
+* To achieve this the function end with a die()
 */
 function ndabio_ajax_callback() {
-  $geonode = (int)$_GET["nid"];
-
-  $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
-
-  $row = db_query($sql)->fetchObject();
-
-  if($row) {
-    echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+  if (!empty($_GET["nid"])) {
+    $geonode = (int)$_GET["nid"];
+    $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
+    $row = db_query($sql)->fetchObject();
+    if($row) {
+	  //Display data in json format
+      echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+    }
+    die(); //die() is required to avoid displaying the entire drupal interface
   }
-  die();
 }
 
-
-/**
- * Output detail page.
- */
-function ndabio_ndadetail_callback($myid = '', $myaction = NULL) {
-  return "<h2>" . t("My ID") . "</h2><pre>" . $myid . " " . $myaction . "</pre>";
-}
 
 /**
  *
@@ -227,19 +211,6 @@ function isJson($string) {
   return (json_last_error() == JSON_ERROR_NONE);
 }
 
-/**
- * GEO data is passed to this page as an node id. The node contains all geo data, and should be posted to the NDA
- */
-function ndabio_pass() {
-  $path = drupal_get_path('module', 'ndabio');
-  $mynode = node_load($_GET['geometry']);
-  $mycontent = "Selected map: " . $mynode->title . "<br />";
-  $mycontent .= "Source: " . $mynode->field_source['und'][0]['value'] . "<br />";
-  $mycontent .= "Type: " . $mynode->field_type['und'][0]['value'] . "<br />";
-  $mycontent .= "JSON: " . substr($mynode->field_geojson['und'][0]['value'], 0, 100) . "... <br />";
-  $keys = "geo=" . urlencode($mynode->field_geojson['und'][0]['value']);
-  return $mycontent . ndabio_postjson($keys = '');
-}
 
 /**
  * Post a query to the NDA.
@@ -293,102 +264,7 @@ function ndabio_getjson($url = '') {
   return $curl_response;
 }
 
-/**
- * DEFINE CUSTOM BLOCKS
- */
 
-/**
- * Implements hook_block_info().
- */
-function ndabio_block_info() {
- $blocks['ndabio_copyright_block'] = array(
-  'info' => t('Naturalis: Copyright'),
-  '#attached' => array(
-      'css' => array(
-        drupal_get_path('module', 'naturalis') . '/css/naturalis.css',
-      ),
-      'js' => array(
-      ),
-    ),
-  );
- $blocks['ndabio_search_block'] = array(
-  'info' => t('Naturalis: Search'),
-  '#attached' => array(
-      'css' => array(
-        drupal_get_path('module', 'naturalis') . '/css/naturalis.css',
-      ),
-      'js' => array(
-      ),
-    ),
-  );
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view().
- */
-function ndabio_block_view($delta = '') {
-  global $base_root, $base_path;
-  $block = array();
-
-  switch ($delta) {
-    case 'ndabio_copyright_block':
-      $block['content'] = t('Copyright') . ' ' . date("Y") . ' ' .
-        '<a href="' . variable_get('ndabio_copyright_url', $base_root . $base_path) . '">' .
-        variable_get('ndabio_copyright_label', 'Naturalis') . '</a>';
-      break;
-  }
-
-  return $block;
-}
-
-/**
- * Implements hook_block_configure().
- */
-function ndabio_block_configure($delta = '') {
-  global $base_root, $base_path;
-  $form = array();
-  if ($delta == 'ndabio_copyright_block') {
-    $form['ndabio_copyright_url'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Naturalis copyright URL'),
-      '#size' => 80,
-      '#description' => t('The URL where the copyright message is pointing to.' . '<br />' .
-        t('Default') . ': ' . $base_root . $base_path),
-      '#default_value' => variable_get('ndabio_copyright_url', $base_root . $base_path),
-    );
-    $form['ndabio_copyright_label'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Naturalis copyright label'),
-      '#size' => 80,
-      '#description' => t('The label of the copyright owner.' . '<br />' .
-        t('Default') . ': ' . t('Naturalis')),
-      '#default_value' => variable_get('ndabio_copyright_label', 'Naturalis'),
-    );
-  }
-  return $form;
-}
-
-/**
- * Implements hook_block_save().
- */
-function ndabio_block_save($delta = '', $edit = array()) {
-  if ($delta == 'ndabio_copyright_block') {
-    variable_set('ndabio_copyright_url', $edit['ndabio_copyright_url']);
-    variable_set('ndabio_copyright_label', $edit['ndabio_copyright_label']);
-  }
-}
-
-/**
- * DEFINE CRON JOB
- */
-
-/**
- * Implements hook_cron().
- */
-function ndabio_cron() {
-  drupal_set_message("Naturalis: Run cron");
-}
 
 /**
  * DEFINE CUSTOM (BASIC) SEARCH
@@ -422,6 +298,8 @@ function ndabio_search_page($results) {
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch() {
+  //dpm($_SESSION);
+  $loadold = 1;
   $geosearch = 0;
   if(variable_get('geosearch') == '1') {
     global $base_root, $base_path;
@@ -458,7 +336,7 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
-        $fieldsetPrefix = strtolower(substr(end(explode(" ", $childsysname)), 0, 1));
+        $fieldsetPrefix = strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1));
         $childgeorelevance = 0;
         if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
@@ -507,11 +385,11 @@ function ndabio_advanced_taxonomysearch() {
                 foreach(explode("|", $lvalues) as $optionitem ) {
                   $optionarray[$optionitem] = $optionitem;
                 }
+				  
                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                     '#type'          => 'select',
                     '#title'         => $catitem->description,
                     '#options'       =>  $optionarray,
-                    '#default_value' => '',
                     '#required'      =>  FALSE,
                     '#inline'        =>  TRUE,
                   );
@@ -521,7 +399,7 @@ function ndabio_advanced_taxonomysearch() {
                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                     '#type'          => 'textfield',
                     '#title'         => $catitem->description,
-                    '#default_value' => '',
+                    '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
                     '#required'      =>  FALSE,
                     '#inline'        =>  TRUE,
                   );
@@ -549,7 +427,7 @@ function ndabio_advanced_taxonomysearch() {
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
                   '#title'         => $subchildlabel,
-                  '#default_value' => '',
+                  '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
                   '#required'      =>  FALSE,
                   '#inline'        =>  TRUE,
                   '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
@@ -580,7 +458,7 @@ function ndabio_advanced_taxonomysearch() {
           $form[$sysname][$childsysname]['#type'] = array(
             '#type'          => 'textfield',
             '#title'         => $childlabel,
-            '#default_value' => '',
+            '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
             '#required'      =>  FALSE,
             '#inline'        =>  TRUE,
             '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
@@ -600,7 +478,7 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname]['omnisearch']['term'] = array(
         '#type' => 'textfield',
         '#title' => t('Keywords'),
-        '#default_value' => '',
+        '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
         '#required' => FALSE,
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
@@ -651,7 +529,7 @@ function ndabio_advanced_taxonomysearch() {
         ),
       ),
       '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
-      '#suffix' => '<div id=\'map-canvas\' style=\'height:600px;\'></div></div>'.$links.$list,
+      '#suffix' => '<div id=\'map-canvas\'></div></div>'.$links.$list,
     );
   }
   $form[$sysname]['submit'] = array(
