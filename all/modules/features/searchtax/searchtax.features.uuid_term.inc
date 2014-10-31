@@ -1430,7 +1430,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndavalues' => array(
       'und' => array(
         0 => array(
-          'value' => 'allotype|epitype|holotype|isoepitype|isolectotype|isoneotype|isosyntype|isotype|lectotype|neotype|paralectotype|paratype|syntype|topotype',
+          'value' => 'Animalia|Archaea|Bacteria|Chromista|Fungi|Plantae|Protozoa|Viruses',
           'format' => NULL,
         ),
       ),
