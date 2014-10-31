@@ -335,7 +335,7 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
-        $fieldsetPrefix = drupal_strtolower(drupal_substr($childsysname, 0, 1)); //strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1));
+        $fieldsetPrefix = (strpos($childsysname, " ") !== FALSE) ? strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1)) : drupal_strtolower(drupal_substr($childsysname, 0, 1));
         $childgeorelevance = 0;
         if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
@@ -479,7 +479,7 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname]['omnisearch']['term'] = array(
         '#type' => 'textfield',
         '#title' => t('Keywords'),
-        '#default_value' => (!empty($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+        '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
         '#required' => FALSE,
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
