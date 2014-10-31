@@ -335,7 +335,13 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
-        $fieldsetPrefix = (strpos($childsysname, " ") !== FALSE) ? strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1)) : drupal_strtolower(drupal_substr($childsysname, 0, 1));
+        if (strpos($childsysname, " ") !== FALSE) {
+          $temp = explode(" ", $childsysname);
+          $fieldsetPrefix = drupal_strtolower(drupal_substr(end($temp), 0, 1));
+        }
+        else {
+          $fieldsetPrefix = drupal_strtolower(drupal_substr($childsysname, 0, 1));
+        }
         $childgeorelevance = 0;
         if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
@@ -367,11 +373,11 @@ function ndabio_advanced_taxonomysearch() {
               $category = taxonomy_get_children($subchild->tid, $subchild->vid);
               if ($category && ($subchild->name == "--more--")) {
                 $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array(
-                  '#type'            => 'fieldset',
-                  '#title'           => t("More"),
-                  '#collapsible'     => TRUE,
-                  '#collapsed'       => TRUE,
-                  '#attributes'    =>  array('collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible", "collapsed", "form-wrapper") )
+                  '#type'        => 'fieldset',
+                  '#title'       => t("More"),
+                  '#collapsible' => TRUE,
+                  '#collapsed'   => TRUE,
+                  '#attributes'  => array('collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible", "collapsed", "form-wrapper"))
                 );
 
                 //put all children in group
@@ -385,11 +391,11 @@ function ndabio_advanced_taxonomysearch() {
                       $optionarray[$optionitem] = $optionitem;
                     }
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
-                      '#type'          => 'select',
-                      '#title'         => $catitem->description,
-                      '#options'       =>  $optionarray,
-                      '#required'      =>  FALSE,
-                      '#inline'        =>  TRUE,
+                      '#type'      => 'select',
+                      '#title'     => $catitem->description,
+                      '#options'   => $optionarray,
+                      '#required'  => FALSE,
+                      '#inline'    => TRUE,
                     );
           
                   }
@@ -398,8 +404,8 @@ function ndabio_advanced_taxonomysearch() {
                       '#type'          => 'textfield',
                       '#title'         => $catitem->description,
                       '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
-                      '#required'      =>  FALSE,
-                      '#inline'        =>  TRUE,
+                      '#required'      => FALSE,
+                      '#inline'        => TRUE,
                     );
                   }
                 }
@@ -414,11 +420,11 @@ function ndabio_advanced_taxonomysearch() {
                   $optionarray[$optionitem] = $optionitem;
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
-                  '#type'          =>  'select',
-                  '#title'         =>  $subchildlabel,
-                  '#options'       =>  $optionarray,
-                  '#inline'        =>  TRUE,
-                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
+                  '#type'       => 'select',
+                  '#title'      => $subchildlabel,
+                  '#options'    => $optionarray,
+                  '#inline'     => TRUE,
+                  '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                 );
                 $subchildvalues = "";
               }
@@ -427,9 +433,9 @@ function ndabio_advanced_taxonomysearch() {
                   '#type'          => 'textfield',
                   '#title'         => $subchildlabel,
                   '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
-                  '#required'      =>  FALSE,
-                  '#inline'        =>  TRUE,
-                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $subchildsysname )
+                  '#required'      => FALSE,
+                  '#inline'        => TRUE,
+                  '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname)
                 );
               }
             }
@@ -446,11 +452,11 @@ function ndabio_advanced_taxonomysearch() {
               $optionarray[$optionitem] = $optionitem;
             }
             $form[$sysname][$childsysname] = array(
-              '#type'          =>  'select',
-              '#title'         =>  $childlabel,
-              '#options'       =>  $optionarray,
-              '#inline'        =>  TRUE,
-              '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
+              '#type'       => 'select',
+              '#title'      => $childlabel,
+              '#options'    => $optionarray,
+              '#inline'     => TRUE,
+              '#attributes' => array('data-clear' => "", 'name' => $childsysname)
             );
             $subchildvalues = "";
           }
@@ -459,9 +465,9 @@ function ndabio_advanced_taxonomysearch() {
               '#type'          => 'textfield',
               '#title'         => $childlabel,
               '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
-              '#required'      =>  FALSE,
-              '#inline'        =>  TRUE,
-              '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
+              '#required'      => FALSE,
+              '#inline'        => TRUE,
+              '#attributes'    => array('data-clear' => "", 'name' => $childsysname)
             );
           }
         }
