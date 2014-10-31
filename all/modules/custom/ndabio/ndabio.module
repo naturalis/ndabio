@@ -79,7 +79,9 @@ function ndabio_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
-  //Page used by javascript to retrieve geo coordinates based on a nid
+  /*
+   * Page used by javascript to retrieve geo coordinates based on a nid.
+   */
   $items['naturalis/ajax'] = array(
    'page callback' => 'ndabio_ajax_callback',
    'access arguments' => array('access content'),
@@ -90,9 +92,9 @@ function ndabio_menu() {
 }
 
 /**
-* Output a json formatted detail page with geocoordinates based on the nid passed in the url.
-* The resulting pae is used as input for he map, so no additional Drupal processing should take place. 
-* To achieve this the function end with a die()
+* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
+* The resulting page is used as input for the map, so no additional Drupal processing should take place. 
+* To avoid additional Drupal theming being applied the function ends with a die()
 */
 function ndabio_ajax_callback() {
   if (!empty($_GET["nid"])) {
@@ -289,14 +291,14 @@ function ndabio_search_page($results) {
 
 /**
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
- *
  */
 function ndabio_advanced_taxonomysearch() {
   $loadold = 0;
   if (!empty($_GET['searchagain'])) {
     if (intval($_GET['searchagain']) == 1) { 
-      drupal_add_js("jQuery(document).ready(function() { getElementById('nbabio-toggle').click(); }", 'inline');
+      drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); }", 'inline');
       $loadold = 1;
+      dpm($_SESSION['ndaSearch']);
     }
   }
   $geosearch = 0;
@@ -552,7 +554,7 @@ function ndabio_advanced_taxonomysearch() {
 
 /**
  *
- */
+ *
 function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   $myvalues = array_diff($form_state['values'], array('form_build_id', 'form_token', 'form_id', 'op', 'submit'));
   unset($myvalues['form_build_id']);
@@ -571,3 +573,4 @@ function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
   }
   drupal_deliver_page("<h2>" . t("Results") . "</h2><pre>" . ndabio_getjson(rtrim($myurl, '&')) . "</pre>");
 }
+*/
