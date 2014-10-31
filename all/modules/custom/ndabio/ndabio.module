@@ -9,12 +9,6 @@
  * @package Bioportal
  */
  
-$phaseOrStage = 'adult|egg|embryo|immature|juvenile|larva|nymph|subadult';
-$sex = 'female|hermaphrodite|male|mixed';
-$typeStatus = 'allotype|epitype|holotype|isoepitype|isolectotype|isoneotype|isosyntype|isotype|lectotype|neotype|paralectotype|paratype|syntype|topotype';
-$kingdom = 'Animalia|Archaea|Bacteria|Chromista|Fungi|Plantae|Protozoa|Viruses';
-$taxonomicStatus = 'basionym|homonym|synonym|valid name';
-
 /**
  * Default value for the NDA. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
@@ -81,7 +75,7 @@ function ndabio_menu() {
   $items['search/advancednda'] = array(
     'page callback' => 'ndabio_displayform',
     'access arguments' => array('access content'),
-    'title' => t('Advanced Naturalis Data Search'),
+    'title' => 'Advanced Naturalis Data Search',
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -102,11 +96,11 @@ function ndabio_menu() {
 */
 function ndabio_ajax_callback() {
   if (!empty($_GET["nid"])) {
-    $geonode = (int)$_GET["nid"];
+    $geonode = intval($_GET["nid"]);
     $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
     $row = db_query($sql)->fetchObject();
-    if($row) {
-	  //Display data in json format
+    if ($row) {
+    //Display data in json format
       echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
     }
     die(); //die() is required to avoid displaying the entire drupal interface
@@ -115,7 +109,7 @@ function ndabio_ajax_callback() {
 
 
 /**
- *
+ * Form used to configure the ndabio module.
  */
 function ndabio_config_form($form, &$form_state) {
   $form['ndabio_config'] = array(
@@ -183,9 +177,9 @@ function ndabio_displayform($arg1 = "") {
 /**
  *
  */
-function _wrap_inner_grid_cols( &$form_element, $n = 6 ){
-  if (!isset($form_element['#prefix']) ) $form_element['#prefix'] = '';
-  if (!isset($form_element['#suffix']) ) $form_element['#prefix'] = '';
+function _wrap_inner_grid_cols(&$form_element, $n = 6) {
+  if (!isset($form_element['#prefix'])) $form_element['#prefix'] = '';
+  if (!isset($form_element['#suffix'])) $form_element['#prefix'] = '';
   $form_element['#prefix'] = $form_element['#suffix'] . "<div class='small-$n columns'>";
   $form_element['#suffix'] = "</div>" . $form_element['#suffix'];
 }
@@ -220,7 +214,7 @@ function ndabio_postjson($keys = '') {
   drupal_set_message("POST:" . $service_url);
 
   $curl = curl_init($service_url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
   curl_setopt($curl, CURLOPT_POST, 1);
   curl_setopt($curl, CURLOPT_POSTFIELDS, $keys);
   curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
@@ -248,7 +242,7 @@ function ndabio_getjson($url = '') {
   drupal_set_message("GET:" . $service_url);
 
   $curl = curl_init($service_url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
   curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
   $curl_response = curl_exec($curl);
   $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -265,7 +259,6 @@ function ndabio_getjson($url = '') {
 }
 
 
-
 /**
  * DEFINE CUSTOM (BASIC) SEARCH
  */
@@ -277,10 +270,10 @@ function ndabio_getjson($url = '') {
 function ndabio_search_page($results) {
   //drupal_set_message("Naturalis: ndabio_search_page");
 
-  $output['prefix']['#markup'] = '<h2>Search results ' . '</h2>' ;
+  $output['prefix']['#markup'] = '<h2>' . t('Search results') . '</h2>' ;
   $output['prefix']['#markup'] .= '<ol class="search-results">';
 
-  if(!empty($results)) {
+  if (!empty($results)) {
     foreach ($results as $entry) {
       $output[] = array(
         '#theme' => 'search_result',
@@ -296,12 +289,18 @@ function ndabio_search_page($results) {
 
 /**
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
+ *
  */
 function ndabio_advanced_taxonomysearch() {
-  //dpm($_SESSION);
-  $loadold = 1;
+  $loadold = 0;
+  if (!empty($_GET['searchagain'])) {
+    if (intval($_GET['searchagain']) == 1) { 
+      drupal_add_js("jQuery(document).ready(function() { getElementById('nbabio-toggle').click(); }", 'inline');
+      $loadold = 1;
+    }
+  }
   $geosearch = 0;
-  if(variable_get('geosearch') == '1') {
+  if (variable_get('geosearch') == '1') {
     global $base_root, $base_path;
     $geosearch = 1;
     $path = drupal_get_path('module', 'ndabio');
@@ -309,7 +308,7 @@ function ndabio_advanced_taxonomysearch() {
     drupal_add_js($path . "/js/map.js", array('weight' => 1));
     drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
     drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
-    drupal_add_js("var str_base_path = '$base_path' ",'inline');
+    drupal_add_js("var str_base_path = '$base_path' ", 'inline');
   }
   $searchtype = array(0 => t('And'), 1 => t('Or'));
 
@@ -318,7 +317,7 @@ function ndabio_advanced_taxonomysearch() {
   $terms = taxonomy_get_tree($v->vid, 0, 1, TRUE);
 
   $form = array();
-  foreach($terms as $item) {
+  foreach ($terms as $item) {
     $name = $item->name;
     $label = $item->description;
     $sysname = $item->name;
@@ -336,7 +335,7 @@ function ndabio_advanced_taxonomysearch() {
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
-        $fieldsetPrefix = strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1));
+        $fieldsetPrefix = drupal_strtolower(drupal_substr($childsysname, 0, 1)); //strtolower(drupal_substr(end(explode(" ", $childsysname)), 0, 1));
         $childgeorelevance = 0;
         if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
@@ -355,10 +354,10 @@ function ndabio_advanced_taxonomysearch() {
           );
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
-	    $subchildsysname = $subchild->name;
-	    $subchildvalues = "";
+            $subchildsysname = $subchild->name;
+            $subchildvalues = "";
             if (!empty($subchild->field_ndasystem)) $subchildsysname = $subchild->field_ndasystem['und'][0]['safe_value'];
-	    if (!empty($subchild->field_ndavalues)) $subchildvalues = $subchild->field_ndavalues['und'][0]['safe_value'];
+            if (!empty($subchild->field_ndavalues)) $subchildvalues = $subchild->field_ndavalues['und'][0]['safe_value'];
 
             //Special category, hide or pulldown fields
             if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
@@ -372,46 +371,46 @@ function ndabio_advanced_taxonomysearch() {
                   '#title'           => t("More"),
                   '#collapsible'     => TRUE,
                   '#collapsed'       => TRUE,
-                  '#attributes'    =>  array( 'collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible","collapsed", "form-wrapper") )
+                  '#attributes'    =>  array('collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible", "collapsed", "form-wrapper") )
                 );
 
                 //put all children in group
                 foreach ($category as $catitem) {
-				$lvalues = "";
-				  if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
-				  if ($lvalues != "") {
- 			    unset($optionarray);
-				$optionarray[""] = ""; //First entry is an empty string 
-                foreach(explode("|", $lvalues) as $optionitem ) {
-                  $optionarray[$optionitem] = $optionitem;
-                }
-				  
-                 $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
-                    '#type'          => 'select',
-                    '#title'         => $catitem->description,
-                    '#options'       =>  $optionarray,
-                    '#required'      =>  FALSE,
-                    '#inline'        =>  TRUE,
-                  );
-				  
-				  }
-				  else {
-                  $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
-                    '#type'          => 'textfield',
-                    '#title'         => $catitem->description,
-                    '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
-                    '#required'      =>  FALSE,
-                    '#inline'        =>  TRUE,
-                  );
-				  }
+                  $lvalues = "";
+                  if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
+                  if ($lvalues != "") {
+                    unset($optionarray);
+                    $optionarray[""] = ""; //First entry is an empty string 
+                    foreach (explode("|", $lvalues) as $optionitem) {
+                      $optionarray[$optionitem] = $optionitem;
+                    }
+                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                      '#type'          => 'select',
+                      '#title'         => $catitem->description,
+                      '#options'       =>  $optionarray,
+                      '#required'      =>  FALSE,
+                      '#inline'        =>  TRUE,
+                    );
+          
+                  }
+                  else {
+                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                      '#type'          => 'textfield',
+                      '#title'         => $catitem->description,
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                      '#required'      =>  FALSE,
+                      '#inline'        =>  TRUE,
+                    );
+                  }
                 }
               }
-            } else {
+            } 
+            else {
               //Default search fields
               if ($subchildvalues != "") {
-			    unset($optionarray);
-				$optionarray[""] = ""; //First entry is an empty string 
-                foreach(explode("|", $subchildvalues) as $optionitem ) {
+                unset($optionarray);
+                $optionarray[""] = ""; //First entry is an empty string 
+                foreach (explode("|", $subchildvalues) as $optionitem ) {
                   $optionarray[$optionitem] = $optionitem;
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
@@ -435,38 +434,40 @@ function ndabio_advanced_taxonomysearch() {
               }
             }
           }
-        } else {
+        }
+        else {
           //Default search fields
-		  $childvalues = "";
-	      if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
-              if ($childvalues != "") {
-			    unset($optionarray);
-				$optionarray[""] = ""; //First entry is an empty string 
-                foreach(explode("|", $childvalues) as $optionitem ) {
-                  $optionarray[$optionitem] = $optionitem;
-                }
-                $form[$sysname][$childsysname] = array(
-                  '#type'          =>  'select',
-                  '#title'         =>  $childlabel,
-                  '#options'       =>  $optionarray,
-                  '#inline'        =>  TRUE,
-                  '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
-                );
-                $subchildvalues = "";
-              }
-              else {
-          $form[$sysname][$childsysname]['#type'] = array(
-            '#type'          => 'textfield',
-            '#title'         => $childlabel,
-            '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
-            '#required'      =>  FALSE,
-            '#inline'        =>  TRUE,
-            '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
-          );
-		  }
+          $childvalues = "";
+          if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
+          if ($childvalues != "") {
+            unset($optionarray);
+            $optionarray[""] = ""; //First entry is an empty string 
+            foreach (explode("|", $childvalues) as $optionitem ) {
+              $optionarray[$optionitem] = $optionitem;
+            }
+            $form[$sysname][$childsysname] = array(
+              '#type'          =>  'select',
+              '#title'         =>  $childlabel,
+              '#options'       =>  $optionarray,
+              '#inline'        =>  TRUE,
+              '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
+            );
+            $subchildvalues = "";
+          }
+          else {
+            $form[$sysname][$childsysname]['#type'] = array(
+              '#type'          => 'textfield',
+              '#title'         => $childlabel,
+              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#required'      =>  FALSE,
+              '#inline'        =>  TRUE,
+              '#attributes'    =>  array( 'data-clear' => "", 'name' => $childsysname )
+            );
+          }
         }
       }
-    } else {
+    }
+    else {
       // Omnisearch Box
       $form[$sysname]['omnisearch'] = array(
         '#type' => 'fieldset',
@@ -478,7 +479,7 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname]['omnisearch']['term'] = array(
         '#type' => 'textfield',
         '#title' => t('Keywords'),
-        '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+        '#default_value' => (!empty($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
         '#required' => FALSE,
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
@@ -496,28 +497,28 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
   
-  if($geosearch) {
+  if ($geosearch) {
     $links =
-       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>"
-      ."  <ul>"
-      ."    <li>"
-      ."      <a data-rel='ajax' href='areas/country?response_type=embed'>Landen</a>"
-      ."    </li>"
-      ."    <li>"
-      ."      <a data-rel='ajax' href='areas/municipality?response_type=embed'>Gemeentes</a>"
-      ."    </li>"
-      ."    <li>"
-      ."      <a data-rel='ajax' href='areas/nature?response_type=embed'>Natuurgebieden</a>"
-      ."    </li>"
-      ."  </ul>"
-      ."</div>";
+      "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
+      "  <ul>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='areas/country?response_type=embed'>Landen</a>" .
+      "    </li>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='areas/municipality?response_type=embed'>Gemeentes</a>" .
+      "    </li>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='areas/nature?response_type=embed'>Natuurgebieden</a>" .
+      "    </li>" .
+      "  </ul>" .
+      "</div>";
 
     $list =
-       "<div id='search-areas-list' class='small-12 medium-3 columns'>"
-      ."  <input id='search-areas-filter' placeholder='« filter »' />"
-      ."  <div id='search-areas-target'></div>"
-      ."</div>";
-	  
+      "<div id='search-areas-list' class='small-12 medium-3 columns'>" .
+      "  <input id='search-areas-filter' placeholder='« filter »' />" .
+      "  <div id='search-areas-target'></div>" .
+      "</div>";
+    
     $form['gmap'] = array(
       '#type' => 'gmap',
       '#map' => 'gmap',
@@ -529,7 +530,7 @@ function ndabio_advanced_taxonomysearch() {
         ),
       ),
       '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
-      '#suffix' => '<div id=\'map-canvas\'></div></div>'.$links.$list,
+      '#suffix' => '<div id=\'map-canvas\'></div></div>' . $links . $list,
     );
   }
   $form[$sysname]['submit'] = array(
