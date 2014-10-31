@@ -162,7 +162,7 @@ function ndabioresults_block_view($delta = '') {
         ));
 
       break;
-	  
+
 	case 'ndabioresults_back':
       $block['subject'] = t('Back to search');
 
@@ -186,7 +186,7 @@ function _list_items($arr_items){
       ."</li>";
   }
 
-  $str_result .= "</ul>";
+  $str_return .= "</ul>";
 
   return $str_return;
 }
@@ -195,7 +195,7 @@ function _item($arr_item){
   return array(
     'data' => $arr_item[0],
     'class' => $arr_item[1],
-    'value' => $arr_item[2]
+    'value' => isset($arr_item[2]) ? $arr_item[2] : null
   );
 }
 
@@ -539,7 +539,7 @@ function ndaAdvancedSearch () {
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
-//echo '<pre>'; print_r($services); echo '</pre>';
+//p($services);
     return performNdaRequest(setChannels($services));
 }
 
@@ -759,7 +759,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['source'] = $row->result->specimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimenMediaTaxonNames($row);
-	$output['unitGUID'] = $row->result->specimen->unitGUID;
+	$output['unitID'] = $row->result->specimen->unitID;
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
@@ -1174,7 +1174,7 @@ function getOtherSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->otherSpecimensInSet)) {
 		foreach ($row->searchResults[0]->result->otherSpecimensInSet as $i => $specimen) {
 			$s = array();
-			$s['unitGUID'] = $specimen->unitGUID;
+			$s['unitID'] = $specimen->unitID;
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = getSpecimenInCollectionUrl($row, $i);
 			$c[] = $s;
@@ -1321,7 +1321,7 @@ function parseSpecimens ($json) {
 	}
 	foreach ($data->searchResults as $row) {
 		$d = array();
-		$d['unitGUID'] = $row->result->unitGUID;
+		$d['unitID'] = $row->result->unitID;
 		$d['url'] = $row->links[0]->href;
 		$d['names'] = getSpecimenTaxonNames($row);
 		$d['hits'] = getHits($row);
@@ -1367,7 +1367,7 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";
 		// Registration number plus hits
-		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['unitGUID'] . "</a>" .
+		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['unitID'] . "</a>" .
 			(!empty($row['hits']) ? '</br>' . printHits($row) : '') .
 			"</td>";
 		// Species
@@ -1446,38 +1446,54 @@ function parseSpecimensByTaxon ($json) {
 		handleError('No or invalid json response');
 	}
 	$data = json_decode($json);
-//print_r($data);
+//p($data);
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
-	if (!$output['searchTerms'] || !$output['total']) {
-		handleError('Invalid json response');
+	if (!$output['searchTerms']) {
+		handleError('parseSpecimensByTaxon: invalid json response');
 	}
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		$d['name'] = formatScientificName(
-			$row->searchResults[0]->matchInfo[0]->value,
-			$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
-			$output['searchTerms']
+			$row->sharedValue,
+		    // @todo
+			//$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
+			$row->searchResults[0]->result->identifications[0]->scientificName,
+		    $output['searchTerms']
 		);
 		$d['url'] = $row->links[0]->href;
 		$d['count'] = count($row->searchResults);
 		$d['sources'] = getSources($row);
 		$d['score'] = $row->searchResults[0]->score;
 
-		// Specimens are stored in a subarray. Brahms may feature "specimen collections"
-		// (or, in other words, a set),  which are virtual entities collecting different parts of the same individual,
-		// e.g. leaves, fruits and flowers of the same plant. If the "collection" contains just
-		// one specimen (as in CRS), there's only a single specimen in the "collection".
-		$c = $s = array();
-		// Collection/set
-		$c['setId'] = $row->searchResults[0]->result->setID;
-		// Specimen(s)
-		$s['unitGUID'] = $row->searchResults[0]->result->unitGUID;
-		$s['collectionType'] = $row->searchResults[0]->result->collectionType;
-		$s['url'] = $row->searchResults[0]->links[0]->href;
-		$otherSpecimens = getOtherSpecimens($row);
-		$c['specimens'] = !empty($otherSpecimens) ? array_merge(array($s), $otherSpecimens) : array($s);
-		$d['set'] = $c;
+		/*
+		 *
+		 *  // Specimens are stored in a subarray. Brahms may feature "specimen collections"
+    		// (or, in other words, a set),  which are virtual entities collecting different parts of the same individual,
+    		// e.g. leaves, fruits and flowers of the same plant. If the "collection" contains just
+    		// one specimen (as in CRS), there's only a single specimen in the "collection".
+    		$c = $s = array();
+    		// Collection/set
+    		$c['assemblageID'] = $row->searchResults[0]->result->assemblageID;
+    		// Specimen(s)
+    		$s['unitID'] = $row->searchResults[0]->result->unitID;
+    		$s['collectionType'] = $row->searchResults[0]->result->collectionType;
+    		$s['url'] = $row->searchResults[0]->links[0]->href;
+    		$otherSpecimens = getOtherSpecimens($row);
+    		$c['specimens'] = !empty($otherSpecimens) ? array_merge(array($s), $otherSpecimens) : array($s);
+    		$d['set'] = $c;
+    		$output['results'][] = $d;
+
+		 */
+
+
+		foreach ($row->searchResults as $i => $sp) {
+    		$assemblageID = $sp->result->assemblageID;
+    		$s['unitID'] = $sp->result->unitID;
+    		$s['collectionType'] = $sp->result->collectionType;
+    		$s['url'] = $sp->links[0]->href;
+            empty($assemblageID) ? $d['specimens'] = $s : $d['sets'][$assemblageID][] = $s;
+		}
 		$output['results'][] = $d;
 	}
 	return isset($output) ? $output : false;
@@ -1539,6 +1555,8 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 
   $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $p) );
 
+ p($data);
+
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";
 		// Name
@@ -1564,23 +1582,27 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 
 // Returns collection/set of specimens or just a specimen if a collection contains a single entry
 function printSpecimenCollection ($row, $i) {
+    $output = '';
 	// Single specimen
+    if (isset($row['specimens'])) {
+        foreach ($row['specimens'] as $specimen) {
+            $output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
+		    printDrupalLink($specimen['url']) . "'>" . $specimen['unitID'] . "</a></td>" . padTds(3) . "</tr>";
+        }
 
-  if (empty($row['set']['setId'])) {
-		return "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
-		    printDrupalLink($row['set']['specimens'][0]['url']) . "'>" .
-			$row['set']['specimens'][0]['unitGUID'] . "</a></td>" . padTds(3) . "</tr>";
-	}
-
-  // Specimen collection/set
-	$output = "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>Brahms " .
-	   $row['set']['setId'] . "</td>" . padTds(3) . "</tr>";
-	foreach ($row['set']['specimens'] as $j => $specimen) {
-		$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
-      . "<td><a href='" . printDrupalLink($specimen['url']) . "'>"
-      .$specimen['unitGUID'] . "</a></td>" . padTds(1) . "<td>" .
-			t(translateNdaField($specimen['collectionType'])) . "</td>" . padTds(1) . "</tr>";
-	}
+    // Specimen collection/set
+    } else if (isset($row['sets'])) {
+        foreach ($row['sets'] as $set => $specimens) {
+        	$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
+        	   $set . "</td>" . padTds(3) . "</tr>";
+        	foreach ($specimens as $j => $specimen) {
+        		$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
+                . "<td><a href='" . printDrupalLink($specimen['url']) . "'>"
+                . $specimen['unitID'] . "</a></td>" . padTds(1) . "<td>" .
+        		t(translateNdaField($specimen['collectionType'])) . "</td>" . padTds(1) . "</tr>";
+        	}
+        }
+    }
 	return $output;
 }
 
