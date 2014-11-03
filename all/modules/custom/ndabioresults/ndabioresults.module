@@ -166,7 +166,10 @@ function ndabioresults_block_view($delta = '') {
 	case 'ndabioresults_back':
       $block['subject'] = t('Back to search');
 
-      $block['content'] = "<a href='" . $base_root . $base_path . "?searchagain=1'>" . t('Back to search') . "</a>";
+      $starturl = $base_root . $base_path;
+      if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
+      
+      $block['content'] = "<a href='" . $starturl . "?searchagain=1'>" . t('Back to search') . "</a>";
 
       break;
   }
