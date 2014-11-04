@@ -296,9 +296,10 @@ function ndabio_advanced_taxonomysearch() {
   $loadold = 0;
   if (!empty($_GET['searchagain'])) {
     if (intval($_GET['searchagain']) == 1) { 
-      drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); }", 'inline');
+      drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); plotMapArea('" . $_SESSION['ndaSearch']['gid'] . " ', ''); }", 'inline');
       $loadold = 1;
-      dpm($_SESSION['ndaSearch']);
+      //dpm($_SESSION['ndaSearch']['gid']);
+      //dpm($_SESSION['ndaSearch']['geoShape']);
     }
   }
   $geosearch = 0;
