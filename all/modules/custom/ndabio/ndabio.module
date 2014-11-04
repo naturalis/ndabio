@@ -391,7 +391,7 @@ function ndabio_advanced_taxonomysearch() {
                     unset($optionarray);
                     $optionarray[""] = ""; //First entry is an empty string 
                     foreach (explode("|", $lvalues) as $optionitem) {
-                      $optionarray[$optionitem] = t("xx " . $optionitem);
+                      $optionarray[$optionitem] = t($optionitem);
                     }
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'      => 'select',
@@ -420,7 +420,7 @@ function ndabio_advanced_taxonomysearch() {
                 unset($optionarray);
                 $optionarray[""] = ""; //First entry is an empty string 
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
-                  $optionarray[$optionitem] = t("xx " . $optionitem);
+                  $optionarray[$optionitem] = t($optionitem);
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'       => 'select',
