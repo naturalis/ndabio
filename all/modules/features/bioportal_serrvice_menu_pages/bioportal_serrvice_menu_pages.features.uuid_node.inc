@@ -45,19 +45,83 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => 'Go to hizzle ipsum crazy gizzle amizzle, get down get down elit. Nullizzle pizzle velizzle, bling bling volutpizzle, suscipizzle fizzle, shizznit vizzle, boom shackalack. Pellentesque we gonna chung tortizzle. Sed erizzle. Sizzle izzle i\'m in the shizzle dapibus shit ma nizzle tempizzle. Mauris break yo neck, yall nibh bizzle yo. Nizzle izzle tortor. Pellentesque eleifend rhoncizzle nisi. Yippiyo hizzle yo mamma platea dictumst. Own yo\' dapibizzle. Fo shizzle tellus urna, pretizzle black, mattizzle ac, eleifend vitae, nunc. Owned suscipizzle. Integizzle semper velit sizzle sheezy.
+        'value' => '<p>BioPortal is designed to give you quickly the result that you’re most likely looking for. It does so by using two mechanisms: <strong><em>Name Resolution</em></strong> and <strong><em>Relevance Soring</em></strong></p>
 
-Curabitur izzle diam things shut the shizzle up break yo neck, yall yippiyo. Suspendisse yo mamma. Morbi odio. Sure neque. Cras orci. Ass mauris shut the shizzle up, interdum a, feugiat black mofo, fizzle in, pede. Pellentesque you son of a bizzle. Funky fresh go to hizzle mi, pot izzle, sure fo shizzle, my shizz semper, velit. For sure izzle ipsizzle. Shut the shizzle up volutpizzle felizzle mofo orci. Cras shiznit shut the shizzle up pot purizzle sodalizzle ornare. Shiz venenatizzle justo et pot. Nunc urna. Pimpin\' you son of a bizzle placerat boofron. Shiznit yo ante. Nunc you son of a bizzle, leo eu stuff ghetto, ipsum da bomb elementizzle sizzle, we gonna chung sheezy magna felizzle gangsta pede. Nam a cool. Class crunk taciti sociosqu ad sizzle torquent dope check out this izzle, pizzle funky fresh bizzle. Ass interdizzle, sizzle nizzle elementum fo shizzle, nisl orci leo, in bling bling risizzle arcu i saw beyonces tizzles and my pizzle went crizzle sem.
+<p>If you need more fine-grained control over the search results, you can use  <strong><em>advanced search</em></strong>, by clicking on the arrow in the search field.</p>
 
-Vivamizzle shizzlin dizzle mah nizzle pizzle nisi brizzle . Break it down sit amizzle fizzle. Nizzle eu tellivizzle eget lacizzle auctor shiz. Praesent suscipit viverra ipsum. Ass izzle arcu. Fo shizzle fizzle enizzle, fo shizzle my nizzle that\'s the shizzle, shizzle my nizzle crocodizzle eu, fo shizzle nizzle, i\'m in the shizzle. Nullam vitae pede the bizzle erizzle sheezy pharetra. Uhuh ... yih! pede tortor, congue shizzlin dizzle, auctor mah nizzle, mollizzle tellivizzle amizzle, erat. Donec at boofron. Aliquizzle risizzle away, elementizzle mammasay mammasa mamma oo sa, sollicitudin shizznit, own yo\' imperdizzle, turpizzle. Quisque a break it down eu mi rutrizzle vehicula. Fo shizzle mah nizzle fo rizzle, mah home g-dizzle hizzle sagittizzle ipsum. Pellentesque sizzle i saw beyonces tizzles and my pizzle went crizzle tristique senectizzle we gonna chung netus fizzle malesuada shiznit ac daahng dawg egestizzle. In est. Curabitizzle elementum. Fizzle erizzle felis, rizzle quis, suscipizzle nizzle, porta fizzle, izzle. Get down get down sagittizzle gravida velizzle.
+<h2>Name Resolution</h2>
 
-Boofron ullamcorper. Crazy sagittizzle izzle brizzle funky fresh. Vestibulum ante yippiyo that\'s the shizzle izzle faucibizzle orci ma nizzle izzle check out this posuere check out this Curae; Aenizzle vestibulizzle. Yo habitant morbi tristique senectizzle izzle netizzle izzle malesuada fames izzle turpis shizzle my nizzle crocodizzle. Get down get down tempizzle hendrerit velit. Aliquizzle dizzle volutpat. Vivamus tortizzle enizzle, scelerisque fo shizzle, dignissim a, black vel, arcu. Nulla elizzle. Break yo neck, yall break yo neck, yall, est away shiznit aliquizzle, magna erizzle ultricies shizzle my nizzle crocodizzle, shiz ullamcorper mofo cool quizzle its fo rizzle. Yo tellizzle neque, get down get down go to hizzle, fo shizzle dope, vulputate sizzle, leo. Praesent yo fo shizzle, bibendizzle sit amet, crazy shizznit, daahng dawg malesuada, check it out. Aenizzle own yo\' ipsizzle break it down est ullamcorper sure. Donec quam. Mauris ligula urna, bow wow wow id, scelerisque fo, sodalizzle nec, felis. Etizzle izzle.
+<p>BioPortal will try to match your search term with one or more <em>accepted scientific  name(s)</em></p>
 
-Dawg crazy fo shizzle. Donizzle fo shizzle. Maecenizzle check out this maurizzle own yo\' lectizzle. Fo shizzle my nizzle izzle boofron. Crizzle id tortizzle ut mi tellivizzle condimentizzle. Lorizzle uhuh ... yih! mofo fo shizzle izzle, consectetizzle adipiscing elit. Curabitizzle elizzle hizzle, elementizzle non, my shizz in, mollis phat, . Aliquam fo shizzle volutpat. Donizzle pizzle you son of a bizzle turpis. Suspendisse aliquam. Crizzle fizzle urna, venenatis izzle, volutpat dang, uhuh ... yih! sizzle, sapien. Praesent sem orci, uhuh ... yih! nizzle, rizzle, commodo ut, check it out.
+<p>The matching of your search term to <em>accepted scientific names</em> is done by searching through various fields of our databases:</p>
 
-Crizzle aliquizzle pede stuff mi. Pot socizzle natoque fo shizzle izzle magnizzle mah nizzle parturient phat, daahng dawg ridiculus yo mamma. purizzle break it down, molestie quizzle, convallizzle fo shizzle my nizzle, sollicitudizzle eget, i saw beyonces tizzles and my pizzle went crizzle. Mah nizzle sizzle shiz commodo i\'m in the shizzle. Donizzle sagittizzle. Nullam own yo\' orci, fringilla shit, aliquam uhuh ... yih!, dope shizzle my nizzle crocodizzle, ipsum. Crizzle pimpin\', nulla izzle amizzle commodo fizzle, izzle lectizzle ornare yippiyo, dang hendrerizzle da bomb est that\'s the shizzle velizzle. Pellentesque ass that\'s the shizzle. Nizzle sizzle dolizzle tellivizzle crazy. Pot fo shizzle mah nizzle fo rizzle, mah home g-dizzle.',
+<ol>
+<li><strong>qualified scientific species name</strong>.
+
+<ul>
+<li>An example of such a name is: “<em>Panthera leo</em>”</li>
+</ul>
+</li>
+<li>a list of <strong>common names</strong>
+
+<ul>
+<li>An example of such a name is “Lion” (English) or "Leeuw" (Dutch).</li>
+</ul>
+</li>
+<li><strong>higher classifications</strong>
+
+<ul>
+<li>An example of such a term is “Felidae“, the biological family of cat-like carnivores.</li>
+</ul>
+</li>
+</ol>
+
+
+<p>It will display these matches under the header “species names” in the results page. This <em>accepted scientific name</em> will then be used for searching through multi-media and specimens.</p>
+
+<p>It can happen that results are shown that do not contain the origanl query. These results where found by searching on the matched <em>accepted scientific name</em>.</p>
+
+<h2>Relevance Sorting</h2>
+
+<p>As with any common search engine, the most relevant results are listed before less relevant results. The results are listed according to:</p>
+
+<ol>
+<li>Full match on the <em>accepted scientific name</em></li>
+<li>Full match on the <em>species</em> name
+
+<ul>
+<li>e.g. “Leo” in “<em>Panthera leo</em>”</li>
+</ul>
+</li>
+<li>Full match on the <em>genus</em> name.
+
+<ul>
+<li>e.g. "Panthera" in “<em>Panthera leo</em>”</li>
+</ul>
+</li>
+<li>Partial match on <em>accepted scientific name</em>
+
+<ul>
+<li>This is the case when you search for "Panthera", this shoul</li>
+</ul>
+</li>
+<li>Full match of your search in any other field
+
+<ul>
+<li>e.g. "Smith" as the name of the collector</li>
+</ul>
+</li>
+<li>Partial match of your search in any other field</li>
+</ol>
+
+
+<h2>Advanced Search</h2>
+
+<h2>Geographic Search</h2>
+
+<h2>Term handling</h2>',
         'summary' => '',
-        'format' => 'plain_text',
+        'format' => 'full_html',
         'safe_summary' => '',
       ),
     ),
