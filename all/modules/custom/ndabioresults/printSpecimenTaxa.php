@@ -10,9 +10,8 @@ function printSpecimenTaxa ($names) {
 			$t . ', ';
 		$output .= $t;
 	}
-	return !empty($output) ? substr($output, 0, -2) : null;
+	return !empty($output) ? substr($output, 0, -2) : '-';
 }
-
 
 
 ?>
