@@ -225,6 +225,7 @@ function processPoints(geometry, callback, thisArg) {
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
+				$('.geo-search-area-name').html( $(this).html()  );
 				plotMapArea(this.id.substr(4),str_base_path);
 				return false;
 
@@ -274,14 +275,14 @@ function processPoints(geometry, callback, thisArg) {
 	// Add labels to the omnibox
 	// A bit dirty, but where else to put it?
 	$("#edit-term")
-		.attr("placeholder","« Alles »");
+		.attr("placeholder","« All records »");
 
 	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
 		.removeClass("large-offset-2")
-		.before("<div class='small-2 large-2 columns geo-search-label'>Zoek:</div>");
+		.before("<div class='small-2 large-2 columns geo-search-label'>Search:</div>");
 
 	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
-		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>Binnen:</div></div");
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>Within:</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 
@@ -309,4 +310,3 @@ function processPoints(geometry, callback, thisArg) {
 		});
 	});
 })(jQuery);
-

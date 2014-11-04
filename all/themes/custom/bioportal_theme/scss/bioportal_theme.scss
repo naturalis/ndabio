@@ -277,6 +277,7 @@ $icon-chevron-right: "\e60c";
       margin             : 0;
       border-width       : 0;
       margin-bottom      : 30px;
+      display            : none;
 
       @media (min-width  : 1000px) {
         padding          : 0.9375rem percentage(2/12) 80px;
@@ -316,10 +317,15 @@ $icon-chevron-right: "\e60c";
       }
 
       input[type='text'],
-      input[type='radio'] {
+      input[type='radio'],
+      select {
         margin           : 0;
         padding          : 3px;
         height           : 26px;
+      }
+
+      select{
+           -webkit-appearance: none;
       }
 
       button[name='op']{
@@ -389,6 +395,16 @@ $icon-chevron-right: "\e60c";
       line-height: 50px;
       text-align: right;
       color: $gray-8;
+      font-size: 1.2em;
+      font-weight: 300;
+      padding-right: 1em;
+    }
+
+    .row.collapse .geo-search-area-name{
+      height: 50px;
+      line-height: 50px;
+      text-align: left;
+      color: $gray-5;
       font-size: 1.2em;
       font-weight: 300;
       padding-right: 1em;
