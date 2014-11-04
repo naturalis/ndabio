@@ -537,6 +537,7 @@ function ndaSimpleSearch () {
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $p['geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+        $p['_andOr'] = 'AND';
     };
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
         $services[$request] = $p;
