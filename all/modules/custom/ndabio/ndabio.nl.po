@@ -53,7 +53,7 @@ msgstr ""
 
 #: ndabio/ndabio.module:128;138;148;162
 msgid "Default"
-msgstr ""
+msgstr "Standaard"
 
 #: ndabio/ndabio.module:133
 msgid "NDA Get URL"
@@ -85,23 +85,23 @@ msgstr ""
 
 #: ndabio/ndabio.module:275
 msgid "Search results"
-msgstr ""
+msgstr "Zoek resultaten"
 
 #: ndabio/ndabio.module:316
 msgid "And"
-msgstr ""
+msgstr "En"
 
 #: ndabio/ndabio.module:316
 msgid "Or"
-msgstr ""
+msgstr "Of"
 
 #: ndabio/ndabio.module:358
 msgid "Combine searchterms"
-msgstr ""
+msgstr "Combineer zoektermen"
 
 #: ndabio/ndabio.module:380
 msgid "More"
-msgstr ""
+msgstr "Meer"
 
 #: ndabio/ndabio.module:490
 msgid "Keywords"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: ndabio/ndabio.module:501;547
 msgid "Search"
-msgstr ""
+msgstr "Zoek"
 
 #: ndabio/ndabio.module:53 ndabioresults/ndabioresults.module:62
 msgid "Naturalis config"
@@ -133,27 +133,27 @@ msgstr ""
 
 #: ndabioresults/printClassifications.php:6
 msgid "Classifications"
-msgstr ""
+msgstr "Classificaties"
 
 #: ndabioresults/printClassifications.php:44
 msgid "No classifications available"
-msgstr ""
+msgstr "Geen classificaties beschikbaar"
 
 #: ndabioresults/printCommonNames.php:6
 msgid "Common names"
-msgstr ""
+msgstr "Populaire naam"
 
 #: ndabioresults/printCommonNames.php:22
 msgid "No common names available"
-msgstr ""
+msgstr "Geen populaire namen beschikbaar"
 
 #: ndabioresults/printDescriptions.php:6
 msgid "Descriptions"
-msgstr ""
+msgstr "Beschrijvingen"
 
 #: ndabioresults/printDescriptions.php:21
 msgid "No descriptions available"
-msgstr ""
+msgstr "Geen beschrijvingen beschikbaar"
 
 #: ndabioresults/printMultimedia.php:11
 msgid "Multimedia"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: ndabioresults/printSpecimens.php:19 ndabioresults/printSpecimensByTaxon.php:19 ndabioresults/printTaxa.php:24
 msgid "Found in"
-msgstr ""
+msgstr "Gevonden in"
 
 #: ndabioresults/printSpecimens.php:23 ndabioresults/printSpecimensByTaxon.php:23 ndabioresults/printTaxa.php:28
 msgid "Match"
@@ -185,11 +185,11 @@ msgstr ""
 
 #: ndabioresults/printSpecimensByTaxon.php:7 ndabioresults/printTaxa.php:14
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: ndabioresults/printSpecimensByTaxon.php:13
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: ndabioresults/printSpecimensByTaxon.php:36
 msgid "Specimens with"
@@ -201,7 +201,7 @@ msgstr ""
 
 #: ndabioresults/printSpecimensByTaxon.php:39
 msgid "No results"
-msgstr ""
+msgstr "Geen resultaten"
 
 #: ndabioresults/printSpecimensByTaxon.php:51
 msgid "specimens"
@@ -213,11 +213,11 @@ msgstr ""
 
 #: ndabioresults/printTaxa.php:20
 msgid "Description"
-msgstr ""
+msgstr "Beschrijving"
 
 #: ndabioresults/printTaxa.php:35
 msgid "Species names"
-msgstr ""
+msgstr "Soortnamen"
 
 #: ndabioresults/printTaxonDetail.php:8
 msgid "zoekresultaten"
@@ -249,27 +249,27 @@ msgstr ""
 
 #: ndabioresults/ndabioresults.module:129
 msgid "Collection date"
-msgstr ""
+msgstr "Collectie datum"
 
 #: ndabioresults/ndabioresults.module:142
 msgid "Sources"
-msgstr ""
+msgstr "Bronnen"
 
 #: ndabioresults/ndabioresults.module:154
 msgid "Categories"
-msgstr ""
+msgstr "Categorieen"
 
 #: ndabioresults/ndabioresults.module:167;172
 msgid "Back to search"
-msgstr ""
+msgstr "Terug naar zoeken"
 
 #: ndabioresults/ndabioresults.module:1387
 msgid "name"
-msgstr ""
+msgstr "naam"
 
 #: ndabioresults/ndabioresults.module:1388
 msgid "for"
-msgstr ""
+msgstr "voor"
 
 #: ndabioresults/ndabioresults.module:35
 msgid "NDA result config"
@@ -404,7 +404,7 @@ msgstr ""
 
 #: /search/advancednda
 msgid "female"
-msgstr ""
+msgstr "vrouwelijk"
 
 #: /search/advancednda
 msgid "hermaphrodite"
@@ -412,7 +412,7 @@ msgstr ""
 
 #: /search/advancednda
 msgid "male"
-msgstr ""
+msgstr "mannelijk"
 
 #: /search/advancednda
 msgid "mixed"
