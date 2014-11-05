@@ -2,6 +2,7 @@ name = Bioportal Controller
 core = 7.x
 package = Bioportal
 dependencies[] = bioportal_geoview
+dependencies[] = bioportal_nl
 dependencies[] = bioportal_search_areas_a_f
 dependencies[] = bioportal_search_areas_g_l
 dependencies[] = bioportal_search_areas_m_s
