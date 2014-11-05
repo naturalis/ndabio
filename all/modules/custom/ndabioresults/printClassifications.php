@@ -12,12 +12,6 @@ function printClassifications ($data) {
 			'classification' => $classification
 		);
 	}
-	foreach ($data['classifications']['system'] as $source => $classification) {
-		$classifications[] = array(
-			'source' => $source,
-			'classification' => $classification
-		);
-	}
 
 	$stored = array();
 	foreach ($classifications as $classification) {

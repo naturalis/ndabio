@@ -59,6 +59,11 @@ function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc
   $output .= "</tbody></table>";
   $output = _markUp($output);
 
+    if (isset($data['moreUrl']) && !empty($data['moreUrl'])) {
+        $output .= '<p class="more"><a href="' . $data['moreUrl'] . '">' .
+            t('Show all...') . '</a></p>';
+    }
+
 	return $output;
 }
 

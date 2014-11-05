@@ -233,6 +233,32 @@ function searchFlags() {
     return $var;
 }
 
+/**
+ * Constant: maximum results for initial "overview" query
+ *
+ * @return integer
+ */
+function maxResultsInitial() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 10;
+    }
+    return $var;
+}
+
+/**
+ * Constant: maximum results for subsequent queries
+ *
+ * @return integer
+ */
+function maxResults() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 50;
+    }
+    return $var;
+}
+
 
 /**
  * Constant: name of specimen service
@@ -491,8 +517,6 @@ function setSpecimenParameters (array $sP, $type) {
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
-//    echo '<pre>'; print_r($_POST); echo '</pre>';
-
     // POST data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
@@ -501,7 +525,6 @@ function ndabioresults_pass ($args = "") {
     // GET data from within NDA response?
     // Forward directly to appropriate service
     else if (isset($_GET['nba_request'])) {
-
         return ndaDirectRequest(urldecode($_GET['nba_request']));
     }
     // If both POST and SESSION are empty we have a problem...
@@ -528,7 +551,7 @@ function ndabioresults_pass ($args = "") {
  */
 function ndaSimpleSearch () {
     $p = array(
-        '_search' => $_SESSION['ndaSearch']['term'],
+        '_search' => $_SESSION['ndaSearch']['term']
     );
     // Taxon search does not include geoShape and should not be invoked when coming from geo form!
     if (!isset($_SESSION['ndaSearch']['gid'])) {
@@ -561,7 +584,7 @@ function ndaAdvancedSearch () {
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
-p($services);
+//p($services);
     return performNdaRequest(setChannels($services));
 }
 
@@ -599,6 +622,7 @@ function setChannels (array $services) {
 	foreach ($services as $s => $p) {
 	    if (!empty($p)) {
 	        $p = array_filter($p, 'strlen');
+	        $p['_maxResults'] = maxResultsInitial();
     		$channels[$i]['request'] = $s;
     		$channels[$i]['url'] = ndaBaseUrl() . $s;
     		$channels[$i]['post'] = count($p);
@@ -851,7 +875,7 @@ function parseTaxonDetail ($json) {
 		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
-p($data);
+//p($data);
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
@@ -862,11 +886,7 @@ p($data);
 
 		if (!empty($row->result->defaultClassification)) {
 			$output['classifications']['default'][$source] =
-				(array) $row->result->defaultClassification;
-		}
-		if (!empty($row->result->systemClassification)) {
-			$output['classifications']['system'][$source] =
-				parseSystemClassification($row->result->systemClassification);
+				parseClassification($row->result->defaultClassification);
 		}
 		if (!empty($row->result->synonyms)) {
 			foreach ($row->result->synonyms as $i => $synonym) {
@@ -877,10 +897,17 @@ p($data);
 			}
 		}
 		if (!empty($row->result->descriptions)) {
-			foreach ($row->result->descriptions as $i => $description) {
-				$output['descriptions'][$description->language][$source] =
-					$description->description;
-			}
+		    // @todo: hard coded for NSR, as this is the only source for descriptions
+		    foreach ($row->result->descriptions as $i => $description) {
+		        if (strtolower($description->category) == 'algemeen') {
+                    $output['descriptions']['Dutch'][$source] =
+					   $description->description;
+		        }
+		    	if (strtolower($description->category) == 'summary') {
+                    $output['descriptions']['English'][$source] =
+					   $description->description;
+		        }
+		    }
 		}
 		if (!empty($row->result->vernacularNames)) {
 			foreach ($row->result->vernacularNames as $i => $name) {
@@ -894,14 +921,16 @@ p($data);
 }
 
 
-function parseSystemClassification ($systemClassification) {
-    if (empty($systemClassification)) {
-        return $systemClassification;
+function parseClassification ($classification) {
+    if (empty($classification) || empty($type)) {
+        return $classification;
     }
-    foreach ($systemClassification as $rank) {
-        $c[$rank->rank] = $rank->name;
+    if ($type == 'system') {
+        foreach ($classification as $rank) {
+            $c[$rank->rank] = $rank->name;
+        }
     }
-    return $c;
+    return isset($c) ? $c : $classification;
 }
 
 
@@ -1039,7 +1068,6 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-//echo '<pre>'; print_r($data); echo '</pre>';
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
@@ -1062,7 +1090,7 @@ function parseMultimedia ($json) {
 		$d['hits'] = getHits($row);
 		$output['results'][] = $d;
 	}
-//echo '<pre>'; print_r($output); echo '</pre>';
+//p($data);
 	return isset($output) ? $output : false;
 }
 
@@ -1192,8 +1220,11 @@ function parseSpecimensByTaxon ($json) {
 
 // Returns image properties
 function getImageUrl ($row) {
-	$key = key(get_object_vars($row->result->serviceAccessPoints));
-	return $row->result->serviceAccessPoints->{$key}->accessUri;
+    if (!empty($row->result->serviceAccessPoints)) {
+    	$key = key(get_object_vars($row->result->serviceAccessPoints));
+    	return $row->result->serviceAccessPoints->{$key}->accessUri;
+    }
+    return null;
 }
 
 
@@ -1405,7 +1436,7 @@ function decorateDescription ($row) {
 	return ($row['type'] != 'accepted' ?
 		t(ucfirst($row['type'])) . ($row['type'] == 'common' ? ' ' . t('name') : '') .
 		' ' . t('for') . ' ' :  '') . ($row['type'] == 'accepted' ? t(ucfirst($row['rank'])) :
-		t($row['rank'])) . ' ' . $row['acceptedName'];
+		t($row['rank']));
 }
 
 // Decorate score in result table
