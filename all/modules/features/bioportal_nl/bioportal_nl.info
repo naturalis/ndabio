@@ -1,7 +1,7 @@
 name = Bioportal NL
 description = Nederlandse vertaling voor Bioportal
 core = 7.x
-package = Features
+package = Bioportal
 version = 7.x-0.1
 project = bioportal_nl
 dependencies[] = features
