@@ -862,11 +862,11 @@ p($data);
 
 		if (!empty($row->result->defaultClassification)) {
 			$output['classifications']['default'][$source] =
-				$row->result->defaultClassification;
+				(array) $row->result->defaultClassification;
 		}
 		if (!empty($row->result->systemClassification)) {
 			$output['classifications']['system'][$source] =
-				$row->result->systemClassification;
+				parseSystemClassification($row->result->systemClassification);
 		}
 		if (!empty($row->result->synonyms)) {
 			foreach ($row->result->synonyms as $i => $synonym) {
@@ -882,8 +882,8 @@ p($data);
 					$description->description;
 			}
 		}
-		if (!empty($row->result->commonNames)) {
-			foreach ($row->result->commonNames as $i => $name) {
+		if (!empty($row->result->vernacularNames)) {
+			foreach ($row->result->vernacularNames as $i => $name) {
 				$output['commonNames'][$name->language][$source] =
 					$name->name;
 			}
@@ -892,6 +892,18 @@ p($data);
 	}
 	return $output;
 }
+
+
+function parseSystemClassification ($systemClassification) {
+    if (empty($systemClassification)) {
+        return $systemClassification;
+    }
+    foreach ($systemClassification as $rank) {
+        $c[$rank->rank] = $rank->name;
+    }
+    return $c;
+}
+
 
 include 'printTaxonDetail.php';
 
@@ -1029,10 +1041,14 @@ function parseMultimedia ($json) {
 	$data = json_decode($json);
 //echo '<pre>'; print_r($data); echo '</pre>';
 	$output['searchTerms'] = getSearchTerms($data);
+	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
 		handleError('parseMultimedia: invalid json response');
 	}
-	$output['total'] = getTotalRows($data);
+	if ($output['total'] == 0) {
+	    $output['results'] = array();
+        return $output;
+	}
 	foreach ($data->searchResults as $row) {
 		$type = !empty($row->result->associatedTaxon) ? 'associatedTaxon' :
             'associatedSpecimen';
@@ -1220,6 +1236,7 @@ include 'printHeaders.php';
 
 // Parses taxon/species json response into array
 function parseTaxa ($json) {
+    global $language;
 	if (!$json || !validJson($json)) {
 		handleError('parseTaxon: no or invalid json response');
 	}
@@ -1230,25 +1247,29 @@ function parseTaxa ($json) {
 	if (!$output['searchTerms']) {
 		handleError('parseTaxon: invalid json response');
 	}
+	if ($output['total'] == 0) {
+	    $output['results'] = array();
+        return $output;
+	}
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
 		$d['type'] = getResultType($row);
 		if ($d['type'] == 'accepted') {
 			$d['name'] = formatScientificName(
-				$row->searchResults[0]->matchInfo[0]->value,
+				strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
 				$row->searchResults[0]->result->acceptedName,
 				$output['searchTerms']
 			);
 		} else if ($d['type'] == 'synonym') {
 			$d['name'] = formatScientificName(
-				$row->searchResults[0]->matchInfo[0]->value,
+				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
 				$row->searchResults[0]->result->synonyms[getResultOffset($row)]->scientificName,
 				$output['searchTerms']
 			);
 		} else if ($d['type'] == 'common') {
 			$d['name'] = highlightSearchTerms(
-				$row->searchResults[0]->matchInfo[0]->value,
+				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
 				$output['searchTerms']
 			);
 		}
@@ -1261,14 +1282,12 @@ function parseTaxa ($json) {
 			)
 		);
 		$d['rank'] = $row->searchResults[0]->result->taxonRank;
-		$d['url'] = url_decode($row->links[0]->href);
+		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
 		$d['sources'] = getSources($row);
-		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row) : array());
+		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row, true) : array());
 		$d['score'] = $row->searchResults[0]->score;
 		$output['results'][] = $d;
 	}
-echo 'Taxon object has to be changed in order to parse...<pre>'; print_r($data); echo '</pre>';
-die();
 	return isset($output) ? $output : false;
 }
 
@@ -1362,12 +1381,12 @@ function getSources ($row) {
 function getCommonNames ($row, $languageCheck = false) {
 	global $language;
 	foreach ($row->searchResults as $i => $taxon) {
-		if (isset($taxon->result->commonNames)) {
-			foreach ($taxon->result->commonNames as $name) {
+		if (isset($taxon->result->vernacularNames)) {
+			foreach ($taxon->result->vernacularNames as $name) {
 				// If language is set, only store when language of
 				// common name matches that of interface...
 				if ($languageCheck) {
-					if ($name->language == $language->language) {
+					if ($name->language == $language->name) {
 						$output[$name->name] = $name->language;
 					}
 				// ... else always return all names

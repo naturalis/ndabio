@@ -33,12 +33,16 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 	// 	"<table class='table'><thead>" . printHeaders($headers, $p) .
 	// 	"</thead><tbody>";
 
-  $output  = sprintf('<h2>%s %s %s <span class="count">(%d)</span></h2>', t('Specimens with'), printMatches($data), t(' occuring in the species&apos; name.'),$data['total'] );
-
   if (!isset($data['results']) || empty($data['results'])) {
-       return $output . '<p>' . t('No results') . '</p>';
+        return sprintf('<h2>%s %s %s</h2><p>%s</p>',
+            t('Specimens with'),
+            t('search term'),
+            t('occurring in the species&apos; name'),
+            t('No results'));
   }
 
+
+  $output  = sprintf('<h2>%s %s %s <span class="count">(%d)</span></h2>', t('Specimens with'), printMatches($data), t(' occurring in the species&apos; name'),$data['total'] );
   $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $p) );
 
   foreach ($data['results'] as $i => $row) {
