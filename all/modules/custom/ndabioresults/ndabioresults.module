@@ -470,6 +470,7 @@ function ndaAdvancedSearch () {
 function ndaDirectRequest ($r) {
     foreach (serviceToFunctions() as $service => $d) {
         if (strpos($r, $service) !== false) {
+            $_SESSION['ndaCurrentService'] = $service;
             $url = parse_url($r);
             parse_str($url['query'], $q);
             $channels[0]['request'] = $service;
@@ -732,7 +733,6 @@ function parseTaxonMediaDetail ($json) {
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
-//echo '<pre>'; print_r($output); echo '</pre>';
 	return $output;
 }
 
