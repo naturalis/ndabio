@@ -99,18 +99,25 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_back':
-      $block['subject'] = '<none>';
+      //$block['subject'] = '<none>';
 
       $starturl = $base_root . $base_path;
       if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
 
-      $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Back to search') . "</a>";
+      if ( $_SESSION['ndaRequestType'] == 'form'){
+        $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Back to search') . "</a>";
+      } else {
+        $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search results') . "</a>";
+      }
+
+
 
       break;
 
     case 'ndabioresults_navigation':
-      $block['subject'] = '<none>';
+      //$block['subject'] = '<none>';
 
+      if ( $_SESSION['ndaRequestType'] !== 'form'){
       $block['content'] =
         "<div id='result-nav'>"
         ._list_items( array(
@@ -120,6 +127,8 @@ function ndabioresults_block_view($delta = '') {
           _item(array("<i class='icon-cross'></i>"     ))
         ))
         ."</div>";
+      }
+
 
       break;
   }

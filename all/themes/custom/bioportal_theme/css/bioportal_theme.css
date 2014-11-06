@@ -414,8 +414,25 @@ html.js fieldset.collapsible .fieldset-legend {
   .polaroid-caption .image-title {
     font-weight: bolder; }
 
+#result-nav {
+  display: table;
+  border-spacing: 3px;
+  width: 100%; }
+  #result-nav ul {
+    display: table-row; }
+  #result-nav li {
+    display: table-cell;
+    background-color: #eeede9;
+    height: 40px;
+    line-height: 40px;
+    text-align: center; }
+  #result-nav a {
+    color: #542e08; }
+
+.page-nba-result .sidebar-first a {
+  font-size: 14px; }
 .page-nba-result .sidebar-first .block-title {
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 500; }
 
 .no-bullets {
@@ -447,6 +464,21 @@ i {
   font-size: 24px;
   position: relative;
   top: 3px; }
+
+.page-nba-result main .property-list {
+  margin-left: 0;
+  width: 100%;
+  border: none; }
+
+.property-list tr {
+  border: none; }
+
+.category {
+  color: #542e08; }
+
+.category + h2 {
+  margin-top: 1em;
+  font-size: 24px; }
 
 .node-type-naturalis-service-menu-page #large-logo {
   padding: 35px; }

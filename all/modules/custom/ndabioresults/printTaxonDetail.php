@@ -1,11 +1,11 @@
 <?php
 
+
+
 function printTaxonDetail ($data) {
   global $language;
 
-//  p($data);
-
-
+  $output  =   "<div class='category'>".t('Taxon name')."</div>";
   $output .=   "<h2>";
   $output .=   "  <span class='scientific-name'>";
   $output .=        $data['acceptedName'];
@@ -16,6 +16,8 @@ function printTaxonDetail ($data) {
     $output .= implode(', ', $data['commonNames'][$language->language]);
     $output .= "  </span>";
   }
+
+  $output .= "</h2>";
 
   $output .=
 		printCommonNames($data) .

@@ -649,12 +649,43 @@ $icon-chevron-right: "\e60c";
 
     }
 
+
+  // -- results: NAVIGATION
+
+    #result-nav{
+      display: table;
+      border-spacing: 3px;
+      width: 100%;
+
+      ul{
+        display: table-row;
+      }
+      
+      li{
+        display: table-cell;
+        background-color: $ghost;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+      }
+
+      a{
+        color: $brown;
+      }
+
+    }
+
   // -- results: FILTER
     
     .page-nba-result{
       .sidebar-first{
+        
+        a {
+          font-size: 14px;
+        }
+
         .block-title{
-          font-size: 1rem;
+          font-size: 14px;
           font-weight: 500;
         }
       }
@@ -684,7 +715,6 @@ $icon-chevron-right: "\e60c";
       color: $blue;
     }
 
-
   // -- results: SPECIMEN
     tr:hover{
       background-color: $smoke;
@@ -708,6 +738,31 @@ $icon-chevron-right: "\e60c";
       position: relative;
       top: 3px;
     }
+
+// DETAIL PAGES
+  
+  // detail-pages: GENERAL
+    .page-nba-result main .property-list{
+      margin-left: 0;
+      width: 100%;
+      border: none;
+    }
+
+    .property-list{
+      tr{
+        border: none;
+      }
+    }
+
+    .category{
+      color: $brown;
+    }
+
+    .category + h2{
+      margin-top: 1em;
+      font-size: 24px;
+    }
+
 
 // USER MENU PAGES
 

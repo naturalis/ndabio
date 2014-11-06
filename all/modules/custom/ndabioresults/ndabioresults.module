@@ -57,6 +57,17 @@ function ndabioresults_menu() {
   return $items;
 }
 
+/**
+ * Implements template_preprocess_html().
+ *
+ * Add an extra class to the body to trigger CSS styles
+ *
+ */
+function ndabioresults_preprocess_html(&$vars){
+  if ( $_SESSION['ndaRequestType'] !== 'form'){
+    $vars['classes_array'][] = "nba-result-detail";
+  }
+}
 
 function ndabioresults_config_form($form, &$form_state) {
   $form['ndabioresults_config'] = array(
