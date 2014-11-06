@@ -115,7 +115,6 @@ $icon-chevron-right: "\e60c";
       background-color: $gray-9;
     }
 
-
 // FRONT PAGE
 
   // -- front-page : INTRO
@@ -297,7 +296,8 @@ $icon-chevron-right: "\e60c";
 
       legend{
         background       : none;
-        margin           : 0;
+        margin           : 0 0 ;
+        height           : 26px; 
 
       }
 

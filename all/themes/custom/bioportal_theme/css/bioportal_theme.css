@@ -188,7 +188,8 @@ button, .button {
       padding: 0; }
   #edit-extended legend {
     background: none;
-    margin: 0; }
+    margin: 0 0;
+    height: 26px; }
   #edit-extended label {
     font-size: 1rem;
     color: white;
