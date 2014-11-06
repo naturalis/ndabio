@@ -3,8 +3,8 @@
 function printSpecimenMediaDetail ($data) {
 	$output = "<h2>" . $data['title'] . "</h2>\n";
 	$output .= printNavigation($data);
-	$output .="<img scr='" . $data['imgSrc'] . "' alt='" . $data['title'] .
-		"' title=''" . $data['title'] . ">\n";
+	$output .= "<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
+		"' title=''" . $data['title'] . " />\n";
 	$output .= "<table class='table-property-list'>\n<tbody>\n";
 	$fields = array('source', 'title', 'caption');
 	if (isset($data['acceptedName'])) {
