@@ -359,7 +359,7 @@ function setSpecimenParameters (array $sP, $type) {
             'sex',
             'taxonomicStatus',
             'typeStatus',
-            'geoShape'
+            '_geoShape'
         ),
         specimenNamesService() => array(
             'className',
@@ -371,7 +371,7 @@ function setSpecimenParameters (array $sP, $type) {
             'speciesEpithet',
             'subspeciesEpithet',
             'vernacularName',
-            'geoShape'
+            '_geoShape'
         )
     );
     foreach ($parameters[$type] as $p) {
@@ -383,7 +383,7 @@ function setSpecimenParameters (array $sP, $type) {
     if (isset($d)) {
         $d['_andOr'] = $sP['_andOr'];
         if (!empty($sP['geoShape'])) {
-            $d['geoShape'] = $sP['geoShape'];
+            $d['_geoShape'] = $sP['geoShape'];
         }
     }
     return isset($d) ? $d : null;
@@ -445,7 +445,7 @@ function ndaSimpleSearch () {
     }
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $p['geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+        $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         $p['_andOr'] = 'AND';
     };
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
@@ -562,7 +562,7 @@ function setSectionParameters (array $post, $typeId = '') {
     // Append geoShape if entered
     if (isset($post['geoShape']) && !empty($post['geoShape']) &&
         in_array($typeId, array('m_', 's_'))) {
-        $d['geoShape'] = $post['geoShape'];
+        $d['_geoShape'] = $post['geoShape'];
     }
     if (countSearchParameters($d) >= 1) {
         // Reset andOr parameter to _andOr and values to and/or
@@ -1122,7 +1122,7 @@ function parseSpecimensByTaxon ($json) {
 	}
 	$output['showAll'] = setShowAll($data);
 	$output['navigator'] = setNavigator($data);
-//p($data);
+p($output);
 	return isset($output) ? $output : false;
 }
 
