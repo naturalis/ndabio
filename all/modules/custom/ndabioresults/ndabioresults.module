@@ -82,6 +82,14 @@ function ndabioresults_config_form($form, &$form_state) {
  * Implements hook_block_info().
  */
 function ndabioresults_block_info() {
+  $blocks['ndabioresults_back'] = array(
+    'info' => t('NBA: Search result back button'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "nba/result\nnba/result*",
+    'region' => "sidebar_first",
+    'status' => TRUE,
+  );
+
   $blocks['ndabioresults_collected_date'] = array(
     'info' => t('NBA: Search result collected'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -89,6 +97,7 @@ function ndabioresults_block_info() {
     'region' => "sidebar_first",
     'status' => TRUE,
   );
+
   $blocks['ndabioresults_source'] = array(
     'info' => t('NBA: Search result source'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -96,15 +105,9 @@ function ndabioresults_block_info() {
     'region' => "sidebar_first",
     'status' => TRUE,
   );
+  
   $blocks['ndabioresults_category'] = array(
     'info' => t('NBA: Search result category'),
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "nba/result\nnba/result*",
-    'region' => "sidebar_first",
-    'status' => TRUE,
-  );
-  $blocks['ndabioresults_back'] = array(
-    'info' => t('NBA: Search result back button'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => "nba/result\nnba/result*",
     'region' => "sidebar_first",

@@ -5,10 +5,7 @@ function printTaxonDetail ($data) {
 
 //  p($data);
 
-  $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>" . t("zoekresultaten") . "</a></div>";
-  $output .= "<div class='large-7 columns'>";
-
-  $output .=   "<h2>";
+  $output  =   "<h2>";
   $output .=   "  <span class='scientific-name'>";
   $output .=        $data['acceptedName'];
   $output .=   "  </span>";
