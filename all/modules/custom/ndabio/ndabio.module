@@ -37,6 +37,9 @@ define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
  */
 define('NDABIO_SEARCHTAXONOMY', 'search');
 
+define('NDABIO_BASEURL', 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/');
+
+
 /**
  * DEFINE CUSTOM PAGES
  * Module administration and all custom pages. Each page includes a callback where the
@@ -70,6 +73,12 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['search/thematic'] = array(
+    'page callback' => 'ndabio_searchthematic',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
 
   //Currently used as front page
   $items['search/advancednda'] = array(
@@ -90,6 +99,21 @@ function ndabio_menu() {
 
   return $items;
 }
+
+function ndabio_searchthematic($var1) {
+  global $base_path, $base_root;
+  drupal_set_message("Thematic search");
+  //$service_url = $base_root . $base_path . "nba/result?nba_request=" . urlencode(NDABIO_BASEURL . "?theme=uitgestrovenvogels");
+
+  $url = ('http://10.42.1.149:8080/nl.naturalis.nda.service.rest/api/taxon/get-taxon/?genus=Larus');
+  $url = 'http://10.42.1.149:8080/nl.naturalis.nda.service.rest/api/taxon/get-taxon/?genus=Larus&specificEpithet=canus&infraspecificEpithet=heinei';
+  $service_url = ($base_root . $base_path .'nba/result?nba_request=http%3A%2F%2F10.42.1.149%3A8080%2Fnl.naturalis.nda.service.rest%2Fapi%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DLarus%26specificEpithet%3Dargentatus%26infraspecificEpithet%3Dargenteus');
+  $service_url = ($base_root . $base_path .'nba/result?nba_request=' . urlencode($url)); // http%3A%2F%2F10.42.1.149%3A8080%2Fnl.naturalis.nda.service.rest%2Fapi%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DLarus%26specificEpithet%3Dargentatus%26infraspecificEpithet%3Dargenteus');
+  //dpm($service_url);
+  //drupal_set_message( urlencode($url));
+  drupal_goto($service_url);
+}
+
 
 /**
 * Output a json formatted detail page with geo coordinates based on the nid passed in the url.
