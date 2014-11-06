@@ -2,8 +2,10 @@
 
 // Transposes common names array and prints common names
 function printCommonNames ($data) {
-	$output = '';
+	$output = "";
+	
 	$header = "<h3>" . t('Common names') . "</h3>";
+	
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
 		// Transpose first
 		foreach ($data['commonNames'] as $lan => $name) {
@@ -19,7 +21,12 @@ function printCommonNames ($data) {
 			$output .= "</tbody></table>";
 		}
 	}
-	return $header . (!empty($output) ? $output : t('No common names available'));
+
+	return _wrap(
+		$header . (!empty($output) ? $output : t('No common names available')),
+		"section",
+		"result-detail-section"
+	);
 }
 
 

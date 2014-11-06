@@ -429,11 +429,18 @@ html.js fieldset.collapsible .fieldset-legend {
   #result-nav a {
     color: #542e08; }
 
-.page-nba-result .sidebar-first a {
-  font-size: 14px; }
-.page-nba-result .sidebar-first .block-title {
-  font-size: 14px;
-  font-weight: 500; }
+.page-nba-result .sidebar-first {
+  margin-top: 8px; }
+  .page-nba-result .sidebar-first h2 {
+    margin-bottom: 0;
+    margin-top: 2em; }
+  .page-nba-result .sidebar-first a {
+    font-size: 14px; }
+  .page-nba-result .sidebar-first .block-title {
+    font-size: 14px;
+    font-weight: 500; }
+.page-nba-result .sidebar-second {
+  margin-top: 8px; }
 
 .no-bullets {
   list-style: none inside none;
@@ -465,20 +472,22 @@ i {
   position: relative;
   top: 3px; }
 
-.page-nba-result main .property-list {
-  margin-left: 0;
-  width: 100%;
-  border: none; }
-
-.property-list tr {
-  border: none; }
+.nba-result-detail h2 {
+  margin-top: 8px;
+  margin-bottom: 1em;
+  font-size: 24px; }
+.nba-result-detail h3 {
+  font-size: 24px; }
+.nba-result-detail h4 {
+  font-size: 16px; }
 
 .category {
-  color: #542e08; }
+  color: #542e08;
+  font-size: 18px;
+  font-weight: 300; }
 
-.category + h2 {
-  margin-top: 1em;
-  font-size: 24px; }
+.result-detail-section {
+  margin-bottom: 24px; }
 
 .node-type-naturalis-service-menu-page #large-logo {
   padding: 35px; }

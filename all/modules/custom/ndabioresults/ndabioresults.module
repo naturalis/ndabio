@@ -1638,3 +1638,7 @@ echo $url . "<br>";
 function p ($a) {
     echo '<pre>'; print_r($a); echo '</pre>';
 }
+
+function _wrap($input, $tag = "div", $class=""){
+  return "<$tag class='$class'>$input</$tag>";
+}

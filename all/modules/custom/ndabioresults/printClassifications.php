@@ -47,7 +47,13 @@ function printClassifications ($data) {
     		$output .= "</tbody></table>";
     	}
 	}
-	return $header . (!empty($output) ? $output : t('No classifications available'));
+
+
+	return _wrap(
+    $header . (!empty($output) ? $output : t('No classifications available')),
+    "section",
+    "result-detail-section"
+  );
 }
 
 

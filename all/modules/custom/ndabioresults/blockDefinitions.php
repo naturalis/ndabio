@@ -59,17 +59,23 @@ function ndabioresults_block_view($delta = '') {
   $_link_disabled =  array('attributes' => array('class' => 'filter-disabled'));
   $_link_active =  array('attributes' => array('class' => 'filter-active'));
 
+  $SHOWS_RESULTS = ( $_SESSION['ndaRequestType'] == 'form' ) ;
+  
   switch ($delta) {
-    case 'ndabioresults_collected_date':
-      $block['subject'] = t('Collection date');
 
-      $block['content'] =
-        _list_items( array(
-          _item(array('All periods','filter-selected')),
-          _item(array('After 2010' ,'filter-enabled')),
-          _item(array('Before 2010','filter-enabled')),
-          _item(array('custom'     ,'filter-enabled','')),
-        ));
+    case 'ndabioresults_collected_date':
+      if ( $SHOWS_RESULTS  ){
+
+        $block['subject'] = t('Collection date');
+
+        $block['content'] =
+          _list_items( array(
+            _item(array('All periods','filter-selected')),
+            _item(array('After 2010' ,'filter-enabled')),
+            _item(array('Before 2010','filter-enabled')),
+            _item(array('custom'     ,'filter-enabled','')),
+          ));
+      }
 
       break;
 
@@ -86,15 +92,18 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_category':
-      $block['subject'] = t('Categories');
+      if ( $SHOWS_RESULTS  ){
 
-      $block['content'] =
-        _list_items( array(
-          _item(array('Multimedia'  ,'filter-selected')),
-          _item(array('Taxons'      ,'filter-selected')),
-          _item(array('Specimen'    ,'filter-selected')),
-          _item(array('Observations','filter-disabled')),
-        ));
+        $block['subject'] = t('Categories');
+
+        $block['content'] =
+          _list_items( array(
+            _item(array('Multimedia'  ,'filter-selected')),
+            _item(array('Taxons'      ,'filter-selected')),
+            _item(array('Specimen'    ,'filter-selected')),
+            _item(array('Observations','filter-disabled')),
+          ));
+      }
 
       break;
 
@@ -117,7 +126,7 @@ function ndabioresults_block_view($delta = '') {
     case 'ndabioresults_navigation':
       //$block['subject'] = '<none>';
 
-      if ( $_SESSION['ndaRequestType'] !== 'form'){
+      if ( !$SHOWS_RESULTS ){
       $block['content'] =
         "<div id='result-nav'>"
         ._list_items( array(

@@ -18,7 +18,12 @@ function printDescriptions ($data) {
 			}
 		}
 	}
-	return $header . (!empty($output) ? $output : t('No descriptions available'));
+
+	return _wrap(
+		$header . (!empty($output) ? $output : t('No descriptions available')),
+		"section",
+		"result-detail-section"
+	);
 }
 
 

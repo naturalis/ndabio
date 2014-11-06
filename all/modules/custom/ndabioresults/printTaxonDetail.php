@@ -13,7 +13,7 @@ function printTaxonDetail ($data) {
 
   if ( isset($data['commonNames'][$language->language]) ){
     $output .= "  <span class='vernacular-name'>";
-    $output .= implode(', ', $data['commonNames'][$language->language]);
+    $output .=      implode(', ', $data['commonNames'][$language->language]);
     $output .= "  </span>";
   }
 
@@ -23,9 +23,6 @@ function printTaxonDetail ($data) {
 		printCommonNames($data) .
 		printDescriptions($data) .
 		printClassifications($data);
-
-  // $output .= printNavigation($data); --> MOVE TO BLOCK
-
 
   return $output;
 }
