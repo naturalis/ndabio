@@ -4,8 +4,6 @@
  * Implements hook_block_info().
  */
 function ndabioresults_block_info() {
-  die();
-
   $blocks['ndabioresults_back'] = array(
     'info' => t('NBA: Search result back button'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
