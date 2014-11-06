@@ -1122,13 +1122,13 @@ function parseSpecimensByTaxon ($json) {
 	}
 	$output['showAll'] = setShowAll($data);
 	$output['navigator'] = setNavigator($data);
-
+//p($data);
 	return isset($output) ? $output : false;
 }
 
 
 function setShowAll ($data) {
-	if (isset($_SESSION['ndaQueryType']) && $_SESSION['ndaQueryType'] == 'form' &&
+	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
