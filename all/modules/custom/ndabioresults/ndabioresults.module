@@ -440,6 +440,10 @@ function ndaSimpleSearch () {
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
         $services[$request] = $p;
     }
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    $_SESSION['ndaRequestType'] = 'form';
+
     return performNdaRequest(setChannels($services));
 }
 
@@ -460,6 +464,10 @@ function ndaAdvancedSearch () {
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
 //p($services);
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    $_SESSION['ndaRequestType'] = 'form';
+
     return performNdaRequest(setChannels($services));
 }
 
@@ -470,14 +478,22 @@ function ndaAdvancedSearch () {
 function ndaDirectRequest ($r) {
     foreach (serviceToFunctions() as $service => $d) {
         if (strpos($r, $service) !== false) {
-            $_SESSION['ndaCurrentService'] = $service;
             $url = parse_url($r);
             parse_str($url['query'], $q);
+            // Add/reset maxResults to default
+            $q['_maxResults'] = maxResults();
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
     		$channels[0]['post'] = 1;
     		$channels[0]['postfields'] = http_build_query($q);
-    		return performNdaRequest($channels);
+    		// Set session variable with last used service;
+            // used to determine current detail page
+            $_SESSION['ndaCurrentService'] = $service;
+            // Set session with NBA query type;
+            // used to determine if show all should be printed
+            $_SESSION['ndaRequestType'] = 'url';
+
+            return performNdaRequest($channels);
         }
     }
     return array();
@@ -1194,7 +1210,28 @@ function parseTaxa ($json) {
 		$d['score'] = $row->searchResults[0]->score;
 		$output['results'][] = $d;
 	}
+
 	return isset($output) ? $output : false;
+}
+
+
+function setShowAll ($data) {
+	if (isset($_SESSION['ndaQueryType']) && $_SESSION['ndaQueryType'] == 'form') {
+        $self = getSelfLink($data);
+
+	}
+}
+
+function setNavigator ($data) {
+
+}
+
+function getSelfLink ($data) {
+    foreach ($data->links as $link) {
+        if ($link->rel == 'self') {
+            return $link->href;
+        }
+    }
 }
 
 
