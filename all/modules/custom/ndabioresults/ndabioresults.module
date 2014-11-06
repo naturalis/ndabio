@@ -804,10 +804,10 @@ function parseSpecimenMediaDetail ($json) {
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
 
-	$output['source'] = $row->result->sourceSystem->name;
+	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimenMediaTaxonNames($row);
-	$output['unitID'] = $row->result->unitID;
+	$output['unitID'] = $row->result->associatedSpecimen->unitID;
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
@@ -818,7 +818,7 @@ function parseSpecimenMediaDetail ($json) {
 
 
 function getSpecimenMediaTaxonNames ($row) {
-	foreach ($row->result->identifications as $i => $name) {
+	foreach ($row->result->associatedSpecimen->identifications as $i => $name) {
 		$output[] = array(
 			'name' => formatScientificName(
 				$name->scientificName->fullScientificName,
@@ -847,14 +847,14 @@ include 'printSpecimenMediaDetail.php';
 
 function parseTaxonMediaDetail ($json) {
 	if (!$json || !validJson($json)) {
-		handleError('No or invalid json response');
+		handleError('parseTaxonMediaDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
-	$output['source'] = $row->result->taxon->sourceSystem->name;
+	$output['source'] = $row->result->associatedTaxon->sourceSystem->name;
 	$output['acceptedName'] = formatScientificName(
-		$row->result->scientificNames[0]->fullScientificName,
-		$row->result->scientificNames[0]
+		$row->result->associatedTaxon->acceptedName->fullScientificName,
+		$row->result->associatedTaxon->acceptedName
 	);
 	$output['navigation'] = getNavigation($data);
 	$output['title'] = $row->result->title;

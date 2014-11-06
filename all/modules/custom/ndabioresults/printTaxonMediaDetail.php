@@ -4,7 +4,7 @@ function printTaxonMediaDetail ($data) {
 
   $output = "<h2>" . $data['title'] . "</h2>";
 	$output .= printNavigation($data);
-	$output .="<img scr='" . $data['imgSrc'] . "' alt='" . $data['title'] .
+	$output .="<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . ">";
 	$output .= "<table class='table-property-list'><tbody>";
 
