@@ -5,8 +5,6 @@ function printTaxonDetail ($data) {
 
 //  p($data);
 
-  $output  = "<div class='large-2 columns'><a href='#'><i class='icon-arrow-left'></i>" . t("zoekresultaten") . "</a></div>";
-  $output .= "<div class='large-7 columns'>";
 
   $output .=   "<h2>";
   $output .=   "  <span class='scientific-name'>";
@@ -24,10 +22,7 @@ function printTaxonDetail ($data) {
 		printDescriptions($data) .
 		printClassifications($data);
 
-  $output .= "</div>";
-  $output .= "<div class='large-3 columns'>";
-  $output .= printNavigation($data);
-  $output .= "</div>";
+  // $output .= printNavigation($data); --> MOVE TO BLOCK
 
 
   return $output;

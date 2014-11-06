@@ -4,11 +4,21 @@
  * Implements hook_block_info().
  */
 function ndabioresults_block_info() {
+  die();
+
   $blocks['ndabioresults_back'] = array(
     'info' => t('NBA: Search result back button'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => "nba/result\nnba/result*",
     'region' => "sidebar_first",
+    'status' => TRUE,
+  );  
+
+  $blocks['ndabioresults_navigation'] = array(
+    'info' => t('NBA: Search result navigation'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "nba/result\nnba/result*",
+    'region' => "sidebar_second",
     'status' => TRUE,
   );
 
@@ -43,6 +53,8 @@ function ndabioresults_block_info() {
  */
 function ndabioresults_block_view($delta = '') {
   global $base_root, $base_path;
+  $icon = "<i class='icon-arrow-left'></i>";
+
   $block = array();
 
   $_link_enabled =  array('attributes' => array('class' => 'filter-enabled'));
@@ -88,13 +100,28 @@ function ndabioresults_block_view($delta = '') {
 
       break;
 
-  case 'ndabioresults_back':
-      $block['subject'] = t('Back to search');
+    case 'ndabioresults_back':
+      $block['subject'] = '<none>';
 
       $starturl = $base_root . $base_path;
       if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
 
-      $block['content'] = "<a href='" . $starturl . "?searchagain=1'>" . t('Back to search') . "</a>";
+      $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Back to search') . "</a>";
+
+      break;
+
+    case 'ndabioresults_navigation':
+      $block['subject'] = '<none>';
+
+      $block['content'] =
+        "<div id='result-nav'>"
+        ._list_items( array(
+          _item(array('7 van 35'    )),
+          _item(array("<i class='icon-triangle-up'></i>"     )),
+          _item(array("<i class='icon-triangle-down'></i>"     )),
+          _item(array("<i class='icon-cross'></i>"     ))
+        ))
+        ."</div>";
 
       break;
   }
