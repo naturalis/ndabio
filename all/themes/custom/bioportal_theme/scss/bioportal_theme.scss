@@ -513,7 +513,7 @@ $icon-chevron-right: "\e60c";
 
   // -- results : LAYOUT
 
-    .page-nda-pass{
+    .page-nba-result{
       main {
         table{
           margin-left      : percentage(1/12);
@@ -536,7 +536,7 @@ $icon-chevron-right: "\e60c";
       }
 
       h2{
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
 
         .scientific-name{
@@ -618,6 +618,7 @@ $icon-chevron-right: "\e60c";
       width                : 18%;
       margin-left          : 1%;
       margin-right         : 1%;
+      margin-bottom        : 1rem;
       background-color     : $ghost;
       float                : left;
     }
@@ -631,6 +632,7 @@ $icon-chevron-right: "\e60c";
         size               : contain;
         repeat : no-repeat;
       }
+
 
 
     }
@@ -648,11 +650,14 @@ $icon-chevron-right: "\e60c";
     }
 
   // -- results: FILTER
-    .block-filter{
-        h2, li{
-          font-size: 13px;
+    
+    .page-nba-result{
+      .sidebar-first{
+        .block-title{
+          font-size: 1rem;
+          font-weight: 500;
         }
-
+      }
 
     }
 
@@ -667,17 +672,17 @@ $icon-chevron-right: "\e60c";
 
     }
 
-  .filter-disabled{
-    color: $gray-2;
-  }
+    .filter-disabled{
+      color: $gray-2;
+    }
 
-  .filter-enabled{
-    color: $gray-7;
-  }
+    .filter-enabled{
+      color: $gray-7;
+    }
 
-  .filter-selected{
-    color: $blue;
-  }
+    .filter-selected{
+      color: $blue;
+    }
 
 
   // -- results: SPECIMEN

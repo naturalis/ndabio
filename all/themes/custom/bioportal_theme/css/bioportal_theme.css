@@ -326,54 +326,54 @@ html.js fieldset.collapsible .fieldset-legend {
   .row-area a.active, .row-area a:hover {
     color: #009ee0; }
 
-.page-nda-pass main table {
+.page-nba-result main table {
   margin-left: 8.33333%;
   width: 91.66667%; }
-.page-nda-pass .column-first {
+.page-nba-result .column-first {
   width: 30%; }
-.page-nda-pass .column-match {
+.page-nba-result .column-match {
   width: 8%; }
-.page-nda-pass .result-query {
+.page-nba-result .result-query {
   text-decoration: underline; }
-.page-nda-pass .score {
+.page-nba-result .score {
   font-size: 1.2em;
   position: relative;
   top: -3px; }
-.page-nda-pass h2 {
-  font-size: 24px;
+.page-nba-result h2 {
+  font-size: 20px;
   font-weight: bold; }
-  .page-nda-pass h2 .scientific-name {
+  .page-nba-result h2 .scientific-name {
     color: black; }
-  .page-nda-pass h2 .vernacular-name {
+  .page-nba-result h2 .vernacular-name {
     color: #b2b1a8; }
-.page-nda-pass h3 {
+.page-nba-result h3 {
   color: #009ee0;
   font-size: 24px;
   font-weight: bold; }
-.page-nda-pass h4 {
+.page-nba-result h4 {
   font-size: 18px;
   font-weight: bold; }
-.page-nda-pass h5.source {
+.page-nba-result h5.source {
   font-size: 18px;
   color: #b2b1a8;
   margin-top: 1em;
   clear: both;
   font-weight: bold; }
-.page-nda-pass .definition-list {
+.page-nba-result .definition-list {
   margin-bottom: 3em;
   display: table;
   width: 100%; }
-.page-nda-pass dl {
+.page-nba-result dl {
   clear: both;
   display: table-row; }
-  .page-nda-pass dl:hover {
+  .page-nba-result dl:hover {
     background-color: #eeede9; }
-.page-nda-pass dt {
+.page-nba-result dt {
   width: 42.85714%;
   font-weight: normal;
   display: table-cell;
   padding-right: 3em; }
-.page-nda-pass dd {
+.page-nba-result dd {
   width: 57.14286%;
   font-weight: bold;
   display: table-cell; }
@@ -394,6 +394,7 @@ html.js fieldset.collapsible .fieldset-legend {
   width: 18%;
   margin-left: 1%;
   margin-right: 1%;
+  margin-bottom: 1rem;
   background-color: #eeede9;
   float: left; }
 
@@ -413,8 +414,9 @@ html.js fieldset.collapsible .fieldset-legend {
   .polaroid-caption .image-title {
     font-weight: bolder; }
 
-.block-filter h2, .block-filter li {
-  font-size: 13px; }
+.page-nba-result .sidebar-first .block-title {
+  font-size: 1rem;
+  font-weight: 500; }
 
 .no-bullets {
   list-style: none inside none;
