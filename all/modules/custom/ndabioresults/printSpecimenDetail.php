@@ -16,40 +16,46 @@ function printSpecimenDetail ($data) {
 	$data = array_merge(array_flip($fieldOrder), $data);
 //p($data);
 	$output = "<h3>" . t('Specimen details') . "</h3>" .
-		"<h5 class='source'>" . $data['source'] . "</h5>";
+		"<h4 class='source'>" . $data['source'] . "</h4>";
+	
 	// Navigation
-	$output .= printNavigation($data);
-	$output .= "<table class='table-property-list'><tbody>";
+	// $output .= printNavigation($data);
+	
+	$output .= "<div class='table-property-list'>";
+	
 	foreach ($data as $field => $value) {
 		if (is_array($value)) {
+			
 			// Taxon name
 			if ($field == 'names') {
 				$output .= printNamesWithLinks($value, 'species');
 			}
+			
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= printTableRow('dateTimeBegin', isset($value['dateTimeBegin']) ?
+                $output .= printDL('dateTimeBegin', isset($value['dateTimeBegin']) ?
                     date('Y-m-d', $value['dateTimeBegin'] / 1000) : '');
-                $output .= printTableRow('gatheringAgents', isset($value['gatheringAgents']) ?
+                $output .= printDL('gatheringAgents', isset($value['gatheringAgents']) ?
                     implode(', ', $value['gatheringAgents']) : '');
-			    $output .= printTableRow('localityText', isset($value['localityText']) ?
+			    $output .= printDL('localityText', isset($value['localityText']) ?
                      $value['localityText'] : '');
-                $output .= printTableRow('siteCoordinates', isset($value['siteCoordinates']) ?
+                $output .= printDL('siteCoordinates', isset($value['siteCoordinates']) ?
                     '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
                     $value['siteCoordinates']['lon'] . ']' : '');
 			}
 		} else {
-			$output .= printTableRow($field, $value);
+			$output .= printDL($field, $value);
 		}
 	}
 	// Other specimens in collection/set are printed in different table
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
-		$output .= "</tbody></table>" .
-			"<table class='table-property-list'><tbody>";
+		$output .= "</div>" .
+			"<div class='table-property-list'>";
 		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
 	}
-	return $output . "</tbody></table>";
+	return $output . "</div>";
 }
+
 
 
 ?>

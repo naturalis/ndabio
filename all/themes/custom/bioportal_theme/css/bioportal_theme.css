@@ -472,6 +472,10 @@ i {
   position: relative;
   top: 3px; }
 
+.table-property-list {
+  display: table;
+  width: 100%; }
+
 .nba-result-detail h2 {
   margin-top: 8px;
   margin-bottom: 1em;

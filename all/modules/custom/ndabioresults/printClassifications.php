@@ -37,14 +37,14 @@ function printClassifications ($data) {
 	foreach ($printClassifications as $pC) {
     	foreach ($pC as $source => $sClassification) {
     	    $output .= "<h4 class='source'>$source</h4>" .
-    			"<table class='property-list'><tbody>";
+    			"<div class='property-list'>";
     		$classification = unserialize($sClassification);
     		foreach ($classification as $rank => $name) {
     			if (!empty($name)) {
-    			    $output .= "<tr><td>" . t($rank) . "</td><td>$name</td></tr>";
+    			    $output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
     			}
     		}
-    		$output .= "</tbody></table>";
+    		$output .= "</div>";
     	}
 	}
 

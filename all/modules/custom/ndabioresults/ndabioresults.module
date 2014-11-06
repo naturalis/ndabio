@@ -1642,3 +1642,7 @@ function p ($a) {
 function _wrap($input, $tag = "div", $class=""){
   return "<$tag class='$class'>$input</$tag>";
 }
+
+function printDL($field, $value){
+  return "<dl><dt>$field</dt><dd>$value</dd></dl>";
+}

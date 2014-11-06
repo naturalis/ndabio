@@ -752,6 +752,11 @@ $icon-chevron-right: "\e60c";
 // DETAIL PAGES
   
   // detail-pages: GENERAL
+    .table-property-list{
+      display: table;
+      width: 100%;
+    }
+
     .nba-result-detail{
       h2{
         margin-top: 8px;
