@@ -1,5 +1,8 @@
 <?php
 
+require_once 'printShowAll.php';
+require_once 'printNavigator.php';
+
 // Prints specimen result set on screen.
 function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
 	$headers = array(
@@ -44,7 +47,12 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
 		$output .= "<td>" . decorateScore($row['score']) . "</td>";
 		$output .= "</tr>";
 	}
-	return $output . "</tbody></table>";
+
+	$output .= "</tbody></table>";
+    $output .= printShowAll($data);
+    $output .= printNavigator($data);
+
+    return $output;
 }
 
 

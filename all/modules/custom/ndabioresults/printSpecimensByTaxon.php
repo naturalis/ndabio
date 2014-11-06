@@ -1,5 +1,9 @@
 <?php
 
+require_once 'printShowAll.php';
+require_once 'printNavigator.php';
+
+
 // Prints specimen result set on screen.
 function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
 	$headers = array(
@@ -62,6 +66,9 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 	}
 
   $output .= "</table>";
+  $output .= printShowAll($data);
+  $output .= printNavigator($data);
+
   return _markUp($output);
 }
 

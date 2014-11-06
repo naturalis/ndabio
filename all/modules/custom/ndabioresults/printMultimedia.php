@@ -1,5 +1,8 @@
 <?php
 
+require_once 'printShowAll.php';
+require_once 'printNavigator.php';
+
 // Prints multimedia on screen
 function printMultimedia ($data) {
 
@@ -32,6 +35,8 @@ function printMultimedia ($data) {
 	}
 
   $output .=  "</div>";
+  $output .= printShowAll($data);
+  $output .= printNavigator($data);
 
   return _markUp($output);
 }

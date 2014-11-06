@@ -1,5 +1,8 @@
 <?php
 
+require_once 'printShowAll.php';
+require_once 'printNavigator.php';
+
 /* Prints taxon result set on screen. Parameters $p should contain:
    'sortColumn', 'sortDirection'
 
@@ -56,13 +59,10 @@ function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc
     $output .= "</tr>";
 	}
 
-  $output .= "</tbody></table>";
-  $output = _markUp($output);
-
-    if (isset($data['moreUrl']) && !empty($data['moreUrl'])) {
-        $output .= '<p class="more"><a href="' . $data['moreUrl'] . '">' .
-            t('Show all...') . '</a></p>';
-    }
+    $output .= "</tbody></table>";
+    $output = _markUp($output);
+    $output .= printShowAll($data);
+    $output .= printNavigator($data);
 
 	return $output;
 }
