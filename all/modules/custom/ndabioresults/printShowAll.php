@@ -1,9 +1,9 @@
 <?php
 function printShowAll ($data) {
+    $output = '';
     if (!isset($data['showAll']) || empty($data['showAll'])) {
-        return '';
+        return $output;
     }
 
-    $output = '';
     return $output;
 }
