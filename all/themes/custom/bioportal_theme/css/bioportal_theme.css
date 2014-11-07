@@ -138,6 +138,8 @@ button, .button {
     padding-right: 60px; }
   .fieldset-omnisearch .ndabio-omnibox-wrapper {
     position: relative; }
+  .fieldset-omnisearch input[disabled] {
+    color: #b2b1a8; }
 
 .ndabio-toggle-advanced {
   position: absolute;
@@ -251,6 +253,9 @@ html.js fieldset.collapsible .fieldset-legend {
     content: "\e613"; }
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
   content: "\e610"; }
+
+#edit-submit-bottom {
+  width: 120px; }
 
 .row.collapse .geo-search-label {
   height: 50px;

@@ -135,7 +135,7 @@
       }
 
     })
-    .on('keypress',function(){
+    .on('keyup',function(){
 
       $_me = $(this);
 
@@ -144,7 +144,8 @@
       } else {
         $_me.next().addClass("hidden");
       }
-  });
+    });
+
   // ---------------------------------------------------------
 
 

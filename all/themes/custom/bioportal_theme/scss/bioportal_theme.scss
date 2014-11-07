@@ -233,6 +233,10 @@ $icon-chevron-right: "\e60c";
         position           : relative;
       }
 
+      input[disabled]{
+        color: $gray;
+      }
+
     }
 
     .ndabio-toggle-advanced{
@@ -392,6 +396,10 @@ $icon-chevron-right: "\e60c";
           content: $icon-double-chevron-down;
         }
       }
+    }
+
+    #edit-submit-bottom{
+      width: 120px;
     }
 
 // GEOSEARCH
@@ -824,9 +832,7 @@ $icon-chevron-right: "\e60c";
       margin-bottom: 24px;
     }
 
-
-
-// USER MENU PAGES
+ // USER MENU PAGES
 
   // user menu pages: LOGO
 
