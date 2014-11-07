@@ -634,8 +634,10 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-	drupal_set_message('<pre>' . $_SESSION['ndaPageDetail'] . '</pre><br>
-	   <pre>' . print_r($channels, true) . '</pre>');
+	// drupal_set_message('<pre>' . $_SESSION['ndaPageDetail'] . '</pre><br>
+	//    <pre>' . print_r($channels, true) . '</pre>');
+
+  // kpr($_SESSION);
 
 	return $output;
 }

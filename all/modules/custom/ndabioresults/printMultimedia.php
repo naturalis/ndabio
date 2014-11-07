@@ -23,13 +23,23 @@ function printMultimedia ($data) {
     // @todo temp fix for medialib
     $row['imgSrc'] = str_replace('file://', '', $row['imgSrc']);
 
+    // kpr($row);
+
+    // Build a nice caption.
+    $caption = '';
+    if ( !empty( $row['hits']['genusOrMonomial']) ){
+      $caption .=  $row['hits']['genusOrMonomial'];
+    }
+
     $output .=
       "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .
       "  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
       "  <div class='polaroid-caption'>".
-      "    <div class='image-title'>" . $row['caption'] . "</div>".
-			"    <div class='image-hits'>" . printHits($row) .  "</div>".
-		  "    <div class='image-source'>" . $row['source'] . "</div>".
+      "    <div class='image-title'>" . $caption . "</div>".
+      // "    <div class='image-title'>" . $row['caption'] . "</div>".
+      // "    <div class='image-hits'>" . printHits($row) .  "</div>".
+			"    <div class='image-hits'>" . $row['caption'] .  "</div>".
+		  // "    <div class='image-source'>" . $row['source'] . "</div>".
       "  </div>".
       "</a>";
 	}

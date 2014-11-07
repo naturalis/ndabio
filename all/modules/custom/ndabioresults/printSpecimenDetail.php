@@ -19,7 +19,7 @@ function printSpecimenDetail ($data) {
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");
 	
-	$output .= "<div class='table-property-list'>";
+	$output .= "<div class='property-list'>";
 	
 	foreach ($data as $field => $value) {
 		if (is_array($value)) {
@@ -48,7 +48,7 @@ function printSpecimenDetail ($data) {
 	// Other specimens in collection/set are printed in different table
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
 		$output .= "</div>" .
-			"<div class='table-property-list'>";
+			"<div class='property-list'>";
 		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
 	}
 	return $output . "</div>";

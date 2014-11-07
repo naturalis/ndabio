@@ -101,7 +101,7 @@ $icon-chevron-right: "\e60c";
         margin-top: 2em;
 
         .count{
-          font-weight: 300;
+          font-weight: 400;
         }
 
       }
@@ -582,16 +582,16 @@ $icon-chevron-right: "\e60c";
         font-weight: bold;
       }
 
-      h5.source{
+      .source{
         font-size: 18px;
-        color: $gray;
+        color: $gray-8;
         margin-top: 1em;
         clear: both;
         font-weight: bold;
 
       }
 
-      .definition-list{
+      .property-list{
         margin-bottom: 3em;
         display: table;
         width: 100%;

@@ -14,11 +14,11 @@ function printCommonNames ($data) {
 		}
 		foreach ($names as $source => $t) {
 			$output .= "<h4 class='source'>$source</h4>" .
-				"<table class='property-list'><tbody>";
+				"<div class='property-list'>";
 			foreach ($t as $name => $lan) {
-				$output .= "<tr><td>" . t($lan) . "</td><td>$name</td></tr>";
+				$output .= printDL( t($lan) , $name);
 			}
-			$output .= "</tbody></table>";
+			$output .= "</div>";
 		}
 	}
 

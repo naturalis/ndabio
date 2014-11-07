@@ -57,7 +57,7 @@
   font-weight: bolder;
   margin-top: 2em; }
   .not-front h2 .count {
-    font-weight: 300; }
+    font-weight: 400; }
 
 button, .button {
   background-color: #009ee0; }
@@ -368,13 +368,13 @@ html.js fieldset.collapsible .fieldset-legend {
 .page-nba-result h4 {
   font-size: 18px;
   font-weight: bold; }
-.page-nba-result h5.source {
+.page-nba-result .source {
   font-size: 18px;
-  color: #b2b1a8;
+  color: #4d4d4d;
   margin-top: 1em;
   clear: both;
   font-weight: bold; }
-.page-nba-result .definition-list {
+.page-nba-result .property-list {
   margin-bottom: 3em;
   display: table;
   width: 100%; }
