@@ -456,6 +456,7 @@ function ndaSimpleSearch () {
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from simple form';
 
     return $title.performNdaRequest(setChannels($services));
 }
@@ -480,7 +481,7 @@ function ndaAdvancedSearch () {
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
-    $_SESSION['ndaPageDetail'] = 'result from form';
+    $_SESSION['ndaPageDetail'] = 'result from advanced form';
 
     return performNdaRequest(setChannels($services));
 }
@@ -508,9 +509,7 @@ function ndaDirectRequest ($r) {
             $_SESSION['ndaRequestType'] = 'url';
             // Set session with info about current page;
             // used to set appropriate blocks
-            $_SESSION['ndaPageDetail'] =
-                (isset($_SESSION['ndaPageDetail']) && $_SESSION['ndaPageDetail'] == 'show all') ?
-                $_SESSION['ndaPageDetail'] . ' ' . $d['info'] : $d['info'];
+            $_SESSION['ndaPageDetail'] = $d['info'];
 
             return performNdaRequest($channels);
         }
@@ -612,10 +611,6 @@ function countSearchParameters ($d) {
  * @return void|string
  */
 function performNdaRequest (array $channels = array()) {
-    // Debug: print queries
-    drupal_set_message('<pre>' . print_r($channels, true) . '</pre>');
-    //return;
-
 	if (empty($channels)) {
 		handleError('Cannot set curl channels');
 	}
@@ -637,6 +632,11 @@ function performNdaRequest (array $channels = array()) {
 		$printFunction = $serviceToFunctions[$service]['print'];
 		$output .= $printFunction($parseFunction($json));
 	}
+
+    // Debug: print queries
+	drupal_set_message('<pre>' . $_SESSION['ndaPageDetail'] . '</pre><br>
+	   <pre>' . print_r($channels, true) . '</pre>');
+
 	return $output;
 }
 
@@ -1140,10 +1140,9 @@ function setShowAll ($data) {
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
-            return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
+	       return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
                 '_maxResults=' . maxResults(), urldecode($self)));
 	    }
-	    $_SESSION['ndaPageDetail'] = 'show all';
 	}
 	return null;
 }
