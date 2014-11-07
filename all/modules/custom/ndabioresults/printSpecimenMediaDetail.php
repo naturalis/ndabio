@@ -5,7 +5,7 @@ function printSpecimenMediaDetail ($data) {
 	$output .= printNavigation($data);
 	$output .= "<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . " />\n";
-	$output .= "<table class='table-property-list'>\n<tbody>\n";
+	$output .= "<dd class='table-property-list'>";
 	$fields = array('source', 'title', 'caption');
 	if (isset($data['acceptedName'])) {
 		array_unshift($fields, 'acceptedName');
@@ -14,10 +14,10 @@ function printSpecimenMediaDetail ($data) {
 	}
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
-			$output .= printTableRow($field, $data[$field]);
+			$output .= printDL($field, $data[$field]);
 		}
 	}
-	return $output . "</tbody>\n</table>\n";
+	return $output . "</dd>";
 }
 
 

@@ -6,13 +6,13 @@ function printTaxonMediaDetail ($data) {
 	$output .= printNavigation($data);
 	$output .="<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . ">";
-	$output .= "<table class='table-property-list'><tbody>";
+	$output .= "<dd class='table-property-list'>";
 
   foreach (array('acceptedName', 'source', 'title', 'caption') as $field) {
-		$output .= printTableRow($field, $data[$field]);
+		$output .= printDL($field, $data[$field]);
 	}
 
-	return $output . "</tbody></table>";
+	return $output . "</dd>";
 }
 
 
