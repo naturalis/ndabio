@@ -39,11 +39,14 @@
   /* Internet Explorer 10+ */
   color: #cccccc; }
 
-.scientific-name {
+.scientific-name, .scientific {
   font-style: italic; }
 
 .vernacular-name {
   font-style: normal; }
+
+.result-query {
+  font-weight: bolder; }
 
 .not-front h2 {
   font-size: 20px;
@@ -326,13 +329,15 @@ html.js fieldset.collapsible .fieldset-legend {
   .row-area a.active, .row-area a:hover {
     color: #009ee0; }
 
-.page-nba-result main table {
-  margin-left: 8.33333%;
-  width: 91.66667%; }
-.page-nba-result main td, .page-nba-result main th {
-  padding-left: 0; }
-.page-nba-result main .show-all {
-  margin-left: 8.33333%; }
+.page-nba-result main {
+  padding-bottom: 3rem; }
+  .page-nba-result main table {
+    margin-left: 8.33333%;
+    width: 91.66667%; }
+  .page-nba-result main td, .page-nba-result main th {
+    padding-left: 0; }
+  .page-nba-result main .show-all {
+    margin-left: 8.33333%; }
 .page-nba-result .column-first {
   width: 30%; }
 .page-nba-result .column-match {
@@ -343,6 +348,8 @@ html.js fieldset.collapsible .fieldset-legend {
   font-size: 1.2em;
   position: relative;
   top: -3px; }
+.page-nba-result h1 {
+  font-size: 24px; }
 .page-nba-result h2 {
   font-size: 20px;
   font-weight: bold; }

@@ -436,6 +436,8 @@ function ndabioresults_pass ($args = "") {
  * @return string Formatted output
  */
 function ndaSimpleSearch () {
+    $title = _wrap(t('Search results'),"H1");
+
     $p = array(
         '_search' => $_SESSION['ndaSearch']['term']
     );
@@ -455,7 +457,7 @@ function ndaSimpleSearch () {
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
 
-    return performNdaRequest(setChannels($services));
+    return $title.performNdaRequest(setChannels($services));
 }
 
 /**
@@ -1683,8 +1685,9 @@ function p ($a) {
     echo '<pre>'; print_r($a); echo '</pre>';
 }
 
-function _wrap($input, $tag = "div", $class=""){
-  return "<$tag class='$class'>$input</$tag>";
+function _wrap($input, $tag = "div", $class = ""){
+  $class = ($class == "" ? "": " class='$class'" );
+  return "<$tag$class>$input</$tag>";
 }
 
 function printDL($field, $value){

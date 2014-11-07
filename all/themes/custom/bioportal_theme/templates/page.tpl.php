@@ -149,10 +149,14 @@
       <?php endif; ?>
 
       <?php if (!empty($tabs)): ?>
-        <div class="tabs">
-          <?php print render($tabs); ?>
-          <?php if (!empty($tabs2)): print render($tabs2); endif; ?>
-        </div>
+        <?php if ( $tabs['#primary'] !== "" ): ?>
+
+          <div class="tabs">
+            <?php print render($tabs); ?>
+            <?php if (!empty($tabs2)): print render($tabs2); endif; ?>
+          </div>
+
+        <?php endif; ?>
       <?php endif; ?>
 
       <?php if ($action_links): ?>

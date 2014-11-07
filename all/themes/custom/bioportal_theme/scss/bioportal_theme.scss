@@ -72,12 +72,16 @@ $icon-chevron-right: "\e60c";
 }
 
 // GLOBAL SEMANTIC CLASSES
-    .scientific-name{
+    .scientific-name, .scientific{
       font-style: italic;
     }
 
     .vernacular-name{
       font-style: normal;
+    }
+
+    .result-query{
+      font-weight: bolder;
     }
 
 
@@ -514,6 +518,9 @@ $icon-chevron-right: "\e60c";
 
     .page-nba-result{
       main {
+        
+        padding-bottom: 3rem;
+
         table{
           margin-left      : percentage(1/12);
           width            : percentage(11/12);
@@ -526,9 +533,6 @@ $icon-chevron-right: "\e60c";
         .show-all{
           margin-left      : percentage(1/12);
         }
-
-
-
       }
 
       .column-first{ width : 30% }
@@ -543,6 +547,10 @@ $icon-chevron-right: "\e60c";
         position: relative;
         top: -3px;
 
+      }
+
+      h1{
+        font-size: 24px;
       }
 
       h2{
