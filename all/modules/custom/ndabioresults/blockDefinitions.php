@@ -10,7 +10,7 @@ function ndabioresults_block_info() {
     'pages' => "nba/result\nnba/result*",
     'region' => "sidebar_first",
     'status' => TRUE,
-  );  
+  );
 
   $blocks['ndabioresults_navigation'] = array(
     'info' => t('NBA: Search result navigation'),
@@ -35,7 +35,7 @@ function ndabioresults_block_info() {
     'region' => "sidebar_first",
     'status' => TRUE,
   );
-  
+
   $blocks['ndabioresults_category'] = array(
     'info' => t('NBA: Search result category'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -60,7 +60,7 @@ function ndabioresults_block_view($delta = '') {
   $_link_active =  array('attributes' => array('class' => 'filter-active'));
 
   $SHOWS_RESULTS = ( $_SESSION['ndaRequestType'] == 'form' ) ;
-  
+
   switch ($delta) {
 
     case 'ndabioresults_collected_date':
@@ -165,7 +165,7 @@ function _list_items($arr_items){
 function _item($arr_item){
   return array(
     'data' => $arr_item[0],
-    'class' => $arr_item[1],
+    'class' => isset($arr_item[1]) ? $arr_item[1] : null,
     'value' => isset($arr_item[2]) ? $arr_item[2] : null
   );
 }
