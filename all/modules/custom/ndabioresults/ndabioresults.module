@@ -301,35 +301,43 @@ function serviceToFunctions() {
          $var = array(
         	taxonService() => array(
         		'parse' => 'parseTaxa',
-        		'print' => 'printTaxa'
+        		'print' => 'printTaxa',
+        	    'info' => 'results taxa'
         	),
         	specimenNamesService() => array(
         		'parse' => 'parseSpecimensByTaxon',
-        		'print' => 'printSpecimensByTaxon'
+        		'print' => 'printSpecimensByTaxon',
+        	    'info' => 'results specimens by name'
         	),
         	multimediaService() => array(
         		'parse' => 'parseMultimedia',
-        		'print' => 'printMultimedia'
+        		'print' => 'printMultimedia',
+        	    'info' => 'results multimedia'
         	),
         	specimenService() => array(
         		'parse' => 'parseSpecimens',
-        		'print' => 'printSpecimens'
+        		'print' => 'printSpecimens',
+        	    'info' => 'results specimens'
         	),
         	specimenDetailService() => array(
         		'parse' => 'parseSpecimenDetail',
-        		'print' => 'printSpecimenDetail'
+        		'print' => 'printSpecimenDetail',
+        	    'info' => 'detail specimen'
         	),
         	taxonDetailService() => array(
         		'parse' => 'parseTaxonDetail',
-        		'print' => 'printTaxonDetail'
+        		'print' => 'printTaxonDetail',
+        	    'info' => 'detail taxon'
         	),
         	taxonMultimediaService() => array(
         		'parse' => 'parseTaxonMediaDetail',
-        		'print' => 'printTaxonMediaDetail'
+        		'print' => 'printTaxonMediaDetail',
+        	    'info' => 'detail multimedia by taxon'
         	),
         	specimenMultimediaService() => array(
         		'parse' => 'parseSpecimenMediaDetail',
-        		'print' => 'printSpecimenMediaDetail'
+        		'print' => 'printSpecimenMediaDetail',
+        	    'info' => 'detail multimedia by specimen'
         	)
         );
     }
@@ -470,6 +478,7 @@ function ndaAdvancedSearch () {
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from form';
 
     return performNdaRequest(setChannels($services));
 }
@@ -495,6 +504,11 @@ function ndaDirectRequest ($r) {
             // Set session with NBA query type;
             // used to determine if show all should be printed
             $_SESSION['ndaRequestType'] = 'url';
+            // Set session with info about current page;
+            // used to set appropriate blocks
+            $_SESSION['ndaPageDetail'] =
+                (isset($_SESSION['ndaPageDetail']) && $_SESSION['ndaPageDetail'] == 'show all') ?
+                $_SESSION['ndaPageDetail'] . ' ' . $d['info'] : $d['info'];
 
             return performNdaRequest($channels);
         }
@@ -1127,6 +1141,7 @@ function setShowAll ($data) {
             return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
                 '_maxResults=' . maxResults(), urldecode($self)));
 	    }
+	    $_SESSION['ndaPageDetail'] = 'show all';
 	}
 	return null;
 }
@@ -1145,9 +1160,11 @@ function replaceUrlParameterValues ($url, array $newValues, $decodeEncode = fals
         if (isset($q[$p])) {
             $q[$p] = $v;
         }
+        $parts['query'] = http_build_query($q);
         $url = reverse_parse_url($parts);
     }
-}
+    return $url;
+    }
 
 function getSelfLink ($data) {
     foreach ($data->links as $link) {
