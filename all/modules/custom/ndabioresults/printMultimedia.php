@@ -1,7 +1,7 @@
 <?php
 
 require_once 'printShowAll.php';
-require_once 'printNavigator.php';
+require_once 'printPaginator.php';
 
 // Prints multimedia on screen
 function printMultimedia ($data) {
@@ -35,10 +35,12 @@ function printMultimedia ($data) {
 	}
 
   $output .=  "</div>";
-  $output .= printShowAll($data);
-  $output .= printNavigator($data);
+  $output = _markUp($output);
 
-  return _markUp($output);
+  $output .= printShowAll($data);
+  $output .= printPaginator($data);
+
+  return $output;
 }
 
 

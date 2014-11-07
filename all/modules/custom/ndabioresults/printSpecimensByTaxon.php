@@ -1,7 +1,7 @@
 <?php
 
 require_once 'printShowAll.php';
-require_once 'printNavigator.php';
+require_once 'printPaginator.php';
 
 
 // Prints specimen result set on screen.
@@ -66,10 +66,12 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 	}
 
   $output .= "</table>";
-  $output .= printShowAll($data);
-  $output .= printNavigator($data);
+  $output = _markUp($output);
 
-  return _markUp($output);
+  $output .= printShowAll($data);
+  $output .= printPaginator($data);
+
+  return $output;
 }
 
 

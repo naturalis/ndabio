@@ -1116,13 +1116,13 @@ function parseSpecimensByTaxon ($json) {
     		$s['unitID'] = $sp->result->unitID;
     		$s['collectionType'] = $sp->result->collectionType;
     		$s['url'] = $sp->links[0]->href;
-            empty($assemblageID) ? $d['specimens'] = $s : $d['sets'][$assemblageID][] = $s;
+            empty($assemblageID) ? $d['specimens'][] = $s : $d['sets'][$assemblageID][] = $s;
 		}
 		$output['results'][] = $d;
 	}
 	$output['showAll'] = setShowAll($data);
 	$output['navigator'] = setNavigator($data);
-p($output);
+// p($data);
 	return isset($output) ? $output : false;
 }
 
@@ -1140,6 +1140,8 @@ function setShowAll ($data) {
 }
 
 function setNavigator ($data) {
+    $total = getTotalRows($data);
+    $offset = getOffset($data);
     return null;
 }
 
@@ -1151,7 +1153,12 @@ function getSelfLink ($data) {
     }
 }
 
-
+function getOffset ($data) {
+    if (isset($data->queryParameters->_offset[0])) {
+        return $data->queryParameters->_offset[0];
+    }
+    return 0;
+}
 
 // Returns image properties
 function getImageUrl ($row) {

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'printShowAll.php';
-require_once 'printNavigator.php';
+require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
@@ -49,8 +49,9 @@ function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' =>
 	}
 
 	$output .= "</tbody></table>";
+
     $output .= printShowAll($data);
-    $output .= printNavigator($data);
+    $output .= printPaginator($data);
 
     return $output;
 }

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'printShowAll.php';
-require_once 'printNavigator.php';
+require_once 'printPaginator.php';
 
 /* Prints taxon result set on screen. Parameters $p should contain:
    'sortColumn', 'sortDirection'
@@ -61,8 +61,9 @@ function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc
 
     $output .= "</tbody></table>";
     $output = _markUp($output);
+
     $output .= printShowAll($data);
-    $output .= printNavigator($data);
+    $output .= printPaginator($data);
 
 	return $output;
 }
