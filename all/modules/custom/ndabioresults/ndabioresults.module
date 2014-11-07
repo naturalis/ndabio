@@ -396,10 +396,6 @@ function setSpecimenParameters (array $sP, $type) {
  * POST data in a SESSION, distributes the search to the appropriate channels
  * and returns the formatted output.
  *
- * @todo For the time being it just prints the appropriate NDA request urls on screen
- * plus displays mock data using DUMMYperformNdaRequest(). Adapt performNdaRequest() and
- * delete DUMMY functions.
- *
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
@@ -420,10 +416,6 @@ function ndabioresults_pass ($args = "") {
     }
     // Redirect to distinct services
     return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
-
-    // This line returns mock data
-    // TODO: Delete this line and DUMMY functions at the bottom once everything runs properly!
-    // return DUMMYperformNdaRequest('all');
 }
 
 /**
@@ -993,7 +985,7 @@ function parseMultimedia ($json) {
 		$output['results'][] = $d;
 	}
 	$output['showAll'] = setShowAll($data);
-	$output['navigator'] = setNavigator($data);
+	$output['paginator'] = setPaginator($data);
 
 	return isset($output) ? $output : false;
 }
@@ -1037,7 +1029,7 @@ function parseSpecimens ($json) {
 		$output['results'][] = $d;
 	}
 	$output['showAll'] = setShowAll($data);
-	$output['navigator'] = setNavigator($data);
+	$output['paginator'] = setPaginator($data);
 
 	return isset($output) ? $output : false;
 }
@@ -1121,7 +1113,7 @@ function parseSpecimensByTaxon ($json) {
 		$output['results'][] = $d;
 	}
 	$output['showAll'] = setShowAll($data);
-	$output['navigator'] = setNavigator($data);
+	$output['paginator'] = setPaginator($data);
 // p($data);
 	return isset($output) ? $output : false;
 }
@@ -1139,10 +1131,22 @@ function setShowAll ($data) {
 	return null;
 }
 
-function setNavigator ($data) {
+function setPaginator ($data) {
     $total = getTotalRows($data);
     $offset = getOffset($data);
+    $self = getSelfLink($data);
     return null;
+}
+
+function replaceUrlParameterValues ($url, array $newValues, $decodeEncode = false) {
+    foreach ($newValues as $p => $v) {
+        $parts = parse_url($url);
+        parse_str($parts['query'], $q);
+        if (isset($q[$p])) {
+            $q[$p] = $v;
+        }
+        $url = reverse_parse_url($parts);
+    }
 }
 
 function getSelfLink ($data) {
@@ -1151,6 +1155,22 @@ function getSelfLink ($data) {
             return $link->href;
         }
     }
+}
+
+/**
+ * Function from php.net to reverse parse_url. Cannot use http_buil_url() because it requires PECL
+ */
+function reverse_parse_url ($parsed_url) {
+    $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+    $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+    $port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+    $user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+    $pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
+    $pass = ($user || $pass) ? "$pass@" : '';
+    $path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+    $query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+    $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+    return "$scheme$user$pass$host$port$path$query$fragment";
 }
 
 function getOffset ($data) {
@@ -1262,7 +1282,7 @@ function parseTaxa ($json) {
 		$output['results'][] = $d;
 	}
 	$output['showAll'] = setShowAll($data);
-	$output['navigator'] = setNavigator($data);
+	$output['paginator'] = setPaginator($data);
 
 	return isset($output) ? $output : false;
 }
