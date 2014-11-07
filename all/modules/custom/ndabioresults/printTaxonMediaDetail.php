@@ -1,12 +1,16 @@
 <?php
 
 function printTaxonMediaDetail ($data) {
+  
+  $output  = _wrap( t("Media item")   , "div", "category");
+  $output .= _wrap( basename(  $data['imgSrc']  ) , "h2"  );
 
-  $output = "<h2>" . $data['title'] . "</h2>";
-	$output .= printNavigation($data);
-	$output .="<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
+  dpr($data);
+	
+  $output .="<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . ">";
-	$output .= "<dd class='table-property-list'>";
+	
+  $output .= "<dd class='table-property-list'>";
 
   foreach (array('acceptedName', 'source', 'title', 'caption') as $field) {
 		$output .= printDL($field, $data[$field]);
