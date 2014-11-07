@@ -1,7 +1,7 @@
 <?php
 function printPaginator ($data) {
     $output = '';
-    if (!isset($data['navigator']) || empty($data['navigator'])) {
+    if (!isset($data['paginator']) || empty($data['paginator'])) {
         return $output;
     }
     return $output;
