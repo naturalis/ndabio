@@ -129,64 +129,6 @@ function bioportal_geoview_views_default_views() {
   $handler->display->display_options['filters']['field_type_value']['expose']['operator'] = 'field_type_value_op';
   $handler->display->display_options['filters']['field_type_value']['expose']['identifier'] = 'field_type_value';
 
-  /* Display: Block Country */
-  $handler = $view->new_display('block', 'Block Country', 'block');
-  $handler->display->display_options['block_description'] = 'Geo areas - Countries';
-
-  /* Display: Block Area */
-  $handler = $view->new_display('block', 'Block Area', 'block_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Regio\'s';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'national_search_area' => 'national_search_area',
-  );
-  /* Filter criterion: Content: Type (field_type) */
-  $handler->display->display_options['filters']['field_type_value']['id'] = 'field_type_value';
-  $handler->display->display_options['filters']['field_type_value']['table'] = 'field_data_field_type';
-  $handler->display->display_options['filters']['field_type_value']['field'] = 'field_type_value';
-  $handler->display->display_options['filters']['field_type_value']['value'] = 'Municipality';
-  $handler->display->display_options['block_description'] = 'Geo areas - Municipalty';
-
-  /* Display: Block Nature */
-  $handler = $view->new_display('block', 'Block Nature', 'block_2');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Natuurgebieden';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'national_search_area' => 'national_search_area',
-  );
-  /* Filter criterion: Content: Type (field_type) */
-  $handler->display->display_options['filters']['field_type_value']['id'] = 'field_type_value';
-  $handler->display->display_options['filters']['field_type_value']['table'] = 'field_data_field_type';
-  $handler->display->display_options['filters']['field_type_value']['field'] = 'field_type_value';
-  $handler->display->display_options['filters']['field_type_value']['value'] = 'Nature';
-  $handler->display->display_options['block_description'] = 'Geo areas - Nature';
-
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['arguments'] = FALSE;
@@ -326,6 +268,24 @@ function bioportal_geoview_views_default_views() {
     'block' => 0,
     'block_1' => 0,
     'block_2' => 0,
+  );
+  $translatables['areas'] = array(
+    t('Master'),
+    t('Landen'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('<div class=\'view-geographic-areas\'>'),
+    t('</div>'),
+    t('<a id="gid_[nid]">[title]</a>'),
+    t('All'),
+    t('Type (field_type)'),
+    t('Page'),
+    t('Attachment'),
+    t('Uitgelicht'),
   );
   $export['areas'] = $view;
 
