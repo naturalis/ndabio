@@ -14,12 +14,10 @@ function printSpecimenDetail ($data) {
 	);
 	// Reorder input array
 	$data = array_merge(array_flip($fieldOrder), $data);
-//p($data);
-	$output = "<h3>" . t('Specimen details') . "</h3>" .
-		"<h4 class='source'>" . $data['source'] . "</h4>";
-	
-	// Navigation
-	// $output .= printNavigation($data);
+	$output  = _wrap( t("Specimen")   , "div", "category");
+	$output .= _wrap( $data['unitID'] , "h2"  );
+	$output .= _wrap( t("Details")    , "h3"  );
+	$output .= _wrap( $data['source'] , "h4", "source");
 	
 	$output .= "<div class='table-property-list'>";
 	

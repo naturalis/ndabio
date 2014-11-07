@@ -84,6 +84,11 @@ $icon-chevron-right: "\e60c";
       font-weight: bolder;
     }
 
+    .explanation{
+      color: $gray;
+      font-weight: 300;
+    }
+
 
 // GLOBAL OVERRIDES OF PARENT THEMES
 
@@ -812,6 +817,7 @@ $icon-chevron-right: "\e60c";
       color: $brown;
       font-size: 18px;
       font-weight: 300;
+      margin-top: 15px;
     }
 
     .result-detail-section{

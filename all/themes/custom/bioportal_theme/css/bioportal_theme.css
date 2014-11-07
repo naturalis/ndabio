@@ -48,6 +48,10 @@
 .result-query {
   font-weight: bolder; }
 
+.explanation {
+  color: #b2b1a8;
+  font-weight: 300; }
+
 .not-front h2 {
   font-size: 20px;
   font-weight: bolder;
@@ -506,7 +510,8 @@ i {
 .category {
   color: #542e08;
   font-size: 18px;
-  font-weight: 300; }
+  font-weight: 300;
+  margin-top: 15px; }
 
 .result-detail-section {
   margin-bottom: 24px; }
