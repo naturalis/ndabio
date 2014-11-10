@@ -1017,7 +1017,7 @@ function parseMultimedia ($json) {
 	}
 	$output['showAll'] = setShowAll($data);
 	$output['paginator'] = setPaginator($data);
-
+//p($data);
 	return isset($output) ? $output : false;
 }
 
@@ -1166,25 +1166,20 @@ function setShowAll ($data) {
 include 'Paginator.php';
 
 function setPaginator ($data) {
-/*
-    $total = getTotalRows($data);
-    $offset = getOffset($data);
-    $self = stripOffsetFromUrl(getSelfLink($data), true);
-    $itemsPerPage = maxResults();
-*/
-    $currentPage = getOffset($data) / maxResults() + 1;
-    $urlPattern = '?nba_request=' . urlencode(stripOffsetFromUrl(urldecode(getSelfLink($data))) .
-        '&_offset=') . '(:num)';
+    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
+        $currentPage = getOffset($data) / maxResults() + 1;
+        $urlPattern = '?nba_request=' . urlencode(stripOffsetFromUrl(urldecode(getSelfLink($data))) .
+            '&_offset=') . '(:num)';
 
-    $paginator = new Paginator(
-        getTotalRows($data),
-        maxResults(),
-        $currentPage,
-        $urlPattern
-    );
-    return $paginator->toHtml();
-
-
+        $paginator = new Paginator(
+            getTotalRows($data),
+            maxResults(),
+            $currentPage,
+            $urlPattern
+        );
+        return $paginator->toHtml();
+    }
+    return null;
 }
 
 function setUrlPars ($url, array $newValues, $decodeEncode = false) {
