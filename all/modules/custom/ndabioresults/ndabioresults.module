@@ -140,7 +140,20 @@ function maxResultsInitial() {
 function maxResults() {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 50;
+         $var = 100;
+    }
+    return $var;
+}
+
+/**
+ * Constant: maximum results for subsequent queries
+ *
+ * @return integer
+ */
+function maxPagesInPaginator() {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 20;
     }
     return $var;
 }
@@ -1142,32 +1155,67 @@ function setShowAll ($data) {
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
-	       return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
-                '_maxResults=' . maxResults(), urldecode($self)));
+	       return setUrlPars($self, array('_maxResults' => maxResults()), true);
+	       //return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
+           //     '_maxResults=' . maxResults(), urldecode($self)));
 	    }
 	}
 	return null;
 }
 
+include 'Paginator.php';
+
 function setPaginator ($data) {
+/*
     $total = getTotalRows($data);
     $offset = getOffset($data);
-    $self = getSelfLink($data);
-    return null;
+    $self = stripOffsetFromUrl(getSelfLink($data), true);
+    $itemsPerPage = maxResults();
+*/
+    $currentPage = getOffset($data) / maxResults() + 1;
+    $urlPattern = '?nba_request=' . urlencode(stripOffsetFromUrl(urldecode(getSelfLink($data))) .
+        '&_offset=') . '(:num)';
+
+    $paginator = new Paginator(
+        getTotalRows($data),
+        maxResults(),
+        $currentPage,
+        $urlPattern
+    );
+    return $paginator->toHtml();
+
+
 }
 
-function replaceUrlParameterValues ($url, array $newValues, $decodeEncode = false) {
+function setUrlPars ($url, array $newValues, $decodeEncode = false) {
+    if ($decodeEncode) {
+        $url = urldecode($url);
+    }
+    $parts = parse_url($url);
+    parse_str($parts['query'], $q);
     foreach ($newValues as $p => $v) {
-        $parts = parse_url($url);
-        parse_str($parts['query'], $q);
         if (isset($q[$p])) {
             $q[$p] = $v;
         }
-        $parts['query'] = http_build_query($q);
-        $url = reverse_parse_url($parts);
     }
-    return $url;
+    $parts['query'] = http_build_query($q);
+    $url = reverse_parse_url($parts);
+    return $decodeEncode ? urlencode($url) : $url;
+}
+
+function stripOffsetFromUrl ($url, $decodeEncode = false) {
+    if ($decodeEncode) {
+        $url = urldecode($url);
     }
+    $parts = parse_url($url);
+    parse_str($parts['query'], $q);
+    if (isset($q['_offset'])) {
+        unset($q['_offset']);
+    }
+    $parts['query'] = http_build_query($q);
+    $url = reverse_parse_url($parts);
+    return $decodeEncode ? urlencode($url) : $url;
+}
 
 function getSelfLink ($data) {
     foreach ($data->links as $link) {
