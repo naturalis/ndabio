@@ -438,99 +438,52 @@ msgstr ""
 
 
 
-#: taxonomy:term:47:name
-msgctxt "term:47:name"
 msgid "extended"
 msgstr ""
 
-#: taxonomy:term:47:description
-msgctxt "term:47:description"
-msgid "extended"
-msgstr ""
 
-#: taxonomy:term:36:name
-msgctxt "term:36:name"
-msgid "Multimedia"
-msgstr ""
-
-#: taxonomy:term:36:description
-msgctxt "term:36:description"
 msgid "Multimedia"
 msgstr ""
 
 
-#: taxonomy:term:40:description
-msgctxt "term:40:description"
 msgid "Common name\r\n"
 msgstr "Populaire naam\r\n"
 
 
-#: taxonomy:term:19:description
-msgctxt "term:19:description"
 msgid "Family"
 msgstr "Familie"
 
 
-#: taxonomy:term:34:description
-msgctxt "term:34:description"
 msgid "Genus or monomial"
 msgstr "Geslacht (genus)"
 
 
-#: taxonomy:term:67:description
-msgctxt "term:67:description"
 msgid "Species name\r\n"
-msgstr ""
+msgstr "Soortnaam\r\n"
 
 
-#: taxonomy:term:72:description
-msgctxt "term:72:description"
 msgid "Type status"
 msgstr ""
 
 
-#: taxonomy:term:9:description
-msgctxt "term:9:description"
 msgid "<p>Locality</p>\r\n"
 msgstr "<p>Plaats of streek</p>\r\n"
 
-#: taxonomy:term:23:description
-msgctxt "term:23:description"
 msgid "Phase or stage"
 msgstr "Levensfase"
 
-#: taxonomy:term:39:description
-msgctxt "term:39:description"
 msgid "Kingdom"
 msgstr "Rijk"
 
-#: taxonomy:term:13:name
-msgctxt "term:13:name"
-msgid "m_phylum"
-msgstr ""
 
-#: taxonomy:term:13:description
-msgctxt "term:13:description"
 msgid "Phylum"
 msgstr ""
 
-#: taxonomy:term:52:name
-msgctxt "term:52:name"
-msgid "m_className"
-msgstr ""
 
-#: taxonomy:term:52:description
-msgctxt "term:52:description"
 msgid "Class"
-msgstr ""
+msgstr "Klasse"
 
-#: taxonomy:term:37:name
-msgctxt "term:37:name"
-msgid "m_order"
-msgstr ""
 
-#: taxonomy:term:37:description
-msgctxt "term:37:description"
 msgid "Order"
 msgstr "Orde"
 
@@ -541,514 +494,124 @@ msgid "Subspecies name\r\n"
 msgstr "Ondersoort"
 
 
-#: taxonomy:term:14:description
-msgctxt "term:14:description"
 msgid "Sex"
 msgstr "Geslacht"
 
 
-#: taxonomy:term:12:description
-msgctxt "term:12:description"
 msgid "Collection field number"
 msgstr "Veldnummer"
 
 
-#: taxonomy:term:3:description
-msgctxt "term:3:description"
 msgid "Collector"
 msgstr "Verzamelaar"
 
 
-#: taxonomy:term:8:description
-msgctxt "term:8:description"
 msgid "Collecting start date"
 msgstr "Verzamel startdatum"
 
 
-#: taxonomy:term:53:description
-msgctxt "term:53:description"
 msgid "Expert name"
 msgstr "Naam expert"
 
 
-#: taxonomy:term:7:description
-msgctxt "term:7:description"
 msgid "Expert organisation"
 msgstr "Organisatie expert"
 
 
-#: taxonomy:term:11:description
-msgctxt "term:11:description"
 msgid "Taxonomic status"
 msgstr "Taxon status"
 
 
-#: taxonomy:term:33:description
-msgctxt "term:33:description"
-msgid "subgenus"
-msgstr ""
-
-
-#: taxonomy:term:63:description
-msgctxt "term:63:description"
 msgid "Youngest chronostratigraphic name\r\n"
 msgstr ""
 
 
-#: taxonomy:term:46:description
-msgctxt "term:46:description"
 msgid "Oldest chronostratigraphic name"
 msgstr ""
 
 
-#: taxonomy:term:50:description
-msgctxt "term:50:description"
 msgid "First lithostratigraphic name"
 msgstr ""
 
 
-#: taxonomy:term:60:description
-msgctxt "term:60:description"
 msgid "Second lithostratigraphic name"
 msgstr ""
 
 
-#: taxonomy:term:38:description
-msgctxt "term:38:description"
 msgid "Oldest biostratigraphic name"
 msgstr ""
 
 
-#: taxonomy:term:27:description
-msgctxt "term:27:description"
 msgid "Younest biostratigraphic name\r\n"
 msgstr ""
 
-#: taxonomy:term:70:name
-msgctxt "term:70:name"
-msgid "Collection specimens"
-msgstr ""
-
-#: taxonomy:term:70:description
-msgctxt "term:70:description"
 msgid "Collection specimens"
 msgstr ""
 
 
-#: taxonomy:term:17:description
-msgctxt "term:17:description"
 msgid "Registration number"
 msgstr "Registratienummer"
 
 
-#: taxonomy:term:28:description
-msgctxt "term:28:description"
-msgid "Common name\r\n"
-msgstr ""
-
-
-#: taxonomy:term:22:description
-msgctxt "term:22:description"
-msgid "Family"
-msgstr ""
-
-#: taxonomy:term:56:name
-msgctxt "term:56:name"
-msgid "s_genusOrMonomial"
-msgstr ""
-
-#: taxonomy:term:56:description
-msgctxt "term:56:description"
-msgid "Genus or monomial"
-msgstr ""
-
-#: taxonomy:term:69:name
-msgctxt "term:69:name"
-msgid "s_speciesEpithet"
-msgstr ""
-
-#: taxonomy:term:69:description
-msgctxt "term:69:description"
-msgid "Species name\r\n"
-msgstr ""
-
-#: taxonomy:term:54:name
-msgctxt "term:54:name"
-msgid "s_typeStatus"
-msgstr ""
-
-#: taxonomy:term:54:description
-msgctxt "term:54:description"
-msgid "Type status"
-msgstr ""
-
-#: taxonomy:term:44:name
-msgctxt "term:44:name"
-msgid "s_localityText"
-msgstr ""
-
-#: taxonomy:term:44:description
-msgctxt "term:44:description"
 msgid "Locality\r\n"
-msgstr ""
+msgstr "Plaats of streek\r\n"
 
-#: taxonomy:term:30:name
-msgctxt "term:30:name"
-msgid "s_phaseOrStage"
-msgstr ""
 
-#: taxonomy:term:30:description
-msgctxt "term:30:description"
-msgid "Phase or stage"
-msgstr ""
-
-#: taxonomy:term:43:name
-msgctxt "term:43:name"
-msgid "s_sex"
-msgstr ""
-
-#: taxonomy:term:43:description
-msgctxt "term:43:description"
-msgid "Sex"
-msgstr ""
-
-#: taxonomy:term:10:name
-msgctxt "term:10:name"
-msgid "--hide--"
-msgstr ""
-
-#: taxonomy:term:10:description
-msgctxt "term:10:description"
-msgid "--hide--"
-msgstr ""
-
-#: taxonomy:term:21:name
-msgctxt "term:21:name"
-msgid "s_subgenus"
-msgstr ""
-
-#: taxonomy:term:21:description
-msgctxt "term:21:description"
-msgid "Subgenus"
-msgstr ""
-
-#: taxonomy:term:2:name
-msgctxt "term:2:name"
-msgid "s_youngestChronstratigraphicName"
-msgstr ""
-
-#: taxonomy:term:2:description
-msgctxt "term:2:description"
 msgid "Youngest chronstratigraphic name"
 msgstr ""
 
-#: taxonomy:term:20:name
-msgctxt "term:20:name"
-msgid "s_oldestChronstratigraphicName"
-msgstr ""
 
-#: taxonomy:term:20:description
-msgctxt "term:20:description"
 msgid "Oldest chronstratigraphic name"
 msgstr ""
 
-#: taxonomy:term:66:name
-msgctxt "term:66:name"
-msgid "s_firstLithostratigraphicName"
-msgstr ""
 
-#: taxonomy:term:66:description
-msgctxt "term:66:description"
 msgid "First lithostratigraphic name"
 msgstr ""
 
-#: taxonomy:term:57:name
-msgctxt "term:57:name"
-msgid "s_secondLithostratigraphicName"
-msgstr ""
 
-#: taxonomy:term:57:description
-msgctxt "term:57:description"
 msgid "Second lithostratigraphic name"
 msgstr ""
 
-#: taxonomy:term:65:name
-msgctxt "term:65:name"
-msgid "s_oldestBiostratigraphicName"
-msgstr ""
 
-#: taxonomy:term:65:description
-msgctxt "term:65:description"
 msgid "Oldest biostratigraphic name"
 msgstr ""
 
-#: taxonomy:term:6:name
-msgctxt "term:6:name"
-msgid "s_youngestBiostratigraphicName"
-msgstr ""
 
-#: taxonomy:term:6:description
-msgctxt "term:6:description"
 msgid "Youngest biostratigraphic name"
 msgstr ""
 
-#: taxonomy:term:31:name
-msgctxt "term:31:name"
-msgid "--more--"
-msgstr ""
 
-#: taxonomy:term:31:description
-msgctxt "term:31:description"
-msgid "--more--"
-msgstr ""
-
-#: taxonomy:term:62:name
-msgctxt "term:62:name"
-msgid "s_kingdom"
-msgstr ""
-
-#: taxonomy:term:62:description
-msgctxt "term:62:description"
-msgid "Kingdom"
-msgstr ""
-
-#: taxonomy:term:49:name
-msgctxt "term:49:name"
-msgid "s_phylum"
-msgstr ""
-
-#: taxonomy:term:49:description
-msgctxt "term:49:description"
-msgid "Phylum"
-msgstr ""
-
-#: taxonomy:term:71:name
-msgctxt "term:71:name"
-msgid "s_className"
-msgstr ""
-
-#: taxonomy:term:71:description
-msgctxt "term:71:description"
-msgid "Class"
-msgstr ""
-
-#: taxonomy:term:75:name
-msgctxt "term:75:name"
-msgid "s_order"
-msgstr ""
-
-#: taxonomy:term:75:description
-msgctxt "term:75:description"
-msgid "Order"
-msgstr ""
-
-#: taxonomy:term:58:name
-msgctxt "term:58:name"
-msgid "s_subspeciesEpithet"
-msgstr ""
-
-#: taxonomy:term:58:description
-msgctxt "term:58:description"
 msgid "Subspecies name\r\n"
-msgstr ""
+msgstr "Ondersoort\r\n"
 
-#: taxonomy:term:55:name
-msgctxt "term:55:name"
-msgid "s_gatheringAgent"
-msgstr ""
 
-#: taxonomy:term:55:description
-msgctxt "term:55:description"
 msgid "Collector"
-msgstr ""
+msgstr "Verzamelaar"
 
-#: taxonomy:term:64:name
-msgctxt "term:64:name"
-msgid "s_collectingStartDate"
-msgstr ""
 
-#: taxonomy:term:64:description
-msgctxt "term:64:description"
-msgid "Collecting start date"
-msgstr ""
-
-#: taxonomy:term:48:name
-msgctxt "term:48:name"
-msgid "s_collectionFieldNumber"
-msgstr ""
-
-#: taxonomy:term:48:description
-msgctxt "term:48:description"
-msgid "Collection field number"
-msgstr ""
-
-#: taxonomy:term:18:name
-msgctxt "term:18:name"
 msgid "Taxa"
 msgstr ""
 
-#: taxonomy:term:24:name
-msgctxt "term:24:name"
-msgid "t_vernacularName"
-msgstr ""
 
-#: taxonomy:term:24:description
-msgctxt "term:24:description"
 msgid "Vernacular name"
-msgstr ""
+msgstr "Populaire naam"
 
-#: taxonomy:term:74:name
-msgctxt "term:74:name"
-msgid "t_family"
-msgstr ""
 
-#: taxonomy:term:74:description
-msgctxt "term:74:description"
-msgid "Family"
-msgstr ""
-
-#: taxonomy:term:16:name
-msgctxt "term:16:name"
-msgid "t_genusOrMonomial"
-msgstr ""
-
-#: taxonomy:term:16:description
-msgctxt "term:16:description"
-msgid "Genus or monomial"
-msgstr ""
-
-#: taxonomy:term:42:name
-msgctxt "term:42:name"
-msgid "t_speciesEpithet"
-msgstr ""
-
-#: taxonomy:term:42:description
-msgctxt "term:42:description"
-msgid "Species name\r\n"
-msgstr ""
-
-#: taxonomy:term:59:name
-msgctxt "term:59:name"
-msgid "t_subspeciesEpithet"
-msgstr ""
-
-#: taxonomy:term:59:description
-msgctxt "term:59:description"
-msgid "Subspecies name\r\n"
-msgstr ""
-
-#: taxonomy:term:4:name
-msgctxt "term:4:name"
-msgid "--more--"
-msgstr ""
-
-#: taxonomy:term:4:description
-msgctxt "term:4:description"
-msgid "--more--"
-msgstr ""
-
-#: taxonomy:term:15:name
-msgctxt "term:15:name"
-msgid "t_kingdom"
-msgstr ""
-
-#: taxonomy:term:15:description
-msgctxt "term:15:description"
-msgid "Kingdom"
-msgstr ""
-
-#: taxonomy:term:61:name
-msgctxt "term:61:name"
-msgid "t_phylum"
-msgstr ""
-
-#: taxonomy:term:61:description
-msgctxt "term:61:description"
-msgid "Phylum"
-msgstr ""
-
-#: taxonomy:term:5:name
-msgctxt "term:5:name"
-msgid "t_className"
-msgstr ""
-
-#: taxonomy:term:5:description
-msgctxt "term:5:description"
-msgid "Class"
-msgstr ""
-
-#: taxonomy:term:1:name
-msgctxt "term:1:name"
-msgid "t_order"
-msgstr ""
-
-#: taxonomy:term:1:description
-msgctxt "term:1:description"
-msgid "Order"
-msgstr ""
-
-#: taxonomy:term:25:name
-msgctxt "term:25:name"
-msgid "t_subgenus"
-msgstr ""
-
-#: taxonomy:term:25:description
-msgctxt "term:25:description"
 msgid "Subgenus"
 msgstr ""
 
-#: taxonomy:term:26:name
-msgctxt "term:26:name"
-msgid "t_expert"
-msgstr ""
 
-#: taxonomy:term:26:description
-msgctxt "term:26:description"
-msgid "Expert name"
-msgstr ""
-
-#: taxonomy:term:68:name
-msgctxt "term:68:name"
-msgid "t_expertOrganisation"
-msgstr ""
-
-#: taxonomy:term:68:description
-msgctxt "term:68:description"
 msgid "Expert organisation"
-msgstr ""
+msgstr "Organisatie expert"
 
-#: taxonomy:term:45:name
-msgctxt "term:45:name"
-msgid "t_taxonomicStatus"
-msgstr ""
 
-#: taxonomy:term:45:description
-msgctxt "term:45:description"
 msgid "Taxonomic status"
 msgstr ""
 
-#: taxonomy:term:51:name
-msgctxt "term:51:name"
-msgid "--hide--"
-msgstr ""
 
-#: taxonomy:term:51:description
-msgctxt "term:51:description"
-msgid "--hide--"
-msgstr ""
-
-#: taxonomy:vocabulary:1:name
-msgctxt "vocabulary:1:name"
-msgid "search"
-msgstr "search"
-
-#: taxonomy:term:41:name
-msgctxt "term:41:name"
 msgid "omnisearch"
 msgstr "omnisearch"
 
-#: taxonomy:term:41:description
-msgctxt "term:41:description"
 msgid "term"
 msgstr "term"
 
@@ -1067,4 +630,20 @@ msgstr "Colofon"
 
 msgid "Home"
 msgstr "Start"
+
+msgid "Countries"
+msgstr "Landen"
+
+msgid "Read more"
+msgstr "Lees meer"
+
+msgid "Back"
+msgstr "Terug"
+
+
+msgid "Geographic Search"
+msgstr "Geografisch zoeken"
+
+msgid "You are here"
+msgstr "U bevindt zich hier"
 
