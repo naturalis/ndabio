@@ -450,7 +450,6 @@ function ndabioresults_pass ($args = "") {
  */
 function ndaSimpleSearch () {
     $title = _wrap(t('Search results'),"H1");
-
     $p = array(
         '_search' => $_SESSION['ndaSearch']['term']
     );
@@ -471,7 +470,7 @@ function ndaSimpleSearch () {
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from simple form';
 
-    return $title.performNdaRequest(setChannels($services));
+    return $title . performNdaRequest(setChannels($services));
 }
 
 /**
@@ -641,9 +640,13 @@ function performNdaRequest (array $channels = array()) {
 		if (!isset($serviceToFunctions[$service]) || empty($json)) {
 			continue;
 		}
-		$parseFunction = $serviceToFunctions[$service]['parse'];
-		$printFunction = $serviceToFunctions[$service]['print'];
-		$output .= $printFunction($parseFunction($json));
+		$parseFunction = isset($serviceToFunctions[$service]['parse']) ?
+		    $serviceToFunctions[$service]['parse'] : false;
+		$printFunction = isset($serviceToFunctions[$service]['print']) ?
+		    $serviceToFunctions[$service]['print'] : false;
+		if (!empty($parseFunction) && !empty($printFunction)) {
+		    $output .= $printFunction($parseFunction($json));
+		}
 	}
 
     // Debug: print queries
@@ -674,14 +677,10 @@ function queryNda ($channels = array(), $timeout = false) {
          * @todo: check if posting large areas does not break GET
          *
         curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-        curl_setopt($ch[$i], CURLOPT_POST, $channels[$i]['post']);
+        curl_setopt($ch[$i], CURLOPT_POST, true;
         curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
         */
         $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
-
-//echo '<pre>'; print_r( $channels[$i]); echo '</pre>';
-
-
         curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch[$i], CURLOPT_HEADER, false);
@@ -712,7 +711,6 @@ function queryNda ($channels = array(), $timeout = false) {
         curl_multi_remove_handle($mh, $ch[$i]);
     }
     curl_multi_close($mh);
-//echo '<pre>'; print_r($remoteData); echo '</pre>';
     return $remoteData;
 }
 
@@ -1303,7 +1301,7 @@ function parseTaxa ($json) {
 	if (!$output['searchTerms']) {
 		handleError('parseTaxon: invalid json response');
 	}
-	if ($output['total'] == 0) {
+	if ($output['total'] == 0 || empty($data->resultGroups)) {
 	    $output['results'] = array();
         return $output;
 	}
@@ -1405,12 +1403,18 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 		}
 	}
 	// Highlight the formatted output
-	return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
+	return $searchTerms ? $output : $output;
 }
 
 function highlightSearchTerms ($output, $searchTerms) {
     foreach ($searchTerms as $field => $value) {
         if (!in_array(str_replace('_', '', $field), searchFlags())) {
+            $terms[] = $value;
+        }
+    }
+    // Intermediate step required to remove any duplicates
+    if (isset($terms)) {
+        foreach (array_unique($terms) as $value) {
             $output = highlightMatch($output, $value);
         }
     }
