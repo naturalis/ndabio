@@ -51,7 +51,7 @@
     $_advanced_search_form.slideUp(0);
 
     // -- search form: add dropdown button to omni-search box
-    $_omnibox.wrap("<div class='ndabio-omnibox-wrapper>'</div>");
+    $_omnibox.wrap("<div class='ndabio-omnibox-wrapper'></div>");
 
     // -- search form: behaviour for dropdown button
     $_omnibox.removeAttr("disabled");
@@ -63,7 +63,9 @@
         $_fieldset_omnisearch.toggleClass("disabled");
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
         $_submit.toggleAttr("disabled").toggleClass("disabled");
+        
         $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
+        
         $_bottom_submit.css("opacity","0")
 
         $_advanced_search_form
@@ -76,7 +78,12 @@
             $_bottom_submit.css("opacity","1")
           });
       })
+
+      // -- fancy pre-loader on submit
+
+      $_submit.click(function(){ preloader(); })
   }
+
 
 
   // ---------------------------------------------------------
@@ -135,7 +142,7 @@
       }
 
     })
-    .on('keyup',function(){
+    .on('keyup',function(e){
 
       $_me = $(this);
 
@@ -144,6 +151,28 @@
       } else {
         $_me.next().addClass("hidden");
       }
+
+
+      // submit on enter
+      if (e.keyCode == 13) {
+        preloader();
+        $("#ndabio-advanced-taxonomysearch").submit();
+      }
+      
+      // if (e.keyCode == 37) {
+      //   var inputs = $(this).parents('form').find(':input[type="text"]:enabled:visible:not("disabled"),select');
+      //   e.preventDefault();
+      //   inputs.eq( inputs.index(this) - 1 ).focus();
+      //   inputs.eq( inputs.index(this) - 1 ).click();
+      // }
+
+      // if (e.keyCode == 39) {
+      //   var inputs = $(this).parents('form').find(':input[type="text"]:enabled:visible:not("disabled"),select');
+      //   e.preventDefault();
+      //   inputs.eq( inputs.index(this) + 1 ).focus();
+      //   inputs.eq( inputs.index(this) + 1 ).click();
+      // }
+
     });
 
   // ---------------------------------------------------------
@@ -152,6 +181,8 @@
   // ---------------------------------------------------------
   // PRELOADER
   //preloader();
+
+  $("#preloader").remove();
 
   function preloader(){
     $_overlay = $("<div id='preloader'></div>")

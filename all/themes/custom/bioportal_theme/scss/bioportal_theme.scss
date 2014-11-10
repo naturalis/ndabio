@@ -56,39 +56,49 @@ $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
 $icon-chevron-right: "\e60c";
 
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:   $gray-3;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    $gray-3;
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    $gray-3;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-   color:    $gray-3;
-}
+// HACKS
+
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color:   $gray-3;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:    $gray-3;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:    $gray-3;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+       color:    $gray-3;
+    }
+
+    // hack to work-around firefox not allowing for disabled elements
+    // to emit events: make triangle-up bottom REALY BIG
+    .ndabio-toggle-advanced.icon-triangle-up{
+      width: 100%;
+      text-align: right;
+      padding-right: 10px;
+    }
+
 
 // GLOBAL SEMANTIC CLASSES
-    .scientific-name, .scientific{
-      font-style: italic;
-    }
+      .scientific-name, .scientific{
+        font-style: italic;
+      }
 
-    .vernacular-name{
-      font-style: normal;
-    }
+      .vernacular-name{
+        font-style: normal;
+      }
 
-    .result-query{
-      font-weight: bolder;
-    }
+      .result-query{
+        font-weight: bolder;
+      }
 
-    .explanation{
-      color: $gray;
-      font-weight: 300;
-    }
-
+      .explanation{
+        color: $gray;
+        font-weight: 300;
+      }
 
 // GLOBAL OVERRIDES OF PARENT THEMES
 
@@ -261,13 +271,13 @@ $icon-chevron-right: "\e60c";
       right              : 15px;
       width              : 27px;
       height             : 27px;
-      color              : $blue;
+      color              : $white;
       font-size          : 24px;
       line-height        : 27px;
       text-align         : center;
       cursor             : pointer;
       &:hover{
-        color: $orange;
+        color: $black;
       }
 
     }
@@ -326,6 +336,26 @@ $icon-chevron-right: "\e60c";
       .form-item{
         margin-bottom    : 0;
         margin-top       : 0.5rem;
+      }
+
+      input[type='text'], 
+      select {
+        transition: background-color 300ms;
+        background-color: $white;
+      
+        &:focus{
+          background-color : $orange;
+          color            : white;
+          font-weight      : bolder;
+          box-shadow       : none;
+          letter-spacing   : 0.05em;
+        }
+
+      }
+
+      select option {
+        background: $white;
+        color: $gray-9;
       }
 
       input[type='text'],
