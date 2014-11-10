@@ -257,7 +257,7 @@
         <div class="row" id="bottom-bar-top">
           <?php if ($show_crumble && $breadcrumb): ?>
             <div class="medium-9 columns crumble">
-              <?php echo t('U bevindt zich hier'); ?>
+              <?php echo t('You are here'); ?>
               <?php print $breadcrumb; ?>
             </div>
           <?php endif; ?>
