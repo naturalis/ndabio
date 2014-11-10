@@ -56,6 +56,11 @@ $icon-double-chevron-up:  "\e613";
 $icon-arrow-right:  "\e613";
 $icon-chevron-right: "\e60c";
 
+.fading .page{
+  transition: opacity 500ms;
+  opacity: 0.5;
+}
+
 // HACKS
 
     ::-webkit-input-placeholder { /* WebKit browsers */

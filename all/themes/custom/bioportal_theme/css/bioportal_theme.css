@@ -21,6 +21,10 @@
 /* orange-2:#f29400;  */
 /* orange : #ef6d14;  */
 /* yellow : #ffed00;  */
+.fading .page {
+  transition: opacity 500ms;
+  opacity: 0.5; }
+
 ::-webkit-input-placeholder {
   /* WebKit browsers */
   color: #cccccc; }

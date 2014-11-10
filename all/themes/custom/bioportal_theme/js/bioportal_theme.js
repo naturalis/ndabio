@@ -1,5 +1,6 @@
 (function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
 
+
   // ---------------------------------------------------------
   // auto fit height of MAIN CONTAINER
     h = $(window).height();
@@ -182,12 +183,16 @@
   // PRELOADER
   //preloader();
 
-  $("#preloader").remove();
+  $(document).ready(function(){
+    $("#preloader").remove();
+  })
 
   function preloader(){
+    $("body").addClass("fading");
+
     $_overlay = $("<div id='preloader'></div>")
       .appendTo("body")
-      .css({ width: "200px", height: "200px", backgroundColor: "#b2b1a8", borderRadius:"5px", position: "absolute", top: "50%", left: "50%", marginLeft: "-100px", zIndex: 1000 } );
+      .css({ width: "200px", height: "200px", backgroundColor: "#444433", borderRadius:"5px", position: "absolute", top: "50%", left: "50%", marginLeft: "-100px", zIndex: 1000 } );
 
     $_canvas = $("<div id='canvas' />")
       .appendTo($_overlay)
@@ -275,6 +280,8 @@
   $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
 
 } }; })(jQuery, Drupal);
+
+
 
 jQuery.fn.toggleAttr = function(a, b) {
     var c = (b === undefined);
