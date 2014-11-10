@@ -227,7 +227,7 @@ function bioportal_geoview_views_default_views() {
   $handler->display->display_options['fields']['sticky']['label'] = '';
   $handler->display->display_options['fields']['sticky']['exclude'] = TRUE;
   $handler->display->display_options['fields']['sticky']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['sticky']['alter']['text'] = 'Uitgelicht';
+  $handler->display->display_options['fields']['sticky']['alter']['text'] = t('Highlighted');
   $handler->display->display_options['fields']['sticky']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['sticky']['not'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
@@ -285,7 +285,7 @@ function bioportal_geoview_views_default_views() {
     t('Type (field_type)'),
     t('Page'),
     t('Attachment'),
-    t('Uitgelicht'),
+    t('Highlighted'),
   );
   $export['areas'] = $view;
 
