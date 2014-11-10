@@ -275,14 +275,14 @@ function processPoints(geometry, callback, thisArg) {
 	// Add labels to the omnibox
 	// A bit dirty, but where else to put it?
 	$("#edit-term")
-		.attr("placeholder","« All records »");
+		.attr("placeholder","« " + Drupal.t('All records') + " »");
 
 	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
 		.removeClass("large-offset-2")
-		.before("<div class='small-2 large-2 columns geo-search-label'>Search:</div>");
+		.before("<div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Search') + ":</div>");
 
 	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
-		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>Within:</div><div class='geo-search-area-name'></div></div");
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 

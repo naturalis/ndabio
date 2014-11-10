@@ -534,10 +534,10 @@ function ndabio_advanced_taxonomysearch() {
       "      <a data-rel='ajax' href='areas/country?response_type=embed'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='areas/municipality?response_type=embed'>" . t('Gemeentes') . "</a>" .
+      "      <a data-rel='ajax' href='areas/municipality?response_type=embed'>" . t('Municipality') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='areas/nature?response_type=embed'>" . t('Natuurgebieden') . "</a>" .
+      "      <a data-rel='ajax' href='areas/nature?response_type=embed'>" . t('Nature') . "</a>" .
       "    </li>" .
       "  </ul>" .
       "</div>";

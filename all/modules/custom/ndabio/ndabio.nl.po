@@ -111,6 +111,23 @@ msgstr ""
 msgid "Search"
 msgstr "Zoek"
 
+
+msgid "Within"
+msgstr "Binnen"
+
+
+msgid "Nature"
+msgstr "Natuurgebieden"
+
+
+msgid "Municipality"
+msgstr "Gemeenten"
+
+
+msgid "All records"
+msgstr "Alle records"
+
+
 #: ndabio/ndabio.module:53 ndabioresults/ndabioresults.module:62
 msgid "Naturalis config"
 msgstr ""
@@ -169,7 +186,7 @@ msgstr ""
 
 #: ndabioresults/printSpecimens.php:13
 msgid "Species"
-msgstr ""
+msgstr "Soort"
 
 #: ndabioresults/printSpecimens.php:19 ndabioresults/printSpecimensByTaxon.php:19 ndabioresults/printTaxa.php:24
 msgid "Found in"
@@ -193,11 +210,11 @@ msgstr "Nummer"
 
 #: ndabioresults/printSpecimensByTaxon.php:36
 msgid "Specimens with"
-msgstr ""
+msgstr "Specimens met"
 
 #: ndabioresults/printSpecimensByTaxon.php:36
 msgid " occuring in the species&apos; name."
-msgstr ""
+msgstr " gevonden in de soortnaam."
 
 #: ndabioresults/printSpecimensByTaxon.php:39
 msgid "No results"
@@ -436,10 +453,8 @@ msgstr ""
 
 
 
-
-
 msgid "extended"
-msgstr ""
+msgstr "uitgebreid"
 
 
 msgid "Multimedia"
@@ -488,8 +503,6 @@ msgid "Order"
 msgstr "Orde"
 
 
-#: taxonomy:term:32:description
-msgctxt "term:32:description"
 msgid "Subspecies name\r\n"
 msgstr "Ondersoort"
 
@@ -523,30 +536,35 @@ msgstr "Taxon status"
 
 
 msgid "Youngest chronostratigraphic name\r\n"
-msgstr ""
+msgstr "Jongste chronostratigrafie naam"
 
 
 msgid "Oldest chronostratigraphic name"
-msgstr ""
+msgstr "Oudste chronostratigrafie naam"
 
 
 msgid "First lithostratigraphic name"
-msgstr ""
+msgstr "Eerste lithostratigrafische naam"
 
 
 msgid "Second lithostratigraphic name"
-msgstr ""
+msgstr "Tweede lithostratigrafische naam"
 
 
 msgid "Oldest biostratigraphic name"
-msgstr ""
+msgstr "Oudste biostratigrafische naam"
 
 
 msgid "Younest biostratigraphic name\r\n"
-msgstr ""
+msgstr "Jongste biostratigrafische naam\r\n"
+
+
+msgid "Youngest biostratigraphic name"
+msgstr "Jongste biostratigrafische naam"
+
 
 msgid "Collection specimens"
-msgstr ""
+msgstr "Collectie specimens"
 
 
 msgid "Registration number"
@@ -558,27 +576,11 @@ msgstr "Plaats of streek\r\n"
 
 
 msgid "Youngest chronstratigraphic name"
-msgstr ""
+msgstr "Jongste chronostratigrafie naam"
 
 
 msgid "Oldest chronstratigraphic name"
-msgstr ""
-
-
-msgid "First lithostratigraphic name"
-msgstr ""
-
-
-msgid "Second lithostratigraphic name"
-msgstr ""
-
-
-msgid "Oldest biostratigraphic name"
-msgstr ""
-
-
-msgid "Youngest biostratigraphic name"
-msgstr ""
+msgstr "Oudste chronostratigrafie naam"
 
 
 msgid "Subspecies name\r\n"
@@ -606,11 +608,12 @@ msgstr "Organisatie expert"
 
 
 msgid "Taxonomic status"
-msgstr ""
+msgstr "Taxonomische status"
 
 
 msgid "omnisearch"
 msgstr "omnisearch"
+
 
 msgid "term"
 msgstr "term"
@@ -619,23 +622,30 @@ msgstr "term"
 msgid "Digital Collections"
 msgstr "Digitale Collecties"
 
+
 msgid "For developers"
 msgstr "Voor ontwikkelaars"
+
 
 msgid "About"
 msgstr "Over"
 
+
 msgid "Colophon"
 msgstr "Colofon"
+
 
 msgid "Home"
 msgstr "Start"
 
+
 msgid "Countries"
 msgstr "Landen"
 
+
 msgid "Read more"
 msgstr "Lees meer"
+
 
 msgid "Back"
 msgstr "Terug"
@@ -644,6 +654,39 @@ msgstr "Terug"
 msgid "Geographic Search"
 msgstr "Geografisch zoeken"
 
+
 msgid "You are here"
 msgstr "U bevindt zich hier"
 
+msgid "Landen"
+msgstr "Countries"
+
+msgid "more"
+msgstr "meer"
+
+msgid "Apply"
+msgstr "Toepassen"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Sort by"
+msgstr "Sorteren op"
+
+msgid "Asc"
+msgstr ""
+
+msgid "Desc"
+msgstr ""
+
+msgid "All"
+msgstr "Alles"
+
+msgid "Page"
+msgstr "Pagina"
+
+msgid "Attachment"
+msgstr ""
+
+msgid "Highlighted"
+msgstr "Uitgelicht"
