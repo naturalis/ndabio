@@ -1110,7 +1110,7 @@ function bioportal_nl_translations_defaults() {
   $translations['nl:default']['083eb1977b0f308fa331ef463e686ad8'] = array(
     'source' => 'All records',
     'context' => '',
-    'location' => '; sites/all/modules/custom/ndabio/js/map.js',
+    'location' => '',
     'translation' => 'Alle records',
     'plid' => 0,
     'plural' => 0,
@@ -2654,7 +2654,7 @@ function bioportal_nl_translations_defaults() {
   $translations['nl:default']['13348442cc6a27032d2b4aa28b75a5d3'] = array(
     'source' => 'Search',
     'context' => '',
-    'location' => 'ndabio/ndabio.module:501; 547; sites/all/modules/custom/ndabio/js/map.js',
+    'location' => 'ndabio/ndabio.module:501;547',
     'translation' => 'Zoeken',
     'plid' => 0,
     'plural' => 0,
@@ -7983,7 +7983,7 @@ else {
   $translations['nl:default']['37bac6dce4f46277d89bfa3003e2e39b'] = array(
     'source' => 'Within',
     'context' => '',
-    'location' => '; sites/all/modules/custom/ndabio/js/map.js',
+    'location' => '',
     'translation' => 'Binnen',
     'plid' => 0,
     'plural' => 0,
@@ -23469,6 +23469,14 @@ Uw account op [site:name] is geannuleerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['9c93a13f5f18183ae580c55f5cc730b3'] = array(
+    'source' => 'Municipality',
+    'context' => '',
+    'location' => '',
+    'translation' => 'Gemeenten',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['9c9eeeae8cce48f4ffabf37aa998ac00'] = array(
     'source' => 'Choice label',
     'context' => '',
@@ -31747,6 +31755,14 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'context' => '',
     'location' => '',
     'translation' => 'dec',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['d212ce7fdc2357d19628334b5a2a2b2f'] = array(
+    'source' => 'Nature',
+    'context' => '',
+    'location' => '',
+    'translation' => 'Natuurgebieden',
     'plid' => 0,
     'plural' => 0,
   );
