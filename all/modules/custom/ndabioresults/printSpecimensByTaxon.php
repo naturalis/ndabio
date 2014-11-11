@@ -39,16 +39,13 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
             t('No results'));
   }
 
-  $term  = _wrap(  $data['searchTerms']['_search']                           , "span", "term"  );
-  $expl  = _wrap(  t('(occurring in the species&apos; name)') , "span", "explanation");
-  $count = _wrap(  $data['total']                             , "span", "count");
+  $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
+  $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
+  $count = _wrap(  $data['total']                                    , "span", "count");
 
 
   $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
   $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $p) );
-
-  kpr(  $_SESSION  );
-  kpr(  $data );
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";

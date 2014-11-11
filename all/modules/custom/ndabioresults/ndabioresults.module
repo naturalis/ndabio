@@ -491,7 +491,7 @@ function ndaSimpleSearch () {
         $p['_andOr'] = 'AND';
 
         $geo = t("Showing only results in") ." ". $_SESSION['ndaSearch']['location'];
-        $geo = "<div data-alert class='alert-box'> $geo <a href='#' class='close'>&times;</a> </div>";
+        $geo = "<div data-alert class='alert-box secondary'> $geo </div>";
 
 
     };
