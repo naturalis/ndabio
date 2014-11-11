@@ -51,10 +51,10 @@ function printTaxa ($data) {
 		$output .= "<tr>";
 
     // Name
-		$output .= "<td>";
+	$output .= "<td>";
     $output .= "<a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>";
-		$output .= (!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '');
-		$output .=	"</td>";
+	$output .= (!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '');
+	$output .=	"</td>";
 
     // Description
     $output .= "<td>" . decorateDescription($row) . "</td>";
