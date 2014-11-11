@@ -11,33 +11,41 @@ require_once 'printPaginator.php';
    2. Pass $p['total'] dynamically
 
 */
-function printTaxa ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
+function printTaxa ($data) {
 	$headers = array(
-		array(
+		'fullScientificname' => array(
 			'label' => t('Name'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-alphabet',
-			'url' => '#'
+			'url' => setSortUrl('fullScientificName', 'ASC', $data['self'])
 		),
-		array(
+		'description' => array(
 			'label' => t('Description'),
 			'sort' => 0
 		),
-		array(
+		'foundIn' => array(
 			'label' => t('Found in'),
 			'sort' => 0
 		),
-		array(
+		'_score' => array(
 			'label' => t('Match'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-attributes',
-			'url' => '#'
+			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);
 
-  $explanation = _wrap("(matching scientific or common name)","span","explanation");
-  $output  = sprintf('<h2>%s <span class="count">(%d)</span> %s</h2>', t('Species names'), $data['total'], $explanation );
-  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $p) );
+    $explanation = _wrap("(matching scientific or common name)","span","explanation");
+    $output  = sprintf(
+        '<h2>%s <span class="count">(%d)</span> %s</h2>',
+        t('Species names'),
+        $data['total'],
+        $explanation
+    );
+    $output .= sprintf(
+        '<table><thead>%s</thead><tbody>',
+        printHeaders($headers, $data['self'])
+    );
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";

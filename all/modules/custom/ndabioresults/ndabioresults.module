@@ -1055,8 +1055,7 @@ function parseMultimedia ($json) {
 		$output['results'][] = $d;
 	}
 
-	$output['sort'] = getSort($data);
-	$output['sortDirection'] = getSortDirection($data);
+	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 //p($data);
@@ -1102,8 +1101,7 @@ function parseSpecimens ($json) {
 		$output['results'][] = $d;
 	}
 
-	$output['sort'] = getSort($data);
-	$output['sortDirection'] = getSortDirection($data);
+	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 
@@ -1189,8 +1187,7 @@ function parseSpecimensByTaxon ($json) {
 		$output['results'][] = $d;
 	}
 
-	$output['sort'] = getSort($data);
-	$output['sortDirection'] = getSortDirection($data);
+	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 // p($data);
@@ -1209,8 +1206,7 @@ function getShowAll ($data) {
 	return null;
 }
 
-function getSort ($data) {
-    $self = getSelfLink($data);
+function getSort ($self) {
     if (!empty($self)) {
         $value = getUrlParValue(urldecode($self), '_sort');
         if (!empty($value)) {
@@ -1220,8 +1216,7 @@ function getSort ($data) {
     return defaultSort();
 }
 
-function getSortDirection ($data) {
-    $self = getSelfLink($data);
+function getSortDirection ($self) {
     if (!empty($self)) {
         $value = getUrlParValue(urldecode($self), '_sortDirection');
         if (!empty($value)) {
@@ -1229,6 +1224,26 @@ function getSortDirection ($data) {
         }
     }
     return defaultSortDirection();
+}
+
+function setSortUrl ($column, $dir, $self) {
+    // Column currently selected; only switch sort direction
+    if ($column == getSort($self)) {
+        return setUrlPars(
+            $self,
+            array('_sortDirection' => getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC'),
+            true
+        );
+    }
+    // Other column is currently selected; set to current column in default direction
+    return setUrlPars(
+        $self,
+        array(
+            '_sort' => $column,
+            '_sortDirection' => $dir
+        ),
+        true
+    );
 }
 
 include 'Paginator.php';
@@ -1433,8 +1448,7 @@ function parseTaxa ($json) {
 		$output['results'][] = $d;
 	}
 
-	$output['sort'] = getSort($data);
-	$output['sortDirection'] = getSortDirection($data);
+	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 
@@ -1496,7 +1510,7 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 		}
 	}
 	// Highlight the formatted output
-	return $searchTerms ? $output : $output;
+	return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
 }
 
 function highlightSearchTerms ($output, $searchTerms) {
