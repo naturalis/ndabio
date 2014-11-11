@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* gray-10 : #1a1a1a; */
 /* gray-9  : #333333; */
 /* gray-8  : #4d4d4d; */
@@ -23,7 +24,7 @@
 /* yellow : #ffed00;  */
 .fading .page {
   transition: opacity 500ms;
-  opacity: 0.5; }
+  opacity: 0.25; }
 
 ::-webkit-input-placeholder {
   /* WebKit browsers */
@@ -60,6 +61,13 @@
 .explanation {
   color: #b2b1a8;
   font-weight: 300; }
+
+.term {
+  font-style: italic; }
+  .term:before {
+    content: "“"; }
+  .term:after {
+    content: "”"; }
 
 .not-front h2 {
   font-size: 20px;

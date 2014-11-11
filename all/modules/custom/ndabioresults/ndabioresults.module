@@ -479,15 +479,23 @@ function ndaSimpleSearch () {
     $p = array(
         '_search' => $_SESSION['ndaSearch']['term']
     );
+    
     // Taxon search does not include geoShape and should not be invoked when coming from geo form!
     if (!isset($_SESSION['ndaSearch']['gid'])) {
         $services[taxonService()] = $p;
     }
+    
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         $p['_andOr'] = 'AND';
+        
+        $geo = t("Showing only results in") ." ". $_SESSION['ndaSearch']['location'];
+        $geo = "<div data-alert class='alert-box'> $geo <a href='#' class='close'>&times;</a> </div>";
+
+
     };
+    
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
         $services[$request] = $p;
     }
@@ -496,7 +504,7 @@ function ndaSimpleSearch () {
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from simple form';
 
-    return $title . performNdaRequest(setChannels($services));
+    return $title . $geo. performNdaRequest(setChannels($services));
 }
 
 /**

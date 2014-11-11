@@ -31,12 +31,6 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 		)
 	);
 
-  // $output = '<h2>' . t('Your search for') . ' ' . printMatches($data) .
-	// 	' ' . t('returned') . ' ' . $data['total'] . ' ' . t('specimens') . ".</h2>\n" .
-	// 	"<h3 class='results-set-header'>" . t('Species with specimens') . "</h3>\n" .
-	// 	"<table class='table'><thead>" . printHeaders($headers, $p) .
-	// 	"</thead><tbody>";
-
   if (!isset($data['results']) || empty($data['results'])) {
         return sprintf('<h2>%s %s %s</h2><p>%s</p>',
             t('Specimens with'),
@@ -45,9 +39,16 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
             t('No results'));
   }
 
+  $term  = _wrap(  $data['searchTerms']['_search']                           , "span", "term"  );
+  $expl  = _wrap(  t('(occurring in the species&apos; name)') , "span", "explanation");
+  $count = _wrap(  $data['total']                             , "span", "count");
 
-  $output  = sprintf('<h2>%s %s %s <span class="count">(%d)</span></h2>', t('Specimens with'), printMatches($data), t(' occurring in the species&apos; name'),$data['total'] );
+
+  $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
   $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $p) );
+
+  kpr(  $_SESSION  );
+  kpr(  $data );
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";
