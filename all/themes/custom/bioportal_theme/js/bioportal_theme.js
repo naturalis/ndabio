@@ -183,15 +183,9 @@
   // ---------------------------------------------------------
   
 
-  $('[data-role=document]').bind('pageshow', function(event) {
-
-    if (event.target.id.indexOf(yourPageId) == 0) {
-
-          alert("Refresh");
-
-    }
-
-  });
+  // $( window ).unload(function() {
+  //   console.log("Weg!");
+  // });
 
 
   function preloader(){

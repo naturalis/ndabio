@@ -22,7 +22,7 @@
 /* orange : #ef6d14;  */
 /* yellow : #ffed00;  */
 .fading .page {
-  transition: opacity 2000ms;
+  transition: opacity 500ms;
   opacity: 0.5; }
 
 ::-webkit-input-placeholder {
