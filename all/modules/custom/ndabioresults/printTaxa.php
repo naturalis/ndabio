@@ -49,7 +49,7 @@ function printTaxa ($data) {
 	$output .=	"</td>";
 
     // Description
-    $output .= "<td>" . decorateDescription($row) . "</td>";
+    $output .= "<td>" . $row['description'] . "</td>";
 
     // Source(s)
     $output .= "<td>" . implode('</br>', $row['sources']) . "</td>";

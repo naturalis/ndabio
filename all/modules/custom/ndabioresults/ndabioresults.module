@@ -114,7 +114,7 @@ function ndaBaseUrl () {
 function searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offSet');
+         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset');
     }
     return $var;
 }
@@ -1413,33 +1413,33 @@ function parseTaxa ($json) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
 		$d['type'] = getResultType($row);
+		$d['rank'] = $row->searchResults[0]->result->taxonRank;
 		if ($d['type'] == 'accepted') {
 			$d['name'] = formatScientificName(
 				strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
 				$row->searchResults[0]->result->acceptedName,
 				$output['searchTerms']
 			);
+			$d['description'] = t(ucfirst($d['rank']));
 		} else if ($d['type'] == 'synonym') {
+            $offset = getTaxonSynonymOffset($row);
 			$d['name'] = formatScientificName(
-				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
-				$row->searchResults[0]->result->synonyms[getResultOffset($row)]->scientificName,
+				strip_tags($row->searchResults[0]->result->synonyms[$offset]->fullScientificName),
+				$row->searchResults[0]->result->synonyms[$offset],
 				$output['searchTerms']
 			);
+			$d['description'] = t('Synonym for') . ' ' .
+    			formatScientificName(
+    				$row->searchResults[0]->result->acceptedName->fullScientificName,
+    				$row->searchResults[0]->result->acceptedName
+    			);
 		} else if ($d['type'] == 'common') {
 			$d['name'] = highlightSearchTerms(
 				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
 				$output['searchTerms']
 			);
+			$d['description'] = '';
 		}
-		$d['acceptedName'] = (
-			$d['type'] == 'accepted' ?
-			$d['name'] :
-			formatScientificName(
-				$row->searchResults[0]->result->acceptedName->fullScientificName,
-				$row->searchResults[0]->result->acceptedName
-			)
-		);
-		$d['rank'] = $row->searchResults[0]->result->taxonRank;
 		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
 		$d['sources'] = getSources($row);
 		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row, true) : array());
@@ -1454,6 +1454,17 @@ function parseTaxa ($json) {
 	return isset($output) ? $output : false;
 }
 
+
+function getTaxonSynonymOffset ($row) {
+    $path = $row->searchResults[0]->matchInfo[0]->path;
+    $field = str_replace('synonyms.', '', $path);
+    foreach ($row->searchResults[0]->result->synonyms as $i => $synonyms) {
+        if ($synonyms->$field ==
+            strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted)) {
+            return $i;
+        }
+    }
+}
 
 
 
@@ -1515,14 +1526,12 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 function highlightSearchTerms ($output, $searchTerms) {
     foreach ($searchTerms as $field => $value) {
         if (!in_array(str_replace('_', '', $field), searchFlags())) {
-            $terms[] = $value;
+            $terms[$value[0]] = '';
         }
     }
     // Intermediate step required to remove any duplicates
     if (isset($terms)) {
-        foreach (array_unique($terms) as $value) {
-            $output = highlightMatch($output, $value);
-        }
+        $output = highlightMatch($output, array_flip($terms));
     }
     return $output;
 }
@@ -1667,172 +1676,6 @@ function _markUp($string){
   );
 
   return $result;
-}
-
-
-
-
-
-
-/*
- * DUMMY functions to print mock data on screen. Please keep this at the bottom of this document
- * so these can removed easily once markup has been completed and NDA services run properly
- */
-function DUMMYmapNdaRequests() {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = array(
-        	'all' => 'group-taxa-by-name.json|groupSpecimenBySpecificName.json|getSpecimensForOtherSearchTerms.json|getMediaObjects.json',
-        	'taxa' => 'group-taxa-by-name.json',
-        	'specimensByTaxon' => 'groupSpecimenBySpecificName.json',
-        	'specimens' => 'groupSpecimenBySpecificName.json',
-        	'multimedia' => 'getMediaObjects.json',
-        	'taxonDetail' => 'taxon-detail.json',
-        	'specimenDetail' => 'specimen-detail.json',
-        	'taxonMediaDetail' => 'taxon-media-detail.json',
-        	'specimenMediaDetail' => 'specimen-media-detail.json'
-        );
-    }
-    return $var;
-}
-
-function DUMMYresultOrder() {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = array(
-        	'getMediaObjects.json',
-        	'group-taxa-by-name.json',
-        	'groupSpecimenBySpecificName.json',
-        	'getSpecimensForOtherSearchTerms.json'
-        );
-    }
-    return $var;
-}
-
-function DUMMYserviceToFunctions() {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = array(
-        	'group-taxa-by-name.json' => array(
-        		'parse' => 'parseTaxa',
-        		'print' => 'printTaxa'
-        	),
-        	'groupSpecimenBySpecificName.json' => array(
-        		'parse' => 'parseSpecimensByTaxon',
-        		'print' => 'printSpecimensByTaxon'
-        	),
-        	'getMediaObjects.json' => array(
-        		'parse' => 'parseMultimedia',
-        		'print' => 'printMultimedia'
-        	),
-        	'getSpecimensForOtherSearchTerms.json' => array(
-        		'parse' => 'parseSpecimens',
-        		'print' => 'printSpecimens'
-        	),
-        	'specimen-detail.json' => array(
-        		'parse' => 'parseSpecimenDetail',
-        		'print' => 'printSpecimenDetail'
-        	),
-        	'taxon-detail.json' => array(
-        		'parse' => 'parseTaxonDetail',
-        		'print' => 'printTaxonDetail'
-        	),
-        	'taxon-media-detail.json' => array(
-        		'parse' => 'parseTaxonMediaDetail',
-        		'print' => 'printTaxonMediaDetail'
-        	),
-        	'specimen-media-detail.json' => array(
-        		'parse' => 'parseSpecimenMediaDetail',
-        		'print' => 'printSpecimenMediaDetail'
-        	)
-        );
-    }
-    return $var;
-}
-
-function DUMMYperformNdaRequest ($request = false) {
-    $serviceToFunctions = DUMMYserviceToFunctions();
-	// Translate request url to curl channels
-	$channels = DUMMYsetChannels($request);
-	if (empty($channels)) {
-		handleError('Cannot set curl channels');
-	}
-	// Get json response(s) with curl
-	$remoteData = DUMMYqueryNda($channels);
-	// Reorder responses in print order if more than one response
-	if (count($remoteData) > 1) {
-	   $remoteData = sortArrayByArray($remoteData, DUMMYresultOrder());
-	}
-	// Map functions to each channel result:
-	// parses and prints data
-	$output = '';
-	foreach ($remoteData as $service => $json) {
-		if (!isset($serviceToFunctions[$service]) || empty($json)) {
-			continue;
-		}
-		$parseFunction = $serviceToFunctions[$service]['parse'];
-		$printFunction = $serviceToFunctions[$service]['print'];
-		$output .= $printFunction($parseFunction($json));
-	}
-	return $output;
-}
-
-
-function DUMMYsetChannels ($request = false) {
-	$mapNdaRequests = DUMMYmapNdaRequests();
-	if (!$request || !isset($mapNdaRequests[$request])) {
-		return false;
-	}
-	$t = explode('|', $mapNdaRequests[$request]);
-	foreach ($t as $i => $url) {
-		$channels[$i]['request'] = $url;
-		$channels[$i]['url'] = 'http://dev2.etibioinformatics.nl/nda/' . $url;
-	}
-	return $channels;
-}
-
-function DUMMYqueryNda ($channels = array(), $timeout = false) {
-    $mh = curl_multi_init();
-    for ($i = 0; $i < count($channels); $i++) {
-        $ch[$i] = curl_init();
-
-$url = $channels[$i]['url'] . '/?'  . $channels[$i]['postfields'];
-echo $url . "<br>";
-
-        curl_setopt($ch[$i], CURLOPT_URL, $url);
-        curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch[$i], CURLOPT_HEADER, false);
-        if ($timeout) {
-       		curl_setopt($ch[$i], CURLOPT_TIMEOUT, $timeout);
-        }
-        curl_multi_add_handle($mh, $ch[$i]);
-    }
-    // While we're still active, execute curl
-	do {
-		$mrc = curl_multi_exec($mh, $active);
-	} while ($mrc == CURLM_CALL_MULTI_PERFORM);
-
-    while ($active && $mrc == CURLM_OK) {
-        // Wait for activity on any curl-connection
-        if (curl_multi_select($mh) == -1) {
-            usleep(1);
-        }
-        // Continue to exec until curl is ready to
-        // give us more data
-        do {
-            $mrc = curl_multi_exec($mh, $active);
-        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
-    }
-    // Place results in results array and close handlers
-    for ($i = 0; $i < count($channels); $i++) {
-        $remoteData[$channels[$i]['request']] = curl_multi_getcontent($ch[$i]);
-        curl_multi_remove_handle($mh, $ch[$i]);
-    }
-    curl_multi_close($mh);
-
- print_r($remoteData); die();
-
-    return $remoteData;
 }
 
 function p ($a) {
