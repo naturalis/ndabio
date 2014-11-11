@@ -57,7 +57,7 @@ $icon-arrow-right:  "\e613";
 $icon-chevron-right: "\e60c";
 
 .fading .page{
-  transition: opacity 500ms;
+  transition: opacity 2000ms;
   opacity: 0.5;
 }
 
@@ -180,14 +180,16 @@ $icon-chevron-right: "\e60c";
 
   // -- front-page: BANNER GEOGRAPHICAL SEARCH
     #banner-geographical-search{
-      background-color : $gray-1;
-      text-align       : center;
-      position         : relative;
-      width            : 100%;
-      left             : -1em;
-      padding          : 1em 1em 0 1em;
-      box-sizing       : content-box;
-      margin           : 40px 0;
+      transition                : background-color 300ms; 
+      background-color          : $gray-1;
+      &:hover{ background-color : $gray-2;}
+      text-align                : center;
+      position                  : relative;
+      width                     : 100%;
+      left                      : -1em;
+      padding                   : 1em 1em 0 1em;
+      box-sizing                : content-box;
+      margin                    : 40px 0;
 
 
 

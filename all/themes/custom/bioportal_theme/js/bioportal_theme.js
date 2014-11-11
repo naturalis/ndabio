@@ -176,16 +176,23 @@
 
     });
 
-  // ---------------------------------------------------------
 
 
   // ---------------------------------------------------------
   // PRELOADER
-  //preloader();
+  // ---------------------------------------------------------
+  
 
-  $(document).ready(function(){
-    $("#preloader").remove();
-  })
+  $('[data-role=document]').bind('pageshow', function(event) {
+
+    if (event.target.id.indexOf(yourPageId) == 0) {
+
+          alert("Refresh");
+
+    }
+
+  });
+
 
   function preloader(){
     $("body").addClass("fading");
@@ -233,10 +240,10 @@
         k = t + n;
         if (k>0){
           var teta  = k * 2.3998277;
-          var omega = n * 2.3998277
+          var omega = n * 2.3998277;
           var r     = Math.round( 7 * Math.sqrt(k) );
-          var num_x = Math.round( r * Math.cos(omega) );
-          var num_y = Math.round(r * Math.sin(omega));
+          var num_x = Math.round( r * Math.cos(omega ) );
+          var num_y = Math.round(r * Math.sin(omega  ));
 
           $_kernel[n].css({
             left         : num_x,
