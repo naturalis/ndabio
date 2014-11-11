@@ -98,7 +98,7 @@ function ndabioresults_config_form($form, &$form_state) {
  *
  * @return string
  */
-function ndaBaseUrl() {
+function ndaBaseUrl () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/';
@@ -111,7 +111,7 @@ function ndaBaseUrl() {
  *
  * @return array
  */
-function searchFlags() {
+function searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offSet');
@@ -124,7 +124,7 @@ function searchFlags() {
  *
  * @return integer
  */
-function maxResultsInitial() {
+function maxResultsInitial () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 10;
@@ -137,10 +137,36 @@ function maxResultsInitial() {
  *
  * @return integer
  */
-function maxResults() {
+function maxResults () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 100;
+    }
+    return $var;
+}
+
+/**
+ * Constant: default sort field
+ *
+ * @return string
+ */
+function defaultSort () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = '_score';
+    }
+    return $var;
+}
+
+/**
+ * Constant: default sort direction
+ *
+ * @return string
+ */
+function defaultSortDirection () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = 'DESC';
     }
     return $var;
 }
@@ -150,7 +176,7 @@ function maxResults() {
  *
  * @return integer
  */
-function maxPagesInPaginator() {
+function maxPagesInPaginator () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 20;
@@ -166,7 +192,7 @@ function maxPagesInPaginator() {
  *
  * @return string
  */
-function specimenService() {
+function specimenService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'specimen/search';
@@ -181,7 +207,7 @@ function specimenService() {
  *
  * @return string
  */
-function specimenNamesService() {
+function specimenNamesService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'specimen/name-search';
@@ -196,7 +222,7 @@ function specimenNamesService() {
  *
  * @return string
  */
-function specimenDetailService() {
+function specimenDetailService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'specimen/get-specimen';
@@ -211,7 +237,7 @@ function specimenDetailService() {
  *
  * @return string
  */
-function specimenMultimediaService() {
+function specimenMultimediaService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'multimedia/get-multimedia-object-for-specimen-within-result-set';
@@ -226,7 +252,7 @@ function specimenMultimediaService() {
  *
  * @return string
  */
-function taxonService() {
+function taxonService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'taxon/search';
@@ -241,7 +267,7 @@ function taxonService() {
  *
  * @return string
  */
-function taxonDetailService() {
+function taxonDetailService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'taxon/get-taxon';
@@ -256,7 +282,7 @@ function taxonDetailService() {
  *
  * @return string
  */
-function taxonMultimediaService() {
+function taxonMultimediaService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'multimedia/get-multimedia-object-for-taxon-within-result-set';
@@ -271,7 +297,7 @@ function taxonMultimediaService() {
  *
  * @return string
  */
-function multimediaService() {
+function multimediaService () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = 'multimedia/search';
@@ -287,7 +313,7 @@ function multimediaService() {
  *
  * @return array
  */
-function resultOrder() {
+function resultOrder () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
@@ -308,7 +334,7 @@ function resultOrder() {
  *
  * @return array Names of parse and print function for the service of choice
  */
-function serviceToFunctions() {
+function serviceToFunctions () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
@@ -507,8 +533,10 @@ function ndaDirectRequest ($r) {
         if (strpos($r, $service) !== false) {
             $url = parse_url($r);
             parse_str($url['query'], $q);
+
             // Add/reset maxResults to default
             $q['_maxResults'] = maxResults();
+
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
     		$channels[0]['post'] = 1;
@@ -544,8 +572,13 @@ function setChannels (array $services) {
 	foreach ($services as $s => $p) {
 	    if (!empty($p)) {
 	        $p = array_filter($p, 'strlen');
+
+	        // Append default search parameters for form
 	        $p['_maxResults'] = maxResultsInitial();
-    		$channels[$i]['request'] = $s;
+	        $p['_sort'] = defaultSort();
+	        $p['_sortDirection'] = defaultSortDirection();
+
+	        $channels[$i]['request'] = $s;
     		$channels[$i]['url'] = ndaBaseUrl() . $s;
     		$channels[$i]['post'] = count($p);
     		$channels[$i]['postfields'] =  http_build_query($p);
@@ -1013,8 +1046,11 @@ function parseMultimedia ($json) {
 		$d['hits'] = getHits($row);
 		$output['results'][] = $d;
 	}
-	$output['showAll'] = setShowAll($data);
-	$output['paginator'] = setPaginator($data);
+
+	$output['sort'] = getSort($data);
+	$output['sortDirection'] = getSortDirection($data);
+	$output['showAll'] = getShowAll($data);
+	$output['paginator'] = getPaginator($data);
 //p($data);
 	return isset($output) ? $output : false;
 }
@@ -1057,8 +1093,11 @@ function parseSpecimens ($json) {
 		$d['names'] = getSpecimenTaxonNames($row);
 		$output['results'][] = $d;
 	}
-	$output['showAll'] = setShowAll($data);
-	$output['paginator'] = setPaginator($data);
+
+	$output['sort'] = getSort($data);
+	$output['sortDirection'] = getSortDirection($data);
+	$output['showAll'] = getShowAll($data);
+	$output['paginator'] = getPaginator($data);
 
 	return isset($output) ? $output : false;
 }
@@ -1141,29 +1180,52 @@ function parseSpecimensByTaxon ($json) {
 		}
 		$output['results'][] = $d;
 	}
-	$output['showAll'] = setShowAll($data);
-	$output['paginator'] = setPaginator($data);
+
+	$output['sort'] = getSort($data);
+	$output['sortDirection'] = getSortDirection($data);
+	$output['showAll'] = getShowAll($data);
+	$output['paginator'] = getPaginator($data);
 // p($data);
 	return isset($output) ? $output : false;
 }
 
 
-function setShowAll ($data) {
+function getShowAll ($data) {
 	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
 	       return setUrlPars($self, array('_maxResults' => maxResults()), true);
-	       //return urlencode(str_replace('_maxResults=' . maxResultsInitial(),
-           //     '_maxResults=' . maxResults(), urldecode($self)));
 	    }
 	}
 	return null;
 }
 
+function getSort ($data) {
+    $self = getSelfLink($data);
+    if (!empty($self)) {
+        $value = getUrlParValue(urldecode($self), '_sort');
+        if (!empty($value)) {
+            return $value;
+        }
+    }
+    return defaultSort();
+}
+
+function getSortDirection ($data) {
+    $self = getSelfLink($data);
+    if (!empty($self)) {
+        $value = getUrlParValue(urldecode($self), '_sortDirection');
+        if (!empty($value)) {
+            return $value;
+        }
+    }
+    return defaultSortDirection();
+}
+
 include 'Paginator.php';
 
-function setPaginator ($data) {
+function getPaginator ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $currentPage = getOffset($data) / maxResults() + 1;
         $urlPattern = '?nba_request=' . urlencode(stripOffsetFromUrl(urldecode(getSelfLink($data))) .
@@ -1210,12 +1272,32 @@ function stripOffsetFromUrl ($url, $decodeEncode = false) {
     return $decodeEncode ? urlencode($url) : $url;
 }
 
-function getSelfLink ($data) {
-    foreach ($data->links as $link) {
-        if ($link->rel == '_self') {
-            return $link->href;
+function getUrlParValue ($url, $par) {
+    if ($url != '' && $par != '') {
+        $parts = parse_url($url);
+        if (!empty($parts)) {
+            parse_str($parts['query'], $q);
+            foreach ($q as $p => $v) {
+                if ($p == $par) {
+                    return $v;
+                }
+            }
         }
     }
+    return false;
+}
+
+
+
+function getSelfLink ($data) {
+    if (isset($data->links) && !empty($data->links)) {
+        foreach ($data->links as $link) {
+            if ($link->rel == '_self') {
+                return $link->href;
+            }
+        }
+    }
+    return false;
 }
 
 /**
@@ -1342,8 +1424,11 @@ function parseTaxa ($json) {
 		$d['score'] = $row->searchResults[0]->percentage;
 		$output['results'][] = $d;
 	}
-	$output['showAll'] = setShowAll($data);
-	$output['paginator'] = setPaginator($data);
+
+	$output['sort'] = getSort($data);
+	$output['sortDirection'] = getSortDirection($data);
+	$output['showAll'] = getShowAll($data);
+	$output['paginator'] = getPaginator($data);
 
 	return isset($output) ? $output : false;
 }
