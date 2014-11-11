@@ -4,34 +4,34 @@ require_once 'printShowAll.php';
 require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
-function printSpecimens ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
+function printSpecimens ($data) {
 	$headers = array(
-		array(
+		'unitID' => array(
 			'label' => t('Specimen'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-alphabet',
-			'url' => '#'
+			'url' => setSortUrl('unitID', 'ASC', $data['self'])
 		),
-		array(
+		'fullScientificname' => array(
 			'label' => t('Species'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-alphabet',
-			'url' => '#'
+			'url' => setSortUrl('fullScientificname', 'ASC', $data['self'])
 		),
-		array(
+		'foundIn' => array(
 			'label' => t('Found in'),
 			'sort' => 0
 		),
-		array(
+		'_score' => array(
 			'label' => t('Match'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-attributes',
-			'url' => '#'
+			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);
 
   $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Specimens'), $data['total'] );
-  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $p) );
+  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $data['self']));
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";

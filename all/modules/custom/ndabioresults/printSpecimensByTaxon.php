@@ -5,29 +5,28 @@ require_once 'printPaginator.php';
 
 
 // Prints specimen result set on screen.
-function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirection' => 'asc')) {
+function printSpecimensByTaxon ($data) {
 	$headers = array(
-		array(
+		'identifyingEpithets' => array(
 			'label' => t('Name'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-alphabet',
-			'url' => '#'
+			'url' => setSortUrl('identifyingEpithets', 'ASC', $data['self'])
 		),
-		array(
-			'label' => t('Number'),
-			'sort' => 1,
-			'icon' => 'icon-sort-by-attributes',
-			'url' => '#'
+		'count' => array(
+			'label' => '',
+			'sort' => 0,
+			'url' => setSortUrl('count', 'ASC', $data['self'])
 		),
-		array(
+		'foundIn' => array(
 			'label' => t('Found in'),
 			'sort' => 0
 		),
-		array(
+		'_score' => array(
 			'label' => t('Match'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-attributes',
-			'url' => '#'
+			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);
 
@@ -45,7 +44,7 @@ function printSpecimensByTaxon ($data, $p = array('sortColumn' => 0, 'sortDirect
 
 
   $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
-  $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $p) );
+  $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self']));
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";

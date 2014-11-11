@@ -36,16 +36,8 @@ function printTaxa ($data) {
 	);
 
     $explanation = _wrap("(matching scientific or common name)","span","explanation");
-    $output  = sprintf(
-        '<h2>%s <span class="count">(%d)</span> %s</h2>',
-        t('Species names'),
-        $data['total'],
-        $explanation
-    );
-    $output .= sprintf(
-        '<table><thead>%s</thead><tbody>',
-        printHeaders($headers, $data['self'])
-    );
+    $output  = sprintf( '<h2>%s <span class="count">(%d)</span> %s</h2>', t('Species names'), $data['total'], $explanation);
+    $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $data['self']));
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";

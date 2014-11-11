@@ -1228,7 +1228,10 @@ function setSortUrl ($column, $dir, $self) {
     if ($column == getSort($self)) {
         return setUrlPars(
             $self,
-            array('_sortDirection' => getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC'),
+            array(
+                '_sortDirection' => getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC',
+                '_offset' => 0
+            ),
             true
         );
     }
@@ -1237,7 +1240,8 @@ function setSortUrl ($column, $dir, $self) {
         $self,
         array(
             '_sort' => $column,
-            '_sortDirection' => $dir
+            '_sortDirection' => $dir,
+            '_offset' => 0
         ),
         true
     );
@@ -1269,9 +1273,7 @@ function setUrlPars ($url, array $newValues, $decodeEncode = false) {
     $parts = parse_url($url);
     parse_str($parts['query'], $q);
     foreach ($newValues as $p => $v) {
-        if (isset($q[$p])) {
-            $q[$p] = $v;
-        }
+        $q[$p] = $v;
     }
     $parts['query'] = http_build_query($q);
     $url = reverse_parse_url($parts);
