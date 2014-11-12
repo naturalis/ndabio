@@ -1,6 +1,7 @@
 name = Bioportal Theme Settings
 core = 7.x
 package = Bioportal
+dependencies[] = bioportal_header_images
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = image
