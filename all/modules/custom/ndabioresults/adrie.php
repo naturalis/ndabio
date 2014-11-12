@@ -33,7 +33,7 @@ function ndabioresults_config_form($form, &$form_state) {
 function ndaBaseUrl () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/';
+         $var = 'http://10.42.1.178:8080/nl.naturalis.nda.service.rest/api/';
     }
     return $var;
 }
