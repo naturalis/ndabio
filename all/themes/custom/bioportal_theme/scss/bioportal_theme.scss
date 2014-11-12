@@ -184,32 +184,6 @@ $icon-chevron-right: "\e60c";
       }
     }
 
-  // --front-page : LOGO
-
-    // #naturalis-header{
-    //   position: relative;
-    //   overflow: display;
-
-    //   #header-image{
-    //     position   : absolute;
-    //     top        : 0px;
-    //     right      : 0;
-    //     overflow   : display;
-    //     height     : 320px;
-    //     width      : 300px;
-    //     margin     : 0;
-    //     padding    : 0;
-    //     outline : 1px solid green;
-
-    //     img{
-    //     max-height : 320px;
-    //     max-width  : 300px;
-    //     }
-    //   }
-    // }
-
-
-
   // -- front-page: BANNER GEOGRAPHICAL SEARCH
     #banner-geographical-search{
       transition                : background-color 300ms; 
@@ -754,6 +728,32 @@ $icon-chevron-right: "\e60c";
         font-weight: bolder;
       }
 
+    }
+
+    table{
+      tr{
+        &.even,
+        &.alt,
+        &:nth-of-type(2n){
+           background-color: $white;
+           transition: background-color 300ms;
+           &:hover{ background-color: $ghost;}
+        }
+      }
+
+      .indent-1, .indent-2{
+        &,
+        &.even,
+        &.alt,
+        &:nth-of-type(2n){
+          background-color: $smoke;
+
+        }
+      }
+
+      .indent-2:not(.hidden) + .indent-0{
+        border-top: 2px solid $gray;
+      }
     }
 
 

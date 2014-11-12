@@ -470,6 +470,16 @@ html.js fieldset.collapsible .fieldset-legend {
   .polaroid-caption .image-title {
     font-weight: bolder; }
 
+table tr.even, table tr.alt, table tr:nth-of-type(2n) {
+  background-color: white;
+  transition: background-color 300ms; }
+  table tr.even:hover, table tr.alt:hover, table tr:nth-of-type(2n):hover {
+    background-color: #eeede9; }
+table .indent-1, table .indent-1.even, table .indent-1.alt, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2.even, table .indent-2.alt, table .indent-2:nth-of-type(2n) {
+  background-color: #f6f6f4; }
+table .indent-2:not(.hidden) + .indent-0 {
+  border-top: 2px solid #b2b1a8; }
+
 #result-nav {
   display: table;
   border-spacing: 3px;

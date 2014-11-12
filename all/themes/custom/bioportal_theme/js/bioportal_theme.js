@@ -242,9 +242,8 @@
   // ---------------------------------------------------------
   
 
-  // $( window ).unload(function() {
-  //   console.log("Weg!");
-  // });
+  $( window ).unload(function() {
+  }); // For the moment, we'll leave this function here
 
 
   function preloader(){
@@ -252,11 +251,28 @@
 
     $_overlay = $("<div id='preloader'></div>")
       .appendTo("body")
-      .css({ width: "200px", height: "200px", backgroundColor: "#444433", borderRadius:"5px", position: "absolute", top: "50%", left: "50%", marginLeft: "-100px", zIndex: 1000 } );
+      .css({ 
+        width            : "200px",
+        height           : "200px",
+        backgroundColor  : "#444433",
+        borderRadius     : "5px",
+        position         : "absolute",
+        top              : "50%",
+        left             : "50%",
+        marginLeft       : "-100px",
+        zIndex           : 1000
+      });
 
     $_canvas = $("<div id='canvas' />")
       .appendTo($_overlay)
-      .css({ width: "10px", height: "10px", position: "absolute", left: "50%", top: "50%", overflow: "show" })
+      .css({ 
+        width            : "10px",
+        height           : "10px",
+        position         : "absolute",
+        left             : "50%",
+        top              : "50%",
+        overflow         : "show"
+      })
 
       var b = 0.306349;
 
