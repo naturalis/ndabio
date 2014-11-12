@@ -69,29 +69,7 @@ function ndabioresults_preprocess_html(&$vars){
   }
 }
 
-function ndabioresults_config_form($form, &$form_state) {
-  $form['ndabioresults_config'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Naturalis config')
-  );
-
-  //NBA Base URL
-  $form['ndabioresults_config']['ndabioresults_config_baseurl'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA base URL'),
-    '#default_value' => variable_get('ndabioresults_config_baseurl', "http://nba.naturalis.nl/"),
-    '#size' => 140,
-    '#maxlength' => 200,
-    '#description' => t('The base URL of the NBA.'),
-    '#required' => TRUE
-  );
-
-
-
-  return system_settings_form($form);
-}
-
-include 'constants.php'
+include 'adrie.php'
 
 /**
  * Mapping function: distributes parameters to appropriate specimen service
@@ -250,7 +228,7 @@ function ndaAdvancedSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
 
-/**
+/**ndabioresults_config_form
  * @todo: check base url!!
  * @param unknown $r
  */
