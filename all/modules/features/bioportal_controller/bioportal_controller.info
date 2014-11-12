@@ -1,6 +1,8 @@
 name = Bioportal Controller
 core = 7.x
 package = Bioportal
+version = 7.x-0.2
+project = bioportal_controller
 dependencies[] = bioportal_geoview
 dependencies[] = bioportal_nl
 dependencies[] = bioportal_search_areas_a_f
@@ -14,7 +16,6 @@ dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = filter
-dependencies[] = geozones
 dependencies[] = ndabio
 dependencies[] = ndabioresults
 dependencies[] = pathauto
