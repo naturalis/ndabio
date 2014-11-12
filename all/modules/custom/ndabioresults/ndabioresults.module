@@ -412,16 +412,19 @@ function queryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
     for ($i = 0; $i < count($channels); $i++) {
         $ch[$i] = curl_init();
-        /*
-         * POST did not return data, currently switching to GET
-         * @todo: check if posting large areas does not break GET
-         *
+/*
+        // POST
         curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-        curl_setopt($ch[$i], CURLOPT_POST, true;
+        curl_setopt($ch[$i], CURLOPT_POST, true);
         curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
-        */
+        // END POST
+*/
+
+        // GET
         $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
         curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+        // END GET
+
         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch[$i], CURLOPT_HEADER, false);
         if ($timeout) {
@@ -598,31 +601,6 @@ function parseClassification ($classification) {
 
 
 include 'printTaxonDetail.php';
-
-
-// function printTaxonDetail ($data) {
-//   global $language;
-//
-//   $output .= "<div class='large-7 columns'>";
-//
-//   $output .= "<h2>" . $data['acceptedName'] . " <span class='populair-name'>" .
-//     (isset($data['commonNames'][$language->language]) ?
-//       implode(', ', $data['commonNames'][$language->language]) : '') .
-//     "</span></h2>";
-//
-//   $output .=
-//      printCommonNames($data)
-//     .printDescriptions($data)
-//     .printClassifications($data);
-//
-//   $output .= "</div>";
-//
-//   $output .= "<div class='large-3 columns'>";
-//   $output .=    printNavigation($data) .
-//   $output .= "</div>";
-//
-//   return $output;
-// }
 
 include 'printCommonNames.php';
 
@@ -1136,6 +1114,7 @@ function parseTaxa ($json) {
 	    $output['results'] = array();
         return $output;
 	}
+//p($data);
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
