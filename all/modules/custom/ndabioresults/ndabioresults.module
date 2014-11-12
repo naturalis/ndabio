@@ -241,6 +241,12 @@ function ndaDirectRequest ($r) {
             // Add/reset maxResults to default
             $q['_maxResults'] = maxResults();
 
+            // Set geoShape from SESSION if geoShape is part of the request
+            if (isset($q['_geoShape']) && $q['_geoShape'] == '[session]' &&
+                isset($_SESSION['ndaStoredGeoShape'])) {
+                $q['_geoShape'] = $_SESSION['ndaStoredGeoShape'];
+            }
+
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
     		$channels[0]['post'] = 1;
@@ -893,7 +899,7 @@ function getShowAll ($data) {
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
-	       return setUrlPars($self, array('_maxResults' => maxResults()), true);
+	       return setUrlPars(geoShapeToSession($self, true), array('_maxResults' => maxResults()), true);
 	    }
 	}
 	return null;
@@ -947,19 +953,21 @@ include 'Paginator.php';
 
 function getPaginator ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
-        $currentPage = getOffset($data) / maxResults() + 1;
-        $urlPattern = '?nba_request=' . urlencode(stripOffsetFromUrl(urldecode(getSelfLink($data))) .
-            '&_offset=') . '(:num)';
-
         $paginator = new Paginator(
             getTotalRows($data),
             maxResults(),
-            $currentPage,
-            $urlPattern
+            getOffset($data) / maxResults() + 1,
+            setPaginatorUrl($data)
         );
         return $paginator->toHtml();
     }
     return null;
+}
+
+function setPaginatorUrl ($data) {
+    return printDrupalLink(
+        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_offset='
+    ) . '(:num)';
 }
 
 function setUrlPars ($url, array $newValues, $decodeEncode = false) {
@@ -973,6 +981,29 @@ function setUrlPars ($url, array $newValues, $decodeEncode = false) {
     }
     $parts['query'] = http_build_query($q);
     $url = reverse_parse_url($parts);
+    return $decodeEncode ? urlencode($url) : $url;
+}
+
+/**
+ *  Replaces the value of the _geoShape parameter from any NBA-created url with [session].
+ *  Stores the value in a session parameter, which should be retrieved when creating the NBA request.
+ *
+ * @param string $url
+ * @return string, session parameter
+ */
+function geoShapeToSession ($url, $decodeEncode = false) {
+    if ($decodeEncode) {
+        $url = urldecode($url);
+    }
+    $parts = parse_url($url);
+    parse_str($parts['query'], $q);
+    if (isset($q['_geoShape'])) {
+        $_SESSION['ndaStoredGeoShape'] = $q['_geoShape'];
+        $q['_geoShape'] = '[session]';
+
+        $parts['query'] = http_build_query($q);
+        $url = reverse_parse_url($parts);
+    }
     return $decodeEncode ? urlencode($url) : $url;
 }
 
