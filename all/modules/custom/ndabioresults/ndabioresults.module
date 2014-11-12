@@ -69,7 +69,7 @@ function ndabioresults_preprocess_html(&$vars){
   }
 }
 
-include 'adrie.php'
+include 'adrie.php';
 
 /**
  * Mapping function: distributes parameters to appropriate specimen service
