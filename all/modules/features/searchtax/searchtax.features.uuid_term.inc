@@ -785,7 +785,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'm_subspeciesEpithet',
+    'name' => 'm_infraspecificEpithet',
     'description' => 'Subspecies name
 ',
     'format' => 'plain_text',
@@ -801,7 +801,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'm_infraspecificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
@@ -1035,7 +1042,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndadatatype' => array(),
   );
   $terms[] = array(
-    'name' => 't_speciesEpithet',
+    'name' => 't_specificEpithet',
     'description' => 'Species name
 ',
     'format' => 'plain_text',
@@ -1051,7 +1058,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 't_specificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
@@ -1444,7 +1458,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 's_subspeciesEpithet',
+    'name' => 's_infraspecificEpithet',
     'description' => 'Subspecies name
 ',
     'format' => 'plain_text',
@@ -1460,7 +1474,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 's_infraspecificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
@@ -1468,7 +1489,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 't_subspeciesEpithet',
+    'name' => 't_infraspecificEpithet',
     'description' => 'Subspecies name
 ',
     'format' => 'plain_text',
@@ -1484,7 +1505,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 't_infraspecificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
@@ -1668,7 +1696,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'm_speciesEpithet',
+    'name' => 'm_specificEpithet',
     'description' => 'Species name
 ',
     'format' => 'plain_text',
@@ -1684,7 +1712,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'm_specificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
@@ -1715,7 +1750,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 's_speciesEpithet',
+    'name' => 's_specificEpithet',
     'description' => 'Species name
 ',
     'format' => 'plain_text',
@@ -1731,7 +1766,14 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 's_specificEpithet',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(),
     'field_ndadatatype' => array(),
     'parent' => array(
