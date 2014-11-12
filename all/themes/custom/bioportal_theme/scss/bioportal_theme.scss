@@ -148,7 +148,7 @@ $icon-chevron-right: "\e60c";
   // -- front-page : INTRO
 
     #naturalis-header{
-      overflow: hidden;
+      //overflow: hidden;
 
       #title-and-slogan{
         position: relative;
@@ -183,6 +183,32 @@ $icon-chevron-right: "\e60c";
         }
       }
     }
+
+  // --front-page : LOGO
+
+    // #naturalis-header{
+    //   position: relative;
+    //   overflow: display;
+
+    //   #header-image{
+    //     position   : absolute;
+    //     top        : 0px;
+    //     right      : 0;
+    //     overflow   : display;
+    //     height     : 320px;
+    //     width      : 300px;
+    //     margin     : 0;
+    //     padding    : 0;
+    //     outline : 1px solid green;
+
+    //     img{
+    //     max-height : 320px;
+    //     max-width  : 300px;
+    //     }
+    //   }
+    // }
+
+
 
   // -- front-page: BANNER GEOGRAPHICAL SEARCH
     #banner-geographical-search{

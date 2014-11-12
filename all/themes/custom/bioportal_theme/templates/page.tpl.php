@@ -82,8 +82,10 @@
 
       </div>
 
-      <div class="medium-4 columns" id="logo"><!-- the photo is used as 'logo' -->
-        <img src='<?php print $logo;?>'/>
+      <div class="medium-4 columns" id="header-image">
+        <?php // Instead of printing the logo, we'll print a block-view with random images ?>
+        <?php $viewName = 'header_image'; ?>
+        <?php print views_embed_view($viewName); ?>
       </div>
 
     </section>
@@ -112,16 +114,6 @@
     <!--/.l-featured -->
   <?php endif; ?>
 
-  <?php if ($messages && !$zurb_foundation_messages_modal): ?>
-    <!--/.l-messages -->
-    <section class="l-messages row">
-      <div class="large-12 columns">
-        <?php if ($messages): print $messages; endif; ?>
-      </div>
-    </section>
-    <!--/.l-messages -->
-  <?php endif; ?>
-
   <?php if (!empty($page['help'])): ?>
     <!--/.l-help -->
     <section class="l-help row">
@@ -134,6 +126,17 @@
 
   <main role="main" class="row l-main">
     <div class="<?php print $main_grid; ?> main columns">
+      
+      <?php if ($messages && !$zurb_foundation_messages_modal && false): ?>
+        <!--/.l-messages -->
+        <section class="l-messages row">
+          <div class="large-12 columns">
+            <?php if ($messages): print $messages; endif; ?>
+          </div>
+        </section>
+        <!--/.l-messages -->
+      <?php endif; ?>
+
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlight panel callout">
           <?php print render($page['highlighted']); ?>

@@ -85,31 +85,29 @@ button, .button {
 .background-gray-9 {
   background-color: #333333; }
 
-#naturalis-header {
-  overflow: hidden; }
-  #naturalis-header #title-and-slogan {
-    position: relative;
-    top: 0px;
-    transition: top 300ms;
-    overflow: visible; }
-    #naturalis-header #title-and-slogan.off-canvas {
-      top: -100%; }
-    #naturalis-header #title-and-slogan #intro {
-      position: absolute;
-      top: 160px;
-      color: white; }
-    #naturalis-header #title-and-slogan .intro-more, #naturalis-header #title-and-slogan .intro-less {
-      color: white;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      padding: 1em;
-      height: 3em;
-      width: 100%;
-      text-align: right;
-      font-weight: bolder; }
-      #naturalis-header #title-and-slogan .intro-more:hover, #naturalis-header #title-and-slogan .intro-less:hover {
-        color: #cccccc; }
+#naturalis-header #title-and-slogan {
+  position: relative;
+  top: 0px;
+  transition: top 300ms;
+  overflow: visible; }
+  #naturalis-header #title-and-slogan.off-canvas {
+    top: -100%; }
+  #naturalis-header #title-and-slogan #intro {
+    position: absolute;
+    top: 160px;
+    color: white; }
+  #naturalis-header #title-and-slogan .intro-more, #naturalis-header #title-and-slogan .intro-less {
+    color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1em;
+    height: 3em;
+    width: 100%;
+    text-align: right;
+    font-weight: bolder; }
+    #naturalis-header #title-and-slogan .intro-more:hover, #naturalis-header #title-and-slogan .intro-less:hover {
+      color: #cccccc; }
 
 #banner-geographical-search {
   transition: background-color 300ms;

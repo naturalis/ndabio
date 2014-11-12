@@ -13,6 +13,58 @@
 
 
 
+  // ---------------------------------------------------------
+  // HEADER IMAGES
+  // ---------------------------------------------------------
+
+    // (We use jQuery for repositioning, to keep the CSS clean)
+
+    if (    $('#naturalis-header').length ) {
+      rl_margin =  (  $(".page").outerWidth() - $("main").outerWidth()  ) / 2;
+
+      // Move image in the DOM and re-position
+      $("#header-image img").appendTo(".page").css({
+        position: "absolute",
+        top: 0, // magic number...?
+        right: rl_margin  ,
+        width: 320,
+        height: 300,
+        zIndex: 600
+      });
+
+      
+      $("#language-menu")
+        .appendTo(".page")
+        .css({
+          zIndex:601,
+          listStyle: "none inside none",
+          position: "fixed",
+          top: 10,
+          right: (rl_margin + 50)
+        })
+
+      
+      $("#help")
+        .appendTo(".page")
+        .css({
+          zIndex:602,
+          position: "fixed",
+          height: "auto",
+          width: "auto",
+          margin: 0,
+          padding: 0,
+          right: rl_margin,
+          top: 0,
+          listStyle: "none inside none"
+        })
+          .find('span')
+            .css({
+              color: '#fff',
+              border: 0,
+              // right: -5,
+              position: "relative"
+            })
+    }
 
   // ---------------------------------------------------------
   // INTRO (more)
