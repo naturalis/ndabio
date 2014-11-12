@@ -13,11 +13,11 @@ require_once 'printPaginator.php';
 */
 function printTaxa ($data) {
 	$headers = array(
-		'fullScientificname' => array(
+		'identifyingEpithets' => array(
 			'label' => t('Name'),
 			'sort' => 1,
 			'icon' => 'icon-sort-by-alphabet',
-			'url' => setSortUrl('fullScientificName', 'ASC', $data['self'])
+			'url' => setSortUrl('identifyingEpithets', 'ASC', $data['self'])
 		),
 		'description' => array(
 			'label' => t('Description'),
