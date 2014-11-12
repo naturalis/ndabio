@@ -5,7 +5,12 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimens ($data) {
-	$headers = array(
+
+    if (empty($data['results'])) {
+        return false;
+    }
+
+    $headers = array(
 		'unitID' => array(
 			'label' => t('Specimen'),
 			'sort' => 1,
