@@ -475,7 +475,8 @@ function ndabioresults_pass ($args = "") {
  * @return string Formatted output
  */
 function ndaSimpleSearch () {
-    $title = _wrap(t('Search results'),"H1");
+    $pageHeader = _wrap(t('Search results'),"H1");
+
     $p = array(
         '_search' => $_SESSION['ndaSearch']['term']
     );
@@ -490,21 +491,22 @@ function ndaSimpleSearch () {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         $p['_andOr'] = 'AND';
 
-        $geo = t("Showing only results in") ." ". $_SESSION['ndaSearch']['location'];
-        $geo = "<div data-alert class='alert-box secondary'> $geo </div>";
-
-
+        $pageHeader .= t("Showing only results in") ." ". $_SESSION['ndaSearch']['location'] .
+            "<div data-alert class='alert-box secondary'> $geo </div>";
     };
 
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
         $services[$request] = $p;
     }
+
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from simple form';
 
-    return $title . $geo. performNdaRequest(setChannels($services));
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
 
 /**
@@ -517,19 +519,25 @@ function ndaSimpleSearch () {
  * @return string Formatted output
  */
 function ndaAdvancedSearch () {
+    $pageHeader = _wrap(t('Search results'),"H1");
+
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+
     // Subdivide specimen parameters for both result types
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
 //p($services);
+
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from advanced form';
 
-    return performNdaRequest(setChannels($services));
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
 
 /**
