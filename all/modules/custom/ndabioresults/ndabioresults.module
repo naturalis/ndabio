@@ -1438,7 +1438,11 @@ function parseTaxa ($json) {
 				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
 				$output['searchTerms']
 			);
-			$d['description'] = '';
+			$d['description'] = t('Vernacular name for') . ' ' .
+			     formatScientificName(
+    				$row->searchResults[0]->result->acceptedName->fullScientificName,
+    				$row->searchResults[0]->result->acceptedName
+    			);
 		}
 		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
 		$d['sources'] = getSources($row);
@@ -1483,7 +1487,7 @@ function validJson ($string) {
 function getResultType ($row) {
 	$path = $row->searchResults[0]->matchInfo[0]->path;
 	return strpos($path, 'synonym') !== false ? 'synonym' :
-		(strpos($path, 'commonName') !== false ? 'common' : 'accepted');
+		(strpos($path, 'vernacularNames') !== false ? 'common' : 'accepted');
 }
 
 // Returns offset of result; used only for synonyms and common names
