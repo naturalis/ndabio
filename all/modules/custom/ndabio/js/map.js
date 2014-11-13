@@ -220,7 +220,7 @@ function processPoints(geometry, callback, thisArg) {
 
 			$_search_areas_target.html( data );
 
-			// Hangle click on area
+			// Handle click on area
 			$_search_areas_target.find('.row-area a').click(function() {
 
 				$(".row-area a").removeClass("active");
