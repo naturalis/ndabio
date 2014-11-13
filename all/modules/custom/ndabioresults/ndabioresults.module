@@ -187,6 +187,9 @@ function ndaSimpleSearch () {
     };
 
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
+        // Special case for specimen/search: do not call this service if
+        // only geoShape is present; results of specimen/name-search and
+        // specimen/search will then be identical
         $services[$request] = $p;
     }
 
