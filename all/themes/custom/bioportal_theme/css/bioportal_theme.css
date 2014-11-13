@@ -470,12 +470,22 @@ html.js fieldset.collapsible .fieldset-legend {
   .polaroid-caption .image-title {
     font-weight: bolder; }
 
-table tr.even, table tr.alt, table tr:nth-of-type(2n) {
+table tr .indent-1:nth-of-type(2n),
+table tr .indent-2:nth-of-type(2n) {
   background-color: white;
   transition: background-color 300ms; }
-  table tr.even:hover, table tr.alt:hover, table tr:nth-of-type(2n):hover {
-    background-color: #eeede9; }
-table .indent-1, table .indent-1.even, table .indent-1.alt, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2.even, table .indent-2.alt, table .indent-2:nth-of-type(2n) {
+  table tr .indent-1:nth-of-type(2n):hover,
+  table tr .indent-2:nth-of-type(2n):hover {
+    background-color: #009ee0; }
+table .indent-0, table .indent-0:nth-of-type(2n), table .indent-0:hover, table .indent-0:nth-of-type(2n):hover {
+  background-color: white; }
+table .indent-0 td {
+  transition: padding-bottom 1000ms; }
+table .indent-0:hover td {
+  padding-bottom: 30px; }
+table .indent-0:hover .icon-triangle-right:before {
+  content: "\e61c"; }
+table .indent-1, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2:nth-of-type(2n) {
   background-color: #f6f6f4; }
 table .indent-2:not(.hidden) + .indent-0 {
   border-top: 2px solid #b2b1a8; }

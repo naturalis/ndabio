@@ -731,20 +731,40 @@ $icon-chevron-right: "\e60c";
     }
 
     table{
-      tr{
-        &.even,
-        &.alt,
+      tr .indent-1,
+      tr .indent-2{
         &:nth-of-type(2n){
            background-color: $white;
            transition: background-color 300ms;
-           &:hover{ background-color: $ghost;}
+           &:hover{ background-color: $blue;}
         }
+      }
+
+      .indent-0{
+        &, &:nth-of-type(2n), // overriding ZURB
+        &:hover, &:nth-of-type(2n):hover { 
+          background-color: $white;
+        }
+
+        td{
+          transition: padding-bottom 1000ms;
+        }
+
+        &:hover{
+          td{
+            padding-bottom: 30px;
+          }
+          
+          .icon-triangle-right:before{
+            content: "\e61c";
+          }
+        }
+
+
       }
 
       .indent-1, .indent-2{
         &,
-        &.even,
-        &.alt,
         &:nth-of-type(2n){
           background-color: $smoke;
 

@@ -6,7 +6,7 @@
   // ---------------------------------------------------------
 
     h = $(window).height();
-    $("main").css("min-height",h-340); // Magic number,...
+    $("main").css("min-height",h-315); // Magic number,...
   
   // ---------------------------------------------------------
 
@@ -65,6 +65,9 @@
               position: "relative"
             })
     }
+  // ---------------------------------------------------------
+
+
 
   // ---------------------------------------------------------
   // INTRO (more)
@@ -144,8 +147,6 @@
       $_submit.click(function(){ preloader(); })
   }
 
-
-
   // ---------------------------------------------------------
 
 
@@ -213,7 +214,7 @@
       }
 
 
-      // submit on enter
+      // submit form on enter
       if (e.keyCode == 13) {
         preloader();
         $("#ndabio-advanced-taxonomysearch").submit();
@@ -332,18 +333,25 @@
   // SEARCH FORM: IMPLODE/EXPLODE RESULTS TABLE
   // ---------------------------------------------------------
 
+  // For each species name...
   $("#specimensByTaxon .indent-0")
+    
     .each(function(){
+      // Add a triangle to species-name
       $(this).find("a").first().prepend("<i class='icon-triangle-right'></i>");
     })
+    
     .click( function(){
+
       $_me = $(this);
       str_id = $_me.attr('id');
 
+      // toggle trianlge class
       $_me.find("i")
         .toggleClass("icon-triangle-right")
         .toggleClass("icon-triangle-down");
 
+      // show / hide specimens and specimen-collections
       $("[data-parent='"+ str_id +"']")
         .toggleClass("hidden");
 
@@ -354,6 +362,11 @@
     });
 
   $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
+
+  // Simulate click on first element, to expand it again:
+  $("#specimensByTaxon .indent-0 a")
+    .first()
+      .trigger("click");
 
 } }; })(jQuery, Drupal);
 
