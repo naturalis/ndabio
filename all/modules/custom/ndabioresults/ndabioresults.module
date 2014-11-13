@@ -103,8 +103,8 @@ function setSpecimenParameters (array $sP, $type) {
             'kingdom',
             'order',
             'phylum',
-            'speciesEpithet',
-            'subspeciesEpithet',
+            'specificEpithet',
+            'subspecificEpithet',
             'vernacularName',
             '_geoShape'
         )
@@ -169,8 +169,10 @@ function ndaSimpleSearch () {
         '_search' => $_SESSION['ndaSearch']['term']
     );
 
-    // Taxon search does not include geoShape and should not be invoked when coming from geo form!
-    if (!isset($_SESSION['ndaSearch']['gid'])) {
+    // Taxon search does not include geoShape and should not be invoked when coming from geo form
+    // when a search are has been entered
+    if (!isset($_SESSION['ndaSearch']['gid']) || empty($_SESSION['ndaSearch']['gid']) &&
+        empty($_SESSION['ndaSearch']['geoShape'])) {
         $services[taxonService()] = $p;
     }
 
@@ -179,8 +181,9 @@ function ndaSimpleSearch () {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         $p['_andOr'] = 'AND';
 
-        $pageHeader .= t("Showing only results in") ." ". $_SESSION['ndaSearch']['location'] .
-            "<div data-alert class='alert-box secondary'> $geo </div>";
+        $pageHeader .= t("Showing only results in") . ' ' . "<div data-alert class='alert-box secondary'>" .
+            (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('Area drawn on map')) . "</div>";
     };
 
     foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
