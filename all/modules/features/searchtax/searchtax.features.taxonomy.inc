@@ -13,7 +13,7 @@ function searchtax_taxonomy_default_vocabularies() {
       'name' => 'search',
       'machine_name' => 'search',
       'description' => '',
-      'hierarchy' => 0,
+      'hierarchy' => 1,
       'module' => 'taxonomy',
       'weight' => 0,
       'language' => 'und',
