@@ -755,13 +755,15 @@ function parseMultimedia ($json) {
             $row->result->{$type}->sourceSystem->name : '';
 		$d['imgSrc'] = getImageUrl($row);
 		$d['hits'] = getHits($row);
+		$d['taxon'] = getMultimediaTaxon($row, $d['hits']);
+		$d['unitID'] = getMultimediaUnitId($row, $d['hits']);
 		$output['results'][] = $d;
 	}
 
 	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
-//p($data);
+
 	return isset($output) ? $output : false;
 }
 
@@ -834,6 +836,42 @@ function getSpecimenTaxonNames ($row) {
 		);
 	}
 	return isset($output) ? $output : false;
+}
+
+
+
+// Returns registration number for multimedia
+function getMultimediaUnitId ($row, $searchTerms = false) {
+    if (isset($row->result->associatedSpecimen->unitID)) {
+        $output = $row->result->associatedSpecimen->unitID;
+        return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
+    }
+    return null;
+}
+
+// Returns taxon name for multimedia
+function getMultimediaTaxon ($row, $searchTerms = false) {
+    if (isset($row->result->associatedTaxon->acceptedName) &&
+        !empty($row->result->associatedTaxon->acceptedName)) {
+        $output = formatScientificName(
+    		$row->result->associatedTaxon->acceptedName->fullScientificName,
+    		$row->result->associatedTaxon->acceptedName
+	    );
+        return $searchTerms ?
+            highlightMatch($output, array_map('strip_tags', $searchTerms)) :
+            $output;
+    }
+    if (isset($row->result->associatedSpecimen->identifications) &&
+        !empty($row->result->associatedSpecimen->identifications)) {
+        $output = formatScientificName(
+    		$row->result->associatedSpecimen->identifications[0]->scientificName->fullScientificName,
+    		$row->result->associatedSpecimen->identifications[0]->scientificName
+	    );
+        return $searchTerms ?
+            highlightMatch($output, array_map('strip_tags', $searchTerms)) :
+            $output;
+    }
+    return null;
 }
 
 
@@ -1347,7 +1385,7 @@ function decorateScore ($score) {
 // Highlight match
 function highlightMatch($haystack, $needles) {
 	foreach ($needles as $needle) {
-		if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
+	    if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
 			continue;
 		}
 		$q = str_split($needle);
