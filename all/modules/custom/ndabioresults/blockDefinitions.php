@@ -119,7 +119,8 @@ function ndabioresults_block_view($delta = '') {
       if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
 
       if ( $_SESSION['ndaRequestType'] == 'form'){
-        $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Back to search') . "</a>";
+        // $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Back to search') . "</a>";
+        $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search') . "</a>";
       } else {
         $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search results') . "</a>";
       }

@@ -224,7 +224,7 @@
 
     } else {
       
-      preloader();
+      //preloader();
 
     }
 
@@ -271,7 +271,6 @@
 
       // submit form on enter
       if (e.keyCode == 13) {
-        preloader();
         $("#ndabio-advanced-taxonomysearch").submit();
       }
       
@@ -284,8 +283,7 @@
   // ---------------------------------------------------------
   
 
-  $( window ).unload(function() {
-  }); // For the moment, we'll leave this function here
+  // $( window ).unload(function() {}); // For the moment, we'll leave this function here
 
 
   function preloader(){
