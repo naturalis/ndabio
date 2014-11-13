@@ -165,9 +165,7 @@ function ndabioresults_pass ($args = "") {
 function ndaSimpleSearch () {
     $pageHeader = _wrap(t('Search results'),"H1");
 
-    $p = array(
-        '_search' => $_SESSION['ndaSearch']['term']
-    );
+    $p['_search'] = $_SESSION['ndaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
     // when a search are has been entered
@@ -186,12 +184,9 @@ function ndaSimpleSearch () {
             t('Area drawn on map')) . "</div>";
     };
 
-    foreach (array(specimenService(), specimenNamesService(), multimediaService()) as $request) {
-        // Special case for specimen/search: do not call this service if
-        // only geoShape is present; results of specimen/name-search and
-        // specimen/search will then be identical
-        $services[$request] = $p;
-    }
+    $services[specimenNamesService()] = $p;
+    $services[multimediaService()] = $p;
+    $services[specimenService()] = $p;
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
@@ -213,6 +208,8 @@ function ndaSimpleSearch () {
  * @return string Formatted output
  */
 function ndaAdvancedSearch () {
+    global $base_root, $base_path;
+
     $pageHeader = _wrap(t('Search results'),"H1");
 
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
@@ -224,6 +221,20 @@ function ndaAdvancedSearch () {
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
 //p($services);
 
+    // Special case for specimen/search: unset this service if only geoShape is present;
+    // results of specimen/name-search and specimen/search will then be identical
+    if (count($services[specimenService()]) == 2 &&
+        isset($services[specimenService()]['_geoShape']) &&
+        isset($services[specimenService()]['_andOr'])) {
+        unset($services[specimenService()]);
+    }
+
+    // Test if anything has been posted; if not return with error message
+    if (!dataPosted($services)) {
+        return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
+            "<a href='$base_root/$base_path'>" . t('Back to home page') . '</a>.', 'p');
+    }
+
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
@@ -232,6 +243,15 @@ function ndaAdvancedSearch () {
     $pageBody = performNdaRequest(setChannels($services));
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
+}
+
+function dataPosted ($services) {
+    foreach ($services as $data) {
+        if (!empty($data)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**ndabioresults_config_form
