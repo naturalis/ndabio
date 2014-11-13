@@ -51,6 +51,9 @@ function bioportal_theme_preprocess_page(&$variables) {
     $variables['sidebar_sec_grid'] = '';
   }
 
+  // Base path for use in the templates
+  $variables['base_url'] = $GLOBALS['base_url'] . "/";
+
 }
 
 function bioportal_theme_ndabio_omnisearch(&$variables){

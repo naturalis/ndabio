@@ -52,7 +52,7 @@
       <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
 
       <div class="medium-2 columns" id="naturalis-logo">
-        <img src="<?php print $naturalis_logo; ?>"/>
+        <img src="<?php print "$base_url$naturalis_logo"; ?>"/>
       </div>
 
       <div class="medium-6 columns" id="title-and-slogan">
@@ -174,7 +174,7 @@
         <div id="banner-geographical-search">
           <a href="<?php global $base_path; print $base_path; ?>geographic-search">
             <h3><?php print t("Geographic Search"); ?><i class="icon-arrow-right"></i></h3>
-            <img src='<?php global $base_path; print $base_path; ?>sites/all/themes/custom/bioportal_theme/img/geographic_search.png' />
+            <img src='<?php print $base_url; ?>sites/all/themes/custom/bioportal_theme/img/geographic_search.png' />
           </a>
         </div>
       <?php endif; ?>
