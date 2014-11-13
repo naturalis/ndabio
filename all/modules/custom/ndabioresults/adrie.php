@@ -79,11 +79,11 @@ function ndabioresults_config_form($form, &$form_state) {
   //Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_maxpagesinpaginator'] = array(
     '#type' => 'textfield',
-    '#title' => t('NBA Maximum results for subsequent queries'),
+    '#title' => t('NBA Maximum number of pages in the paginator'),
     '#default_value' => variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR),
     '#size' => 10,
     '#maxlength' => 10,
-    '#description' => t('Maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
+    '#description' => t('Maximum number of pages in the paginator.') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
     '#required' => TRUE
   );
   
