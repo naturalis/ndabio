@@ -1,5 +1,22 @@
 <?php
 
+define("NBABASEURL", "http://10.42.1.178:8080/nl.naturalis.nda.service.rest/api/");
+define("NBAINITMAXRESULTS", 10);
+define("NBAMAXRESULTS", 100);
+define("NBADEFAULTSORT", '_score');
+define("NBADEFAULTSORTDIRECTION", 'DESC');
+define("NBAMAXPAGESINPAGINATOR", 20);
+define("NBASPECIMENSERVICE", 'specimen/search');
+define("NBASPECIMENNAMESERVICE", 'specimen/name-search');
+define("NBASPECIMENDETAILSERVICE", 'specimen/get-specimen');  
+define("NBASPECIMENMULTIMEDIASERVICE", 'multimedia/get-multimedia-object-for-specimen-within-result-set');
+define("NBATAXONSERVICE", 'taxon/search');
+define("NBATAXONDETAILSERVICE", 'taxon/get-taxon');
+define("NBATAXONMULTIMEDIASERVICE", 'multimedia/get-multimedia-object-for-taxon-within-result-set');
+define("NBAMULTIMEDIASERVICE", 'multimedia/search');
+
+
+
 function ndabioresults_config_form($form, &$form_state) {
   $form['ndabioresults_config'] = array(
     '#type' => 'fieldset',
@@ -10,14 +27,154 @@ function ndabioresults_config_form($form, &$form_state) {
   $form['ndabioresults_config']['ndabioresults_config_baseurl'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA base URL'),
-    '#default_value' => variable_get('ndabioresults_config_baseurl', "http://nba.naturalis.nl/"),
+    '#default_value' => variable_get('ndabioresults_config_baseurl', NBABASEURL),
     '#size' => 140,
     '#maxlength' => 200,
-    '#description' => t('The base URL of the NBA.'),
+    '#description' => t('The base URL of the NBA.') . '<br />' . t('Default') . ': ' . NBABASEURL,
+    '#required' => TRUE
+  );
+  //Maximum results for initial "overview"
+  $form['ndabioresults_config']['ndabioresults_config_initialmaxresults'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Initial max results'),
+    '#default_value' => variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('Maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
+    '#required' => TRUE
+  );
+  //Maximum results for subsequent queries
+  $form['ndabioresults_config']['ndabioresults_config_maxresults'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Maximum results'),
+    '#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('Maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
     '#required' => TRUE
   );
 
+  //Constant: default sort field
+  $form['ndabioresults_config']['ndabioresults_config_defaultsort'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Default sort field'),
+    '#default_value' => variable_get('ndabioresults_config_defaultsort', NBADEFAULTSORT),
+    '#size' => 30,
+    '#maxlength' => 30,
+    '#description' => t('Default sort field.') . '<br />' . t('Default') . ': ' . NBADEFAULTSORT,
+    '#required' => TRUE
+  );
 
+  //Constant: default sort direction
+  $form['ndabioresults_config']['ndabioresults_config_defaultsortdirection'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Default sort field direction'),
+    '#default_value' => variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION),
+    '#size' => 20,
+    '#maxlength' => 20,
+    '#description' => t('Default sort field direction.') . '<br />' . t('Default') . ': ' . NBADEFAULTSORTDIRECTION,
+    '#required' => TRUE
+  );
+
+  //Constant: maximum results for subsequent queries
+  $form['ndabioresults_config']['ndabioresults_config_maxpagesinpaginator'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Maximum results for subsequent queries'),
+    '#default_value' => variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('Maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
+    '#required' => TRUE
+  );
+  
+  //Constant: name of specimen service
+  $form['ndabioresults_config']['ndabioresults_config_namespecimenservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of specimen service'),
+    '#default_value' => variable_get('ndabioresults_config_namespecimenservice', NBASPECIMENSERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENSERVICE,
+    '#required' => TRUE
+  );
+
+  //Constant: name of specimen name service
+  $form['ndabioresults_config']['ndabioresults_config_specimennameservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of specimen name service'),
+    '#default_value' => variable_get('ndabioresults_config_specimennameservice', NBASPECIMENNAMESERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of specimen name service.') . '<br />' . t('Default') . ': ' . NBASPECIMENNAMESERVICE,
+    '#required' => TRUE
+  );
+  
+  //Constant: name of specimen detail service
+  $form['ndabioresults_config']['ndabioresults_config_specimendetailservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of specimen detail service'),
+    '#default_value' => variable_get('ndabioresults_config_specimendetailservice', NBASPECIMENDETAILSERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of specimen detail service.') . '<br />' . t('Default') . ': ' . NBASPECIMENDETAILSERVICE,
+    '#required' => TRUE
+  );
+  
+  //Constant: name of multimedia per specimen service
+  $form['ndabioresults_config']['ndabioresults_config_specimenmultimediaservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of multimedia per specimen service'),
+    '#default_value' => variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of multimedia per specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENMULTIMEDIASERVICE,
+    '#required' => TRUE
+  );
+  
+  //Constant: name of taxon service
+  $form['ndabioresults_config']['ndabioresults_config_taxonservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of taxon service'),
+    '#default_value' => variable_get('ndabioresults_config_taxonservice', NBATAXONSERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of taxon service.') . '<br />' . t('Default') . ': ' . NBATAXONSERVICE,
+    '#required' => TRUE
+  );
+ 
+  //Constant: name of taxon detail service 
+  $form['ndabioresults_config']['ndabioresults_config_taxondetailservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of taxon detail service'),
+    '#default_value' => variable_get('ndabioresults_config_taxondetailservice', NBATAXONDETAILSERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of taxon detail service.') . '<br />' . t('Default') . ': ' . NBATAXONDETAILSERVICE,
+    '#required' => TRUE
+  );
+ 
+
+  //Constant: name of multimedia per taxon service
+  $form['ndabioresults_config']['ndabioresults_config_taxonmultimediaservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of multimedia per taxon service'),
+    '#default_value' => variable_get('ndabioresults_config_taxonmultimediaservice', NBATAXONMULTIMEDIASERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of multimedia per taxon service.') . '<br />' . t('Default') . ': ' . NBATAXONMULTIMEDIASERVICE,
+    '#required' => TRUE
+  );
+
+  //Constant: name of multimedia service
+  $form['ndabioresults_config']['ndabioresults_config_multimediaservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of multimedia service'),
+    '#default_value' => variable_get('ndabioresults_config_multimediaservice', NBAMULTIMEDIASERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of multimedia service.') . '<br />' . t('Default') . ': ' . NBAMULTIMEDIASERVICE,
+    '#required' => TRUE
+  );
 
   return system_settings_form($form);
 }
@@ -31,11 +188,7 @@ function ndabioresults_config_form($form, &$form_state) {
  * @return string
  */
 function ndaBaseUrl () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_baseurl', NBABASEURL);
 }
 
 /**
@@ -57,11 +210,7 @@ function searchFlags () {
  * @return integer
  */
 function maxResultsInitial () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 10;
-    }
-    return $var;
+  return variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS);
 }
 
 /**
@@ -70,11 +219,7 @@ function maxResultsInitial () {
  * @return integer
  */
 function maxResults () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 100;
-    }
-    return $var;
+  return variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS);
 }
 
 /**
@@ -83,11 +228,7 @@ function maxResults () {
  * @return string
  */
 function defaultSort () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = '_score';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_defaultsort', NBADEFAULTSORT);
 }
 
 /**
@@ -96,11 +237,7 @@ function defaultSort () {
  * @return string
  */
 function defaultSortDirection () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'DESC';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION);
 }
 
 /**
@@ -109,11 +246,7 @@ function defaultSortDirection () {
  * @return integer
  */
 function maxPagesInPaginator () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 20;
-    }
-    return $var;
+  return variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR);
 }
 
 
@@ -125,11 +258,7 @@ function maxPagesInPaginator () {
  * @return string
  */
 function specimenService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'specimen/search';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_namespecimenservice', NBASPECIMENSERVICE);
 }
 
 /**
@@ -140,11 +269,7 @@ function specimenService () {
  * @return string
  */
 function specimenNamesService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'specimen/name-search';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_specimennameservice', NBASPECIMENNAMESERVICE);
 }
 
 /**
@@ -155,11 +280,7 @@ function specimenNamesService () {
  * @return string
  */
 function specimenDetailService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'specimen/get-specimen';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_specimendetailservice', NBASPECIMENDETAILSERVICE);
 }
 
 /**
@@ -170,11 +291,7 @@ function specimenDetailService () {
  * @return string
  */
 function specimenMultimediaService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'multimedia/get-multimedia-object-for-specimen-within-result-set';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE);
 }
 
 /**
@@ -185,11 +302,7 @@ function specimenMultimediaService () {
  * @return string
  */
 function taxonService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'taxon/search';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_taxonservice', NBATAXONSERVICE);
 }
 
 /**
@@ -200,11 +313,7 @@ function taxonService () {
  * @return string
  */
 function taxonDetailService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'taxon/get-taxon';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_taxondetailservice', NBATAXONDETAILSERVICE);
 }
 
 /**
@@ -215,11 +324,7 @@ function taxonDetailService () {
  * @return string
  */
 function taxonMultimediaService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'multimedia/get-multimedia-object-for-taxon-within-result-set';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_taxonmultimediaservice', NBATAXONMULTIMEDIASERVICE);
 }
 
 /**
@@ -230,11 +335,7 @@ function taxonMultimediaService () {
  * @return string
  */
 function multimediaService () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = 'multimedia/search';
-    }
-    return $var;
+  return variable_get('ndabioresults_config_multimediaservice', NBAMULTIMEDIASERVICE);
 }
 
 /**
