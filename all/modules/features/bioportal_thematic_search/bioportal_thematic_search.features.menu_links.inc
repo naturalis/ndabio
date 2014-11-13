@@ -57,6 +57,29 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'language' => 'en',
     'menu_links_customized' => 1,
   );
+  // Exported menu link: main-menu_digitale-collecties:<front>
+  $menu_links['main-menu_digitale-collecties:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Digitale Collecties',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_digitale-collecties:<front>',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -49,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+  );
   // Exported menu link: main-menu_extinct-birds:explore/extinct-birds/Extinct birds
   $menu_links['main-menu_extinct-birds:explore/extinct-birds/Extinct birds'] = array(
     'menu_name' => 'main-menu',
@@ -80,6 +103,54 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_digital-collections:<front>',
+  );
+  // Exported menu link: main-menu_kunst:explore/arts/Kunst
+  $menu_links['main-menu_kunst:explore/arts/Kunst'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/arts/Kunst',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Kunst',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_kunst:explore/arts/Kunst',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 4,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+  );
+  // Exported menu link: main-menu_martin:explore/martin/Martin collectie
+  $menu_links['main-menu_martin:explore/martin/Martin collectie'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/martin/Martin collectie',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Martin',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_martin:explore/martin/Martin collectie',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 1,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
   );
   // Exported menu link: main-menu_martin:explore/martin/Martin collection
   $menu_links['main-menu_martin:explore/martin/Martin collection'] = array(
@@ -129,13 +200,40 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_digital-collections:<front>',
   );
+  // Exported menu link: main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels
+  $menu_links['main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/extinct-birds/Uitgestorven vogels',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Uitgestorven vogels',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+  );
   // Translatables
   // Included for use with string extractors like potx.
   t('Arts');
   t('Digital Collections');
+  t('Digitale Collecties');
   t('Extinct birds');
+  t('Kunst');
   t('Martin');
   t('Siebold');
+  t('Uitgestorven vogels');
 
 
   return $menu_links;
