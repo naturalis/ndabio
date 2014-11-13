@@ -1,14 +1,11 @@
 name = bioportal thematic search
 core = 7.x
 package = Bioportal
+version = 7.x-0.1
+project = bioportal_thematic_search
 dependencies[] = features
 dependencies[] = menu
 features[features_api][] = api:2
 features[menu_custom][] = main-menu
 features[menu_links][] = main-menu_digital-collections:<front>
-features[menu_links][] = main-menu_extinct:explore/extinct
-features[menu_links][] = main-menu_glaspreparaten:explore/glas
-features[menu_links][] = main-menu_songbirds:explore/songbirds
-features[menu_links][] = main-menu_suriname:explore/suriname
-features[menu_links][] = main-menu_type-exemplaren:explore/type
 features_exclude[menu_links][devel_variable-editor:devel/variable] = devel_variable-editor:devel/variable
