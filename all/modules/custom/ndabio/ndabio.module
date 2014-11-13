@@ -10,34 +10,10 @@
  */
  
 /**
- * Default value for the NDA. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_NDA', 'http://nda.naturalis.nl');
-/**
- * Default value for the NDA GET service. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_JSON', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
-/**
- * Default value for the NDA POST service. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_JSONPOST', 'http://10.42.1.121:8080/nl.naturalis.nda.service.rest/api/specimen/search/');
-/**
  * Default value for the GMAP key. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
  */
 define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
-
-/**
- * Advanced search used a drupal taxonomy. This is the systemname of the taxonomy used for
- * building the advances search form.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_SEARCHTAXONOMY', 'search');
-
-define('NDABIO_BASEURL', 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/api/');
 
 
 /**
@@ -52,8 +28,8 @@ define('NDABIO_BASEURL', 'http://10.42.1.163:8080/nl.naturalis.nda.service.rest/
  */
 function ndabio_menu() {
   //Configuration page
-  $items['admin/config/naturalis'] = array(
-    'title' => 'Naturalis config',
+  $items['admin/config/naturalis/ndabio'] = array(
+    'title' => 'NDABIO GMap config',
     'description' => 'Configuration for Naturalis module',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ndabio_config_form'),
@@ -138,41 +114,7 @@ function ndabio_config_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Naturalis Data API config')
   );
-  $form['ndabio_config']['ndabio_config_nda'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Naturalis Data API URL'),
-    '#default_value' => variable_get('ndabio_config_nda', NDABIO_NDA),
-    '#size' => 140,
-    '#maxlength' => 200,
-    '#description' => t('The URL of the Naturalis Data API, used for sending queries.') . '<br />' .
-      t('Default') . ': ' . NDABIO_NDA,
-    '#required' => TRUE,
-  );
-  $form['ndabio_config']['ndabio_config_json'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NDA Get URL'),
-    '#default_value' => variable_get('ndabio_config_json', NDABIO_JSON),
-    '#size' => 140,
-    '#maxlength' => 200,
-    '#description' => t('The URL used for sending GET requests. Expects a JSON reply.') . '<br />' .
-      t('Default') . ': ' . NDABIO_JSON,
-    '#required' => TRUE,
-  );
-  $form['ndabio_config']['ndabio_config_jsonpost'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NDA Post URL'),
-    '#default_value' => variable_get('ndabio_config_jsonpost', NDABIO_JSONPOST),
-    '#size' => 140,
-    '#maxlength' => 200,
-    '#description' => t('The URL used for sending POST requests. Expects a JSON reply.') . '<br />' .
-      t('Default') . ': ' . NDABIO_JSONPOST,
-    '#required' => TRUE,
-  );
-  $form['ndabio_gmap'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Naturalis Geosearch config')
-  );
-  $form['ndabio_gmap']['ndabio_config_gmapkey'] = array(
+  $form['ndabio_config']['ndabio_config_gmapkey'] = array(
     '#type' => 'textfield',
     '#title' => t('Google maps key'),
     '#default_value' => variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY),
@@ -228,57 +170,6 @@ function isJson($string) {
 }
 
 
-/**
- * Post a query to the NDA.
- */
-function ndabio_postjson($keys = '') {
-  $service_url = variable_get('ndabio_config_jsonpost', NDABIO_JSONPOST);
-  drupal_set_message("POST:" . $service_url);
-
-  $curl = curl_init($service_url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($curl, CURLOPT_POST, 1);
-  curl_setopt($curl, CURLOPT_POSTFIELDS, $keys);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
-  $curl_response = curl_exec($curl);
-  $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  curl_close($curl);
-  if ($http_status >= 400) {
-    drupal_set_message("Curl returned error: " .  $http_status);
-    return " ";
-  }
-  if (!isJson($curl_response)) {
-    drupal_set_message("Curl did not return json: " .  $curl_response);
-    return " ";
-  }
-  return $curl_response;
-}
-
-
-
-/**
- * Get a JSON string.
- */
-function ndabio_getjson($url = '') {
-  $service_url = $url;
-  drupal_set_message("GET:" . $service_url);
-
-  $curl = curl_init($service_url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array("Expect:"));
-  $curl_response = curl_exec($curl);
-  $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  curl_close($curl);
-  if ($http_status >= 400) {
-    drupal_set_message("Curl returned error: " .  $http_status);
-    return " ";
-  }
-  if (!isJson($curl_response)) {
-    drupal_set_message("Curl did not return json: " .  $curl_response);
-    return " ";
-  }
-  return $curl_response;
-}
 
 
 /**
@@ -573,25 +464,4 @@ function ndabio_advanced_taxonomysearch() {
   return ($form);
 }
 
-/**
- *
- *
-function ndabio_advanced_taxonomysearch_callback_submit(&$form, &$form_state) {
-  $myvalues = array_diff($form_state['values'], array('form_build_id', 'form_token', 'form_id', 'op', 'submit'));
-  unset($myvalues['form_build_id']);
-  unset($myvalues['form_token']);
-  unset($myvalues['form_id']);
-  unset($myvalues['op']);
-  unset($myvalues['submit']);
 
-  $myurl = variable_get('ndabio_config_json', NDABIO_JSON) . "?";
-  //Default search is AND based. Only add the operator if a non-default is chosen
-  if ($myvalues['searchtype'] == 1) $myurl .= "operator=OR&";
-  unset($myvalues['searchtype']);
-
-  foreach (array_filter($myvalues) as $key => $val) {
-    $myurl .= "$key=" . urlencode($val) . "&";
-  }
-  drupal_deliver_page("<h2>" . t("Results") . "</h2><pre>" . ndabio_getjson(rtrim($myurl, '&')) . "</pre>");
-}
-*/
