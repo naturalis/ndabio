@@ -200,6 +200,30 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_digital-collections:<front>',
   );
+  // Exported menu link: main-menu_siebold:explore/siebold/Siebold collectie
+  $menu_links['main-menu_siebold:explore/siebold/Siebold collectie'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/siebold/Siebold collectie',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Siebold',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_siebold:explore/siebold/Siebold collectie',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 2,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+  );
   // Exported menu link: main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels
   $menu_links['main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels'] = array(
     'menu_name' => 'main-menu',
