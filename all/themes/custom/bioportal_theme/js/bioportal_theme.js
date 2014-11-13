@@ -140,6 +140,25 @@
 
             $_bottom_submit.css("opacity","1")
           });
+
+        // Exchange value with placeholder value
+        
+        console.log(  $_omnibox.val()  );
+        console.log(  $_omnibox.attr('value')  );
+        console.log(  $_omnibox.attr('placeholder')  );
+
+        if ($_omnibox.val() !== ""){
+
+          $_omnibox.attr("placeholder", $_omnibox.val()  );
+          $_omnibox.val("");
+
+        } else {
+
+          $_omnibox.val( $_omnibox.attr("placeholder") );
+          $_omnibox.removeAttr("placeholder");
+
+        }
+
       })
 
       // -- fancy pre-loader on submit
@@ -220,20 +239,6 @@
         $("#ndabio-advanced-taxonomysearch").submit();
       }
       
-      // if (e.keyCode == 37) {
-      //   var inputs = $(this).parents('form').find(':input[type="text"]:enabled:visible:not("disabled"),select');
-      //   e.preventDefault();
-      //   inputs.eq( inputs.index(this) - 1 ).focus();
-      //   inputs.eq( inputs.index(this) - 1 ).click();
-      // }
-
-      // if (e.keyCode == 39) {
-      //   var inputs = $(this).parents('form').find(':input[type="text"]:enabled:visible:not("disabled"),select');
-      //   e.preventDefault();
-      //   inputs.eq( inputs.index(this) + 1 ).focus();
-      //   inputs.eq( inputs.index(this) + 1 ).click();
-      // }
-
     });
 
 
@@ -346,6 +351,9 @@
       $_me = $(this);
       str_id = $_me.attr('id');
 
+      $_me.
+        toggleClass("expanded");
+
       // toggle trianlge class
       $_me.find("i")
         .toggleClass("icon-triangle-right")
@@ -357,6 +365,8 @@
 
       $("[data-parent='"+ str_id +"-collection']")
         .toggleClass("hidden");
+
+
 
       return false;
     });
@@ -371,8 +381,15 @@
 } }; })(jQuery, Drupal);
 
 
-
 jQuery.fn.toggleAttr = function(a, b) {
+    var c = (b === undefined);
+    return this.each(function() {
+        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
+        else jQuery(this).removeAttr(a);
+    });
+};
+
+jQuery.fn.swapValAndPlaceholder = function(a, b) {
     var c = (b === undefined);
     return this.each(function() {
         if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);

@@ -747,12 +747,13 @@ $icon-chevron-right: "\e60c";
         }
 
         td{
-          transition: padding-bottom 1000ms;
+          transition: padding-bottom 300ms;
         }
 
-        &:hover{
+        &:not(.expanded):hover{
           td{
             padding-bottom: 30px;
+            transition: padding-bottom 1000ms;
           }
           
           .icon-triangle-right:before{

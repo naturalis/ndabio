@@ -480,10 +480,11 @@ table tr .indent-2:nth-of-type(2n) {
 table .indent-0, table .indent-0:nth-of-type(2n), table .indent-0:hover, table .indent-0:nth-of-type(2n):hover {
   background-color: white; }
 table .indent-0 td {
+  transition: padding-bottom 300ms; }
+table .indent-0:not(.expanded):hover td {
+  padding-bottom: 30px;
   transition: padding-bottom 1000ms; }
-table .indent-0:hover td {
-  padding-bottom: 30px; }
-table .indent-0:hover .icon-triangle-right:before {
+table .indent-0:not(.expanded):hover .icon-triangle-right:before {
   content: "\e61c"; }
 table .indent-1, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2:nth-of-type(2n) {
   background-color: #f6f6f4; }
