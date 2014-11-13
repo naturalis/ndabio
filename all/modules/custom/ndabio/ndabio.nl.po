@@ -690,3 +690,19 @@ msgstr ""
 
 msgid "Highlighted"
 msgstr "Uitgelicht"
+
+msgid "Digital Collections"
+msgstr "Digitale Collecties"
+
+msgid "Extinct birds"
+msgstr "Uitgestorven vogels"
+
+msgid "Martin"
+msgstr "Martin"
+
+msgid "Siebold"
+msgstr "Siebold collectie"
+
+msgid "Arts"
+msgstr "Kunsten"
+

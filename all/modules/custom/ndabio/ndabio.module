@@ -82,7 +82,8 @@ function ndabio_searchthematic($var1, $stitle = "") {
   $_POST['searchtitle'] = t($stitle);
   $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
   $_POST['term'] = $var1;
-
+  $_POST['theme'] = $var1;
+  
   return ndabioresults_pass();
 }
 
