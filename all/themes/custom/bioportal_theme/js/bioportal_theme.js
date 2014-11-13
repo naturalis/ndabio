@@ -142,28 +142,15 @@
           });
 
         // Exchange value with placeholder value
-        
-        console.log(  $_omnibox.val()  );
-        console.log(  $_omnibox.attr('value')  );
-        console.log(  $_omnibox.attr('placeholder')  );
-
         if ($_omnibox.val() !== ""){
-
           $_omnibox.attr("placeholder", $_omnibox.val()  );
           $_omnibox.val("");
-
         } else {
-
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
-
         }
 
       })
-
-      // -- fancy pre-loader on submit
-
-      $_submit.click(function(){ preloader(); })
   }
 
   // ---------------------------------------------------------
@@ -173,7 +160,6 @@
   // ---------------------------------------------------------
   // SEARCH FORM: prevent submit button from scrolling of the page
   // ---------------------------------------------------------
-
 
   if ( $_advanced_search_form.length ){
     $(window).scroll(function(){
@@ -189,10 +175,60 @@
           $_bottom_submit.removeAttr("style");
           int_y = $_bottom_submit.offset().top;
         }
-
-
     });
   }
+
+  // ---------------------------------------------------------
+
+
+  // ---------------------------------------------------------
+  // SEARCH FORM: form validation
+  // ---------------------------------------------------------
+
+  $("#ndabio-advanced-taxonomysearch").submit(function(){
+    
+    int_valid = 0;
+
+    // If there's more then one textfield with containing more
+    // then three characters:
+    $(this).find('input[type=text], select').each(function(){
+      str_val = $(this).val();
+      if( str_val != "" && str_val.length > 2) {
+        int_valid += 1;
+      }
+    });
+
+    // 'select boxes' also count as valid choices, ofcourse
+    $(this).find('select').each(function(){
+      str_val = $(this).val();
+      if( str_val != "" ) {
+        int_valid += 1;
+      }
+    });
+
+    // If the simple search is entered, but too short:
+    str_val = $($_omnibox).val();
+    if( str_val != "" && str_val.length < 2){
+      int_valid = 0;
+    } 
+
+    if (int_valid < 1){
+      
+      alert(
+        "Please, make sure that you complete \n" +
+        "at least one field and that it contains more\n" +
+        "then three characters.\n" 
+      );
+
+      return false;
+
+    } else {
+      
+      preloader();
+
+    }
+
+  });
 
   // ---------------------------------------------------------
 
@@ -377,6 +413,9 @@
   $("#specimensByTaxon .indent-0 a")
     .first()
       .trigger("click");
+
+  // ---------------------------------------------------------
+
 
 } }; })(jQuery, Drupal);
 
