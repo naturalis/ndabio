@@ -284,6 +284,9 @@ function processPoints(geometry, callback, thisArg) {
 	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
 		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
 
+
+
+
 } }; })(jQuery, Drupal);
 
 
