@@ -1418,7 +1418,11 @@ function sortArrayByArray ($array, $orderArray) {
 
 // Wrapper for Drupal error handler
 function handleError ($message) {
-    die($message);
+  //Log to the drupal error log
+  watchdog("ndabioresults", $message, NULL, WATCHDOG_ERROR);
+  //Log to the screen?
+  drupal_set_message("Naturalis: " . $message);  
+  //die($message);
 }
 
 
