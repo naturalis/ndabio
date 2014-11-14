@@ -28,7 +28,55 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 4,
+    'weight' => -47,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digital-collections:<front>',
+  );
+  // Exported menu link: main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie
+  $menu_links['main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/beekbergerwoud/Beekbergerwoud collectie',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Beekbergerwoud collectie',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 5,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+  );
+  // Exported menu link: main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection
+  $menu_links['main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'explore/beekbergerwoud/Beekbergerwoud collection',
+    'router_path' => 'explore/%/%',
+    'link_title' => 'Beekbergerwoud collection',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -46,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
@@ -98,7 +146,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 0,
+    'weight' => -50,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
@@ -146,7 +194,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 1,
+    'weight' => -49,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
@@ -218,7 +266,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 2,
+    'weight' => -48,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
@@ -251,6 +299,8 @@ function bioportal_thematic_search_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Arts collection');
+  t('Beekbergerwoud collectie');
+  t('Beekbergerwoud collection');
   t('Digital Collections');
   t('Digitale Collecties');
   t('Extinct birds');

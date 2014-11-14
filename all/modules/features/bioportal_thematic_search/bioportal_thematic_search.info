@@ -1,13 +1,15 @@
 name = bioportal thematic search
 core = 7.x
 package = Bioportal
-version = 7.x-0.3b
+version = 7.x-0.3c
 project = bioportal_thematic_search
 dependencies[] = features
 dependencies[] = menu
 features[features_api][] = api:2
 features[menu_custom][] = main-menu
 features[menu_links][] = main-menu_arts-collection:explore/arts/Arts collection
+features[menu_links][] = main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie
+features[menu_links][] = main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection
 features[menu_links][] = main-menu_digital-collections:<front>
 features[menu_links][] = main-menu_digitale-collecties:<front>
 features[menu_links][] = main-menu_extinct-birds:explore/extinct-birds/Extinct birds
