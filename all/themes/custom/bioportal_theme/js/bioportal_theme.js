@@ -6,7 +6,7 @@
   // ---------------------------------------------------------
 
     h = $(window).height();
-    $("main").css("min-height",h-315); // Magic number,...
+    $("main").css("min-height",h - 315); // Magic number,...
   
   // ---------------------------------------------------------
 
@@ -22,13 +22,18 @@
       rl_margin =  (  $(".page").outerWidth() - $("main").outerWidth()  ) / 2;
 
       // Move image in the DOM and re-position
-      $("#header-image img").appendTo(".page").css({
-        position: "absolute",
-        top: 0, // magic number...?
-        right: rl_margin  ,
-        width: 320,
-        height: 300,
-        zIndex: 600
+      $("#header-image img")
+        .appendTo(".page")
+        .removeAttr('width')
+        .removeAttr('height')
+        .css({
+          position: "absolute",
+          top: 0, // magic number...?
+          right: rl_margin  ,
+          width: 320,
+          maxWidth: "27%", 
+          height: "auto",
+          zIndex: 600,
       });
 
       

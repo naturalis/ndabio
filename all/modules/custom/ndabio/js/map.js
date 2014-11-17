@@ -193,7 +193,7 @@ function processPoints(geometry, callback, thisArg) {
 }
 
   // ---------------------------------------------------------
-  // Load VIEWS as AJAX upon click into #search-areas-list
+  // Load VIEWS via AJAX upon click into #search-areas-list
   // ---------------------------------------------------------
 
 (function ($, Drupal) { Drupal.behaviors.ndabio = { attach: function(context, settings) {
