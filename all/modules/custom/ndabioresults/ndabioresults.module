@@ -1421,7 +1421,7 @@ function handleError ($message) {
   //Log to the drupal error log
   watchdog("ndabioresults", $message, NULL, WATCHDOG_ERROR);
   //Log to the screen?
-  drupal_set_message("Naturalis: " . $message);  
+  drupal_set_message("Bioportal: " . $message);  
   //die($message);
 }
 
