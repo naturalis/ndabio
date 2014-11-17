@@ -21,7 +21,7 @@ function printTaxa ($data) {
     	'identifyingEpithets' => array(
     		'label' => t('Name'),
     		'sort' => 1,
-    		'icon' => 'icon-sort-by-alphabet',
+    		'icon' => 'icon-sort_a_z',
     		'url' => setSortUrl('identifyingEpithets', 'ASC', $data['self'])
     	),
     	'description' => array(
@@ -35,7 +35,7 @@ function printTaxa ($data) {
     	'_score' => array(
     		'label' => t('Match'),
     		'sort' => 1,
-    		'icon' => 'icon-sort-by-attributes',
+    		'icon' => 'icon-sort_much_little',
     		'url' => setSortUrl('_score', 'DESC', $data['self'])
     	)
     );

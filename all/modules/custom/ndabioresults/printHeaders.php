@@ -21,7 +21,7 @@ function printHeaders ($headers, $self) {
 				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
 					$header['label'] . "</a>" .
 					"<a href='" . printDrupalLink($header['url']) . "'>" .
-					"<span class='sortable glyphicon " . $header['icon'] .
+					"<span class='icon-sort_sortable" . $header['icon'] .
 					(getSortDirection($self) == 'DESC' ? "-alt" : "") . "'></span></a>";
 			// Other headers
 			} else {
@@ -29,7 +29,7 @@ function printHeaders ($headers, $self) {
 				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
 					$header['label'] . "</a>" .
 					"<a href='" . printDrupalLink($header['url']) . "'>" .
-					"<span class='sortable glyphicon icon-sort'></span></a>";
+					"<span class='icon-sort_sortable'></span></a>";
 			}
 		} else {
 			$output .= $header['label'];

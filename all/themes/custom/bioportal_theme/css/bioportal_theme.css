@@ -1,27 +1,27 @@
 @charset "UTF-8";
-/* gray-10 : #1a1a1a; */
-/* gray-9  : #333333; */
-/* gray-8  : #4d4d4d; */
-/* gray-7  : #666666; */
-/* gray-6  : #808080; */
-/* gray-5  : #999999; */
-/* gray-4  : #b3b3b3; */
-/* gray-3  : #cccccc; */
-/* gray-2  : #e6e6e6; */
-/* gray-1  : #f2f2f2; */
-/* smoke  : #F6F6F4;  */
-/* ghost  : #EEEDE9;  */
-/* white  : #ffffff;  */
-/* black  : #000000;  */
-/* gray   : #b2b1a8;  */
-/* brown  : #542e08;  */
-/* purple : #3e2782;  */
-/* green  : #009932;  */
-/* blue   : #009ee0;  */
-/* red    : #e3004a;  */
-/* orange-2:#f29400;  */
-/* orange : #ef6d14;  */
-/* yellow : #ffed00;  */
+/* gray-10  : #1a1a1a; */
+/* gray-9   : #333333; */
+/* gray-8   : #4d4d4d; */
+/* gray-7   : #666666; */
+/* gray-6   : #808080; */
+/* gray-5   : #999999; */
+/* gray-4   : #b3b3b3; */
+/* gray-3   : #cccccc; */
+/* gray-2   : #e6e6e6; */
+/* gray-1   : #f2f2f2; */
+/* smoke    : #F6F6F4;  */
+/* ghost    : #EEEDE9;  */
+/* white    : #ffffff;  */
+/* black    : #000000;  */
+/* gray     : #b2b1a8;  */
+/* brown    : #542e08;  */
+/* purple   : #3e2782;  */
+/* green    : #009932;  */
+/* blue     : #009ee0;  */
+/* red      : #e3004a;  */
+/* orange-2 : #f29400;  */
+/* orange   : #ef6d14;  */
+/* yellow   : #ffed00;  */
 .fading .page {
   transition: opacity 500ms;
   opacity: 0.25; }
@@ -293,9 +293,9 @@ html.js fieldset.collapsible .fieldset-legend {
     font-family: 'App2';
     position: relative;
     top: 3px;
-    content: "\e613"; }
+    content: "\e614"; }
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
-  content: "\e610"; }
+  content: "\e611"; }
 
 #edit-submit-bottom {
   width: 120px; }
@@ -347,7 +347,7 @@ html.js fieldset.collapsible .fieldset-legend {
     right: -2rem;
     bottom: 0;
     color: #009ee0;
-    content: "\e60c";
+    content: "\e60e";
     font-family: App2;
     font-size: 24px; }
 .chained-select-level-1 a {
@@ -443,10 +443,11 @@ html.js fieldset.collapsible .fieldset-legend {
   font-weight: bold;
   display: table-cell; }
 
-.square-empty {
+.score i {
+  font-size: 8px; }
+.score .icon-square_empty {
   color: #cccccc; }
-
-.square-filled {
+.score .icon-square_full {
   color: #f29400; }
 
 .multimedia-wrapper {

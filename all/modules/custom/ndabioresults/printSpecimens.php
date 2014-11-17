@@ -14,13 +14,13 @@ function printSpecimens ($data) {
 		'unitID' => array(
 			'label' => t('Specimen'),
 			'sort' => 1,
-			'icon' => 'icon-sort-by-alphabet',
+			'icon' => 'icon-sort_a_z',
 			'url' => setSortUrl('unitID', 'ASC', $data['self'])
 		),
 		'fullScientificname' => array(
 			'label' => t('Species'),
 			'sort' => 1,
-			'icon' => 'icon-sort-by-alphabet',
+			'icon' => 'icon-sort_a_z',
 			'url' => setSortUrl('fullScientificname', 'ASC', $data['self'])
 		),
 		'foundIn' => array(
@@ -30,7 +30,7 @@ function printSpecimens ($data) {
 		'_score' => array(
 			'label' => t('Match'),
 			'sort' => 1,
-			'icon' => 'icon-sort-by-attributes',
+			'icon' => 'icon-sort_much_little',
 			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);

@@ -1,60 +1,102 @@
 // COLOURS
 
-$yellow : #ffed00;
-$orange : #ef6d14;
-$orange-2:#f29400;
-$red    : #e3004a;
-$blue   : #009ee0;
-$green  : #009932;
-$purple : #3e2782;
-$brown  : #542e08;
-$gray   : #b2b1a8;
-$black  : #000000;
-$white  : #ffffff;
-$ghost  : #EEEDE9;
-$smoke  : #F6F6F4;
+  $yellow : #ffed00;
+  $orange : #ef6d14;
+  $orange-2:#f29400;
+  $red    : #e3004a;
+  $blue   : #009ee0;
+  $green  : #009932;
+  $purple : #3e2782;
+  $brown  : #542e08;
+  $gray   : #b2b1a8;
+  $black  : #000000;
+  $white  : #ffffff;
+  $ghost  : #EEEDE9;
+  $smoke  : #F6F6F4;
 
-$gray-1  : #f2f2f2;
-$gray-2  : #e6e6e6;
-$gray-3  : #cccccc;
-$gray-4  : #b3b3b3;
-$gray-5  : #999999;
-$gray-6  : #808080;
-$gray-7  : #666666;
-$gray-8  : #4d4d4d;
-$gray-9  : #333333;
-$gray-10 : #1a1a1a;
+  $gray-1  : #f2f2f2;
+  $gray-2  : #e6e6e6;
+  $gray-3  : #cccccc;
+  $gray-4  : #b3b3b3;
+  $gray-5  : #999999;
+  $gray-6  : #808080;
+  $gray-7  : #666666;
+  $gray-8  : #4d4d4d;
+  $gray-9  : #333333;
+  $gray-10 : #1a1a1a;
 
-/* gray-10 : #1a1a1a; */
-/* gray-9  : #333333; */
-/* gray-8  : #4d4d4d; */
-/* gray-7  : #666666; */
-/* gray-6  : #808080; */
-/* gray-5  : #999999; */
-/* gray-4  : #b3b3b3; */
-/* gray-3  : #cccccc; */
-/* gray-2  : #e6e6e6; */
-/* gray-1  : #f2f2f2; */
-/* smoke  : #F6F6F4;  */
-/* ghost  : #EEEDE9;  */
-/* white  : #ffffff;  */
-/* black  : #000000;  */
-/* gray   : #b2b1a8;  */
-/* brown  : #542e08;  */
-/* purple : #3e2782;  */
-/* green  : #009932;  */
-/* blue   : #009ee0;  */
-/* red    : #e3004a;  */
-/* orange-2:#f29400;  */
-/* orange : #ef6d14;  */
-/* yellow : #ffed00;  */
+  /* gray-10  : #1a1a1a; */
+  /* gray-9   : #333333; */
+  /* gray-8   : #4d4d4d; */
+  /* gray-7   : #666666; */
+  /* gray-6   : #808080; */
+  /* gray-5   : #999999; */
+  /* gray-4   : #b3b3b3; */
+  /* gray-3   : #cccccc; */
+  /* gray-2   : #e6e6e6; */
+  /* gray-1   : #f2f2f2; */
+  /* smoke    : #F6F6F4;  */
+  /* ghost    : #EEEDE9;  */
+  /* white    : #ffffff;  */
+  /* black    : #000000;  */
+  /* gray     : #b2b1a8;  */
+  /* brown    : #542e08;  */
+  /* purple   : #3e2782;  */
+  /* green    : #009932;  */
+  /* blue     : #009ee0;  */
+  /* red      : #e3004a;  */
+  /* orange-2 : #f29400;  */
+  /* orange   : #ef6d14;  */
+  /* yellow   : #ffed00;  */
 
-$icon-double-chevron-down:  "\e610";
-$icon-double-chevron-left:  "\e611";
-$icon-double-chevron-right:  "\e612";
-$icon-double-chevron-up:  "\e613";
-$icon-arrow-right:  "\e613";
-$icon-chevron-right: "\e60c";
+// ICON DEFINITIONS
+  $icon-naturalis            : "\e600";
+  $icon-home                 : "\e601";
+  $icon-search               : "\e602";
+  $icon-help                 : "\e603";
+  $icon-bars                 : "\e604";
+  $icon-cross                : "\e605";
+  $icon-download             : "\e606";
+  $icon-location             : "\e607";
+  $icon-arrow-down           : "\e608";
+  $icon-arrow-left           : "\e609";
+  $icon-arrow-right          : "\e60a";
+  $icon-arrow-up             : "\e60b";
+  $icon-chevron-left         : "\e60c";
+  $icon-chevron-down         : "\e60d";
+  $icon-chevron-right        : "\e60e";
+  $icon-chevron-up           : "\e60f";
+  $icon-decision-path        : "\e610";
+  $icon-double-chevron-down  : "\e611";
+  $icon-double-chevron-left  : "\e612";
+  $icon-double-chevron-right : "\e613";
+  $icon-double-chevron-up    : "\e614";
+  $icon-generate             : "\e615";
+  $icon-triangle-down-right  : "\e616";
+  $icon-triangle-down        : "\e617";
+  $icon-triangle-left        : "\e618";
+  $icon-triangle-right       : "\e619";
+  $icon-triangle-up          : "\e61a";
+  $icon-arrow-back           : "\e61b";
+  $icon-arrow-down-lean      : "\e61c";
+  $icon-arrow-forward        : "\e61d";
+  $icon-arrow-left-lean      : "\e61e";
+  $icon-arrow-right-lean     : "\e61f";
+  $icon-arrow-up-lean        : "\e620";
+  $icon-camera               : "\e621";
+  $icon-checkmark            : "\e622";
+  $icon-database             : "\e623";
+  $icon-play                 : "\e624";
+  $icon-refresh              : "\e625";
+  $icon-sort_1_9             : "\e626";
+  $icon-sort_9_1             : "\e627";
+  $icon-sort_a_z             : "\e628";
+  $icon-sort_z_a             : "\e629";
+  $icon-sort_much_little     : "\e62a";
+  $icon-sort_little_much     : "\e62b";
+  $icon-sort_sortable        : "\e62e";
+  $icon-square_empty         : "\e62c";
+  $icon-square_full          : "\e62d";
 
 .fading .page{
   transition: opacity 500ms;
@@ -686,12 +728,19 @@ $icon-chevron-right: "\e60c";
 
     }
 
-    .square-empty{
-      color: $gray-3;
-    }
+    .score{
+      
+      i{
+        font-size: 8px;
+      }
 
-    .square-filled{
-      color: $orange-2;
+      .icon-square_empty{
+        color: $gray-3;
+      }
+
+      .icon-square_full{
+        color: $orange-2;
+      }
     }
 
     .multimedia-wrapper{
