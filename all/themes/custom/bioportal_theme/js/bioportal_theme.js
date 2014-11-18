@@ -6,6 +6,7 @@
   // ---------------------------------------------------------
 
     h = $(window).height();
+    w = $(window).width();
     $("main").css("min-height",h - 315); // Magic number,...
   
   // ---------------------------------------------------------
@@ -19,55 +20,37 @@
     // (We use jQuery for repositioning, to keep the CSS clean)
 
     if (    $('#naturalis-header').length ) {
+      
       rl_margin =  (  $(".page").outerWidth() - $("main").outerWidth()  ) / 2;
 
-      // Move image in the DOM and re-position
-      $("#header-image img")
-        .appendTo(".page")
-        .removeAttr('width')
-        .removeAttr('height')
-        .css({
-          position: "absolute",
-          top: 0, // magic number...?
-          right: rl_margin  ,
-          width: 320,
-          maxWidth: "27%", 
-          height: "auto",
-          zIndex: 600,
-      });
+      // If the page is wide enough:
+      // - Move the header image to the root of the DOM
+      // else, get rid of it alltoghether
+      if ( w >= 1024 ){
 
+        // Move image in the DOM and re-position
+        $("#header-image img")
+          .appendTo(".page")
+          .removeAttr('width')
+          .removeAttr('height')
+          .css({position: "absolute", top: 0, right: rl_margin  , width: 320, maxWidth: "27%", height: "auto", zIndex: 600, });
+        
+        $("#language-menu")
+          .appendTo(".page")
+          .css({zIndex:601, listStyle: "none inside none", position: "fixed", top: 10, right: (rl_margin + 50) });
+        
+        $("#help")
+          .appendTo(".page")
+          .css({zIndex:602, position: "fixed", height: "auto", width: "auto", margin: 0, padding: 0, right: rl_margin, top: 0, listStyle: "none inside none"})
+            .find('span')
+              .css({color: '#fff', border: 0, position: "relative"});
       
-      $("#language-menu")
-        .appendTo(".page")
-        .css({
-          zIndex:601,
-          listStyle: "none inside none",
-          position: "fixed",
-          top: 10,
-          right: (rl_margin + 50)
-        })
+      } else {  
 
-      
-      $("#help")
-        .appendTo(".page")
-        .css({
-          zIndex:602,
-          position: "fixed",
-          height: "auto",
-          width: "auto",
-          margin: 0,
-          padding: 0,
-          right: rl_margin,
-          top: 0,
-          listStyle: "none inside none"
-        })
-          .find('span')
-            .css({
-              color: '#fff',
-              border: 0,
-              // right: -5,
-              position: "relative"
-            })
+        $("#header-image img").remove();
+
+      }
+
     }
   // ---------------------------------------------------------
 
@@ -173,7 +156,7 @@
         var windowScrollTop = $(window).scrollTop();
         var windowHeight = $(window).height();
 
-        if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) ){
+        if ( ( int_y - windowHeight  )  > (windowScrollTop - objectHeight) && w >= 1024 ){
           $_bottom_submit.css({position:"fixed", bottom: "0px", left: int_x})
         } else {
           $_bottom_submit.removeAttr("style");

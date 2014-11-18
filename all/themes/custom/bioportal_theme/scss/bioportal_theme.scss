@@ -200,11 +200,11 @@
 
         h1{
           line-height: 1;
-          @media only screen and (max-width: 1000px) { font-size: 24px }
+          @media only screen and (max-width: 1024px) { font-size: 24px }
         }
 
         h2{
-          @media only screen and (max-width: 1000px) { font-size: 12px }
+          @media only screen and (max-width: 1024px) { font-size: 14px }
         }
 
         &.off-canvas{
@@ -217,7 +217,7 @@
           top: 160px;
           color: $white;
           p{
-            @media only screen and (max-width: 1000px) { font-size: 12px }
+            @media only screen and (max-width: 1024px) { font-size: 12px;  }
           }
         }
 
@@ -365,6 +365,7 @@
       border-width       : 0;
       margin-bottom      : 30px;
       display            : none;
+      padding-bottom     : 65px;
 
       @media (min-width  : 1000px) {
         padding          : 0.9375rem percentage(2/12) 80px;
@@ -438,7 +439,7 @@
 
       button[name='op']{
         position         : absolute;
-        right            : 3rem;
+        right            : 2rem;
         background-color : $orange;
         border-radius    : 2px;
         text-transform     : lowercase;

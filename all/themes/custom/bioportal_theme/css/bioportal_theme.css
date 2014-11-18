@@ -92,19 +92,19 @@ button, .button {
   overflow: visible; }
   #naturalis-header #title-and-slogan h1 {
     line-height: 1; }
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       #naturalis-header #title-and-slogan h1 {
         font-size: 24px; } }
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1024px) {
     #naturalis-header #title-and-slogan h2 {
-      font-size: 12px; } }
+      font-size: 14px; } }
   #naturalis-header #title-and-slogan.off-canvas {
     top: -100%; }
   #naturalis-header #title-and-slogan #intro {
     position: absolute;
     top: 160px;
     color: white; }
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 1024px) {
       #naturalis-header #title-and-slogan #intro p {
         font-size: 12px; } }
   #naturalis-header #title-and-slogan .intro-more, #naturalis-header #title-and-slogan .intro-less {
@@ -212,7 +212,8 @@ button, .button {
   margin: 0;
   border-width: 0;
   margin-bottom: 30px;
-  display: none; }
+  display: none;
+  padding-bottom: 65px; }
   @media (min-width: 1000px) {
     #edit-extended {
       padding: 0.9375rem 16.66667% 80px; } }
@@ -262,7 +263,7 @@ button, .button {
     -webkit-appearance: none; }
   #edit-extended button[name='op'] {
     position: absolute;
-    right: 3rem;
+    right: 2rem;
     background-color: #ef6d14;
     border-radius: 2px;
     text-transform: lowercase;
