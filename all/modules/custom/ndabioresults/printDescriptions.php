@@ -10,9 +10,10 @@ function printDescriptions ($data) {
 			$source = key($description);
 			$descriptions[$source][$description[$source]] = $lan;
 		}
+//p($descriptions); p($language);
 		foreach ($descriptions as $source => $t) {
 			foreach ($t as $description => $lan) {
-				if ($lan == $language->language) {
+				if ($lan == $language->name) {
 					$output .= "<p>$description</p>";
 				}
 			}

@@ -1,7 +1,4 @@
 <?php
-
-
-
 function printTaxonDetail ($data) {
   global $language;
 
@@ -24,6 +21,7 @@ function printTaxonDetail ($data) {
 		printDescriptions($data) .
 		printClassifications($data);
 
+//p($data);
   return $output;
 }
 

@@ -579,7 +579,6 @@ function parseTaxonDetail ($json) {
 		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
@@ -601,13 +600,20 @@ function parseTaxonDetail ($json) {
 			}
 		}
 		if (!empty($row->result->descriptions)) {
-		    // @todo: hard coded for NSR, as this is the only source for descriptions
+		    // @todo: hard coded for NSR and CoL
 		    foreach ($row->result->descriptions as $i => $description) {
+		        // NSR Dutch
 		        if (strtolower($description->category) == 'algemeen') {
                     $output['descriptions']['Dutch'][$source] =
 					   $description->description;
 		        }
-		    	if (strtolower($description->category) == 'summary') {
+		        // NSR English
+		        if (strtolower($description->category) == 'summary') {
+                    $output['descriptions']['English'][$source] =
+					   $description->description;
+		        }
+		        // CoL English
+		        if (empty($description->category) && !empty($description->description)) {
                     $output['descriptions']['English'][$source] =
 					   $description->description;
 		        }
