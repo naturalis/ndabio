@@ -23,6 +23,10 @@ function printSpecimensByTaxon ($data) {
 			'sort' => 0,
 			'url' => setSortUrl('count', 'ASC', $data['self'])
 		),
+        'mapIcon' => array(
+			'label' => '',
+			'sort' => 0
+        ),
 		'foundIn' => array(
 			'label' => t('Found in'),
 			'sort' => 0
@@ -53,6 +57,8 @@ function printSpecimensByTaxon ($data) {
 			"</td>";
 		// Number (and collection type)
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
+		// Map icon
+		$output .= "<td><a href='#' class='icon-location'></a></td>";
 		// Source(s)
 		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
 		// Match
