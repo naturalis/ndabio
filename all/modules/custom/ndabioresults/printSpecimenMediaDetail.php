@@ -24,7 +24,7 @@ function printSpecimenMediaDetail ($data) {
 	);
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
-			$output .= printDL($field, $data[$field]);
+			$output .= printDL(translateNdaField($field), $data[$field]);
 		}
 	}
 	return $output . "</dd>";

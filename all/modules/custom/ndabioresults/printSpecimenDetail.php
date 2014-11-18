@@ -18,31 +18,32 @@ function printSpecimenDetail ($data) {
 	$output .= _wrap( $data['unitID'] , "h2"  );
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");
-	
+
 	$output .= "<div class='property-list'>";
-	
+
 	foreach ($data as $field => $value) {
 		if (is_array($value)) {
-			
+
 			// Taxon name
 			if ($field == 'names') {
 				$output .= printNamesWithLinks($value, 'species');
 			}
-			
+
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= printDL('dateTimeBegin', isset($value['dateTimeBegin']) ?
-                    date('Y-m-d', $value['dateTimeBegin'] / 1000) : '');
-                $output .= printDL('gatheringAgents', isset($value['gatheringAgents']) ?
-                    implode(', ', $value['gatheringAgents']) : '');
-			    $output .= printDL('localityText', isset($value['localityText']) ?
-                     $value['localityText'] : '');
-                $output .= printDL('siteCoordinates', isset($value['siteCoordinates']) ?
+                $output .= printDL(translateNdaField('dateTimeBegin'),
+                    isset($value['dateTimeBegin']) ? date('Y-m-d', $value['dateTimeBegin'] / 1000) : '');
+                $output .= printDL(translateNdaField('gatheringAgents'),
+                    isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : '');
+			    $output .= printDL(translateNdaField('localityText'),
+			        isset($value['localityText']) ? $value['localityText'] : '');
+                $output .= printDL(translateNdaField('siteCoordinates'),
+                    isset($value['siteCoordinates']) ?
                     '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
                     $value['siteCoordinates']['lon'] . ']' : '');
 			}
 		} else {
-			$output .= printDL($field, $value);
+			$output .= printDL(translateNdaField($field), $value);
 		}
 	}
 	// Other specimens in collection/set are printed in different table
