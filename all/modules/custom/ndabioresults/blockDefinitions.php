@@ -64,35 +64,35 @@ function ndabioresults_block_view($delta = '') {
     $_SESSION['ndaPageDetail'] == 'results taxa' ||
     $_SESSION['ndaPageDetail'] == 'results multimedia' ||
     $_SESSION['ndaPageDetail'] == 'results specimens' 
-    ) ;
+  ) ;
 
   switch ($delta) {
 
     case 'ndabioresults_collected_date':
-      if ( $SHOWS_RESULTS  ){
+      if ( $SHOWS_RESULTS ){
 
-        $block['subject'] = t('Collection date');
+        // $block['subject'] = t('Collection date');
 
-        $block['content'] =
-          _list_items( array(
-            _item(array('All periods','filter-selected')),
-            _item(array('After 2010' ,'filter-enabled')),
-            _item(array('Before 2010','filter-enabled')),
-            _item(array('custom'     ,'filter-enabled','')),
-          ));
+        // $block['content'] =
+        //   _list_items( array(
+        //     _item(array('All periods','filter-selected')),
+        //     _item(array('After 2010' ,'filter-enabled')),
+        //     _item(array('Before 2010','filter-enabled')),
+        //     _item(array('custom'     ,'filter-enabled','')),
+        //   ));
       }
 
       break;
 
     case 'ndabioresults_source':
-      $block['subject'] = t('Sources');
+      // $block['subject'] = t('Sources');
 
-      $block['content'] =
-        _list_items( array(
-          _item(array('Naturalis',          'filter-selected')),
-          _item(array('the Netherlands',    'filter-disabled')),
-          _item(array('Worldwide & the Web','filter-disabled')),
-        ));
+      // $block['content'] =
+      //   _list_items( array(
+      //     _item(array('Naturalis',          'filter-selected')),
+      //     _item(array('the Netherlands',    'filter-disabled')),
+      //     _item(array('Worldwide & the Web','filter-disabled')),
+      //   ));
 
       break;
 
@@ -135,12 +135,12 @@ function ndabioresults_block_view($delta = '') {
       if ( !$SHOWS_RESULTS ){
       $block['content'] =
         "<div id='result-nav'>"
-        ._list_items( array(
-          _item(array('7 van 35'    )),
-          _item(array("<i class='icon-triangle-up'></i>"     )),
-          _item(array("<i class='icon-triangle-down'></i>"     )),
-          _item(array("<i class='icon-cross'></i>"     ))
-        ))
+        // ._list_items( array(
+        //   _item(array('7 van 35'    )),
+        //   _item(array("<i class='icon-triangle-up'></i>"     )),
+        //   _item(array("<i class='icon-triangle-down'></i>"     )),
+        //   _item(array("<i class='icon-cross'></i>"     ))
+        // ))
         ."</div>";
       }
 

@@ -809,17 +809,17 @@
         }
 
         td{
-          transition: padding-bottom 300ms;
+          transition: border-bottom-width 300ms;
         }
 
         &:not(.expanded):hover{
           td{
-            padding-bottom: 30px;
-            transition: padding-bottom 1000ms;
+            border-bottom: 15px solid $ghost;
+            transition: border-bottom-width 1000ms;
           }
           
           .icon-triangle-right:before{
-            content: "\e61c";
+            content: $icon-triangle-down-right;
           }
         }
 
