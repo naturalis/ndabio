@@ -10,23 +10,6 @@
 function bioportal_thematic_search_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb
-  $menu_links['main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => 'uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
-    'router_path' => 'uuid',
-    'link_title' => 'About',
-    'options' => array(
-      'identifier' => 'main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
-      'alter' => TRUE,
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -48,
-  );
   // Exported menu link: main-menu_arts-collection:explore/arts/Arts collection
   $menu_links['main-menu_arts-collection:explore/arts/Arts collection'] = array(
     'menu_name' => 'main-menu',
@@ -168,23 +151,6 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_digital-collections:<front>',
-  );
-  // Exported menu link: main-menu_for-developers:uuid/node/ee159a0a-2bc8-44bd-aac9-33ce07af5273
-  $menu_links['main-menu_for-developers:uuid/node/ee159a0a-2bc8-44bd-aac9-33ce07af5273'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => 'uuid/node/ee159a0a-2bc8-44bd-aac9-33ce07af5273',
-    'router_path' => 'uuid',
-    'link_title' => 'For developers',
-    'options' => array(
-      'identifier' => 'main-menu_for-developers:uuid/node/ee159a0a-2bc8-44bd-aac9-33ce07af5273',
-      'alter' => TRUE,
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -47,
   );
   // Exported menu link: main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen
   $menu_links['main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen'] = array(
@@ -332,14 +298,12 @@ function bioportal_thematic_search_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('About');
   t('Arts collection');
   t('Beekbergerwoud collectie');
   t('Beekbergerwoud collection');
   t('Digital Collections');
   t('Digitale Collecties');
   t('Extinct birds');
-  t('For developers');
   t('Martin collectie van fossiele schelpen');
   t('Martin collection of fossil shell');
   t('Prentencollectie');
