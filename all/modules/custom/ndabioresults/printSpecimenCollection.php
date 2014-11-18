@@ -17,9 +17,11 @@ function printSpecimenCollection ($row, $i) {
         	   $set . "</td>" . padTds(3) . "</tr>";
         	foreach ($specimens as $j => $specimen) {
         		$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
-                . "<td><a href='" . printDrupalLink($specimen['url']) . "'>"
-                . $specimen['unitID'] . "</a></td>" . padTds(1) . "<td>" .
-        		t(translateNdaField($specimen['collectionType'])) . "</td>" . padTds(1) . "</tr>";
+                . "<td><a href='" . printDrupalLink($specimen['url']) . "'>"  . $specimen['unitID'] . "</a></td>" .
+                padTds(1) .
+                "<td>" . $specimen['collectionType'] . "</td>" .
+                padTds(1) .
+        		"</tr>";
         	}
         }
     }

@@ -34,15 +34,9 @@ function printSpecimensByTaxon ($data) {
 			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);
-/*
-  if (!isset($data['results']) || empty($data['results'])) {
-        return sprintf('<h2>%s %s %s</h2><p>%s</p>',
-            t('Specimens with'),
-            t('search term'),
-            t('occurring in the species&apos; name'),
-            t('No results'));
-  }
-*/
+
+//    p($data);
+
     $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
     $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
     $count = _wrap(  $data['total']                                    , "span", "count");
