@@ -499,10 +499,15 @@ function parseSpecimenMediaDetail ($json) {
 	$output['names'] = getSpecimenMediaTaxonNames($row);
 	$output['unitID'] = $row->result->associatedSpecimen->unitID;
 	$output['title'] = $row->result->title;
+	$output['description'] = $row->result->description;
+	$output['creator'] = $row->result->creator;
+	$output['copyrightText'] = $row->result->copyrightText;
+	$output['phasesOrStages'] = $row->result->phasesOrStages;
+	$output['sexes'] = $row->result->sexes;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
 
-//p($output);
+//p($data);
 	return $output;
 }
 
@@ -550,6 +555,13 @@ function parseTaxonMediaDetail ($json) {
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
+	$output['description'] = $row->result->description;
+	$output['creator'] = $row->result->creator;
+	$output['copyrightText'] = $row->result->copyrightText;
+	$output['phasesOrStages'] = $row->result->phasesOrStages;
+	$output['sexes'] = $row->result->sexes;
+
+//p($data);
 	return $output;
 }
 
