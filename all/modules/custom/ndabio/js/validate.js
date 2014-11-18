@@ -13,12 +13,11 @@
     // If we're on the geo-search page
     if ( $("body").hasClass("page-geographic-search") ){
 
-      console.log("VALIDATING: We are on the geo-searh page.");
+      int_valid = 1;
       
     } else {
     // If we're not on the geo-searh page
       
-      console.log("VALIDATING: We are NOT on the geo-searh page.");
 
       // If there's more then one textfield with containing more
       // then three characters:
