@@ -517,16 +517,18 @@ table tr .indent-2:nth-of-type(2n) {
 table .indent-0, table .indent-0:nth-of-type(2n), table .indent-0:hover, table .indent-0:nth-of-type(2n):hover {
   background-color: white; }
 table .indent-0 td {
-  transition: border-bottom-width 300ms; }
+  transition: padding-bottom 300ms; }
 table .indent-0:not(.expanded):hover td {
-  border-bottom: 15px solid #eeede9;
-  transition: border-bottom-width 1000ms; }
+  padding-bottom: 15px;
+  transition: padding-bottom 1000ms; }
 table .indent-0:not(.expanded):hover .icon-triangle-right:before {
   content: "\e616"; }
 table .indent-1, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2:nth-of-type(2n) {
   background-color: #f6f6f4; }
 table .indent-2:not(.hidden) + .indent-0 {
   border-top: 2px solid #b2b1a8; }
+table .icon-location {
+  font-size: 18px; }
 
 #result-nav {
   display: table;
