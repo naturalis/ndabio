@@ -102,11 +102,6 @@
       <!--/.l-header-region -->
     <?php endif; ?>
 
-  <div class="ie8">
-    <p>This website does not support Internet Explorer 8 or lower. </p>
-    <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
-  </div>
-
   <?php if (!empty($page['featured'])): ?>
     <!--/.featured -->
     <section class="l-featured row">
@@ -128,6 +123,7 @@
   <?php endif; ?>
 
   <main role="main" class="row l-main">
+
     <div class="<?php print $main_grid; ?> main columns">
       
       <?php if ($messages && !$zurb_foundation_messages_modal && false): ?>
