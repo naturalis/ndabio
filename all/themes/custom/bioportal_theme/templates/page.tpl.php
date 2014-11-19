@@ -1,8 +1,3 @@
-<div class="ie8">
-  <p>This website does not support Internet Explorer 8 or lower. </p>
-  <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
-</div>
-
 <!--.page -->
 <div role="document" class="page">
 
@@ -107,7 +102,10 @@
       <!--/.l-header-region -->
     <?php endif; ?>
 
-
+  <div class="ie8">
+    <p>This website does not support Internet Explorer 8 or lower. </p>
+    <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
+  </div>
 
   <?php if (!empty($page['featured'])): ?>
     <!--/.featured -->
