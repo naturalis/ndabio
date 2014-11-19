@@ -11,13 +11,6 @@
 define('NATURALIS', 'taxonDetail');
 
 /**
- * Default value for the GMAP key. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-//define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
-
-
-/**
 * DEFINE CUSTOM PAGES
 */
 
@@ -1027,8 +1020,7 @@ function parseSpecimensByMap ($data) {
 		$taxonUrl = isset($row->links[0]->href) ? $row->links[0]->href : null;
 		$sources = getSources($row);
 		foreach ($row->searchResults as $i => $sp) {
-    		//$d['name'] = $name;
-    		$d['name'] = $row->sharedValue;
+    		$d['name'] = $name;
     		$d['source'] = implode(', ', $sources);
     		$d['assemblageID'] = $sp->result->assemblageID;
     		$d['unitID'] = $sp->result->unitID;

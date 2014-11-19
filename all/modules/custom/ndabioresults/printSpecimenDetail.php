@@ -2,6 +2,25 @@
 
 // Print specimen detail on screen
 function printSpecimenDetail ($data) {
+//p($data);
+    // Do we have a valid set of coordinates? If so, add Google Map
+    $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
+        $data['gatheringEvent']['siteCoordinates']['lat'] : false;
+    $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
+        $data['gatheringEvent']['siteCoordinates']['lon'] : false;
+
+    if ($lat && $lon) {
+        // Add Google Maps scripts from ndabio module (REQUIRED!)
+        global $base_root, $base_path;
+        $path = drupal_get_path('module', 'ndabio');
+        drupal_add_css($path . "/css/ndabio_style.css");
+        drupal_add_js($path . "/js/map.js", array('weight' => 1));
+        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
+        drupal_add_js("var str_base_path = '$base_path' ", 'inline');
+        drupal_add_js("var specimenMarker = " . json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
+    }
+
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
 	$fieldOrder = array(
@@ -52,7 +71,7 @@ function printSpecimenDetail ($data) {
 			"<div class='property-list'>";
 		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
 	}
-	return $output . "</div>";
+	return $output . "</div>" . ($lat && $lon ? "\n<div id='map-canvas'></div>" : '');
 }
 
 
