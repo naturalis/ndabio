@@ -24,7 +24,7 @@
       return;
     });
 
-    
+
 
   // ---------------------------------------------------------
 
@@ -325,7 +325,7 @@
   // ---------------------------------------------------------
 
   // For each species name...
-  $("#specimensByTaxon .indent-0")
+  $("#specimensByTaxon .indent-0 td:first-child")
     
     .each(function(){
       // Add a triangle to species-name
@@ -334,7 +334,7 @@
     
     .click( function(){
 
-      $_me = $(this);
+      $_me = $(this).parent();
       str_id = $_me.attr('id');
 
       $_me.
@@ -351,8 +351,6 @@
 
       $("[data-parent='"+ str_id +"-collection']")
         .toggleClass("hidden");
-
-
 
       return false;
     });
