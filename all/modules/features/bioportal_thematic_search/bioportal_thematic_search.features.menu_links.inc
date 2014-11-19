@@ -32,7 +32,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
+    'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
   // Exported menu link: main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie
   $menu_links['main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie'] = array(
@@ -56,7 +56,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+    'parent_identifier' => 'main-menu_online-verzamelingen:<front>',
   );
   // Exported menu link: main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection
   $menu_links['main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection'] = array(
@@ -80,19 +80,19 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
+    'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_digital-collections:<front>
-  $menu_links['main-menu_digital-collections:<front>'] = array(
+  // Exported menu link: main-menu_explore-highlights:<front>
+  $menu_links['main-menu_explore-highlights:<front>'] = array(
     'menu_name' => 'main-menu',
     'link_path' => '<front>',
     'router_path' => '',
-    'link_title' => 'Digital Collections',
+    'link_title' => 'Explore Highlights',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
-      'identifier' => 'main-menu_digital-collections:<front>',
+      'identifier' => 'main-menu_explore-highlights:<front>',
       'alter' => TRUE,
     ),
     'module' => 'menu',
@@ -101,29 +101,6 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'has_children' => 1,
     'expanded' => 0,
     'weight' => -50,
-    'customized' => 1,
-    'language' => 'und',
-    'menu_links_customized' => 1,
-  );
-  // Exported menu link: main-menu_digitale-collecties:<front>
-  $menu_links['main-menu_digitale-collecties:<front>'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => '<front>',
-    'router_path' => '',
-    'link_title' => 'Digitale Collecties',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'alter' => TRUE,
-      'identifier' => 'main-menu_digitale-collecties:<front>',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 1,
-    'has_children' => 1,
-    'expanded' => 0,
-    'weight' => -49,
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
@@ -150,7 +127,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
+    'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
   // Exported menu link: main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen
   $menu_links['main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen'] = array(
@@ -174,7 +151,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+    'parent_identifier' => 'main-menu_online-verzamelingen:<front>',
   );
   // Exported menu link: main-menu_martin-collection-of-fossil-shell:explore/martin/Martin collection of fossil shell
   $menu_links['main-menu_martin-collection-of-fossil-shell:explore/martin/Martin collection of fossil shell'] = array(
@@ -198,7 +175,30 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
+    'parent_identifier' => 'main-menu_explore-highlights:<front>',
+  );
+  // Exported menu link: main-menu_online-verzamelingen:<front>
+  $menu_links['main-menu_online-verzamelingen:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Online verzamelingen',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_online-verzamelingen:<front>',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -49,
+    'customized' => 1,
+    'language' => 'und',
+    'menu_links_customized' => 1,
   );
   // Exported menu link: main-menu_prentencollectie:explore/arts/Prentencollectie
   $menu_links['main-menu_prentencollectie:explore/arts/Prentencollectie'] = array(
@@ -222,7 +222,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+    'parent_identifier' => 'main-menu_online-verzamelingen:<front>',
   );
   // Exported menu link: main-menu_siebold-collectie:explore/siebold/Siebold collectie
   $menu_links['main-menu_siebold-collectie:explore/siebold/Siebold collectie'] = array(
@@ -246,7 +246,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+    'parent_identifier' => 'main-menu_online-verzamelingen:<front>',
   );
   // Exported menu link: main-menu_siebold-collection:explore/siebold/Siebold collection
   $menu_links['main-menu_siebold-collection:explore/siebold/Siebold collection'] = array(
@@ -270,7 +270,7 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digital-collections:<front>',
+    'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
   // Exported menu link: main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels
   $menu_links['main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels'] = array(
@@ -294,18 +294,18 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'customized' => 1,
     'language' => 'und',
     'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_digitale-collecties:<front>',
+    'parent_identifier' => 'main-menu_online-verzamelingen:<front>',
   );
   // Translatables
   // Included for use with string extractors like potx.
   t('Arts collection');
   t('Beekbergerwoud collectie');
   t('Beekbergerwoud collection');
-  t('Digital Collections');
-  t('Digitale Collecties');
+  t('Explore Highlights');
   t('Extinct birds');
   t('Martin collectie van fossiele schelpen');
   t('Martin collection of fossil shell');
+  t('Online verzamelingen');
   t('Prentencollectie');
   t('Siebold collectie');
   t('Siebold collection');

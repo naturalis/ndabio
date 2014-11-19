@@ -1110,7 +1110,7 @@ function bioportal_nl_translations_defaults() {
   $translations['nl:default']['083eb1977b0f308fa331ef463e686ad8'] = array(
     'source' => 'All records',
     'context' => '',
-    'location' => '',
+    'location' => '; sites/all/modules/custom/ndabio/js/map.js',
     'translation' => 'Alle records',
     'plid' => 0,
     'plural' => 0,
@@ -2654,7 +2654,7 @@ function bioportal_nl_translations_defaults() {
   $translations['nl:default']['13348442cc6a27032d2b4aa28b75a5d3'] = array(
     'source' => 'Search',
     'context' => '',
-    'location' => 'ndabio/ndabio.module:501;547',
+    'location' => 'ndabio/ndabio.module:501; 547; sites/all/modules/custom/ndabio/js/map.js',
     'translation' => 'Zoeken',
     'plid' => 0,
     'plural' => 0,
@@ -7983,7 +7983,7 @@ else {
   $translations['nl:default']['37bac6dce4f46277d89bfa3003e2e39b'] = array(
     'source' => 'Within',
     'context' => '',
-    'location' => '',
+    'location' => '; sites/all/modules/custom/ndabio/js/map.js',
     'translation' => 'Binnen',
     'plid' => 0,
     'plural' => 0,
@@ -12459,7 +12459,7 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
   $translations['nl:default']['544ddb0ec2e8f5e130cc50cfd852ba8a'] = array(
     'source' => 'Hide summary',
     'context' => '',
-    'location' => '',
+    'location' => '; modules/field/modules/text/text.js',
     'translation' => 'Samenvatting verbergen',
     'plid' => 0,
     'plural' => 0,
@@ -36016,7 +36016,7 @@ Uw account op [site:name] werd geblokkeerd.
   $translations['nl:default']['f15dceb01634a6c4e6c88e42ad05c6a9'] = array(
     'source' => 'Edit summary',
     'context' => '',
-    'location' => '',
+    'location' => '; modules/field/modules/text/text.js',
     'translation' => 'Samenvatting bewerken',
     'plid' => 0,
     'plural' => 0,
