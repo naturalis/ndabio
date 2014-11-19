@@ -44,6 +44,13 @@
     <?php endif; ?>
   </header> <!--/.l-header -->
 
+  <!-- IE8 warning -->
+  <div class="ie8">
+    <p>This website does not support Internet Explorer 8 or lower. </p>
+    <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
+  </div>
+  <!-- //.ie8 -->
+
   <!-- NATURALIS header -->
   <?php if (  $is_front  ): ?>
     <!--.l-header-region -->
@@ -123,6 +130,8 @@
   <?php endif; ?>
 
   <main role="main" class="row l-main">
+
+
 
     <div class="<?php print $main_grid; ?> main columns">
       
