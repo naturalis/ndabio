@@ -54,7 +54,12 @@
   background-color: #e3004a;
   color: white;
   text-align: center;
-  height: 50px; }
+  height: 50px;
+  z-index: 900;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0; }
 
 .lt-ie9 .ie8 {
   display: block; }
