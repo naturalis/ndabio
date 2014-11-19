@@ -5,11 +5,29 @@
   // auto fit height of MAIN CONTAINER
   // ---------------------------------------------------------
 
-    h = $(window).height();
-    w = $(window).width();
+    var h = $(window).height();
+    var w = $(window).width();
     $("main").css("min-height",h - 315); // Magic number,...
   
   // ---------------------------------------------------------
+
+
+  // ---------------------------------------------------------
+  // reload page on resize
+  // ---------------------------------------------------------
+
+    $(window).resize(function() {
+      if( w != $(window).width()){
+        location.reload();
+      }
+      
+      return;
+    });
+
+    
+
+  // ---------------------------------------------------------
+
 
 
  

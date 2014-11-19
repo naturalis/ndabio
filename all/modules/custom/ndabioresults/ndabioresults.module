@@ -191,6 +191,21 @@ function ndabioresults_pass ($args = "") {
 function ndaSimpleSearch () {
     $pageHeader = _wrap(t('Search results'),"H1");
 
+    if(  $_POST['searchtype'] == "thematicsearch"){
+        // $pageHeader = "";
+        drupal_set_title("");
+        
+        $pageHeader = 
+            _wrap( 
+                _wrap(
+                    $_POST['searchtitle'], "h1"
+                ),
+            "div", "panel"
+        );
+
+        //$_POST['searchtitle'] = t($stitle);)
+    }
+
     $p['_search'] = $_SESSION['ndaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form

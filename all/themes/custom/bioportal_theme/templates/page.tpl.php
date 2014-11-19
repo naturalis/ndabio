@@ -131,7 +131,11 @@
 
   <main role="main" class="row l-main">
 
-
+    <?php if (!empty($page['sidebar_first'])): ?>
+      <aside role="complementary" class="<?php print $sidebar_first_grid; ?> sidebar-first columns sidebar">
+        <?php print render($page['sidebar_first']); ?>
+      </aside>
+    <?php endif; ?>
 
     <div class="<?php print $main_grid; ?> main columns">
       
@@ -189,12 +193,6 @@
 
     </div>
     <!--/.main region -->
-
-    <?php if (!empty($page['sidebar_first'])): ?>
-      <aside role="complementary" class="<?php print $sidebar_first_grid; ?> sidebar-first columns sidebar">
-        <?php print render($page['sidebar_first']); ?>
-      </aside>
-    <?php endif; ?>
 
     <?php if (!empty($page['sidebar_second'])): ?>
       <aside role="complementary" class="<?php print $sidebar_sec_grid; ?> sidebar-second columns sidebar">

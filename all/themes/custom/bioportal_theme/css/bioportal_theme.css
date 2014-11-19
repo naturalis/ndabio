@@ -398,63 +398,67 @@ html.js fieldset.collapsible .fieldset-legend {
   .row-area a.active, .row-area a:hover {
     color: #009ee0; }
 
-.page-nba-result main {
+.page-nba-result main, .page-explore main {
   padding-bottom: 3rem; }
-  .page-nba-result main table {
+  .page-nba-result main table, .page-explore main table {
     margin-left: 8.33333%;
     width: 91.66667%; }
-  .page-nba-result main td, .page-nba-result main th {
+    @media only screen and (max-width: 1024px) {
+      .page-nba-result main table, .page-explore main table {
+        margin-left: 0;
+        width: 100%; } }
+  .page-nba-result main td, .page-nba-result main th, .page-explore main td, .page-explore main th {
     padding-left: 0; }
-  .page-nba-result main .show-all {
+  .page-nba-result main .show-all, .page-explore main .show-all {
     margin-left: 8.33333%; }
-.page-nba-result .column-first {
+.page-nba-result .column-first, .page-explore .column-first {
   width: 30%; }
-.page-nba-result .column-match {
+.page-nba-result .column-match, .page-explore .column-match {
   width: 8%; }
-.page-nba-result .result-query {
+.page-nba-result .result-query, .page-explore .result-query {
   text-decoration: underline; }
-.page-nba-result .score {
+.page-nba-result .score, .page-explore .score {
   font-size: 1.2em;
   position: relative;
   top: -3px; }
-.page-nba-result h1 {
+.page-nba-result h1, .page-explore h1 {
   font-size: 24px; }
-.page-nba-result h2 {
+.page-nba-result h2, .page-explore h2 {
   font-size: 20px;
   font-weight: bold; }
-  .page-nba-result h2 .scientific-name {
+  .page-nba-result h2 .scientific-name, .page-explore h2 .scientific-name {
     color: black; }
-  .page-nba-result h2 .vernacular-name {
+  .page-nba-result h2 .vernacular-name, .page-explore h2 .vernacular-name {
     color: #b2b1a8; }
-.page-nba-result h3 {
+.page-nba-result h3, .page-explore h3 {
   color: #009ee0;
   font-size: 24px;
   font-weight: bold; }
-.page-nba-result h4 {
+.page-nba-result h4, .page-explore h4 {
   font-size: 18px;
   font-weight: bold; }
-.page-nba-result .source {
+.page-nba-result .source, .page-explore .source {
   font-size: 18px;
   color: #4d4d4d;
   margin-top: 1em;
   clear: both;
   font-weight: bold; }
-.page-nba-result .property-list {
+.page-nba-result .property-list, .page-explore .property-list {
   margin-bottom: 3em;
   display: table;
   width: 100%; }
-.page-nba-result dl {
+.page-nba-result dl, .page-explore dl {
   clear: both;
   display: table-row;
   transition: background-color 400ms; }
-  .page-nba-result dl:hover {
+  .page-nba-result dl:hover, .page-explore dl:hover {
     background-color: #eeede9; }
-.page-nba-result dt {
+.page-nba-result dt, .page-explore dt {
   width: 42.85714%;
   font-weight: normal;
   display: table-cell;
   padding-right: 3em; }
-.page-nba-result dd {
+.page-nba-result dd, .page-explore dd {
   width: 57.14286%;
   font-weight: bold;
   display: table-cell; }
@@ -470,6 +474,10 @@ html.js fieldset.collapsible .fieldset-legend {
   margin-left: 8.33333%;
   width: 91.66667%;
   overflow: hidden; }
+  @media only screen and (max-width: 1024px) {
+    .multimedia-wrapper {
+      margin-left: 0;
+      width: 100%; } }
 
 .polaroid {
   display: block;
@@ -558,7 +566,7 @@ table .indent-2:not(.hidden) + .indent-0 {
     margin-right: 1em;
     margin-bottom: 0; }
 
-.filter-disabled {
+.filter-disabled, .filter-disabled:hover {
   color: #e6e6e6; }
 
 .filter-enabled {

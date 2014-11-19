@@ -645,7 +645,7 @@
 
   // -- results : LAYOUT
 
-    .page-nba-result{
+    .page-nba-result, .page-explore{
       main {
         
         padding-bottom: 3rem;
@@ -653,6 +653,10 @@
         table{
           margin-left      : percentage(1/12);
           width            : percentage(11/12);
+          @media only screen and (max-width: 1024px) { 
+            margin-left : 0;   
+            width       : 100%; 
+          }
         }
 
         td, th{
@@ -766,6 +770,10 @@
       margin-left          : percentage(1/12);
       width                : percentage(11/12);
       overflow             : hidden;
+      @media only screen and (max-width: 1024px) { 
+            margin-left : 0;   
+            width       : 100%; 
+      }
     }
 
     .polaroid{
@@ -932,7 +940,10 @@
     }
 
     .filter-disabled{
-      color: $gray-2;
+      &, &:hover{ 
+        color: $gray-2;
+      }
+
     }
 
     .filter-enabled{

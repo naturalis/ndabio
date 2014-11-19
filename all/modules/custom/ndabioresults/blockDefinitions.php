@@ -15,7 +15,7 @@ function ndabioresults_block_info() {
   $blocks['ndabioresults_navigation'] = array(
     'info' => t('NBA: Search result navigation'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "nba/result\nnba/result*",
+    'pages' => "nba/result\nnba/result*\nexplore*",
     'region' => "sidebar_second",
     'status' => TRUE,
   );
@@ -124,8 +124,6 @@ function ndabioresults_block_view($delta = '') {
       } else {
         $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search results') . "</a>";
       }
-
-
 
       break;
 
