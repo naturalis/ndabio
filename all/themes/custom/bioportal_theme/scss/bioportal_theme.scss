@@ -128,6 +128,19 @@
       padding-right: 10px;
     }
 
+    // IE-8 MESSAGE
+    .ie8{
+      display: none;
+      background-color: $red;
+      color: white;
+      text-align: center;
+      height: 50px;
+    }
+
+    .lt-ie9 .ie8{ 
+      display: block;
+    }
+
 // GLOBAL SEMANTIC CLASSES
       .scientific-name, .scientific{
         font-style: italic;
