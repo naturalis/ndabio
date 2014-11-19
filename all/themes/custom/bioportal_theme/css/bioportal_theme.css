@@ -494,7 +494,7 @@ html.js fieldset.collapsible .fieldset-legend {
 .polaroid-image {
   padding: 80% 0 0 0;
   position: relative;
-  background-color: #cccccc;
+  background-color: #f6f6f4;
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat; }
