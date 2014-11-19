@@ -381,7 +381,7 @@ function serviceToFunctions () {
         		'print' => 'printSpecimensByTaxon',
         	    'info' => 'results specimens by name'
         	),
-        	multimediaService() => array(
+            multimediaService() => array(
         		'parse' => 'parseMultimedia',
         		'print' => 'printMultimedia',
         	    'info' => 'results multimedia'

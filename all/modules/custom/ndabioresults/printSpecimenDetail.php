@@ -32,7 +32,7 @@ function printSpecimenDetail ($data) {
 			// Gathering event
 			if ($field == 'gatheringEvent') {
                 $output .= printDL(translateNdaField('dateTimeBegin'),
-                    isset($value['dateTimeBegin']) ? date('Y-m-d', $value['dateTimeBegin'] / 1000) : '');
+                    isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : '');
                 $output .= printDL(translateNdaField('gatheringAgents'),
                     isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : '');
 			    $output .= printDL(translateNdaField('localityText'),

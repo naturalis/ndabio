@@ -11,6 +11,13 @@
 define('NATURALIS', 'taxonDetail');
 
 /**
+ * Default value for the GMAP key. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
+//define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
+
+
+/**
 * DEFINE CUSTOM PAGES
 */
 
@@ -54,8 +61,22 @@ function ndabioresults_menu() {
     'access callback' => TRUE,
   );
 
+
+  /*
+   * Page used by javascript to retrieve geo coordinates based on a nid.
+   */
+  $items['naturalis/ajax'] = array(
+   'page callback' => 'ndabio_ajax_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
+
+
+
+
 
 /**
  * Implements template_preprocess_html().
@@ -106,7 +127,8 @@ function setSpecimenParameters (array $sP, $type) {
             'specificEpithet',
             'subspecificEpithet',
             'vernacularName',
-            '_geoShape'
+            '_geoShape',
+            'showMap'
         )
     );
     foreach ($parameters[$type] as $p) {
@@ -134,14 +156,18 @@ function setSpecimenParameters (array $sP, $type) {
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
+
     // POST data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
     }
+
     // GET data from within NDA response?
     // Forward directly to appropriate service
     else if (isset($_GET['nba_request'])) {
+        // @todo: check direct url for injection
+
         return ndaDirectRequest(urldecode($_GET['nba_request']));
     }
     // If both POST and SESSION are empty we have a problem...
@@ -384,9 +410,6 @@ function countSearchParameters ($d) {
  *
  * Performs curl queries through multicurl. For each channel, resulting json is
  * parsed to an array by one function and subsequently printed by another.
- *
- * @todo Remove drupal_set_message() that temporarily simply prints the resulting
- * NBA urls
  *
  * @param array $channels Service channels
  * @return void|string
@@ -718,6 +741,10 @@ function getGatheringEventSpecimens ($row) {
         $event = $row->searchResults[0]->result->gatheringEvent;
 		foreach ($event as $k => $v) {
 		    if (!is_array($v) && !is_object($k) && $v != '') {
+		        // Translate datetime from Unix to proper date
+		        if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
+		            $v = date('Y-m-d', $v / 1000);
+		        }
                 $d[$k] = $v;
 		    }
 		}
@@ -913,17 +940,25 @@ function parseSpecimensByTaxon ($json) {
 		handleError('parseSpecimensByTaxon: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
 	$output['searchTerms'] = getSearchTerms($data);
+
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
 		handleError('parseSpecimensByTaxon: invalid json response');
 	}
+
+    // If showMap parameter has been set, parsing and printing should be redirected
+    // to parse-/printSpecimensByMap
+    if (isset($output['searchTerms']['showMap'])) {
+        return parseSpecimensByMap($data);
+    }
+
 	if ($output['total'] == 0) {
 	    $output['results'] = array();
         return $output;
 	}
-	foreach ($data->resultGroups as $row) {
+
+    foreach ($data->resultGroups as $row) {
 		$d = array();
 		$d['name'] = formatScientificName(
 			$row->sharedValue,
@@ -933,6 +968,7 @@ function parseSpecimensByTaxon ($json) {
 		    $output['searchTerms']
 		);
 		$d['url'] = isset($row->links[0]->href) ? $row->links[0]->href : null;
+		$d['fullScientificName'] = $row->sharedValue;
 		$d['count'] = count($row->searchResults);
 		$d['sources'] = getSources($row);
 		$d['score'] = $row->searchResults[0]->percentage;
@@ -949,6 +985,48 @@ function parseSpecimensByTaxon ($json) {
 	$output['self'] = getSelfLink($data);
 	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
+//p($data);
+	return isset($output) ? $output : false;
+}
+
+
+
+
+// Parses specimen json response into array; searched by taxon and redirect
+// to print specimens on map
+function parseSpecimensByMap ($data) {
+
+	$output['searchTerms'] = getSearchTerms($data);
+	$output['total'] = getTotalRows($data);
+	$output['showMap'] = true;
+
+	foreach ($data->resultGroups as $row) {
+		$d = array();
+		$name = formatScientificName(
+			$row->sharedValue,
+		    // @todo
+			//$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
+			$row->searchResults[0]->result->identifications[0]->scientificName,
+		    $output['searchTerms']
+		);
+		$taxonUrl = isset($row->links[0]->href) ? $row->links[0]->href : null;
+		$sources = getSources($row);
+		foreach ($row->searchResults as $i => $sp) {
+    		//$d['name'] = $name;
+    		$d['name'] = $row->sharedValue;
+    		$d['source'] = implode(', ', $sources);
+    		$d['assemblageID'] = $sp->result->assemblageID;
+    		$d['unitID'] = $sp->result->unitID;
+    		$gatheringEvent = getGatheringEventSpecimens($row);
+    		$d['localityText'] = $gatheringEvent['localityText'];
+    		$d['date'] = $gatheringEvent['dateTimeBegin'];
+    		$d['lat'] = $gatheringEvent['siteCoordinates']['lat'];
+    		$d['lon'] = $gatheringEvent['siteCoordinates']['lon'];
+		}
+		$output['results'][] = $d;
+	}
+
+	$output['self'] = getSelfLink($data);
 //p($data);
 	return isset($output) ? $output : false;
 }
@@ -989,7 +1067,7 @@ function setSortUrl ($column, $dir, $self) {
     // Column currently selected; only switch sort direction
     if ($column == getSort($self)) {
         return setUrlPars(
-            $self,
+            geoShapeToSession($self, true),
             array(
                 '_sortDirection' => getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC',
                 '_offset' => 0
@@ -999,7 +1077,7 @@ function setSortUrl ($column, $dir, $self) {
     }
     // Other column is currently selected; set to current column in default direction
     return setUrlPars(
-        $self,
+        geoShapeToSession($self, true),
         array(
             '_sort' => $column,
             '_sortDirection' => $dir,
@@ -1152,7 +1230,7 @@ function getHits ($row) {
 }
 
 include 'printSpecimensByTaxon.php';
-
+include 'printSpecimensByMap.php';
 include 'printSpecimenCollection.php';
 
 

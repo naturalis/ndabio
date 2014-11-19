@@ -11,6 +11,10 @@ function printSpecimensByTaxon ($data) {
         return false;
     }
 
+    if (isset($data['showMap'])) {
+        return printSpecimensByMap($data);
+    }
+
     $headers = array(
 		'identifyingEpithets' => array(
 			'label' => t('Name'),
@@ -39,7 +43,7 @@ function printSpecimensByTaxon ($data) {
 		)
 	);
 
-//    p($data);
+//p($data);
 
     $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
     $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
@@ -58,7 +62,12 @@ function printSpecimensByTaxon ($data) {
 		// Number (and collection type)
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
 		// Map icon
-		$output .= "<td><a href='#' class='icon-location'></a></td>";
+		$output .= "<td>" .
+		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) ?
+		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
+		      '&fullScientificName=' . urlencode($row['fullScientificName'])) .
+		      "' class='icon-location'></a>" : '') .
+		  "</td>";
 		// Source(s)
 		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
 		// Match
