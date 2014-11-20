@@ -19,6 +19,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -28,7 +29,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/torder',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -42,6 +48,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -51,7 +58,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/syoungestchronstratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -65,6 +77,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -74,7 +87,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mgatheringagent',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -88,6 +106,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -97,7 +116,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/more',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -111,6 +135,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -120,7 +145,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tclassname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -134,6 +164,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -143,7 +174,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/syoungestbiostratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -157,6 +193,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -166,7 +203,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mexpertorganisation',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -180,6 +222,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -189,7 +232,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mcollectingstartdate',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -204,6 +252,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -213,7 +262,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mlocalitytext',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -227,6 +281,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -236,7 +291,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/hide',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -250,6 +310,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -259,7 +320,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mtaxonomicstatus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -273,6 +339,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -282,7 +349,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mcollectionfieldnumber',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -296,6 +368,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -305,7 +378,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mphylum',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -319,6 +397,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -342,7 +421,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/msex',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -356,6 +440,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -379,7 +464,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tkingdom',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -393,6 +483,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -402,7 +493,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tgenusormonomial',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -416,6 +512,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -425,7 +522,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sunitid',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -440,6 +542,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -449,7 +552,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/taxa',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
     ),
@@ -463,6 +571,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -472,7 +581,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mfamily',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -486,6 +600,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -495,7 +610,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/soldestchronstratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -509,6 +629,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -518,7 +639,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/ssubgenus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -532,6 +658,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -541,7 +668,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sfamily',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -555,6 +687,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -578,7 +711,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mphaseorstage',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -592,6 +730,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -601,7 +740,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tvernacularname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -615,6 +759,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -624,7 +769,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tsubgenus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -638,6 +788,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -647,7 +798,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/texpert',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -662,6 +818,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -671,7 +828,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mbiostratigraphicattributiontypeyoung',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -686,6 +848,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -695,7 +858,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/svernacularname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -710,6 +878,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -719,7 +888,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/munitid',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -733,6 +907,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -756,7 +931,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sphaseorstage',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -770,6 +950,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -779,7 +960,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/more-1',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -794,6 +980,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -810,7 +997,12 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/minfraspecificepithet',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -824,6 +1016,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -833,7 +1026,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/msubgenus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -847,6 +1045,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -856,7 +1055,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mgenusormonomial',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -870,6 +1074,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -879,7 +1084,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/hide-0',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -893,6 +1103,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -909,7 +1120,12 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/multimedia',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
     ),
@@ -923,6 +1139,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -932,7 +1149,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/morder',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -946,6 +1168,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -955,7 +1178,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mbiostratigraphicattributiontypeold',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -969,6 +1197,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -992,7 +1221,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mkingdom',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -1007,6 +1241,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1016,7 +1251,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mvernacularname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -1025,11 +1265,12 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'omnisearch',
     'description' => 'term',
     'format' => NULL,
-    'weight' => 72,
+    'weight' => 73,
     'uuid' => '7a6d1b8b-574f-4dfb-b74b-e4ea17e9d3e5',
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1039,7 +1280,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
   );
   $terms[] = array(
     'name' => 't_specificEpithet',
@@ -1051,6 +1292,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1067,7 +1309,12 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tspecificepithet',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1081,6 +1328,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1104,7 +1352,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/ssex',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -1119,6 +1372,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1128,7 +1382,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/slocalitytext',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -1142,6 +1401,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1165,7 +1425,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/ttaxonomicstatus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -1179,6 +1444,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1188,7 +1454,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mchronostratigraphicattributionttypeold',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -1202,6 +1473,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1211,17 +1483,18 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
   );
   $terms[] = array(
     'name' => 's_collectionFieldNumber',
     'description' => 'Collection field number',
     'format' => NULL,
-    'weight' => 7,
+    'weight' => 6,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1231,7 +1504,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/scollectionfieldnumber',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1245,6 +1523,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1254,7 +1533,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sphylum',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1268,6 +1552,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1277,7 +1562,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -1291,6 +1576,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1300,7 +1586,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1314,6 +1600,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1323,7 +1610,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mclassname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     ),
@@ -1337,6 +1629,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1346,7 +1639,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -1360,6 +1653,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1383,7 +1677,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/stypestatus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -1397,6 +1696,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1406,7 +1706,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sgatheringagent',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1420,6 +1725,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1429,7 +1735,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sgenusormonomial',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -1443,6 +1754,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1452,7 +1764,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/ssecondlithostratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -1467,6 +1784,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1483,7 +1801,12 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sinfraspecificepithet',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1498,6 +1821,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1514,7 +1838,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1528,6 +1852,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1537,7 +1862,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -1551,6 +1876,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1560,7 +1886,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -1574,6 +1900,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1597,7 +1924,12 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/skingdom',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1612,6 +1944,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1621,7 +1954,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -1630,11 +1963,12 @@ function searchtax_uuid_features_default_terms() {
     'name' => 's_collectingStartDate',
     'description' => 'Collecting start date',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 7,
     'uuid' => 'd2997fb3-bfb6-46a2-9074-a6db473d4ba3',
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1644,9 +1978,14 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/scollectingstartdate',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
-      0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
+      0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
   );
   $terms[] = array(
@@ -1658,6 +1997,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1667,7 +2007,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/soldestbiostratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -1681,6 +2026,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1690,7 +2036,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sfirstlithostratigraphicname',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
     ),
@@ -1705,6 +2056,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1721,7 +2073,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -1735,6 +2087,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1744,7 +2097,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -1759,6 +2112,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1775,7 +2129,12 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/sspecificepithet',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     ),
@@ -1789,6 +2148,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1798,7 +2158,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
     ),
@@ -1812,6 +2172,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1821,7 +2182,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
@@ -1835,6 +2196,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1858,7 +2220,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -1872,6 +2234,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1881,7 +2244,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
@@ -1895,6 +2258,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1904,7 +2268,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1918,6 +2282,7 @@ function searchtax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
       'und' => array(
         0 => array(
@@ -1927,7 +2292,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndadatatype' => array(),
+    'url_alias' => array(),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
     ),
