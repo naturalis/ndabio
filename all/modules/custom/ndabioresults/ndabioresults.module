@@ -1245,7 +1245,7 @@ include 'printSpecimenCollection.php';
 // Shorthand function to pad "filler" tds
 function padTds ($i) {
 	if ((int)$i > 0) {
-		return str_repeat("<td></td>", $i);
+		return "<td colspan='$i'></td>";
 	}
 }
 
