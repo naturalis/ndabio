@@ -43,14 +43,20 @@ function printSpecimensByTaxon ($data) {
 		)
 	);
 
-//p($data);
+    if (  isset($data['searchTerms']['_search'])  ){
+      $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
+      $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
+      $count = _wrap(  $data['total'], "span", "count");
+      $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
+    } else {
+      $count = _wrap(  "(".$data['total'].")", "span", "count");
 
-    $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
-    $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
-    $count = _wrap(  $data['total']                                    , "span", "count");
+      $expl  = _wrap(  t('(grouped by species name)')        , "span", "explanation");
+      $output  = sprintf('<h2>%s %s %s</h2>', t('Specimens'), $count, $expl );
+    }
+    
 
 
-    $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
     $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self']));
 
     foreach ($data['results'] as $i => $row) {

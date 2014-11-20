@@ -63,7 +63,8 @@ function ndabioresults_block_view($delta = '') {
     $_SESSION['ndaPageDetail'] == 'result from simple form' || 
     $_SESSION['ndaPageDetail'] == 'results taxa' ||
     $_SESSION['ndaPageDetail'] == 'results multimedia' ||
-    $_SESSION['ndaPageDetail'] == 'results specimens' 
+    $_SESSION['ndaPageDetail'] == 'results specimens' ||
+    $_SESSION['ndaPageDetail'] == 'result from advanced form' 
   ) ;
 
   switch ($delta) {

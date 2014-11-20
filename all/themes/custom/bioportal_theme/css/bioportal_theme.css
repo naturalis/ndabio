@@ -463,6 +463,11 @@ html.js fieldset.collapsible .fieldset-legend {
   font-weight: bold;
   display: table-cell; }
 
+.panel {
+  background-color: #542e08; }
+  .panel h1 {
+    color: white; }
+
 .score i {
   font-size: 8px; }
 .score .icon-square_empty {
