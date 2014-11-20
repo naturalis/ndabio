@@ -19,11 +19,17 @@ function printSpecimensByMap ($data) {
     drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'], 'inline');
 
 
-//p($data);
+//p($data['results']);
 
 //    echo $_SESSION['ndaSearch']['geoShape'];
 //    p(json_encode($data['results']));
-    $output = '<div id="map-canvas"></div>';
+    $output = sprintf('<h2>%s %s %s %s</h2>',
+        t('Specimens of '),
+        $data['results'][0]['name'],
+        ' in ',
+        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'))
+    );
+    $output .= '<div id="map-canvas"></div>';
 
     return $output;
 }
