@@ -6,7 +6,7 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimensByTaxon ($data) {
-p($_SESSION['ndaSearch']);
+//p($_SESSION['ndaSearch']);
     if (empty($data['results'])) {
         return false;
     }
