@@ -8,7 +8,7 @@
  * @author Naturalis
  * @package Bioportal
  */
- 
+
 /**
  * Default value for the GMAP key. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
@@ -83,14 +83,14 @@ function ndabio_searchthematic($var1, $stitle = "") {
   $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
   $_POST['term'] = $var1;
   $_POST['theme'] = $var1;
-  
+
   return ndabioresults_pass();
 }
 
 
 /**
 * Output a json formatted detail page with geo coordinates based on the nid passed in the url.
-* The resulting page is used as input for the map, so no additional Drupal processing should take place. 
+* The resulting page is used as input for the map, so no additional Drupal processing should take place.
 * To avoid additional Drupal theming being applied the function ends with a die()
 */
 function ndabio_ajax_callback() {
@@ -203,20 +203,35 @@ function ndabio_search_page($results) {
   return $output;
 }
 
+function setExpandedFlag () {
+    foreach ($_SESSION['ndaSearch'] as $k => $v) {
+        // All true search parameters als formatted as x_etc
+        if ($k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 /**
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch() {
   $loadold = 0;
   if (!empty($_GET['searchagain'])) {
-    if (intval($_GET['searchagain']) == 1) { 
-      drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); plotMapArea('" . $_SESSION['ndaSearch']['gid'] . " ', ''); }", 'inline');
+    if (intval($_GET['searchagain']) == 1) {
+      drupal_add_js("var expand_advanced_form = " . setExpandedFlag(), 'inline');
+      if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
+        drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); plotMapArea('" . $_SESSION['ndaSearch']['gid'] . " ', ''); }", 'inline');
+      } else if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        drupal_add_js("jQuery(document).ready(function() { plotDrawnArea('" . $_SESSION['ndaSearch']['geoShape'] . " ', ''); }", 'inline');
+      }
       $loadold = 1;
-      //dpm($_SESSION['ndaSearch']['gid']);
-      //dpm($_SESSION['ndaSearch']['geoShape']);
     }
   }
   $geosearch = 0;
+
   if (variable_get('geosearch') == '1') {
     global $base_root, $base_path;
     $geosearch = 1;
@@ -228,6 +243,7 @@ function ndabio_advanced_taxonomysearch() {
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
   }
   $searchtype = array(0 => t('And'), 1 => t('Or'));
+
 
   $machine_name = "search";
   $v = taxonomy_vocabulary_machine_name_load($machine_name);
@@ -303,7 +319,7 @@ function ndabio_advanced_taxonomysearch() {
                   if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
                   if ($lvalues != "") {
                     unset($optionarray);
-                    $optionarray[""] = ""; //First entry is an empty string 
+                    $optionarray[""] = ""; //First entry is an empty string
                     foreach (explode("|", $lvalues) as $optionitem) {
                       $optionarray[$optionitem] = t($optionitem);
                     }
@@ -314,7 +330,7 @@ function ndabio_advanced_taxonomysearch() {
                       '#required'  => FALSE,
                       '#inline'    => TRUE,
                     );
-          
+
                   }
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
@@ -327,12 +343,12 @@ function ndabio_advanced_taxonomysearch() {
                   }
                 }
               }
-            } 
+            }
             else {
               //Default search fields
               if ($subchildvalues != "") {
                 unset($optionarray);
-                $optionarray[""] = ""; //First entry is an empty string 
+                $optionarray[""] = ""; //First entry is an empty string
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
                   $optionarray[$optionitem] = t($optionitem);
                 }
@@ -364,7 +380,7 @@ function ndabio_advanced_taxonomysearch() {
           if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
           if ($childvalues != "") {
             unset($optionarray);
-            $optionarray[""] = ""; //First entry is an empty string 
+            $optionarray[""] = ""; //First entry is an empty string
             foreach (explode("|", $childvalues) as $optionitem ) {
               $optionarray[$optionitem] = $optionitem;
             }
@@ -419,7 +435,7 @@ function ndabio_advanced_taxonomysearch() {
       );
     }
   }
-  
+
   if ($geosearch) {
     $links =
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
@@ -441,7 +457,7 @@ function ndabio_advanced_taxonomysearch() {
       "  <input id='search-areas-filter' placeholder='« filter »' />" .
       "  <div id='search-areas-target'></div>" .
       "</div>";
-    
+
     $form['gmap'] = array(
       '#type' => 'gmap',
       '#map' => 'gmap',

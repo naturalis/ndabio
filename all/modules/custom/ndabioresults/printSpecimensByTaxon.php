@@ -6,7 +6,7 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimensByTaxon ($data) {
-
+p($_SESSION['ndaSearch']);
     if (empty($data['results'])) {
         return false;
     }
@@ -54,7 +54,7 @@ function printSpecimensByTaxon ($data) {
       $expl  = _wrap(  t('(grouped by species name)')        , "span", "explanation");
       $output  = sprintf('<h2>%s %s %s</h2>', t('Specimens'), $count, $expl );
     }
-    
+
 
 
     $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self']));

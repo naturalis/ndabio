@@ -186,11 +186,11 @@ function ndaSimpleSearch () {
 
     // Clear page header and page title in case of thematic search
     if(  $_POST['searchtype'] == "thematicsearch"){
-        
+
         drupal_set_title("");
-        
-        $pageHeader = 
-            _wrap( 
+
+        $pageHeader =
+            _wrap(
                 _wrap(
                     $_POST['searchtitle'], "h1"
                 ),
@@ -216,12 +216,12 @@ function ndaSimpleSearch () {
 
         $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
 
-        $pageHeader = 
+        $pageHeader =
             _wrap(
                 _wrap(
-                    t("Showing only results in") 
-                   . " " 
-                   . _wrap($area, "span", "term"), 
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
                    "h1"
                 ), "div", "panel"
             );
@@ -270,23 +270,23 @@ function ndaAdvancedSearch () {
         isset($services[specimenService()]['_geoShape']) &&
         isset($services[specimenService()]['_andOr'])) {
         unset($services[specimenService()]);
-    
+
         // While we're at anyway, add a banner to indicate we're dealing with a geoSearch
         // $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         // $p['_andOr'] = 'AND';
 
         $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
 
-        $pageHeader = 
+        $pageHeader =
             _wrap(
                 _wrap(
-                    t("Showing only results in") 
-                   . " " 
-                   . _wrap($area, "span", "term"), 
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
                    "h1"
                 ), "div", "panel"
             );
-   
+
 
     }
 
@@ -733,8 +733,9 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 	$output['navigation'] = getNavigation($data);
-//p($output);
-    return $output;
+//p($data);
+
+	return $output;
 }
 
 
@@ -1430,7 +1431,7 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 function highlightSearchTerms ($output, $searchTerms) {
     foreach ($searchTerms as $field => $value) {
         if (!in_array(str_replace('_', '', $field), searchFlags())) {
-            $terms[$value[0]] = '';
+            $terms[$value[0]] = $field;
         }
     }
     // Intermediate step required to remove any duplicates

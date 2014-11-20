@@ -73,7 +73,4 @@ function printSpecimenDetail ($data) {
 	}
 	return $output . "</div>" . ($lat && $lon ? "\n<div id='map-canvas'></div>" : '');
 }
-
-
-
 ?>

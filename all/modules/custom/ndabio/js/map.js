@@ -226,6 +226,17 @@ function plotMapArea(gid, baseurl) {
 	});
 }
 
+
+function plotDrawnArea (geometry) {
+	feature = {
+		type: "Feature",
+		geometry: geometry
+	};
+	map.data.addGeoJson(feature);
+	map.data.setStyle(mapStyle);
+	zoom(map);
+}
+
 /*
 function setDrawingMode(mode) {
 	drawingManager.setDrawingMode(mode);
