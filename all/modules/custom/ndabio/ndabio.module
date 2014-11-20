@@ -225,7 +225,7 @@ function ndabio_advanced_taxonomysearch() {
       if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
         drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); plotMapArea('" . $_SESSION['ndaSearch']['gid'] . " ', ''); }", 'inline');
       } else if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        drupal_add_js("jQuery(document).ready(function() { plotDrawnArea('" . $_SESSION['ndaSearch']['geoShape'] . " ', ''); }", 'inline');
+        drupal_add_js("jQuery(document).ready(function() { plotDrawnArea('" . json_encode($_SESSION['ndaSearch']['geoShape']) . " ', ''); }", 'inline');
       }
       $loadold = 1;
     }
