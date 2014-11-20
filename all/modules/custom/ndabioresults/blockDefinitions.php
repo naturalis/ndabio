@@ -122,7 +122,7 @@ function ndabioresults_block_view($delta = '') {
       if ( $_SESSION['ndaRequestType'] == 'form'){
         // $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
         $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a><br />" .
-          "<a onclick='javascript:window.history.back()'>$icon" . t('New search') . "</a>";
+          "<a href='" . $starturl . "'>$icon" . t('New search') . "</a>";
       } else {
         $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search results') . "</a>";
       }
