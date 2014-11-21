@@ -133,6 +133,7 @@ function initializeSpecimens() {
       name         : this.name,
       icon         : obj_pin,
       assemblageID : this.assemblageID,
+      source       : this.source,
       unitID       : this.unitID,
       localityText : this.localityText,
       date         : this.date,
