@@ -118,7 +118,7 @@ function setSpecimenParameters (array $sP, $type) {
             'order',
             'phylum',
             'specificEpithet',
-            'subspecificEpithet',
+            'infraspecificEpithet',
             'vernacularName',
             '_geoShape',
             'showMap'
