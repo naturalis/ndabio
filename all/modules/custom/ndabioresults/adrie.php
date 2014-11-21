@@ -374,42 +374,50 @@ function serviceToFunctions () {
         	taxonService() => array(
         		'parse' => 'parseTaxa',
         		'print' => 'printTaxa',
-        	    'info' => 'results taxa'
+        	    'info' => 'results taxa',
+        	    'method' => 'get'
         	),
         	specimenNamesService() => array(
         		'parse' => 'parseSpecimensByTaxon',
         		'print' => 'printSpecimensByTaxon',
-        	    'info' => 'results specimens by name'
+        	    'info' => 'results specimens by name',
+        	    'method' => 'post'
         	),
             multimediaService() => array(
         		'parse' => 'parseMultimedia',
         		'print' => 'printMultimedia',
-        	    'info' => 'results multimedia'
+        	    'info' => 'results multimedia',
+        	    'method' => 'post'
         	),
         	specimenService() => array(
         		'parse' => 'parseSpecimens',
         		'print' => 'printSpecimens',
-        	    'info' => 'results specimens'
+        	    'info' => 'results specimens',
+        	    'method' => 'get'
         	),
         	specimenDetailService() => array(
         		'parse' => 'parseSpecimenDetail',
         		'print' => 'printSpecimenDetail',
-        	    'info' => 'detail specimen'
+        	    'info' => 'detail specimen',
+        	    'method' => 'get'
         	),
         	taxonDetailService() => array(
         		'parse' => 'parseTaxonDetail',
         		'print' => 'printTaxonDetail',
-        	    'info' => 'detail taxon'
+        	    'info' => 'detail taxon',
+        	    'method' => 'get'
         	),
         	taxonMultimediaService() => array(
         		'parse' => 'parseTaxonMediaDetail',
         		'print' => 'printTaxonMediaDetail',
-        	    'info' => 'detail multimedia by taxon'
+        	    'info' => 'detail multimedia by taxon',
+        	    'method' => 'get'
         	),
         	specimenMultimediaService() => array(
         		'parse' => 'parseSpecimenMediaDetail',
         		'print' => 'printSpecimenMediaDetail',
-        	    'info' => 'detail multimedia by specimen'
+        	    'info' => 'detail multimedia by specimen',
+        	    'method' => 'get'
         	)
         );
     }

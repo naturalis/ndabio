@@ -336,7 +336,7 @@ function ndaDirectRequest ($r) {
 
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
-    		$channels[0]['post'] = 1;
+    		$channels[0]['method'] = $d['method'];
     		$channels[0]['postfields'] = http_build_query($q);
     		// Set session variable with last used service;
             // used to determine current detail page
@@ -366,6 +366,7 @@ function ndaDirectRequest ($r) {
  */
 function setChannels (array $services) {
     $i = 0;
+    $serviceSettings = serviceToFunctions();
 	foreach ($services as $s => $p) {
 	    if (!empty($p)) {
 	        $p = array_filter($p, 'strlen');
@@ -377,7 +378,7 @@ function setChannels (array $services) {
 
 	        $channels[$i]['request'] = $s;
     		$channels[$i]['url'] = ndaBaseUrl() . $s;
-    		$channels[$i]['post'] = count($p);
+    		$channels[$i]['method'] = $serviceSettings[$s]['method'];
     		$channels[$i]['postfields'] =  http_build_query($p);
     		$i++;
 	    }
@@ -496,18 +497,15 @@ function queryNda ($channels = array(), $timeout = false) {
     $mh = curl_multi_init();
     for ($i = 0; $i < count($channels); $i++) {
         $ch[$i] = curl_init();
-/*
-        // POST
-        curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-        curl_setopt($ch[$i], CURLOPT_POST, true);
-        curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
-        // END POST
-*/
 
-        // GET
-        $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
-        curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-        // END GET
+        if ($channels[$i]['method'] == 'post') {
+            curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+            curl_setopt($ch[$i], CURLOPT_POST, true);
+            curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
+        } else if ($channels[$i]['method'] == 'get') {
+            $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
+            curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
+        }
 
         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch[$i], CURLOPT_HEADER, false);
@@ -1215,11 +1213,23 @@ function getSelfLink ($data) {
     if (isset($data->links) && !empty($data->links)) {
         foreach ($data->links as $link) {
             if ($link->rel == '_self') {
-                return $link->href;
+                $self = $link->href;
+                break;
             }
         }
     }
-    return false;
+    if (!isset($self) || empty($self)) {
+        return false;
+    }
+    $post = strpos(urldecode($self), '?') === false ? true : false;
+    if ($post) {
+        $p = '/?';
+        foreach (getSearchTerms($data) as $k => $v) {
+            $p .= $k . '=' . $v[0] . '&';
+        }
+        return $self . urlencode(substr($p, 0, -1));
+    }
+    return $self;
 }
 
 /**

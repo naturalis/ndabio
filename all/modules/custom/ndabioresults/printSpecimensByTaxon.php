@@ -6,7 +6,7 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimensByTaxon ($data) {
-//p($_SESSION['ndaSearch']);
+//p($data);
     if (empty($data['results'])) {
         return false;
     }
@@ -20,7 +20,7 @@ function printSpecimensByTaxon ($data) {
 			'label' => t('Name'),
 			'sort' => 1,
 			'icon' => 'icon-sort_a_z',
-			'url' => setSortUrl('identifyingEpithets', 'ASC', $data['self'])
+			'url' => setSortUrl('identifications.scientificName.genusOrMonomial', 'ASC', $data['self'])
 		),
 		'count' => array(
 			'label' => '',
