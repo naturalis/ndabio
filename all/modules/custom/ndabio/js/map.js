@@ -10,15 +10,6 @@ var mapStyle = {
 	zIndex: 1
 }
 
-function postShape() {
-	if (selectedShape) {
-		alert(getShapeGeometry());
-	} else if (feature) {
-		//var g = $("#search-areas-target").find("a.active");
-		alert(JSON.stringify(geometry));
-	}
-}
-
 function getShapeGeometry() {
 	if (selectedShape.type == 'polygon') {
 		return getPolygonGeometry();
@@ -95,8 +86,18 @@ function initialize() {
     });
 
  	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
-    //google.maps.event.addListener(map, 'click', clearMap);
-    //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', clearMap);
+
+ 	if (storedGeoShape != -1) {
+		feature = {
+			type: "Feature",
+			geometry: JSON.parse(storedGeoShape)
+		};
+		map.data.addGeoJson(feature);
+		map.data.setStyle(mapStyle);
+		zoom(map);
+ 	} else if (storedGid != -1) {
+ 		plotMapArea(storedGid, str_base_path);
+ 	}
 }
 
 function initializeSpecimens() {
@@ -224,17 +225,6 @@ function plotMapArea(gid, baseurl) {
 
 		}
 	});
-}
-
-
-function plotDrawnArea (geometry) {
-	feature = {
-		type: "Feature",
-		geometry: geometry
-	};
-	map.data.addGeoJson(feature);
-	map.data.setStyle(mapStyle);
-	zoom(map);
 }
 
 /*
