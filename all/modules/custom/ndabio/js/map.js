@@ -10,6 +10,16 @@ var mapStyle = {
 	zIndex: 1
 }
 
+var obj_pin = {
+    path         : 'M18.2,11l-4.7,10.1C13.2,21.6,12.6,22,12,22c-0.6,0-1.2-0.4-1.5-0.9L5.8,11c-0.3-0.7-0.4-1.5-0.4-2.3 C5.3,5,8.3,2,12,2c3.7,0,6.7,3,6.7,6.7C18.7,9.5,18.6,10.3,18.2,11z M12,5.3c-1.8,0-3.3,1.5-3.3,3.3c0,1.8,1.5,3.3,3.3,3.3 c1.8,0,3.3-1.5,3.3-3.3C15.3,6.8,13.8,5.3,12,5.3z',
+    fillColor    : '#542e08',
+    fillOpacity  : 1,
+    scale        : 1,
+    strokeColor  : 'white',
+    strokeWeight : 1
+};
+
+
 function getShapeGeometry() {
 	if (selectedShape.type == 'polygon') {
 		return getPolygonGeometry();
@@ -116,14 +126,6 @@ function initializeSpecimens() {
 	map.data.setStyle(mapStyle);
 	zoom(map);
 
-  var obj_pin = {
-    path         : 'M18.2,11l-4.7,10.1C13.2,21.6,12.6,22,12,22c-0.6,0-1.2-0.4-1.5-0.9L5.8,11c-0.3-0.7-0.4-1.5-0.4-2.3 C5.3,5,8.3,2,12,2c3.7,0,6.7,3,6.7,6.7C18.7,9.5,18.6,10.3,18.2,11z M12,5.3c-1.8,0-3.3,1.5-3.3,3.3c0,1.8,1.5,3.3,3.3,3.3 c1.8,0,3.3-1.5,3.3-3.3C15.3,6.8,13.8,5.3,12,5.3z',
-    fillColor    : '#542e08',
-    fillOpacity  : 1,
-    scale        : 1,
-    strokeColor  : 'white',
-    strokeWeight : 1
-  };
 
 
 	jQuery.each(specimenMarkers, function() {
@@ -166,6 +168,7 @@ function initializeSpecimenDetail() {
 
 	var marker = new google.maps.Marker({
 		position: myLatlng,
+		icon: obj_pin,
 	});
 
 	marker.setMap(map);
