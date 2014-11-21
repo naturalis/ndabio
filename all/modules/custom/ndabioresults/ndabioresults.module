@@ -292,7 +292,7 @@ function ndaAdvancedSearch () {
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
-p($services);
+p($services); die();
         return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
             "<a href='$base_root/$base_path'>" . t('Back to home page') . '</a>.', 'p');
     }
