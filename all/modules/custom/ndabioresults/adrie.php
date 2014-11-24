@@ -40,7 +40,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#default_value' => variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS),
     '#size' => 10,
     '#maxlength' => 10,
-    '#description' => t('Maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
+    '#description' => t('Number of maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
     '#required' => TRUE
   );
   //Maximum results for subsequent queries
@@ -50,7 +50,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
     '#size' => 10,
     '#maxlength' => 10,
-    '#description' => t('Maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
+    '#description' => t('Number of maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
     '#required' => TRUE
   );
 

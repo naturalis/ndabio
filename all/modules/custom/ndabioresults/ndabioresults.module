@@ -183,12 +183,10 @@ function ndabioresults_pass ($args = "") {
  */
 function ndaSimpleSearch () {
     $pageHeader = _wrap(t('Search results'),"H1");
-
+  
     // Clear page header and page title in case of thematic search
+    //Only show header as a block on georaphic search and thematic search
     if(  $_POST['searchtype'] == "thematicsearch"){
-
-        drupal_set_title("");
-
         $pageHeader =
             _wrap(
                 _wrap(
@@ -196,8 +194,6 @@ function ndaSimpleSearch () {
                 ),
                 "div", "panel"
             );
-
-        //$_POST['searchtitle'] = t($stitle);)
     }
 
     $p['_search'] = $_SESSION['ndaSearch']['term'];
@@ -254,6 +250,18 @@ function ndaAdvancedSearch () {
     global $base_root, $base_path;
 
     $pageHeader = _wrap(t('Search results'),"H1");
+  
+    //Clear page header and page title in case of thematic search
+    //Only show header as a block on georaphic search and thematic search
+    if(  $_POST['searchtype'] == "thematicsearch"){
+        $pageHeader =
+            _wrap(
+                _wrap(
+                    $_POST['searchtitle'], "h1"
+                ),
+                "div", "panel"
+            );
+    }
 
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     if ($_SESSION['ndaSearch']['searchtype'] == "thematicsearch" ) {
