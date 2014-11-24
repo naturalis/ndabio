@@ -296,7 +296,6 @@
 
           <?php if ($show_service_menu): ?>
             <?php print $service_menu; ?>
-          </span>
           <?php endif; ?>
 
         </div>

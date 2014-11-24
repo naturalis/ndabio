@@ -1,4 +1,4 @@
-(function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
+ (function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
 
 
   // ---------------------------------------------------------
