@@ -78,11 +78,13 @@ function ndabio_menu() {
 
 function ndabio_searchthematic($var1, $stitle = "") {
   drupal_set_message("Thematic search");
+  session_unset();
   $_POST['searchtype'] = 'thematicsearch';
   $_POST['searchtitle'] = t($stitle);
-  //$_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
-  $_POST['term'] = $var1;
-  $_POST['theme'] = $var1;
+  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+  //$_POST['term'] = $var1;
+  $_POST['s_theme'] = $var1;
+  $_POST['m_theme'] = $var1;
 
   return ndabioresults_pass();
 }
