@@ -256,12 +256,18 @@ function ndaAdvancedSearch () {
     $pageHeader = _wrap(t('Search results'),"H1");
 
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    if ($_SESSION['ndaSearch']['searchtype'] == "thematicsearch" ) {
+      $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    }
+    else {
+      $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
 
-    // Subdivide specimen parameters for both result types
-    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+      // Subdivide specimen parameters for both result types
+      $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    
+      $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+      $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+    }
 //p($services);
 
     // Special case for specimen/search: unset this service if only geoShape is present;
