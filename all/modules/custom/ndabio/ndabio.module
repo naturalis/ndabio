@@ -77,10 +77,10 @@ function ndabio_menu() {
 }
 
 function ndabio_searchthematic($var1, $stitle = "") {
-  //drupal_set_message("Thematic search");
+  drupal_set_message("Thematic search");
   $_POST['searchtype'] = 'thematicsearch';
   $_POST['searchtitle'] = t($stitle);
-  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+  //$_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
   $_POST['term'] = $var1;
   $_POST['theme'] = $var1;
 
@@ -238,13 +238,6 @@ function ndabio_advanced_taxonomysearch() {
                 $_SESSION['ndaSearch']['gid'] : -1;
             $storedGeoShape = setStoredGeoShape();
 
-            /*
-                if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
-                    drupal_add_js("jQuery(document).ready(function() { $('nbabio-toggle').click(); plotMapArea('" . $_SESSION['ndaSearch']['gid'] . " ', ''); }", 'inline');
-                  } else if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-                    drupal_add_js("jQuery(document).ready(function() { plotDrawnArea('" . json_encode($_SESSION['ndaSearch']['geoShape']) . " ', ''); }", 'inline');
-                  }
-            */
             $loadold = 1;
         }
     }
@@ -282,7 +275,8 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname] = array(
         '#type' => 'fieldset',
         '#id' => "edit-$sysname",
-        '#attributes' => array( 'form_id' => 'ndabio_advanced_taxonomysearch')
+        //'#attributes' => array( 'form_id' => 'ndabio_advanced_taxonomysearch'),
+        '#collapsed' => ($loadold) ? FALSE : TRUE,
         //'#title' => $label,
       );
 
