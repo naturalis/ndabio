@@ -332,8 +332,9 @@ function deleteMarkers() {
 
 			$_search_areas_target.html( data );
 
-			// Handle click on area
-			$_search_areas_target.find('.row-area a').click(function() {
+			// Handle click on area-name
+      $_search_areas_target.find('.row-area a').click(function() {
+
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
