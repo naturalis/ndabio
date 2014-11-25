@@ -54,6 +54,7 @@ function bioportal_geo_install() {
 			$node->field_iso[$node->language][0]['value'] = $row[3];
 			$node->field_source[$node->language][0]['value'] = $row[4];
 			$node->field_type[$node->language][0]['value'] = $row[5];
+			$node->field_country_nl[$node->language][0]['value'] = $row[6];
 
 			$node = node_submit($node); // Prepare node for saving
 			node_save($node);
