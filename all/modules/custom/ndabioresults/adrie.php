@@ -23,8 +23,15 @@ function ndabioresults_config_form($form, &$form_state) {
     '#title' => t('Naturalis config')
   );
 
+  $form['ndabioresults_config']['ndabioresults_config_general'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('General NBA services'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => FALSE, 
+  );
+  
   //NBA Base URL
-  $form['ndabioresults_config']['ndabioresults_config_baseurl'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_baseurl'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA base URL'),
     '#default_value' => variable_get('ndabioresults_config_baseurl', NBABASEURL),
@@ -34,7 +41,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
   //Maximum results for initial "overview"
-  $form['ndabioresults_config']['ndabioresults_config_initialmaxresults'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxresults'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Initial max results'),
     '#default_value' => variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS),
@@ -44,7 +51,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
   //Maximum results for subsequent queries
-  $form['ndabioresults_config']['ndabioresults_config_maxresults'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxresults'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum results'),
     '#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
@@ -55,7 +62,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: default sort field
-  $form['ndabioresults_config']['ndabioresults_config_defaultsort'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsort'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Default sort field'),
     '#default_value' => variable_get('ndabioresults_config_defaultsort', NBADEFAULTSORT),
@@ -66,7 +73,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: default sort direction
-  $form['ndabioresults_config']['ndabioresults_config_defaultsortdirection'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsortdirection'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Default sort field direction'),
     '#default_value' => variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION),
@@ -77,7 +84,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: maximum results for subsequent queries
-  $form['ndabioresults_config']['ndabioresults_config_maxpagesinpaginator'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxpagesinpaginator'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum number of pages in the paginator'),
     '#default_value' => variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR),
@@ -87,8 +94,17 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
+  
+  $form['ndabioresults_config']['ndabioresults_config_specimen'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('NBA Specimen services'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => FALSE, 
+  );
+  
+
   //Constant: name of specimen service
-  $form['ndabioresults_config']['ndabioresults_config_namespecimenservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_namespecimenservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen service'),
     '#default_value' => variable_get('ndabioresults_config_namespecimenservice', NBASPECIMENSERVICE),
@@ -99,7 +115,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: name of specimen name service
-  $form['ndabioresults_config']['ndabioresults_config_specimennameservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimennameservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen name service'),
     '#default_value' => variable_get('ndabioresults_config_specimennameservice', NBASPECIMENNAMESERVICE),
@@ -110,7 +126,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: name of specimen detail service
-  $form['ndabioresults_config']['ndabioresults_config_specimendetailservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimendetailservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen detail service'),
     '#default_value' => variable_get('ndabioresults_config_specimendetailservice', NBASPECIMENDETAILSERVICE),
@@ -120,19 +136,18 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: name of multimedia per specimen service
-  $form['ndabioresults_config']['ndabioresults_config_specimenmultimediaservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of multimedia per specimen service'),
-    '#default_value' => variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of multimedia per specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENMULTIMEDIASERVICE,
-    '#required' => TRUE
+  
+  
+  $form['ndabioresults_config']['ndabioresults_config_taxon'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('NBA Taxon services'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => FALSE, 
   );
+  
 
   //Constant: name of taxon service
-  $form['ndabioresults_config']['ndabioresults_config_taxonservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_taxon']['ndabioresults_config_taxonservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of taxon service'),
     '#default_value' => variable_get('ndabioresults_config_taxonservice', NBATAXONSERVICE),
@@ -143,7 +158,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: name of taxon detail service
-  $form['ndabioresults_config']['ndabioresults_config_taxondetailservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_taxon']['ndabioresults_config_taxondetailservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of taxon detail service'),
     '#default_value' => variable_get('ndabioresults_config_taxondetailservice', NBATAXONDETAILSERVICE),
@@ -153,9 +168,28 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
+ 
+  $form['ndabioresults_config']['ndabioresults_config_mm'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('NBA Multimedia servives'),
+    '#collapsible' => TRUE, 
+    '#collapsed' => FALSE, 
+  );
+  
+
+  //Constant: name of multimedia per specimen service
+  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_specimenmultimediaservice'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Name of multimedia per specimen service'),
+    '#default_value' => variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE),
+    '#size' => 50,
+    '#maxlength' => 100,
+    '#description' => t('Name of multimedia per specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENMULTIMEDIASERVICE,
+    '#required' => TRUE
+  );
 
   //Constant: name of multimedia per taxon service
-  $form['ndabioresults_config']['ndabioresults_config_taxonmultimediaservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_taxonmultimediaservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of multimedia per taxon service'),
     '#default_value' => variable_get('ndabioresults_config_taxonmultimediaservice', NBATAXONMULTIMEDIASERVICE),
@@ -166,7 +200,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   //Constant: name of multimedia service
-  $form['ndabioresults_config']['ndabioresults_config_multimediaservice'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_multimediaservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of multimedia service'),
     '#default_value' => variable_get('ndabioresults_config_multimediaservice', NBAMULTIMEDIASERVICE),
