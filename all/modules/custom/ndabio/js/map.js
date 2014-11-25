@@ -223,6 +223,7 @@ function plotMapArea(gid, baseurl) {
 				map.data.addGeoJson(feature);
 				map.data.setStyle(mapStyle);
 				zoom(map);
+				jQuery('.geo-search-area-name').html(json.locality);
 			} else {
 				alert('Failed to retrieve area data.');
 			}
@@ -249,6 +250,7 @@ function setDrawingMode(mode) {
 */
 
 function clearMap() {
+	jQuery('.geo-search-area-name').html('');
     clearMapSessionData();
 	map.data.forEach(function(_feature) {
 		map.data.remove(_feature);
@@ -353,7 +355,6 @@ function deleteMarkers() {
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
-				$('.geo-search-area-name').html( $(this).html()  );
 				plotMapArea(this.id.substr(4),str_base_path);
 				return false;
 
