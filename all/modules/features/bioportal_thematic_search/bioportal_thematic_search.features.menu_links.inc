@@ -10,6 +10,26 @@
 function bioportal_thematic_search_menu_default_menu_links() {
   $menu_links = array();
 
+  // Exported menu link: main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb
+  $menu_links['main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
+    'router_path' => 'uuid',
+    'link_title' => 'About',
+    'options' => array(
+      'identifier' => 'main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
+      'alter' => TRUE,
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -48,
+  );
   // Exported menu link: main-menu_arts-collection:explore/arts/Arts collection
   $menu_links['main-menu_arts-collection:explore/arts/Arts collection'] = array(
     'menu_name' => 'main-menu',
@@ -82,6 +102,29 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
+  // Exported menu link: main-menu_explore-highlights:<front>
+  $menu_links['main-menu_explore-highlights:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Explore highlights',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'main-menu_explore-highlights:<front>',
+      'alter' => TRUE,
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -50,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+  );
   // Exported menu link: main-menu_extinct-birds:explore/extinct-birds/Extinct birds
   $menu_links['main-menu_extinct-birds:explore/extinct-birds/Extinct birds'] = array(
     'menu_name' => 'main-menu',
@@ -153,6 +196,49 @@ function bioportal_thematic_search_menu_default_menu_links() {
     'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
+  );
+  // Exported menu link: main-menu_online-verzamelingen:<front>
+  $menu_links['main-menu_online-verzamelingen:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Online verzamelingen',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_online-verzamelingen:<front>',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -49,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: main-menu_over:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb
+  $menu_links['main-menu_over:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
+    'router_path' => 'uuid',
+    'link_title' => 'Over',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_over:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -47,
   );
   // Exported menu link: main-menu_prentencollectie:explore/arts/Prentencollectie
   $menu_links['main-menu_prentencollectie:explore/arts/Prentencollectie'] = array(
@@ -252,12 +338,16 @@ function bioportal_thematic_search_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
+  t('About');
   t('Arts collection');
   t('Beekbergerwoud collectie');
   t('Beekbergerwoud collection');
+  t('Explore highlights');
   t('Extinct birds');
   t('Martin collectie van fossiele schelpen');
   t('Martin collection of fossil shell');
+  t('Online verzamelingen');
+  t('Over');
   t('Prentencollectie');
   t('Siebold collectie');
   t('Siebold collection');
