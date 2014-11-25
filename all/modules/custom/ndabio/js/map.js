@@ -60,9 +60,9 @@ function getRectangleGeometry() {
 
 function initialize() {
 	var mapOptions = {
-	  center: new google.maps.LatLng(52.1, 5),
+	  center: new google.maps.LatLng(52.15282, 5.27396),
 	  mapTypeId: 'satellite',
-	  zoom: 8
+	  zoom: 7
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
@@ -231,6 +231,17 @@ function plotMapArea(gid, baseurl) {
 	});
 }
 
+function clearMapSessionData() {
+	jQuery.ajax({
+		url: str_base_path + 'naturalis/clear_map_data',
+		type: "GET",
+		dataType: "text",
+		success: function (result) {
+			//console.log(result);
+		}
+	});
+}
+
 /*
 function setDrawingMode(mode) {
 	drawingManager.setDrawingMode(mode);
@@ -238,6 +249,7 @@ function setDrawingMode(mode) {
 */
 
 function clearMap() {
+    clearMapSessionData();
 	map.data.forEach(function(_feature) {
 		map.data.remove(_feature);
 	});
@@ -257,6 +269,7 @@ function zoom(map) {
     processPoints(feature.getGeometry(), bounds.extend, bounds);
   });
   map.fitBounds(bounds);
+  //alert(bounds.getCenter());
 }
 
 /**
@@ -315,7 +328,9 @@ function deleteMarkers() {
 
 
 	// Load VIEWS with areas upon click on area-type
-	$("a[data-rel='ajax']").click(function(){ str_url = $(this).attr("href");
+	$("a[data-rel='ajax']").click(function(){
+
+		str_url = $(this).attr("href");
 
 		var $_active_link = $(this);
 
@@ -333,7 +348,7 @@ function deleteMarkers() {
 			$_search_areas_target.html( data );
 
 			// Handle click on area-name
-      $_search_areas_target.find('.row-area a').click(function() {
+			$_search_areas_target.find('.row-area a').click(function() {
 
 
 				$(".row-area a").removeClass("active");
@@ -353,7 +368,6 @@ function deleteMarkers() {
 	$("a[data-rel='ajax']")
 		.first()
 			.trigger("click");
-
 
 	// Filter results when typing
 	$_geo_filter.on("keyup", function(){

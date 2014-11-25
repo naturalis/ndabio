@@ -73,6 +73,12 @@ function ndabio_menu() {
    'type' => MENU_CALLBACK,
   );
 
+    $items['naturalis/clear_map_data'] = array(
+   'page callback' => 'ndabio_clear_map_data_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -89,6 +95,12 @@ function ndabio_searchthematic($var1, $stitle = "") {
   return ndabioresults_pass();
 }
 
+function ndabio_clear_map_data_callback() {
+    $_SESSION['ndaSearch']['geoShape'] = false;
+    $_SESSION['ndaSearch']['location'] = false;
+    $_SESSION['ndaSearch']['gid'] = false;
+    die('Session data cleared');
+}
 
 /**
 * Output a json formatted detail page with geo coordinates based on the nid passed in the url.
