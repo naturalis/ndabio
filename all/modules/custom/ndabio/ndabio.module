@@ -458,13 +458,13 @@ function ndabio_advanced_taxonomysearch() {
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
       "  <ul>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='$base_root/areas/country?response_type=embed'>" . t('Countries') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='$base_root/areas/municipality?response_type=embed'>" . t('Municipality') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed'>" . t('Municipality') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='$base_root/areas/nature?response_type=embed'>" . t('Nature') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed'>" . t('Nature') . "</a>" .
       "    </li>" .
       "  </ul>" .
       "</div>";
