@@ -14,23 +14,19 @@ function printHeaders ($headers, $self) {
         $i++;
         $output .= "<th class='$class'>";
 
-        if ($header['sort'] == 1 && $_SESSION['ndaRequestType'] != 'form') {
+        if (isset($header['sort']) && $_SESSION['ndaRequestType'] != 'form') {
 			// Selected header
-			if ($field == getSortDirection($self)) {
-				//$header['url'] .= ($p['sortDirection'] == 'asc' ? '&desc' : '&asc');
-				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
-					$header['label'] . "</a>" .
-					"<a href='" . printDrupalLink($header['url']) . "'>" .
-					"<span class='icon-sort_sortable" . $header['icon'] .
-					(getSortDirection($self) == 'DESC' ? "-alt" : "") . "'></span></a>";
-			// Other headers
+			if ($field == getSort($self)) {
+			    $sortDir = getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC';
+			     $sortDir = getSortDirection($self);
+			    $output .= '<a href="' . printDrupalLink($header['url']) . '">' . $header['label'] . "</a>\n" .
+			       '<a href="' . printDrupalLink($header['url']) . '"><span class="' . $header['icon'][$sortDir] .
+			       '"></span></a>';
+			    // Other headers
 			} else {
-				//$header['url'] .= '&desc';
-				$output .= "<a href='" . printDrupalLink($header['url']) . "'>" .
-					$header['label'] . "</a>" .
-					"<a href='" . printDrupalLink($header['url']) . "'>" .
-					"<span class='icon-sort_sortable'></span></a>";
-			}
+			    $output .= '<a href="' . printDrupalLink($header['url']) . '">' . $header['label'] . "</a>\n" .
+			        '<a href="' . printDrupalLink($header['url']) . '"><span class="icon-sort_sortable"></span></a>';
+		    }
 		} else {
 			$output .= $header['label'];
 		}

@@ -13,24 +13,32 @@ function printSpecimens ($data) {
     $headers = array(
 		'unitID' => array(
 			'label' => t('Specimen'),
-			'sort' => 1,
-			'icon' => 'icon-sort_a_z',
+			'sort' => 'ASC',
+			'icon' => array(
+			    'ASC' => 'icon-sort_a_z',
+			    'DESC' => 'icon-sort_z_a'
+			),
 			'url' => setSortUrl('unitID', 'ASC', $data['self'])
 		),
-		'fullScientificname' => array(
+		'identifications.scientificName.fullScientificName' => array(
 			'label' => t('Species'),
-			'sort' => 1,
-			'icon' => 'icon-sort_a_z',
-			'url' => setSortUrl('fullScientificname', 'ASC', $data['self'])
+			'sort' => 'ASC',
+			'icon' => array(
+			    'ASC' => 'icon-sort_a_z',
+			    'DESC' => 'icon-sort_z_a'
+			),
+			'url' => setSortUrl('identifications.scientificName.fullScientificName', 'ASC', $data['self'])
 		),
 		'foundIn' => array(
-			'label' => t('Found in'),
-			'sort' => 0
+			'label' => t('Found in')
 		),
 		'_score' => array(
 			'label' => t('Match'),
-			'sort' => 1,
-			'icon' => 'icon-sort_much_little',
+			'sort' => 'DESC',
+			'icon' => array(
+			    'ASC' => 'icon-sort_little_much',
+			    'DESC' => 'icon-sort_much_little'
+			),
 			'url' => setSortUrl('_score', 'DESC', $data['self'])
 		)
 	);

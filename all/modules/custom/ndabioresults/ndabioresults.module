@@ -746,7 +746,7 @@ function parseSpecimenDetail ($json) {
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
-	$output['navigation'] = getNavigation($data);
+//	$output['navigation'] = getNavigation($data);
 //p($data);
 
 	return $output;

@@ -18,24 +18,28 @@ function printTaxa ($data) {
     }
 
     $headers = array(
-    	'identifyingEpithets' => array(
+    	'acceptedName.fullScientificName' => array(
     		'label' => t('Name'),
-    		'sort' => 1,
-    		'icon' => 'icon-sort_a_z',
-    		'url' => setSortUrl('identifyingEpithets', 'ASC', $data['self'])
+    		'sort' => 'ASC',
+    		'icon' => array(
+			    'ASC' => 'icon-sort_a_z',
+			    'DESC' => 'icon-sort_z_a'
+			),
+    		'url' => setSortUrl('acceptedName.fullScientificName', 'ASC', $data['self'])
     	),
     	'description' => array(
-    		'label' => t('Description'),
-    		'sort' => 0
+    		'label' => t('Description')
     	),
     	'foundIn' => array(
-    		'label' => t('Found in'),
-    		'sort' => 0
+    		'label' => t('Found in')
     	),
     	'_score' => array(
     		'label' => t('Match'),
-    		'sort' => 1,
-    		'icon' => 'icon-sort_much_little',
+    		'sort' => 'DESC',
+    		'icon' => array(
+			    'ASC' => 'icon-sort_little_much',
+			    'DESC' => 'icon-sort_much_little'
+			),
     		'url' => setSortUrl('_score', 'DESC', $data['self'])
     	)
     );
