@@ -19,7 +19,7 @@ function bioportal_geo_install() {
 	ini_set('auto_detect_line_endings', true);
   set_time_limit(0);
 
-	$csvFile = drupal_get_path('module', 'bioportal_geo') . '/data/bioportal_areas.csv';
+	$csvFile = drupal_get_path('module', 'bioportal_geo') . '/bioportal_areas.csv';
 	if (!file_exists($csvFile)) {
 		handleError('Cannot read file ' . $csvFile);
 	}
