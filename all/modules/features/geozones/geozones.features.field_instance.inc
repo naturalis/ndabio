@@ -10,6 +10,46 @@
 function geozones_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'node-national_search_area-field_country_nl'
+  $field_instances['node-national_search_area-field_country_nl'] = array(
+    'bundle' => 'national_search_area',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_country_nl',
+    'label' => 'Country NL',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-national_search_area-field_geojson'
   $field_instances['node-national_search_area-field_geojson'] = array(
     'bundle' => 'national_search_area',
@@ -58,7 +98,7 @@ function geozones_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -98,7 +138,7 @@ function geozones_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -138,7 +178,7 @@ function geozones_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -172,6 +212,7 @@ function geozones_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Country NL');
   t('GeoJson');
   t('Iso');
   t('Source');
