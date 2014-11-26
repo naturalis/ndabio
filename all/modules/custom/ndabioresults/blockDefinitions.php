@@ -41,7 +41,7 @@ function ndabioresults_block_info() {
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => "nba/result\nnba/result*",
     'region' => "sidebar_first",
-    'status' => TRUE,
+    'status' => FALSE,
   );
   return $blocks;
 }
