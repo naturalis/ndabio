@@ -24,7 +24,7 @@ function getShapeGeometry() {
 	if (selectedShape.type == 'polygon') {
 		return getPolygonGeometry();
 	}
-  return getRectangleGeometry();
+	return getRectangleGeometry();
 }
 
 function getPolygonGeometry() {
@@ -125,8 +125,6 @@ function initializeSpecimens() {
 	map.data.addGeoJson(feature);
 	map.data.setStyle(mapStyle);
 	zoom(map);
-
-
 
 	jQuery.each(specimenMarkers, function() {
 		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
