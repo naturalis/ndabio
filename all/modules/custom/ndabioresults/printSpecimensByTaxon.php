@@ -64,16 +64,17 @@ function printSpecimensByTaxon ($data) {
     foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";
 		// Name
-		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['name'] . "</a>" .
-			(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') .
-			"</td>";
+		$url = printDrupalLink($row['url']);
+
+		$output .= "<td>" . "<a href='" . (!empty($url) ? $url : '#') . "'>" . $row['name'] . "</a>" .
+		    (!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') . "</td>";
 		// Number (and collection type)
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
 		// Map icon
 		$output .= "<td>" .
 		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) ?
 		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
-		      '&fullScientificName=' . urlencode($row['fullScientificName'])) .
+		      '&identifications@scientificName@fullScientificName@raw=' . urlencode($row['fullScientificName'])) .
 		      "' class='icon-location'></a>" : '') .
 		  "</td>";
 		// Source(s)

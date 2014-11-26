@@ -160,9 +160,8 @@ function ndabioresults_pass ($args = "") {
     // Forward directly to appropriate service
     else if (isset($_GET['nba_request'])) {
         // @todo: check direct url for injection
-
         return ndaDirectRequest(urldecode($_GET['nba_request']));
-    }
+     }
     // If both POST and SESSION are empty we have a problem...
     else {
         // Probably best to redirect gracefully to search page?
@@ -183,7 +182,7 @@ function ndabioresults_pass ($args = "") {
  */
 function ndaSimpleSearch () {
     $pageHeader = _wrap(t('Search results'),"H1");
-  
+
     // Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
     if(  $_POST['searchtype'] == "thematicsearch"){
@@ -251,7 +250,7 @@ function ndaAdvancedSearch () {
     global $base_root, $base_path;
 
     $pageHeader = _wrap(t('Search results'),"H1");
-  
+
     //Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
     if(  $_POST['searchtype'] == "thematicsearch"){
@@ -274,7 +273,7 @@ function ndaAdvancedSearch () {
 
       // Subdivide specimen parameters for both result types
       $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    
+
       $services[specimenService()] = setSpecimenParameters($sP, specimenService());
       $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
     }
@@ -344,6 +343,11 @@ function ndaDirectRequest ($r) {
             // Add/reset maxResults to default
             $q['_maxResults'] = maxResults();
 
+            // Special case for specimens on map: remove _sort and _offset
+            if (isset($q['showMap'])) {
+                unset($q['_sort'], $q['_offset']);
+            }
+
             // Set geoShape from SESSION if geoShape is part of the request
             if (isset($q['_geoShape']) && $q['_geoShape'] == '[session]' &&
                 isset($_SESSION['ndaStoredGeoShape'])) {
@@ -353,7 +357,9 @@ function ndaDirectRequest ($r) {
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
     		$channels[0]['method'] = $d['method'];
-    		$channels[0]['postfields'] = http_build_query($q);
+    		// If ES request parameter contains dots, these hsould be replaced with @ and reverted to
+    		// dots at this point
+    		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
     		// Set session variable with last used service;
             // used to determine current detail page
             $_SESSION['ndaCurrentService'] = $service;
@@ -583,7 +589,6 @@ function parseSpecimenMediaDetail ($json) {
 	return $output;
 }
 
-
 function getSpecimenMediaTaxonNames ($row) {
 	foreach ($row->result->associatedSpecimen->identifications as $i => $name) {
 		$output[] = array(
@@ -591,13 +596,35 @@ function getSpecimenMediaTaxonNames ($row) {
 				$name->scientificName->fullScientificName,
 				$name->scientificName
 			),
-			'url' => getSpecimenMediaTaxonUrl($row, $i)
+			'url' => getSpecimenTaxonUrl($row->links, $name->scientificName)
 		);
 	}
 	return isset($output) ? $output : false;
 }
 
 
+// Returns url for a taxon associated with the specimen
+function getSpecimenTaxonUrl ($links, $scientificName) {
+//    p($links);
+//    p($scientificName);
+	if (!empty($links)) {
+		foreach ($links as $link) {
+			if ($link->rel == '_taxon') {
+			    // All parts in query should be present in $scientificName object
+			    $parts = parse_url(urldecode($link->href));
+                parse_str($parts['query'], $q);
+                $diff = array_diff($q, (array)$scientificName);
+                if (empty($diff)) {
+                    return $link->href;
+                }
+			}
+		}
+	}
+	return null;
+}
+
+
+/*
 function getSpecimenMediaTaxonUrl ($row, $i) {
 	if (!empty($row->links)) {
 		foreach ($row->links as $link) {
@@ -608,6 +635,7 @@ function getSpecimenMediaTaxonUrl ($row, $i) {
 	}
 	return null;
 }
+*/
 
 include 'printSpecimenMediaDetail.php';
 
@@ -743,7 +771,7 @@ function parseSpecimenDetail ($json) {
 	}
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
 	   $data->searchResults[0]->result->sourceSystem->name : '';
-	$output['names'] = getSpecimenTaxonNames($data->searchResults[0]);
+	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
@@ -751,6 +779,32 @@ function parseSpecimenDetail ($json) {
 
 	return $output;
 }
+
+
+
+// Returns taxon names for specimens plus their url found by other fields but name
+// (for specimens found by taxon name only a single name is returned!)
+function getSpecimenTaxonNames ($row, $links = false) {
+    if (!isset($row->result->identifications) || empty($row->result->identifications)) {
+        return array();
+    }
+    if (!$links) {
+        $links = $row->links;
+    }
+    foreach ($row->result->identifications as $i => $id) {
+		$output[] = array(
+			'name' => formatScientificName(
+				$id->scientificName->fullScientificName,
+				$id->scientificName
+			),
+			'url' => getSpecimenTaxonUrl($links, $id->scientificName)
+		);
+	}
+	return isset($output) ? $output : false;
+}
+
+
+
 
 
 // Return previous/next links from result set
@@ -830,6 +884,7 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
+//p($data);
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
@@ -914,27 +969,6 @@ include 'printHits.php';
 
 include 'printSpecimenTaxa.php';
 
-
-// Returns taxon names for specimens plus their url found by other fields but name
-// (for specimens found by taxon name only a single name is returned!)
-function getSpecimenTaxonNames ($row) {
-    if (!isset($row->result->identifications) || empty($row->result->identifications)) {
-        return array();
-    }
-	foreach ($row->result->identifications as $i => $id) {
-		$output[] = array(
-			'name' => formatScientificName(
-				$id->scientificName->fullScientificName,
-				$id->scientificName
-			),
-			'url' => getSpecimenTaxonUrl($row, $i)
-		);
-	}
-	return isset($output) ? $output : false;
-}
-
-
-
 // Returns registration number for multimedia
 function getMultimediaUnitId ($row, $searchTerms = false) {
     if (isset($row->result->associatedSpecimen->unitID)) {
@@ -967,19 +1001,6 @@ function getMultimediaTaxon ($row, $searchTerms = false) {
             $output;
     }
     return null;
-}
-
-
-// Returns url for a taxon associated with the specimen
-function getSpecimenTaxonUrl ($row, $i) {
-	if (!empty($row->links)) {
-		foreach ($row->links as $link) {
-			if ($link->rel == "identifications[{$i}].scientificName.fullScientificName") {
-				return $link->href;
-			}
-		}
-	}
-	return null;
 }
 
 
@@ -1017,7 +1038,8 @@ function parseSpecimensByTaxon ($json) {
 			$row->searchResults[0]->result->identifications[0]->scientificName,
 		    $output['searchTerms']
 		);
-		$d['url'] = isset($row->links[0]->href) ? $row->links[0]->href : null;
+		$d['url'] = getSpecimenTaxonUrl($row->searchResults[0]->links,
+		    $row->searchResults[0]->result->identifications[0]->scientificName);
 		$d['fullScientificName'] = $row->sharedValue;
 		$d['count'] = count($row->searchResults);
 		$d['sources'] = getSources($row);
@@ -1071,8 +1093,8 @@ function parseSpecimensByMap ($data) {
     		$d['date'] = $gatheringEvent['dateTimeBegin'];
     		$d['lat'] = $gatheringEvent['siteCoordinates']['lat'];
     		$d['lon'] = $gatheringEvent['siteCoordinates']['lon'];
+    		$output['results'][] = $d;
 		}
-		$output['results'][] = $d;
 	}
 
 	$output['self'] = getSelfLink($data);

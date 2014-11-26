@@ -23,12 +23,16 @@ function printSpecimenDetail ($data) {
 
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
+	$hideFields = array(
+        'licenceType',
+        'licence',
+	    'otherSpecimens'
+	);
 	$fieldOrder = array(
 	   'unitID',
 	   'names',
 	   'source',
-	   'assemblageID',
-	   'otherSpecimens'
+	   'assemblageID'
 		// etc
 	);
 	// Reorder input array
@@ -41,8 +45,10 @@ function printSpecimenDetail ($data) {
 	$output .= "<div class='property-list'>";
 
 	foreach ($data as $field => $value) {
+	    if (in_array($field, $hideFields)) {
+	        continue;
+	    }
 		if (is_array($value)) {
-
 			// Taxon name
 			if ($field == 'names') {
 				$output .= printNamesWithLinks($value, 'species');
@@ -56,10 +62,12 @@ function printSpecimenDetail ($data) {
                     isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : '');
 			    $output .= printDL(translateNdaField('localityText'),
 			        isset($value['localityText']) ? $value['localityText'] : '');
-                $output .= printDL(translateNdaField('siteCoordinates'),
-                    isset($value['siteCoordinates']) ?
-                    '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
-                    $value['siteCoordinates']['lon'] . ']' : '');
+			    if (!empty($value['siteCoordinates'])) {
+                    $output .= printDL(translateNdaField('siteCoordinates'),
+                        isset($value['siteCoordinates']) ?
+                        '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
+                        $value['siteCoordinates']['lon'] . ']' : '');
+			    }
 			}
 		} else {
 			$output .= printDL(translateNdaField($field), $value);

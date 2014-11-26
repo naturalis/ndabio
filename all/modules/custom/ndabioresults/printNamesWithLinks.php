@@ -6,7 +6,7 @@ function printNamesWithLinks ($details, $fieldLabel) {
 	foreach ($details as $i => $detail) {
 		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
 		$t = !empty($detail['url']) ?
-			'<a href="' . printDrupalLink($detail['url']) . '">$name</a>' : $name;
+			'<a href="' . printDrupalLink($detail['url']) . '">' . $name . '</a>' : $name;
 		$output .= printDL(($i == 0 ? t($fieldLabel) : ''), $t);
 	}
 	return !empty($output) ? $output : null;

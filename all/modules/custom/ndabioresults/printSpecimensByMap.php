@@ -6,7 +6,7 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimensByMap ($data) {
-
+//p($data);
     // Add Google Maps scripts from ndabio module (REQUIRED!)
     global $base_root, $base_path;
     $path = drupal_get_path('module', 'ndabio');
