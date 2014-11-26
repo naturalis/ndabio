@@ -296,7 +296,7 @@ function ndabio_advanced_taxonomysearch() {
       
       $form[$sysname]['reset'] = array(
         '#type' => 'button',
-        '#value' => t('Reset'),
+        '#value' => 'Reset',
         '#nowrapper' => TRUE,
         '#attributes' => array(
           'onclick' => 'this.form.reset(); return false;',
