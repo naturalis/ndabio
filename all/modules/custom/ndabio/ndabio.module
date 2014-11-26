@@ -293,7 +293,18 @@ function ndabio_advanced_taxonomysearch() {
         '#collapsed' => ($loadold) ? FALSE : TRUE,
         //'#title' => $label,
       );
-
+      
+      $form[$sysname]['reset'] = array(
+        '#type' => 'button',
+        '#value' => t('Reset'),
+        '#nowrapper' => TRUE,
+        '#attributes' => array(
+          'onclick' => 'this.form.reset(); return false;',
+          'class' => array("reset-button"),
+        )
+      );
+      
+   
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
