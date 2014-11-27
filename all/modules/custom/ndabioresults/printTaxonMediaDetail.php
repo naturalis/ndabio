@@ -1,7 +1,7 @@
 <?php
 
 function printTaxonMediaDetail ($data) {
-    p($data);
+//p($data);
 
   $output  = _wrap( t("Media item")   , "div", "category");
   $output .= _wrap( basename(  $data['imgSrc']  ) , "h2"  );
