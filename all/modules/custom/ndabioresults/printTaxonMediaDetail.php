@@ -1,6 +1,7 @@
 <?php
 
 function printTaxonMediaDetail ($data) {
+    p($data);
 
   $output  = _wrap( t("Media item")   , "div", "category");
   $output .= _wrap( basename(  $data['imgSrc']  ) , "h2"  );
@@ -9,10 +10,9 @@ function printTaxonMediaDetail ($data) {
 		"' title=''" . $data['title'] . ">";
 
   $output .= "<div class='property-list'>";
-
+  $output .= printNamesWithLinks($data['names'], 'species');
 
 	$fields = array(
-        'acceptedName',
 	    'source',
     	'creator',
 	    'title',

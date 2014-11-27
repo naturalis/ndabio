@@ -575,7 +575,7 @@ function parseSpecimenMediaDetail ($json) {
 
 	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
-	$output['names'] = getSpecimenMediaTaxonNames($row);
+	$output['names'] = getSpecimensMultimediaNames($row);
 	$output['unitID'] = $row->result->associatedSpecimen->unitID;
 	$output['title'] = $row->result->title;
 	$output['description'] = $row->result->description;
@@ -590,14 +590,14 @@ function parseSpecimenMediaDetail ($json) {
 	return $output;
 }
 
-function getSpecimenMediaTaxonNames ($row) {
+function getSpecimensMultimediaNames ($row) {
 	foreach ($row->result->associatedSpecimen->identifications as $i => $name) {
 		$output[] = array(
 			'name' => formatScientificName(
 				$name->scientificName->fullScientificName,
 				$name->scientificName
 			),
-			'url' => getSpecimenTaxonUrl($row->links, $name->scientificName)
+			'url' => getTaxonUrl($row->links, $name->scientificName)
 		);
 	}
 	return isset($output) ? $output : false;
@@ -605,9 +605,10 @@ function getSpecimenMediaTaxonNames ($row) {
 
 
 // Returns url for a taxon associated with the specimen
-function getSpecimenTaxonUrl ($links, $scientificName) {
+function getTaxonUrl ($links, $scientificName) {
 //    p($links);
-//    p($scientificName);
+//   p($scientificName);
+ //   die();
 	if (!empty($links)) {
 		foreach ($links as $link) {
 			if ($link->rel == '_taxon') {
@@ -652,6 +653,7 @@ function parseTaxonMediaDetail ($json) {
 		$row->result->associatedTaxon->acceptedName->fullScientificName,
 		$row->result->associatedTaxon->acceptedName
 	);
+	$output['names'] = getTaxonMultimediaNames($row);
 	$output['navigation'] = getNavigation($data);
 	$output['title'] = $row->result->title;
 	$output['caption'] = $row->result->caption;
@@ -665,6 +667,22 @@ function parseTaxonMediaDetail ($json) {
 //p($data);
 	return $output;
 }
+
+
+
+function getTaxonMultimediaNames ($row) {
+	if (!empty($row->result->associatedTaxon->acceptedName)) {
+	    $output[] = array(
+    		'name' => formatScientificName(
+    			$row->result->associatedTaxon->acceptedName->fullScientificName,
+    			$row->result->associatedTaxon->acceptedName
+    		),
+    		'url' => getTaxonUrl($row->links, $row->result->associatedTaxon->acceptedName)
+    	);
+	}
+	return isset($output) ? $output : false;
+}
+
 
 
 include 'printTaxonMediaDetail.php';
@@ -798,7 +816,7 @@ function getSpecimenTaxonNames ($row, $links = false) {
 				$id->scientificName->fullScientificName,
 				$id->scientificName
 			),
-			'url' => getSpecimenTaxonUrl($links, $id->scientificName)
+			'url' => getTaxonUrl($links, $id->scientificName)
 		);
 	}
 	return isset($output) ? $output : false;
@@ -1039,7 +1057,7 @@ function parseSpecimensByTaxon ($json) {
 			$row->searchResults[0]->result->identifications[0]->scientificName,
 		    $output['searchTerms']
 		);
-		$d['url'] = getSpecimenTaxonUrl($row->searchResults[0]->links,
+		$d['url'] = getTaxonUrl($row->searchResults[0]->links,
 		    $row->searchResults[0]->result->identifications[0]->scientificName);
 		$d['fullScientificName'] = $row->sharedValue;
 		$d['count'] = count($row->searchResults);
@@ -1544,7 +1562,8 @@ function decorateDescription ($row) {
 
 // Decorate score in result table
 function decorateScore ($score) {
-	$score = round($score * 100);
+    // Reset score so always one square is filled
+    $score = $score < 20 ? 20 : $score;
 	$roundScore = round( $score / 20 );
   $result = "<span class='score' title='$score %'>";
 
