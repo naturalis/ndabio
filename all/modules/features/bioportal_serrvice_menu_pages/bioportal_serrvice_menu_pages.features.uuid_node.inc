@@ -41,8 +41,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-21 12:58:21 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
+  'date' => '2014-10-21 14:58:21 +0200',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'Help',
@@ -170,8 +170,54 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-21 12:37:22 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
+  'date' => '2014-10-21 14:37:22 +0200',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+);
+  $nodes[] = array(
+  'title' => 'API',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'en',
+  'created' => 1417081488,
+  'tnid' => 0,
+  'translate' => 0,
+  'uuid' => '400c73b8-5ad3-44eb-a513-c019e8ef8fce',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>De Naturalis API (Application Programming Interface) is een nieuwe, state-of-the-art service voor applicatieontwikkelaars. Via de API stelt het Naturalis collectie- en andere content en (hoge resolutie) afbeeldingen beschikbaar om te gebruiken in bijvoorbeeld apps of webtoepassingen.</p>
+
+<h2>API</h2>
+
+<p>De live website API (met een live koppeling op het websiteplatform) maakt alle kracht van de Award-winnende Naturalis website direct toegankelijk voor een grote groep ontwikkelaars. Met name het zoeken in de collectie, de ontdek de collectie pagina’s, de Rijksstudio gebruikersverzamelingen en de getilede beelden om diep te kunnen inzoomen op een kunstwerk, bieden vele interessante mogelijkheden. Daarnaast is er bijvoorbeeld ook agenda-informatie beschikbaar.<br />
+De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen dat gebruik maakt van de rijke en aantrekkelijke Naturalis content.</p>
+
+<h2>Toegang tot de API</h2>
+
+<p>Om toegang te krijgen tot de data en afbeeldingen dien je een API key aan te vragen. Dan kan je doen bij bij je geavanceerde instellingen in je Rijksstudio account (https://www.Naturalis.nl/rijksstudio ). Je krijg dan direct een code. Deze code heb je nodig om gebruik te maken van de api\'s.</p>
+
+<p>Voor vragen en opmerkingen kun je mailen met: website@Naturalis.nl</p>
+
+<p><a href="http://Naturalis.github.io/">Meer informatie over de API</a> (Op Github, Engelstalig)</p>
+
+<h2>OAI API</h2>
+
+<p>Sinds 2011 biedt het Naturalis ook een API aan met het zogenaamde OAI protocol (Open Achives Initiative). OAI is een standaard die in de culturele sector wordt gebruikt door net name organisaties zoals Europeana, Koninklijke Bibliotheek en het Instituut voor Beeld &amp; Geluid.<br />
+<a href="https://www.Naturalis.nl/nl/api/uitleg-Naturalis-oai-api">Meer informatie over de OAI API</a></p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'date' => '2014-11-27 10:44:48 +0100',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'Colophon',
@@ -208,8 +254,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-21 12:41:00 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
+  'date' => '2014-10-21 14:41:00 +0200',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'About',
@@ -246,8 +292,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-22 13:37:20 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
+  'date' => '2014-10-22 15:37:20 +0200',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'Contact',
@@ -313,54 +359,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-22 13:22:53 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
-);
-  $nodes[] = array(
-  'title' => 'For developers',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_page',
-  'language' => 'und',
-  'created' => 1413984718,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'ee159a0a-2bc8-44bd-aac9-33ce07af5273',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De Naturalis API (Application Programming Interface) is een nieuwe, state-of-the-art service voor applicatieontwikkelaars. Via de API stelt het Naturalis collectie- en andere content en (hoge resolutie) afbeeldingen beschikbaar om te gebruiken in bijvoorbeeld apps of webtoepassingen.</p>
-
-<h2>API</h2>
-
-<p>De live website API (met een live koppeling op het websiteplatform) maakt alle kracht van de Award-winnende Naturalis website direct toegankelijk voor een grote groep ontwikkelaars. Met name het zoeken in de collectie, de ontdek de collectie pagina’s, de Rijksstudio gebruikersverzamelingen en de getilede beelden om diep te kunnen inzoomen op een kunstwerk, bieden vele interessante mogelijkheden. Daarnaast is er bijvoorbeeld ook agenda-informatie beschikbaar.<br />
-De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen dat gebruik maakt van de rijke en aantrekkelijke Naturalis content.</p>
-
-<h2>Toegang tot de API</h2>
-
-<p>Om toegang te krijgen tot de data en afbeeldingen dien je een API key aan te vragen. Dan kan je doen bij bij je geavanceerde instellingen in je Rijksstudio account (https://www.Naturalis.nl/rijksstudio ). Je krijg dan direct een code. Deze code heb je nodig om gebruik te maken van de api\'s.</p>
-
-<p>Voor vragen en opmerkingen kun je mailen met: website@Naturalis.nl</p>
-
-<p><a href="http://Naturalis.github.io/">Meer informatie over de API</a> (Op Github, Engelstalig)</p>
-
-<h2>OAI API</h2>
-
-<p>Sinds 2011 biedt het Naturalis ook een API aan met het zogenaamde OAI protocol (Open Achives Initiative). OAI is een standaard die in de culturele sector wordt gebruikt door net name organisaties zoals Europeana, Koninklijke Bibliotheek en het Instituut voor Beeld &amp; Geluid.<br />
-<a href="https://www.Naturalis.nl/nl/api/uitleg-Naturalis-oai-api">Meer informatie over de OAI API</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'date' => '2014-10-22 13:31:58 +0000',
-  'user_uuid' => 'd4fc88d0-c5d0-4ad1-a390-c5ee98f38dd5',
+  'date' => '2014-10-22 15:22:53 +0200',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   return $nodes;
 }
