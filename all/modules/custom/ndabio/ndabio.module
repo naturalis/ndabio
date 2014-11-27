@@ -82,6 +82,44 @@ function ndabio_menu() {
   return $items;
 }
 
+
+/**
+ * Implements hook_block_info().
+ */
+function ndabio_block_info() {
+  $blocks['ndabio_languageselect'] = array(
+    'info' => t('NBA: Language select'),
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'region' => 'sidebar_first',
+    'status' => FALSE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ndabio_block_view($delta = '') {
+  global $base_root, $base_path;
+  global $language;
+  
+  $block = array();
+  switch ($delta) {
+
+    case 'ndabio_languageselect':
+      $currentpath = $base_root . $base_path . drupal_get_path_alias(current_path());
+    
+      $block['content'] = "";
+      $block['content'] .= "<a href='" . $currentpath . "?language=en' title>EN</a><br />";
+      $block['content'] .= "<a href='" . $currentpath . "?language=nl' title>NL</a>";
+      $block['content'] .= "";
+      break;
+  }
+  return $block;
+}
+
+
+
 function ndabio_searchthematic($var1, $stitle = "") {
   drupal_set_message("Thematic search");
   session_unset();
