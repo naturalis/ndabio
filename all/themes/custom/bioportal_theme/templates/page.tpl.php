@@ -29,7 +29,7 @@
 
             <ul class="right" id="help">
               <li>
-                <a href="help">
+                <a href="<?php print $base_url; ?>help">
                   <span class="icon-help"></span>
                 </a>
               </li>
