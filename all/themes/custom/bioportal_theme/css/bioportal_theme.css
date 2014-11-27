@@ -312,6 +312,21 @@ html.js fieldset.collapsible .fieldset-legend {
 #edit-submit-bottom {
   width: 120px; }
 
+#edit-extended #edit-reset {
+  background-color: #eeede9;
+  color: #4d4d4d;
+  box-sizing: border-box;
+  width: 120px; }
+  #edit-extended #edit-reset:hover {
+    background-color: white; }
+  #edit-extended #edit-reset:before {
+    font-family: "App2";
+    content: "\e625";
+    font-size: 24px;
+    font-weight: normal;
+    position: relative;
+    top: 5px; }
+
 .row.collapse .geo-search-label {
   height: 50px;
   line-height: 50px;

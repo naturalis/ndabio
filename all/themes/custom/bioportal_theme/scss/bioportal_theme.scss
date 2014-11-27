@@ -511,6 +511,23 @@
     #edit-submit-bottom{
       width: 120px;
     }
+    
+    #edit-extended #edit-reset{
+       background-color: $ghost;
+       &:hover{background-color: $white;}
+       color: $gray-8;
+       box-sizing: border-box;
+       width: 120px;
+       &:before{
+        font-family: "App2";
+        content:  $icon-refresh;
+        font-size: 24px;
+        font-weight: normal;
+           position: relative;
+           top: 5px;
+      }
+    }
+
 
 // GEOSEARCH
 
