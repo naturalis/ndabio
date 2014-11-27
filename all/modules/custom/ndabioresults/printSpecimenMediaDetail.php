@@ -7,11 +7,17 @@ function printSpecimenMediaDetail ($data) {
 	$output .= "<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . " />\n";
 	$output .= "<div class='property-list'>";
-	if (isset($data['acceptedName'])) {
-		array_unshift($fields, 'acceptedName');
-	} else if (isset($data['names'])) {
+
+	if (!empty($data['unitID'])) {
+		$output .= printDL(
+            translateNdaField('unitID'),
+            '<a href="' . printDrupalLink(specimenDetailService() . '?unitID=' . $data['unitID']) . '">' . $data['unitID'] . '</a>'
+		);
+	}
+	if (!empty($data['names'])) {
 		$output .= printNamesWithLinks($data['names'], 'species');
 	}
+
 	$fields = array(
         'source',
     	'creator',

@@ -1382,6 +1382,8 @@ function parseTaxa ($json) {
 		// Accepted scientific name, synonym, or common name
 		$d['type'] = getResultType($row);
 		$d['rank'] = $row->searchResults[0]->result->taxonRank;
+
+		/*
 		if ($d['type'] == 'accepted') {
 			$d['name'] = formatScientificName(
 				strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
@@ -1412,6 +1414,31 @@ function parseTaxa ($json) {
     				$row->searchResults[0]->result->acceptedName
     			);
 		}
+
+	*/
+		$d['name'] = formatScientificName(
+			strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
+			$row->searchResults[0]->result->acceptedName,
+			$output['searchTerms']
+		);
+		if ($d['type'] == 'accepted') {
+			$d['description'] = t(ucfirst($d['rank']));
+		} else if ($d['type'] == 'synonym') {
+            $offset = getTaxonSynonymOffset($row);
+			$d['description'] = t('Synonym') . ': ' .
+                formatScientificName(
+    				strip_tags($row->searchResults[0]->result->synonyms[$offset]->fullScientificName),
+    				$row->searchResults[0]->result->synonyms[$offset],
+    				$output['searchTerms']
+    			);
+		} else if ($d['type'] == 'common') {
+			$d['description'] = t('Vernacular name(s)') . ': ' .
+                highlightSearchTerms(
+    				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
+    				$output['searchTerms']
+    		);
+		}
+
 		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
 		$d['sources'] = getSources($row);
 		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row, true) : array());

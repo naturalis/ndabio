@@ -12,7 +12,7 @@ require_once 'printPaginator.php';
 
 */
 function printTaxa ($data) {
-
+//p($data);
     if (empty($data['results'])) {
         return false;
     }
