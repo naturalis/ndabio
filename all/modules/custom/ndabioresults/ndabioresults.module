@@ -59,12 +59,8 @@ function ndabioresults_menu() {
     'access callback' => TRUE,
   );
 
-
-  /*
-   * Page used by javascript to retrieve geo coordinates based on a nid.
-   */
-  $items['naturalis/ajax'] = array(
-   'page callback' => 'ndabio_ajax_callback',
+  $items['nba/ajax'] = array(
+   'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
    'type' => MENU_CALLBACK,
   );
@@ -184,7 +180,9 @@ function ndabioresults_pass ($args = "") {
 }
 
 
-
+function ndabioresults_ajax_callback ($request) {
+    return ndaAjaxRequest($request);
+}
 
 
 /**
@@ -391,6 +389,20 @@ function ndaDirectRequest ($r) {
         }
     }
     return array();
+}
+
+
+function ndaAjaxRequest ($r) {
+    foreach (serviceToFunctions() as $service => $d) {
+        if (strpos($r, $service) !== false) {
+            $channels[0]['request'] = $service;
+    		$channels[0]['url'] = ndaBaseUrl() . $service;
+    		$channels[0]['method'] = $d['method'];
+    		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
+            return queryNda($channels);
+        }
+    }
+    return null;
 }
 
 

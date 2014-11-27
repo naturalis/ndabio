@@ -115,19 +115,19 @@ function ndabioresults_block_view($delta = '') {
           _list_items( array(
             _item(array(
                 !empty($multimediaUrl) ? $multimediaUrl : 'Multimedia',
-                'filter-' . (!empty($multimediaUrl)) ? 'selected' : 'disabled'
+                !empty($multimediaUrl) ? 'filter-selected' : 'filter-disabled'
             )),
             _item(array(
                 !empty($taxonUrl) ? $taxonUrl : 'Taxa',
-                'filter-' . (!empty($taxonUrl)) ? 'selected' : 'disabled'
+                !empty($taxonUrl) ? 'filter-selected' : 'filter-disabled'
             )),
             _item(array(
-                !empty($specimenNameUrl) ? $specimenNameUrl : t('Taxa with specimens'),
-                'filter-' . (!empty($specimenNameUrl)) ? 'selected' : 'disabled'
+                !is_null($specimenNameUrl) ? $specimenNameUrl : t('Taxa with specimens'),
+                !is_null($specimenNameUrl) ? 'filter-selected' : 'filter-disabled'
             )),
             _item(array(
                 !empty($specimenUrl) ? $specimenUrl : t('Specimens'),
-                'filter-' . (!empty($specimenUrl)) ? 'selected' : 'disabled'
+                !empty($specimenUrl) ? 'filter-selected' : 'filter-disabled'
             )),
             _item(array('Observations','filter-disabled')),
           ));
