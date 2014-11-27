@@ -43,7 +43,7 @@ function bioportal_header_images_uuid_features_default_content() {
     ),
   ),
   'date' => '2014-11-20 09:09:48 +0100',
-  'user_uuid' => '73f30b82-9d79-4b08-af2f-f9200ccd0104',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'mineraal4',
@@ -78,7 +78,7 @@ function bioportal_header_images_uuid_features_default_content() {
     ),
   ),
   'date' => '2014-11-20 09:08:54 +0100',
-  'user_uuid' => '73f30b82-9d79-4b08-af2f-f9200ccd0104',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'zilvermeeuw',
@@ -113,7 +113,7 @@ function bioportal_header_images_uuid_features_default_content() {
     ),
   ),
   'date' => '2014-11-20 09:08:30 +0100',
-  'user_uuid' => '73f30b82-9d79-4b08-af2f-f9200ccd0104',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   $nodes[] = array(
   'title' => 'paddestoelen',
@@ -148,7 +148,7 @@ function bioportal_header_images_uuid_features_default_content() {
     ),
   ),
   'date' => '2014-11-20 09:09:14 +0100',
-  'user_uuid' => '73f30b82-9d79-4b08-af2f-f9200ccd0104',
+  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
 );
   return $nodes;
 }

@@ -41,8 +41,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-21 14:58:21 +0200',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-10-21 12:58:21 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   $nodes[] = array(
   'title' => 'Help',
@@ -170,8 +170,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-10-21 14:37:22 +0200',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-10-21 12:37:22 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   $nodes[] = array(
   'title' => 'API',
@@ -216,8 +216,8 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
-  'date' => '2014-11-27 10:44:48 +0100',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-11-27 09:44:48 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   $nodes[] = array(
   'title' => 'Colophon',
@@ -254,8 +254,8 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
-  'date' => '2014-10-21 14:41:00 +0200',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-10-21 12:41:00 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   $nodes[] = array(
   'title' => 'About',
@@ -292,8 +292,8 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
-  'date' => '2014-10-22 15:37:20 +0200',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-10-22 13:37:20 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   $nodes[] = array(
   'title' => 'Contact',
@@ -359,8 +359,8 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
-  'date' => '2014-10-22 15:22:53 +0200',
-  'user_uuid' => '0092db6f-1ccd-4af4-8de1-103c73489ae2',
+  'date' => '2014-10-22 13:22:53 +0000',
+  'user_uuid' => 'fd948610-e4f9-4246-bd43-5a4ac71dd86a',
 );
   return $nodes;
 }

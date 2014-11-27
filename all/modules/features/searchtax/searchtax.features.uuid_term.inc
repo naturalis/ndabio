@@ -962,7 +962,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndavalues' => array(),
     'url_alias' => array(
       0 => array(
-        'alias' => 'search/more-1',
+        'alias' => 'search/more-0',
         'language' => 'und',
       ),
     ),
