@@ -185,17 +185,18 @@ function ndaSimpleSearch () {
 
     // Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
-    if(  $_POST['searchtype'] == "thematicsearch"){
-      drupal_set_title("");
-      $pageHeader =
-        _wrap(
+    if(isset($_POST['searchtype'])) {
+      if( $_POST['searchtype'] == "thematicsearch"){
+        drupal_set_title("");
+        $pageHeader =
           _wrap(
-            $_POST['searchtitle'], "h1"
-          ),
-          "div", "panel"
-        );
+            _wrap(
+              $_POST['searchtitle'], "h1"
+            ),
+            "div", "panel"
+          );
+      }
     }
-
     $p['_search'] = $_SESSION['ndaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
