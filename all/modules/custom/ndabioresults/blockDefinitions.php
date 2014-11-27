@@ -59,12 +59,12 @@ function ndabioresults_block_view($delta = '') {
   $_link_disabled =  array('attributes' => array('class' => 'filter-disabled'));
   $_link_active =  array('attributes' => array('class' => 'filter-active'));
 
-  $SHOWS_RESULTS = ( 
-    $_SESSION['ndaPageDetail'] == 'result from simple form' || 
+  $SHOWS_RESULTS = (
+    $_SESSION['ndaPageDetail'] == 'result from simple form' ||
     $_SESSION['ndaPageDetail'] == 'results taxa' ||
     $_SESSION['ndaPageDetail'] == 'results multimedia' ||
     $_SESSION['ndaPageDetail'] == 'results specimens' ||
-    $_SESSION['ndaPageDetail'] == 'result from advanced form' 
+    $_SESSION['ndaPageDetail'] == 'result from advanced form'
   ) ;
 
   switch ($delta) {
@@ -124,7 +124,7 @@ function ndabioresults_block_view($delta = '') {
         $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a><!-- br />" .
           "<a href='" . $starturl . "'>$icon" . t('New search') . "</a -->";
       } else {
-        $block['content'] = "<a onclick='javascript:window.history.back()'>$icon" . t('Back to search results') . "</a>";
+        $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
       }
 
       break;

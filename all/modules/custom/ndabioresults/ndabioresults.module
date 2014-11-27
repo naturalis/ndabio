@@ -53,6 +53,11 @@ function ndabioresults_menu() {
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
+  $items['nba/back'] = array(
+    'page callback' => 'ndabioresults_back',
+    'load arguments' => array('%map', '%index'),
+    'access callback' => TRUE,
+  );
 
 
   /*
@@ -150,6 +155,11 @@ function setSpecimenParameters (array $sP, $type) {
 */
 function ndabioresults_pass ($args = "") {
 
+    // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
+    if ($_GET['back'] && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+        return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+    }
+
     // POST data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
@@ -170,6 +180,10 @@ function ndabioresults_pass ($args = "") {
     // Redirect to distinct services
     return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 }
+
+
+
+
 
 /**
  * Distributes search parameter of the simple search to appropiate services and returns
@@ -1382,40 +1396,6 @@ function parseTaxa ($json) {
 		// Accepted scientific name, synonym, or common name
 		$d['type'] = getResultType($row);
 		$d['rank'] = $row->searchResults[0]->result->taxonRank;
-
-		/*
-		if ($d['type'] == 'accepted') {
-			$d['name'] = formatScientificName(
-				strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
-				$row->searchResults[0]->result->acceptedName,
-				$output['searchTerms']
-			);
-			$d['description'] = t(ucfirst($d['rank']));
-		} else if ($d['type'] == 'synonym') {
-            $offset = getTaxonSynonymOffset($row);
-			$d['name'] = formatScientificName(
-				strip_tags($row->searchResults[0]->result->synonyms[$offset]->fullScientificName),
-				$row->searchResults[0]->result->synonyms[$offset],
-				$output['searchTerms']
-			);
-			$d['description'] = t('Synonym for') . ' ' .
-    			formatScientificName(
-    				$row->searchResults[0]->result->acceptedName->fullScientificName,
-    				$row->searchResults[0]->result->acceptedName
-    			);
-		} else if ($d['type'] == 'common') {
-			$d['name'] = highlightSearchTerms(
-				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
-				$output['searchTerms']
-			);
-			$d['description'] = t('Vernacular name for') . ' ' .
-			     formatScientificName(
-    				$row->searchResults[0]->result->acceptedName->fullScientificName,
-    				$row->searchResults[0]->result->acceptedName
-    			);
-		}
-
-	*/
 		$d['name'] = formatScientificName(
 			strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
 			$row->searchResults[0]->result->acceptedName,
