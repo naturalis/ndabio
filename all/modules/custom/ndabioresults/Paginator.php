@@ -176,7 +176,7 @@ class Paginator
      */
     public function getPrevUrl()
     {
-        if (!$this->getPrevPage()) {
+        if (is_null($this->getPrevPage())) {
             return null;
         }
 
