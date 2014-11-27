@@ -169,14 +169,16 @@ function ndabioresults_pass ($args = "") {
     // GET data from within NDA response?
     // Forward directly to appropriate service
     else if (isset($_GET['nba_request'])) {
-        // @todo: check direct url for injection
+        // @todo: check direct url for injection?
         return ndaDirectRequest(urldecode($_GET['nba_request']));
      }
+
     // If both POST and SESSION are empty we have a problem...
     else {
         // Probably best to redirect gracefully to search page?
         handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
     }
+
     // Redirect to distinct services
     return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 }
@@ -944,7 +946,7 @@ function parseMultimedia ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
+	$output['showAll'] = $_SESSION['ndaFilters']['multimedia'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 
 	return isset($output) ? $output : false;
@@ -990,7 +992,7 @@ function parseSpecimens ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
+	$output['showAll'] = $_SESSION['ndaFilters']['specimen'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 
 	return isset($output) ? $output : false;
@@ -1088,7 +1090,7 @@ function parseSpecimensByTaxon ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
+	$output['showAll'] = $_SESSION['ndaFilters']['specimenName'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 //p($data);
 	return isset($output) ? $output : false;
@@ -1427,7 +1429,7 @@ function parseTaxa ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
+	$output['showAll'] = $_SESSION['ndaFilters']['taxon'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 
 	return isset($output) ? $output : false;

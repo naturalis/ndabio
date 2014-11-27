@@ -102,11 +102,33 @@ function ndabioresults_block_view($delta = '') {
 
         $block['subject'] = t('Categories');
 
+        $multimediaUrl = isset($_SESSION['ndaFilters']['multimedia']) && !empty($_SESSION['ndaFilters']['multimedia']) ?
+            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['multimedia']) . '">Multimedia</a>' : null;
+        $taxonUrl = isset($_SESSION['ndaFilters']['taxon']) && !empty($_SESSION['ndaFilters']['taxon']) ?
+            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['taxon']) . '">Taxa</a>' : null;
+        $specimenNameUrl = isset($_SESSION['ndaFilters']['specimenName']) && !empty($_SESSION['ndaFilters']['specimenName']) ?
+            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['specimenName']) . '">' . t('Taxa with specimens') . '</a>' : null;
+        $specimenUrl = isset($_SESSION['ndaFilters']['specimen']) && !empty($_SESSION['ndaFilters']['specimen']) ?
+            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['specimen']) . '">' . t('Specimens') . '</a>' : null;
+
         $block['content'] =
           _list_items( array(
-            _item(array('Multimedia'  ,'filter-selected')),
-            _item(array('Taxons'      ,'filter-selected')),
-            _item(array('Specimen'    ,'filter-selected')),
+            _item(array(
+                !empty($multimediaUrl) ? $multimediaUrl : 'Multimedia',
+                'filter-' . (!empty($multimediaUrl)) ? 'selected' : 'disabled'
+            )),
+            _item(array(
+                !empty($taxonUrl) ? $taxonUrl : 'Taxa',
+                'filter-' . (!empty($taxonUrl)) ? 'selected' : 'disabled'
+            )),
+            _item(array(
+                !empty($specimenNameUrl) ? $specimenNameUrl : t('Taxa with specimens'),
+                'filter-' . (!empty($specimenNameUrl)) ? 'selected' : 'disabled'
+            )),
+            _item(array(
+                !empty($specimenUrl) ? $specimenUrl : t('Specimens'),
+                'filter-' . (!empty($specimenUrl)) ? 'selected' : 'disabled'
+            )),
             _item(array('Observations','filter-disabled')),
           ));
       }
