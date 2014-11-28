@@ -1648,6 +1648,39 @@ function handleError ($message) {
 
 // Should be replaced with a function that translates NDS field labels to proper English
 function translateNdaField ($str) {
+  switch ($str) {
+    case "dateTimeBegin": return t("Collection start date");
+    case "gatheringAgents": return t("Collector");
+    case "localityText": return t("Locality");
+    case "siteCoordinates": return t("Site coordinates");
+    case "unitID": return t("Unit ID");
+    case "species": return t("Species");
+    case "source": return t("Source");
+    case "assemblageID": return t("Assemblage");
+    case "sourceSystemId": return t("System");
+    case "sourceInstitutionID": return t("Institution");
+    case "sourceID": return t("Source");
+    case "owner": return t("Owner");
+    case "recordBasis": return t("Basis of record");
+    case "kindOfUnit": return t("Kind of unit");
+    case "collectionType": return t("Collection");
+    case "preparationType": return t("Preparation");
+    case "numberOfSpecimen": return t("Number of species");
+    case "multiMediaPublic": return t("Multimedia");
+    case "creator": return t("Creator");
+    case "caption": return t("Caption");
+    case "description": return t("Description");
+    case "copyrightText": return t("Copyright");
+    case "kingdom": return t("Kingdom");
+    case "phylum": return t("Phylum");
+    case "className": return t("Class");
+    case "order": return t("Order");
+    case "family": return t("Family");
+    case "genus": return t("Genus");
+    case "specificEpithet": return t("Specific Epithet");
+    case "infraspecificEpithet": return t("Infraspecific Epithet");
+    //case "": return t("xx");
+  }
 	return $str;
 }
 

@@ -41,7 +41,7 @@ function printClassifications ($data) {
     		$classification = unserialize($sClassification);
     		foreach ($classification as $rank => $name) {
     			if (!empty($name)) {
-    			    $output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
+    			    $output .= "<dl><dt>" . translateNdaField($rank) . "</dt><dd>$name</dd></dl>";
     			}
     		}
     		$output .= "</div>";
