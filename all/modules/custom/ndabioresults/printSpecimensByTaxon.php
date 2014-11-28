@@ -74,7 +74,7 @@ function printSpecimensByTaxon ($data) {
 		$output .= "<td>" .
 		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) ?
 		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
-		      '&identifications@scientificName@fullScientificName@raw=' . urlencode($row['fullScientificName'])) .
+		      '&identifications@scientificName@fullScientificName@raw=' . urlencode(urlencode($row['fullScientificName']))) .
 		      "' class='icon-location'></a>" : '') .
 		  "</td>";
 		// Source(s)
