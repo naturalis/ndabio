@@ -51,7 +51,7 @@ function printSpecimenDetail ($data) {
 		if (is_array($value)) {
 			// Taxon name
 			if ($field == 'names') {
-				$output .= printNamesWithLinks($value, 'species');
+				$output .= printNamesWithLinks($value, 'Species');
 			}
 
 			// Gathering event
