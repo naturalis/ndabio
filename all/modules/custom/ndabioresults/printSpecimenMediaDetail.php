@@ -15,7 +15,7 @@ function printSpecimenMediaDetail ($data) {
 		);
 	}
 	if (!empty($data['names'])) {
-		$output .= printNamesWithLinks($data['names'], 'Species');
+		$output .= printNamesWithLinks($data['names'], 'species');
 	}
 
 	$fields = array(

@@ -16,7 +16,7 @@ function printCommonNames ($data) {
 			$output .= "<h4 class='source'>$source</h4>" .
 				"<div class='property-list'>";
 			foreach ($t as $name => $lan) {
-				$output .= printDL( translateNdaField($lan) , $name);
+				$output .= printDL( t($lan) , $name);
 			}
 			$output .= "</div>";
 		}

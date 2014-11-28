@@ -10,7 +10,7 @@ function printTaxonMediaDetail ($data) {
 		"' title=''" . $data['title'] . ">";
 
   $output .= "<div class='property-list'>";
-  $output .= printNamesWithLinks($data['names'], 'Species');
+  $output .= printNamesWithLinks($data['names'], 'species');
 
 	$fields = array(
 	    'source',
