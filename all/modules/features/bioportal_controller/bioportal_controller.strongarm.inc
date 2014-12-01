@@ -13,6 +13,20 @@ function bioportal_controller_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'metatag_has_revision_id';
+  $strongarm->value = TRUE;
+  $export['metatag_has_revision_id'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'metatag_schema_installed';
+  $strongarm->value = TRUE;
+  $export['metatag_schema_installed'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'ndabio_config_jsonp';
   $strongarm->value = 'http://naturalis_installation_profile.local:8083/?q=naturalis/json';
   $export['ndabio_config_jsonp'] = $strongarm;
@@ -84,14 +98,14 @@ function bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'niemand@nergens.nl';
+  $strongarm->value = 'admin@example.com';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_name';
-  $strongarm->value = 'naturalis_installation_profile.local';
+  $strongarm->value = 'Site-Install';
   $export['site_name'] = $strongarm;
 
   $strongarm = new stdClass();
