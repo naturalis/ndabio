@@ -52,11 +52,26 @@
 
     if (int_valid < 1){
 
-      alert(
-        Drupal.t("Please, make sure that you complete \n" +
-        "at least one field and that it contains more\n" +
-        "then three characters.\n")
-      );
+      if ( $("body").hasClass("page-geographic-search") ){
+        
+        alert(
+          Drupal.t(
+            "Please, select an area or draw\n" +
+            "one on the map.\n"
+          )
+        );
+
+      } else {
+        
+        alert(
+          Drupal.t(
+            "Please, make sure that you complete \n" +
+            "at least one field and that it contains more\n" +
+            "then three characters.\n"
+          )
+        );
+        
+      }
 
       return false;
 
