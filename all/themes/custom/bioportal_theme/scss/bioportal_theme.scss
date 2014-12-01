@@ -510,11 +510,12 @@
     }
     
     #edit-extended #edit-reset{
-       background-color: $ghost;
-       &:hover{background-color: $white;}
-       color: $gray-8;
+       background-color: transparent;
+       color: $gray-2;
        box-sizing: border-box;
-       width: 120px;
+       padding: 0 0 3px 0;
+       border-bottom: 1px dotted $gray-5;
+       font-weight: normal;
        &:before{
         font-family: "App2";
         content:  $icon-refresh;
@@ -522,6 +523,11 @@
         font-weight: normal;
            position: relative;
            top: 5px;
+      }
+
+      &:hover{
+        color: $orange;
+        border-color: $orange;
       }
     }
 

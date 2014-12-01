@@ -190,6 +190,7 @@
   // SEARCH FORM: clear text fields
   // ---------------------------------------------------------
 
+
   $("<div class='ndabio-clear-textfield icon-cross hidden' />")
     .insertAfter("input[data-clear]")
     .click(function(){
@@ -228,9 +229,37 @@
       
     });
 
+  // ---------------------------------------------------------
+  // SEARCH FORM: reset button
+  // ---------------------------------------------------------
+
+  // We clear the fields instead of reloaden - this is faster
+
+  $("#edit-reset").click(function(){
+
+    $("input[type='text']").removeAttr("value");
+    $("input[value='0']").attr("checked","checked");
+    $("select").attr("value","");
+    $("fieldset fieldset.collapsible:not(.collapsed) a").trigger("click");
+
+  });
+
+
+
 
 
   // ---------------------------------------------------------
+  // SEARCH FORM: explode expanded search
+  // ---------------------------------------------------------
+
+    console.log("Explode expanded search");
+    if(  $("input[type='text'][value!='']").size() > 0 ){
+      console.log("Reason to explode");
+      $(".icon-triangle-down").trigger("click");
+    }
+
+
+   // ---------------------------------------------------------
   // PRELOADER
   // ---------------------------------------------------------
   

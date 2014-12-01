@@ -310,12 +310,12 @@ html.js fieldset.collapsible .fieldset-legend {
   width: 120px; }
 
 #edit-extended #edit-reset {
-  background-color: #eeede9;
-  color: #4d4d4d;
+  background-color: transparent;
+  color: #e6e6e6;
   box-sizing: border-box;
-  width: 120px; }
-  #edit-extended #edit-reset:hover {
-    background-color: white; }
+  padding: 0 0 3px 0;
+  border-bottom: 1px dotted #999999;
+  font-weight: normal; }
   #edit-extended #edit-reset:before {
     font-family: "App2";
     content: "\e625";
@@ -323,6 +323,9 @@ html.js fieldset.collapsible .fieldset-legend {
     font-weight: normal;
     position: relative;
     top: 5px; }
+  #edit-extended #edit-reset:hover {
+    color: #ef6d14;
+    border-color: #ef6d14; }
 
 .row.collapse .geo-search-label {
   height: 50px;
