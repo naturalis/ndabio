@@ -21,7 +21,7 @@ function printTaxonDetail ($data) {
 		printDescriptions($data) .
 		printClassifications($data);
 
-p($data);
+//p($data);
 
   $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
     '/?identifications@scientificName@fullScientificName@raw=' . urlencode(strip_tags($data['acceptedName']));
