@@ -1,7 +1,7 @@
 name = nbatax
 description = Taxonomy to translate NBA terns to english
 core = 7.x
-package = Features
+package = Bioportal
 version = 7.x-0.1
 project = nbatax
 dependencies[] = features
