@@ -11,44 +11,6 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   $nodes = array();
 
   $nodes[] = array(
-  'title' => 'About',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_page',
-  'language' => 'en',
-  'created' => 1417189687,
-  'tnid' => 4,
-  'translate' => 0,
-  'uuid' => '046583ea-ed92-4f82-9641-f2821bea952a',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<h2>What si this site about?</h2>
-
-<h2>sourcesystems</h2>
-
-<h2>about collectie</h2>
-
-<h3>about brahms</h3>
-
-<h3>about CRS</h3>
-
-<h3>over NSR</h3>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'date' => '2014-11-28 15:48:07 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
-);
-  $nodes[] = array(
   'title' => 'Disclaimer',
   'log' => '',
   'status' => 1,
@@ -79,8 +41,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:58:21 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   $nodes[] = array(
   'title' => 'Help',
@@ -208,8 +171,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:37:22 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   $nodes[] = array(
   'title' => 'API',
@@ -254,8 +218,9 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-11-27 09:44:48 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   $nodes[] = array(
   'title' => 'Colophon',
@@ -292,11 +257,12 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:41:00 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   $nodes[] = array(
-  'title' => 'Over',
+  'title' => 'About',
   'log' => '',
   'status' => 1,
   'comment' => 0,
@@ -304,9 +270,9 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   'sticky' => 0,
   'ds_switch' => '',
   'type' => 'naturalis_page',
-  'language' => 'nl',
+  'language' => 'und',
   'created' => 1413985040,
-  'tnid' => 4,
+  'tnid' => 0,
   'translate' => 0,
   'uuid' => '9c021310-9a55-495b-b798-dbbc56a1c5bb',
   'body' => array(
@@ -330,8 +296,9 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-22 13:37:20 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   $nodes[] = array(
   'title' => 'Contact',
@@ -350,10 +317,23 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<table border="0" style="height:146px; width:416px">
+        'value' => '<h2>Vragen en suggesties over BioPortal</h2>
+
+<table border="0" style="width:100%">
 	<tbody>
 		<tr>
-			<td>Visiting address</td>
+			<td style="width:50%">e-mail</td>
+			<td>bioportal@naturalis.nl</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Naturalis Biodiversity Center</h2>
+
+<table border="0" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="width:50%">Visiting address</td>
 			<td>Darwinweg 2, 2333 CR Leiden</td>
 		</tr>
 		<tr>
@@ -397,8 +377,9 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-22 13:22:53 +0000',
-  'user_uuid' => '7891539b-e48f-4fc0-9ae7-f84456aaf6ec',
+  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
 );
   return $nodes;
 }

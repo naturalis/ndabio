@@ -44,12 +44,7 @@
     <?php endif; ?>
   </header> <!--/.l-header -->
 
-  <!-- IE8 warning -->
-  <div class="ie8">
-    <p>This website does not support Internet Explorer 8 or lower. </p>
-    <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
-  </div>
-  <!-- //.ie8 -->
+
 
   <!-- NATURALIS header -->
   <?php if (  $is_front  ): ?>
@@ -313,5 +308,12 @@
 
 </div>
 <!--/.page -->
+
+<!-- IE8 warning -->
+<div id="ie8">
+  <p>This website does not support Internet Explorer 8 or lower. </p>
+  <p>Please, update your version of Internet Explorer or use another, modern, browser. </p>
+</div>
+<!-- //.ie8 -->
 
 
