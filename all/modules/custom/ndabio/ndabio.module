@@ -49,9 +49,9 @@ function ndabio_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['explore/%/%'] = array(
+  $items['explore/%'] = array(
     'page callback' => 'ndabio_searchthematic',
-    'page arguments' => array(1,2),
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -124,7 +124,7 @@ function ndabio_searchthematic($var1, $stitle = "") {
   drupal_set_message("Thematic search");
   session_unset();
   $_POST['searchtype'] = 'thematicsearch';
-  $_POST['searchtitle'] = t($stitle);
+  $_POST['searchkey'] = $var1;
   $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
   //$_POST['term'] = $var1;
   $_POST['s_theme'] = $var1;
