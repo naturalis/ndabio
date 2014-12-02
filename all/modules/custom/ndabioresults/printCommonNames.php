@@ -3,20 +3,18 @@
 // Transposes common names array and prints common names
 function printCommonNames ($data) {
 	$output = "";
-	
+
 	$header = "<h3>" . t('Common names') . "</h3>";
-	
+
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
-		// Transpose first
-		foreach ($data['commonNames'] as $lan => $name) {
-			$source = key($name);
-			$names[$source][$name[$source]] = $lan;
-		}
-		foreach ($names as $source => $t) {
-			$output .= "<h4 class='source'>$source</h4>" .
-				"<div class='property-list'>";
-			foreach ($t as $name => $lan) {
-				$output .= printDL( t($lan) , $name);
+		foreach ($data['commonNames'] as $lan => $t) {
+		    $i = 0;
+			foreach ($t as $name => $source) {
+			    if ($i == 0) {
+        			$output .= "<h4 class='source'>$source</h4>\n<div class='property-list'>\n";
+    			}
+			    $output .= printDL($i == 0 ? t($lan) : '', $name);
+			    $i++;
 			}
 			$output .= "</div>";
 		}

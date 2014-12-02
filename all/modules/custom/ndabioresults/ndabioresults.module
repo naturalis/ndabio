@@ -792,8 +792,8 @@ function parseTaxonDetail ($json) {
 		}
 		if (!empty($row->result->vernacularNames)) {
 			foreach ($row->result->vernacularNames as $i => $name) {
-				$output['commonNames'][$name->language][$source] =
-					$name->name;
+				$output['commonNames'][$name->language][$name->name] =
+					$source;
 			}
 
 		}
@@ -982,8 +982,13 @@ function parseMultimedia ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = $_SESSION['ndaFilters']['multimedia'] = getShowAll($data);
+	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
+
+	// Only set filter when performing initial search
+	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
+	    $_SESSION['ndaFilters']['multimedia'] = $output['showAll'];
+	}
 
 	return isset($output) ? $output : false;
 }
@@ -1028,8 +1033,13 @@ function parseSpecimens ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = $_SESSION['ndaFilters']['specimen'] = getShowAll($data);
+	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
+
+	// Only set filter when performing initial search
+	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
+	    $_SESSION['ndaFilters']['specimen'] = $output['showAll'];
+	}
 
 	return isset($output) ? $output : false;
 }
@@ -1126,9 +1136,15 @@ function parseSpecimensByTaxon ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = $_SESSION['ndaFilters']['specimenName'] = getShowAll($data);
+	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
 //p($data);
+
+	// Only set filter when performing initial search
+	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
+	    $_SESSION['ndaFilters']['specimenName'] = $output['showAll'];
+	}
+
 	return isset($output) ? $output : false;
 }
 
@@ -1450,11 +1466,15 @@ function parseTaxa ($json) {
     				$output['searchTerms']
     			);
 		} else if ($d['type'] == 'common') {
-			$d['description'] = t('Vernacular name(s)') . ': ' .
-                highlightSearchTerms(
-    				strip_tags($row->searchResults[0]->matchInfo[0]->valueHighlighted),
+			$d['description'] = t('Vernacular name(s)') . ': ';
+			foreach ($row->searchResults[0]->matchInfo as $i => $info) {
+                $vernaculars[] = highlightSearchTerms(
+    				strip_tags($info->valueHighlighted),
     				$output['searchTerms']
-    		);
+    		    );
+			}
+			$d['description'] .= implode(', ', $vernaculars);
+			unset($vernaculars);
 		}
 
 		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
@@ -1465,8 +1485,13 @@ function parseTaxa ($json) {
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = $_SESSION['ndaFilters']['taxon'] = getShowAll($data);
+	$output['showAll'] = getShowAll($data);
 	$output['paginator'] = getPaginator($data);
+
+	// Only set filter when performing initial search
+	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
+	    $_SESSION['ndaFilters']['taxon'] = $output['showAll'];
+	}
 
 	return isset($output) ? $output : false;
 }
