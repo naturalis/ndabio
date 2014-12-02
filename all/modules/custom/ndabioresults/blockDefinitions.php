@@ -43,6 +43,14 @@ function ndabioresults_block_info() {
     'region' => "sidebar_first",
     'status' => FALSE,
   );
+  $blocks['ndabioresults_thematicsearch'] = array(
+    'info' => t('NBA: Thematic search title block'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "explore*",
+    'region' => "content",
+    'weight' => -10,
+    'status' => TRUE,
+  );
   return $blocks;
 }
 
@@ -167,6 +175,30 @@ function ndabioresults_block_view($delta = '') {
       }
 
 
+      break;
+      
+      
+    case 'ndabioresults_thematicsearch':
+      //Get NBA search term from URL
+      if($_POST['searchtype'] == "thematicsearch") {
+        
+        //Check if content with identical label is available
+        //Get node of type 'Naturalis thematic search'
+        $sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $_POST['searchkey'] . "' LIMIT 1";
+       
+        $myid = db_query($sql)->fetchAssoc();
+        //print_r($myid['entity_id']);
+        
+        //SELECT nid FROM xxx WHERE label = $_POST['searchkey']
+        $mynode = node_load($myid['entity_id']);
+        
+        if (!empty($mynode)) {
+          //Create block content
+          $block['subject'] = $mynode->title;
+          $block['content'] = $mynode->body['und'][0]['value'];
+        }
+      }
+      
       break;
   }
   return $block;

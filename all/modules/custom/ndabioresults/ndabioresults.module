@@ -1695,41 +1695,17 @@ function handleError ($message) {
 }
 
 
-// Should be replaced with a function that translates NDS field labels to proper English
+// A function that translates NDS field labels to proper English
 function translateNdaField ($str) {
-  switch ($str) {
-    case "dateTimeBegin": return t("Collection start date"); break;
-    case "gatheringAgents": return t("Collector"); break;
-    case "localityText": return t("Locality"); break;
-    case "siteCoordinates": return t("Site coordinates"); break;
-    case "species": return t("Species"); break;
-    case "source": return t("Source"); break;
-    case "assemblageID": return t("Assemblage"); break;
-    case "sourceSystemId": return t("System"); break;
-    case "sourceInstitutionID": return t("Institution"); break;
-    case "sourceID": return t("Source"); break;
-    case "owner": return t("Owner"); break;
-    case "recordBasis": return t("Basis of record"); break;
-    case "kindOfUnit": return t("Kind of unit"); break;
-    case "collectionType": return t("Collection"); break;
-    case "preparationType": return t("Preparation"); break;
-    case "numberOfSpecimen": return t("Number of species"); break;
-    case "multiMediaPublic": return t("Multimedia"); break;
-    case "creator": return t("Creator"); break;
-    case "caption": return t("Caption"); break;
-    case "description": return t("Description"); break;
-    case "copyrightText": return t("Copyright"); break;
-    case "kingdom": return t("Kingdom"); break;
-    case "phylum": return t("Phylum"); break;
-    case "className": return t("Class"); break;
-    case "order": return t("Order"); break;
-    case "family": return t("Family"); break;
-    case "genus": return t("Genus"); break;
-    case "specificEpithet": return t("Specific Epithet"); break;
-    case "infraspecificEpithet": return t("Infraspecific Epithet"); break;
-    //case "": return t("");
-    default: return $str; break;
+  $machine_name = "nba2text";
+  $myvalue = taxonomy_get_term_by_name($str, $machine_name);
+  if (is_array($myvalue)) {
+    $myvalues = array_shift($myvalue);
+    if(!empty($myvalues)) {
+      return $myvalues->description;
+    }
   }
+  return $str;
 }
 
 // Create Drupal specific link
