@@ -1,6 +1,6 @@
 <?php
 
-define("NBABASEURL", "http://10.42.1.163:8080/");
+define("NBABASEURL", "http://10.42.1.163:8080/v0/");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
 define("NBADEFAULTSORT", '_score');
