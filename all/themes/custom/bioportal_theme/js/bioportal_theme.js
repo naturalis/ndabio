@@ -7,8 +7,9 @@
 
     var h = $(window).height();
     var w = $(window).width();
-    $("main").css("min-height",h - 315); // Magic number,...
-  
+    $("main").css("min-height",h - 170); // Magic number,...
+
+
   // ---------------------------------------------------------
 
 
@@ -252,10 +253,10 @@
   // SEARCH FORM: explode expanded search
   // ---------------------------------------------------------
 
-    console.log("Explode expanded search");
-    if(  $("input[type='text'][value!='']").size() > 0 ){
-      console.log("Reason to explode");
-      $(".icon-triangle-down").trigger("click");
+    if(  $("#edit-extended input[type='text'][value!='']").size() > 0 ){
+      if (  $("#edit-term").val() == "" ){
+        $(".icon-triangle-down").trigger("click");
+      }
     }
 
 
@@ -263,11 +264,80 @@
   // PRELOADER
   // ---------------------------------------------------------
   
+  // $("#preloader").remove();
 
-  // $( window ).unload(function() {}); // For the moment, we'll leave this function here
+
+  
+
+  // ---------------------------------------------------------
 
 
-  function preloader(){
+  // ---------------------------------------------------------
+  // SEARCH FORM: IMPLODE/EXPLODE RESULTS TABLE
+  // ---------------------------------------------------------
+
+  // For each species name...
+  $("#specimensByTaxon .indent-0 td:first-child")
+    
+    .each(function(){
+      // Add a triangle to species-name
+      $(this).find("a").first().prepend("<i class='icon-triangle-right'></i>");
+    })
+    
+    .click( function(){
+
+      $_me = $(this).parent();
+      str_id = $_me.attr('id');
+
+      $_me.
+        toggleClass("expanded");
+
+      // toggle trianlge class
+      $_me.find("i")
+        .toggleClass("icon-triangle-right")
+        .toggleClass("icon-triangle-down");
+
+      // show / hide specimens and specimen-collections
+      $("[data-parent='"+ str_id +"']")
+        .toggleClass("hidden");
+
+      $("[data-parent='"+ str_id +"-collection']")
+        .toggleClass("hidden");
+
+      return false;
+    });
+
+  $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
+
+  // Simulate click on first element, to expand it again:
+  $("#specimensByTaxon .indent-0 a")
+    .first()
+      .trigger("click");
+
+  // ---------------------------------------------------------
+
+
+} }; })(jQuery, Drupal);
+
+
+jQuery.fn.toggleAttr = function(a, b) {
+    var c = (b === undefined);
+    return this.each(function() {
+        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
+        else jQuery(this).removeAttr(a);
+    });
+};
+
+jQuery.fn.swapValAndPlaceholder = function(a, b) {
+    var c = (b === undefined);
+    return this.each(function() {
+        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
+        else jQuery(this).removeAttr(a);
+    });
+};
+
+function preloader(){
+  (function($) {  
     $("body").addClass("fading");
 
     $_overlay = $("<div id='preloader'></div>")
@@ -343,72 +413,5 @@
 
       }
     }, 25);
-
-
-  }
-  // ---------------------------------------------------------
-
-
-  // ---------------------------------------------------------
-  // SEARCH FORM: IMPLODE/EXPLODE RESULTS TABLE
-  // ---------------------------------------------------------
-
-  // For each species name...
-  $("#specimensByTaxon .indent-0 td:first-child")
-    
-    .each(function(){
-      // Add a triangle to species-name
-      $(this).find("a").first().prepend("<i class='icon-triangle-right'></i>");
-    })
-    
-    .click( function(){
-
-      $_me = $(this).parent();
-      str_id = $_me.attr('id');
-
-      $_me.
-        toggleClass("expanded");
-
-      // toggle trianlge class
-      $_me.find("i")
-        .toggleClass("icon-triangle-right")
-        .toggleClass("icon-triangle-down");
-
-      // show / hide specimens and specimen-collections
-      $("[data-parent='"+ str_id +"']")
-        .toggleClass("hidden");
-
-      $("[data-parent='"+ str_id +"-collection']")
-        .toggleClass("hidden");
-
-      return false;
-    });
-
-  $(".indent-1, .indent-2","#specimensByTaxon").addClass("hidden");
-
-  // Simulate click on first element, to expand it again:
-  $("#specimensByTaxon .indent-0 a")
-    .first()
-      .trigger("click");
-
-  // ---------------------------------------------------------
-
-
-} }; })(jQuery, Drupal);
-
-
-jQuery.fn.toggleAttr = function(a, b) {
-    var c = (b === undefined);
-    return this.each(function() {
-        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
-        else jQuery(this).removeAttr(a);
-    });
-};
-
-jQuery.fn.swapValAndPlaceholder = function(a, b) {
-    var c = (b === undefined);
-    return this.each(function() {
-        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
-        else jQuery(this).removeAttr(a);
-    });
-};
+  })(jQuery);
+}
