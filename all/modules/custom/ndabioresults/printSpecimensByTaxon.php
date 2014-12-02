@@ -72,7 +72,8 @@ function printSpecimensByTaxon ($data) {
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
 		// Map icon
 		$output .= "<td>" .
-		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) ?
+		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
+		      && !isset($_GET['noMap']) ?
 		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
 		      '&identifications@scientificName@fullScientificName@raw=' . urlencode(urlencode($row['fullScientificName']))) .
 		      "' class='icon-location'></a>" : '') .

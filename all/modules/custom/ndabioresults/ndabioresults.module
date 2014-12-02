@@ -261,6 +261,7 @@ function ndaSimpleSearch () {
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
+    unset($_SESSION['ndaFilters']);
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from simple form';
 
@@ -289,6 +290,7 @@ function ndaAdvancedSearch () {
       //not needed anymore, this funcionality has been rep`laces by a block
     //}
 
+    unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     if ($_SESSION['ndaSearch']['searchtype'] == "thematicsearch" ) {
       $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
@@ -670,19 +672,6 @@ function getTaxonUrl ($links, $scientificName) {
 	return null;
 }
 
-
-/*
-function getSpecimenMediaTaxonUrl ($row, $i) {
-	if (!empty($row->links)) {
-		foreach ($row->links as $link) {
-			if ($link->rel == "scientificnames[{$i}].fullScientificName") {
-				return $link->href;
-			}
-		}
-	}
-	return null;
-}
-*/
 
 include 'printSpecimenMediaDetail.php';
 
@@ -1110,7 +1099,8 @@ function parseSpecimensByTaxon ($json) {
 		    // @todo
 			//$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
 			$row->searchResults[0]->result->identifications[0]->scientificName,
-		    $output['searchTerms']
+    		//$output['searchTerms']
+    		getHits($row->searchResults[0])
 		);
 		$d['url'] = getTaxonUrl($row->searchResults[0]->links,
 		    $row->searchResults[0]->result->identifications[0]->scientificName);
@@ -1387,7 +1377,10 @@ function getImageUrl ($row) {
 function getHits ($row) {
 	foreach ($row->matchInfo as $info) {
 		$e = explode('.', $info->path);
-		$hits[end($e)] = $info->valueHighlighted;
+		$field = end($e);
+		if ($field != 'fullScientificName') {
+            $hits[end($e)] = strip_tags($info->valueHighlighted);
+		}
 	}
 	return isset($hits) ? $hits : array();
 }
@@ -1561,7 +1554,11 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 function highlightSearchTerms ($output, $searchTerms) {
     foreach ($searchTerms as $field => $value) {
         if (!in_array(str_replace('_', '', $field), searchFlags())) {
-            $terms[$value[0]] = $field;
+            $term = is_array($value) ? $value[0] : $value;
+            $t = explode(' ', $term);
+            foreach ($t as $i => $v) {
+                $terms[$v] = $field . $i;
+            }
         }
     }
     // Intermediate step required to remove any duplicates
