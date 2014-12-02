@@ -285,16 +285,9 @@ function ndaAdvancedSearch () {
 
     //Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
-    if(  $_POST['searchtype'] == "thematicsearch"){
-      drupal_set_title("");
-      $pageHeader =
-        _wrap(
-          _wrap(
-            $_POST['searchtitle'], "h1"
-          ),
-          "div", "panel"
-        );
-    }
+    //if(  $_POST['searchtype'] == "thematicsearch"){
+      //not needed anymore, this funcionality has been rep`laces by a block
+    //}
 
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     if ($_SESSION['ndaSearch']['searchtype'] == "thematicsearch" ) {
