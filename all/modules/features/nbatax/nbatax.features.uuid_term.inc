@@ -19,6 +19,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourceinstitutionid',
@@ -35,6 +36,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/localitytext',
@@ -51,6 +53,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/specificepithet',
@@ -67,6 +70,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/family',
@@ -83,6 +87,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/phylum',
@@ -100,6 +105,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourceid',
@@ -116,6 +122,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -127,6 +134,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/classname',
@@ -143,6 +151,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/kindofunit',
@@ -159,6 +168,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/infraspecificepithet',
@@ -175,6 +185,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourcesystemid',
@@ -191,6 +202,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/genus',
@@ -207,6 +219,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/creator',
@@ -223,6 +236,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sitecoordinates',
@@ -239,6 +253,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/description',
@@ -255,6 +270,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/preparationtype',
@@ -271,6 +287,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/gatheringagents',
@@ -287,6 +304,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/source',
@@ -303,6 +321,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collectiontype',
@@ -319,6 +338,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/kingdom',
@@ -335,6 +355,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/caption',
@@ -351,6 +372,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/copyrighttext',
@@ -367,6 +389,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/species',
@@ -383,6 +406,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/recordbasis',
@@ -399,6 +423,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/numberofspecimen',
@@ -415,6 +440,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/order',
@@ -431,6 +457,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/multimediapublic',
@@ -447,6 +474,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/assemblageid',
@@ -463,6 +491,7 @@ function nbatax_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/owner',
