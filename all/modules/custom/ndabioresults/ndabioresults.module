@@ -221,13 +221,13 @@ function ndaSimpleSearch () {
     if(isset($_POST['searchtype'])) {
       if( $_POST['searchtype'] == "thematicsearch"){
         drupal_set_title("");
-        $pageHeader =
-          _wrap(
-            _wrap(
-              $_POST['searchtitle'], "h1"
-            ),
-            "div", "panel"
-          );
+        $pageHeader = "";
+          // _wrap(
+          //   _wrap(
+          //     $_POST['searchtitle'], "h1"
+          //   ),
+          //   "div", "panel"
+          // );
       }
     }
     $p['_search'] = $_SESSION['ndaSearch']['term'];
