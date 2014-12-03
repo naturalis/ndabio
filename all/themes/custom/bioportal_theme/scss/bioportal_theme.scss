@@ -531,7 +531,6 @@
       }
     }
 
-
 // GEOSEARCH
 
   // -- geosearch: EXTRA LABELS AROUND SEARCH-BOX
@@ -892,7 +891,6 @@
       }
     }
 
-
   // -- results: NAVIGATION
 
     #result-nav{
@@ -917,6 +915,11 @@
       }
 
     }
+
+  // -- results: EXPLORE HIHLIGHTS
+  .block-ndabioresults{
+    background-color: $ghost;
+  }
 
   // -- results: BACK
 
