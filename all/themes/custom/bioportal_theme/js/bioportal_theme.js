@@ -437,10 +437,11 @@ onload = function() {
         
         p = document.getElementById("preloader")
 
-        if (typeof p === 'undefined'){
-        } else {
-          p.remove();
-        }
+        if (typeof p != 'undefined'){
+          if ( p ){
+            p.remove();
+          }
+        } 
     
 
     }

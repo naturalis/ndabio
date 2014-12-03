@@ -190,6 +190,9 @@ function ndabio_displayform($arg1 = "") {
   if ($arg1 === "geo") variable_set("geosearch", "1");
   else variable_set("geosearch", "0");
   $form = drupal_get_form('ndabio_advanced_taxonomysearch');
+  
+
+
   return (drupal_render($form));
 }
 
