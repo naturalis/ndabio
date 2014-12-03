@@ -51,6 +51,10 @@ function bioportal_theme_preprocess_page(&$variables) {
   // Base path for use in the templates
   $variables['base_url'] = $GLOBALS['base_url'] . "/";
 
+  // Override Language Menu
+  $block = module_invoke('ndabio', 'block_view', 'ndabio_languageselect');
+  $variables['language_menu'] = $block['content'];
+
 }
 
 function bioportal_theme_ndabio_omnisearch(&$variables){

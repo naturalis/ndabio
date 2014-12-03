@@ -109,10 +109,14 @@ function ndabio_block_view($delta = '') {
     case 'ndabio_languageselect':
       $currentpath = $base_root . $base_path . drupal_get_path_alias(current_path());
 
-      $block['content'] = "";
-      $block['content'] .= "<a href='" . $currentpath . "?language=en' title>EN</a><br />";
-      $block['content'] .= "<a href='" . $currentpath . "?language=nl' title>NL</a>";
-      $block['content'] .= "";
+      $block['content']  = "<ul class='right' id='language-menu'>";
+      $block['content'] .= "  <li class='active'>";
+      $block['content'] .= "    <a href='" . $currentpath . "?language=en' title>EN</a>";
+      $block['content'] .= "  </li>";
+      $block['content'] .= "  <li>";
+      $block['content'] .= "    <a href='" . $currentpath . "?language=nl' title>NL</a>";
+      $block['content'] .= "  </li>";
+      $block['content'] .= "</ul>";
       break;
   }
   return $block;
