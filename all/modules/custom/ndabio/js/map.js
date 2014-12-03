@@ -32,7 +32,7 @@ function getPolygonGeometry() {
 	geometry = '{"type":"Polygon","coordinates":[[';
 
 	// Iterate over the vertices.
-	for (var i =0; i < vertices.getLength(); i++) {
+	for (var i = 0; i < vertices.getLength(); i++) {
 		var xy = vertices.getAt(i);
 		if (i == 0) {
 			var firstXy = xy;
@@ -105,6 +105,9 @@ function initialize() {
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
 		zoom(map);
+		if (storedZoomLevel != -1) {
+			map.setZoom(storedZoomLevel);
+		}
  	} else if (storedGid != -1) {
  		plotMapArea(storedGid, str_base_path);
  	}
@@ -241,6 +244,10 @@ function clearMapSessionData() {
 	});
 }
 
+function getZoom() {
+	return map.getZoom();
+}
+
 /*
 function setDrawingMode(mode) {
 	drawingManager.setDrawingMode(mode);
@@ -264,12 +271,11 @@ function clearMap() {
  * @param {google.maps.Map} map The map to adjust
  */
 function zoom(map) {
-  var bounds = new google.maps.LatLngBounds();
-  map.data.forEach(function(feature) {
-    processPoints(feature.getGeometry(), bounds.extend, bounds);
-  });
-  map.fitBounds(bounds);
-  //alert(bounds.getCenter());
+	var bounds = new google.maps.LatLngBounds();
+	map.data.forEach(function(feature) {
+		processPoints(feature.getGeometry(), bounds.extend, bounds);
+	});
+	map.fitBounds(bounds);
 }
 
 /**
@@ -347,6 +353,12 @@ function deleteMarkers() {
 
 			$_search_areas_target.html( data );
 
+			// Select appropriate name if coming from modify search
+			if (storedGid != -1) {
+				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid)
+				target.addClass('active').get(0).scrollIntoView();
+			}
+
 			// Handle click on area-name
 			$_search_areas_target.find('.row-area a').click(function() {
 
@@ -364,9 +376,13 @@ function deleteMarkers() {
 	})
 
 	// Simulate click on first area-type
-	$("a[data-rel='ajax']")
-		.first()
-			.trigger("click");
+	if (storedCategory == -1) {
+		$("a[data-rel='ajax']").first().trigger("click");
+	// User returns from modify search
+	} else {
+		// Select appropriate search-areas-type and -target
+		$("a[data-rel='ajax']").eq(storedCategory).trigger("click");
+	}
 
 	// Filter results when typing
 	$_geo_filter.on("keyup", function(){
@@ -422,19 +438,36 @@ function deleteMarkers() {
 			var gid = '';
 			var location = '';
 			var geoShape = '';
-			// Rectangle/polygon
+			var category = -1;
+
+			// From form, drawn area
 			if (selectedShape) {
-				var geoShape = getShapeGeometry();
-			// Selected area
+				geoShape = getShapeGeometry();
+			// From selected area or previous search
 			} else if (feature) {
-				var a = $("#search-areas-target a.active");
-				var gid = a.attr("id").substr(4) ;
-				var location = a.text();
-				var geoShape = JSON.stringify(geometry);
+				// From previous search, drawn area
+				if (feature.geometry.type == 'Polygon') {
+					geoShape = JSON.stringify(feature.geometry);
+				} else {
+					var target = $("#search-areas-target a.active");
+					// From form, selected area
+					if (target.length > 0) {
+						gid = target.attr("id").substr(4) ;
+						location = target.text();
+						category = $("#search-areas-types li").index($('li.active')[0]);
+					// From previous search, selected area
+					} else {
+						gid = storedGid;
+					}
+					geoShape = JSON.stringify(geometry);
+				}
 			}
+
 			$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
 			$(this).append("<input name='location' value='" + location + "' type='hidden'>");
+			$(this).append("<input name='category' value='" + category + "' type='hidden'>");
 			$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
+			$(this).append("<input name='zoomLevel' value='" + getZoom() + "' type='hidden'>");
 			return true;
 		});
 	});

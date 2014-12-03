@@ -141,6 +141,8 @@ function ndabio_clear_map_data_callback() {
     $_SESSION['ndaSearch']['geoShape'] = false;
     $_SESSION['ndaSearch']['location'] = false;
     $_SESSION['ndaSearch']['gid'] = false;
+    $_SESSION['ndaSearch']['zoomLevel'] = false;
+    $_SESSION['ndaSearch']['category'] = false;
     die('Session data cleared');
 }
 
@@ -272,9 +274,16 @@ function setExpandedFlag () {
     return 0;
 }
 
-function setZoomLevel () {
+function setStoredZoomLevel () {
     if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
         return $_SESSION['ndaSearch']['zoomLevel'];
+    }
+    return -1;
+}
+
+function setStoredCategory () {
+    if (isset($_SESSION['ndaSearch']['category']) && $_SESSION['ndaSearch']['category'] != '') {
+        return $_SESSION['ndaSearch']['category'];
     }
     return -1;
 }
@@ -320,7 +329,8 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
         drupal_add_js('var storedGeoShape = ' . $storedGeoShape . ';', 'inline');
-        drupal_add_js('var zoomLevel = ' . setZoomLevel() . ';', 'inline');
+        drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
+        drupal_add_js('var storedCategory = ' . setStoredCategory() . ';', 'inline');
     }
     $searchtype = array(0 => t('And'), 1 => t('Or'));
 
