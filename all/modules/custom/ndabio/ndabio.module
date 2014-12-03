@@ -190,7 +190,7 @@ function ndabio_displayform($arg1 = "") {
   if ($arg1 === "geo") variable_set("geosearch", "1");
   else variable_set("geosearch", "0");
   $form = drupal_get_form('ndabio_advanced_taxonomysearch');
-  
+
 
 
   return (drupal_render($form));
@@ -273,7 +273,7 @@ function setZoomLevel () {
         return $_SESSION['ndaSearch']['zoomLevel'];
     }
     return -1;
- }
+}
 
 function setStoredGeoShape () {
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
