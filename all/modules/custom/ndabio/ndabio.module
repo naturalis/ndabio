@@ -102,13 +102,13 @@ function ndabio_block_info() {
 function ndabio_block_view($delta = '') {
   global $base_root, $base_path;
   global $language;
-  
+
   $block = array();
   switch ($delta) {
 
     case 'ndabio_languageselect':
       $currentpath = $base_root . $base_path . drupal_get_path_alias(current_path());
-    
+
       $block['content'] = "";
       $block['content'] .= "<a href='" . $currentpath . "?language=en' title>EN</a><br />";
       $block['content'] .= "<a href='" . $currentpath . "?language=nl' title>NL</a>";
@@ -268,6 +268,12 @@ function setExpandedFlag () {
     return 0;
 }
 
+function setZoomLevel () {
+    if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
+        return $_SESSION['ndaSearch']['zoomLevel'];
+    }
+    return -1;
+ }
 
 function setStoredGeoShape () {
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
@@ -310,6 +316,7 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
         drupal_add_js('var storedGeoShape = ' . $storedGeoShape . ';', 'inline');
+        drupal_add_js('var zoomLevel = ' . setZoomLevel() . ';', 'inline');
     }
     $searchtype = array(0 => t('And'), 1 => t('Or'));
 
@@ -335,7 +342,7 @@ function ndabio_advanced_taxonomysearch() {
         '#collapsed' => ($loadold) ? FALSE : TRUE,
         //'#title' => $label,
       );
-      
+
       $form[$sysname]['reset'] = array(
         '#type' => 'button',
         '#value' => 'Reset',
@@ -345,8 +352,8 @@ function ndabio_advanced_taxonomysearch() {
           'class' => array("reset-button"),
         )
       );
-      
-   
+
+
       foreach ($children as $child) {
         $childlabel = $child->description;
         $childsysname = $child->name;
