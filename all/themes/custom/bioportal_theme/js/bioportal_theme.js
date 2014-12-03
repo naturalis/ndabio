@@ -7,7 +7,11 @@
 
     var h = $(window).height();
     var w = $(window).width();
-    $("main").css("min-height",h - 170); // Magic number,...
+    if (  $("body").hasClass("front")  ){
+      $("main").css("min-height",h - 170 - 160);
+    } else {
+      $("main").css("min-height",h - 170);
+    }
 
 
   // ---------------------------------------------------------
@@ -433,9 +437,11 @@ onload = function() {
         
         p = document.getElementById("preloader")
 
-        if (p != null){
+        if (typeof p === 'undefined'){
+        } else {
           p.remove();
         }
+    
 
     }
 }
