@@ -105,14 +105,14 @@ function bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_name';
-  $strongarm->value = 'Site-Install';
+  $strongarm->value = 'BioPortal';
   $export['site_name'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_slogan';
-  $strongarm->value = 'Doorzoek natuurhistorische collectie-informatie';
+  $strongarm->value = 'Browse through Dutch natural history collections';
   $export['site_slogan'] = $strongarm;
 
   $strongarm = new stdClass();

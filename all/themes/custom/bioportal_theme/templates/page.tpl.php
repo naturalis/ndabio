@@ -57,7 +57,7 @@
         <img src="<?php print "$base_url$naturalis_logo"; ?>"/>
       </div>
 
-      <div class="medium-6 columns" id="title-and-slogan">
+      <div class="medium-6 columns" id="title-and-slogan" role="header">
 
         <?php if ($site_name): ?>
           <h1>
