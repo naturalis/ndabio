@@ -153,6 +153,8 @@ function ndabioresults_pass ($args = "") {
     global $base_root, $base_path;
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
 
+    drupal_set_title(t("Search results"));
+    
     // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
     if ($_GET['back'] && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
         return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
@@ -212,7 +214,7 @@ function ndabioresults_ajax_callback () {
  * @return string Formatted output
  */
 function ndaSimpleSearch () {
-    $pageHeader = _wrap(t('Search results'),"H1");
+    $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
     // Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
@@ -282,7 +284,7 @@ function ndaSimpleSearch () {
 function ndaAdvancedSearch () {
     global $base_root, $base_path;
 
-    $pageHeader = _wrap(t('Search results'),"H1");
+    $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
     //Clear page header and page title in case of thematic search
     //Only show header as a block on georaphic search and thematic search
