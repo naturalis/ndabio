@@ -923,6 +923,7 @@
   // -- results: EXPLORE HIHLIGHTS
     .block-ndabioresults-ndabioresults-thematicsearch{
       background-color: $smoke;
+      color: #333;
       padding: 10px 10px 10px percentage( 1 / 10 );
       @media only screen and (max-width: 1024px) { 
         padding-left: 10px;
@@ -945,7 +946,6 @@
 
 
     }
-
 
   // -- results: BACK
 
@@ -1054,6 +1054,29 @@
 
     .gm-style-iw > div > div{
       overflow: hidden !important;
+    }
+
+  // -- results: SORTING
+
+    th{
+      a:first-child{
+        border-bottom: 1px dotted black;
+      }
+
+      [class^="icon-sort"], [class*=" icon-sort"]{
+        font-size: 24px;
+        color: $red;
+        position: relative;
+        top: 0.2em;
+        margin-left: 0.3em;
+      }
+
+      .icon-sort_sortable{
+        color: $blue;
+        &:hover{
+          color: $red;
+        }
+      }
     }
 
 // DETAIL PAGES
