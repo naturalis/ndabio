@@ -2,7 +2,7 @@
 
 // Transposes common names array and prints common names
 function printCommonNames ($data) {
-    p($data);
+//p($data);
 	$output = "";
 
 	$header = "<h3>" . t('Common names') . "</h3>";
