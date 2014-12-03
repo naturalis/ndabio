@@ -214,20 +214,16 @@ function ndabioresults_ajax_callback () {
  * @return string Formatted output
  */
 function ndaSimpleSearch () {
-    $pageHeader = ""; //_wrap(t('Search results'),"H1");
+    $pageHeader = ""; 
 
     // Clear page header and page title in case of thematic search
+    
     //Only show header as a block on georaphic search and thematic search
+    
     if(isset($_POST['searchtype'])) {
       if( $_POST['searchtype'] == "thematicsearch"){
         drupal_set_title("");
-        $pageHeader =
-          _wrap(
-            _wrap(
-              $_POST['searchtitle'], "h1"
-            ),
-            "div", "panel"
-          );
+        $pageHeader = "";
       }
     }
     $p['_search'] = $_SESSION['ndaSearch']['term'];
