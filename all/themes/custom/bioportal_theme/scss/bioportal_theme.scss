@@ -921,10 +921,18 @@
     }
 
   // -- results: EXPLORE HIHLIGHTS
-  .block-ndabioresults{
-    background-color: $smoke;
-    
-  }
+    .block-ndabioresults{
+      background-color: $smoke;
+      padding: 10px 10px 10px percentage( 1 / 10 );
+
+      h2{
+        margin-top: 0;
+      }
+
+      p{
+        margin-bottom: 0;
+      }
+    }
 
   // -- results: BACK
 
