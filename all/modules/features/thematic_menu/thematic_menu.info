@@ -1,7 +1,7 @@
 name = thematic menu
 core = 7.x
 package = Bioportal
-version = 7.x-0.1
+version = 7.x-0.2
 project = thematic_menu
 dependencies[] = bioportal_serrvice_menu_pages
 dependencies[] = features
@@ -10,6 +10,8 @@ dependencies[] = nbatax
 dependencies[] = strongarm
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
+features[field_instance][] = node-naturalis_featured_content-body
+features[field_instance][] = node-naturalis_featured_content-field_nba_search_term
 features[menu_links][] = main-menu_arts-collection:explore/arts/Arts collection
 features[menu_links][] = main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie
 features[menu_links][] = main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection
