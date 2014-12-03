@@ -1,4 +1,4 @@
- (function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
+(function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
 
 
   // ---------------------------------------------------------
@@ -414,4 +414,41 @@ function preloader(){
       }
     }, 25);
   })(jQuery);
+}
+
+  // ---------------------------------------------------------
+  // PRELOADER: remove upon clicking browser back-button
+  // ---------------------------------------------------------
+
+onload = function() {
+    var e = document.getElementById("refreshed");
+    
+    if (e.value == "no"){
+     
+     e.value = "yes";
+    
+    } else {
+       
+        e.value = "no";
+        
+        p = document.getElementById("preloader")
+
+        if (p != null){
+          p.remove();
+        }
+
+    }
+}
+
+//http://stackoverflow.com/a/18120786/960592
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
 }
