@@ -732,6 +732,7 @@ function parseTaxonDetail ($json) {
 		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
+//p($data);
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
@@ -774,8 +775,7 @@ function parseTaxonDetail ($json) {
 		}
 		if (!empty($row->result->vernacularNames)) {
 			foreach ($row->result->vernacularNames as $i => $name) {
-				$output['commonNames'][$name->language][$name->name] =
-					$source;
+				$output['commonNames'][$source][$name->language][] = $name->name;
 			}
 
 		}
