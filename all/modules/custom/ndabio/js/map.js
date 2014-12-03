@@ -356,7 +356,8 @@ function deleteMarkers() {
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
 				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid)
-				target.addClass('active').get(0).scrollIntoView();
+				//target.addClass('active').get(0).scrollIntoView();
+				target.addClass('active');
 			}
 
 			// Handle click on area-name
