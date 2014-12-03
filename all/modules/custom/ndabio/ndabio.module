@@ -300,6 +300,7 @@ function ndabio_advanced_taxonomysearch() {
     $geosearch = 0;
 
     if (variable_get('geosearch') == '1') {
+        drupal_set_title(t("Geographic search"));
         $geosearch = 1;
         $path = drupal_get_path('module', 'ndabio');
         drupal_add_css($path . "/css/ndabio_style.css");
