@@ -7,7 +7,7 @@ function printSpecimenCollection ($row, $i) {
     if (isset($row['specimens'])) {
         foreach ($row['specimens'] as $specimen) {
             $output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
-		    printDrupalLink($specimen['url']) . "'>" . $specimen['unitID'] . "</a></td>" . padTds(3) . "</tr>";
+		    printDrupalLink($specimen['url']) . "'>" . $specimen['unitID'] . "</a></td>" . padTds(4) . "</tr>";
         }
 
     // Specimen collection/set
