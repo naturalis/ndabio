@@ -1181,7 +1181,7 @@ function parseSpecimensByMap ($data) {
 		    // @todo
 			//$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
 			$row->searchResults[0]->result->identifications[0]->scientificName,
-		    $output['searchTerms']
+		    getHits($row->searchResults[0])
 		);
 		$taxonUrl = isset($row->links[0]->href) ? $row->links[0]->href : null;
 		$sources = getSources($row);
