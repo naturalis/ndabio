@@ -46,7 +46,7 @@ function ndabioresults_block_info() {
   $blocks['ndabioresults_thematicsearch'] = array(
     'info' => t('NBA: Thematic search title block'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "explore*",
+    'pages' => "nba/result\nnba/result*",
     'region' => "content",
     'weight' => -10,
     'status' => TRUE,
@@ -149,10 +149,10 @@ function ndabioresults_block_view($delta = '') {
       $starturl = $base_root . $base_path;
       if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
 
-      if ( $_SESSION['ndaRequestType'] == 'form'){
-        // $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
-        $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a><!-- br />" .
-          "<a href='" . $starturl . "'>$icon" . t('New search') . "</a -->";
+      if ($_SESSION['ndaSearch']['theme'] && !empty($_SESSION['ndaSearch']['theme'])) {
+         $block['content'] = "<a href='$starturl'>$icon" . t('Home') . "</a>";
+      } else if ( $_SESSION['ndaRequestType'] == 'form'){
+        $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
       } else {
         $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
       }
@@ -176,29 +176,29 @@ function ndabioresults_block_view($delta = '') {
 
 
       break;
-      
-      
+
+
     case 'ndabioresults_thematicsearch':
       //Get NBA search term from URL
-      if($_POST['searchtype'] == "thematicsearch") {
-        
+      if(isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
+
         //Check if content with identical label is available
         //Get node of type 'Naturalis thematic search'
-        $sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $_POST['searchkey'] . "' LIMIT 1";
-       
+        $sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $_SESSION['ndaSearch']['theme'] . "' LIMIT 1";
+
         $myid = db_query($sql)->fetchAssoc();
         //print_r($myid['entity_id']);
-        
+
         //SELECT nid FROM xxx WHERE label = $_POST['searchkey']
         $mynode = node_load($myid['entity_id']);
-        
+
         if (!empty($mynode)) {
           //Create block content
           $block['subject'] = $mynode->title;
           $block['content'] = $mynode->body['und'][0]['value'];
         }
       }
-      
+
       break;
   }
   return $block;

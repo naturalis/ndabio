@@ -153,11 +153,19 @@ function ndabioresults_pass ($args = "") {
     global $base_root, $base_path;
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
 
+    // Thematic search
+    if (isset($_GET['theme']) && !empty($_GET['theme'])) {
+        unset($_SESSION['ndaSearch']);
+        $_SESSION['ndaSearch']['theme'] = $_GET['theme'];
+        return ndaThematicSearch();
+    }
+
     drupal_set_title(t("Search results"));
-    
+
     // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
-    if ($_GET['back'] && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
-        return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+    if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+         return !empty($_SESSION['ndaSearch']['term']) ? ndaSimpleSearch() :
+            !empty($_SESSION['ndaSearch']['theme']) ? ndaThematicSearch() : ndaAdvancedSearch();
     }
 
     // POST data from the search form?
@@ -216,20 +224,6 @@ function ndabioresults_ajax_callback () {
 function ndaSimpleSearch () {
     $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
-    // Clear page header and page title in case of thematic search
-    //Only show header as a block on georaphic search and thematic search
-    if(isset($_POST['searchtype'])) {
-      if( $_POST['searchtype'] == "thematicsearch"){
-        drupal_set_title("");
-        $pageHeader = "";
-          // _wrap(
-          //   _wrap(
-          //     $_POST['searchtitle'], "h1"
-          //   ),
-          //   "div", "panel"
-          // );
-      }
-    }
     $p['_search'] = $_SESSION['ndaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
@@ -286,26 +280,15 @@ function ndaAdvancedSearch () {
 
     $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
-    //Clear page header and page title in case of thematic search
-    //Only show header as a block on georaphic search and thematic search
-    //if(  $_POST['searchtype'] == "thematicsearch"){
-      //not needed anymore, this funcionality has been rep`laces by a block
-    //}
-
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    if ($_SESSION['ndaSearch']['searchtype'] == "thematicsearch" ) {
-      $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    }
-    else {
-      $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
 
-      // Subdivide specimen parameters for both result types
-      $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    // Subdivide specimen parameters for both result types
+    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
 
-      $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-      $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
-    }
+    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
 //p($services);
 
     // Special case for specimen/search: unset this service if only geoShape is present;
@@ -316,10 +299,8 @@ function ndaAdvancedSearch () {
         unset($services[specimenService()]);
 
         // While we're at anyway, add a banner to indicate we're dealing with a geoSearch
-        // $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
-        // $p['_andOr'] = 'AND';
-
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ?
+            $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
 
         $pageHeader =
             _wrap(
@@ -328,10 +309,8 @@ function ndaAdvancedSearch () {
                    . " "
                    . _wrap($area, "span", "term"),
                    "h1"
-                ), "div", "panel"
-            );
-
-
+            ), "div", "panel"
+        );
     }
 
     // Test if anything has been posted; if not return with error message
@@ -350,14 +329,48 @@ function ndaAdvancedSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
 
-function dataPosted ($services) {
-    foreach ($services as $data) {
-        if (!empty($data)) {
-            return true;
-        }
+
+
+function ndaThematicSearch () {
+    global $base_root, $base_path;
+
+    unset($_SESSION['ndaFilters']);
+    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+
+    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
+    $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+/*
+    $pageHeader =
+        _wrap(
+            _wrap(
+                t("Thematic search")
+               . " "
+               . _wrap($area, "span", "term"),
+               "h1"
+        ), "div", "panel"
+    );
+*/
+    $pageHeader = '';
+
+    // Test if anything has been posted; if not return with error message
+    if (!dataPosted($services)) {
+        return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
+            "<a href='$base_root/$base_path'>" . t('Back to home page') . '</a>.', 'p');
     }
-    return false;
+
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from thematic search';
+
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
+
+
 
 /**ndabioresults_config_form
  * @todo: check base url!!
@@ -424,6 +437,18 @@ function ndaAjaxRequest ($r, $maxResults = false) {
         }
     }
     return null;
+}
+
+
+
+
+function dataPosted ($services) {
+    foreach ($services as $data) {
+        if (!empty($data)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -1699,6 +1724,7 @@ function translateNdaField ($str) {
   }
   return $str;
 }
+
 
 // Create Drupal specific link
 function printDrupalLink ($url) {
