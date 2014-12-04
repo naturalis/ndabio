@@ -362,9 +362,12 @@ function deleteMarkers() {
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
 				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid);
-				//target.addClass('active').get(0).scrollIntoView();
-				target.addClass('active');
-				$_search_areas_target.scrollTo(target);
+				if (target.length > 0) {
+					target.addClass('active');
+					$_search_areas_target.scrollTo(target);
+				} else {
+					$_search_areas_target.scrollTo(0);
+				}
 			}
 
 			// Handle click on area-name
