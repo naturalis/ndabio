@@ -19,7 +19,7 @@ function bioportal_controller_default_box() {
   $box->description = 'Introduction';
   $box->options = array(
     'body' => array(
-      'value' => 'Bij Naturalis Biodiversity Center willen we biodiversiteit beschrijven, begrijpen en verklaren. We verzamelen, bewaren en bestuderen dieren, planten en stenen.  De verscheidenheid van het leven op aarde, op het niveau van genen, soorten en ecosystemen. Biodiversiteit omvat alle soorten die er op aarde zijn, waaronder alle dier- en plantensoorten. Op deze site kunt u door deze verzamelelde gegevens zoeken.   ',
+      'value' => 'At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.',
       'format' => 'plain_text',
     ),
     'additional_classes' => '',
