@@ -17,6 +17,7 @@ function printSpecimensByMap ($data) {
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']), 'inline');
     drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'], 'inline');
+    drupal_add_js("var storedCategory = " . $_SESSION['ndaSearch']['category'], 'inline');
 
 
 //p($data['results']);
