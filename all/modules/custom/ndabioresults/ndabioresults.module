@@ -164,8 +164,13 @@ function ndabioresults_pass ($args = "") {
 
     // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
-         return !empty($_SESSION['ndaSearch']['term']) ? ndaSimpleSearch() :
-            !empty($_SESSION['ndaSearch']['theme']) ? ndaThematicSearch() : ndaAdvancedSearch();
+        if (!empty($_SESSION['ndaSearch']['term'])) {
+            return ndaSimpleSearch();
+        } else if (!empty($_SESSION['ndaSearch']['theme'])) {
+            return ndaThematicSearch();
+        } else {
+            return ndaAdvancedSearch();
+        }
     }
 
     // POST data from the search form?
