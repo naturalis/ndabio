@@ -79,7 +79,7 @@ function ndabioresults_menu() {
  *
  */
 function ndabioresults_preprocess_html(&$vars){
-  if ( $_SESSION['ndaRequestType'] !== 'form'){
+  if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
     $vars['classes_array'][] = "nba-result-detail";
   }
 }
