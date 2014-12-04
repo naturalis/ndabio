@@ -104,10 +104,7 @@ function initialize() {
 		};
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
-		zoom(map);
-		if (storedZoomLevel != -1) {
-			map.setZoom(storedZoomLevel);
-		}
+		zoom(map, true);
  	} else if (storedGid != -1) {
  		plotMapArea(storedGid, str_base_path);
  	}
@@ -270,12 +267,21 @@ function clearMap() {
  * Update a map's viewport to fit each geometry in a dataset
  * @param {google.maps.Map} map The map to adjust
  */
-function zoom(map) {
+function zoom (map, resetZoom = false) {
 	var bounds = new google.maps.LatLngBounds();
 	map.data.forEach(function(feature) {
 		processPoints(feature.getGeometry(), bounds.extend, bounds);
 	});
-	map.fitBounds(bounds);
+
+	// zoomLevel has been stored
+	if (resetZoom && typeof storedZoomLevel !== 'undefined' && storedZoomLevel != -1) {
+		map.setCenter(bounds.getCenter());
+		map.setZoom(storedZoomLevel);
+	// zoomLevel has not been set before
+	} else {
+		map.fitBounds(bounds);
+	}
+
 }
 
 /**
@@ -286,7 +292,7 @@ function zoom(map) {
  * @param {Object} thisArg The value of 'this' as provided to 'callback' (e.g.
  *     myArray)
  */
-function processPoints(geometry, callback, thisArg) {
+function processPoints (geometry, callback, thisArg) {
   if (geometry instanceof google.maps.LatLng) {
     callback.call(thisArg, geometry);
   } else if (geometry instanceof google.maps.Data.Point) {
@@ -358,6 +364,7 @@ function deleteMarkers() {
 				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid);
 				//target.addClass('active').get(0).scrollIntoView();
 				target.addClass('active');
+				$_search_areas_target.scrollTo(target);
 			}
 
 			// Handle click on area-name
@@ -439,7 +446,7 @@ function deleteMarkers() {
 			var gid = '';
 			var location = '';
 			var geoShape = '';
-			var category = -1;
+			var category = '';
 
 			// From form, drawn area
 			if (selectedShape) {
@@ -455,7 +462,11 @@ function deleteMarkers() {
 					if (target.length > 0) {
 						gid = target.attr("id").substr(4) ;
 						location = target.text();
-						category = $("#search-areas-types li").index($('li.active')[0]);
+						$("#search-areas-types ul li").each(function(i){
+							if ($(this).hasClass('active')) {
+								category = i;
+							}
+						});
 					// From previous search, selected area
 					} else {
 						gid = storedGid;
