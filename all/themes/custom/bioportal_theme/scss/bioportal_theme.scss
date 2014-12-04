@@ -559,6 +559,10 @@
       padding-right: 1em;
     }
 
+    .page-geographic-search h1{
+      display: none;
+    }
+
   // --geosearch: bug-fix (zurb vs. google maps)
 
     #map-canvas{
