@@ -182,14 +182,12 @@ function ndabioresults_block_view($delta = '') {
 
 
     case 'ndabioresults_thematicsearch':
-
       //Get NBA search term from URL
       $mytheme = check_plain($_GET['theme']);
       if(!empty($mytheme)) {
         //Check if content with identical label is available
         //Get node of type 'Naturalis thematic search'
         $sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $mytheme . "' LIMIT 1";
-
         $myid = db_query($sql)->fetchAssoc();
 
         //SELECT nid FROM xxx WHERE label = $_POST['searchkey']
@@ -198,7 +196,7 @@ function ndabioresults_block_view($delta = '') {
         if (!empty($mynode)) {
           //Create block content
           $block['subject'] = $mynode->title;
-          $block['content'] = $mynode->body['und'][0]['value'];
+          $block['content'] = $mynode->body['und'][0]['value'] . " ";
         }
       }
 
