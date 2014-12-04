@@ -43,7 +43,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   ),
   'metatags' => array(),
   'date' => '2014-10-21 12:58:21 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   $nodes[] = array(
   'title' => 'Help',
@@ -173,7 +173,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   ),
   'metatags' => array(),
   'date' => '2014-10-21 12:37:22 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   $nodes[] = array(
   'title' => 'API',
@@ -220,7 +220,7 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   ),
   'metatags' => array(),
   'date' => '2014-11-27 09:44:48 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   $nodes[] = array(
   'title' => 'Colophon',
@@ -259,7 +259,7 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   ),
   'metatags' => array(),
   'date' => '2014-10-21 12:41:00 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   $nodes[] = array(
   'title' => 'About',
@@ -298,7 +298,7 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   ),
   'metatags' => array(),
   'date' => '2014-10-22 13:37:20 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   $nodes[] = array(
   'title' => 'Contact',
@@ -379,7 +379,7 @@ De op Json gebaseerde service is zo eenvoudig dat je in no time iets kan bouwen 
   ),
   'metatags' => array(),
   'date' => '2014-10-22 13:22:53 +0000',
-  'user_uuid' => 'e78664b9-0cda-423f-b903-51f6d91a9e23',
+  'user_uuid' => '12b69a5f-ba67-476d-b2d1-3696ed94edbe',
 );
   return $nodes;
 }

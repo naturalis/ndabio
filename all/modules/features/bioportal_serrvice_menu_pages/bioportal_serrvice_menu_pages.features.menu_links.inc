@@ -17,6 +17,8 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'router_path' => 'uuid',
     'link_title' => 'About',
     'options' => array(
+      'node_type' => 'naturalis_page',
+      'alter' => TRUE,
       'identifier' => 'main-menu_about:uuid/node/9c021310-9a55-495b-b798-dbbc56a1c5bb',
     ),
     'module' => 'menu',
@@ -29,7 +31,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 1,
     'uuid' => '9c021310-9a55-495b-b798-dbbc56a1c5bb',
-    'vuuid' => 'd3e32c45-574b-4bf6-b9da-325656a7ac37',
+    'vuuid' => '22380422-d1a9-4183-8652-c6b22eefa909',
   );
   // Exported menu link: main-menu_api:uuid/node/400c73b8-5ad3-44eb-a513-c019e8ef8fce
   $menu_links['main-menu_api:uuid/node/400c73b8-5ad3-44eb-a513-c019e8ef8fce'] = array(
@@ -38,6 +40,8 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'router_path' => 'uuid',
     'link_title' => 'API',
     'options' => array(
+      'node_type' => 'naturalis_page',
+      'alter' => TRUE,
       'identifier' => 'main-menu_api:uuid/node/400c73b8-5ad3-44eb-a513-c019e8ef8fce',
     ),
     'module' => 'menu',
@@ -47,10 +51,10 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 0,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'uuid' => '400c73b8-5ad3-44eb-a513-c019e8ef8fce',
-    'vuuid' => '7e8ca4a6-6a88-408f-82b3-179da0d87c68',
+    'vuuid' => '80e3bfd7-7f0c-42f7-942a-d15f55e6d45c',
   );
   // Exported menu link: menu-naturalis-service-menu_colophon:uuid/node/794d5b17-da10-492e-839d-bbfce2ad70b4
   $menu_links['menu-naturalis-service-menu_colophon:uuid/node/794d5b17-da10-492e-839d-bbfce2ad70b4'] = array(
@@ -59,6 +63,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'router_path' => 'uuid',
     'link_title' => 'Colophon',
     'options' => array(
+      'node_type' => 'naturalis_service_menu_page',
       'identifier' => 'menu-naturalis-service-menu_colophon:uuid/node/794d5b17-da10-492e-839d-bbfce2ad70b4',
     ),
     'module' => 'menu',
@@ -71,7 +76,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 1,
     'uuid' => '794d5b17-da10-492e-839d-bbfce2ad70b4',
-    'vuuid' => '1fc25a75-cf8e-4a4d-9084-e224f1051e43',
+    'vuuid' => '0743a0fc-b681-4caf-8d05-d03007a0e8c3',
   );
   // Exported menu link: menu-naturalis-service-menu_contact:uuid/node/a2f56bf1-1289-45f2-96a5-c25a057d6679
   $menu_links['menu-naturalis-service-menu_contact:uuid/node/a2f56bf1-1289-45f2-96a5-c25a057d6679'] = array(
@@ -80,6 +85,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'router_path' => 'uuid',
     'link_title' => 'Contact',
     'options' => array(
+      'node_type' => 'naturalis_service_menu_page',
       'identifier' => 'menu-naturalis-service-menu_contact:uuid/node/a2f56bf1-1289-45f2-96a5-c25a057d6679',
     ),
     'module' => 'menu',
@@ -92,7 +98,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 1,
     'uuid' => 'a2f56bf1-1289-45f2-96a5-c25a057d6679',
-    'vuuid' => '8ed2fce3-10ae-48a7-b482-5a7d36039a21',
+    'vuuid' => '132dce58-bc01-4b29-9745-ffdc8d5e07f8',
   );
   // Exported menu link: menu-naturalis-service-menu_disclaimer:uuid/node/1dfa43fc-f62c-4d40-a016-4e4f40952954
   $menu_links['menu-naturalis-service-menu_disclaimer:uuid/node/1dfa43fc-f62c-4d40-a016-4e4f40952954'] = array(
@@ -101,6 +107,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'router_path' => 'uuid',
     'link_title' => 'Disclaimer',
     'options' => array(
+      'node_type' => 'naturalis_service_menu_page',
       'identifier' => 'menu-naturalis-service-menu_disclaimer:uuid/node/1dfa43fc-f62c-4d40-a016-4e4f40952954',
     ),
     'module' => 'menu',
@@ -113,7 +120,7 @@ function bioportal_serrvice_menu_pages_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 1,
     'uuid' => '1dfa43fc-f62c-4d40-a016-4e4f40952954',
-    'vuuid' => '1c7b1be5-4136-4ef9-b190-088649eb342e',
+    'vuuid' => 'b7a139d1-7136-44f5-a805-ee53e50ba80c',
   );
   // Translatables
   // Included for use with string extractors like potx.
