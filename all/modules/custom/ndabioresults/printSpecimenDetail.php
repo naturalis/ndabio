@@ -19,6 +19,7 @@ function printSpecimenDetail ($data) {
         drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js("var specimenMarker = " . json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
+        drupal_add_js("var storedCategory = " . $_SESSION['ndaSearch']['category'], 'inline');
     }
 
 	// Determines order to print field/value;
