@@ -1402,10 +1402,14 @@ function getImageUrl ($row) {
 
 // Return the field containing the hit
 function getHits ($row) {
+    $noHits = array(
+        'fullScientificName',
+        'theme'
+    );
 	foreach ($row->matchInfo as $info) {
 		$e = explode('.', $info->path);
 		$field = end($e);
-		if ($field != 'fullScientificName') {
+		if (!in_array($field, $noHits)) {
             $hits[end($e)] = strip_tags($info->valueHighlighted);
 		}
 	}
