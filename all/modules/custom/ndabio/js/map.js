@@ -267,7 +267,10 @@ function clearMap() {
  * Update a map's viewport to fit each geometry in a dataset
  * @param {google.maps.Map} map The map to adjust
  */
-function zoom (map, resetZoom = false) {
+function zoom (map, resetZoom) {
+	if (!resetZoom) {
+		var resetZoom = false;
+	}
 	var bounds = new google.maps.LatLngBounds();
 	map.data.forEach(function(feature) {
 		processPoints(feature.getGeometry(), bounds.extend, bounds);
