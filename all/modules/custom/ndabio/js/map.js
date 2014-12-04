@@ -268,7 +268,7 @@ function clearMap() {
  * @param {google.maps.Map} map The map to adjust
  */
 function zoom (map, resetZoom) {
-	if (!resetZoom) {
+	if (typeof resetZoom == "undefined") {
 		var resetZoom = false;
 	}
 	var bounds = new google.maps.LatLngBounds();
