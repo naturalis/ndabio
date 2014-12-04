@@ -10,18 +10,21 @@
 function thematic_menu_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: main-menu_arts-collection:explore/arts/Arts collection
-  $menu_links['main-menu_arts-collection:explore/arts/Arts collection'] = array(
+  // Exported menu link: main-menu_arts-collection:nba/result
+  $menu_links['main-menu_arts-collection:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/arts/Arts collection',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Arts collection',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_arts-collection:explore/arts/Arts collection',
+      'identifier' => 'main-menu_arts-collection:nba/result',
+      'query' => array(
+        'theme' => 'arts',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -30,22 +33,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -47,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie
-  $menu_links['main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie'] = array(
+  // Exported menu link: main-menu_beekbergerwoud-collectie:nba/result
+  $menu_links['main-menu_beekbergerwoud-collectie:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/beekbergerwoud/Beekbergerwoud collectie',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Beekbergerwoud collectie',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_beekbergerwoud-collectie:explore/beekbergerwoud/Beekbergerwoud collectie',
+      'identifier' => 'main-menu_beekbergerwoud-collectie:nba/result',
+      'query' => array(
+        'theme' => 'beekbergerwoud',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -54,22 +60,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 5,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
-  // Exported menu link: main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection
-  $menu_links['main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection'] = array(
+  // Exported menu link: main-menu_beekbergerwoud-collection:nba/result
+  $menu_links['main-menu_beekbergerwoud-collection:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/beekbergerwoud/Beekbergerwoud collection',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Beekbergerwoud collection',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_beekbergerwoud-collection:explore/beekbergerwoud/Beekbergerwoud collection',
+      'identifier' => 'main-menu_beekbergerwoud-collection:nba/result',
+      'query' => array(
+        'theme' => 'beekbergerwoud',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -78,7 +87,7 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -46,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
@@ -99,7 +108,7 @@ function thematic_menu_menu_default_menu_links() {
     'hidden' => 0,
     'external' => 1,
     'has_children' => 1,
-    'expanded' => 0,
+    'expanded' => 1,
     'weight' => -49,
     'customized' => 1,
     'language' => 'nl',
@@ -122,24 +131,27 @@ function thematic_menu_menu_default_menu_links() {
     'hidden' => 0,
     'external' => 1,
     'has_children' => 1,
-    'expanded' => 0,
+    'expanded' => 1,
     'weight' => -50,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
   );
-  // Exported menu link: main-menu_extinct-birds:explore/extinct-birds/Extinct birds
-  $menu_links['main-menu_extinct-birds:explore/extinct-birds/Extinct birds'] = array(
+  // Exported menu link: main-menu_extinct-birds:nba/result
+  $menu_links['main-menu_extinct-birds:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/extinct-birds/Extinct birds',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Extinct birds',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_extinct-birds:explore/extinct-birds/Extinct birds',
+      'identifier' => 'main-menu_extinct-birds:nba/result',
+      'query' => array(
+        'theme' => 'extinct-birds',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -148,22 +160,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -50,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen
-  $menu_links['main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen'] = array(
+  // Exported menu link: main-menu_martin-collectie-van-fossiele-schelpen:nba/result
+  $menu_links['main-menu_martin-collectie-van-fossiele-schelpen:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/martin/Martin collectie van fossiele schelpen',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Martin collectie van fossiele schelpen',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_martin-collectie-van-fossiele-schelpen:explore/martin/Martin collectie van fossiele schelpen',
+      'identifier' => 'main-menu_martin-collectie-van-fossiele-schelpen:nba/result',
+      'query' => array(
+        'theme' => 'martin',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -172,22 +187,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 1,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
-  // Exported menu link: main-menu_martin-collection-of-fossil-shell:explore/martin/Martin collection of fossil shell
-  $menu_links['main-menu_martin-collection-of-fossil-shell:explore/martin/Martin collection of fossil shell'] = array(
+  // Exported menu link: main-menu_martin-collection-of-fossil-shell:nba/result
+  $menu_links['main-menu_martin-collection-of-fossil-shell:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/martin/Martin collection of fossil shell',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Martin collection of fossil shell',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_martin-collection-of-fossil-shell:explore/martin/Martin collection of fossil shell',
+      'identifier' => 'main-menu_martin-collection-of-fossil-shell:nba/result',
+      'query' => array(
+        'theme' => 'martin',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -196,22 +214,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -49,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_prentencollectie:explore/arts/Prentencollectie
-  $menu_links['main-menu_prentencollectie:explore/arts/Prentencollectie'] = array(
+  // Exported menu link: main-menu_prentencollectie:nba/result
+  $menu_links['main-menu_prentencollectie:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/arts/Prentencollectie',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Prentencollectie',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_prentencollectie:explore/arts/Prentencollectie',
+      'identifier' => 'main-menu_prentencollectie:nba/result',
+      'query' => array(
+        'theme' => 'arts',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -220,22 +241,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 4,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
-  // Exported menu link: main-menu_siebold-collectie:explore/siebold/Siebold collectie
-  $menu_links['main-menu_siebold-collectie:explore/siebold/Siebold collectie'] = array(
+  // Exported menu link: main-menu_siebold-collectie:nba/result
+  $menu_links['main-menu_siebold-collectie:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/siebold/Siebold collectie',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Siebold collectie',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_siebold-collectie:explore/siebold/Siebold collectie',
+      'identifier' => 'main-menu_siebold-collectie:nba/result',
+      'query' => array(
+        'theme' => 'siebold',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -244,22 +268,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 2,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
-  // Exported menu link: main-menu_siebold-collection:explore/siebold/Siebold collection
-  $menu_links['main-menu_siebold-collection:explore/siebold/Siebold collection'] = array(
+  // Exported menu link: main-menu_siebold-collection:nba/result
+  $menu_links['main-menu_siebold-collection:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/siebold/Siebold collection',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Siebold collection',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_siebold-collection:explore/siebold/Siebold collection',
+      'identifier' => 'main-menu_siebold-collection:nba/result',
+      'query' => array(
+        'theme' => 'siebold',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -268,22 +295,25 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => -48,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels
-  $menu_links['main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels'] = array(
+  // Exported menu link: main-menu_uitgestorven-vogels:nba/result
+  $menu_links['main-menu_uitgestorven-vogels:nba/result'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'explore/extinct-birds/Uitgestorven vogels',
-    'router_path' => 'explore/%',
+    'link_path' => 'nba/result',
+    'router_path' => 'nba/result',
     'link_title' => 'Uitgestorven vogels',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_uitgestorven-vogels:explore/extinct-birds/Uitgestorven vogels',
+      'identifier' => 'main-menu_uitgestorven-vogels:nba/result',
+      'query' => array(
+        'theme' => 'extinct-birds',
+      ),
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -292,7 +322,7 @@ function thematic_menu_menu_default_menu_links() {
     'expanded' => 0,
     'weight' => 0,
     'customized' => 1,
-    'language' => 'und',
+    'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
