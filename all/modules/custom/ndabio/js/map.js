@@ -230,7 +230,7 @@ function plotMapArea(gid, baseurl) {
 	});
 }
 
-function clearMapSessionData() {
+function clearMapSessionData () {
 	jQuery.ajax({
 		url: str_base_path + 'naturalis/clear_map_data',
 		type: "GET",
@@ -270,7 +270,6 @@ function setZoomLevel () {
 		return 7;
 	}
 	return storedZoomLevel;
-
 }
 
 

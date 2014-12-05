@@ -275,8 +275,6 @@ function setExpandedFlag () {
 }
 
 function setStoredZoomLevel () {
- p('zoom ' . $_SESSION['ndaSearch']['zoomLevel']);
-
     if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
         return $_SESSION['ndaSearch']['zoomLevel'];
     }
@@ -284,7 +282,6 @@ function setStoredZoomLevel () {
 }
 
 function setStoredCategory () {
-p('category ' . $_SESSION['ndaSearch']['category']);
     if (isset($_SESSION['ndaSearch']['category']) && $_SESSION['ndaSearch']['category'] != '') {
         return $_SESSION['ndaSearch']['category'];
     }
@@ -293,7 +290,6 @@ p('category ' . $_SESSION['ndaSearch']['category']);
 
 
 function setStoredGeoShape () {
-p('shape ' . $_SESSION['ndaSearch']['geoShape']);
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
         isset($_SESSION['ndaSearch']['gid']) && empty($_SESSION['ndaSearch']['gid'])) {
         return json_encode($_SESSION['ndaSearch']['geoShape']);
@@ -302,7 +298,6 @@ p('shape ' . $_SESSION['ndaSearch']['geoShape']);
 }
 
 function setStoredMapCenter () {
-p('center ' . $_SESSION['ndaSearch']['mapCenter']);
     if (isset($_SESSION['ndaSearch']['mapCenter'])) {
          return $_SESSION['ndaSearch']['mapCenter'];
     }
