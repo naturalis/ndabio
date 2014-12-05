@@ -29,6 +29,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/torder',
@@ -58,6 +59,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/syoungestchronstratigraphicname',
@@ -87,6 +89,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgatheringagent',
@@ -116,6 +119,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/more',
@@ -145,6 +149,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tclassname',
@@ -174,6 +179,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/syoungestbiostratigraphicname',
@@ -203,6 +209,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mexpertorganisation',
@@ -232,6 +239,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectingstartdate',
@@ -262,6 +270,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mlocalitytext',
@@ -291,6 +300,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/hide',
@@ -320,6 +330,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mtaxonomicstatus',
@@ -349,6 +360,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectionfieldnumber',
@@ -378,6 +390,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mphylum',
@@ -421,6 +434,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msex',
@@ -451,7 +465,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'kingdom',
+          'value' => 't_kingdom',
           'format' => NULL,
         ),
       ),
@@ -464,6 +478,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tkingdom',
@@ -493,6 +508,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tgenusormonomial',
@@ -522,6 +538,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sunitid',
@@ -552,6 +569,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/taxa',
@@ -581,6 +599,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mfamily',
@@ -610,6 +629,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/soldestchronstratigraphicname',
@@ -639,6 +659,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssubgenus',
@@ -668,6 +689,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sfamily',
@@ -711,6 +733,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mphaseorstage',
@@ -740,6 +763,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tvernacularname',
@@ -769,6 +793,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tsubgenus',
@@ -798,6 +823,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/texpert',
@@ -828,6 +854,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mbiostratigraphicattributiontypeyoung',
@@ -858,6 +885,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/svernacularname',
@@ -888,6 +916,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/munitid',
@@ -931,6 +960,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sphaseorstage',
@@ -960,6 +990,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/more-0',
@@ -997,6 +1028,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/minfraspecificepithet',
@@ -1026,6 +1058,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msubgenus',
@@ -1055,6 +1088,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgenusormonomial',
@@ -1084,6 +1118,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/hide-0',
@@ -1120,6 +1155,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/multimedia',
@@ -1149,6 +1185,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/morder',
@@ -1178,6 +1215,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mbiostratigraphicattributiontypeold',
@@ -1221,6 +1259,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mkingdom',
@@ -1251,6 +1290,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mvernacularname',
@@ -1280,6 +1320,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -1309,6 +1350,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tspecificepithet',
@@ -1352,6 +1394,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssex',
@@ -1382,6 +1425,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/slocalitytext',
@@ -1425,6 +1469,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ttaxonomicstatus',
@@ -1454,6 +1499,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mchronostratigraphicattributionttypeold',
@@ -1483,6 +1529,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -1504,6 +1551,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectionfieldnumber',
@@ -1533,6 +1581,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sphylum',
@@ -1562,6 +1611,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -1586,6 +1636,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
@@ -1610,6 +1661,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mclassname',
@@ -1639,6 +1691,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -1664,7 +1717,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'typeStatus',
+          'value' => 's_typeStatus',
           'format' => NULL,
         ),
       ),
@@ -1677,6 +1730,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/stypestatus',
@@ -1706,6 +1760,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sgatheringagent',
@@ -1735,6 +1790,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sgenusormonomial',
@@ -1764,6 +1820,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssecondlithostratigraphicname',
@@ -1801,6 +1858,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sinfraspecificepithet',
@@ -1838,6 +1896,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
@@ -1862,6 +1921,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -1886,6 +1946,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
@@ -1924,6 +1985,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/skingdom',
@@ -1954,6 +2016,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -1978,6 +2041,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectingstartdate',
@@ -2007,6 +2071,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/soldestbiostratigraphicname',
@@ -2036,6 +2101,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sfirstlithostratigraphicname',
@@ -2073,6 +2139,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -2097,6 +2164,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
@@ -2129,6 +2197,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sspecificepithet',
@@ -2158,6 +2227,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
@@ -2182,6 +2252,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
@@ -2220,6 +2291,7 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -2244,6 +2316,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -2268,6 +2341,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
@@ -2292,6 +2366,7 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'metatags' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
