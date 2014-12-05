@@ -288,6 +288,7 @@ function setStoredCategory () {
     return -1;
 }
 
+
 function setStoredGeoShape () {
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
         isset($_SESSION['ndaSearch']['gid']) && empty($_SESSION['ndaSearch']['gid'])) {
@@ -310,7 +311,7 @@ function ndabio_advanced_taxonomysearch() {
     global $base_root, $base_path;
 
     // Set default values for searchagain
-    $expandedFlag = $storedGid = $storedGeoShape = -1;
+    $expandedFlag = $storedGid = -1;
 
     $loadold = 0;
     if (!empty($_GET['searchagain'])) {
@@ -318,7 +319,6 @@ function ndabio_advanced_taxonomysearch() {
             $expandedFlag = setExpandedFlag();
             $storedGid = isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']) ?
                 $_SESSION['ndaSearch']['gid'] : -1;
-            $storedGeoShape = setStoredGeoShape();
 
             $loadold = 1;
         }
@@ -337,10 +337,11 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path';", 'inline');
         drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
-        drupal_add_js('var storedGeoShape = ' . $storedGeoShape . ';', 'inline');
+        drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
         drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
         drupal_add_js('var storedMapCenter = "' . setStoredMapCenter() . '";', 'inline');
         drupal_add_js('var storedCategory = ' . setStoredCategory() . ';', 'inline');
+
     }
     $searchtype = array(0 => t('And'), 1 => t('Or'));
 
