@@ -870,7 +870,7 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
-p($data);
+//p($data);
 
 	return $output;
 }
