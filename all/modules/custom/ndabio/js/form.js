@@ -53,7 +53,7 @@
     if (int_valid < 1){
 
       if ( $("body").hasClass("page-geographic-search") ){
-        
+
         alert(
           Drupal.t(
             "Please, select an area or draw\n" +
@@ -62,7 +62,7 @@
         );
 
       } else {
-        
+
         alert(
           Drupal.t(
             "Please, make sure that you complete \n" +
@@ -70,7 +70,7 @@
             "then three characters.\n"
           )
         );
-        
+
       }
 
       return false;
@@ -83,3 +83,49 @@
 
   });
 } }; })(jQuery, Drupal);
+
+
+(function ($) {
+	$(function() {
+		$("#ndabio-advanced-taxonomysearch").submit(function(e) {
+			var gid = '';
+			var location = '';
+			var geoShape = '';
+			var category = '';
+
+			// From form, drawn area
+			if (selectedShape) {
+				geoShape = getShapeGeometry();
+			// From selected area or previous search
+			} else if (feature) {
+				// From previous search, drawn area
+				if (feature.geometry.type == 'Polygon') {
+					geoShape = JSON.stringify(feature.geometry);
+				} else {
+					var target = $("#search-areas-target a.active");
+					// From form, selected area
+					if (target.length > 0) {
+						gid = target.attr("id").substr(4) ;
+						location = target.text();
+						$("#search-areas-types ul li").each(function(i){
+							if ($(this).hasClass('active')) {
+								category = i;
+							}
+						});
+					// From previous search, selected area
+					} else {
+						gid = storedGid;
+					}
+					geoShape = JSON.stringify(geometry);
+				}
+			}
+			$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
+			$(this).append("<input name='location' value='" + location + "' type='hidden'>");
+			$(this).append("<input name='category' value='" + category + "' type='hidden'>");
+			$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
+			$(this).append("<input name='mapCenter' value='" + getMapCenter() + "' type='hidden'>");
+			$(this).append("<input name='zoomLevel' value='" + getZoom() + "' type='hidden'>");
+			return true;
+		});
+	});
+})(jQuery);
