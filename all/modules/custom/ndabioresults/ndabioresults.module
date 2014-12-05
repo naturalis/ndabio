@@ -298,25 +298,30 @@ function ndaAdvancedSearch () {
 
     // Special case for specimen/search: unset this service if only geoShape is present;
     // results of specimen/name-search and specimen/search will then be identical
-    if (count($services[specimenService()]) == 2 &&
-        isset($services[specimenService()]['_geoShape']) &&
-        isset($services[specimenService()]['_andOr'])) {
+    if (!serviceUsed($services[specimenService()])) {
         unset($services[specimenService()]);
-
-        // While we're at anyway, add a banner to indicate we're dealing with a geoSearch
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ?
-            $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
-
-        $pageHeader =
-            _wrap(
-                _wrap(
-                    t("Showing only results in")
-                   . " "
-                   . _wrap($area, "span", "term"),
-                   "h1"
-            ), "div", "panel"
-        );
     }
+
+    // Now check if either multimedia or specimen has search parameters
+    // If so, unset the "empty" service; if not, pass both
+    if (!serviceUsed($services[specimenNamesService()]) && serviceUsed($services[multimediaService()])) {
+        unset($services[specimenNamesService()]);
+    } else if (serviceUsed($services[specimenNamesService()]) && !serviceUsed($services[multimediaService()])) {
+        unset($services[multimediaService()]);
+    }
+
+    $area =  (!empty($_SESSION['ndaSearch']['location']) ?
+        $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+
+    $pageHeader =
+        _wrap(
+            _wrap(
+                t("Showing only results in")
+               . " "
+               . _wrap($area, "span", "term"),
+               "h1"
+        ), "div", "panel"
+    );
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -334,7 +339,12 @@ function ndaAdvancedSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
 }
 
-
+function serviceUsed ($service) {
+    if (count($service) == 2 && isset($service['_geoShape']) && isset($service['_andOr'])) {
+        return false;
+    }
+    return true;
+}
 
 function ndaThematicSearch () {
     global $base_root, $base_path;
@@ -860,7 +870,7 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
-//p($data);
+p($data);
 
 	return $output;
 }
