@@ -326,6 +326,9 @@ function ndabio_advanced_taxonomysearch() {
     $geosearch = 0;
 
     if (variable_get('geosearch') == '1') {
+
+ p($_SESSION['ndaSearch']);
+
         drupal_set_title(t("Geographic search"));
         $geosearch = 1;
         $path = drupal_get_path('module', 'ndabio');
