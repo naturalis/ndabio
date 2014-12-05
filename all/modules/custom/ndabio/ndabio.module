@@ -275,6 +275,8 @@ function setExpandedFlag () {
 }
 
 function setStoredZoomLevel () {
+ p('zoom ' . $_SESSION['ndaSearch']['zoomLevel']);
+
     if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
         return $_SESSION['ndaSearch']['zoomLevel'];
     }
@@ -282,6 +284,7 @@ function setStoredZoomLevel () {
 }
 
 function setStoredCategory () {
+p('category ' . $_SESSION['ndaSearch']['category']);
     if (isset($_SESSION['ndaSearch']['category']) && $_SESSION['ndaSearch']['category'] != '') {
         return $_SESSION['ndaSearch']['category'];
     }
@@ -290,6 +293,7 @@ function setStoredCategory () {
 
 
 function setStoredGeoShape () {
+p('shape ' . $_SESSION['ndaSearch']['geoShape']);
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
         isset($_SESSION['ndaSearch']['gid']) && empty($_SESSION['ndaSearch']['gid'])) {
         return json_encode($_SESSION['ndaSearch']['geoShape']);
@@ -298,6 +302,7 @@ function setStoredGeoShape () {
 }
 
 function setStoredMapCenter () {
+p('center ' . $_SESSION['ndaSearch']['mapCenter']);
     if (isset($_SESSION['ndaSearch']['mapCenter'])) {
          return $_SESSION['ndaSearch']['mapCenter'];
     }
@@ -327,23 +332,23 @@ function ndabio_advanced_taxonomysearch() {
 
     if (variable_get('geosearch') == '1') {
 
- p($_SESSION['ndaSearch']);
-
         drupal_set_title(t("Geographic search"));
         $geosearch = 1;
         $path = drupal_get_path('module', 'ndabio');
         drupal_add_css($path . "/css/ndabio_style.css");
         drupal_add_js($path . "/js/map.js", array('weight' => 1));
         drupal_add_js($path . "/js/mapform.js", array('weight' => 1));
-        drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
-        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
-        drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path';", 'inline');
+
         drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
         drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
         drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
         drupal_add_js('var storedMapCenter = "' . setStoredMapCenter() . '";', 'inline');
         drupal_add_js('var storedCategory = ' . setStoredCategory() . ';', 'inline');
+
+        drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
+        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initialize); });", 'inline');
 
     }
     $searchtype = array(0 => t('And'), 1 => t('Or'));
