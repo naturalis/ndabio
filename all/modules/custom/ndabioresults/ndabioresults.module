@@ -677,7 +677,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
 
-//p($data);
+p($data);
 	return $output;
 }
 
@@ -742,7 +742,7 @@ function parseTaxonMediaDetail ($json) {
 	$output['phasesOrStages'] = $row->result->phasesOrStages;
 	$output['sexes'] = $row->result->sexes;
 
-//p($data);
+p($data);
 	return $output;
 }
 
