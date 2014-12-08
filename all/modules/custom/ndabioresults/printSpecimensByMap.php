@@ -14,10 +14,11 @@ function printSpecimensByMap ($data) {
     drupal_add_js($path . "/js/map.js", array('weight' => 1));
     drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
     drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimens); });", 'inline');
-    drupal_add_js("var str_base_path = '$base_path' ", 'inline');
-    drupal_add_js("var specimenMarkers = " . json_encode($data['results']), 'inline');
-    drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'], 'inline');
-    drupal_add_js("var storedCategory = " . $_SESSION['ndaSearch']['category'], 'inline');
+    drupal_add_js("var str_base_path = '$base_path';", 'inline');
+    drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
+    drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
+    drupal_add_js("var storedMapCenter = " . $_SESSION['ndaSearch']['mapCenter'] .';', 'inline');
+    drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] .';', 'inline');
 
 
 //p($data['results']);

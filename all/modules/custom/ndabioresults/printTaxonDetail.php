@@ -24,9 +24,9 @@ function printTaxonDetail ($data) {
 //p($data);
 
   $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
-    '/?identifications@scientificName@fullScientificName@raw=' . urlencode(strip_tags($data['acceptedName']));
+    '/?' . http_build_query($data['nameElements']);
   $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
-    '/?associatedTaxon@acceptedName@fullScientificName@raw=' . urlencode(strip_tags($data['acceptedName']));
+    '/?associatedTaxonReference=' . (!empty($data['taxonID']) ? urlencode($data['taxonID']) : '0');
 
   drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
   drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');

@@ -18,7 +18,7 @@ function setTaxonSpecimenLink (request, total) {
 	total = parseInt(total);
 	if (total > 0) {
 		var label = total == 1 ? Drupal.t('Specimen') : Drupal.t('Specimens');
-		jQuery('#taxon_specimens').html('<a href="?nba_request=' + request + '&noMap">' + label + ' (' + total + ')</a>');
+		jQuery('#taxon_specimens').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' + label + ' (' + total + ')</a>');
 	} else {
 		jQuery('#taxon_specimens').html(Drupal.t('No specimens'));
 	}
@@ -28,7 +28,7 @@ function setTaxonSpecimenLink (request, total) {
 function setTaxonMultimediaLink (request, total) {
 	total = parseInt(total);
 	if (total > 0) {
-		jQuery('#taxon_multimedia').html('<a href="?nba_request=' + request + '&noMap">Multimedia (' + total + ')</a>');
+		jQuery('#taxon_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
 	} else {
 		jQuery('#taxon_multimedia').html(Drupal.t('No multimedia'));
 	}
@@ -38,7 +38,7 @@ function setTaxonMultimediaLink (request, total) {
 function setSpecimenMultimediaLink (request, total) {
 	total = parseInt(total);
 	if (total > 0) {
-		jQuery('#specimen_multimedia').html('<a href="?nba_request=' + request + '&noMap">Multimedia (' + total + ')</a>');
+		jQuery('#specimen_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
 	} else {
 		jQuery('#specimen_multimedia').html(Drupal.t('No multimedia'));
 	}

@@ -779,7 +779,11 @@ function parseTaxonDetail ($json) {
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
 	);
-	$output['navigation'] = getNavigation($data);
+	//$output['navigation'] = getNavigation($data);
+	$output['taxonID'] = getTaxonId($data);
+	$output['nameElements'] = array_filter(
+	   getScientificNameElements($data->searchResults[0]->result->acceptedName)
+	);
 	foreach ($data->searchResults as $row) {
 		$source = $row->result->sourceSystem->name;
 
@@ -825,6 +829,15 @@ function parseTaxonDetail ($json) {
 	return $output;
 }
 
+
+function getTaxonId ($data) {
+    foreach ($data->searchResults as $row) {
+        if ($row->result->sourceSystem->code == 'NSR') {
+            return $row->result->sourceSystemId;
+        }
+    }
+    return null;
+}
 
 function parseClassification ($classification) {
     if (empty($classification) || empty($type)) {
@@ -1618,10 +1631,10 @@ function highlightSearchTerms ($output, $searchTerms) {
 // Store as keys and flip to avoid duplicates (as in Larus fuscus fuscus)
 function getScientificNameElements ($name) {
 	$elements = array(
-		$name->genusOrMonomial => 0,
-		$name->subgenus => 1,
-		$name->specificEpithet => 2,
-		$name->infraspecificEpithet => 3
+		$name->genusOrMonomial => 'genusOrMonomial',
+		$name->subgenus => 'subgenus',
+		$name->specificEpithet => 'specificEpithet',
+		$name->infraspecificEpithet => 'infraspecificEpithet'
 	);
 	return array_flip($elements);
 }
