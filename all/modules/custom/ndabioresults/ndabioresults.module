@@ -310,18 +310,20 @@ function ndaAdvancedSearch () {
         unset($services[multimediaService()]);
     }
 
-    $area =  (!empty($_SESSION['ndaSearch']['location']) ?
-        $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ?
+            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
 
-    $pageHeader =
-        _wrap(
+        $pageHeader =
             _wrap(
-                t("Showing only results in")
-               . " "
-               . _wrap($area, "span", "term"),
-               "h1"
-        ), "div", "panel"
-    );
+                _wrap(
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
+                   "h1"
+            ), "div", "panel"
+        );
+    }
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -883,7 +885,7 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
-//p($data);
+p($data);
 
 	return $output;
 }
