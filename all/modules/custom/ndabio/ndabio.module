@@ -108,7 +108,6 @@ function ndabio_block_view($delta = '') {
 
     case 'ndabio_languageselect':
       $currentpath = $base_root . $base_path . drupal_get_path_alias(current_path());
-
       $block['content']  = "<ul class='right' id='language-menu'>";
       $block['content'] .= "  <li class='active'>";
       $block['content'] .= "    <a href='" . $currentpath . "?language=en' title>EN</a>";
@@ -440,10 +439,11 @@ function ndabio_advanced_taxonomysearch() {
                     foreach (explode("|", $lvalues) as $optionitem) {
                       $optionarray[$optionitem] = t($optionitem);
                     }
-                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'      => 'select',
                       '#title'     => t($catitem->description),
                       '#options'   => $optionarray,
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
                       '#required'  => FALSE,
                       '#inline'    => TRUE,
                     );
@@ -473,6 +473,7 @@ function ndabio_advanced_taxonomysearch() {
                   '#type'       => 'select',
                   '#title'      => t($subchildlabel),
                   '#options'    => $optionarray,
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
                   '#inline'     => TRUE,
                   '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                 );
@@ -505,6 +506,7 @@ function ndabio_advanced_taxonomysearch() {
               '#type'       => 'select',
               '#title'      => t($childlabel),
               '#options'    => $optionarray,
+              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
               '#inline'     => TRUE,
               '#attributes' => array('data-clear' => "", 'name' => $childsysname)
             );
