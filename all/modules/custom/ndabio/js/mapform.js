@@ -44,7 +44,7 @@
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
-				plotMapArea(this.id.substr(4),str_base_path);
+				plotMapArea(this.id.substr(4));
 				return false;
 
 			});

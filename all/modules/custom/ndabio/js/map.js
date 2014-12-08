@@ -59,6 +59,7 @@ function getRectangleGeometry() {
 }
 
 function initialize() {
+
 	var mapOptions = {
 	  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 	  mapTypeId: 'satellite',
@@ -104,18 +105,18 @@ function initialize() {
 		};
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
-		zoom(map, true);
+		zoom(map, false);
  	} else if (storedGid != -1) {
- 		plotMapArea(storedGid, str_base_path);
+ 		plotMapArea(storedGid, false);
  	}
 }
 
 function initializeSpecimens() {
 	var mapOptions = {
-		center: new google.maps.LatLng(52.1, 5),
-		mapTypeId: 'satellite',
-		zoom: 8
-	};
+		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
+		  mapTypeId: 'satellite',
+		  zoom: setZoomLevel()
+		};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
 	feature = {
@@ -160,7 +161,7 @@ function initializeSpecimenDetail() {
 	var mapOptions = {
 		center: myLatlng,
 		mapTypeId: 'satellite',
-		zoom: 8
+		zoom: 7
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
@@ -198,12 +199,18 @@ function setSelection(shape) {
 }
 
 
-function plotMapArea(gid, baseurl) {
+function plotMapArea(gid, fit) {
 
-	if (!gid) return;
+	if (!gid || typeof str_base_path == 'undefined') {
+		return;
+	}
+
+	if (typeof fit == 'undefined') {
+		var fit = true;
+	}
 
 	jQuery.ajax({
-		url: baseurl + 'naturalis/ajax',
+		url: str_base_path + 'naturalis/ajax',
 		type: "GET",
 		dataType: "json",
 		data: ( {nid: gid} ),
@@ -220,7 +227,7 @@ function plotMapArea(gid, baseurl) {
 
 				map.data.addGeoJson(feature);
 				map.data.setStyle(mapStyle);
-				zoom(map);
+				zoom(map, fit);
 				jQuery('.geo-search-area-name').html(json.locality);
 			} else {
 				alert('Failed to retrieve area data.');
@@ -255,14 +262,14 @@ function setMapCenterLat () {
 	if (typeof storedMapCenter == "undefined" || storedMapCenter == "") {
 		return 52.175010314147784;
 	}
-	return parseInt(storedMapCenter.split(',')[0]);
+	return parseFloat(storedMapCenter.split(',')[0]);
 }
 
 function setMapCenterLon () {
 	if (typeof storedMapCenter == "undefined" || storedMapCenter == "") {
 		return 5.273959999999988;
 	}
-	return parseInt(storedMapCenter.split(',')[1]);
+	return parseFloat(storedMapCenter.split(',')[1]);
 }
 
 function setZoomLevel () {
@@ -295,12 +302,17 @@ function clearMap() {
  * Update a map's viewport to fit each geometry in a dataset
  * @param {google.maps.Map} map The map to adjust
  */
-function zoom (map) {
+function zoom (map, fit = true) {
 	var bounds = new google.maps.LatLngBounds();
 	map.data.forEach(function(feature) {
 		processPoints(feature.getGeometry(), bounds.extend, bounds);
 	});
-	map.fitBounds(bounds);
+	// Fit map to boundaries of geo shape
+	// Alternative is to keep stored zoom level and map center
+	if (fit || typeof storedZoomLevel == 'undefined' || storedZoomLevel == -1 ||
+		typeof storedMapCenter == 'undefined' || storedMapCenter == '') {
+		map.fitBounds(bounds);
+	}
 }
 
 /**

@@ -119,12 +119,14 @@
 					geoShape = JSON.stringify(geometry);
 				}
 			}
+
 			$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
 			$(this).append("<input name='location' value='" + location + "' type='hidden'>");
 			$(this).append("<input name='category' value='" + category + "' type='hidden'>");
 			$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
 			$(this).append("<input name='mapCenter' value='" + getMapCenter() + "' type='hidden'>");
 			$(this).append("<input name='zoomLevel' value='" + getZoom() + "' type='hidden'>");
+
 			return true;
 		});
 	});
