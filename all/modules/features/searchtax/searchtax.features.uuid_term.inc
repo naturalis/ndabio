@@ -1325,8 +1325,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_specificEpithet',
-    'description' => 'Species name
-',
+    'description' => 'Specific epithet',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => '93674884-b99c-442a-9bee-aec1175ac576',
@@ -2114,8 +2113,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_specificEpithet',
-    'description' => 'Species name
-',
+    'description' => 'Specific epithet',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'deb807f4-558d-49ec-973b-057a4b570e47',
@@ -2172,8 +2170,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_specificEpithet',
-    'description' => 'Species name
-',
+    'description' => 'Specific epithet',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'e3956f71-9c9e-41dd-a5f3-f656df13ad90',
