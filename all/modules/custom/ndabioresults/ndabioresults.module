@@ -876,7 +876,7 @@ function parseSpecimenDetail ($json) {
 	foreach ($data->searchResults[0]->result as $field => $value) {
 		if (!is_array($value) && !is_object($value) &&
 			!in_array($field, $skipFields) && $value != '') {
-			$output[t(translateNdaField($field))] = $value;
+			$output[$field] = $value;
 		}
 	}
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
@@ -885,7 +885,7 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
-p($data);
+//p($data);
 
 	return $output;
 }
