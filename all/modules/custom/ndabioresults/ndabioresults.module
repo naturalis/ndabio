@@ -866,7 +866,14 @@ include 'printClassifications.php';
 // Parses specimen detail json response into array
 function parseSpecimenDetail ($json) {
 	$skipFields = array(
-		'objectPublic'
+        'objectPublic',
+	    'sourceSystemId',
+        'sourceID',
+	    'owner',
+	    'title',
+	    'multiMediaPublic',
+	    'licenceType',
+        'licence'
 		// etc
 	);
 	if (!$json || !validJson($json)) {
@@ -885,7 +892,7 @@ function parseSpecimenDetail ($json) {
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
-//p($data);
+p($data);
 
 	return $output;
 }
@@ -1491,7 +1498,7 @@ function parseTaxa ($json) {
 	    $output['results'] = array();
         return $output;
 	}
-//p($data);
+p($data);
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
@@ -1784,6 +1791,48 @@ function _markUp($string){
   );
 
   return $result;
+}
+
+function decimalToDMS ($decimal, $lat = true) { // $lon = false
+     //set default values for variables passed by reference
+     $degrees = 0;
+     $minutes = 0;
+     $seconds = 0;
+     $direction = 'X';
+
+     //decimal must be integer or float no larger than 180;
+     //lat must be Boolean
+     if (!is_numeric($decimal) || abs($decimal) > 180 || !is_bool($lat)) {
+          return false;
+     }
+
+     //set direction; north assumed
+     if($lat && $decimal < 0) {
+          $direction = t('S');
+     } else if (!$lat && $decimal < 0) {
+          $direction = 'W';
+     } else if (!$lat) {
+          $direction = t('E');
+     } else {
+          $direction = 'N';
+     }
+
+     //get absolute value of decimal
+     $d = abs($decimal);
+
+     //get degrees
+     $degrees = floor($d);
+
+     //get seconds
+     $seconds = ($d - $degrees) * 3600;
+
+     //get minutes
+     $minutes = floor($seconds / 60);
+
+     //reset seconds
+     $seconds = floor($seconds - ($minutes * 60));
+
+     return $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
 }
 
 function p ($a) {

@@ -2,7 +2,7 @@
 
 // Print specimen detail on screen
 function printSpecimenDetail ($data) {
-//p($data);
+p($data);
     // Do we have a valid set of coordinates? If so, add Google Map
     $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
         $data['gatheringEvent']['siteCoordinates']['lat'] : false;
@@ -26,15 +26,12 @@ function printSpecimenDetail ($data) {
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
 	$hideFields = array(
-        'licenceType',
-        'licence',
-	    'otherSpecimens'
+ 	    'otherSpecimens'
 	);
 	$fieldOrder = array(
-	   'unitID',
 	   'names',
-	   'source',
-	   'assemblageID'
+	   'unitID',
+	   'source'
 		// etc
 	);
 	// Reorder input array
@@ -53,26 +50,32 @@ function printSpecimenDetail ($data) {
 		if (is_array($value)) {
 			// Taxon name
 			if ($field == 'names') {
-				$output .= printNamesWithLinks($value, 'species');
+				$output .= printNamesWithLinks($value, 'Name');
 			}
 
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= printDL(translateNdaField('dateTimeBegin'),
-                    isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : '');
-                $output .= printDL(translateNdaField('gatheringAgents'),
-                    isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : '');
-			    $output .= printDL(translateNdaField('localityText'),
-			        isset($value['localityText']) ? $value['localityText'] : '');
+                $output .= isset($value['dateTimeBegin']) ?
+    			    printDL(ucfirst(translateNdaField('dateTimeBegin')), $value['dateTimeBegin']) :
+                    '';
+			    $output .= isset($value['dateTimeBegin']) ?
+    			    printDL(ucfirst(translateNdaField('gatheringAgents')), implode(', ', $value['gatheringAgents'])) :
+			          '';
+			    $output .= isset($value['localityText']) ?
+    			    printDL(ucfirst(translateNdaField('localityText')), $value['localityText']) :
+                    '';
+
 			    if (!empty($value['siteCoordinates'])) {
-                    $output .= printDL(translateNdaField('siteCoordinates'),
-                        isset($value['siteCoordinates']) ?
-                        '[print on Google Maps: lat ' . $value['siteCoordinates']['lat'] . ', lon ' .
-                        $value['siteCoordinates']['lon'] . ']' : '');
+                    $output .= printDL(ucfirst(translateNdaField('siteCoordinates')),
+                        decimalToDMS($value['siteCoordinates']['lat']) . ', ' .
+                        decimalToDMS($value['siteCoordinates']['lon'], false) .
+                        ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
+                        $value['siteCoordinates']['lon'] . ')'
+                    );
 			    }
 			}
 		} else {
-			$output .= printDL(translateNdaField($field), $value);
+			$output .= printDL(ucfirst(translateNdaField($field)), $value);
 		}
 	}
 	// Other specimens in collection/set are printed in different table
