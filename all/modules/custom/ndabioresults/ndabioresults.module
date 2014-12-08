@@ -776,7 +776,7 @@ function parseTaxonDetail ($json) {
 		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
+p($data);
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
@@ -1498,7 +1498,7 @@ function parseTaxa ($json) {
 	    $output['results'] = array();
         return $output;
 	}
-p($data);
+//p($data);
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
