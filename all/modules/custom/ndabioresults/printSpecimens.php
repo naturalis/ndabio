@@ -53,7 +53,7 @@ function printSpecimens ($data) {
 		$output .= "<tr>";
 		// Registration number plus hits
 		$output .= "<td><a href='" . printDrupalLink($row['url']) . "'>" . $row['unitID'] . "</a>" .
-			(!empty($row['hits']) ? '</br>' . printHits($row) : '') .
+			(!empty($row['hits']) ? '<br/>' . printHits($row) : '') .
 			"</td>";
 		// Species
 		$output .= "<td>" . printSpecimenTaxa($row['names']) . "</td>";

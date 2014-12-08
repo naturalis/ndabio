@@ -867,8 +867,7 @@ function parseSpecimenDetail ($json) {
 	    'owner',
 	    'title',
 	    'multiMediaPublic',
-	    'licenceType',
-        'licence'
+	    'licenceType'
 		// etc
 	);
 	if (!$json || !validJson($json)) {
@@ -884,6 +883,7 @@ function parseSpecimenDetail ($json) {
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
 	   $data->searchResults[0]->result->sourceSystem->name : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
+	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 //	$output['navigation'] = getNavigation($data);
@@ -911,6 +911,18 @@ function getSpecimenTaxonNames ($row, $links = false) {
 			),
 			'url' => getTaxonUrl($links, $id->scientificName)
 		);
+	}
+	return isset($output) ? $output : false;
+}
+
+function getSpecimenVernaculars ($row) {
+    if (!isset($row->result->identifications) || empty($row->result->identifications)) {
+        return array();
+    }
+    foreach ($row->result->identifications as $i => $id) {
+		if (!empty($id->vernacularNames)) {
+		    $output[] = $id->vernacularNames;
+		}
 	}
 	return isset($output) ? $output : false;
 }
@@ -1516,7 +1528,7 @@ function parseTaxa ($json) {
     				$output['searchTerms']
     			);
 		} else if ($d['type'] == 'common') {
-			$d['description'] = t('Vernacular name(s)') . ': ';
+			$d['description'] = t('Common name(s)') . ': ';
 			foreach ($row->searchResults[0]->matchInfo as $i => $info) {
                 $vernaculars[] = highlightSearchTerms(
     				strip_tags($info->valueHighlighted),

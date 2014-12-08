@@ -25,11 +25,10 @@ p($data);
 
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
-	$hideFields = array(
- 	    'otherSpecimens'
-	);
+	$hideFields = array();
 	$fieldOrder = array(
 	   'names',
+	   'vernaculars',
 	   'unitID',
 	   'source'
 		// etc
@@ -51,6 +50,9 @@ p($data);
 			// Taxon name
 			if ($field == 'names') {
 				$output .= printNamesWithLinks($value, 'Name');
+			}
+			if ($field == 'vernaculars') {
+				$output .= printDL(t('Common name(s)'), $value['vernaculars']);
 			}
 
 			// Gathering event
@@ -75,7 +77,9 @@ p($data);
 			    }
 			}
 		} else {
-			$output .= printDL(ucfirst(translateNdaField($field)), $value);
+			if ($value != '') {
+			    $output .= printDL(ucfirst(translateNdaField($field)), $value);
+			}
 		}
 	}
 	// Other specimens in collection/set are printed in different table
