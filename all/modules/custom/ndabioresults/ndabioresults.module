@@ -243,7 +243,8 @@ function ndaSimpleSearch () {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
         $p['_andOr'] = 'AND';
 
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'));
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('area drawn on map'));
 
         $pageHeader =
             _wrap(
@@ -289,11 +290,17 @@ function ndaAdvancedSearch () {
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
 
+/*
+ * Old code
     // Subdivide specimen parameters for both result types
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
+ */
+
+    $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
+
 //p($services);
 
     // Special case for specimen/search: unset this service if only geoShape is present;
@@ -354,11 +361,11 @@ function ndaThematicSearch () {
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-
+/*
     $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenService()] = setSpecimenParameters($sP, specimenService());
     $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-/*
+
     $pageHeader =
         _wrap(
             _wrap(
@@ -369,6 +376,9 @@ function ndaThematicSearch () {
         ), "div", "panel"
     );
 */
+    $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
+
     $pageHeader = '';
 
     // Test if anything has been posted; if not return with error message
@@ -525,7 +535,7 @@ function setSectionParameters (array $post, $typeId = '') {
     }
     // Append geoShape if entered
     if (isset($post['geoShape']) && !empty($post['geoShape']) &&
-        in_array($typeId, array('m_', 's_'))) {
+        in_array($typeId, array('m_', 's_', 'n_'))) {
         $d['_geoShape'] = $post['geoShape'];
     }
     if (countSearchParameters($d) >= 1) {
