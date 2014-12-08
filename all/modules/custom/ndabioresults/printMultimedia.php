@@ -10,7 +10,10 @@ function printMultimedia ($data) {
         return false;
     }
 //p($data);
-    $output  = sprintf('<h2>%s <span class="count">(%d)</span></h2>', t('Multimedia'), $data['total'] );
+    $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
+        t('Multimedia'),
+        _formatNumber($data['total'])
+    );
     $output  .= "<div class='multimedia-wrapper'>";
 
     foreach ($data['results'] as $i => $row) {

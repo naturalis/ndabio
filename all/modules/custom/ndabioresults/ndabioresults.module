@@ -1709,7 +1709,7 @@ function decorateScore ($score) {
 }
 
 // Highlight match
-function highlightMatch($haystack, $needles) {
+function highlightMatch ($haystack, $needles) {
 	foreach ($needles as $needle) {
 	    if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
 			continue;
@@ -1722,12 +1722,20 @@ function highlightMatch($haystack, $needles) {
 	return $haystack;
 }
 
-function _fsub1($m) {
+function _fsub1 ($m) {
 	return "<span class='result-query'>".preg_replace_callback('(<(.*?)>)','_fsub2',$m[0])."</span>";
 }
 
-function _fsub2($m) {
+function _fsub2 ($m) {
 	return '</span>'.$m[0]."<span class='result-query'>";
+}
+
+function _formatNumber ($n) {
+    global $language;
+    if ($language->language == 'nl') {
+        return number_format($n, 2, ',', '.');
+    }
+    return number_format($n);
 }
 
 function sortArrayByArray ($array, $orderArray) {

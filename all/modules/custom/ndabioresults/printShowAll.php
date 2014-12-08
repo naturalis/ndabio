@@ -6,6 +6,6 @@ function printShowAll ($data) {
     }
     $output = '<div class="show-all"><a href="?nba_request=' . $data['showAll'] . '">' .
         '<i class="icon-arrow-right"></i>'.
-        t('Show all') . ' ' . $data['total'] . ' '. t('results') . '</a></div>';
+        t('Show all') . ' ' . _formatNumber($data['total']) . ' '. t('results') . '</a></div>';
     return $output;
 }
