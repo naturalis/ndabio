@@ -1016,7 +1016,7 @@ function parseMultimedia ($json) {
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
             $row->result->{$type}->sourceSystem->name : '';
 		$d['imgSrc'] = getImageUrl($row);
-		$d['hits'] = getHits($row);
+		$d['hits'] = getHits($row, false);
 		$d['taxon'] = getMultimediaTaxon($row, $d['hits']);
 		$d['unitID'] = getMultimediaUnitId($row, $d['hits']);
 		$output['results'][] = $d;
@@ -1066,7 +1066,7 @@ function parseSpecimens ($json) {
 		$d = array();
 		$d['unitID'] = $row->result->unitID;
 		$d['url'] = $row->links[0]->href;
-		$d['hits'] = getHits($row);
+		$d['hits'] = getHits($row, false);
 		$d['source'] = $row->result->sourceSystem->name;
 		$d['score'] = $row->percentage;
 		$d['names'] = getSpecimenTaxonNames($row);
@@ -1433,7 +1433,7 @@ function getImageUrl ($row) {
 
 
 // Return the field containing the hit
-function getHits ($row) {
+function getHits ($row, $stripTags = true) {
     $noHits = array(
         'fullScientificName',
         'theme'
@@ -1442,7 +1442,8 @@ function getHits ($row) {
 		$e = explode('.', $info->path);
 		$field = end($e);
 		if (!in_array($field, $noHits)) {
-            $hits[end($e)] = strip_tags($info->valueHighlighted);
+            $hits[end($e)] = $stripTags ? strip_tags($info->valueHighlighted) :
+                $info->valueHighlighted;
 		}
 	}
 	return isset($hits) ? $hits : array();
