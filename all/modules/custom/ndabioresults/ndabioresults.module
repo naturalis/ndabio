@@ -289,6 +289,8 @@ function ndaAdvancedSearch () {
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
 
 /*
  * Old code
@@ -298,8 +300,6 @@ function ndaAdvancedSearch () {
     $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
  */
 
-    $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
 
 //p($services);
 
@@ -361,21 +361,6 @@ function ndaThematicSearch () {
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-/*
-    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-    $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-
-    $pageHeader =
-        _wrap(
-            _wrap(
-                t("Thematic search")
-               . " "
-               . _wrap($area, "span", "term"),
-               "h1"
-        ), "div", "panel"
-    );
-*/
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
 
@@ -1639,11 +1624,15 @@ function highlightSearchTerms ($output, $searchTerms) {
             }
         }
     }
+    // Intermediate set required to prevent highlighting of html
+    $f = array('<span class="scientific">', '</span');
+    $r = array('@#', '#@');
+
     // Intermediate step required to remove any duplicates
     if (isset($terms)) {
-        $output = highlightMatch($output, array_flip($terms));
+        $output = highlightMatch(str_replace($f, $r, $output), array_flip($terms));
     }
-    return $output;
+    return str_replace($r, $f, $output);
 }
 
 // Returns scientific name elements from name object
