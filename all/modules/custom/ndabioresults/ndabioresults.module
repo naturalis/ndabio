@@ -1856,7 +1856,7 @@ function decimalToDMS ($decimal, $lat = true) { // $lon = false
 }
 
 function p ($a) {
-    echo '<pre>'; print_r($a); echo '</pre>';
+   // echo '<pre>'; print_r($a); echo '</pre>';
 }
 
 function _wrap($input, $tag = "div", $class = ""){
