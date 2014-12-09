@@ -30,7 +30,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  //NBA Base URL
+  // NBA Base URL
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_baseurl'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA base URL'),
@@ -40,7 +40,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#description' => t('The base URL of the NBA.') . '<br />' . t('Default') . ': ' . NBABASEURL,
     '#required' => TRUE
   );
-  //Maximum results for initial "overview"
+  // Maximum results for initial "overview"
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxresults'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Initial max results'),
@@ -50,7 +50,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#description' => t('Number of maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
     '#required' => TRUE
   );
-  //Maximum results for subsequent queries
+  // Maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxresults'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum results'),
@@ -61,7 +61,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: default sort field
+  // Constant: default sort field
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsort'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Default sort field'),
@@ -72,7 +72,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: default sort direction
+  // Constant: default sort direction
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsortdirection'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Default sort field direction'),
@@ -83,7 +83,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: maximum results for subsequent queries
+  // Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxpagesinpaginator'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum number of pages in the paginator'),
@@ -103,7 +103,7 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
 
-  //Constant: name of specimen service
+  // Constant: name of specimen service
   $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_namespecimenservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen service'),
@@ -114,7 +114,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: name of specimen name service
+  // Constant: name of specimen name service
   $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimennameservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen name service'),
@@ -125,7 +125,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  //Constant: name of specimen detail service
+  // Constant: name of specimen detail service
   $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimendetailservice'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Name of specimen detail service'),

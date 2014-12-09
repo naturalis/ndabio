@@ -101,8 +101,8 @@ function printSpecimenDetail ($data) {
 
 	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
 
-    $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
-        '/?associatedSpecimenReference=' . urlencode($data['unitID']);
+    $getMultimediaRequest = urlencode(ndaBaseUrl() . multimediaService() .
+        '/?associatedSpecimenReference=' . urlencode($data['unitID']));
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
     drupal_add_js("jQuery(document).ready(function() {  getTotal(getMultimediaRequest, setSpecimenMultimediaLink); });", 'inline');
