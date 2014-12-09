@@ -316,7 +316,5 @@
 </div>
 <!-- //.ie8 -->
 
-<!-- // Forces removing of preloader -->
-<input type="hidden" id="refreshed" value="no" />
 
 

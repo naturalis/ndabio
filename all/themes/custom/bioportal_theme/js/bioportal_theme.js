@@ -455,28 +455,7 @@ function preloader(){
   // PRELOADER: remove upon clicking browser back-button
   // ---------------------------------------------------------
 
-onload = function() {
-    var e = document.getElementById("refreshed");
-    
-    if (e.value == "no"){
-     
-     e.value = "yes";
-    
-    } else {
-       
-        e.value = "no";
-        
-        p = document.getElementById("preloader")
 
-        if (typeof p != 'undefined'){
-          if ( p ){
-            p.remove();
-          }
-        } 
-    
-
-    }
-}
 
 
 
