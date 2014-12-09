@@ -19,7 +19,7 @@ function printSpecimenDetail ($data) {
         drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js("var specimenMarker = " . json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
-        drupal_add_js("var storedMapCenter = " . $_SESSION['ndaSearch']['mapCenter'], 'inline');
+        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] .'";', 'inline');
         drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'], 'inline');
     }
 

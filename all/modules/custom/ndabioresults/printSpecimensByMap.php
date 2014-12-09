@@ -6,7 +6,6 @@ require_once 'printPaginator.php';
 
 // Prints specimen result set on screen.
 function printSpecimensByMap ($data) {
-//p($data);
     // Add Google Maps scripts from ndabio module (REQUIRED!)
     global $base_root, $base_path;
     $path = drupal_get_path('module', 'ndabio');
@@ -17,19 +16,17 @@ function printSpecimensByMap ($data) {
     drupal_add_js("var str_base_path = '$base_path';", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
     drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
-    drupal_add_js("var storedMapCenter = " . $_SESSION['ndaSearch']['mapCenter'] .';', 'inline');
+    drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] .'";', 'inline');
     drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] .';', 'inline');
 
+//p($data);
 
-//p($data['results']);
-
-//    echo $_SESSION['ndaSearch']['geoShape'];
-//    p(json_encode($data['results']));
     $output = sprintf('<h2>%s %s %s %s</h2>',
         t('Specimens of '),
         $data['results'][0]['name'],
         ' in ',
-        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] : t('Area drawn on map'))
+        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('area drawn on map'))
     );
     $output .= '<div id="map-canvas"></div>';
 
