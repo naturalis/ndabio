@@ -736,6 +736,10 @@ function parseTaxonMediaDetail ($json) {
 	$output['copyrightText'] = $row->result->copyrightText;
 	$output['phasesOrStages'] = $row->result->phasesOrStages;
 	$output['sexes'] = $row->result->sexes;
+	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
+	$output['date'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
+	$output['licence'] = trim($row->result->licenceType . ' ' . $row->result->licence);
+	$output['sourceUrls'][$output['source']] = $row->result->associatedTaxon->recordURI;
 
 //p($data);
 	return $output;
@@ -830,6 +834,10 @@ function parseTaxonDetail ($json) {
 
 function getSourceUrls ($data) {
     foreach ($data->searchResults as $row) {
+        // @todo: fix CoL links! Currently linking to main page
+        if (strtolower($row->result->sourceSystem->name) == 'catalogue of life') {
+            continue;
+        }
         $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
     }
     return isset($urls) ? $urls : null;
@@ -883,7 +891,9 @@ function parseSpecimenDetail ($json) {
 	    'owner',
 	    'title',
 	    'multiMediaPublic',
-	    'licenceType'
+	    'licenceType',
+	    'licence',
+	    'assemblyID'
 		// etc
 	);
 	if (!$json || !validJson($json)) {
@@ -896,13 +906,16 @@ function parseSpecimenDetail ($json) {
 			$output[$field] = $value;
 		}
 	}
+	$output['assemblageID'] = $data->searchResults[0]->result->assemblageID;
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
 	   $data->searchResults[0]->result->sourceSystem->name : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
 	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
+	$output['licence'] = trim($data->searchResults[0]->result->licenceType . ' ' .
+	   $data->searchResults[0]->result->licence);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
-//	$output['navigation'] = getNavigation($data);
+	//	$output['navigation'] = getNavigation($data);
 //p($data);
 
 	return $output;
@@ -979,6 +992,14 @@ function getOtherSpecimens ($row) {
 	return isset($c) ? $c : null;
 }
 
+function timeStampToDate ($v) {
+    if (!empty($v)) {
+        return date('Y-m-d', $v / 1000);
+    }
+    return null;
+}
+
+
 // Return gathering event data for detail page
 function getGatheringEventSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->gatheringEvent)) {
@@ -987,7 +1008,7 @@ function getGatheringEventSpecimens ($row) {
 		    if (!is_array($v) && !is_object($k) && $v != '') {
 		        // Translate datetime from Unix to proper date
 		        if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
-		            $v = date('Y-m-d', $v / 1000);
+		            $v = timeStampToDate($v);
 		        }
                 $d[$k] = $v;
 		    }

@@ -2,7 +2,6 @@
 
 // Print specimen detail on screen
 function printSpecimenDetail ($data) {
-//p($data);
     // Do we have a valid set of coordinates? If so, add Google Map
     $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
         $data['gatheringEvent']['siteCoordinates']['lat'] : false;
@@ -19,8 +18,12 @@ function printSpecimenDetail ($data) {
         drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js("var specimenMarker = " . json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
-        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] .'";', 'inline');
-        drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'], 'inline');
+        if (isset($_SESSION['ndaSearch']['mapCenter'])) {
+            drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+        }
+        if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
+            drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+        }
     }
 
 	// Determines order to print field/value;
@@ -30,11 +33,17 @@ function printSpecimenDetail ($data) {
 	   'names',
 	   'vernaculars',
 	   'unitID',
-	   'source'
+	   'source',
+	   'assemblageID',
+	   'licence',
+	   'collectionType'
 		// etc
 	);
 	// Reorder input array
 	$data = array_merge(array_flip($fieldOrder), $data);
+
+//p($data);
+
 	$output  = _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
 	$output .= _wrap( t("Details")    , "h3"  );
@@ -49,7 +58,7 @@ function printSpecimenDetail ($data) {
 		if (is_array($value)) {
 			// Taxon name
 			if ($field == 'names') {
-				$output .= printNamesWithLinks($value, 'Name');
+				$output .= printNamesWithLinks($value, 'Scientific name');
 			}
 			if ($field == 'vernaculars') {
 				$output .= printDL(t('Common name(s)'), $value['vernaculars']);

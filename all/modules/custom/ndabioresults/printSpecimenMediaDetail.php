@@ -10,19 +10,18 @@ function printSpecimenMediaDetail ($data) {
 
 	if (!empty($data['unitID'])) {
 		$output .= printDL(
-            translateNdaField('unitID'),
+            ucfirst(translateNdaField('unitID')),
             '<a href="' . printDrupalLink(specimenDetailService() . '?unitID=' . $data['unitID']) . '">' . $data['unitID'] . '</a>'
 		);
 	}
 	if (!empty($data['names'])) {
-		$output .= printNamesWithLinks($data['names'], 'species');
+		$output .= printNamesWithLinks($data['names'], t('Scientific name'));
 	}
 
 	$fields = array(
         'source',
     	'creator',
 	    'title',
-        'caption',
 	    'description',
         'copyrightText',
         'phasesOrStages',
@@ -30,7 +29,7 @@ function printSpecimenMediaDetail ($data) {
 	);
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
-			$output .= printDL(translateNdaField($field), $data[$field]);
+			$output .= printDL(ucfirst(translateNdaField($field)), $data[$field]);
 		}
 	}
 	return $output . "</dd>";

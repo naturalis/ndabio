@@ -2,7 +2,7 @@
 function printTaxonDetail ($data) {
   global $language;
 
-  $output  =   "<div class='category'>".t('Taxon name')."</div>";
+  $output  =   "<div class='category'>".t('Taxon')."</div>";
   $output .=   "<h2>";
   $output .=   "  <span class='scientific-name'>";
   $output .=        $data['acceptedName'];
@@ -17,9 +17,9 @@ function printTaxonDetail ($data) {
   $output .= "</h2>";
 
   $output .=
-		printCommonNames($data) .
-		printDescriptions($data) .
-		printClassifications($data);
+	printCommonNames($data) .
+	printDescriptions($data) .
+	printClassifications($data);
 
 //p($data);
 
@@ -34,8 +34,8 @@ function printTaxonDetail ($data) {
   drupal_add_js("jQuery(document).ready(function() { getTotal(getSpecimenRequest, setTaxonSpecimenLink); });", 'inline');
   drupal_add_js("jQuery(document).ready(function() { getTotal(getMultimediaRequest, setTaxonMultimediaLink); });", 'inline');
 
-  $output .= '<p id="taxon_specimens"></p>';
-  $output .= '<p id="taxon_multimedia"</p>';
+  $output .= '<h3>' . t('Specimens'). '</h3><p id="taxon_specimens"></p>';
+  $output .= '<h3>' . t('Multimedia'). '</h3><p id="taxon_multimedia"</p>';
 
   return $output;
 }

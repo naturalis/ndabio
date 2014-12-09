@@ -16,8 +16,12 @@ function printSpecimensByMap ($data) {
     drupal_add_js("var str_base_path = '$base_path';", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
     drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
-    drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] .'";', 'inline');
-    drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] .';', 'inline');
+    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
+        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+    }
+    if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
+        drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+    }
 
 //p($data);
 

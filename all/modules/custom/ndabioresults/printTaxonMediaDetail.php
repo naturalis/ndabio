@@ -10,21 +10,26 @@ function printTaxonMediaDetail ($data) {
 		"' title=''" . $data['title'] . ">";
 
   $output .= "<div class='property-list'>";
-  $output .= printNamesWithLinks($data['names'], 'species');
+  $output .= printNamesWithLinks($data['names'], t('Scientific name'));
 
 	$fields = array(
 	    'source',
     	'creator',
+    	'licence',
 	    'title',
-        'caption',
 	    'description',
         'copyrightText',
-        'phasesOrStages',
-        'sexes'
+	    'phasesOrStages',
+        'sexes',
+    	'locality',
+    	'date'
 	);
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
-			$output .= printDL(translateNdaField($field), $data[$field]);
+		    if ($field == 'source' && !empty($data['sourceUrls'])) {
+                $data['source'] = printSource($data, $data['source']);
+		    }
+		    $output .= printDL(ucfirst(translateNdaField($field)), $data[$field]);
 		}
 	}
 
