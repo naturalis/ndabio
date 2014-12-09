@@ -319,36 +319,7 @@
       .trigger("click");
 
   // ---------------------------------------------------------
-  
 
-
-  // ---------------------------------------------------------
-  // HELP: Quick 'n' Dirty solution for linking to help items
-  // ---------------------------------------------------------
-
-
-  if ( $_advanced_search_form.length ){
-
-    var $_fieldset = $("#edit-extended > div > fieldset[id^='edit']");
-
-    $_fieldset.each(function(){
-      $_me = $(this);
-
-      str_anchor = $_me.attr("id");
-
-      str_anchor = str_anchor.substring(5);
-
-      str_anchor = "/help#" + str_anchor;
-
-      $_me
-        .children(":first")
-          .children(":first")
-            .wrap("<a class='to-help' href='"+str_anchor+"'></a>");
-
-    })
-
-  }
-  // ---------------------------------------------------------
 
 } }; })(jQuery, Drupal);
 
@@ -370,8 +341,6 @@ jQuery.fn.swapValAndPlaceholder = function(a, b) {
 };
 
 function preloader(){
-  return;
-
   (function($) {  
     $("body").addClass("fading");
 
@@ -477,10 +446,6 @@ onload = function() {
 
     }
 }
-
-
-
-
 
 //http://stackoverflow.com/a/18120786/960592
 Element.prototype.remove = function() {
