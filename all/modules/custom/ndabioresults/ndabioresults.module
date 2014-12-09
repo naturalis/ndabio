@@ -781,6 +781,7 @@ function parseTaxonDetail ($json) {
 	$output['nameElements'] = array_filter(
 	   getScientificNameElements($data->searchResults[0]->result->acceptedName)
 	);
+	$output['sourceUrls'] = getSourceUrls($data);
 	foreach ($data->searchResults as $row) {
 		$source = $row->result->sourceSystem->name;
 
@@ -822,8 +823,23 @@ function parseTaxonDetail ($json) {
 			}
 
 		}
+
 	}
 	return $output;
+}
+
+function getSourceUrls ($data) {
+    foreach ($data->searchResults as $row) {
+        $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
+    }
+    return isset($urls) ? $urls : null;
+}
+
+function printSource($data, $source) {
+    if (isset($data['sourceUrls'][$source])) {
+        return '<a href="' . $data['sourceUrls'][$source] . '" target="_blank">' . $source . '</a>';
+    }
+    return $source;
 }
 
 

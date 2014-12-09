@@ -14,7 +14,8 @@ function printDescriptions ($data) {
 		foreach ($descriptions as $source => $t) {
 			foreach ($t as $description => $lan) {
 				if ($lan == $language->name) {
-					$output .= "<p>$description</p>";
+					$output .= "<h4 class='source'>" . printSource($data, $source) .
+					   "</h4>\n<p>$description</p>";
 				}
 			}
 		}

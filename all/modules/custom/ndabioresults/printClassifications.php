@@ -8,7 +8,7 @@ function printClassifications ($data) {
 	// First merge two separate classification arrays
 	foreach ($data['classifications']['default'] as $source => $classification) {
 		$classifications[] = array(
-			'source' => $source,
+			'source' =>  printSource($data, $source),
 			'classification' => $classification
 		);
 	}
@@ -41,7 +41,16 @@ function printClassifications ($data) {
     		$classification = unserialize($sClassification);
     		foreach ($classification as $rank => $name) {
     			if (!empty($name)) {
-    			    $output .= "<dl><dt>" . t($rank) . "</dt><dd>$name</dd></dl>";
+    			    if (in_array($rank, array(
+        			    'genusOrMonomial',
+        			    'genus',
+        			    'subgenus',
+        			    'specificEpithet',
+        			    'infraspecificEpithet'
+     			    ))) {
+                        $name = '<span class="scientific">' . $name . '</span>';
+    			    }
+    			    $output .= "<dl><dt>" . ucfirst(translateNdaField($rank)) . "</dt><dd>$name</dd></dl>";
     			}
     		}
     		$output .= "</div>";
