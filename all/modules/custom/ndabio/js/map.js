@@ -130,14 +130,16 @@ function initializeSpecimens() {
 	jQuery.each(specimenMarkers, function() {
 		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
 		var marker = new google.maps.Marker({
-      position     : myLatlng,
-      name         : this.name,
-      icon         : obj_pin,
-      assemblageID : this.assemblageID,
-      source       : this.source,
-      unitID       : this.unitID,
-      localityText : this.localityText,
-      date         : this.date,
+	      position     : myLatlng,
+	      name         : this.name,
+	      icon         : obj_pin,
+	      assemblageID : this.assemblageID,
+	      source       : this.source,
+	      unitID       : this.unitID,
+	      localityText : this.localityText,
+	      date         : this.date,
+	      taxonUrl     : this.taxonUrl,
+	      url		   : this.url
 		});
 
 		var infowindow = new google.maps.InfoWindow({
@@ -175,9 +177,12 @@ function initializeSpecimenDetail() {
 
 
 function createInfoText(marker) {
+	var taxon = marker.taxonUrl == '' ? marker.name :
+		'<a href="?nba_request=' + marker.taxonUrl + '">' + marker.name + '</a>';
 	return '<div class="map-infoWindow">' +
-		'<div class="marker-name">' + marker.name + '</div>' +
-		'<div class="marker-unitID">' + marker.unitID + '</div>' +
+		'<div class="marker-name">' + taxon + '</div>' +
+		'<div class="marker-unitID">' + '<a href="?nba_request=' +
+			marker.url + '">' + marker.unitID + '</a>' + '</div>' +
 		'<div class="marker-source">' + marker.source + '</div>' +
 		'<div class="marker-localityText">' + marker.localityText + '</div>' +
 		'<div class="marker-date">' + (marker.date != null ? marker.date : '-') + '</div>' +
