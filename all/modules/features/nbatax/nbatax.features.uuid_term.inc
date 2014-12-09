@@ -46,7 +46,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'specificEpithet',
-    'description' => 'specific epithet',
+    'description' => 'specific name',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '21fa65b6-b064-4835-8ff7-b05f57f07d98',
@@ -115,7 +115,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'dateTimeBegin',
-    'description' => 'collection start date',
+    'description' => 'collecting start date',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3a9bd272-91fc-42c5-b513-f2599ba06161',
@@ -143,8 +143,25 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'institution',
+    'description' => 'source institution',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => '3ad44115-0f24-4f2c-988d-e751532a50aa',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/institution',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'kindOfUnit',
-    'description' => 'kind of unit',
+    'description' => 'part',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3e689df7-1ed6-4ca1-a437-ed95bc675ea9',
@@ -160,8 +177,25 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'genusOrMonomial',
+    'description' => 'genus',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => '481afad4-f569-4baa-b38a-33362ed65707',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/genusormonomial',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'infraspecificEpithet',
-    'description' => 'infraspecific epithet',
+    'description' => 'infraspecific name',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '534aff72-8e31-42ab-bf1c-39eccca2de5a',
@@ -262,6 +296,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'phaseOrStage',
+    'description' => 'phase or stage',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => '841b706f-ac29-41cb-bb33-d6125a649252',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/phaseorstage',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'description',
     'description' => 'description',
     'format' => 'plain_text',
@@ -280,7 +331,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'preparationType',
-    'description' => 'preparation type',
+    'description' => 'preparation method',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '85a22acf-4972-4aec-b850-91dba233c294',
@@ -331,7 +382,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'collectionType',
-    'description' => 'collection',
+    'description' => 'collection name',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '8c6d3106-adaa-4e2c-9770-59f12eb8cfa4',
@@ -381,6 +432,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'typeStatus',
+    'description' => 'type status',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => '92f23ba1-2047-4c3d-a05c-a8bc3da60d4b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/typestatus',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'copyrightText',
     'description' => 'copyright',
     'format' => 'plain_text',
@@ -415,6 +483,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'sex',
+    'description' => 'sex',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => 'afe4d99f-3fcb-49c7-8015-343c1db66460',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/sex',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'recordBasis',
     'description' => 'basis of record',
     'format' => 'plain_text',
@@ -444,6 +529,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/numberofspecimen',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'collectorsFieldNumber',
+    'description' => 'collectors field number',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => 'dd24107d-176d-40fe-9aef-56261c4d716c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/collectorsfieldnumber-0',
         'language' => 'und',
       ),
     ),
@@ -484,7 +586,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'assemblageID',
-    'description' => 'assemblage',
+    'description' => 'collection number',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f1acf885-614e-4d0b-a0be-2691f495868f',
@@ -495,6 +597,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/assemblageid',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'fullName',
+    'description' => 'collector',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => 'f7f3df5a-1e15-4255-abe8-c32179cae273',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/fullname',
         'language' => 'und',
       ),
     ),
