@@ -1791,7 +1791,7 @@ function _fsub2 ($m) {
 function _formatNumber ($n) {
     global $language;
     if ($language->language == 'nl') {
-        return number_format($n, 2, ',', '.');
+        return number_format($n, 0, ',', '.');
     }
     return number_format($n);
 }
