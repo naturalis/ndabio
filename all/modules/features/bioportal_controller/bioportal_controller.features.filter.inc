@@ -20,6 +20,16 @@ function bioportal_controller_filter_default_formats() {
     'filters' => array(),
   );
 
+  // Exported format: Markdown.
+  $formats['markdown'] = array(
+    'format' => 'markdown',
+    'name' => 'Markdown',
+    'cache' => 1,
+    'status' => 1,
+    'weight' => 0,
+    'filters' => array(),
+  );
+
   // Exported format: Plain text.
   $formats['plain_text'] = array(
     'format' => 'plain_text',

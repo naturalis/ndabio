@@ -45,6 +45,7 @@ function bioportal_controller_strongarm() {
   $strongarm->value = array(
     'node' => TRUE,
     'taxonomy' => TRUE,
+    'user' => TRUE,
   );
   $export['path_alias_whitelist'] = $strongarm;
 

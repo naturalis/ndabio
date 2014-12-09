@@ -15,7 +15,6 @@ features[node][] = ndabio_header_image
 features[uuid_node][] = 3250b7b0-0cde-4b3d-88f5-931e0bb1f83f
 features[uuid_node][] = 626ffc19-1650-4885-8ccc-3f4ff9ea37a8
 features[uuid_node][] = 786b2489-998b-4794-87a6-bef7c2d87fb1
-features[uuid_node][] = b517cdec-8a56-49ee-92eb-cb56e536dd4d
 features[variable][] = field_bundle_settings_node__ndabio_header_image
 features[variable][] = language_content_type_ndabio_header_image
 features[variable][] = menu_options_ndabio_header_image

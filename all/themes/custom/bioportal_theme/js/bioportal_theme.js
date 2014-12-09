@@ -341,6 +341,8 @@ jQuery.fn.swapValAndPlaceholder = function(a, b) {
 };
 
 function preloader(){
+  return;
+
   (function($) {  
     $("body").addClass("fading");
 
