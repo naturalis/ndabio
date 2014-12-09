@@ -269,7 +269,7 @@ function ndaSimpleSearch () {
 
     $pageBody = performNdaRequest(setChannels($services));
 
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 /**
@@ -345,7 +345,7 @@ function ndaAdvancedSearch () {
 
     $pageBody = performNdaRequest(setChannels($services));
 
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 function serviceUsed ($service) {
@@ -379,7 +379,7 @@ function ndaThematicSearch () {
 
     $pageBody = performNdaRequest(setChannels($services));
 
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . t('No results') . '</p>');
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 
@@ -692,9 +692,6 @@ function getSpecimensMultimediaNames ($row) {
 
 // Returns url for a taxon associated with the specimen
 function getTaxonUrl ($links, $scientificName) {
-//    p($links);
-//   p($scientificName);
- //   die();
 	if (!empty($links)) {
 		foreach ($links as $link) {
 			if ($link->rel == '_taxon') {
@@ -915,7 +912,7 @@ function parseSpecimenDetail ($json) {
 	$output['licence'] = trim($data->searchResults[0]->result->licenceType . ' ' .
 	   $data->searchResults[0]->result->licence);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
-	//	$output['navigation'] = getNavigation($data);
+	// $output['navigation'] = getNavigation($data);
 //p($data);
 
 	return $output;
@@ -971,6 +968,11 @@ function getNavigation ($data) {
 	}
 	return isset($output) ? $output : null;
 }
+
+function stripBaseUrl ($url) {
+    return str_replace(urlencode(ndaBaseUrl()), '', $url);
+}
+
 
 include 'printSpecimenDetail.php';
 
@@ -1609,7 +1611,11 @@ function getTaxonSynonymOffset ($row) {
     }
 }
 
-
+function printNoResults () {
+    global $base_path;
+    return t('Sorry, no results found') . '. <a href="' . $base_path . '?searchagain=1">' .
+        t('Please try again'). '</a>!';
+}
 
 include 'printTaxa.php';
 
