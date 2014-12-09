@@ -99,123 +99,131 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
     </li>
     <li>
       <a href='#explore'>
-        <em>explore highlights</em>
+        <em>Bijzondere collecties</em>
       </a>
     </li>
   </ul>
 </p>
 <h2 id='search'>Zoeken</h2>
-<h3 id='simple-search'>Simple Search</h3>
-<p>
-  Bioportaal werkt net zoals bekende zoekmachines: het gebruikt jouw
-  zoekterm om onze bronnen te doorzoeken. Het doorzoekt daarbij alle
-  velden die in de
-  <em>advanced search</em>
-  vermeld zijn (zoals de
-  <em>populaire naam</em>
-  , de
-  <em>wetenschappelijke naam</em>
-  of de vindplaats) en zelfs velden die ook met de
-  <em>advanced search</em>
-  niet doorzoekbaar zijn.
-</p>
-<p>
-  <em>Voorbeeld</em>
-  : je kan zowel op [ bruine rat ] als op [ rattus norvegicus ] zoeken.
-</p>
-<p>
-  Wanneer je meer dan één zoekterm invult, tonen we alle resultaten
-  waarin één van beide termen voorkomt, maar we tonen resultaten met
-  beide termen boven aan de lijst.
-</p>
-<p>
-  Je kan geen gebruik maken van haakjes of zogenoemde
-  <em>
-    wildcards.
-  </em>
-  Alle vreemde tekens worden genegeerd in de zoekopdracht. Om zoektermen
-  te combineren kan je gebruik maken van de
-  <a href='#advanced_search'>
-    <i class='icon-arrow-right'></i>
+<section id='simple-search'>
+  <h3>Simple Search</h3>
+  <p>
+    Bioportaal werkt net zoals bekende zoekmachines: het gebruikt jouw
+    zoekterm om onze bronnen te doorzoeken. Het doorzoekt daarbij alle
+    velden die in de
+    <em>advanced search</em>
+    vermeld zijn (zoals de
+    <em>populaire naam</em>
+    , de
+    <em>wetenschappelijke naam</em>
+    of de vindplaats) en zelfs velden die ook met de
+    <em>advanced search</em>
+    niet doorzoekbaar zijn.
+  </p>
+  <p>
+    <em>Voorbeeld</em>
+    : je kan zowel op [ bruine rat ] als op [ rattus norvegicus ] zoeken.
+  </p>
+  <p>
+    Wanneer je meer dan één zoekterm invult, tonen we alle resultaten
+    waarin één van beide termen voorkomt, maar we tonen resultaten met
+    beide termen boven aan de lijst.
+  </p>
+  <p>
+    Je kan geen gebruik maken van haakjes of zogenoemde
+    <em>
+      wildcards.
+    </em>
+    Alle vreemde tekens worden genegeerd in de zoekopdracht. Om zoektermen
+    te combineren kan je gebruik maken van de
+    <a href='#advanced-search'>
+      <i class='icon-arrow-right'></i>
+      Advanced Search
+    </a>
+  </p>
+</section>
+<section id='advanced-search'>
+  <h3>
     Advanced Search
-  </a>
-</p>
-<h3 id='advanced-search'>
-  Advanced Search
-</h3>
-<p>
-  Door op het driehoekje in het invulveld te klikken, verlaat je de
-  <em>simple search</em>
-  en begin je aan een
-  <em>advanced search</em>
-  . Hiermee beperk je de resultaten tot de
-  <a href='#category'>
-    <i class='icon-arrow-right'></i>
-    categorie
-  </a>
-  waarin je zoekt (
-  <a href='#multimedia'>
-    <i class='icon-arrow-right'></i>
-    multimedia
-  </a>
-  ,
-  <a href='#specimen'>
-    <i class='icon-arrow-right'></i>
-    exemplaren
-  </a>
-  of
-  <a href='#taxa'>
-    <i class='icon-arrow-right'></i>
-    taxa
-  </a>
-  ) en tot de specifieke velden waarin je zoekt.
-</p>
-<p>
-  Wanneer je voor meer categorieën zoektermen opgeeft, worden voor
-  elke categorie resultaten getoond.
-</p>
-<p>
-  Als je binnen een categorie
-  meerdere zoekvelden invult, worden aanvankelijk slechts resultaten
-  getoond die beide termen bevatten. Je
-  <em>beperkt</em>
-  hier het aantal
-  resultaten mee.
-</p>
-<p>
-  Wanneer je “OR” kiest voor “combine search terms”
-  krijg je daarbij resultaten te zien die één van beide termen bevatten
-  en breidt je de resultaten dus uit.
-</p>
-<h3 id='geo-search'>
-  Geographic Search
-</h3>
-<p>
-  Geografisch zoeken kan gebruikt worden om de zoekresultaten snel te
-  beperken tot een bepaald gebied. Dit gebied kan gekozen worden uit
-  een lijst gebieden aan de rechterkant van de kaart of op de kaart
-  getekend worden.
-</p>
-<p>
-  De resultaten zijn altijd beperkt tot exemplaren en multimedia.
-  Alleen resultaten waarvan de geografische co&ouml;rdinaten van de
-  vindplaats opgenomen zijn in de bronsystemen, worden hier getoond.
-</p>
-<p>
-  We maken gebruik van verschillende
-  <a href='colophon#sources'>bronnen.</a>
-  Daardoor kan het voorkomen
-  dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden
-  in de gedetaileerdheid van de begrenzing.
-</p>
-<h3 id='explore'>
-  Explore Highlights
-</h3>
-<p>
-  Een eenvoudige en snelle manier van zoeken is “Explore Highlights”.
-  Hiermee zie je alle exemplaren die behoren tot een van de Bijzondere
-  Collecties van Naturalis. Je krijgt direct de resultaten te zien.
-</p>
+  </h3>
+  <p>
+    Door op het driehoekje in het invulveld te klikken, verlaat je de
+    <em>simple search</em>
+    en begin je aan een
+    <em>advanced search</em>
+    . Hiermee beperk je de resultaten tot de
+    <a href='#category'>
+      <i class='icon-arrow-right'></i>
+      categorie
+    </a>
+    waarin je zoekt (
+    <a href='#multimedia'>
+      <i class='icon-arrow-right'></i>
+      multimedia
+    </a>
+    ,
+    <a href='#specimen'>
+      <i class='icon-arrow-right'></i>
+      exemplaren
+    </a>
+    of
+    <a href='#taxa'>
+      <i class='icon-arrow-right'></i>
+      taxa
+    </a>
+    ) en tot de specifieke velden waarin je zoekt.
+  </p>
+  <p>
+    Wanneer je voor meer categorieën zoektermen opgeeft, worden voor
+    elke categorie resultaten getoond.
+  </p>
+  <p>
+    Als je binnen een categorie
+    meerdere zoekvelden invult, worden aanvankelijk slechts resultaten
+    getoond die beide termen bevatten. Je
+    <em>beperkt</em>
+    hier het aantal
+    resultaten mee.
+  </p>
+  <p>
+    Wanneer je “OR” kiest voor “combine search terms”
+    krijg je daarbij resultaten te zien die één van beide termen bevatten
+    en breidt je de resultaten dus uit.
+  </p>
+</section>
+<section id='geo-search'>
+  <h3 id='geo-search'>
+    Geographic Search
+  </h3>
+  <p>
+    Geografisch zoeken kan gebruikt worden om de zoekresultaten snel te
+    beperken tot een bepaald gebied. Dit gebied kan gekozen worden uit
+    een lijst gebieden aan de rechterkant van de kaart of op de kaart
+    getekend worden.
+  </p>
+  <p>
+    De resultaten zijn altijd beperkt tot exemplaren en multimedia.
+    Alleen resultaten waarvan de geografische co&ouml;rdinaten van de
+    vindplaats opgenomen zijn in de bronsystemen, worden hier getoond.
+  </p>
+  <p>
+    We maken gebruik van verschillende
+    <a href='colophon#sources'>bronnen.</a>
+    Daardoor kan het voorkomen
+    dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden
+    in de gedetaileerdheid van de begrenzing.
+  </p>
+</section>
+<section id='explore'>
+  <h3 id='explore'>
+    Bijzondere Collecties
+  </h3>
+  <p>
+    Een eenvoudige en snelle manier van zoeken is “Bijzondere Collecties”.
+    Hiermee zie je alle exemplaren die behoren tot een van de Bijzondere
+    Collecties van Naturalis. Je krijgt direct de resultaten te zien.
+  </p>
+</section>
 <h2 id='results'>Zoekresultaten</h2>
 <p>
   BioPortal probeert je snel de resultaten te geven die je zoekt en
@@ -225,138 +233,167 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   <em>ranking</em>
   .
 </p>
-<h3 id='name-resolution'>
-  Name resolution
-</h3>
-<p>
-  Het BioPortaal zal trachten jouw zoekterm te
-  <em>matchen</em>
-  met een wetenschappelijke naam. Dit wordt gedaan door verschillende
-  velden te doorzoeken van het
-  <a href='http://www.nederlandsesoorten.nl/'>
-    Nederlands Soorten Register
-  </a>
-  en de
-  <a href='http://www.catalogueoflife.org/'>
-    Catalogue of Life
-  </a>
-</p>
-<ol>
-  <li>
-    <p>Wetenschappelijke naam</p>
-    <ul>
-      <li>
-        <p>
-          Bijvoorbeeld:
-          <em>“Rattus norvegicus”</em>
-        </p>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>Een lijst met populaire namen in verschillende talen</p>
-    <ul>
-      <li>
-        <p>
-          Een voorbeeld is “Bruine Rat” (Nederlands) of “Brown Rat ” (Engels)
-        </p>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>Hogere ordeningen</p>
-    <ul>
-      <li>
-        <p>
-          Bijvoorbeeld “Rodentia” voor de biologische orde van de knaagdieren
-        </p>
-      </li>
-    </ul>
-  </li>
-</ol>
-<p></p>
-<p>
-  Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van multimedia en exemplaren. Hierdoor kan het zijn dat je jouw oorspronkelijke zoekopdracht niet letterlijk terugziet in sommige resultaten.
-</p>
-<h3 id='ranking'>
-  Ranking
-</h3>
-<p>De zoekresultaten worden geordend aan de hand van</p>
-<ol>
-  <li>
-    <p>
-      Volledige
-      <em>match</em>
-      op de wetenschappelijke naam
-    </p>
-  </li>
-  <li>
-    <p>
-      Volledige
-      <em>match</em>
-      op de soortnaam
-    </p>
-  </li>
-  <li>
-    <p>
-      Volledige
-      <em>match</em>
-      op de naam van het geslacht
-    </p>
-  </li>
-  <li>
-    <p>
-      Gedeeltelijke
-      <em>match</em>
-      op de wetenschappelijke nam
-    </p>
-  </li>
-  <li>
-    <p>
-      Volledige
-      <em>match</em>
-      op enig ander veld
-    </p>
-  </li>
-  <li>
-    <p>
-      Gedeeltelijke
-      <em>match</em>
-      op enig ander veld
-    </p>
-  </li>
-</ol>
-<h3 id='category'>
-  Categorieën
-</h3>
-<p>De zoekresulaten zijn verdeeld over vier categorieën:</p>
-<ol>
-  <li id='multimedia'>
-    <p>
-      Multimedia: afbeeldingen, geluid of bewegend beeld uit alle gegevens
-    </p>
-  </li>
-  <li id='taxa'>
-    <p>Taxa (soortbeschrijvingen)</p>
-  </li>
-  <li id='specimen'>
-    <p id='specimens-by-name'>Exemplaren met de zoekterm in de soortnaam</p>
-  </li>
-  <li>
-    <p id='specimens'>Exemplaren met de zoekterm in een ander veld.</p>
-    <ul>
-      <li>
-        “Rat” levert ook resultaten op voor “Rat Island” in Plymout, U.K.
-      </li>
-    </ul>
-  </li>
-</ol>
-<p>
-  Exemplaren (of specimen) zijn verwijzingen naar en beschrijvingen van objecten die zijn
-  opgeslagen in de collectie van Naturalis (en soms ook daarbuiten).
-  Deze beschrijvingen kunnen veel verschillende velden bevatten.
-</p>
-
+<section id='name-resolution'>
+  <h3>
+    Name resolution
+  </h3>
+  <p>
+    Het BioPortaal zal trachten jouw zoekterm te
+    <em>matchen</em>
+    met een wetenschappelijke naam. Dit wordt gedaan door verschillende
+    velden te doorzoeken van het
+    <a href='http://www.nederlandsesoorten.nl/'>
+      Nederlands Soorten Register
+    </a>
+    en de
+    <a href='http://www.catalogueoflife.org/'>
+      Catalogue of Life
+    </a>
+  </p>
+  <ol>
+    <li>
+      <p>Wetenschappelijke naam</p>
+      <ul>
+        <li>
+          <p>
+            Bijvoorbeeld:
+            <em>“Rattus norvegicus”</em>
+          </p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>Een lijst met populaire namen in verschillende talen</p>
+      <ul>
+        <li>
+          <p>
+            Een voorbeeld is “Bruine Rat” (Nederlands) of “Brown Rat ” (Engels)
+          </p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>Hogere ordeningen</p>
+      <ul>
+        <li>
+          <p>
+            Bijvoorbeeld “Rodentia” voor de biologische orde van de knaagdieren
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <p></p>
+  <p>
+    Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van multimedia en exemplaren. Hierdoor kan het zijn dat je jouw oorspronkelijke zoekopdracht niet letterlijk terugziet in sommige resultaten.
+  </p>
+</section>
+<section id='ranking'>
+  <h3 id='ranking'>
+    Ranking
+  </h3>
+  <p>De zoekresultaten worden geordend aan de hand van</p>
+  <ol>
+    <li>
+      <p>
+        Volledige
+        <em>match</em>
+        op de wetenschappelijke naam
+      </p>
+    </li>
+    <li>
+      <p>
+        Volledige
+        <em>match</em>
+        op de soortnaam
+      </p>
+    </li>
+    <li>
+      <p>
+        Volledige
+        <em>match</em>
+        op de naam van het geslacht
+      </p>
+    </li>
+    <li>
+      <p>
+        Gedeeltelijke
+        <em>match</em>
+        op de wetenschappelijke nam
+      </p>
+    </li>
+    <li>
+      <p>
+        Volledige
+        <em>match</em>
+        op enig ander veld
+      </p>
+    </li>
+    <li>
+      <p>
+        Gedeeltelijke
+        <em>match</em>
+        op enig ander veld
+      </p>
+    </li>
+    <li>
+      <p>
+        Aantal keer dat een match met de zoekterm voor komt in de brondata
+      </p>
+    </li>
+    <li>
+      <p>
+        Belang van het veld.
+      </p>
+    </li>
+  </ol>
+</section>
+<section id='category'>
+  <h3>
+    Categorieën
+  </h3>
+  <p>De zoekresultaten zijn verdeeld over vier categorieën:</p>
+  <ol>
+    <li id='multimedia'>
+      <p>
+        Multimedia: afbeeldingen, geluid of bewegend beeld uit alle gegevens
+      </p>
+    </li>
+    <li id='taxa'>
+      <p>Taxa (soortbeschrijvingen)</p>
+    </li>
+    <li id='collection-specimens-by-name'>
+      <p>Exemplaren met de zoekterm in de soortnaam</p>
+      <ul>
+        <li>
+          Geeft resultaten wanneer de zoekterm voorkomt in de taxonomische
+          informatie van het exemplaar.
+        </li>
+      </ul>
+    </li>
+    <li id='collection-specimens'>
+      <p>Exemplaren met de zoekterm in een ander veld.</p>
+      <ul>
+        <li>
+          Geeft resultaten wanneer de zoekterm voorkomt in (bijvoorbeeld)
+          collectie-informatie, geografische informatie of informatie
+          met betrekking tot tijd en data.
+        </li>
+        <li>
+          “Rat” levert ook resultaten op voor “Rat Island” in Plymout, U.K.
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <p id='specimen'>
+    Exemplaren (of specimen) zijn verwijzingen naar en beschrijvingen van objecten die zijn
+    opgeslagen in de collectie van Naturalis (en soms ook daarbuiten).
+    Deze beschrijvingen kunnen veel verschillende velden bevatten.
+  </p>
+</section>
+<h2 id='faq'>
+  What the F.A.Q.!?
+</h2>
 ",
         'summary' => '',
         'format' => 'full_html',
