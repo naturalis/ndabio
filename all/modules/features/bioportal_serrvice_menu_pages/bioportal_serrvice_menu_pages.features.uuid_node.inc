@@ -212,11 +212,14 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   Explore Highlights
 </h3>
 <p>
-  Een eenvoudige en snelle manier van zoeken is “Explore Highlights”. Hiermee zie je alle exemplaren die behoren tot een van de Bijzondere Collecties van Naturalis. Je krijgt direct de resultaten te zien.
+  Een eenvoudige en snelle manier van zoeken is “Explore Highlights”.
+  Hiermee zie je alle exemplaren die behoren tot een van de Bijzondere
+  Collecties van Naturalis. Je krijgt direct de resultaten te zien.
 </p>
 <h2 id='results'>Zoekresultaten</h2>
 <p>
-  BioPortal probeert je snel de resultaten te geven die je zoekt en gebruikt daarvoor
+  BioPortal probeert je snel de resultaten te geven die je zoekt en
+  gebruikt daarvoor
   <em>name resolution</em>
   en
   <em>ranking</em>
@@ -228,11 +231,15 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 <p>
   Het BioPortaal zal trachten jouw zoekterm te
   <em>matchen</em>
-  met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het
-  <a href='http://www.nederlandsesoorten.nl/' style='text-decoration:none;'>
-    <u>Nederlands Soorten Register</u>
+  met een wetenschappelijke naam. Dit wordt gedaan door verschillende
+  velden te doorzoeken van het
+  <a href='http://www.nederlandsesoorten.nl/'>
+    Nederlands Soorten Register
   </a>
-  en de [Catalogue of Life]:
+  en de
+  <a href='http://www.catalogueoflife.org/'>
+    Catalogue of Life
+  </a>
 </p>
 <ol>
   <li>
@@ -333,10 +340,10 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
     <p>Taxa (soortbeschrijvingen)</p>
   </li>
   <li id='specimen'>
-    <p>Exemplaren met de zoekterm in de soortnaam</p>
+    <p id='specimens-by-name'>Exemplaren met de zoekterm in de soortnaam</p>
   </li>
   <li>
-    <p>Exemplaren met de zoekterm in een ander veld.</p>
+    <p id='specimens'>Exemplaren met de zoekterm in een ander veld.</p>
     <ul>
       <li>
         “Rat” levert ook resultaten op voor “Rat Island” in Plymout, U.K.
