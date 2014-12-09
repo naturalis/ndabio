@@ -551,9 +551,9 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Taxa',
-    'description' => '<p>Taxa</p>
+    'description' => 'Taxa
 ',
-    'format' => 'full_html',
+    'format' => 'plain_text',
     'weight' => 3,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     'language' => 'und',
@@ -1666,7 +1666,12 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'metatags' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/hide-1',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1925,7 +1930,12 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndavalues' => array(),
     'metatags' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tinfraspecificepithet',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
@@ -1975,7 +1985,12 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'metatags' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tphylum',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -2192,7 +2207,12 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'metatags' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/texpertorganisation',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '0db9da4a-2338-418c-be05-383749713024',
     ),
@@ -2369,7 +2389,12 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'metatags' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tfamily',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     ),
