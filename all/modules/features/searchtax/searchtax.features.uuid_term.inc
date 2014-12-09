@@ -491,8 +491,8 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_genusOrMonomial',
-    'description' => 'Genus or monomial',
-    'format' => NULL,
+    'description' => 'Genus',
+    'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '33ab617b-d485-42a7-a592-c530998e9409',
     'language' => 'und',
@@ -746,8 +746,8 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_vernacularName',
-    'description' => 'Vernacular name',
-    'format' => NULL,
+    'description' => 'Common name',
+    'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '453c7051-f8db-4fb1-b5ae-1dfe556c844d',
     'language' => 'und',
@@ -1003,7 +1003,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_infraspecificEpithet',
-    'description' => 'Infraspecific epithet',
+    'description' => 'Infraspecific name',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '5d26d474-beeb-49a7-9405-7707474c4bf4',
@@ -1354,7 +1354,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_specificEpithet',
-    'description' => 'Specific epithet
+    'description' => 'Specific name
 ',
     'format' => 'plain_text',
     'weight' => 3,
@@ -1563,7 +1563,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_collectionFieldNumber',
-    'description' => 'Collection field number',
+    'description' => 'Collections field number',
     'format' => 'plain_text',
     'weight' => 6,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
@@ -1802,7 +1802,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'n_genusOrMonomial',
-    'description' => 'Genus or monomial',
+    'description' => 'Genus',
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => 'bc27e6d3-4ae7-4d2f-ae3d-2eeb1ddbd719',
@@ -1862,7 +1862,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'n_infraspecificEpithet',
-    'description' => 'Infraspecific epithet',
+    'description' => 'Infraspecific name',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'c4a8bf82-0a73-4630-bb8a-126700cd9452',
@@ -1899,7 +1899,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_infraspecificEpithet',
-    'description' => 'Infraspecific epithet
+    'description' => 'Infraspecific name
 ',
     'format' => 'plain_text',
     'weight' => 4,
@@ -2142,7 +2142,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_specificEpithet',
-    'description' => 'Specific epithet',
+    'description' => 'Specific name',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'deb807f4-558d-49ec-973b-057a4b570e47',
@@ -2199,7 +2199,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'n_specificEpithet',
-    'description' => 'Specific epithet
+    'description' => 'Specific name
 ',
     'format' => 'plain_text',
     'weight' => 3,
