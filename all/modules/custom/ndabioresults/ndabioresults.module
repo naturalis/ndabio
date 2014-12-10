@@ -706,7 +706,7 @@ function getTaxonUrl ($links, $scientificName) {
 			}
 		}
 	}
-	return null;
+	return false;
 }
 
 
