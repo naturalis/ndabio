@@ -363,7 +363,7 @@ function ndaThematicSearch () {
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
 
     $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-    $services[specimenService()] = $_SESSION['ndaSearch']['theme'];
+    $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
 
     $pageHeader = '';
 
