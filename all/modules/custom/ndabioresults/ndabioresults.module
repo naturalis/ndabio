@@ -353,6 +353,16 @@ function ndaAdvancedSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
+function isMp4 ($url) {
+    $headers = get_headers($url);
+    foreach ($headers as $i => $v) {
+        if (strpos($v, 'mp4') !== false) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function serviceUsed ($service) {
     if (count($service) == 2 && isset($service['_geoShape']) && isset($service['_andOr'])) {
         return false;
