@@ -360,9 +360,10 @@ function ndaThematicSearch () {
 
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
+
+    $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    $services[specimenService()] = $_SESSION['ndaSearch']['theme'];
 
     $pageHeader = '';
 
