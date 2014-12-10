@@ -309,6 +309,11 @@ function ndaAdvancedSearch () {
         unset($services[specimenService()]);
     }
 
+    // Another check: specimen/search is used but specimen/name-search is not
+    if (serviceUsed($services[specimenService()]) && !serviceUsed($services[specimenNamesService()])) {
+        unset($services[specimenNamesService()]);
+    }
+
     // Now check if either multimedia or specimen has search parameters
     // If so, unset the "empty" service; if not, pass both
     if (!serviceUsed($services[specimenNamesService()]) && serviceUsed($services[multimediaService()])) {
