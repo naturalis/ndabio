@@ -310,7 +310,7 @@ function ndaAdvancedSearch () {
     }
 
     // Another check: specimen/search is used but specimen/name-search is not
-    if (serviceUsed($services[specimenService()]) && !serviceUsed($services[specimenNamesService()])) {
+    if (isset($services[specimenService()]) && !serviceUsed($services[specimenNamesService()])) {
         unset($services[specimenNamesService()]);
     }
 
