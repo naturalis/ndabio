@@ -102,7 +102,7 @@
 				if (feature.geometry.type == 'Polygon') {
 					geoShape = JSON.stringify(feature.geometry);
 				} else {
-					var target = $("#search-areas-target a.active");
+					var target = $("#search-areas-target a.active").first();
 					// From form, selected area
 					if (target.length > 0) {
 						gid = target.attr("id").substr(4) ;
