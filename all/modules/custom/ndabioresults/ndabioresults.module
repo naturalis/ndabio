@@ -25,7 +25,7 @@ function gettaxonomybysystem($systemname) {
   return t(db_query($sql)->fetchField());
 }
 
-include("blockDefinitions.php");
+include("ndabioresults.block.inc");
 
 /**
  * Implements hook_menu().
@@ -84,7 +84,7 @@ function ndabioresults_preprocess_html(&$vars){
   }
 }
 
-include 'adrie.php';
+include 'ndabioresults.config.inc';
 
 /**
  * Mapping function: distributes parameters to appropriate specimen service
