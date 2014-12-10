@@ -144,16 +144,11 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_back':
-      //$block['subject'] = '<none>';
-
-      $starturl = $base_root . $base_path;
-      if (isset($_SESSION['ndaSearch']['geoShape'])) $starturl .= "geographic-search/";
-
-    if ( $_SESSION['ndaRequestType'] == 'form'){
+        if ( $_SESSION['ndaRequestType'] == 'form') {
         if ($_SESSION['ndaSearch']['theme'] && !empty($_SESSION['ndaSearch']['theme'])) {
-            $block['content'] = "<a href='$starturl'>$icon" . t('Home') . "</a>";
+            $block['content'] = "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
         } else {
-           $block['content'] = "<a href='" . $starturl . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
+           $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
         }
       } else {
           $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";

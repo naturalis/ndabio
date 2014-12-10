@@ -282,7 +282,6 @@ function ndaSimpleSearch () {
  * @return string Formatted output
  */
 function ndaAdvancedSearch () {
-    global $base_root, $base_path;
 
     $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
@@ -340,7 +339,7 @@ function ndaAdvancedSearch () {
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
         return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
-            "<a href='$base_root/$base_path'>" . t('Back to home page') . '</a>.', 'p');
+            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
     }
 
     // Set session with NBA query type;
@@ -363,6 +362,15 @@ function isMp4 ($url) {
     return false;
 }
 
+function setStartUrl () {
+    global $base_root, $base_path;
+    if (isset($_SESSION['ndaSearch']['geoShape'])) {
+        return $base_root . $base_path . "geographic-search/";
+    }
+    return $base_root . $base_path;
+}
+
+
 function serviceUsed ($service) {
     if (count($service) == 2 && isset($service['_geoShape']) && isset($service['_andOr'])) {
         return false;
@@ -371,7 +379,6 @@ function serviceUsed ($service) {
 }
 
 function ndaThematicSearch () {
-    global $base_root, $base_path;
 
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
@@ -385,7 +392,7 @@ function ndaThematicSearch () {
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
         return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
-            "<a href='$base_root/$base_path'>" . t('Back to home page') . '</a>.', 'p');
+            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
     }
 
     // Set session with NBA query type;
@@ -1631,7 +1638,7 @@ function getTaxonSynonymOffset ($row) {
 
 function printNoResults () {
     global $base_path;
-    return t('Sorry, no results found') . '. <a href="' . $base_path . '?searchagain=1">' .
+    return t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
         t('Please try again'). '</a>!';
 }
 
