@@ -17,7 +17,7 @@
   // ---------------------------------------------------------
 
 
- 
+
   // ---------------------------------------------------------
   // HEADER IMAGES
   // ---------------------------------------------------------
@@ -25,7 +25,7 @@
     // (We use jQuery for repositioning, to keep the CSS clean)
 
     if (    $('#naturalis-header').length ) {
-      
+
       rl_margin =  (  $(".page").outerWidth() - $("main").outerWidth()  ) / 2;
 
       // If the page is wide enough:
@@ -39,18 +39,18 @@
           .removeAttr('width')
           .removeAttr('height')
           .css({position: "absolute", top: 0, right: rl_margin  , width: 320, maxWidth: "27%", height: "auto", zIndex: 600, });
-        
+
         $("#language-menu")
           .appendTo(".page")
           .css({zIndex:601, listStyle: "none inside none", position: "fixed", top: 10, right: (rl_margin + 50) });
-        
+
         $("#help")
           .appendTo(".page")
           .css({zIndex:602, position: "fixed", height: "auto", width: "auto", margin: 0, padding: 0, right: rl_margin, top: 0, listStyle: "none inside none"})
             .find('span')
               .css({color: '#fff', border: 0, position: "relative"});
-      
-      } else {  
+
+      } else {
 
         $("#header-image img").remove();
 
@@ -118,9 +118,9 @@
         $_fieldset_omnisearch.toggleClass("disabled");
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
         $_submit.toggleAttr("disabled").toggleClass("disabled");
-        
+
         $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
-        
+
         $_bottom_submit.css("opacity","0")
 
         $_advanced_search_form
@@ -213,7 +213,7 @@
       if (e.keyCode == 13) {
         $("#ndabio-advanced-taxonomysearch").submit();
       }
-      
+
     });
 
   // ---------------------------------------------------------
@@ -239,21 +239,25 @@
   // SEARCH FORM: explode expanded search
   // ---------------------------------------------------------
 
+  /*
     if(  $("#edit-extended input[type='text'][value!='']").size() > 0 ){
       if (  $("#edit-term").val() == "" ){
         $(".icon-triangle-down").trigger("click");
       }
     }
-
+*/
+  	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
+  		$(".icon-triangle-down").trigger("click");
+  	}
 
    // ---------------------------------------------------------
   // PRELOADER
   // ---------------------------------------------------------
-  
+
   // $("#preloader").remove();
 
 
-  
+
 
   // ---------------------------------------------------------
 
@@ -264,12 +268,12 @@
 
   // For each species name...
   $("#specimensByTaxon .indent-0 td:first-child")
-    
+
     .each(function(){
       // Add a triangle to species-name
       $(this).find("a").first().prepend("<i class='icon-triangle-right'></i>");
     })
-    
+
     .click( function(){
 
       $_me = $(this).parent();
@@ -301,7 +305,7 @@
       .trigger("click");
 
   // ---------------------------------------------------------
-  
+
 
 
   // ---------------------------------------------------------
@@ -354,12 +358,12 @@ jQuery.fn.swapValAndPlaceholder = function(a, b) {
 function preloader(){
   return;
 
-  (function($) {  
+  (function($) {
     $("body").addClass("fading");
 
     $_overlay = $("<div id='preloader'></div>")
       .appendTo("body")
-      .css({ 
+      .css({
         width            : "200px",
         height           : "200px",
         backgroundColor  : "#444433",
@@ -373,7 +377,7 @@ function preloader(){
 
     $_canvas = $("<div id='canvas' />")
       .appendTo($_overlay)
-      .css({ 
+      .css({
         width            : "10px",
         height           : "10px",
         position         : "absolute",
