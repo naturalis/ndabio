@@ -4,7 +4,6 @@ function printSpecimenMediaDetail ($data) {
 //p($data);
 	$output = "<h2>" . $data['title'] . "</h2>\n";
 	$output .= printNavigation($data);
-echo $data['imgSrc'];
 
     if (isMp4($data['imgSrc'])) {
         $output .= '<video src="' . $data['imgSrc'] . '" type="video/mp4" autoplay controls></video>';
