@@ -226,7 +226,7 @@
 
     $("input[type='text']").removeAttr("value");
     $("input[value='0']").attr("checked","checked");
-    $("select").attr("value","");
+    $("select option:first").attr('selected','selected');
     $("fieldset fieldset.collapsible:not(.collapsed) a").trigger("click");
 
   });
