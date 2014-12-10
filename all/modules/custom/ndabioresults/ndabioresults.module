@@ -833,9 +833,11 @@ function parseTaxonDetail ($json) {
 function getSourceUrls ($data) {
     foreach ($data->searchResults as $row) {
         // @todo: fix CoL links! Currently linking to main page
+        /*
         if (strtolower($row->result->sourceSystem->name) == 'catalogue of life') {
             continue;
         }
+        */
         $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
     }
     return isset($urls) ? $urls : null;
