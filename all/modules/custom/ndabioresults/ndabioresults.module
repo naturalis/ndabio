@@ -685,7 +685,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimensMultimediaNames($row);
-	$output['unitID'] = $row->result->associatedSpecimen->unitID;
+	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
 	$output['title'] = $row->result->title;
 	$output['description'] = $row->result->description;
 	$output['creator'] = $row->result->creator;
@@ -915,7 +915,8 @@ function parseSpecimenDetail ($json) {
 	    'multiMediaPublic',
 	    'licenceType',
 	    'licence',
-	    'assemblyID'
+	    'assemblyID',
+	    'collectionType'
 		// etc
 	);
 	if (!$json || !validJson($json)) {
@@ -925,10 +926,11 @@ function parseSpecimenDetail ($json) {
 	foreach ($data->searchResults[0]->result as $field => $value) {
 		if (!is_array($value) && !is_object($value) &&
 			!in_array($field, $skipFields) && $value != '') {
-			$output[$field] = $value;
+			$output[$field] = setUnitId($value, $field);
 		}
 	}
 	$output['assemblageID'] = $data->searchResults[0]->result->assemblageID;
+	$output['collectionType'] = $data->searchResults[0]->result->collectionType;
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
 	   $data->searchResults[0]->result->sourceSystem->name : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
@@ -1010,7 +1012,7 @@ function getOtherSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->otherSpecimensInSet)) {
 		foreach ($row->searchResults[0]->result->otherSpecimensInSet as $i => $specimen) {
 			$s = array();
-			$s['unitID'] = $specimen->unitID;
+			$s['unitID'] = setUnitId($specimen->unitID);
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = getSpecimenInCollectionUrl($row, $i);
 			$c[] = $s;
@@ -1140,7 +1142,7 @@ function parseSpecimens ($json) {
 	}
 	foreach ($data->searchResults as $row) {
 		$d = array();
-		$d['unitID'] = $row->result->unitID;
+		$d['unitID'] = setUnitId($row->result->unitID);
 		$d['url'] = $row->links[0]->href;
 		$d['hits'] = getHits($row, false);
 		$d['source'] = $row->result->sourceSystem->name;
@@ -1170,7 +1172,7 @@ include 'printSpecimenTaxa.php';
 // Returns registration number for multimedia
 function getMultimediaUnitId ($row, $searchTerms = false) {
     if (isset($row->result->associatedSpecimen->unitID)) {
-        $output = $row->result->associatedSpecimen->unitID;
+        $output = setUnitId($row->result->associatedSpecimen->unitID);
         return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
     }
     return null;
@@ -1231,10 +1233,7 @@ function parseSpecimensByTaxon ($json) {
 		$d = array();
 		$d['name'] = formatScientificName(
 			$row->sharedValue,
-		    // @todo
-			//$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
 			$row->searchResults[0]->result->identifications[0]->scientificName,
-    		//$output['searchTerms']
     		getHits($row->searchResults[0])
 		);
 		$d['url'] = getTaxonUrl($row->searchResults[0]->links,
@@ -1245,7 +1244,7 @@ function parseSpecimensByTaxon ($json) {
 		$d['score'] = $row->searchResults[0]->percentage;
 		foreach ($row->searchResults as $i => $sp) {
     		$assemblageID = $sp->result->assemblageID;
-    		$s['unitID'] = $sp->result->unitID;
+    		$s['unitID'] = setUnitId($sp->result->unitID);
     		$s['collectionType'] = $sp->result->collectionType;
     		$s['url'] = $sp->links[0]->href;
             empty($assemblageID) ? $d['specimens'][] = $s : $d['sets'][$assemblageID][] = $s;
@@ -1267,6 +1266,12 @@ function parseSpecimensByTaxon ($json) {
 }
 
 
+function setUnitId ($string, $field = false) {
+    if (!$field || $field == 'unitID') {
+        return str_replace(' ', '&nbsp;', $string);
+    }
+    return $string;
+}
 
 
 // Parses specimen json response into array; searched by taxon and redirect
@@ -1294,7 +1299,7 @@ function parseSpecimensByMap ($data) {
     		$d['url'] = $sp->links[0]->href;
     		$d['source'] = implode(', ', $sources);
     		$d['assemblageID'] = $sp->result->assemblageID;
-    		$d['unitID'] = $sp->result->unitID;
+    		$d['unitID'] = setUnitId($sp->result->unitID);
     		$gatheringEvent = getGatheringEventSpecimens($row);
     		$d['localityText'] = $gatheringEvent['localityText'];
     		$d['date'] = $gatheringEvent['dateTimeBegin'];
@@ -1572,7 +1577,6 @@ function parseTaxa ($json) {
 	    $output['results'] = array();
         return $output;
 	}
-//p($data);
 	foreach ($data->resultGroups as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
@@ -1688,11 +1692,16 @@ function getSearchTerms ($data) {
 function formatScientificName ($scientificname, $nameObject, $searchTerms = false) {
 	$output = $scientificname;
 	$elements = getScientificNameElements($nameObject);
+    $f = array(chr(4), chr(7));
+	$r = array('<span class="scientific">', '</span>');
+
 	foreach ($elements as $e) {
 		if (!empty($e)) {
-			$output = str_replace($e, '<span class="scientific">' . $e . '</span>', $output);
+			$output = str_replace($e, chr(4) . $e . chr(7), $output);
 		}
 	}
+	$output = str_replace($f, $r, $output);
+
 	// Highlight the formatted output
 	return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
 }
@@ -1707,15 +1716,11 @@ function highlightSearchTerms ($output, $searchTerms) {
             }
         }
     }
-    // Intermediate set required to prevent highlighting of html
-    $f = array('<span class="scientific">', '</span');
-    $r = array('@#', '#@');
-
     // Intermediate step required to remove any duplicates
     if (isset($terms)) {
-        $output = highlightMatch(str_replace($f, $r, $output), array_flip($terms));
+        $output = highlightMatch($output, array_flip($terms));
     }
-    return str_replace($r, $f, $output);
+    return $output;
 }
 
 // Returns scientific name elements from name object
@@ -1787,13 +1792,18 @@ function decorateScore ($score) {
 
   $result .= "</span>";
   return $result;
-
-  //return "<span class='score'><span class='score-bar' style='width: $score%'></span><span class='score-text'>$score%</span></span>";
 }
+
 
 // Highlight match
 function highlightMatch ($haystack, $needles) {
-	foreach ($needles as $needle) {
+    // Intermediate set required to prevent highlighting of html
+    $f = array('<span class="scientific">', '</span>', '&nbsp;', '<span class="result-query">');
+    $r = array(chr(4), chr(7), chr(13), chr(14));
+    $haystack = str_replace($f, $r, $haystack);
+
+    foreach ($needles as $needle) {
+	    $needle = trim($needle);
 	    if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
 			continue;
 		}
@@ -1802,15 +1812,16 @@ function highlightMatch ($haystack, $needles) {
 		$q = str_replace('( )','(\s*)','('.implode($x, $q).')');
 		$haystack = preg_replace_callback('/'.$q.'/i','_fsub1', $haystack);
 	}
-	return $haystack;
+
+	return str_replace($r, $f, $haystack);
 }
 
 function _fsub1 ($m) {
-	return "<span class='result-query'>".preg_replace_callback('(<(.*?)>)','_fsub2',$m[0])."</span>";
+	return chr(14) . preg_replace_callback('(<(.*?)>)','_fsub2',$m[0]) . chr(7);
 }
 
 function _fsub2 ($m) {
-	return '</span>'.$m[0]."<span class='result-query'>";
+	return chr(7) . $m[0] . chr(14);
 }
 
 function _formatNumber ($n) {
@@ -1926,7 +1937,7 @@ function decimalToDMS ($decimal, $lat = true) { // $lon = false
 }
 
 function p ($a) {
-   echo '<pre>'; print_r($a); echo '</pre>';
+   echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
 function _wrap($input, $tag = "div", $class = ""){
