@@ -216,8 +216,6 @@ function logSearch () {
     $data['field_search_type'] = !empty($_SESSION['ndaSearch']['geoShape']) ? 'geo ' :
         (empty($data['field_term']) ? 'advanced' : 'simple');
 
-    p($data);
-
     $node = new stdClass();
     $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .
             ' | ' . $data['field_timestamp'];
