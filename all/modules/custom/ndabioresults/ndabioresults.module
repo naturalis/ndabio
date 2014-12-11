@@ -177,6 +177,7 @@ function ndabioresults_pass ($args = "") {
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
         $_SESSION['ndaSearch'] = $_POST;
+        logSearch();
     }
 
     // GET data from within NDA response?
@@ -195,6 +196,48 @@ function ndabioresults_pass ($args = "") {
     // Redirect to distinct services
     return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 }
+
+
+function logSearch () {
+    foreach ($_SESSION['ndaSearch'] as $k => $v) {
+        $skip = array(
+            'op', 'form_build_id', 'form_token', 'form_id'
+
+        );
+        if (in_array(strtolower($k), $skip) ||
+            $k == 'geoShape' && !empty($_SESSION['ndaSearch']['gid'])) {
+            continue;
+        }
+        $data['field_' . strtolower($k)] = $v;
+    }
+    $data['field_timestamp'] = date('Y-m-d H:i:s');
+    $data['field_ip_address'] = $_SERVER['REMOTE_ADDR'];
+    $data['field_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+    $data['field_search_type'] = !empty($_SESSION['ndaSearch']['geoShape']) ? 'geo ' :
+        (empty($data['field_term']) ? 'advanced' : 'simple');
+
+    p($data);
+
+    $node = new stdClass();
+    $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .
+            ' | ' . $data['field_timestamp'];
+    $node->type = "search_log";
+    node_object_prepare($node);
+
+    $node->language = LANGUAGE_NONE; // Or 'en' if locale is enabled
+    $node->uid = $user->uid;
+    $node->status = 1; //(1 or 0): published or not
+    $node->promote = 0; //(1 or 0): promoted to front page
+    $node->comment = 0; // 0 = comments disabled
+    foreach ($data as $k => $v) {
+        if ($v != '') {
+            $node->{$k}[$node->language][0]['value'] = $v;
+        }
+    }
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+}
+
 
 
 function ndabioresults_ajax_callback () {
@@ -1948,3 +1991,4 @@ function _wrap($input, $tag = "div", $class = ""){
 function printDL($field, $value){
   return "<dl><dt>$field</dt><dd>$value</dd></dl>";
 }
+
