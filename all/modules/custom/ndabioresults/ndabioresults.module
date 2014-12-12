@@ -843,9 +843,8 @@ function parseTaxonDetail ($json) {
 	);
 	//$output['navigation'] = getNavigation($data);
 	$output['taxonID'] = getTaxonId($data);
-	$output['nameElements'] = array_filter(
-	   getScientificNameElements($data->searchResults[0]->result->acceptedName)
-	);
+	$output['nameElements'] =
+	   getScientificNameElementsWithDuplicates($data->searchResults[0]->result->acceptedName);
 	$output['sourceUrls'] = getSourceUrls($data);
 	foreach ($data->searchResults as $row) {
 		$source = $row->result->sourceSystem->name;
@@ -1774,6 +1773,15 @@ function getScientificNameElements ($name) {
 		$name->infraspecificEpithet => 'infraspecificEpithet'
 	);
 	return array_flip($elements);
+}
+
+function getScientificNameElementsWithDuplicates ($name) {
+	return array(
+		'genusOrMonomial' => $name->genusOrMonomial,
+		'subgenus' => $name->subgenus,
+		'specificEpithet' => $name->specificEpithet,
+		'infraspecificEpithet' => $name->infraspecificEpithet
+	);
 }
 
 // Returns all sources for taxon/specimen

@@ -23,10 +23,10 @@ function printTaxonDetail ($data) {
 
 //p($data);
 
-  $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
-    '/?' . http_build_query($data['nameElements']);
-  $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
-    '/?associatedTaxonReference=' . (!empty($data['taxonID']) ? urlencode($data['taxonID']) : '0');
+  $getSpecimenRequest = urlencode(ndaBaseUrl() . specimenNamesService() .
+    '/?' . http_build_query($data['nameElements']) . '&_andOr=AND');
+  $getMultimediaRequest = urlencode(ndaBaseUrl() . multimediaService() .
+     '/?' . http_build_query($data['nameElements']) . '&_andOr=AND');
 
   drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
   drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
