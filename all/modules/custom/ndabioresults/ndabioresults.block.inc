@@ -184,7 +184,7 @@ function ndabioresults_block_view($delta = '') {
       if(!empty($mytheme)) {
         //Check if content with identical label is available
         //Get node of type 'Naturalis thematic search'
-        $sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $mytheme . "' AND language = '" . $language->language . "' LIMIT 1";
+        $sql = "SELECT entity_id FROM field_data_field_nba_search_term st, node n WHERE st.field_nba_search_term_value = '" . $mytheme . "' AND st.entity_id = n.nid AND n.language = '" . $language->language . "' LIMIT 1";
         $myid = db_query($sql)->fetchAssoc();
 
         if(empty($myid)) {
@@ -194,10 +194,13 @@ function ndabioresults_block_view($delta = '') {
 
         //SELECT nid FROM xxx WHERE label = $_POST['searchkey']
         $mynode = node_load($myid['entity_id']);
+        print_r($mynode);
         if (!empty($mynode)) {
           //Create block content
           $block['subject'] = $mynode->title;
-          $block['content'] = $mynode->body[$mynode->language][0]['value'] . " ";
+          $mycontent = $mynode->body[$mynode->language][0]['value'];
+          if (empty($mycontent)) $mycontent = $mynode->body['und'][0]['value'];
+          $block['content'] = $mycontent . " ";
         }
       }
 
