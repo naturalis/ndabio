@@ -651,7 +651,7 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-	kpr($channels);
+	//kpr($channels);
 
 	 return $output;
 }
