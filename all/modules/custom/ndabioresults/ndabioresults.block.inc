@@ -194,7 +194,6 @@ function ndabioresults_block_view($delta = '') {
 
         //SELECT nid FROM xxx WHERE label = $_POST['searchkey']
         $mynode = node_load($myid['entity_id']);
-        print_r($mynode);
         if (!empty($mynode)) {
           //Create block content
           $block['subject'] = $mynode->title;
