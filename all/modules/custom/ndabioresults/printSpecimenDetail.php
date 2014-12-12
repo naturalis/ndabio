@@ -69,7 +69,7 @@ function printSpecimenDetail ($data) {
                 $output .= isset($value['dateTimeBegin']) ?
     			    printDL(ucfirst(translateNdaField('dateTimeBegin')), $value['dateTimeBegin']) :
                     '';
-			    $output .= isset($value['dateTimeBegin']) ?
+			    $output .= isset($value['gatheringAgents']) ?
     			    printDL(ucfirst(translateNdaField('gatheringAgents')), implode(', ', $value['gatheringAgents'])) :
 			          '';
 			    $output .= isset($value['localityText']) ?
@@ -85,6 +85,7 @@ function printSpecimenDetail ($data) {
                     );
 			    }
 			}
+
 		} else {
 			if ($value != '') {
 			    $output .= printDL(

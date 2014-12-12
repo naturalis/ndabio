@@ -946,7 +946,6 @@ include 'printClassifications.php';
 
 // Parses specimen detail json response into array
 function parseSpecimenDetail ($json) {
-//p($data);
 
     $skipFields = array(
         'objectPublic',
@@ -965,6 +964,8 @@ function parseSpecimenDetail ($json) {
 		handleError('parseSpecimenDetail : no or invalid json response');
 	}
 	$data = json_decode($json);
+//p($data);
+
 	foreach ($data->searchResults[0]->result as $field => $value) {
 		if (!is_array($value) && !is_object($value) &&
 			!in_array($field, $skipFields) && $value != '') {
