@@ -20,14 +20,6 @@ function printMultimedia ($data) {
     	$w = "240";
         $h = 100 + $i * 50;
 
-        // kpr($row);
-
-        // Build a nice caption.
-        $caption = '';
-        if ( !empty( $row['hits']['genusOrMonomial']) ){
-            $caption .=  $row['hits']['genusOrMonomial'];
-        }
-
         // Reset imgUrl if media is mp4
         if ($row['format'] == 'video/mp4') {
             $row['imgSrc'] = setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
@@ -39,9 +31,9 @@ function printMultimedia ($data) {
           "  <div class='polaroid-caption'>".
           "    <div class='image-title'>" . $row['taxon'] . (!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>".
           // "    <div class='image-title'>" . $row['caption'] . "</div>".
-          // "    <div class='image-hits'>" . printHits($row) .  "</div>".
-        		"    <div class='image-hits'>" . $row['caption'] .  "</div>".
-        	  // "    <div class='image-source'>" . $row['source'] . "</div>".
+           "    <div class='image-hits'>" . $row['caption'] .  "</div>".
+           "    <div class='image-hits'>" . printMultimediaHit($row) .  "</div>".
+           // "    <div class='image-source'>" . $row['source'] . "</div>".
           "  </div>".
           "</a>";
     }
