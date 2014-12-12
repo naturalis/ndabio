@@ -1,3 +1,4 @@
+// document this
 function getTotal (request, callback) {
 	jQuery.ajax({
 		url: str_base_path + 'nba/ajax',
