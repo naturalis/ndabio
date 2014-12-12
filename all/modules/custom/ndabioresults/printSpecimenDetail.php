@@ -61,7 +61,7 @@ function printSpecimenDetail ($data) {
 				$output .= printNamesWithLinks($value, 'Scientific name');
 			}
 			if ($field == 'vernaculars') {
-				$output .= printDL(t('Common name(s)'), $value['vernaculars']);
+				$output .= printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
 			}
 
 			// Gathering event
@@ -87,7 +87,10 @@ function printSpecimenDetail ($data) {
 			}
 		} else {
 			if ($value != '') {
-			    $output .= printDL(ucfirst(translateNdaField($field)), $value);
+			    $output .= printDL(
+                    ucfirst(translateNdaField($field)),
+			        is_array($value) ? implode(', ', $value) : $value
+			    );
 			}
 		}
 	}

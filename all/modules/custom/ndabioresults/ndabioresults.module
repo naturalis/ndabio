@@ -946,7 +946,9 @@ include 'printClassifications.php';
 
 // Parses specimen detail json response into array
 function parseSpecimenDetail ($json) {
-	$skipFields = array(
+//p($data);
+
+    $skipFields = array(
         'objectPublic',
 	    'sourceSystemId',
         'sourceID',
@@ -980,7 +982,6 @@ function parseSpecimenDetail ($json) {
 	   $data->searchResults[0]->result->licence);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 	// $output['navigation'] = getNavigation($data);
-//p($data);
 
 	return $output;
 }
@@ -1012,9 +1013,11 @@ function getSpecimenVernaculars ($row) {
     if (!isset($row->result->identifications) || empty($row->result->identifications)) {
         return array();
     }
-    foreach ($row->result->identifications as $i => $id) {
+    foreach ($row->result->identifications as $id) {
 		if (!empty($id->vernacularNames)) {
-		    $output[] = $id->vernacularNames;
+		    foreach ($id->vernacularNames as $name) {
+		        $output[] = $name->name;
+		    }
 		}
 	}
 	return isset($output) ? $output : false;
