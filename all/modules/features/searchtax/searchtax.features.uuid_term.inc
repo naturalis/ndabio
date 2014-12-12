@@ -551,8 +551,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Taxa',
-    'description' => 'Taxa
-',
+    'description' => 'Taxa',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
