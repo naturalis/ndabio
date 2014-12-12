@@ -150,7 +150,7 @@ function setSpecimenParameters (array $sP, $type) {
  * @return string The formatted output
 */
 function ndabioresults_pass ($args = "") {
-    global $base_root, $base_path;
+    global $base_path;
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
 
     // Thematic search
@@ -404,10 +404,14 @@ function isMp4 ($url) {
 }
 
 function setStartUrl () {
-    global $base_root, $base_path;
     if (isset($_SESSION['ndaSearch']['geoShape'])) {
-        return $base_root . $base_path . "geographic-search/";
+        return setBasePath() . "geographic-search/";
     }
+    return setBasePath();
+}
+
+function setBasePath () {
+    global $base_root, $base_path;
     return $base_root . $base_path;
 }
 
@@ -1132,12 +1136,16 @@ function parseMultimedia ($json) {
 		$type = !empty($row->result->associatedTaxon) ? 'associatedTaxon' :
             'associatedSpecimen';
 		$d['title'] = $row->result->title;
+		$d['format'] =
 		$d['caption'] = $row->result->caption;
 		$d['score'] = $row->percentage;
 		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
             $row->result->{$type}->sourceSystem->name : '';
-		$d['imgSrc'] = getImageUrl($row);
+
+		list($d['imgSrc'], $d['format']) = getImageData($row);
+
+		//$d['imgSrc'] = getImageUrl($row);
 		$d['hits'] = getHits($row, false);
 		$d['taxon'] = getMultimediaTaxon($row, $d['hits']);
 		$d['unitID'] = getMultimediaUnitId($row, $d['hits']);
@@ -1549,7 +1557,7 @@ function getOffset ($data) {
     return 0;
 }
 
-// Returns image properties
+// Returns image url
 function getImageUrl ($row) {
     if (!empty($row->result->serviceAccessPoints)) {
     	$key = key(get_object_vars($row->result->serviceAccessPoints));
@@ -1557,6 +1565,19 @@ function getImageUrl ($row) {
     }
     return null;
 }
+
+// Returns image url and formar in array
+function getImageData ($row) {
+    if (!empty($row->result->serviceAccessPoints)) {
+    	$key = key(get_object_vars($row->result->serviceAccessPoints));
+    	return array(
+    	   $row->result->serviceAccessPoints->{$key}->accessUri,
+    	   $row->result->serviceAccessPoints->{$key}->format
+    	);
+    }
+    return null;
+}
+
 
 
 // Return the field containing the hit
@@ -1685,7 +1706,6 @@ function getTaxonSynonymOffset ($row) {
 }
 
 function printNoResults () {
-    global $base_path;
     return t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
         t('Please try again'). '</a>!';
 }
@@ -1923,8 +1943,7 @@ function translateNdaField ($str) {
 
 // Create Drupal specific link
 function printDrupalLink ($url) {
-    global $base_root, $base_path;
-    return $base_root . $base_path . 'nba/result?nba_request=' . urlencode($url);
+    return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
 }
 
 

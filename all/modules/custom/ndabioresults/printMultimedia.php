@@ -20,15 +20,17 @@ function printMultimedia ($data) {
     	$w = "240";
         $h = 100 + $i * 50;
 
-        // @todo temp fix for medialib
-        $row['imgSrc'] = str_replace('file://', '', $row['imgSrc']);
-
         // kpr($row);
 
         // Build a nice caption.
         $caption = '';
         if ( !empty( $row['hits']['genusOrMonomial']) ){
             $caption .=  $row['hits']['genusOrMonomial'];
+        }
+
+        // Reset imgUrl if media is mp4
+        if ($row['format'] == 'video/mp4') {
+            $row['imgSrc'] = setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
         }
 
         $output .=
