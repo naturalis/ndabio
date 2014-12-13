@@ -107,7 +107,13 @@ function ndabio_block_view($delta = '') {
   switch ($delta) {
 
     case 'ndabio_languageselect':
-      $currentpath = $base_root . $base_path . drupal_get_path_alias(current_path());
+      $currentpath = request_uri();
+      if (strpos($currentpath, "?") === FALSE) {
+        $currentpath = $currentpath . "?";
+      }
+      else {
+        $currentpath = $currentpath . "&";
+      }
       $block['content']  = "<ul class='right' id='language-menu'>";
       if ($language->language == "en") {
         $block['content'] .= "  <li>";
@@ -115,7 +121,7 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpath . "?language=en' title>EN</a>";
+      $block['content'] .= "    <a href='" . $currentpath . "language=en' title>EN</a>";
       $block['content'] .= "  </li>";
       if ($language->language == "nl") {
         $block['content'] .= "  <li>";
@@ -123,7 +129,7 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpath . "?language=nl' title>NL</a>";
+      $block['content'] .= "    <a href='" . $currentpath . "language=nl' title>NL</a>";
       $block['content'] .= "  </li>";
       $block['content'] .= "</ul>";
       break;
