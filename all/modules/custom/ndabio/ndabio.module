@@ -108,6 +108,8 @@ function ndabio_block_view($delta = '') {
 
     case 'ndabio_languageselect':
       $currentpath = request_uri();
+      $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl");
+      $currentpath = str_replace($cleanup, "", $currentpath);
       if (strpos($currentpath, "?") === FALSE) {
         $currentpath = $currentpath . "?";
       }
