@@ -46,6 +46,7 @@ function ndabioresults_block_info() {
   $blocks['ndabioresults_thematicsearch'] = array(
     'info' => t('NBA: Thematic search title block'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
+    'cache' => DRUPAL_NO_CACHE,
     'pages' => "nba/result\nnba/result*",
     'region' => "content",
     'weight' => -10,
