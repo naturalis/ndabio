@@ -181,6 +181,7 @@ function ndabioresults_block_view($delta = '') {
     case 'ndabioresults_thematicsearch':
       //Get NBA search term from URL
       $mytheme = check_plain($_GET['theme']);
+      $block['content'] = "";
       if(!empty($mytheme)) {
         //Check if content with identical label is available
         //Get node of type 'Naturalis thematic search'
