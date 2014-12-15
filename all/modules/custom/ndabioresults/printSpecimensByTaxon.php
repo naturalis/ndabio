@@ -48,8 +48,8 @@ function printSpecimensByTaxon ($data) {
     if (isset($data['searchTerms']['_search'])  ){
       $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
       $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
-      $count = _wrap(  _formatNumber($data['total']), "span", "count");
-      $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $expl, $count );
+      $count = _wrap(  '(' ._formatNumber($data['total']) . ')', "span", "count");
+      $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $count, $expl );
     } else {
       $count = _wrap(  "(" . _formatNumber($data['total']) . ")", "span", "count");
 
