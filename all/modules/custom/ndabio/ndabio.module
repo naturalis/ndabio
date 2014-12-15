@@ -100,21 +100,35 @@ function ndabio_block_info() {
  * Implements hook_block_view().
  */
 function ndabio_block_view($delta = '') {
-  global $base_root, $base_path;
+  global $base_url, $base_root, $base_path;
   global $language;
 
   $block = array();
   switch ($delta) {
 
     case 'ndabio_languageselect':
-      $currentpath = request_uri();
-      $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl");
-      $currentpath = str_replace($cleanup, "", $currentpath);
-      if (strpos($currentpath, "?") === FALSE) {
-        $currentpath = $currentpath . "?";
+      $mytargeten = $mytargetnl = "";
+      if (arg(0) == 'node' && is_numeric(arg(1))) $currentnode = arg(1);
+      
+      if (!empty($currentnode) && is_numeric( $currentnode)) {
+        $currentpath = "node/" . $currentnode;
+        $currentalias = (drupal_lookup_path("alias", $currentpath ));
+        $mytargeten = db_query("SELECT source FROM url_alias WHERE alias = '" . $currentalias . "' AND language = 'en'")->fetchAssoc();
+        $mytargetnl = db_query("SELECT source FROM url_alias WHERE alias = '" . $currentalias . "' AND language = 'nl'")->fetchAssoc();
+        $mytargeten = !empty($mytargeten["source"]) ? $mytargeten["source"] : "";
+        $mytargetnl = !empty($mytargetnl["source"]) ? $mytargetnl["source"] : "";;
       }
       else {
-        $currentpath = $currentpath . "&";
+        $currentpath = request_uri();
+      }
+      $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl");
+      $currentpath = str_replace($cleanup, "", $currentpath);
+      
+      if (strpos($currentpath, "?") === FALSE) {
+        $separator = "?";
+      }
+      else {
+        $separator = "&";
       }
       $block['content']  = "<ul class='right' id='language-menu'>";
       if ($language->language == "en") {
@@ -123,7 +137,9 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpath . "language=en' title>EN</a>";
+      if (!empty($mytargeten)) $currentpathen = $base_url . "/" . $mytargeten;
+      else $currentpathen = $currentpath;
+      $block['content'] .= "    <a href='" . $currentpathen . $separator . "language=en' title>EN</a>";
       $block['content'] .= "  </li>";
       if ($language->language == "nl") {
         $block['content'] .= "  <li>";
@@ -131,10 +147,13 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpath . "language=nl' title>NL</a>";
+      if (!empty($mytargetnl)) $currentpathnl = $base_url . "/" . $mytargetnl;
+      else $currentpathnl = $currentpath;
+      $block['content'] .= "    <a href='" . $currentpathnl . $separator . "language=nl' title>NL</a>";
       $block['content'] .= "  </li>";
       $block['content'] .= "</ul>";
       break;
+
   }
   return $block;
 }
