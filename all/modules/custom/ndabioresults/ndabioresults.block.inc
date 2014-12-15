@@ -61,7 +61,7 @@ function ndabioresults_block_info() {
 function ndabioresults_block_view($delta = '') {
   global $base_root, $base_path;
   global $language;
-  
+
   $icon = "<i class='icon-arrow-left'></i>";
 
   $block = array();
@@ -181,7 +181,7 @@ function ndabioresults_block_view($delta = '') {
 
     case 'ndabioresults_thematicsearch':
       //Get NBA search term from URL
-      $mytheme = check_plain($_GET['theme']);
+      $mytheme = isset($_GET['theme']) ? check_plain($_GET['theme']) : '';
       $block['content'] = "";
       if(!empty($mytheme)) {
         //Check if content with identical label is available
