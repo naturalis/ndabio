@@ -147,8 +147,8 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_back':
-        if ( $_SESSION['ndaRequestType'] == 'form') {
-        if ($_SESSION['ndaSearch']['theme'] && !empty($_SESSION['ndaSearch']['theme'])) {
+      if ( $_SESSION['ndaRequestType'] == 'form') {
+        if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
             $block['content'] = "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
         } else {
            $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
