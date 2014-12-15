@@ -160,10 +160,10 @@ function ndabioresults_pass ($args = "") {
         return ndaThematicSearch();
     }
 
-    drupal_set_title(t("Search results"));
-
     // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+        drupal_set_title(t("Search results"));
+
         if (!empty($_SESSION['ndaSearch']['term'])) {
             return ndaSimpleSearch();
         } else if (!empty($_SESSION['ndaSearch']['theme'])) {
@@ -176,8 +176,11 @@ function ndabioresults_pass ($args = "") {
     // POST data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_POST['form_id']) && $_POST['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        drupal_set_title(t("Search results"));
+
         $_SESSION['ndaSearch'] = $_POST;
         logSearch();
+        return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
     }
 
     // GET data from within NDA response?
@@ -191,10 +194,8 @@ function ndabioresults_pass ($args = "") {
     else {
         // Probably best to redirect gracefully to search page?
         handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
+        drupal_goto('');
     }
-
-    // Redirect to distinct services
-    return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
 }
 
 
@@ -728,7 +729,7 @@ function parseSpecimenMediaDetail ($json) {
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
 
-	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
+	$output['source'] = fixNsr($row->result->associatedSpecimen->sourceSystem->name);
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimensMultimediaNames($row);
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
@@ -787,7 +788,7 @@ function parseTaxonMediaDetail ($json) {
 	}
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
-	$output['source'] = $row->result->associatedTaxon->sourceSystem->name;
+	$output['source'] = fixNsr($row->result->associatedTaxon->sourceSystem->name);
 	$output['acceptedName'] = formatScientificName(
 		$row->result->associatedTaxon->acceptedName->fullScientificName,
 		$row->result->associatedTaxon->acceptedName
@@ -852,7 +853,7 @@ function parseTaxonDetail ($json) {
 	   getScientificNameElementsWithDuplicates($data->searchResults[0]->result->acceptedName);
 	$output['sourceUrls'] = getSourceUrls($data);
 	foreach ($data->searchResults as $row) {
-		$source = $row->result->sourceSystem->name;
+		$source = fixNsr($row->result->sourceSystem->name);
 
 		if (!empty($row->result->defaultClassification)) {
 			$output['classifications']['default'][$source] =
@@ -899,15 +900,13 @@ function parseTaxonDetail ($json) {
 
 function getSourceUrls ($data) {
     foreach ($data->searchResults as $row) {
-        // @todo: fix CoL links! Currently linking to main page
-        /*
-        if (strtolower($row->result->sourceSystem->name) == 'catalogue of life') {
-            continue;
-        }
-        */
-        $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
+        $urls[fixNsr($row->result->sourceSystem->name)] = $row->result->recordURI;
     }
     return isset($urls) ? $urls : null;
+}
+
+function fixNsr ($str) {
+    return str_replace('Nationaal Soortenregister', 'Nederlands Soortenregister', $str);
 }
 
 function printSource($data, $source) {
@@ -980,7 +979,7 @@ function parseSpecimenDetail ($json) {
 	$output['assemblageID'] = $data->searchResults[0]->result->assemblageID;
 	$output['collectionType'] = $data->searchResults[0]->result->collectionType;
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
-	   $data->searchResults[0]->result->sourceSystem->name : '';
+	   fixNsr($data->searchResults[0]->result->sourceSystem->name) : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
 	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
@@ -1142,7 +1141,7 @@ function parseMultimedia ($json) {
 		$d['score'] = $row->percentage;
 		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
-            $row->result->{$type}->sourceSystem->name : '';
+            fixNsr($row->result->{$type}->sourceSystem->name) : '';
 
 		list($d['imgSrc'], $d['format']) = getImageData($row);
 
@@ -1223,7 +1222,7 @@ function parseSpecimens ($json) {
 		$d['unitID'] = setUnitId($row->result->unitID);
 		$d['url'] = $row->links[0]->href;
 		$d['hits'] = getHits($row, false);
-		$d['source'] = $row->result->sourceSystem->name;
+		$d['source'] = fixNsr($row->result->sourceSystem->name);
 		$d['score'] = $row->percentage;
 		$d['names'] = getSpecimenTaxonNames($row);
 		$output['results'][] = $d;
@@ -1833,7 +1832,7 @@ function getScientificNameElementsWithDuplicates ($name) {
 // Returns all sources for taxon/specimen
 function getSources ($row) {
 	foreach ($row->searchResults as $i => $obj) {
-		$output[$obj->result->sourceSystem->name] = $i;
+		$output[fixNsr($obj->result->sourceSystem->name)] = $i;
 	}
 	return isset($output) ? array_flip($output) : false;
 }
