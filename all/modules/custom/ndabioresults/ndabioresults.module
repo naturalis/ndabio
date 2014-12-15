@@ -655,7 +655,7 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-	//p($channels);
+	p($channels);
 
 	 return $output;
 }
@@ -678,6 +678,7 @@ function queryNda ($channels = array(), $timeout = false) {
         if ($channels[$i]['method'] == 'post') {
             curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
             curl_setopt($ch[$i], CURLOPT_POST, true);
+			curl_setopt($ch[$i], CURLOPT_HTTPHEADER, array('Expect:'));
             curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
         } else if ($channels[$i]['method'] == 'get') {
             $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
