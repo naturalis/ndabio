@@ -427,7 +427,7 @@ function serviceToFunctions () {
         		'parse' => 'parseSpecimens',
         		'print' => 'printSpecimens',
         	    'info' => 'results specimens',
-        	    'method' => 'get'
+        	    'method' => 'post'
         	),
         	specimenDetailService() => array(
         		'parse' => 'parseSpecimenDetail',
