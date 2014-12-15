@@ -1181,7 +1181,13 @@ function printMultimediaHit ($row) {
 		foreach ($row['hits'] as $field => $hit) {
 		    // Skip hits that are part of the scientific name
 		    if (in_array($field,
-                array('genusOrMonomial', 'specificEpithet', 'infraspecificEpithet', 'subgenus'))) {
+                array(
+                    'genusOrMonomial',
+                    'specificEpithet',
+                    'infraspecificEpithet',
+                    'subgenus',
+                    'associatedSpecimenReference'
+                ))) {
                 continue;
 		    }
             // Rename field if it doesn't match ABCD term

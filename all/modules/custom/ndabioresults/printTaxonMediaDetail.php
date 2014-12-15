@@ -1,10 +1,12 @@
 <?php
 
 function printTaxonMediaDetail ($data) {
+
 //p($data);
 
+
   $output  = _wrap( t("Media item")   , "div", "category");
-  $output .= _wrap( basename(  $data['imgSrc']  ) , "h2"  );
+  $output .= _wrap( '', "h2"  );
 
   $output .="<img src='" . $data['imgSrc'] . "' alt='" . $data['title'] .
 		"' title=''" . $data['title'] . ">";
