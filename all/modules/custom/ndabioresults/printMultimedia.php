@@ -29,7 +29,8 @@ function printMultimedia ($data) {
           "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .
           "  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
           "  <div class='polaroid-caption'>".
-          "    <div class='image-title'>" . $row['taxon'] . (!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>".
+          "    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
+                    (!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>".
           // "    <div class='image-title'>" . $row['caption'] . "</div>".
            "    <div class='image-hits'>" . $row['caption'] .  "</div>".
            "    <div class='image-hits'>" . printMultimediaHit($row) .  "</div>".
