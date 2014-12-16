@@ -1190,7 +1190,8 @@ function printMultimediaHit ($row) {
                     'specificEpithet',
                     'infraspecificEpithet',
                     'subgenus',
-                    'associatedSpecimenReference'
+                    'associatedSpecimenReference',
+                    'associatedTaxonReference'
                 ))) {
                 continue;
 		    }
@@ -1205,7 +1206,7 @@ function printMultimediaHit ($row) {
 				str_replace('<span class="search_hit">', '<span class="result-query">', $hit);
 		}
 	}
-	return !empty($output) ? substr($output, 0, -5) : null;
+	return !empty($output) ? substr($output, 0, -5) : false;
 }
 
 
