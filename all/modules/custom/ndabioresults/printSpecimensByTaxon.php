@@ -15,6 +15,10 @@ function printSpecimensByTaxon ($data) {
         return printSpecimensByMap($data);
     }
 
+    // Drupal title empty; page title custom
+    drupal_set_title(t('Search results'));
+    $_SESSION['ndaSearch']['pageTitle'] = t('Search results');
+
     $headers = array(
 		'identifications.scientificName.fullScientificName' => array(
 			'label' => t('Name'),

@@ -79,9 +79,12 @@ function ndabioresults_menu() {
  *
  */
 function ndabioresults_preprocess_html(&$vars){
-  if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
-    $vars['classes_array'][] = "nba-result-detail";
-  }
+    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
+        $vars['classes_array'][] = "nba-result-detail";
+    }
+    if (isset($_SESSION['ndaSearch']['pageTitle']) && current_path() == 'nba/result') {
+        $vars['head_title'] = $_SESSION['ndaSearch']['pageTitle'] . ' | BioPortal';
+    }
 }
 
 include 'ndabioresults.config.inc';
@@ -151,6 +154,9 @@ function setSpecimenParameters (array $sP, $type) {
 */
 function ndabioresults_pass ($args = "") {
     global $base_path;
+
+    unset($_SESSION['ndaSearch']['pageTitle']);
+
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
     // Thematic search
     if (isset($_GET['theme']) && !empty($_GET['theme'])) {
@@ -158,8 +164,6 @@ function ndabioresults_pass ($args = "") {
         $_SESSION['ndaSearch']['theme'] = $_GET['theme'];
         return ndaThematicSearch();
     }
-
-    drupal_set_title(t("Search results"));
 
     // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {

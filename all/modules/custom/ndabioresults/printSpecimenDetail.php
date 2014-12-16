@@ -113,6 +113,9 @@ function printSpecimenDetail ($data) {
     drupal_add_js("jQuery(document).ready(function() {  getTotal(getMultimediaRequest, setSpecimenMultimediaLink); });", 'inline');
     $output .= '<h3>' . t('Multimedia') . '</h3><p id="specimen_multimedia"</p>';
 
+    $_SESSION['ndaSearch']['pageTitle'] = t('Specimen') . ' | ' . strip_tags($data[names][0]['name']) .
+        ' | '  . $data['unitID'];
+
 	return $output;
 }
 ?>

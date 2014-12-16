@@ -1,7 +1,7 @@
 <?php
 
 function printSpecimenMediaDetail ($data) {
-//p($data);
+// p($data);
 
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
@@ -44,6 +44,12 @@ function printSpecimenMediaDetail ($data) {
 			);
 		}
 	}
+
+    // Drupal title empty; page title custom
+    drupal_set_title('');
+    $_SESSION['ndaSearch']['pageTitle'] = t('Multimedia') . ' | ' .
+        strip_tags($data[names][0]['name']) . ' | '  . $data['unitID'];
+
 	return $output . "</dd>";
 }
 

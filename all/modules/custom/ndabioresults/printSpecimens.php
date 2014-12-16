@@ -10,6 +10,10 @@ function printSpecimens ($data) {
         return false;
     }
 
+    // Drupal title empty; page title custom
+    drupal_set_title(t('Search results'));
+    $_SESSION['ndaSearch']['pageTitle'] = t('Search results');
+
     $headers = array(
 		'unitID' => array(
 			'label' => t('Specimen'),

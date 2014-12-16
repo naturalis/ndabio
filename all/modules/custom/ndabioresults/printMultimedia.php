@@ -10,6 +10,11 @@ function printMultimedia ($data) {
         return false;
     }
 //p($data);
+
+    // Drupal title empty; page title custom
+    drupal_set_title(t('Search results'));
+    $_SESSION['ndaSearch']['pageTitle'] = t('Search results');
+
     $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
         t('Multimedia'),
         _formatNumber($data['total'])

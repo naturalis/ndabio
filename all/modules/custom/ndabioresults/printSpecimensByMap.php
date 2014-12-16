@@ -8,6 +8,11 @@ require_once 'printPaginator.php';
 function printSpecimensByMap ($data) {
     // Add Google Maps scripts from ndabio module (REQUIRED!)
     global $base_root, $base_path;
+
+    // Drupal title empty; page title custom
+    drupal_set_title(t('Search results'));
+    $_SESSION['ndaSearch']['pageTitle'] = t('Search results');
+
     $path = drupal_get_path('module', 'ndabio');
     drupal_add_css($path . "/css/ndabio_style.css");
     drupal_add_js($path . "/js/map.js", array('weight' => 1));
