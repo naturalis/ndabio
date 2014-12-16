@@ -17,8 +17,6 @@ function printMultimedia ($data) {
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     setTitle($headTitle, $pageTitle);
 
-    echo $headTitle;
-
     $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
         t('Multimedia'),
         _formatNumber($data['total'])
