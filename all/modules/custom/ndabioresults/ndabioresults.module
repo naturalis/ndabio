@@ -2039,7 +2039,7 @@ function decimalToDMS ($decimal, $lat = true) { // $lon = false
 }
 
 function setTitle ($head, $page = '') {
-    $_SESSION['ndaSearch']['pageTitle'] = t($head);
+    $_SESSION['ndaSearch']['pageTitle'] = $head;
     drupal_set_title($page);
 }
 

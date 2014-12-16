@@ -12,12 +12,10 @@ function printMultimedia ($data) {
 //p($data);
 
     // Drupal title empty; page title custom
-    setTitle(
-        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-            'Search results' : 'Explore highlights',
-        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-            t('Search results') : ''
-    );
+    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    setTitle($headTitle, $pageTitle);
 
     $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
         t('Multimedia'),

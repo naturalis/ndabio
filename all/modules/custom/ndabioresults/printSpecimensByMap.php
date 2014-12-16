@@ -10,12 +10,9 @@ function printSpecimensByMap ($data) {
     global $base_root, $base_path;
 
     // Drupal title empty; page title custom
-    setTitle(
-        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-            t('Search results') : t('Explore highlights'),
-        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-            t('Search results') : ''
-    );
+    $pageTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    setTitle($pageTitle, isset($_GET['theme']) ? '' : $pageTitle);
 
     $path = drupal_get_path('module', 'ndabio');
     drupal_add_css($path . "/css/ndabio_style.css");
