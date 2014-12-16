@@ -18,8 +18,12 @@ function printTaxa ($data) {
     }
 
     // Drupal title empty; page title custom
-    drupal_set_title(t('Search results'));
-    $_SESSION['ndaSearch']['pageTitle'] = t('Search results');
+    setTitle(
+        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+            t('Search results') : t('Explore highlights'),
+        !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+            t('Search results') : ''
+    );
 
     $headers = array(
     	'acceptedName.fullScientificName' => array(

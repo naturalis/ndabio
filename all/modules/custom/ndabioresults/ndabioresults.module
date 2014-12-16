@@ -2038,6 +2038,11 @@ function decimalToDMS ($decimal, $lat = true) { // $lon = false
      return $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
 }
 
+function setTitle ($head, $page = '') {
+    $_SESSION['ndaSearch']['pageTitle'] = t($head);
+    drupal_set_title($page);
+}
+
 function p ($a) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
