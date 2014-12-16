@@ -34,8 +34,7 @@ function printTaxonMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-    drupal_set_title('');
-	$_SESSION['ndaSearch']['pageTitle'] = t('Multimedia') . ' | ' . strip_tags($data['acceptedName']);
+	setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
 
     return $output . "</div>";
 }

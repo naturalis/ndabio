@@ -16,9 +16,8 @@ function printSpecimensByTaxon ($data) {
     }
 
     // Drupal title empty; page title custom
-    $pageTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-        t('Search results') : t('Explore highlights');
-    setTitle($pageTitle, isset($_GET['theme']) ? '' : $pageTitle);
+    $headTitle = t('Search results');
+    setTitle($headTitle, $headTitle);
 
     $headers = array(
 		'identifications.scientificName.fullScientificName' => array(

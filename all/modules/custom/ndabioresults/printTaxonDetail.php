@@ -38,8 +38,7 @@ function printTaxonDetail ($data) {
     $output .= '<h3>' . t('Multimedia'). '</h3><p id="taxon_multimedia"</p>';
 
     // Drupal title empty; page title custom
-    drupal_set_title('');
-    $_SESSION['ndaSearch']['pageTitle'] = t('Taxon') . ' | '. strip_tags($data['acceptedName']);
+    setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Taxon') . ' | '. strip_tags($data['acceptedName']));
 
     return $output;
 }
