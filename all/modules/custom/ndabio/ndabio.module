@@ -109,13 +109,9 @@ function ndabio_block_view($delta = '') {
     case 'ndabio_languageselect':
     
       if (arg(0) == 'node' && is_numeric(arg(1))) {
-        $currentpath = 'node/' . arg(1);
-        $currentnode = arg(1);
-        $currentalias = (drupal_lookup_path("alias", $currentpath ));
-        $mytargeten = db_query("SELECT source FROM url_alias WHERE alias = '" . $currentalias . "' AND language = 'en'")->fetchAssoc();
-        $mytargetnl = db_query("SELECT source FROM url_alias WHERE alias = '" . $currentalias . "' AND language = 'nl'")->fetchAssoc();
-        $currentpathnl = $base_url . "/" . $mytargetnl["source"] . "?";
-        $currentpathen = $base_url . "/" . $mytargeten["source"] . "?";
+        $translations = translation_path_get_translations("node/" . arg(1));
+        $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
+        $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
       }
       else {
         $currentpath = request_uri();
