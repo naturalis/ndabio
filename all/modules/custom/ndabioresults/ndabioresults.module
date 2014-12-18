@@ -734,7 +734,7 @@ function parseSpecimenMediaDetail ($json) {
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
 
-	$output['source'] = fixNsr($row->result->associatedSpecimen->sourceSystem->name);
+	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 	$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimensMultimediaNames($row);
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
@@ -793,7 +793,7 @@ function parseTaxonMediaDetail ($json) {
 	}
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
-	$output['source'] = fixNsr($row->result->associatedTaxon->sourceSystem->name);
+	$output['source'] = $row->result->associatedTaxon->sourceSystem->name;
 	$output['acceptedName'] = formatScientificName(
 		$row->result->associatedTaxon->acceptedName->fullScientificName,
 		$row->result->associatedTaxon->acceptedName
@@ -810,7 +810,7 @@ function parseTaxonMediaDetail ($json) {
 	$output['sexes'] = $row->result->sexes;
 	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
 	$output['date'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
-	$output['licence'] = trim($row->result->licenceType . ' ' . $row->result->licence);
+	$output['license'] = trim($row->result->licenseType . ' ' . $row->result->license);
 	$output['sourceUrls'][$output['source']] = $row->result->associatedTaxon->recordURI;
 
 //p($data);
@@ -858,7 +858,7 @@ function parseTaxonDetail ($json) {
 	   getScientificNameElementsWithDuplicates($data->searchResults[0]->result->acceptedName);
 	$output['sourceUrls'] = getSourceUrls($data);
 	foreach ($data->searchResults as $row) {
-		$source = fixNsr($row->result->sourceSystem->name);
+		$source = $row->result->sourceSystem->name;
 
 		if (!empty($row->result->defaultClassification)) {
 			$output['classifications']['default'][$source] =
@@ -905,13 +905,14 @@ function parseTaxonDetail ($json) {
 
 function getSourceUrls ($data) {
     foreach ($data->searchResults as $row) {
-        $urls[fixNsr($row->result->sourceSystem->name)] = $row->result->recordURI;
+        $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
     }
     return isset($urls) ? $urls : null;
 }
 
 function fixNsr ($str) {
-    return str_replace('Nationaal Soortenregister', 'Nederlands Soortenregister', $str);
+    return $str;
+    //return str_replace('Nationaal Soortenregister', 'Nederlands Soortenregister', $str);
 }
 
 function printSource($data, $source) {
@@ -963,8 +964,8 @@ function parseSpecimenDetail ($json) {
 	    'owner',
 	    'title',
 	    'multiMediaPublic',
-	    'licenceType',
-	    'licence',
+	    'licenseType',
+	    'license',
 	    'assemblyID',
 	    'collectionType'
 		// etc
@@ -984,12 +985,12 @@ function parseSpecimenDetail ($json) {
 	$output['assemblageID'] = $data->searchResults[0]->result->assemblageID;
 	$output['collectionType'] = $data->searchResults[0]->result->collectionType;
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
-	   fixNsr($data->searchResults[0]->result->sourceSystem->name) : '';
+	   $data->searchResults[0]->result->sourceSystem->name : '';
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
 	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
-	$output['licence'] = trim($data->searchResults[0]->result->licenceType . ' ' .
-	   $data->searchResults[0]->result->licence);
+	$output['license'] = trim($data->searchResults[0]->result->licenseType . ' ' .
+	   $data->searchResults[0]->result->license);
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 	// $output['navigation'] = getNavigation($data);
 
@@ -1146,7 +1147,7 @@ function parseMultimedia ($json) {
 		$d['score'] = $row->percentage;
 		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
-            fixNsr($row->result->{$type}->sourceSystem->name) : '';
+            $row->result->{$type}->sourceSystem->name : '';
 
 		list($d['imgSrc'], $d['format']) = getImageData($row);
 
@@ -1234,7 +1235,7 @@ function parseSpecimens ($json) {
 		$d['unitID'] = setUnitId($row->result->unitID);
 		$d['url'] = $row->links[0]->href;
 		$d['hits'] = getHits($row, false);
-		$d['source'] = fixNsr($row->result->sourceSystem->name);
+		$d['source'] = $row->result->sourceSystem->name;
 		$d['score'] = $row->percentage;
 		$d['names'] = getSpecimenTaxonNames($row);
 		$output['results'][] = $d;
@@ -1844,7 +1845,7 @@ function getScientificNameElementsWithDuplicates ($name) {
 // Returns all sources for taxon/specimen
 function getSources ($row) {
 	foreach ($row->searchResults as $i => $obj) {
-		$output[fixNsr($obj->result->sourceSystem->name)] = $i;
+		$output[$obj->result->sourceSystem->name] = $i;
 	}
 	return isset($output) ? array_flip($output) : false;
 }
