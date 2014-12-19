@@ -180,7 +180,7 @@ function createInfoText(marker) {
 	var taxon = marker.taxonUrl == '' ? marker.name :
 		'<a href="?nba_request=' + marker.taxonUrl + '">' + marker.name + '</a>';
 	return '<div class="map-infoWindow">' +
-		'<div class="marker-name" style="color:000;">' + taxon + '</div>' +
+		'<div class="marker-name" style="color:#000;">' + taxon + '</div>' +
 		'<div class="marker-unitID">' + '<a href="?nba_request=' +
 			marker.url + '">' + marker.unitID + '</a>' + '</div>' +
 		'<div class="marker-source">' + marker.source + '</div>' +
