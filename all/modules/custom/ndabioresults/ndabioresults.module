@@ -751,7 +751,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['sexes'] = $row->result->sexes;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
-	$output['license'] = trim($row->result->licenseType . ' ' . $row->result->license);
+	$output['license'] = $row->result->license;
 
 //p($data);
 	return $output;
@@ -816,7 +816,7 @@ function parseTaxonMediaDetail ($json) {
 	$output['sexes'] = $row->result->sexes;
 	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
 	$output['date'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
-	$output['license'] = trim($row->result->licenseType . ' ' . $row->result->license);
+	$output['license'] = $row->result->license;
 	$output['sourceUrls'][$output['source']] = $row->result->associatedTaxon->recordURI;
 
 //p($data);
@@ -995,8 +995,7 @@ function parseSpecimenDetail ($json) {
 	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
 	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
-	$output['license'] = trim($data->searchResults[0]->result->licenseType . ' ' .
-	   $data->searchResults[0]->result->license);
+	$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = getOtherSpecimens($data);
 	// $output['navigation'] = getNavigation($data);
 
