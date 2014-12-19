@@ -155,6 +155,11 @@ function setSpecimenParameters (array $sP, $type) {
 function ndabioresults_pass ($args = "") {
     global $base_path;
 
+    drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+    drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
+    drupal_add_http_header('Cache-Control', 'post-check=0, pre-check=0');
+    session_cache_limiter("must-revalidate");
+
     unset($_SESSION['ndaSearch']['pageTitle']);
 
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
@@ -746,6 +751,7 @@ function parseSpecimenMediaDetail ($json) {
 	$output['sexes'] = $row->result->sexes;
 	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
+	$output['license'] = trim($row->result->licenseType . ' ' . $row->result->license);
 
 //p($data);
 	return $output;

@@ -30,6 +30,7 @@ function printSpecimenMediaDetail ($data) {
 	$fields = array(
         'source',
     	'creator',
+    	'license',
 	    'title',
 	    'description',
         'copyrightText',
@@ -51,7 +52,4 @@ function printSpecimenMediaDetail ($data) {
 
 	return $output . "</dd>";
 }
-
-
-
 ?>

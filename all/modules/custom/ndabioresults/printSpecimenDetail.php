@@ -35,7 +35,7 @@ function printSpecimenDetail ($data) {
 	   'unitID',
 	   'source',
 	   'assemblageID',
-	   'licence',
+	   'license',
 	   'collectionType'
 		// etc
 	);

@@ -15,7 +15,7 @@ function printTaxonMediaDetail ($data) {
 	$fields = array(
 	    'source',
     	'creator',
-    	'licence',
+    	'license',
 	    'title',
 	    'description',
         'copyrightText',
