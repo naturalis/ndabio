@@ -472,9 +472,9 @@ function ndaDirectRequest ($r) {
         if (strpos($r, $service) !== false) {
             $url = parse_url($r);
             parse_str($url['query'], $q);
-
             // Add/reset maxResults to default
-            $q['_maxResults'] = maxResults();
+            $q['_maxResults'] = $service == specimenNamesService() ?
+                10 : maxResults();
 
             // Special case for specimens on map: remove _sort and _offset
             if (isset($q['showMap'])) {
