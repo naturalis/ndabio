@@ -1467,7 +1467,7 @@ function getPaginator ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRows($data),
-            maxResults(),
+            $_SESSION['ndaCurrentService'] == specimenNamesService() ? 10 : maxResults(),
             getOffset($data) / maxResults() + 1,
             setPaginatorUrl($data)
         );
