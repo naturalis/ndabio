@@ -3,9 +3,11 @@
 define("NBABASEURL", "http://10.42.1.163:8080/v0/");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
-define("NBAMAXGROUPEDRESULTS", 10);
 define("NBADEFAULTSORT", '_score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
+define("NBAMAXGROUPRESULTS", 10);
+define("NBADEFAULTGROUPSORT", '_score');
+define("NBADEFAULTSORTGROUPDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
 define("NBASPECIMENSERVICE", 'specimen/search');
 define("NBASPECIMENNAMESERVICE", 'specimen/name-search');
@@ -65,13 +67,13 @@ function ndabioresults_config_form($form, &$form_state) {
   );
 
   // Maximum results for grouped results (currently only specimen name search)
-  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxgroupedresults'] = array(
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxgroupresults'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum grouped results'),
-    '#default_value' => variable_get('ndabioresults_config_maxgroupedresults', NBAMAXGROUPEDRESULTS),
+    '#default_value' => variable_get('ndabioresults_config_maxgroupresults', NBAMAXGROUPRESULTS),
     '#size' => 10,
     '#maxlength' => 10,
-    '#description' => t('Number of maximum results for grouped results.') . '<br />' . t('Default') . ': ' . NBAMAXGROUPEDRESULTS,
+    '#description' => t('Number of maximum results for grouped results.') . '<br />' . t('Default') . ': ' . NBAMAXGROUPRESULTS,
     '#required' => TRUE
   );
 
@@ -276,8 +278,8 @@ function maxResults () {
  *
  * @return integer
  */
-function maxGroupedResults () {
-  return variable_get('ndabioresults_config_maxgroupedresults', NBAMAXGROUPEDRESULTS);
+function maxGroupResults () {
+  return variable_get('ndabioresults_config_maxgroupresults', NBAMAXGROUPRESULTS);
 }
 
 
@@ -297,6 +299,26 @@ function defaultSort () {
  */
 function defaultSortDirection () {
   return variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION);
+}
+
+/**
+ * Constant: default group sort
+ * This parameter currently cannot be set by the user in the module
+ *
+ * @return string
+ */
+function defaultGroupSort () {
+    return NBADEFAULTGROUPSORT;
+}
+
+/**
+ * Constant: default group sort direction
+ * This parameter currently cannot be set by the user in the module
+ *
+ * @return string
+ */
+function defaultGroupSortDirection () {
+    return NBADEFAULTSORTGROUPDIRECTION;
 }
 
 /**
@@ -478,6 +500,16 @@ function serviceToFunctions () {
         	    'info' => 'detail multimedia by specimen',
         	    'method' => 'get'
         	)
+        );
+    }
+    return $var;
+}
+
+function groupServices () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+        $var = array(
+        	specimenNamesService()
         );
     }
     return $var;

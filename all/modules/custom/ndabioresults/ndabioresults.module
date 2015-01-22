@@ -198,7 +198,8 @@ function ndabioresults_pass ($args = "") {
     // If both POST and SESSION are empty we have a problem...
     else {
         // Probably best to redirect gracefully to search page?
-        handleError('No POST data received! Form validation should trap this. Redirect to home if this occurs?');
+        handleError('No POST data received! Form validation should trap this.
+            Redirect to home if this occurs?');
         drupal_goto('');
     }
 }
@@ -468,8 +469,7 @@ function ndaDirectRequest ($r) {
             $url = parse_url($r);
             parse_str($url['query'], $q);
             // Add/reset maxResults to default
-            $q['_maxResults'] = $service == specimenNamesService() ?
-                maxGroupedResults() : maxResults();
+            $q['_maxResults'] = isGroupService($service) ? maxGroupResults() : maxResults();
 
             // Special case for specimens on map: remove _sort and _offset
             if (isset($q['showMap'])) {
@@ -558,6 +558,13 @@ function setChannels (array $services) {
 	        $p['_maxResults'] = maxResultsInitial();
 	        $p['_sort'] = defaultSort();
 	        $p['_sortDirection'] = defaultSortDirection();
+
+	        if (isGroupService($s)) {
+    	        $p['_groupMaxResults'] = maxGroupResults();
+    	        $p['_groupSort'] = defaultGroupSort();
+    	        $p['_groupSortDirection'] = defaultGroupSortDirection();
+    	        unset($p['_sort'], $p['_sortDirection']);
+	        }
 
 	        $channels[$i]['request'] = $s;
     		$channels[$i]['url'] = ndaBaseUrl() . $s;
@@ -661,7 +668,7 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-	//p($channels);
+	p($channels);
 
 	 return $output;
 }
@@ -1325,7 +1332,7 @@ function parseSpecimensByTaxon ($json) {
 		$d['url'] = getTaxonUrl($row->searchResults[0]->links,
 		    $row->searchResults[0]->result->identifications[0]->scientificName);
 		$d['fullScientificName'] = $row->sharedValue;
-		$d['count'] = count($row->searchResults);
+		$d['count'] = $row->totalSize;
 		$d['sources'] = getSources($row);
 		$d['score'] = $row->searchResults[0]->percentage;
 		foreach ($row->searchResults as $i => $sp) {
@@ -1462,7 +1469,7 @@ function getPaginator ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRows($data),
-            setPaginatorOffset(),
+            setPaginatorItemsPerPage(),
             setPaginatorCurrentPage($data),
             setPaginatorUrl($data)
         );
@@ -1471,25 +1478,27 @@ function getPaginator ($data) {
     return null;
 }
 
-function setPaginatorOffset () {
-    if (isset($_SESSION['ndaCurrentService']) &&
-        $_SESSION['ndaCurrentService'] == specimenNamesService()) {
-        return maxGroupedResults();
+function setPaginatorItemsPerPage () {
+    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
+        return maxGroupResults();
     }
     return maxResults();
 }
 
 function setPaginatorCurrentPage ($data) {
-    if (isset($_SESSION['ndaCurrentService']) &&
-        $_SESSION['ndaCurrentService'] == specimenNamesService()) {
-        return getOffset($data) / maxGroupedResults() + 1;
+    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
+        return getGroupOffset($data) / maxGroupResults() + 1;
     }
     return getOffset($data) / maxResults() + 1;
 }
 
 function setPaginatorUrl ($data) {
+    $offset = 'offset';
+    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
+        $offset = 'groupOffset';
+    }
     return printDrupalLink(
-        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_offset='
+        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_' . $offset . '='
     ) . '(:num)';
 }
 
@@ -1536,8 +1545,10 @@ function stripOffsetFromUrl ($url, $decodeEncode = false) {
     }
     $parts = parse_url($url);
     parse_str($parts['query'], $q);
-    if (isset($q['_offset'])) {
-        unset($q['_offset']);
+    foreach (array('_offset', '_groupOffset') as $p) {
+        if (isset($q[$p])) {
+            unset($q[$p]);
+        }
     }
     $parts['query'] = http_build_query($q);
     $url = reverse_parse_url($parts);
@@ -1603,6 +1614,13 @@ function reverse_parse_url ($parsed_url) {
 function getOffset ($data) {
     if (isset($data->queryParameters->_offset[0])) {
         return $data->queryParameters->_offset[0];
+    }
+    return 0;
+}
+
+function getGroupOffset ($data) {
+    if (isset($data->queryParameters->_groupOffset[0])) {
+        return $data->queryParameters->_groupOffset[0];
     }
     return 0;
 }
@@ -2065,12 +2083,15 @@ function p ($a) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
-function _wrap($input, $tag = "div", $class = ""){
+function _wrap ($input, $tag = "div", $class = ""){
   $class = ($class == "" ? "": " class='$class'" );
   return "<$tag$class>$input</$tag>";
 }
 
-function printDL($field, $value){
+function printDL ($field, $value) {
   return "<dl><dt>$field</dt><dd>$value</dd></dl>";
 }
 
+function isGroupService ($service) {
+    return in_array($service, groupServices());
+}
