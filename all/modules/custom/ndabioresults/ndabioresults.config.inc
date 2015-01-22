@@ -3,6 +3,7 @@
 define("NBABASEURL", "http://10.42.1.163:8080/v0/");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
+define("NBAMAXGROUPEDRESULTS", 10);
 define("NBADEFAULTSORT", '_score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
@@ -40,6 +41,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#description' => t('The base URL of the NBA.') . '<br />' . t('Default') . ': ' . NBABASEURL,
     '#required' => TRUE
   );
+
   // Maximum results for initial "overview"
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxresults'] = array(
     '#type' => 'textfield',
@@ -50,6 +52,7 @@ function ndabioresults_config_form($form, &$form_state) {
     '#description' => t('Number of maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
     '#required' => TRUE
   );
+
   // Maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxresults'] = array(
     '#type' => 'textfield',
@@ -58,6 +61,17 @@ function ndabioresults_config_form($form, &$form_state) {
     '#size' => 10,
     '#maxlength' => 10,
     '#description' => t('Number of maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
+    '#required' => TRUE
+  );
+
+  // Maximum results for grouped results (currently only specimen name search)
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxgroupedresults'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA Maximum grouped results'),
+    '#default_value' => variable_get('ndabioresults_config_maxgroupedresults', NBAMAXGROUPEDRESULTS),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('Number of maximum results for grouped results.') . '<br />' . t('Default') . ': ' . NBAMAXGROUPEDRESULTS,
     '#required' => TRUE
   );
 
@@ -255,6 +269,17 @@ function maxResultsInitial () {
 function maxResults () {
   return variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS);
 }
+
+
+/**
+ * Constant: maximum results for grouped results (currently specimen name search)
+ *
+ * @return integer
+ */
+function maxGroupedResults () {
+  return variable_get('ndabioresults_config_maxgroupedresults', NBAMAXGROUPEDRESULTS);
+}
+
 
 /**
  * Constant: default sort field

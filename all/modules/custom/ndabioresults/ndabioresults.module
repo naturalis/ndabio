@@ -1,11 +1,6 @@
 <?php
 
 /**
- * @file
- * Naturalis example module.
- */
-
-/**
  * Defaults.
  */
 define('NATURALIS', 'taxonDetail');
@@ -474,7 +469,7 @@ function ndaDirectRequest ($r) {
             parse_str($url['query'], $q);
             // Add/reset maxResults to default
             $q['_maxResults'] = $service == specimenNamesService() ?
-                10 : maxResults();
+                maxGroupedResults() : maxResults();
 
             // Special case for specimens on map: remove _sort and _offset
             if (isset($q['showMap'])) {
@@ -490,7 +485,7 @@ function ndaDirectRequest ($r) {
             $channels[0]['request'] = $service;
     		$channels[0]['url'] = ndaBaseUrl() . $service;
     		$channels[0]['method'] = $d['method'];
-    		// If ES request parameter contains dots, these hsould be replaced with @ and reverted to
+    		// If ES request parameter contains dots, these should be replaced with @ and reverted to
     		// dots at this point
     		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
     		// Set session variable with last used service;
@@ -1467,13 +1462,29 @@ function getPaginator ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRows($data),
-            $_SESSION['ndaCurrentService'] == specimenNamesService() ? 10 : maxResults(),
-            getOffset($data) / maxResults() + 1,
+            setPaginatorOffset(),
+            setPaginatorCurrentPage($data),
             setPaginatorUrl($data)
         );
         return $paginator->toHtml();
     }
     return null;
+}
+
+function setPaginatorOffset () {
+    if (isset($_SESSION['ndaCurrentService']) &&
+        $_SESSION['ndaCurrentService'] == specimenNamesService()) {
+        return maxGroupedResults();
+    }
+    return maxResults();
+}
+
+function setPaginatorCurrentPage ($data) {
+    if (isset($_SESSION['ndaCurrentService']) &&
+        $_SESSION['ndaCurrentService'] == specimenNamesService()) {
+        return getOffset($data) / maxGroupedResults() + 1;
+    }
+    return getOffset($data) / maxResults() + 1;
 }
 
 function setPaginatorUrl ($data) {
