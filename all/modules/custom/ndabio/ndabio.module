@@ -429,7 +429,7 @@ function ndabio_advanced_taxonomysearch() {
             '#title' => $childlabel,
             $fieldsetPrefix . '_andOr' => array(
               '#type' => 'radios',
-              '#title' => t('Combine searchterms'),
+              '#title' => t('Combine search terms'),
               '#default_value' => 0,
               '#options' => $searchtype,
               '#inline' => TRUE
