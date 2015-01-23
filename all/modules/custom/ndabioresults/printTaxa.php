@@ -48,7 +48,7 @@ function printTaxa ($data) {
     	)
     );
 
-    $explanation = _wrap("(matching scientific or common name)","span","explanation");
+    $explanation = _wrap(t("(matching scientific or common name)"),"span","explanation");
     $output  = sprintf('<h2>%s <span class="count">(%s)</span> %s</h2>',
         t('Species names'),
         _formatNumber($data['total']),
