@@ -58,6 +58,38 @@ function printMultimedia ($data) {
   return $output;
 }
 
-
-
+/**
+ * Only prints first hit
+ *
+ * @param array $row Parsed json
+ * @return string|void
+ */
+function printMultimediaHit ($row) {
+	if (isset($row['hits']) && !empty($row['hits'])) {
+		foreach ($row['hits'] as $field => $hit) {
+		    // Skip hits that are part of the scientific name
+		    if (in_array($field,
+                array(
+                    'genusOrMonomial',
+                    'specificEpithet',
+                    'infraspecificEpithet',
+                    'subgenus',
+                    'associatedSpecimenReference',
+                    'associatedTaxonReference'
+                ))) {
+                continue;
+		    }
+            // Rename field if it doesn't match ABCD term
+            $replace = array(
+                'name' => t('Common name')
+            );
+            if (isset($replace[$field])) {
+                $field = $replace[$field];
+            }
+			return ucfirst(translateNdaField($field)) . ': ' .
+				str_replace('<span class="search_hit">', '<span class="result-query">', $hit);
+		}
+	}
+	return false;
+}
 ?>

@@ -2,6 +2,7 @@
 
 require_once 'printShowAll.php';
 require_once 'printPaginator.php';
+require_once 'printSpecimensBySingleGroup.php';
 
 
 // Prints specimen result set on screen.
@@ -13,6 +14,10 @@ function printSpecimensByTaxon ($data) {
 
     if (isset($data['showMap'])) {
         return printSpecimensByMap($data);
+    }
+
+    if (isset($data['single']) && $data['single']) {
+        return printSpecimensBySingleGroup($data);
     }
 
     // Drupal title empty; page title custom
@@ -27,7 +32,12 @@ function printSpecimensByTaxon ($data) {
 			    'ASC' => 'icon-sort_a_z',
 			    'DESC' => 'icon-sort_z_a'
 			),
-			'url' => setSortUrl('identifications.scientificName.fullScientificName', 'ASC', $data['self'])
+			'url' => setSortUrl(
+                'groupName',
+			    'ASC',
+			    $data['self'],
+			    true
+			)
 		),
 		'count' => array(
 			'label' => ''
@@ -45,11 +55,18 @@ function printSpecimensByTaxon ($data) {
 			    'ASC' => 'icon-sort_little_much',
 			    'DESC' => 'icon-sort_much_little'
 			),
-			'url' => setSortUrl('_score', 'DESC', $data['self'])
+			'url' => setSortUrl(
+                '_score',
+			    'DESC',
+			    $data['self'],
+			    true
+			)
 		)
 	);
 
+    /*
     if (isset($data['searchTerms']['_search'])  ){
+
       $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
       $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
       $count = _wrap(  '(' ._formatNumber($data['total']) . ')', "span", "count");
@@ -60,8 +77,10 @@ function printSpecimensByTaxon ($data) {
       $expl  = _wrap(  t('(grouped by species name)')        , "span", "explanation");
       $output  = sprintf('<h2>%s %s %s</h2>', t('Specimens'), $count, $expl );
     }
+    */
 
-
+    $count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
+    $output = sprintf('<h2>%s %s</h2>', t('Species with specimens'), $count);
 
     $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self']));
 
@@ -79,7 +98,8 @@ function printSpecimensByTaxon ($data) {
 		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
 		      && !isset($_GET['noMap']) ?
 		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
-		      '&identifications@scientificName@fullScientificName@raw=' . urlencode(urlencode($row['fullScientificName']))) .
+		      '&identifications.scientificName.fullScientificName.raw=' .
+		      urlencode(urlencode($row['fullScientificName']))) .
 		      "' class='icon-location'></a>" : '') .
 		  "</td>";
 		// Source(s)

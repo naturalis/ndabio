@@ -1,4 +1,13 @@
 <?php
+// TODO: alle includes bij elkaar zetten
+
+
+
+
+// Adrie kun jij de volgende functies checken? Zijn deze nog nodig? Moet
+// er uitgebreidere documentatie komen? Moeten ze verplaatst worden?
+
+// Adrie START
 
 /**
  * Defaults.
@@ -15,7 +24,6 @@ function gettaxonomyidbysystem($systemname) {
 }
 
 function gettaxonomybysystem($systemname) {
-  //$sql = "SELECT description FROM {taxonomy_term_data} WHERE tid = " . gettaxonomyidbysystem($systemname) . "";
   $sql = "SELECT description FROM {taxonomy_term_data} WHERE name = '$systemname'";
   return t(db_query($sql)->fetchField());
 }
@@ -63,10 +71,6 @@ function ndabioresults_menu() {
   return $items;
 }
 
-
-
-
-
 /**
  * Implements template_preprocess_html().
  *
@@ -82,13 +86,29 @@ function ndabioresults_preprocess_html(&$vars){
     }
 }
 
+// Adrie END
+
+
+
+
+
+
+
+
+
+
+
+
 include 'ndabioresults.config.inc';
+
+
+
 
 /**
  * Mapping function: distributes parameters to appropriate specimen service
  *
  * Distributes specimens search parameters between specimen and specimen name
- * services. Important: list of parameters hould be complete!
+ * services. Important: list of parameters should be complete!
  *
  * @param array $sP Search parameters
  * @param string $type Service type
@@ -144,6 +164,9 @@ function setSpecimenParameters (array $sP, $type) {
  * The main function that actually processes the incoming POST data, stores the
  * POST data in a SESSION, distributes the search to the appropriate channels
  * and returns the formatted output.
+ *
+ * Headers were added to avoid problems with "Webpage has expired" in IE after
+ * hitting back button
  *
  * @return string The formatted output
 */
@@ -204,7 +227,12 @@ function ndabioresults_pass ($args = "") {
     }
 }
 
-
+/**
+ * Logs searches to Drupal
+ *
+ * Agregates data from search form (as SESSION data) and stores search and
+ * user data in Drupal database (search_log content type)
+ */
 function logSearch () {
     foreach ($_SESSION['ndaSearch'] as $k => $v) {
         $skip = array(
@@ -243,11 +271,18 @@ function logSearch () {
     node_save($node);
 }
 
-
-
+/**
+ * Mapping function: distributes parameters to appropriate specimen service
+ *
+ * Distributes specimens search parameters between specimen and specimen name
+ * services. Important: list of parameters hould be complete!
+ *
+ * @param array $sP Search parameters
+ * @param string $type Service type
+ * @return array Reduced array of search criteria for the service of choice
+ */
 function ndabioresults_ajax_callback () {
     if (isset($_GET['nba_request'])) {
-
         // For the time being this service is used only to retrieve totalSize
         // Therefore maxResults is capped to 1 by default
         if (isset($_GET['getTotal'])) {
@@ -256,10 +291,8 @@ function ndabioresults_ajax_callback () {
             echo $data->totalSize;
             die();
         }
-
         $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
         die(reset($remoteData));
-
     }
     die('Invalid NBA request');
 }
@@ -339,17 +372,6 @@ function ndaAdvancedSearch () {
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
 
-/*
- * Old code
-    // Subdivide specimen parameters for both result types
-    $sP = setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenService()] = setSpecimenParameters($sP, specimenService());
-    $services[specimenNamesService()] = setSpecimenParameters($sP, specimenNamesService());
- */
-
-
-//p($services);
-
     // Special case for specimen/search: unset this service if only geoShape is present;
     // results of specimen/name-search and specimen/search will then be identical
     if (!serviceUsed($services[specimenService()])) {
@@ -400,16 +422,14 @@ function ndaAdvancedSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
-function isMp4 ($url) {
-    $headers = get_headers($url);
-    foreach ($headers as $i => $v) {
-        if (strpos($v, 'mp4') !== false) {
-            return true;
-        }
-    }
-    return false;
-}
-
+/**
+ * Sets url to search form
+ *
+ * Used to create links back to search form; differentiates between home and
+ * geographic search page
+ *
+ * @return string Url to last used form
+ */
 function setStartUrl () {
     if (isset($_SESSION['ndaSearch']['geoShape'])) {
         return setBasePath() . "geographic-search/";
@@ -417,12 +437,25 @@ function setStartUrl () {
     return setBasePath();
 }
 
+/**
+ * Sets base url
+ *
+ * Sometimes Drupal home is not accessible at the site root; this function returns the
+ * base of of the Drupal installation
+ *
+ * @return string Url to Drupal root
+ */
 function setBasePath () {
     global $base_root, $base_path;
     return $base_root . $base_path;
 }
 
-
+/**
+ * Checks if any search parameters have been set for a service
+ *
+ * @param string $service Service
+ * @return boolean
+ */
 function serviceUsed ($service) {
     if (count($service) == 2 && isset($service['_geoShape']) && isset($service['_andOr'])) {
         return false;
@@ -430,6 +463,15 @@ function serviceUsed ($service) {
     return true;
 }
 
+/**
+ * Performs thematic search
+ *
+ * For thematic search, two services are called: multimedia and specimen.
+ * Currenty this service simply returns the search results. However, it is
+ * already more or less ready to be used as an additional filter to the search form
+ *
+ * @return string Formatted result page
+ */
 function ndaThematicSearch () {
 
     unset($_SESSION['ndaFilters']);
@@ -457,19 +499,26 @@ function ndaThematicSearch () {
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
-
-
-/**ndabioresults_config_form
- * @todo: check base url!!
- * @param unknown $r
+/**
+ * Performs direct request
+ *
+ * Takes request from url as input, redirects this to the appropriate
+ * service and returns formatted html.
+ *
+ * @param string $r Request url
+ * @return string|void (empty array) Formatted output
  */
 function ndaDirectRequest ($r) {
     foreach (serviceToFunctions() as $service => $d) {
         if (strpos($r, $service) !== false) {
             $url = parse_url($r);
-            parse_str($url['query'], $q);
-            // Add/reset maxResults to default
-            $q['_maxResults'] = isGroupService($service) ? maxGroupResults() : maxResults();
+            //parse_str($url['query'], $q);
+            safe_parse_str($url['query'], $q);
+
+            // Cap maxResults to max
+            if (!isset($q['_maxResults']) || $q['_maxResults'] > maxResults()) {
+                $q['_maxResults'] = isGroupService($service) ? maxGroupResults() : maxResults();
+            }
 
             // Special case for specimens on map: remove _sort and _offset
             if (isset($q['showMap'])) {
@@ -487,7 +536,7 @@ function ndaDirectRequest ($r) {
     		$channels[0]['method'] = $d['method'];
     		// If ES request parameter contains dots, these should be replaced with @ and reverted to
     		// dots at this point
-    		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
+    		$channels[0]['postfields'] = http_build_query($q);
     		// Set session variable with last used service;
             // used to determine current detail page
             $_SESSION['ndaCurrentService'] = $service;
@@ -504,12 +553,21 @@ function ndaDirectRequest ($r) {
     return array();
 }
 
-
+/**
+ * Dedicated service to use for Ajax request
+ *
+ * Takes request url, redirects to the appropriate service and returns
+ * unformatted NBA json
+ *
+ * @param string $r Request url
+ * @param string $maxResults Optional max results
+ * @return json|void
+ */
 function ndaAjaxRequest ($r, $maxResults = false) {
     foreach (serviceToFunctions() as $service => $d) {
         if (strpos($r, $service) !== false) {
             $url = parse_url($r);
-            parse_str($url['query'], $q);
+            safe_parse_str($url['query'], $q);
 
             if ($maxResults && is_int($maxResults) && $maxResults <= maxResults()) {
                 $q['_maxResults'] = $maxResults;
@@ -525,9 +583,14 @@ function ndaAjaxRequest ($r, $maxResults = false) {
     return null;
 }
 
-
-
-
+/**
+ * Checks if data has been posted
+ *
+ * Takes the $services array from form submission and checks if any field contains data
+ *
+ * @param array $services
+ * @return boolean
+ */
 function dataPosted ($services) {
     foreach ($services as $data) {
         if (!empty($data)) {
@@ -544,8 +607,7 @@ function dataPosted ($services) {
  * Sets request and url parameters for curl channels
  *
  * @param array Service array (service name => search parameters)
- *
- * @return void|array Channels for curl
+ * @return array|void Channels for curl
  */
 function setChannels (array $services) {
     $i = 0;
@@ -587,7 +649,7 @@ function setChannels (array $services) {
  * @param array $post The input as key => value pairs
  * @param string $typeId The input prefix (s_, t_, m_)
  *
- * @return void|array Filtered key => value pairs
+ * @return array|void Filtered key => value pairs
  */
 function setSectionParameters (array $post, $typeId = '') {
     if ($typeId == '') {
@@ -619,7 +681,7 @@ function setSectionParameters (array $post, $typeId = '') {
  * Calculates the number of search parameters excluding flags (andOr etc)
  *
  * @param array $d Search parameter
- * @return Number of search items
+ * @return int Number of search items
  */
 function countSearchParameters ($d) {
     foreach ($d as $k => $v) {
@@ -638,7 +700,7 @@ function countSearchParameters ($d) {
  * parsed to an array by one function and subsequently printed by another.
  *
  * @param array $channels Service channels
- * @return void|string
+ * @return string|void
  */
 function performNdaRequest (array $channels = array()) {
 	if (empty($channels)) {
@@ -730,10 +792,12 @@ function queryNda ($channels = array(), $timeout = false) {
     return $remoteData;
 }
 
-
-
-
-
+/**
+ * Parses specimen media detail json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseSpecimenMediaDetail ($json) {
 	if (!$json || !validJson($json)) {
 		handleError('parseSpecimenMediaDetail: no or invalid json response');
@@ -755,10 +819,15 @@ function parseSpecimenMediaDetail ($json) {
 	$output['imgSrc'] = getImageUrl($row);
 	$output['license'] = $row->result->license;
 
-//p($data);
 	return $output;
 }
 
+/**
+ * Gets scientific names for specimen media detail response
+ *
+ * @param array $row Search results section of NBA response
+ * @return array|void Array with formatted names and their links
+ */
 function getSpecimensMultimediaNames ($row) {
 	foreach ($row->result->associatedSpecimen->identifications as $i => $name) {
 		$output[] = array(
@@ -772,15 +841,24 @@ function getSpecimensMultimediaNames ($row) {
 	return isset($output) ? $output : false;
 }
 
-
-// Returns url for a taxon associated with the specimen
+/**
+ * Returns url for a taxon associated with the specimen
+ *
+ * Quite a complicated way to find the appropriate url for a taxon. The entire
+ * links object is passed and matched against the name components of the scientific
+ * name. Only when a match is complete the link is considered matching
+ *
+ * @param object $links
+ * @param array $scientificName
+ * @return string|void Url to the name
+ */
 function getTaxonUrl ($links, $scientificName) {
 	if (!empty($links)) {
 		foreach ($links as $link) {
 			if ($link->rel == '_taxon') {
 			    // All parts in query should be present in $scientificName object
 			    $parts = parse_url(urldecode($link->href));
-                parse_str($parts['query'], $q);
+                safe_parse_str($parts['query'], $q);
                 $diff = array_diff($q, (array)$scientificName);
                 if (empty($diff)) {
                     return $link->href;
@@ -791,10 +869,14 @@ function getTaxonUrl ($links, $scientificName) {
 	return false;
 }
 
-
 include 'printSpecimenMediaDetail.php';
 
-
+/**
+ * Parses taxon media detail json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseTaxonMediaDetail ($json) {
 	if (!$json || !validJson($json)) {
 		handleError('parseTaxonMediaDetail: no or invalid json response');
@@ -821,12 +903,15 @@ function parseTaxonMediaDetail ($json) {
 	$output['license'] = $row->result->license;
 	$output['sourceUrls'][$output['source']] = $row->result->associatedTaxon->recordURI;
 
-//p($data);
 	return $output;
 }
 
-
-
+/**
+ * Gets scientific names for taxon media detail response
+ *
+ * @param array $row search results section of json response
+ * @return array|void Array with formatted names and their links
+ */
 function getTaxonMultimediaNames ($row) {
 	if (!empty($row->result->associatedTaxon->acceptedName)) {
 	    $output[] = array(
@@ -845,7 +930,15 @@ function getTaxonMultimediaNames ($row) {
 include 'printTaxonMediaDetail.php';
 
 
-// Parses taxon detail json response into array
+/**
+ * Parses taxon detail json to PHP array
+ *
+ * Optional: adds fields to exclude to $skipFields array
+ *
+ * @todo Descriptions are hard-coded for NSR and CoL
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseTaxonDetail ($json) {
 	$skipFields = array(
 		'objectPublic'
@@ -855,12 +948,11 @@ function parseTaxonDetail ($json) {
 		handleError('parseTaxonDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
+
 	$output['acceptedName'] = formatScientificName(
 		$data->searchResults[0]->result->acceptedName->fullScientificName,
 		$data->searchResults[0]->result->acceptedName
 	);
-	//$output['navigation'] = getNavigation($data);
 	$output['taxonID'] = getTaxonId($data);
 	$output['nameElements'] =
 	   getScientificNameElementsWithDuplicates($data->searchResults[0]->result->acceptedName);
@@ -906,11 +998,16 @@ function parseTaxonDetail ($json) {
 			}
 
 		}
-
 	}
 	return $output;
 }
 
+/**
+ * Urls for data sources
+ *
+ * @param array $data NBA json response
+ * @return array|void $output Array with key source name, value url
+ */
 function getSourceUrls ($data) {
     foreach ($data->searchResults as $row) {
         $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
@@ -918,11 +1015,13 @@ function getSourceUrls ($data) {
     return isset($urls) ? $urls : null;
 }
 
-function fixNsr ($str) {
-    return $str;
-    //return str_replace('Nationaal Soortenregister', 'Nederlands Soortenregister', $str);
-}
-
+/**
+ * Prints single source as formatted html
+ *
+ * @param array $data
+ * @param string $source
+ * @return string Formatted html
+ */
 function printSource($data, $source) {
     if (isset($data['sourceUrls'][$source])) {
         return '<a href="' . $data['sourceUrls'][$source] . '" target="_blank">' . $source . '</a>';
@@ -930,7 +1029,12 @@ function printSource($data, $source) {
     return $source;
 }
 
-
+/**
+ * NSR id of a taxon
+ *
+ * @param array $data NBA json response
+ * @return int|void ID of NRS taxon record
+ */
 function getTaxonId ($data) {
     foreach ($data->searchResults as $row) {
         if ($row->result->sourceSystem->code == 'NSR') {
@@ -940,6 +1044,12 @@ function getTaxonId ($data) {
     return null;
 }
 
+/**
+ * Parses classification of taxon
+ *
+ * @param object $classification Classification section of NBA response
+ * @return array|void
+ */
 function parseClassification ($classification) {
     if (empty($classification) || empty($type)) {
         return $classification;
@@ -962,7 +1072,14 @@ include 'printDescriptions.php';
 include 'printClassifications.php';
 
 
-// Parses specimen detail json response into array
+/**
+ * Parses specimen detail json to PHP array
+ *
+ * Optional: adds fields to exclude to $skipFields array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseSpecimenDetail ($json) {
 
     $skipFields = array(
@@ -982,7 +1099,6 @@ function parseSpecimenDetail ($json) {
 		handleError('parseSpecimenDetail : no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
 
 	foreach ($data->searchResults[0]->result as $field => $value) {
 		if (!is_array($value) && !is_object($value) &&
@@ -1004,10 +1120,13 @@ function parseSpecimenDetail ($json) {
 	return $output;
 }
 
-
-
-// Returns taxon names for specimens plus their url found by other fields but name
-// (for specimens found by taxon name only a single name is returned!)
+/**
+ * Scientific names and their urls for a specimen
+ *
+ * @param array $row Identification section of NBA response
+ * @param array $links Links to taxa (optional: if not provided links will be extracted from NBA response)
+ * @return array|void Array of names and their urls
+ */
 function getSpecimenTaxonNames ($row, $links = false) {
     if (!isset($row->result->identifications) || empty($row->result->identifications)) {
         return array();
@@ -1027,6 +1146,12 @@ function getSpecimenTaxonNames ($row, $links = false) {
 	return isset($output) ? $output : false;
 }
 
+/**
+ * Vernacular names for a specimen
+ *
+ * @param array $row Identification section of NBA response
+ * @return array|void Array of names
+ */
 function getSpecimenVernaculars ($row) {
     if (!isset($row->result->identifications) || empty($row->result->identifications)) {
         return array();
@@ -1041,11 +1166,12 @@ function getSpecimenVernaculars ($row) {
 	return isset($output) ? $output : false;
 }
 
-
-
-
-
-// Return previous/next links from result set
+/**
+ * Get previous/next links from NBA response
+ *
+ * @param array $data NBA response
+ * @return array|void Array with previous and next links
+ */
 function getNavigation ($data) {
 	if (isset($data->links) && !empty($data->links)) {
 		foreach ($data->links as $link) {
@@ -1057,6 +1183,12 @@ function getNavigation ($data) {
 	return isset($output) ? $output : null;
 }
 
+/**
+ * Strips base url from string
+ *
+ * @param string $url
+ * @return string $url Stripped url
+ */
 function stripBaseUrl ($url) {
     return str_replace(urlencode(ndaBaseUrl()), '', $url);
 }
@@ -1068,7 +1200,12 @@ include 'printNavigation.php';
 
 include 'printNamesWithLinks.php';
 
-// Return other specimens for detail page
+/**
+ * Gets other specimens in "specimen collection" (Brahms)
+ *
+ * @param array $row Other specimens in set section of NBA response
+ * @return array|void Array with other specimens
+ */
 function getOtherSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->otherSpecimensInSet)) {
 		foreach ($row->searchResults[0]->result->otherSpecimensInSet as $i => $specimen) {
@@ -1082,6 +1219,12 @@ function getOtherSpecimens ($row) {
 	return isset($c) ? $c : null;
 }
 
+/**
+ * Converts timestamp in milliseconds to year-month-day
+ *
+ * @param string $v
+ * @return string
+ */
 function timeStampToDate ($v) {
     if (!empty($v)) {
         return date('Y-m-d', $v / 1000);
@@ -1089,8 +1232,12 @@ function timeStampToDate ($v) {
     return null;
 }
 
-
-// Return gathering event data for detail page
+/**
+ * Gets gathering event data for specimen
+ *
+ * @param array $row Gathering event section of NBA response
+ * @return array|void
+ */
 function getGatheringEventSpecimens ($row) {
 	if (!empty($row->searchResults[0]->result->gatheringEvent)) {
         $event = $row->searchResults[0]->result->gatheringEvent;
@@ -1124,12 +1271,14 @@ function getGatheringEventSpecimens ($row) {
 	return isset($d) ? $d : null;
 }
 
-
 include 'printTableRow.php';
 
-
-
-// Parses multimedia json response into array
+/**
+ * Parses multimedia json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseMultimedia ($json) {
 	if (!$json || !validJson($json)) {
 		handleError('parseMultimedia: no or invalid json response');
@@ -1157,8 +1306,6 @@ function parseMultimedia ($json) {
             $row->result->{$type}->sourceSystem->name : '';
 
 		list($d['imgSrc'], $d['format']) = getImageData($row);
-
-		//$d['imgSrc'] = getImageUrl($row);
 		$d['hits'] = getHits($row, false);
 		$d['taxon'] = getMultimediaTaxon($row, $output['searchTerms']);
 		$d['unitID'] = getMultimediaUnitId($row, $output['searchTerms']);
@@ -1177,44 +1324,18 @@ function parseMultimedia ($json) {
 	return isset($output) ? $output : false;
 }
 
-
+/**
+ * Gets url to multimedia detail
+ *
+ * @param array $row NBA response
+ * @return string Url
+ */
 function getMultimediaDetailLink ($row) {
     foreach ($row->links as $link) {
         if ($link->rel == '_multimedia') {
             return $link->href;
         }
     }
-}
-
-
-function printMultimediaHit ($row) {
-	$output = '';
-	if (isset($row['hits']) && !empty($row['hits'])) {
-		foreach ($row['hits'] as $field => $hit) {
-		    // Skip hits that are part of the scientific name
-		    if (in_array($field,
-                array(
-                    'genusOrMonomial',
-                    'specificEpithet',
-                    'infraspecificEpithet',
-                    'subgenus',
-                    'associatedSpecimenReference',
-                    'associatedTaxonReference'
-                ))) {
-                continue;
-		    }
-            // Rename field if it doesn't match ABCD term
-            $replace = array(
-                'name' => t('Common name')
-            );
-            if (isset($replace[$field])) {
-                $field = $replace[$field];
-            }
-			return ucfirst(translateNdaField($field)) . ': ' .
-				str_replace('<span class="search_hit">', '<span class="result-query">', $hit);
-		}
-	}
-	return !empty($output) ? substr($output, 0, -5) : false;
 }
 
 
@@ -1322,6 +1443,9 @@ function parseSpecimensByTaxon ($json) {
         return $output;
 	}
 
+    // Parameter that determines if results are for group or single taxon
+    $single = isset($output['searchTerms']['single']) ? true : false;
+
     foreach ($data->resultGroups as $row) {
 		$d = array();
 		$d['name'] = formatScientificName(
@@ -1338,16 +1462,25 @@ function parseSpecimensByTaxon ($json) {
 		foreach ($row->searchResults as $i => $sp) {
     		$assemblageID = $sp->result->assemblageID;
     		$s['unitID'] = setUnitId($sp->result->unitID);
+    		$s['recordBasis'] = $sp->result->recordBasis;
+    		$s['kindOfUnit'] = $sp->result->kindOfUnit;
+    		$s['preparationType'] = $sp->result->preparationType;
     		$s['collectionType'] = $sp->result->collectionType;
     		$s['url'] = $sp->links[0]->href;
+    		$s['score'] = $sp->score;
             empty($assemblageID) ? $d['specimens'][] = $s : $d['sets'][$assemblageID][] = $s;
 		}
+		$d['allLink'] = $d['count'] > maxGroupResults() ?
+            specimenNamesService() . '/?identifications.scientificName.fullScientificName.raw=' .
+            urlencode(urlencode($row->sharedValue)) : '';
 		$output['results'][] = $d;
 	}
 
 	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
-	$output['paginator'] = getPaginator($data);
+	$output['showAll'] = getShowAll($data, true);
+	$output['paginator'] = $single ? getPaginatorWithinGroup($data) : getPaginator($data, true);
+	$output['single'] = $single;
+
 //p($data);
 
 	// Only set filter when performing initial search
@@ -1357,6 +1490,8 @@ function parseSpecimensByTaxon ($json) {
 
 	return isset($output) ? $output : false;
 }
+
+
 
 
 function setUnitId ($string, $field = false) {
@@ -1408,45 +1543,57 @@ function parseSpecimensByMap ($data) {
 }
 
 
-function getShowAll ($data) {
+function getShowAll ($data, $groupResults = false) {
 	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
-	       return setUrlPars(geoShapeToSession($self, true), array('_maxResults' => maxResults()), true);
+            return setUrlPars(
+                geoShapeToSession($self, true),
+                array('_maxResults' => $groupResults ? maxGroupResults() : maxResults()),
+                true
+            );
 	    }
 	}
 	return null;
 }
 
-function getSort ($self) {
+function getSort ($self, $groupResult = false) {
+    $p = $groupResult ? '_groupSort' : '_sort';
     if (!empty($self)) {
-        $value = getUrlParValue(urldecode($self), '_sort');
+        $value = getUrlParValue(urldecode($self), $p);
         if (!empty($value)) {
             return $value;
         }
     }
-    return defaultSort();
+    return $groupResult ? defaultGroupSort() : defaultSort();
 }
 
-function getSortDirection ($self) {
+function getSortDirection ($self, $groupResult = false) {
+    $p = $groupResult ? '_groupSortDirection' : '_sortDirection';
     if (!empty($self)) {
-        $value = getUrlParValue(urldecode($self), '_sortDirection');
+        $value = getUrlParValue(urldecode($self), $p);
         if (!empty($value)) {
             return $value;
         }
     }
-    return defaultSortDirection();
+    return $groupResult ? defaultGroupSortDirection() : defaultSortDirection();
 }
 
-function setSortUrl ($column, $dir, $self) {
+function setSortUrl ($column, $dir, $self, $groupResult = false) {
+
+    // Set parameters differently for default or grouped results
+    $offset = $groupResult ? '_groupOffset' : '_offset';
+    $sort = $groupResult ? '_groupSort' : '_sort';
+    $sortDirection = $groupResult ? '_groupSortDirection' : '_sortDirection';
+
     // Column currently selected; only switch sort direction
-    if ($column == getSort($self)) {
+    if ($column == getSort($self, $groupResult)) {
         return setUrlPars(
             geoShapeToSession($self, true),
             array(
-                '_sortDirection' => getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC',
-                '_offset' => 0
+                $sortDirection => getSortDirection($self, $groupResult) == 'DESC' ? 'ASC' : 'DESC',
+                $offset => 0
             ),
             true
         );
@@ -1455,9 +1602,9 @@ function setSortUrl ($column, $dir, $self) {
     return setUrlPars(
         geoShapeToSession($self, true),
         array(
-            '_sort' => $column,
-            '_sortDirection' => $dir,
-            '_offset' => 0
+            $sort => $column,
+            $sortDirection => $dir,
+            $offset => 0
         ),
         true
     );
@@ -1465,10 +1612,47 @@ function setSortUrl ($column, $dir, $self) {
 
 include 'Paginator.php';
 
-function getPaginator ($data) {
+/**
+ * Paginator
+ *
+ * Returns html-formatted paginator based on json input. $groupResult is used to
+ * differentiate between regular or grouped services.
+ *
+ * @param unknown $data Json
+ * @param boolean $groupResult Regular or grouped service?
+ * @return Html-formatted paginator | void
+ */
+function getPaginator ($data, $groupResult = false) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRows($data),
+            setPaginatorItemsPerPage($groupResult),
+            setPaginatorCurrentPage($data, $groupResult),
+            setPaginatorUrl($data, $groupResult)
+        );
+        return $paginator->toHtml();
+    }
+    return null;
+}
+
+
+/**
+ * Special case: paginator used for results within grouped results
+ *
+ * A modified function for getPaginator for results within a grouped result. The problem
+ * was that the $groupedResult flag in that function cannot be used, because getTotalRows
+ * would need to differentiate to accept the results of a group or within a group
+ * (for services that returned grouped results). Instead of introducing a potentialy
+ * confusing third parameter, this special case function handles the paginator for results
+ * within a grouped result.
+ *
+ * @param array $data Json
+ * @return Formatted html | void
+ */
+function getPaginatorWithinGroup ($data) {
+    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
+        $paginator = new Paginator(
+            getTotalRowsWithinGroup($data),
             setPaginatorItemsPerPage(),
             setPaginatorCurrentPage($data),
             setPaginatorUrl($data)
@@ -1478,25 +1662,21 @@ function getPaginator ($data) {
     return null;
 }
 
-function setPaginatorItemsPerPage () {
-    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
-        return maxGroupResults();
-    }
-    return maxResults();
+
+
+
+function setPaginatorItemsPerPage ($groupResult = false) {
+    return $groupResult ? maxGroupResults() : maxResults();
 }
 
-function setPaginatorCurrentPage ($data) {
-    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
-        return getGroupOffset($data) / maxGroupResults() + 1;
-    }
-    return getOffset($data) / maxResults() + 1;
+function setPaginatorCurrentPage ($data, $groupResult = false) {
+    return $groupResult ?
+        getGroupOffset($data) / maxGroupResults() + 1 :
+        getOffset($data) / maxResults() + 1;
 }
 
-function setPaginatorUrl ($data) {
-    $offset = 'offset';
-    if (isset($_SESSION['ndaCurrentService']) && isGroupService($_SESSION['ndaCurrentService'])) {
-        $offset = 'groupOffset';
-    }
+function setPaginatorUrl ($data, $groupResult = false) {
+    $offset = $groupResult ? 'groupOffset' : 'offset';
     return printDrupalLink(
         stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_' . $offset . '='
     ) . '(:num)';
@@ -1507,7 +1687,7 @@ function setUrlPars ($url, array $newValues, $decodeEncode = false) {
         $url = urldecode($url);
     }
     $parts = parse_url($url);
-    parse_str($parts['query'], $q);
+    safe_parse_str($parts['query'], $q);
     foreach ($newValues as $p => $v) {
         $q[$p] = $v;
     }
@@ -1528,7 +1708,7 @@ function geoShapeToSession ($url, $decodeEncode = false) {
         $url = urldecode($url);
     }
     $parts = parse_url($url);
-    parse_str($parts['query'], $q);
+    safe_parse_str($parts['query'], $q);
     if (isset($q['_geoShape'])) {
         $_SESSION['ndaStoredGeoShape'] = $q['_geoShape'];
         $q['_geoShape'] = '[session]';
@@ -1544,7 +1724,7 @@ function stripOffsetFromUrl ($url, $decodeEncode = false) {
         $url = urldecode($url);
     }
     $parts = parse_url($url);
-    parse_str($parts['query'], $q);
+    safe_parse_str($parts['query'], $q);
     foreach (array('_offset', '_groupOffset') as $p) {
         if (isset($q[$p])) {
             unset($q[$p]);
@@ -1559,7 +1739,7 @@ function getUrlParValue ($url, $par) {
     if ($url != '' && $par != '') {
         $parts = parse_url($url);
         if (!empty($parts)) {
-            parse_str($parts['query'], $q);
+            safe_parse_str($parts['query'], $q);
             foreach ($q as $p => $v) {
                 if ($p == $par) {
                     return $v;
@@ -1648,7 +1828,7 @@ function getImageData ($row) {
 
 
 
-// Return the field containing the hit
+// Return the fields containing the hit
 function getHits ($row, $stripTags = true) {
     $noHits = array(
         'fullScientificName',
@@ -1658,7 +1838,7 @@ function getHits ($row, $stripTags = true) {
 		$e = explode('.', $info->path);
 		$field = end($e);
 		if (!in_array($field, $noHits)) {
-            $hits[end($e)] = $stripTags ? strip_tags($info->valueHighlighted) :
+            $hits[$field] = $stripTags ? strip_tags($info->valueHighlighted) :
                 $info->valueHighlighted;
 		}
 	}
@@ -1804,10 +1984,31 @@ function getResultOffset ($row) {
 	return $m[1];
 }
 
-// Returns total number of results
-function getTotalRows ($data) {
+/**
+ * Total size
+ *
+ * Number of results in json response
+ *
+ * @param array $data Json
+ * @return number|boolean
+ */
+function getTotalRows ($data, $groupResult = false) {
 	if (isset($data->totalSize)) {
 		return (int)$data->totalSize;
+	}
+	return false;
+}
+
+// Returns total number of results within a grouped result
+/**
+ * Special case function for number of results in json response within a grouped result
+ *
+ * @param array $data Json
+ * @return number|boolean
+ */
+function getTotalRowsWithinGroup ($data) {
+	if (isset($data->resultGroups[0]->totalSize)) {
+		return (int)$data->resultGroups[0]->totalSize;
 	}
 	return false;
 }
@@ -2094,4 +2295,56 @@ function printDL ($field, $value) {
 
 function isGroupService ($service) {
     return in_array($service, groupServices());
+}
+
+/**
+ * Helper function that parses query string into array
+ *
+ * Alternate function for parse_url that preserves periods and other special
+ * characters in parameter names
+ *
+ * @param array $target Output
+ * @param string $source Input
+ * @return array
+ */
+function safe_parse_str ($source, &$target) {
+    if (!$source) {
+        return;
+    }
+    $keys = $target = array();
+    $source = preg_replace_callback(
+        '/
+        # Match at start of string or &
+        (?:^|(?<=&))
+        # Exclude cases where the period is in brackets, e.g. foo[bar.blarg]
+        [^=&\[]*
+        # Affected cases: periods and spaces
+        (?:\.|%20)
+        # Keep matching until assignment, next variable, end of string or
+        # start of an array
+        [^=&\[]*
+        /x',
+        function ($key) use (&$keys) {
+            $keys[] = $key = base64_encode(urldecode($key[0]));
+            return urlencode($key);
+        },
+        $source
+    );
+    parse_str($source, $data);
+    foreach ($data as $key => $val) {
+        // Only unprocess encoded keys
+        if (!in_array($key, $keys)) {
+            $target[$key] = $val;
+            continue;
+        }
+
+        $key = base64_decode($key);
+        $target[$key] = $val;
+
+        if ($keep) {
+            // Keep a copy in the underscore key version
+            $key = preg_replace('/(\.| )/', '_', $key);
+            $target[$key] = $val;
+        }
+    }
 }
