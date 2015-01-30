@@ -1472,7 +1472,7 @@ function parseSpecimensByTaxon ($json) {
 		}
 		$d['allLink'] = $d['count'] > maxGroupResults() ?
             specimenNamesService() . '/?identifications.scientificName.fullScientificName.raw=' .
-            urlencode(urlencode($row->sharedValue)) : '';
+            urlencode(urlencode($row->sharedValue)) . '&_sort=unitID&_sortDirection=ASC' : '';
 		$output['results'][] = $d;
 	}
 
