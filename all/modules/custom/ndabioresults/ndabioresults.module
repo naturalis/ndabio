@@ -803,6 +803,7 @@ function parseSpecimenMediaDetail ($json) {
 		handleError('parseSpecimenMediaDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
+//p($data);
 	$row = $data->searchResults[0];
 
 	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
@@ -1342,13 +1343,18 @@ function getMultimediaDetailLink ($row) {
 include 'printMultimedia.php';
 include 'printMatches.php';
 
-// Returns specimens searched for other fields but taxon
+/**
+ * Parses specimen data json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseSpecimens ($json) {
 	if (!$json || !validJson($json)) {
 		handleError('parseSpecimens: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
+
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
@@ -1387,7 +1393,13 @@ include 'printHits.php';
 
 include 'printSpecimenTaxa.php';
 
-// Returns registration number for multimedia
+/**
+ * Gets unit id associated with multimedia
+ *
+ * @param array $row Json data
+ * @param array $searchTerms Optional parameter so search terms can be highlighted
+ * @return string|void Registration number (= unit id)
+ */
 function getMultimediaUnitId ($row, $searchTerms = false) {
     if (isset($row->result->associatedSpecimen->unitID)) {
         $output = setUnitId($row->result->associatedSpecimen->unitID);
@@ -1396,7 +1408,13 @@ function getMultimediaUnitId ($row, $searchTerms = false) {
     return null;
 }
 
-// Returns taxon name for multimedia
+/**
+ * Gets scientific name associated with multimedia
+ *
+ * @param array $row Json data
+ * @param array $searchTerms Optional parameter so search terms can be highlighted
+ * @return string|void Scientific name
+ */
 function getMultimediaTaxon ($row, $searchTerms = false) {
     if (isset($row->result->associatedTaxon->acceptedName) &&
         !empty($row->result->associatedTaxon->acceptedName)) {
@@ -1417,9 +1435,16 @@ function getMultimediaTaxon ($row, $searchTerms = false) {
     return null;
 }
 
-
-
-// Parses specimen json response into array; searched by taxon
+/**
+ * Parses specimen data json searched by name to PHP array
+ *
+ * Unlike the other parse functions, this one may forward to json to "specialised"
+ * function: parseSpecimensByMap(). Additionally,this function differentiates between
+ * grouped results and results per single taxon.
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
 function parseSpecimensByTaxon ($json) {
 	if (!$json || !validJson($json)) {
 		handleError('parseSpecimensByTaxon: no or invalid json response');
@@ -1481,8 +1506,6 @@ function parseSpecimensByTaxon ($json) {
 	$output['paginator'] = $single ? getPaginatorWithinGroup($data) : getPaginator($data, true);
 	$output['single'] = $single;
 
-//p($data);
-
 	// Only set filter when performing initial search
 	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
 	    $_SESSION['ndaFilters']['specimenName'] = $output['showAll'];
@@ -1491,9 +1514,17 @@ function parseSpecimensByTaxon ($json) {
 	return isset($output) ? $output : false;
 }
 
-
-
-
+/**
+ * Replaces registration numbers with multiple spaces with non-breaking spaces
+ *
+ * Some Brahms registration numbers contain double spaces, e.g. L  012345;
+ * If these are used without modification, they are presented on the site with
+ * a single space, and these numbers cannot be properly copy/pasted to search fields.
+ *
+ * @param string $string
+ * @param string $field Extra parameter so function can be used in loop over json data
+ * @return string $string
+ */
 function setUnitId ($string, $field = false) {
     if (!$field || $field == 'unitID') {
         return str_replace(' ', '&nbsp;', $string);
@@ -1501,9 +1532,25 @@ function setUnitId ($string, $field = false) {
     return $string;
 }
 
+/**
+ * Reverses setUnitId()
+ *
+ * @param string $string Unit id to "decode"
+ * @return string $string
+ */
+function unsetUnitId ($string) {
+    return str_replace('&nbsp;', ' ', $string);
+}
 
-// Parses specimen json response into array; searched by taxon and redirect
-// to print specimens on map
+/**
+ * Parses specimen data json searched by name and map to PHP array
+ *
+ * As the data arrives to this function through parseSpecimensByTaxon(),
+ * json parsing and validation can be skipped.
+ *
+ * @param array $data Parsed json from parseSpecimensByTaxon()
+ * @return array $output
+ */
 function parseSpecimensByMap ($data) {
 
 	$output['searchTerms'] = getSearchTerms($data);
@@ -1538,19 +1585,29 @@ function parseSpecimensByMap ($data) {
 	}
 
 	$output['self'] = getSelfLink($data);
-//p($data);
 	return isset($output) ? $output : false;
 }
 
-
-function getShowAll ($data, $groupResults = false) {
+/**
+ * Gets Show all... link
+ *
+ * Show all link is shown only when the user does not come from a form and
+ * when the number of results exceeds the maximum number of initial results.
+ * The latter setting depends on the fact if it's a service that has regulr or grouped
+ * results.
+ *
+ * @param array $data Parsed json
+ * @param boolean $groupResult Service has grouped results?
+ * @return string|void Url
+ */
+function getShowAll ($data, $groupResult = false) {
 	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {
             return setUrlPars(
                 geoShapeToSession($self, true),
-                array('_maxResults' => $groupResults ? maxGroupResults() : maxResults()),
+                array('_maxResults' => $groupResult ? maxGroupResults() : maxResults()),
                 true
             );
 	    }
@@ -1558,6 +1615,16 @@ function getShowAll ($data, $groupResults = false) {
 	return null;
 }
 
+/**
+ * Gets sort parameter
+ *
+ * Gets sort parameter from self link or, if self link is not provided,
+ * returns default value
+ *
+ * @param string $self Self link
+ * @param boolean $groupResult Service has grouped results?
+ * @return string Result from self link or default value if self link is not provided
+ */
 function getSort ($self, $groupResult = false) {
     $p = $groupResult ? '_groupSort' : '_sort';
     if (!empty($self)) {
@@ -1569,6 +1636,16 @@ function getSort ($self, $groupResult = false) {
     return $groupResult ? defaultGroupSort() : defaultSort();
 }
 
+/**
+ * Gets sort direction
+ *
+ * Gets sort direction parameter from self link or, if self link is not provided,
+ * returns default value
+ *
+ * @param string $self Self link
+ * @param boolean $groupResult Service has grouped results?
+ * @return string Result from self link or default value if self link is not provided
+ */
 function getSortDirection ($self, $groupResult = false) {
     $p = $groupResult ? '_groupSortDirection' : '_sortDirection';
     if (!empty($self)) {
@@ -1580,6 +1657,15 @@ function getSortDirection ($self, $groupResult = false) {
     return $groupResult ? defaultGroupSortDirection() : defaultSortDirection();
 }
 
+/**
+ * Sets sort url
+ *
+ * @param string $column Field to sort on
+ * @param string $dir Default sort direction for column
+ * @param string $self Self link
+ * @param boolean $groupResult Service has grouped results?
+ * @return string Url
+ */
 function setSortUrl ($column, $dir, $self, $groupResult = false) {
 
     // Set parameters differently for default or grouped results
@@ -1618,7 +1704,7 @@ include 'Paginator.php';
  * Returns html-formatted paginator based on json input. $groupResult is used to
  * differentiate between regular or grouped services.
  *
- * @param unknown $data Json
+ * @param unknown $data Parsed json
  * @param boolean $groupResult Regular or grouped service?
  * @return Html-formatted paginator | void
  */
@@ -1635,7 +1721,6 @@ function getPaginator ($data, $groupResult = false) {
     return null;
 }
 
-
 /**
  * Special case: paginator used for results within grouped results
  *
@@ -1647,7 +1732,7 @@ function getPaginator ($data, $groupResult = false) {
  * within a grouped result.
  *
  * @param array $data Json
- * @return Formatted html | void
+ * @return Formatted html|void
  */
 function getPaginatorWithinGroup ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
@@ -1662,19 +1747,38 @@ function getPaginatorWithinGroup ($data) {
     return null;
 }
 
-
-
-
+/**
+ * Sets maximum number of results per page for paginator
+ *
+ * @param boolean $groupResult Regular or grouped service?
+ * @return int Maximum number of results per page dependent of grouped or not
+ */
 function setPaginatorItemsPerPage ($groupResult = false) {
     return $groupResult ? maxGroupResults() : maxResults();
 }
 
+/**
+ * Sets current page number for paginator
+ *
+ * @param boolean $groupResult Regular or grouped service?
+ * @return int Current page number dependent of grouped or not
+ */
 function setPaginatorCurrentPage ($data, $groupResult = false) {
     return $groupResult ?
         getGroupOffset($data) / maxGroupResults() + 1 :
         getOffset($data) / maxResults() + 1;
 }
 
+/**
+ *
+ * Sets url for paginator
+ *
+ * Strips offset from self link and replaces this with placeholder for paginator
+ *
+ * @param array $data Json
+ * @param boolean $groupResult
+ * @return string Url
+ */
 function setPaginatorUrl ($data, $groupResult = false) {
     $offset = $groupResult ? 'groupOffset' : 'offset';
     return printDrupalLink(
@@ -1682,6 +1786,14 @@ function setPaginatorUrl ($data, $groupResult = false) {
     ) . '(:num)';
 }
 
+/**
+ * Adds or replaces parameters in url with new parameters
+ *
+ * @param string $url Input url
+ * @param array $newValues New values as key => value pairs
+ * @param boolean $decodeEncode Decode url before replacement?
+ * @return string $url Output string
+ */
 function setUrlPars ($url, array $newValues, $decodeEncode = false) {
     if ($decodeEncode) {
         $url = urldecode($url);
@@ -1719,6 +1831,13 @@ function geoShapeToSession ($url, $decodeEncode = false) {
     return $decodeEncode ? urlencode($url) : $url;
 }
 
+/**
+ * Strips _offset and _groupOffset from url
+ *
+ * @param string $url Input url
+ * @param string $decodeEncode Decode url before replacement?
+ * @return string $url Output url
+ */
 function stripOffsetFromUrl ($url, $decodeEncode = false) {
     if ($decodeEncode) {
         $url = urldecode($url);
@@ -1735,6 +1854,13 @@ function stripOffsetFromUrl ($url, $decodeEncode = false) {
     return $decodeEncode ? urlencode($url) : $url;
 }
 
+/**
+ * Gets value for specified parameter in url
+ *
+ * @param string $url Input utl
+ * @param string $par Parameter to get value for
+ * @return string|void Value
+ */
 function getUrlParValue ($url, $par) {
     if ($url != '' && $par != '') {
         $parts = parse_url($url);
@@ -1750,9 +1876,17 @@ function getUrlParValue ($url, $par) {
     return false;
 }
 
-
-
-function getSelfLink ($data) {
+/**
+ * Gets self link for current request
+ *
+ * Rather straightforward if the result is from a GET request. If the result is from
+ * a POST request, the self link has to be reconstructed from the search terms in
+ * the request.
+ *
+ * @param array $data Json
+ * @return string|void Self link
+ *
+ */function getSelfLink ($data) {
     if (isset($data->links) && !empty($data->links)) {
         foreach ($data->links as $link) {
             if ($link->rel == '_self') {
@@ -1764,6 +1898,8 @@ function getSelfLink ($data) {
     if (!isset($self) || empty($self)) {
         return false;
     }
+    // If data is returned from a POST request, we have to recompile the
+    // self link from the search terms...
     $post = strpos(urldecode($self), '?') === false ? true : false;
     if ($post) {
         $p = '/?';
@@ -1776,7 +1912,13 @@ function getSelfLink ($data) {
 }
 
 /**
- * Function from php.net to reverse parse_url. Cannot use http_buil_url() because it requires PECL
+ * Reassembles parsed url
+ *
+ * Function from php.net to reverse parse_url. Replacement for http_buil_url() because
+ * that function requires PECL.
+ *
+ * @param array $parsed_url Url components
+ * @return string Reassembled url
  */
 function reverse_parse_url ($parsed_url) {
     $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
@@ -1791,6 +1933,12 @@ function reverse_parse_url ($parsed_url) {
     return "$scheme$user$pass$host$port$path$query$fragment";
 }
 
+/**
+ * Gets _offset from json
+ *
+ * @param array $data Json
+ * @return int Offset
+ */
 function getOffset ($data) {
     if (isset($data->queryParameters->_offset[0])) {
         return $data->queryParameters->_offset[0];
@@ -1798,6 +1946,12 @@ function getOffset ($data) {
     return 0;
 }
 
+/**
+ * Gets _groupOffset from json
+ *
+ * @param array $data Json
+ * @return int Group offset
+ */
 function getGroupOffset ($data) {
     if (isset($data->queryParameters->_groupOffset[0])) {
         return $data->queryParameters->_groupOffset[0];
@@ -1805,7 +1959,12 @@ function getGroupOffset ($data) {
     return 0;
 }
 
-// Returns image url
+/**
+ * Gets image url from json
+ *
+ * @param array $row Json
+ * @return string|void Url
+ */
 function getImageUrl ($row) {
     if (!empty($row->result->serviceAccessPoints)) {
     	$key = key(get_object_vars($row->result->serviceAccessPoints));
@@ -1814,7 +1973,12 @@ function getImageUrl ($row) {
     return null;
 }
 
-// Returns image url and formar in array
+/**
+ * Gets image url plus format from json
+ *
+ * @param array $row Json
+ * @return array|void Array with url and format
+ */
 function getImageData ($row) {
     if (!empty($row->result->serviceAccessPoints)) {
     	$key = key(get_object_vars($row->result->serviceAccessPoints));
@@ -1826,15 +1990,21 @@ function getImageData ($row) {
     return null;
 }
 
-
-
-// Return the fields containing the hit
+/**
+ * Gets the fields containing data matching the search term(s)
+ *
+ * @param array $row Parsed json
+ * @param boolean $stripTags Should html tags be removed?
+ * @return array Array with field => value pairs
+ */
 function getHits ($row, $stripTags = true) {
+    // Exclude matches in these fields
     $noHits = array(
         'fullScientificName',
         'theme'
     );
 	foreach ($row->matchInfo as $info) {
+		// Extract field from path.to.field; field is the last part
 		$e = explode('.', $info->path);
 		$field = end($e);
 		if (!in_array($field, $noHits)) {
@@ -1849,16 +2019,25 @@ include 'printSpecimensByTaxon.php';
 include 'printSpecimensByMap.php';
 include 'printSpecimenCollection.php';
 
-
-
-// Shorthand function to pad "filler" tds
+/**
+ * Shorthand function to pad "filler" tds
+ *
+ * @param int $i How many tds should be padded?
+ * @return string|void
+ */
 function padTds ($i) {
 	if ((int)$i > 0) {
 		return "<td colspan='$i'></td>";
 	}
+	return null;
 }
 
-// Return url for specimens in "collection"/set
+/**
+ * Get url for Nth specimen in "collection"/set
+ *
+ * @param int $i Offset for specimen in searchResults->links
+ * @return string|void Url
+ */
 function getSpecimenInCollectionUrl ($row, $i) {
 	if (!empty($row->searchResults[0]->links)) {
 		foreach ($row->searchResults[0]->links as $link) {
@@ -1872,8 +2051,12 @@ function getSpecimenInCollectionUrl ($row, $i) {
 
 include 'printHeaders.php';
 
-
-// Parses taxon/species json response into array
+/**
+ * Parses taxon json to PHP array
+ *
+ * @param string $json
+ * @return array $output
+ */
 function parseTaxa ($json) {
     global $language;
 	if (!$json || !validJson($json)) {
@@ -1941,7 +2124,14 @@ function parseTaxa ($json) {
 	return isset($output) ? $output : false;
 }
 
-
+/** Gets offset of matched synonym in taxon response
+ *
+ * Indirect way to determine the offset of the matched synonym: check match
+ * against value of field in synonyms and return offset of first hit
+ *
+ * @param array $row Parsed json
+ * @return int|void $i
+ */
 function getTaxonSynonymOffset ($row) {
     $path = $row->searchResults[0]->matchInfo[0]->path;
     $field = str_replace('synonyms.', '', $path);
@@ -1951,8 +2141,13 @@ function getTaxonSynonymOffset ($row) {
             return $i;
         }
     }
+    return false;
 }
 
+/** Prints no result message
+ *
+ * @return string Translated string with url back to form
+ */
 function printNoResults () {
     return t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
         t('Please try again'). '</a>!';
@@ -1961,24 +2156,45 @@ function printNoResults () {
 include 'printTaxa.php';
 
 
-// Validates json string
+/**
+ * Validates json
+ *
+ * @param boolean Valid?
+ */
 function validJson ($string) {
 	return is_object(json_decode($string));
 }
 
-// Returns type of result:
-// acceptedName.fullScientificName
-// acceptedName.synonyms[0].scientificName.fullScientificName
-// acceptedName.commonNames[0].name
+/**
+ * Gets result type (accepted/synonym/common) for taxon
+ *
+ * Returns type of result:
+ * acceptedName.fullScientificName
+ * acceptedName.synonyms[0].scientificName.fullScientificName
+ * acceptedName.commonNames[0].name
+ *
+ * @param array $row Parsed json
+ * @return string accepted/synonym/common
+ */
 function getResultType ($row) {
 	$path = $row->searchResults[0]->matchInfo[0]->path;
 	return strpos($path, 'synonym') !== false ? 'synonym' :
 		(strpos($path, 'vernacularNames') !== false ? 'common' : 'accepted');
 }
 
-// Returns offset of result; used only for synonyms and common names
-// to determine the array key containing the hit
-// Used for taxon/specimenByTaxon
+/**
+ *
+ * Gets offset for synonym/common name in taxon response
+ *
+ * Returns offset of result; used only for synonyms and common names to
+ * determine the array key containing the hit
+ *
+ * NOTE: currently not in use because final NBA response does not match
+ * mock object for which this function was developed...
+ *
+ * @param array $row Parsed json
+ * @return unknown
+ */
 function getResultOffset ($row) {
 	preg_match('/\[(.*?)\]/', $row->searchResults[0]->matchInfo[0]->path, $m);
 	return $m[1];
@@ -1989,7 +2205,7 @@ function getResultOffset ($row) {
  *
  * Number of results in json response
  *
- * @param array $data Json
+ * @param array $data Parsed json
  * @return number|boolean
  */
 function getTotalRows ($data, $groupResult = false) {
@@ -1999,11 +2215,10 @@ function getTotalRows ($data, $groupResult = false) {
 	return false;
 }
 
-// Returns total number of results within a grouped result
 /**
  * Special case function for number of results in json response within a grouped result
  *
- * @param array $data Json
+ * @param array $data Parsed json
  * @return number|boolean
  */
 function getTotalRowsWithinGroup ($data) {
@@ -2013,7 +2228,12 @@ function getTotalRowsWithinGroup ($data) {
 	return false;
 }
 
-// Returns total number of results
+/**
+ * Gets query parameters
+ *
+ * @param array $data Parsed json
+ * @return array|void Parameters
+ */
 function getSearchTerms ($data) {
 	if (isset($data->queryParameters)) {
 		return (array)$data->queryParameters;
@@ -2066,6 +2286,17 @@ function getScientificNameElements ($name) {
 		$name->infraspecificEpithet => 'infraspecificEpithet'
 	);
 	return array_flip($elements);
+}
+
+
+function isMp4 ($url) {
+    $headers = get_headers($url);
+    foreach ($headers as $i => $v) {
+        if (strpos($v, 'mp4') !== false) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function getScientificNameElementsWithDuplicates ($name) {
