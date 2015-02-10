@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Prints classification(s)
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printClassifications ($data) {
 	global $language;
 	$output = '';

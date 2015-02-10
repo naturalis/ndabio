@@ -78,9 +78,7 @@ function printSpecimenDetail ($data) {
 
 			    if (!empty($value['siteCoordinates'])) {
                     $output .= printDL(ucfirst(translateNdaField('siteCoordinates')),
-                        decimalToDMS($value['siteCoordinates']['lat']) . ', ' .
-                        decimalToDMS($value['siteCoordinates']['lon'], false) .
-                        ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
+                        decimalToDMS2($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
                         $value['siteCoordinates']['lon'] . ')'
                     );
 			    }
@@ -113,7 +111,7 @@ function printSpecimenDetail ($data) {
     drupal_add_js("jQuery(document).ready(function() {  getTotal(getMultimediaRequest, setSpecimenMultimediaLink); });", 'inline');
     $output .= '<h3>' . t('Multimedia') . '</h3><p id="specimen_multimedia"</p>';
 
-    setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Specimen') . ' | ' .
+    setTitle(t('Specimen') . ' | ' .
         strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output;

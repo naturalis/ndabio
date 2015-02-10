@@ -1,6 +1,10 @@
 <?php
-
-// Prints taxon identifications for specimen (used only for non-name search)
+/**
+ * Prints taxon identifications for specimen (used only for non-name search)
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printSpecimenTaxa ($names) {
 	$output = '';
 	foreach ($names as $name) {
@@ -12,6 +16,4 @@ function printSpecimenTaxa ($names) {
 	}
 	return !empty($output) ? substr($output, 0, -2) : '-';
 }
-
-
 ?>

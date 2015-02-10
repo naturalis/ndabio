@@ -1,4 +1,10 @@
 <?php
+/**
+ * Prints taxon detail result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printTaxonDetail ($data) {
     global $language;
 
@@ -38,7 +44,7 @@ function printTaxonDetail ($data) {
     $output .= '<h3>' . t('Multimedia'). '</h3><p id="taxon_multimedia"</p>';
 
     // Drupal title empty; page title custom
-    setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Taxon') . ' | '. strip_tags($data['acceptedName']));
+    setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
 
     return $output;
 }

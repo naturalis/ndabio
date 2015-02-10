@@ -1,6 +1,10 @@
 <?php
-
-// Prints matches on screen
+/**
+ * Practically identical to printHits()
+ *
+ * @param array $row Parsed json data
+ * @return string Formatted output
+ */
 function printMatches ($data) {
 	$output = '';
 	if (isset($data['searchTerms']) && !empty($data['searchTerms'])) {

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Prints Show all... link
+ *
+ * @param array $row Parsed json data
+ * @return string Formatted output
+ */
 function printShowAll ($data) {
     $output = '';
     if (!isset($data['showAll']) || empty($data['showAll'])) {

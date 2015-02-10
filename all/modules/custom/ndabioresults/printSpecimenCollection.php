@@ -1,6 +1,14 @@
 <?php
-
-// Returns collection/set of specimens or just a specimen if a collection contains a single entry
+/**
+ * Prints specimen rows in result table
+ *
+ * Returns collection/set of specimens or just a specimen if a collection contains a single entry;
+ * also provides the Show [x] specimens link if appropriate.
+ *
+ * @param array $row Parsed json data
+ * @param int $i Offset
+ * @return string Formatted output
+ */
 function printSpecimenCollection ($row, $i) {
     $output = '';
 	// Single specimen
@@ -34,7 +42,4 @@ function printSpecimenCollection ($row, $i) {
     }
 	return $output;
 }
-
-
-
 ?>

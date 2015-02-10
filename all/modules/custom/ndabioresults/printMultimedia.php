@@ -3,13 +3,17 @@
 require_once 'printShowAll.php';
 require_once 'printPaginator.php';
 
-// Prints multimedia on screen
+/**
+ * Prints multimedia
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printMultimedia ($data) {
 
     if (empty($data['results'])) {
         return false;
     }
-//p($data);
 
     // Drupal title empty; page title custom
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?

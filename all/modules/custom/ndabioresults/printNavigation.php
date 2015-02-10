@@ -1,6 +1,12 @@
 <?php
-
-// Prints navigation on details page
+/**
+ * Prints navigation on details page
+ *
+ * Currently not in use!
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
 function printNavigation ($data) {
 	$output = "<div class='navigation'>";
 	if (isset($data['navigation']) && !empty($data['navigation'])) {

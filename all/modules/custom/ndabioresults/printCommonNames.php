@@ -1,6 +1,13 @@
 <?php
+/**
+ * Prints common names
+ *
+ * Transposes common names array and prints common names
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 
-// Transposes common names array and prints common names
 function printCommonNames ($data) {
 //p($data);
 	$output = "";

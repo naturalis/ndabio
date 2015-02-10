@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Prints description(s)
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printDescriptions ($data) {
 	global $language;
 	$output = '';

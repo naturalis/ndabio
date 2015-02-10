@@ -1,7 +1,12 @@
 <?php
-
-// Prints hits as field: hits;
-// replaces default <span> with <span class="result-query">
+/**
+ * Prints hits (matched results) as field: hits
+ *
+ * Replaces default <span> with <span class="result-query">
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
 function printHits ($row) {
 	$output = '';
 	if (isset($row['hits']) && !empty($row['hits'])) {

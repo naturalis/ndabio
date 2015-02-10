@@ -1914,8 +1914,9 @@ function getUrlParValue ($url, $par) {
 /**
  * Reassembles parsed url
  *
- * Function from php.net to reverse parse_url. Replacement for http_buil_url() because
- * that function requires PECL.
+ * Function from php.net to reverse parse_url:
+ * http://php.net/manual/en/function.parse-url.php#106731
+ * Replacement for http_buil_url() because that function requires PECL.
  *
  * @param array $parsed_url Url components
  * @return string Reassembled url
@@ -2241,7 +2242,14 @@ function getSearchTerms ($data) {
 	return false;
 }
 
-// Results formatted accepted name with proper use of italics
+/**
+ * Creates properly formatted scientific name
+ *
+ * @param string $scientificname
+ * @param object $nameObject Parsed json with individual name components
+ * @param string $searchTerms Optional highlighting
+ * @return string
+ */
 function formatScientificName ($scientificname, $nameObject, $searchTerms = false) {
 	$output = $scientificname;
 	$elements = getScientificNameElements($nameObject);
@@ -2259,25 +2267,41 @@ function formatScientificName ($scientificname, $nameObject, $searchTerms = fals
 	return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
 }
 
-function highlightSearchTerms ($output, $searchTerms) {
+/**
+ * Highlight search terms
+ *
+ * @param string $string
+ * @param array $searchTerms
+ * @return string $string
+ *
+ */function highlightSearchTerms ($string, $searchTerms) {
     foreach ($searchTerms as $field => $value) {
-        if (!in_array(str_replace('_', '', $field), searchFlags())) {
+        // Do not highlight search flags
+         if (!in_array(str_replace('_', '', $field), searchFlags())) {
             $term = is_array($value) ? $value[0] : $value;
+            // Split terms on space if necessary
             $t = explode(' ', $term);
+            // Store as array keys to eliminate duplicates
             foreach ($t as $i => $v) {
                 $terms[$v] = $field . $i;
             }
         }
     }
-    // Intermediate step required to remove any duplicates
     if (isset($terms)) {
-        $output = highlightMatch($output, array_flip($terms));
+        $string = highlightMatch($string, array_flip($terms));
     }
-    return $output;
+    return $string;
 }
 
-// Returns scientific name elements from name object
-// Store as keys and flip to avoid duplicates (as in Larus fuscus fuscus)
+/**
+ * Extracts scientific name components from json name object
+ *
+ * Returns scientific name elements from name object. Stores as keys and
+ * flips to avoid duplicates (as in Larus fuscus fuscus)
+ *
+ * @param object $name Name object from json
+ * @return array
+ */
 function getScientificNameElements ($name) {
 	$elements = array(
 		$name->genusOrMonomial => 'genusOrMonomial',
@@ -2288,7 +2312,33 @@ function getScientificNameElements ($name) {
 	return array_flip($elements);
 }
 
+/**
+ * Extracts scientific name components from json name object, but unlike
+ * getScientificNameElements() does not filter out duplicates
+ *
+ * Returns scientific name elements from name object.
+ *
+ * @param object $name Name object from json
+ * @return array
+ */
+function getScientificNameElementsWithDuplicates ($name) {
+	return array(
+		'genusOrMonomial' => $name->genusOrMonomial,
+		'subgenus' => $name->subgenus,
+		'specificEpithet' => $name->specificEpithet,
+		'infraspecificEpithet' => $name->infraspecificEpithet
+	);
+}
 
+/**
+ * Checks if multimedia at specific url is mp4 file
+ *
+ * Visits url and checks headers. Movie files should be treated differently
+ * from image files.
+ *
+ * @param string $url Url to multimedia file
+ * @return boolean
+ */
 function isMp4 ($url) {
     $headers = get_headers($url);
     foreach ($headers as $i => $v) {
@@ -2299,16 +2349,12 @@ function isMp4 ($url) {
     return false;
 }
 
-function getScientificNameElementsWithDuplicates ($name) {
-	return array(
-		'genusOrMonomial' => $name->genusOrMonomial,
-		'subgenus' => $name->subgenus,
-		'specificEpithet' => $name->specificEpithet,
-		'infraspecificEpithet' => $name->infraspecificEpithet
-	);
-}
-
-// Returns all sources for taxon/specimen
+/**
+ * Returns all sources for taxon/specimen
+ *
+ * @param array $row Parsed json
+ * @return array|void
+ */
 function getSources ($row) {
 	foreach ($row->searchResults as $i => $obj) {
 		$output[$obj->result->sourceSystem->name] = $i;
@@ -2316,8 +2362,17 @@ function getSources ($row) {
 	return isset($output) ? array_flip($output) : false;
 }
 
-// Returns common names for the current interface language;
-// format is array(name => language), so duplicates will be avoided
+/**
+ * Gets common names for taxon
+ *
+ * Return format is array(name => language), so duplicates will be avoided.
+ * Language check is optional. If selected, only common names for the
+ * current interface language will be returned.
+ *
+ * @param array $row Parsed json
+ * @param boolean $languageCheck
+ * @return array|void
+ */
 function getCommonNames ($row, $languageCheck = false) {
 	global $language;
 	foreach ($row->searchResults as $i => $taxon) {
@@ -2339,8 +2394,12 @@ function getCommonNames ($row, $languageCheck = false) {
 	return isset($output) ? $output : false;
 }
 
-
-// Decorate description in taxon result table
+/**
+ * Decorates description in taxon result table
+ *
+ * @param array $row Parsed json
+ * @return string
+ */
 function decorateDescription ($row) {
 	return ($row['type'] != 'accepted' ?
 		t(ucfirst($row['type'])) . ($row['type'] == 'common' ? ' ' . t('name') : '') .
@@ -2348,32 +2407,46 @@ function decorateDescription ($row) {
 		t($row['rank']));
 }
 
-// Decorate score in result table
+/**
+ * Decorates score in result table
+ *
+ * @param int $score Percentage from NBA response
+ * @return string Formatted html
+ */
 function decorateScore ($score) {
     // Reset score so always one square is filled
     $score = $score < 20 ? 20 : $score;
 	$roundScore = round( $score / 20 );
-  $result = "<span class='score' title='$score %'>";
+    $result = "<span class='score' title='$score %'>";
 
-  for ( $i=1; $i<=5; $i++ ){
-    if ( $i <= $roundScore ){
-      $result.= "<i class='icon-square_full'></i>";
-    } else {
-      $result.= "<i class='icon-square_empty'></i>";
+    for ($i = 1; $i <= 5; $i++){
+        if ($i <= $roundScore){
+            $result.= "<i class='icon-square_full'></i>";
+        } else {
+            $result.= "<i class='icon-square_empty'></i>";
+        }
     }
-  }
 
-  $result .= "</span>";
-  return $result;
+    return $result .= "</span>";
 }
 
 
-// Highlight match
+/**
+ * Highlight match
+ *
+ * Experimental highlight function from Linnaeus NG by Maarten Schermer
+ *
+ * @param string $haystack Input string
+ * @param array $needles Matches
+ * @return string
+ */
 function highlightMatch ($haystack, $needles) {
+
     // Intermediate set required to prevent highlighting of html
     $f = array('<span class="scientific">', '</span>', '&nbsp;', '<span class="result-query">');
     $r = array(chr(4), chr(7), chr(13), chr(14));
     $haystack = str_replace($f, $r, $haystack);
+
     foreach ($needles as $needle) {
 	    $needle = trim($needle);
 	    if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
@@ -2381,20 +2454,36 @@ function highlightMatch ($haystack, $needles) {
 		}
 		$q = str_split($needle);
 		$x = ')(\<[^<]*\>)*(';
-		$q = str_replace('( )','(\s*)','('.implode($x, $q).')');
-		$haystack = preg_replace_callback('/'.$q.'/i','_fsub1', $haystack);
+		$q = str_replace('( )','(\s*)', '('.implode($x, $q) . ')');
+		$haystack = preg_replace_callback('/' . $q.'/i', '_fsub1', $haystack);
 	}
+
+	// Restore temporarily replaced tags
 	return str_replace($r, $f, $haystack);
 }
 
+/**
+ * Helper callback function for highlightMatch()
+ */
 function _fsub1 ($m) {
-	return chr(14) . preg_replace_callback('(<(.*?)>)','_fsub2', $m[0]) . chr(7);
+	return chr(14) . preg_replace_callback('(<(.*?)>)', '_fsub2', $m[0]) . chr(7);
 }
 
+/**
+ * Helper callback function for highlightMatch()
+ */
 function _fsub2 ($m) {
 	return chr(7) . $m[0] . chr(14);
 }
 
+/**
+ * Formats number to English/Dutch systems
+ *
+ * Customized internationalisation to format number that only works for EN/NL
+ *
+ * @param int/string $n Input number
+ * @return string Formatted number
+ */
 function _formatNumber ($n) {
     global $language;
     if ($language->language == 'nl') {
@@ -2403,6 +2492,15 @@ function _formatNumber ($n) {
     return number_format($n);
 }
 
+/**
+ * Sorts associative array based on another associative array
+ *
+ * From http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
+ *
+ * @param array $array
+ * @param array $orderArray
+ * @return array
+ */
 function sortArrayByArray ($array, $orderArray) {
     $ordered = array();
     foreach ($orderArray as $key) {
@@ -2414,37 +2512,60 @@ function sortArrayByArray ($array, $orderArray) {
     return $ordered + $array;
 }
 
-
-// Wrapper for Drupal error handler
+/**
+ * Wrapper for logging
+ *
+ * Currently log to watchdog and print error on screen. Can be adapted to
+ * instantantly die() etc.
+ *
+ * @param string $message
+ */
 function handleError ($message) {
-  //Log to the drupal error log
-  watchdog("ndabioresults", $message, NULL, WATCHDOG_ERROR);
-  //Log to the screen?
-  drupal_set_message("Bioportal: " . $message);
-  //die($message);
+    //Log to the drupal error log
+    watchdog("ndabioresults", $message, NULL, WATCHDOG_ERROR);
+    //Log to the screen?
+    drupal_set_message("Bioportal: " . $message);
 }
 
-
-// A function that translates NDS field labels to proper English
+/**
+ * Translates NBA fields (usually ABCD/DC) to proper English
+ *
+ * Uses Drupal nba2text Taxonomy for translation
+ *
+ * @param string $str Input string
+ * @return string Translated string
+ */
 function translateNdaField ($str) {
-  $machine_name = "nba2text";
-  $myvalue = taxonomy_get_term_by_name($str, $machine_name);
-  if (is_array($myvalue)) {
-    $myvalues = array_shift($myvalue);
-    if(!empty($myvalues)) {
-      return $myvalues->description;
+    $machine_name = "nba2text";
+    $myvalue = taxonomy_get_term_by_name($str, $machine_name);
+    if (is_array($myvalue)) {
+        $myvalues = array_shift($myvalue);
+        if(!empty($myvalues)) {
+            return $myvalues->description;
+        }
     }
-  }
-  return $str;
+    return $str;
 }
 
-
-// Create Drupal specific link
+/**
+ * Recreates NBA request url for Drupal
+ *
+ * Enriches the NBA request url by appending the basic search parameters
+ * to the base url and path to this module.
+ *
+ * @param string $url NBA search parameters
+ * @return string Drupal url
+ */
 function printDrupalLink ($url) {
     return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
 }
 
-
+/**
+ * Beautifies source output
+ *
+ * @param string $string
+ * @return string
+ */
 function _markUp($string){
   $result = $string;
   $result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
@@ -2464,66 +2585,107 @@ function _markUp($string){
   return $result;
 }
 
-function decimalToDMS ($decimal, $lat = true) { // $lon = false
-     //set default values for variables passed by reference
-     $degrees = 0;
-     $minutes = 0;
-     $seconds = 0;
-     $direction = 'X';
-
-     //decimal must be integer or float no larger than 180;
-     //lat must be Boolean
-     if (!is_numeric($decimal) || abs($decimal) > 180 || !is_bool($lat)) {
-          return false;
-     }
-
-     //set direction; north assumed
-     if($lat && $decimal < 0) {
-          $direction = t('S');
-     } else if (!$lat && $decimal < 0) {
+/**
+ * Translates decimal coordinate pair to DMS
+ *
+ * Adapted from
+ * https://www.dougv.com/2012/03/converting-latitude-and-longitude-coordinates-between-decimal-and-degrees-minutes-seconds/
+ *
+ * Takes decimal coordinates and return degree, minute, second notation. Original function only
+ * accepted single parameter; adapted to take both latitude and longitude immediately
+ *
+ * @param Decimal $lat Latitude
+ * @param Decimal $lon Longitude
+ * @return string Latitude, longitude
+ */
+function decimalToDMS ($lat, $lon) {
+     $coordinates = array(
+        'lat' => $lat,
+        'lon' => $lon
+     );
+     foreach ($coordinates as $type => $decimal) {
+        if (!is_numeric($decimal) || abs($decimal) > 180) {
+            return false;
+        }
+        if ($type == 'lat' && $decimal < 0) {
+              $direction = t('S');
+        } else if ($type == 'lon' && $decimal < 0) {
           $direction = 'W';
-     } else if (!$lat) {
+        } else if ($type == 'lon') {
           $direction = t('E');
-     } else {
+        } else {
           $direction = 'N';
+        }
+        $d = abs($decimal);
+        $degrees = floor($d);
+        $seconds = ($d - $degrees) * 3600;
+        $minutes = floor($seconds / 60);
+        $seconds = floor($seconds - ($minutes * 60));
+        $output[$type] = $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
      }
-
-     //get absolute value of decimal
-     $d = abs($decimal);
-
-     //get degrees
-     $degrees = floor($d);
-
-     //get seconds
-     $seconds = ($d - $degrees) * 3600;
-
-     //get minutes
-     $minutes = floor($seconds / 60);
-
-     //reset seconds
-     $seconds = floor($seconds - ($minutes * 60));
-
-     return $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
+     return isset($output) && count($output) == 2 ? implode(', ', $output) : false;
 }
 
+/**
+ * Sets head and (optionally) page title
+ *
+ * @param string $head Head title
+ * @param string $page Page title
+ */
 function setTitle ($head, $page = '') {
     $_SESSION['ndaSearch']['pageTitle'] = $head;
     drupal_set_title($page);
 }
 
-function p ($a) {
+/**
+ * Shorthand function for print_r()
+ */
+ function p ($a) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
+/**
+ * Formats string between tags and optionally appends class
+ *
+ * @param string $input
+ * @param string $tag
+ * @param string $class
+ * @return string
+ */
 function _wrap ($input, $tag = "div", $class = ""){
   $class = ($class == "" ? "": " class='$class'" );
   return "<$tag$class>$input</$tag>";
 }
 
+/**
+ * Prints description list
+ *
+ * @param string $field
+ * @param string $value
+ * @return string
+ */
 function printDL ($field, $value) {
   return "<dl><dt>$field</dt><dd>$value</dd></dl>";
 }
 
+/**
+ * Prints table row
+ *
+ * @param string $field
+ * @param string $value
+ * @return string
+ */
+function printTableRow ($field, $value) {
+	return "<tr><td>" . ($field != '' ? t(translateNdaField($field)) : '') . "</td><td>" .
+		($value != '' ? $value : '') . "</td></tr>";
+}
+
+/**
+ * Tests if service is regular or grouped service
+ *
+ * @param string $service
+ * @return boolean
+ */
 function isGroupService ($service) {
     return in_array($service, groupServices());
 }

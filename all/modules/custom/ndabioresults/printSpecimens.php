@@ -3,7 +3,12 @@
 require_once 'printShowAll.php';
 require_once 'printPaginator.php';
 
-// Prints specimen result set on screen.
+/**
+ * Prints specimen search result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printSpecimens ($data) {
 
     if (empty($data['results'])) {
@@ -77,6 +82,4 @@ function printSpecimens ($data) {
 
     return $output;
 }
-
-
 ?>

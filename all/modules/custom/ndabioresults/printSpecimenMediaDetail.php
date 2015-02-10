@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Prints multimedia detail
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printSpecimenMediaDetail ($data) {
 // p($data);
 
@@ -20,7 +25,7 @@ function printSpecimenMediaDetail ($data) {
 		$output .= printDL(
             ucfirst(translateNdaField('unitID')),
             '<a href="' . printDrupalLink(specimenDetailService() . '?unitID=' .
-                $data['unitID']) . '">' . $data['unitID'] . '</a>'
+                unsetUnitId($data['unitID'])) . '">' . $data['unitID'] . '</a>'
 		);
 	}
 	if (!empty($data['names'])) {
@@ -47,8 +52,7 @@ function printSpecimenMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-    setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Multimedia') . ' | ' .
-        strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
+    setTitle(t('Multimedia') . ' | ' . strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output . "</dd>";
 }

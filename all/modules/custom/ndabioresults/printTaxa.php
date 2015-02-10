@@ -3,14 +3,12 @@
 require_once 'printShowAll.php';
 require_once 'printPaginator.php';
 
-/* Prints taxon result set on screen. Parameters $p should contain:
-   'sortColumn', 'sortDirection'
-
-   TODO:
-   1. Set truncated (for overview)/non-truncated
-   2. Pass $p['total'] dynamically
-
-*/
+/**
+ * Prints taxon search result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printTaxa ($data) {
 //p($data);
     if (empty($data['results'])) {

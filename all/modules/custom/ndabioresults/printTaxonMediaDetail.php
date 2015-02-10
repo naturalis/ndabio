@@ -1,4 +1,10 @@
 <?php
+/**
+ * Prints taxon media result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printTaxonMediaDetail ($data) {
 
 //p($data);
@@ -34,7 +40,7 @@ function printTaxonMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-	setTitle($_SESSION['ndaSearch']['pageTitle'] = t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
+	setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
 
     return $output . "</div>";
 }

@@ -1,6 +1,11 @@
 <?php
-
-// Prints headers of result table on screen
+/**
+ * Prints headers of result table
+ *
+ * @param array $headers Parsed json data
+ * @param array $self Self link
+ * @return string Formatted output
+ */
 function printHeaders ($headers, $self) {
 	$output = "<tr>";
 
@@ -34,6 +39,4 @@ function printHeaders ($headers, $self) {
 	}
 	return $output . "</tr>";
 }
-
-
 ?>

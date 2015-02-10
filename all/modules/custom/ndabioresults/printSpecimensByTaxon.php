@@ -4,8 +4,12 @@ require_once 'printShowAll.php';
 require_once 'printPaginator.php';
 require_once 'printSpecimensBySingleGroup.php';
 
-
-// Prints specimen result set on screen.
+/**
+ * Prints specimen name search result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
 function printSpecimensByTaxon ($data) {
 //p($data);
     if (empty($data['results'])) {

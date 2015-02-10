@@ -1,6 +1,12 @@
 <?php
-
-// Prints taxon identifications for specimen (used only for non-name search)
+/**
+ * Prints taxon identifications for specimen (used only for non-name search)
+ *
+ * Replaces default <span> with <span class="result-query">
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
 function printNamesWithLinks ($details, $fieldLabel) {
 	$output = '';
 	foreach ($details as $i => $detail) {
