@@ -626,7 +626,7 @@ function ndabio_advanced_taxonomysearch() {
     '#id' => 'edit-submit-bottom'
   );
   global $language;
-  $form['#action'] = url('nba/result?language=' . $language->language);
+  $form['#action'] = url('nba/result');
 
   return ($form);
 }
