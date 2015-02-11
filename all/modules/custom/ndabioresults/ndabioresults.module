@@ -2,32 +2,14 @@
 // TODO: alle includes bij elkaar zetten
 
 
-
-
 // Adrie kun jij de volgende functies checken? Zijn deze nog nodig? Moet
 // er uitgebreidere documentatie komen? Moeten ze verplaatst worden?
 
 // Adrie START
 
 /**
- * Defaults.
- */
-define('NATURALIS', 'taxonDetail');
-
-/**
-* DEFINE CUSTOM PAGES
+* DEFINE BLOCKS
 */
-
-function gettaxonomyidbysystem($systemname) {
-  $sql = "SELECT entity_id FROM {field_data_field_ndasystem} WHERE field_ndasystem_value = '$systemname'";
-  return db_query($sql)->fetchField();
-}
-
-function gettaxonomybysystem($systemname) {
-  $sql = "SELECT description FROM {taxonomy_term_data} WHERE name = '$systemname'";
-  return t(db_query($sql)->fetchField());
-}
-
 include("ndabioresults.block.inc");
 
 /**

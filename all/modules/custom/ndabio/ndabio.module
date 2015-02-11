@@ -625,7 +625,8 @@ function ndabio_advanced_taxonomysearch() {
     '#nowrapper' => TRUE,
     '#id' => 'edit-submit-bottom'
   );
-  $form['#action'] = url('nba/result');
+  global $language;
+  $form['#action'] = url('nba/result?language=' . $language->language);
 
   return ($form);
 }
