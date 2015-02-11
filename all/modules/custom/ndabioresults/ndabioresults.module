@@ -2523,10 +2523,10 @@ function translateNdaField ($str) {
     if (is_array($myvalue)) {
         $myvalues = array_shift($myvalue);
         if(!empty($myvalues)) {
-            return $myvalues->description;
+            return t($myvalues->description);
         }
     }
-    return $str;
+    return t($str);
 }
 
 /**
