@@ -1254,8 +1254,6 @@ function getGatheringEventSpecimens ($row) {
 	return isset($d) ? $d : null;
 }
 
-include 'printTableRow.php';
-
 /**
  * Parses multimedia json to PHP array
  *
