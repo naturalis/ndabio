@@ -105,7 +105,7 @@ function setSpecimenParameters (array $sP, $type) {
             'infraspecificEpithet',
             'vernacularName',
             '_geoShape',
-            'showMap'
+            '_showMap'
         )
     );
     foreach ($parameters[$type] as $p) {
@@ -287,7 +287,6 @@ function ndaSimpleSearch () {
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
-        //$p['_andOr'] = 'AND';
 
         $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
             t('area drawn on map'));
@@ -486,7 +485,7 @@ function ndaDirectRequest ($r) {
             }
 
             // Special case for specimens on map: remove _sort and _offset
-            if (isset($q['showMap'])) {
+            if (isset($q['_showMap'])) {
                 unset($q['_sort'], $q['_offset']);
             }
 
@@ -1204,9 +1203,9 @@ function timeStampToDate ($v) {
  * @param array $row Gathering event section of NBA response
  * @return array|void
  */
-function getGatheringEventSpecimens ($row) {
-	if (!empty($row->searchResults[0]->result->gatheringEvent)) {
-        $event = $row->searchResults[0]->result->gatheringEvent;
+function getGatheringEventSpecimens ($row, $i = 0) {
+	if (!empty($row->searchResults[$i]->result->gatheringEvent)) {
+        $event = $row->searchResults[$i]->result->gatheringEvent;
 		foreach ($event as $k => $v) {
 		    if (!is_array($v) && !is_object($k) && $v != '') {
 		        // Translate datetime from Unix to proper date
@@ -1422,7 +1421,7 @@ function parseSpecimensByTaxon ($json) {
 
     // If showMap parameter has been set, parsing and printing should be redirected
     // to parse-/printSpecimensByMap
-    if (isset($output['searchTerms']['showMap'])) {
+    if (isset($output['searchTerms']['_showMap'])) {
         return parseSpecimensByMap($data);
     }
 
@@ -1518,7 +1517,7 @@ function parseSpecimensByMap ($data) {
 
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
-	$output['showMap'] = true;
+	$output['_showMap'] = true;
 
 	foreach ($data->resultGroups as $row) {
 		$d = array();
@@ -1538,7 +1537,7 @@ function parseSpecimensByMap ($data) {
     		$d['source'] = implode(', ', $sources);
     		$d['assemblageID'] = $sp->result->assemblageID;
     		$d['unitID'] = setUnitId($sp->result->unitID);
-    		$gatheringEvent = getGatheringEventSpecimens($row);
+    		$gatheringEvent = getGatheringEventSpecimens($row, $i);
     		$d['localityText'] = $gatheringEvent['localityText'];
     		$d['date'] = $gatheringEvent['dateTimeBegin'];
     		$d['lat'] = $gatheringEvent['siteCoordinates']['lat'];
@@ -1546,6 +1545,7 @@ function parseSpecimensByMap ($data) {
     		$output['results'][] = $d;
 		}
 	}
+p($output['results']);
 
 	$output['self'] = getSelfLink($data);
 	return isset($output) ? $output : false;

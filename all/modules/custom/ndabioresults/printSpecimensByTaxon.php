@@ -16,7 +16,7 @@ function printSpecimensByTaxon ($data) {
         return false;
     }
 
-    if (isset($data['showMap'])) {
+    if (isset($data['_showMap'])) {
         return printSpecimensByMap($data);
     }
 
@@ -101,9 +101,10 @@ function printSpecimensByTaxon ($data) {
 		$output .= "<td>" .
 		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
 		      && !isset($_GET['noMap']) ?
-		      "<a href='" . printDrupalLink(geoShapeToSession($data['self'], true) . '&showMap' .
+		      "<a href='" . printDrupalLink(
+                specimenNamesService() . '?_geoShape=[session]&' .
 		      '&identifications.scientificName.fullScientificName.raw=' .
-		      urlencode(urlencode($row['fullScientificName']))) .
+		      urlencode(urlencode($row['fullScientificName'])) . '&_showMap&_maxResults=100') .
 		      "' class='icon-location'></a>" : '') .
 		  "</td>";
 		// Source(s)
