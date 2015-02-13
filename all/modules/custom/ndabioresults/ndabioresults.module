@@ -1545,7 +1545,6 @@ function parseSpecimensByMap ($data) {
     		$output['results'][] = $d;
 		}
 	}
-p($output['results']);
 
 	$output['self'] = getSelfLink($data);
 	return isset($output) ? $output : false;
