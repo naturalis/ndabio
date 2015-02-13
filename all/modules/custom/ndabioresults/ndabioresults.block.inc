@@ -155,6 +155,7 @@ function ndabioresults_block_view($delta = '') {
         }
       } else {
           $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
+	  drupal_set_title(t("Search results"));
       }
 
 
@@ -199,7 +200,11 @@ function ndabioresults_block_view($delta = '') {
         if (!empty($mynode)) {
           //Create block content
           $block['subject'] = $mynode->title;
-          $mycontent = $mynode->body[$mynode->language][0]['value'];
+
+	  //Set title for correct display of breadcrumb
+	  drupal_set_title($mynode->title);
+	  $mycontent = $mynode->body[$mynode->language][0]['value'];
+
           if (empty($mycontent)) $mycontent = $mynode->body['und'][0]['value'];
           $block['content'] = $mycontent . " ";
         }
