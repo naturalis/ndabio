@@ -1,12 +1,6 @@
 <?php
 // TODO: alle includes bij elkaar zetten
 
-
-// Adrie kun jij de volgende functies checken? Zijn deze nog nodig? Moet
-// er uitgebreidere documentatie komen? Moeten ze verplaatst worden?
-
-// Adrie START
-
 /**
 * DEFINE BLOCKS
 */
@@ -67,17 +61,6 @@ function ndabioresults_preprocess_html(&$vars){
         $vars['head_title'] = $_SESSION['ndaSearch']['pageTitle'] . ' | BioPortal';
     }
 }
-
-// Adrie END
-
-
-
-
-
-
-
-
-
 
 
 
@@ -304,7 +287,7 @@ function ndaSimpleSearch () {
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
-        $p['_andOr'] = 'AND';
+        //$p['_andOr'] = 'AND';
 
         $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
             t('area drawn on map'));
