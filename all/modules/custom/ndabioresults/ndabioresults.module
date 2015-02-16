@@ -1699,7 +1699,7 @@ function getPaginator ($data, $groupResult = false) {
 function getPaginatorWithinGroup ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
-            getTotalRowsWithinGroup($data),
+            getTotalRows($data, true),
             setPaginatorItemsPerPage(),
             setPaginatorCurrentPage($data),
             setPaginatorUrl($data)
@@ -2169,26 +2169,17 @@ function getResultOffset ($row) {
  * Number of results in json response
  *
  * @param array $data Parsed json
- * @return number|boolean
+ * @param boolean $groupResult Grouped service?
+ * @return number|int
  */
 function getTotalRows ($data, $groupResult = false) {
-	if (isset($data->totalSize)) {
+	if (!$groupResult && isset($data->totalSize)) {
 		return (int)$data->totalSize;
 	}
-	return false;
-}
-
-/**
- * Special case function for number of results in json response within a grouped result
- *
- * @param array $data Parsed json
- * @return number|boolean
- */
-function getTotalRowsWithinGroup ($data) {
-	if (isset($data->resultGroups[0]->totalSize)) {
-		return (int)$data->resultGroups[0]->totalSize;
-	}
-	return false;
+    if ($groupResult && isset($data->resultGroups[0]->totalSize)) {
+        return (int)$data->resultGroups[0]->totalSize;
+    }
+	return 0;
 }
 
 /**
