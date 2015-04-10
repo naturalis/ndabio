@@ -694,7 +694,7 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-	p($channels);
+//p($channels);
 
 	 return $output;
 }
@@ -1699,7 +1699,7 @@ function getPaginator ($data, $groupResult = false) {
 function getPaginatorWithinGroup ($data) {
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
         $paginator = new Paginator(
-            getTotalRows($data, true),
+            getTotalRowsWithinGroup($data),
             setPaginatorItemsPerPage(),
             setPaginatorCurrentPage($data),
             setPaginatorUrl($data)
@@ -2169,17 +2169,26 @@ function getResultOffset ($row) {
  * Number of results in json response
  *
  * @param array $data Parsed json
- * @param boolean $groupResult Grouped service?
- * @return number|int
+ * @return number|boolean
  */
 function getTotalRows ($data, $groupResult = false) {
-	if (!$groupResult && isset($data->totalSize)) {
+	if (isset($data->totalSize)) {
 		return (int)$data->totalSize;
 	}
-    if ($groupResult && isset($data->resultGroups[0]->totalSize)) {
-        return (int)$data->resultGroups[0]->totalSize;
-    }
-	return 0;
+	return false;
+}
+
+/**
+ * Special case function for number of results in json response within a grouped result
+ *
+ * @param array $data Parsed json
+ * @return number|boolean
+ */
+function getTotalRowsWithinGroup ($data) {
+	if (isset($data->resultGroups[0]->totalSize)) {
+		return (int)$data->resultGroups[0]->totalSize;
+	}
+	return false;
 }
 
 /**
@@ -2693,4 +2702,32 @@ function safe_parse_str ($source, &$target) {
             $target[$key] = $val;
         }
     }
+}
+
+/**
+ * Determines if prettyPhoto library should be loaded
+ *
+ * Alternate function for parse_url that preserves periods and other special
+ * characters in parameter names
+ *
+ * @param array $target Output
+ * @param string $source Input
+ * @return array
+ */
+function loadPrettyPhoto ($imageUrl) {
+    $img = @getimagesize($imageUrl);
+    if ($img && $img[0] > 600 || $img[1] > 600) {
+        $path = drupal_get_path('module', 'ndabioresults');
+        drupal_add_css($path . "/css/prettyPhoto.css");
+        drupal_add_js($path . "/js/jquery.prettyPhoto.js");
+        drupal_add_js(
+            'jQuery(document).ready(function($){
+                $("a[rel^=\'prettyPhoto\']").prettyPhoto({
+                    social_tools: false
+                });
+            });',
+            array('type' => 'inline', 'scope' => 'footer'));
+        return true;
+    }
+    return false;
 }
