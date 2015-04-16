@@ -694,9 +694,9 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-    p($channels);
+    p($channels); echo 'henk';
 
-	 return $output;
+	return $output;
 }
 
 /**
