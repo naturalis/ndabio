@@ -215,6 +215,8 @@ function logSearch () {
     $data['field_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     $data['field_search_type'] = !empty($_SESSION['ndaSearch']['geoShape']) ? 'geo ' :
         (empty($data['field_term']) ? 'advanced' : 'simple');
+    $file = variable_get('ndabioresults_config_log', NBALOG); // "/tmp/bioportal.log.json";
+    file_put_contents($file, json_encode($data) . "\r\n", FILE_APPEND);
 
     $node = new stdClass();
     $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .

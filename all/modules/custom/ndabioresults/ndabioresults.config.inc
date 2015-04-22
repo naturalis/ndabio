@@ -1,6 +1,7 @@
 <?php
 
 define("NBABASEURL", "http://10.42.1.163:8080/v0/");
+define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
 define("NBADEFAULTSORT", '_score');
@@ -41,6 +42,17 @@ function ndabioresults_config_form($form, &$form_state) {
     '#size' => 140,
     '#maxlength' => 200,
     '#description' => t('The base URL of the NBA.') . '<br />' . t('Default') . ': ' . NBABASEURL,
+    '#required' => TRUE
+  );
+
+  //LOG file location
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_log'] = array(
+    '#type' => 'textfield',
+    '#title' => t('NBA JSON Log file'),
+    '#default_value' => variable_get('ndabioresults_config_log', NBALOG),
+    '#size' => 140,
+    '#maxlength' => 200,
+    '#description' => t('NBA JSON Log file.') . '<br />' . t('Default') . ': ' . NBALOG,
     '#required' => TRUE
   );
 
