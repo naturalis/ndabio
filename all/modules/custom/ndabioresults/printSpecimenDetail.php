@@ -78,7 +78,7 @@ function printSpecimenDetail ($data) {
 
 			    if (!empty($value['siteCoordinates'])) {
                     $output .= printDL(ucfirst(translateNdaField('siteCoordinates')),
-                        decimalToDMS2($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
+                        decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
                         $value['siteCoordinates']['lon'] . ')'
                     );
 			    }
