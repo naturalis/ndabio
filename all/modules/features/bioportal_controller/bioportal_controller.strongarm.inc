@@ -99,7 +99,7 @@ function bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'admin@example.com';
+  $strongarm->value = 'bioportal@naturalis.nl';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();

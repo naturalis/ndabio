@@ -55,12 +55,5 @@ function bioportal_controller_wysiwyg_default_profiles() {
     ),
   );
 
-  // Exported profile: markdown
-  $profiles['markdown'] = array(
-    'format' => 'markdown',
-    'editor' => 'epiceditor',
-    'settings' => FALSE,
-  );
-
   return $profiles;
 }
