@@ -26,6 +26,8 @@ function printSpecimensByTaxon ($data) {
 
     // Drupal title empty; page title custom
     $headTitle = t('Search results');
+    $nameSortFlag = isGroupService(specimenNamesService()) ?
+        'groupName' : 'identifications.scientificName.fullScientificName';
     setTitle($headTitle, $headTitle);
 
     $headers = array(
@@ -37,10 +39,10 @@ function printSpecimensByTaxon ($data) {
 			    'DESC' => 'icon-sort_z_a'
 			),
 			'url' => setSortUrl(
-                'groupName',
+                $nameSortFlag,
 			    'ASC',
 			    $data['self'],
-			    true
+                isGroupService(specimenNamesService())
 			)
 		),
 		'count' => array(
@@ -63,7 +65,7 @@ function printSpecimensByTaxon ($data) {
                 '_score',
 			    'DESC',
 			    $data['self'],
-			    true
+			    isGroupService(specimenNamesService())
 			)
 		)
 	);

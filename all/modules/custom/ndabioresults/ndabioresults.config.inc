@@ -521,7 +521,7 @@ function groupServices () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
-        	specimenNamesService()
+        	//specimenNamesService()
         );
     }
     return $var;
