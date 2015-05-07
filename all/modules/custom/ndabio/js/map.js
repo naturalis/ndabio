@@ -127,6 +127,8 @@ function initializeSpecimens() {
 	map.data.setStyle(mapStyle);
 	zoom(map);
 
+	var previousInfowindow = false;
+
 	jQuery.each(specimenMarkers, function() {
 		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
 		var marker = new google.maps.Marker({
@@ -144,11 +146,15 @@ function initializeSpecimens() {
 
 		var infowindow = new google.maps.InfoWindow({
 		    content: createInfoText(marker),
-        maxWidth: 400
+		    maxWidth: 350
 		});
 
 		google.maps.event.addListener(marker, 'click', function() {
-		    infowindow.open(map, marker);
+			if (previousInfowindow) {
+				previousInfowindow.close();
+		    }
+			previousInfowindow = infowindow;
+			infowindow.open(map, marker);
 		});
 
 		marker.setMap(map);
