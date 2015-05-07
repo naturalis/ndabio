@@ -14,16 +14,27 @@ function printSpecimenDetail ($data) {
         $path = drupal_get_path('module', 'ndabio');
         drupal_add_css($path . "/css/ndabio_style.css");
         drupal_add_js($path . "/js/map.js", array('weight' => 1));
-        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
+            variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
         drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
-        drupal_add_js("var specimenMarker = " . json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
+        drupal_add_js("var specimenMarker = " .
+            json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
         if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-            drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+            drupal_add_js('var storedMapCenter = "' .
+                $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
         }
         if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
-            drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+            drupal_add_js("var storedZoomLevel = " .
+                $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
         }
+        // Add mapcode scripts
+        $path = drupal_get_path('module', 'ndabioresults');
+        drupal_add_js($path . "/js/mapcode/ctrynams.js", array('weight' => 1));
+        drupal_add_js($path . "/js/mapcode/mapcode.js", array('weight' => 1));
+        drupal_add_js($path . "/js/mapcode/ndata.js", array('weight' => 1));
+        drupal_add_js($path . "/js/library.js", array('weight' => 1));
+        drupal_add_js("jQuery(document).ready(function() { setMapcode(); });", 'inline');
     }
 
 	// Determines order to print field/value;
@@ -78,9 +89,13 @@ function printSpecimenDetail ($data) {
 
 			    if (!empty($value['siteCoordinates'])) {
                     $output .= printDL(ucfirst(translateNdaField('siteCoordinates')),
-                        decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
+                        decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
+                        ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
                         $value['siteCoordinates']['lon'] . ')'
                     );
+                    // Mapcodes
+                    $output .= '<dl><dt>Mapcode(s)</dt><dd id="mapcode"></dd></dl>';
+
 			    }
 			}
 
