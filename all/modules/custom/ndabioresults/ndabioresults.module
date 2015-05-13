@@ -1435,6 +1435,8 @@ function parseSpecimensByTaxon ($json) {
 
     // Parameter that determines if results are for group or single taxon
     $single = isset($output['searchTerms']['single']) ? true : false;
+    $maxResults = isGroupService(specimenNamesService()) ?
+        maxGroupResults() : maxResults();
 
     foreach ($data->resultGroups as $row) {
 		$d = array();
@@ -1459,9 +1461,10 @@ function parseSpecimensByTaxon ($json) {
     		$s['collectionType'] = $sp->result->collectionType;
     		$s['url'] = $sp->links[0]->href;
     		$s['score'] = $sp->score;
-            empty($assemblageID) ? $d['specimens'][] = $s : $d['sets'][$assemblageID][] = $s;
+            empty($assemblageID) ? $d['specimens'][] = $s :
+                $d['sets'][$assemblageID][] = $s;
 		}
-		$d['allLink'] = $d['count'] > maxGroupResults() ?
+		$d['allLink'] = $d['count'] > $maxResults ?
             specimenNamesService() . '/?identifications.scientificName.fullScientificName.raw=' .
             urlencode(urlencode($row->sharedValue)) . '&_sort=unitID&_sortDirection=ASC' : '';
 		$output['results'][] = $d;
