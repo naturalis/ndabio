@@ -46,7 +46,6 @@ function printSpecimenMediaDetail ($data) {
 	$fields = array(
         'source',
     	'creator',
-    	'license',
 	    'title',
 	    'description',
         'copyrightText',
@@ -60,6 +59,12 @@ function printSpecimenMediaDetail ($data) {
 			    is_array($data[$field]) ? implode(', ', $data[$field]) : $data[$field]
 			);
 		}
+	}
+	if (!empty($data['license'])) {
+	    $output .= printDL(
+	       ucfirst(translateNdaField('license')),
+	       printCC0($data['license'])
+	    );
 	}
 
     // Drupal title empty; page title custom

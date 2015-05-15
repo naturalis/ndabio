@@ -30,7 +30,6 @@ function printTaxonMediaDetail ($data) {
 	$fields = array(
 	    'source',
     	'creator',
-    	'license',
 	    'title',
 	    'description',
         'copyrightText',
@@ -46,6 +45,12 @@ function printTaxonMediaDetail ($data) {
 		    }
 		    $output .= printDL(ucfirst(translateNdaField($field)), $data[$field]);
 		}
+	}
+	if (!empty($data['license'])) {
+	    $output .= printDL(
+	       ucfirst(translateNdaField('license')),
+	       printCC0($data['license'])
+	    );
 	}
 
     // Drupal title empty; page title custom
