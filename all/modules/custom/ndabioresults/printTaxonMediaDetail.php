@@ -30,7 +30,7 @@ function printTaxonMediaDetail ($data) {
 	$fields = array(
 	    'source',
     	'creator',
-    	'license',
+	    'license',
 	    'title',
 	    'description',
         'copyrightText',
@@ -41,10 +41,10 @@ function printTaxonMediaDetail ($data) {
 	);
 	foreach ($fields as $field) {
 		if ($data[$field] != '') {
-		    if ($field == 'source' && !empty($data['sourceUrls'])) {
+			if ($field == 'source' && !empty($data['sourceUrls'])) {
                 $data['source'] = printSource($data, $data['source']);
 		    }
-		    $output .= printDL(ucfirst(translateNdaField($field)), $data[$field]);
+		    $output .= printDL(ucfirst(translateNdaField($field)), printCC0($data[$field]));
 		}
 	}
 

@@ -103,7 +103,7 @@ function printSpecimenDetail ($data) {
 			if ($value != '') {
 			    $output .= printDL(
                     ucfirst(translateNdaField($field)),
-			        is_array($value) ? implode(', ', $value) : $value
+			        is_array($value) ? implode(', ', $value) : printCC0($value)
 			    );
 			}
 		}

@@ -2738,3 +2738,18 @@ function loadPrettyPhoto ($imageUrl) {
     }
     return false;
 }
+
+/**
+ *
+ * Prints CC0 license with link, others as is
+ *
+ * @param string $license
+ * @return string
+ */
+function printCC0 ($license) {
+    if (strtolower($license) == 'cc0') {
+        return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
+            $license . '</a>';
+    }
+    return $license;
+}

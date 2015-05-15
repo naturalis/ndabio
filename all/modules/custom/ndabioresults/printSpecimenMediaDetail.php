@@ -46,7 +46,7 @@ function printSpecimenMediaDetail ($data) {
 	$fields = array(
         'source',
     	'creator',
-    	'license',
+	    'license',
 	    'title',
 	    'description',
         'copyrightText',
@@ -57,7 +57,7 @@ function printSpecimenMediaDetail ($data) {
 		if ($data[$field] != '') {
 			$output .= printDL(
                 ucfirst(translateNdaField($field)),
-			    is_array($data[$field]) ? implode(', ', $data[$field]) : $data[$field]
+			    is_array($data[$field]) ? implode(', ', $data[$field]) : printCC0($data[$field])
 			);
 		}
 	}
