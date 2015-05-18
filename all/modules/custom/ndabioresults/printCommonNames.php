@@ -16,7 +16,8 @@ function printCommonNames ($data) {
 
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
 	    foreach ($data['commonNames'] as $source => $d) {
-			$output .= "<h4 class='source'>" . printSource($data, $source) . "</h4>\n<div class='property-list'>\n";
+			$output .= "<h4 class='source'>" . printSource($data, $source) . "</h4>\n
+			     <div class='property-list'>\n";
 	        foreach ($d as $lan => $t) {
 			    $i = 0;
 			    foreach ($t as $name) {
@@ -30,7 +31,8 @@ function printCommonNames ($data) {
 	}
 
 	return _wrap(
-		$header . (!empty($output) ? $output : t('No common names available')),
+        $header . (!empty($output) ? $output :
+		    "<p class='property-list'>" . t('No common names available') . '</p>'),
 		"section",
 		"result-detail-section"
 	);

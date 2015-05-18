@@ -1,5 +1,4 @@
 <?php
-// TODO: alle includes bij elkaar zetten
 
 /**
 * DEFINE BLOCKS
@@ -934,7 +933,7 @@ function parseTaxonDetail ($json) {
 		}
 		if (!empty($row->result->synonyms)) {
 			foreach ($row->result->synonyms as $i => $synonym) {
-				$output['synonyms'][$source] = formatScientificName(
+				$output['synonyms'][$source][] = formatScientificName(
 					$row->result->synonyms[$i]->fullScientificName,
 					$row->result->synonyms[$i]
 				);
@@ -1032,11 +1031,9 @@ function parseClassification ($classification) {
 
 
 include 'printTaxonDetail.php';
-
 include 'printCommonNames.php';
-
+include 'printSynonyms.php';
 include 'printDescriptions.php';
-
 include 'printClassifications.php';
 
 

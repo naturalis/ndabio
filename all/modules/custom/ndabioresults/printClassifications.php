@@ -64,7 +64,8 @@ function printClassifications ($data) {
 
 
 	return _wrap(
-    $header . (!empty($output) ? $output : t('No classifications available')),
+    $header . (!empty($output) ? $output :
+        "<p class='property-list'>" . t('No classifications available') . '</p>'),
     "section",
     "result-detail-section"
   );
