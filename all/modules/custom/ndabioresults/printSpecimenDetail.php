@@ -39,15 +39,34 @@ function printSpecimenDetail ($data) {
 
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
-	$hideFields = array();
+	$hideFields = array(
+        'vernaculars',
+    	'recordURI',
+    	'unitGUID',
+    	'assemblageID',
+    	'notes',
+    	'fromCaptivity',
+    	'acquiredFrom',
+    	'otherSpecimensInAssemblage',
+    	'associatedTaxa'
+	);
 	$fieldOrder = array(
-	   'names',
-	   'vernaculars',
-	   'unitID',
-	   'source',
-	   'assemblageID',
-	   'license',
-	   'collectionType'
+        'names',
+        'unitID',
+        'source',
+        'assemblageID',
+        'license',
+        'collectionType',
+        'sourceInstitutionID',
+        'recordBasis',
+        'typeStatus',
+        'phaseOrStage',
+        'sex',
+        'kindOfUnit',
+        'preparationType',
+        'numberOfSpecimen',
+        'gatheringEvent',
+        'collectorsFieldNumber'
 		// etc
 	);
 	// Reorder input array
@@ -100,12 +119,10 @@ function printSpecimenDetail ($data) {
 			}
 
 		} else {
-			if ($value != '') {
-			    $output .= printDL(
-                    ucfirst(translateNdaField($field)),
-			        is_array($value) ? implode(', ', $value) : printCC0($value)
-			    );
-			}
+		    $output .= printDL(
+                ucfirst(translateNdaField($field)),
+		        is_array($value) ? implode(', ', $value) : printValue($value)
+		    );
 		}
 	}
 	// Other specimens in collection/set are printed in different table

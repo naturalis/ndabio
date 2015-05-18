@@ -44,7 +44,7 @@ function printTaxonMediaDetail ($data) {
 			if ($field == 'source' && !empty($data['sourceUrls'])) {
                 $data['source'] = printSource($data, $data['source']);
 		    }
-		    $output .= printDL(ucfirst(translateNdaField($field)), printCC0($data[$field]));
+		    $output .= printDL(ucfirst(translateNdaField($field)), printValue($data[$field]));
 		}
 	}
 

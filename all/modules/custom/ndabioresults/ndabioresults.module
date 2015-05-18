@@ -1069,8 +1069,7 @@ function parseSpecimenDetail ($json) {
 	$data = json_decode($json);
 
 	foreach ($data->searchResults[0]->result as $field => $value) {
-		if (!is_array($value) && !is_object($value) &&
-			!in_array($field, $skipFields) && $value != '') {
+		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
 			$output[$field] = setUnitId($value, $field);
 		}
 	}
@@ -2741,15 +2740,15 @@ function loadPrettyPhoto ($imageUrl) {
 
 /**
  *
- * Prints CC0 license with link, others as is
+ * Prints value, changing a few if they meet criteria
  *
  * @param string $license
  * @return string
  */
-function printCC0 ($license) {
-    if (strtolower($license) == 'cc0') {
+function printValue ($value) {
+    if (strtolower($value) == 'cc0') {
         return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
-            $license . '</a>';
+            $value . '</a>';
     }
-    return $license;
+    return $value != '' ? $value : '—';
 }
