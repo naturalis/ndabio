@@ -57,7 +57,7 @@ function printSpecimenMediaDetail ($data) {
 		if ($data[$field] != '') {
 			$output .= printDL(
                 ucfirst(translateNdaField($field)),
-			    is_array($data[$field]) ? implode(', ', $data[$field]) : $data[$field]
+			    is_array($data[$field]) ? implode(', ', $data[$field]) : printValue($data[$field])
 			);
 		}
 	}
