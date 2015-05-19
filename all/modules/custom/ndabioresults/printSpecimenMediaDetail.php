@@ -6,8 +6,6 @@
  * @return string Formatted output
  */
 function printSpecimenMediaDetail ($data) {
-//p($data);
-
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
     	//$output .= printNavigation($data);
@@ -45,21 +43,23 @@ function printSpecimenMediaDetail ($data) {
 
 	$fields = array(
         'source',
-    	'creator',
-    	'license',
-	    'title',
-	    'description',
+        'creator',
+        'license',
+        'sourceInstitutionID',
+        'description',
         'copyrightText',
-        'phasesOrStages',
-        'sexes'
+    	'localityText',
+    	'dateTimeBegin',
+        'sexes',
+	    'specimenTypeStatus',
+        'phaseOrStage'
 	);
-	foreach ($fields as $field) {
-		if ($data[$field] != '') {
-			$output .= printDL(
-                ucfirst(translateNdaField($field)),
-			    is_array($data[$field]) ? implode(', ', $data[$field]) : printValue($data[$field])
-			);
-		}
+
+  	foreach ($fields as $field) {
+		$output .= printDL(
+            ucfirst(translateNdaField($field)),
+		    is_array($data[$field]) ? implode(', ', $data[$field]) : printValue($data[$field])
+		);
 	}
 
     // Drupal title empty; page title custom

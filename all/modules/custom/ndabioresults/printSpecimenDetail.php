@@ -2,6 +2,9 @@
 
 // Print specimen detail on screen
 function printSpecimenDetail ($data) {
+
+//p($data);
+
     // Do we have a valid set of coordinates? If so, add Google Map
     $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
         $data['gatheringEvent']['siteCoordinates']['lat'] : false;
