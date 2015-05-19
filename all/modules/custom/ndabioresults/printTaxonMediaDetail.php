@@ -6,8 +6,6 @@
  * @return string Formatted output
  */
 function printTaxonMediaDetail ($data) {
-//p($data);
-
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
 
@@ -31,21 +29,19 @@ function printTaxonMediaDetail ($data) {
 	    'source',
     	'creator',
 	    'license',
-	    'title',
+        'sourceInstitutionID',
 	    'description',
         'copyrightText',
-	    'phasesOrStages',
-        'sexes',
     	'locality',
-    	'date'
+    	'date',
+	    'phaseOrStage',
+        'sexes'
 	);
 	foreach ($fields as $field) {
-		if ($data[$field] != '') {
-			if ($field == 'source' && !empty($data['sourceUrls'])) {
-                $data['source'] = printSource($data, $data['source']);
-		    }
-		    $output .= printDL(ucfirst(translateNdaField($field)), printValue($data[$field]));
-		}
+		if ($field == 'source' && !empty($data['sourceUrls'])) {
+            $data['source'] = printSource($data, $data['source']);
+	    }
+	    $output .= printDL(ucfirst(translateNdaField($field)), printValue($data[$field]));
 	}
 
     // Drupal title empty; page title custom
