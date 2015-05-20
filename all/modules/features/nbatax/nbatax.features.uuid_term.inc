@@ -11,6 +11,23 @@ function nbatax_uuid_features_default_terms() {
   $terms = array();
 
   $terms[] = array(
+    'name' => 'license',
+    'description' => 'license',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '0dad6c98-97dd-41ea-82e9-8782a04950f8',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/license',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'sourceInstitutionID',
     'description' => 'Institution',
     'format' => 'plain_text',
@@ -74,6 +91,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/family',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Basis of record',
+    'description' => 'Basis of record',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '28545072-6195-4494-95b0-0721c01c295d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/basis-record',
         'language' => 'und',
       ),
     ),
@@ -194,6 +228,57 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'Institution',
+    'description' => 'Institution',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '4d06915b-732b-4086-b2b3-dc596cf2d3a5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/institution-0',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'otherSpecimens',
+    'description' => 'other specimens',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '50e9ad90-9022-493e-8408-e6110b3e8b9c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/otherspecimens-0',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Preparation method',
+    'description' => 'Preparation method',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '52f35973-2e89-476f-a9cd-a18774ae31dc',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/preparation-method',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'infraspecificEpithet',
     'description' => 'infraspecific name',
     'format' => 'plain_text',
@@ -257,6 +342,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/genus',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'title',
+    'description' => 'title',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '70b39707-2532-4e1c-bb37-7a1e46f940c1',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/title',
         'language' => 'und',
       ),
     ),
@@ -347,6 +449,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'OtherSpecimens',
+    'description' => 'other specimens',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '876ea642-1bc7-4265-bfa4-19677c0b4b8a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/otherspecimens',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'gatheringAgents',
     'description' => 'collector',
     'format' => 'plain_text',
@@ -365,7 +484,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'source',
-    'description' => 'source',
+    'description' => 'source system',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '89d0de23-7446-4a26-8728-485896e4e9cb',
@@ -483,6 +602,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'Part',
+    'description' => 'Part',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'a643f544-36b4-47e0-b6f9-665967060a14',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/part',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'sex',
     'description' => 'sex',
     'format' => 'plain_text',
@@ -518,7 +654,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'numberOfSpecimen',
-    'description' => 'number of specimens',
+    'description' => 'Count',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'cd856700-a807-4794-b17e-cd9d2620e087',
@@ -563,6 +699,57 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/order',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Number of specimens',
+    'description' => 'Number of specimens',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'e2169f6f-b664-492d-a59b-a4c2088f08c1',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/number-specimens',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Collection name',
+    'description' => 'Collection name',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'e2a060ef-4ff1-428d-ab1f-55a718800f46',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/collection-name',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'CollectionName',
+    'description' => 'Collection name',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'e9529ceb-48de-4837-bf83-27a7300d53b4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/collectionname',
         'language' => 'und',
       ),
     ),

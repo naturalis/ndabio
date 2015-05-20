@@ -342,9 +342,9 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'm_collectionFieldNumber',
-    'description' => 'Collection field number',
-    'format' => NULL,
+    'name' => 'm_collectorsFieldNumber',
+    'description' => 'Collectors field number',
+    'format' => 'markdown',
     'weight' => 2,
     'uuid' => '1fb5261e-7b24-4bfe-b03f-35bb6e121354',
     'language' => 'und',
@@ -364,6 +364,10 @@ function searchtax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectionfieldnumber',
+        'language' => 'und',
+      ),
+      1 => array(
+        'alias' => 'search/mcollectorsfieldnumber',
         'language' => 'und',
       ),
     ),
@@ -807,7 +811,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 't_expert',
     'description' => 'Expert name',
     'format' => NULL,
-    'weight' => 5,
+    'weight' => 0,
     'uuid' => '479981df-3e8b-4ec9-86a5-6c9824ebd5b3',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -830,7 +834,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => '0db9da4a-2338-418c-be05-383749713024',
+      0 => 'abf15890-2907-4350-a0b2-8a3ec2e44512',
     ),
   );
   $terms[] = array(
@@ -1468,7 +1472,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 't_taxonomicStatus',
     'description' => 'Taxonomic status',
     'format' => 'plain_text',
-    'weight' => 7,
+    'weight' => 2,
     'uuid' => '9a975141-7129-41cc-8a1c-a55c118f5948',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1505,7 +1509,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => '0db9da4a-2338-418c-be05-383749713024',
+      0 => 'abf15890-2907-4350-a0b2-8a3ec2e44512',
     ),
   );
   $terms[] = array(
@@ -1561,8 +1565,8 @@ function searchtax_uuid_features_default_terms() {
     'url_alias' => array(),
   );
   $terms[] = array(
-    'name' => 's_collectionFieldNumber',
-    'description' => 'Collections field number',
+    'name' => 's_collectorsFieldNumber',
+    'description' => 'Collectors field number',
     'format' => 'plain_text',
     'weight' => 6,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
@@ -1583,6 +1587,10 @@ function searchtax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectionfieldnumber',
+        'language' => 'und',
+      ),
+      1 => array(
+        'alias' => 'search/scollectorsfieldnumber',
         'language' => 'und',
       ),
     ),
@@ -2190,7 +2198,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 't_expertOrganisation',
     'description' => 'Expert organisation',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 1,
     'uuid' => 'df111ae5-11b6-4ab0-bff2-f9d81cf3b045',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2213,7 +2221,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => '0db9da4a-2338-418c-be05-383749713024',
+      0 => 'abf15890-2907-4350-a0b2-8a3ec2e44512',
     ),
   );
   $terms[] = array(
