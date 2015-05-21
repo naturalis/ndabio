@@ -677,7 +677,9 @@ th .icon-sort_sortable {
 .nba-result-detail h4 {
   font-size: 16px; }
 .nba-result-detail main img {
-  max-height: 600px; }
+  max-width: 700px;
+  max-height: 600px;
+}
 
 .category {
   color: #542e08;
