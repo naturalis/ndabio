@@ -6,6 +6,7 @@
  * @return string Formatted output
  */
 function printSpecimenMediaDetail ($data) {
+//p($data);
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
     	//$output .= printNavigation($data);
@@ -19,7 +20,13 @@ function printSpecimenMediaDetail ($data) {
 
     $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' />";
     if (loadPrettyPhoto($data['imgSrc'])) {
-        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto'>$img</a>\n";
+        $copyright = !empty($data['copyrightText']) ?
+            $copyright = '© ' . $data['copyrightText'] : '';
+        $institution = $data['sourceInstitutionID'] .
+            (!empty($data['sourceID']) ? ' (' . $data['sourceID'] . ')' : '');
+        array_unshift($altParts, $institution, $copyright);
+        $caption = implode('<br/>', array_filter($altParts));
+        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
     }
 
     if (isMp4($data['imgSrc'])) {

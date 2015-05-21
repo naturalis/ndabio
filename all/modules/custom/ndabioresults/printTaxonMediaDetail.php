@@ -17,9 +17,16 @@ function printTaxonMediaDetail ($data) {
     );
     $alt = implode(' | ', array_filter($altParts));
 
+    // Temp solution to show fullsize images
+    $data['imgSrc'] = str_replace('/comping/', '/original/', $data['imgSrc']);
+
     $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' />";
     if (loadPrettyPhoto($data['imgSrc'])) {
-        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto'>$img</a>\n";
+        $copyright = !empty($data['copyrightText']) ?
+            $copyright = '© ' . $data['copyrightText'] : '';
+        array_unshift($altParts, $data['sourceInstitutionID'], $copyright);
+        $caption = implode('<br/>', array_filter($altParts));
+        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
     }
 
     $output .= $img;
