@@ -33,6 +33,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['00647f6a4ec6cb603754c0975a8caf88'] = array(
+    'source' => 'other specimens',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DRMNH.INS.823691',
+    'translation' => 'andere specimens',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['0072c685433ecb2a8aa2d8ad35ef5bb9'] = array(
     'source' => 'Save blocks',
     'context' => '',
@@ -1451,6 +1459,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['0a8f75236305b2d7745f47ba231ea3d1'] = array(
+    'source' => 'area drawn on map',
+    'context' => '',
+    'location' => '/nba/result?language=nl',
+    'translation' => 'getekend gebied',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['0aaa87422396fdd678498793b6d5250e'] = array(
     'source' => 'disable',
     'context' => '',
@@ -2567,7 +2583,7 @@ function bioportal_nl_translations_defaults() {
     'source' => 'Highlighted',
     'context' => '',
     'location' => '',
-    'translation' => 'Geaccentueerd',
+    'translation' => 'Uitgelicht',
     'plid' => 0,
     'plural' => 0,
   );
@@ -9222,6 +9238,14 @@ else {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['3f8dcfc5c6a6942c3246147a31a89035'] = array(
+    'source' => 'Common name(s)',
+    'context' => '',
+    'location' => '/nba/result',
+    'translation' => 'Populaire naam',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['3fcdb73d36d54f2cc22d0f68e6b6e182'] = array(
     'source' => 'form',
     'context' => '',
@@ -9571,6 +9595,14 @@ else {
     'context' => '',
     'location' => '',
     'translation' => 'Auteursinformatie',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['41d00736607886e5658f9522bf812731'] = array(
+    'source' => 'site coordinates',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DL++0755257',
+    'translation' => 'coördinaten vindplaats',
     'plid' => 0,
     'plural' => 0,
   );
@@ -11067,6 +11099,14 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['4b704fc81ee239155d70e135b9330956'] = array(
+    'source' => 'No multimedia available',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabioresults/js/ajax.js',
+    'translation' => 'Geen multimedia beschikbaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['4b76b9076e69be9e9b362d2eec540de0'] = array(
     'source' => 'Individual content types can have different fields, behaviors, and permissions assigned to them.',
     'context' => '',
@@ -11863,7 +11903,7 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'source' => 'preparation method',
     'context' => '',
     'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DRMNH.MAM.45423.b',
-    'translation' => 'preparatie methode',
+    'translation' => 'preparatiemethode',
     'plid' => 0,
     'plural' => 0,
   );
@@ -15198,7 +15238,7 @@ Wachtwoord: het door u ingestelde wachtwoord
     'source' => 'basis of record',
     'context' => '',
     'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DL++0755257',
-    'translation' => 'record beschrijving',
+    'translation' => 'beschrijving',
     'plid' => 0,
     'plural' => 0,
   );
@@ -17645,6 +17685,14 @@ print t(\'Welkom! Dank voor uw bezoek.\');
     'context' => '',
     'location' => '',
     'translation' => 'Nieuwe feed-items worden automatisch in de gemarkeerde categorieën opgeslagen.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['75239c46c0f1ef3dab55e03c3e438ce0'] = array(
+    'source' => 'Type status',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'Typestatus',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24045,6 +24093,14 @@ Uw account op [site:name] is geannuleerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['9f36519a7eb32a78b935661be950441f'] = array(
+    'source' => 'Please, make sure that you complete \\nat least one field and that it contains more\\nthen three characters.\\n',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Vul in ieder geval een zoekveld in\\nmet minimaal drie karakters.\\n',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['9f3b3f02f112f982b538f27ce08b6edb'] = array(
     'source' => 'Using the Color module allows you to easily change the color of links, backgrounds, text, and other theme elements. To change the color settings for a compatible theme, select the <em>Settings</em> link for your theme on the <a href=\'@configure\'>Themes administration page</a>. If you don\'t see a color picker on that page, then your theme is not compatible with the color module. If you are sure that the theme does indeed support the color module, but the color picker does not appear, then <a href=\'@troubleshoot\'>follow these troubleshooting procedures</a>.',
     'context' => '',
@@ -24146,6 +24202,14 @@ Uw account op [site:name] is geannuleerd.
     'context' => '',
     'location' => '',
     'translation' => 'Voegt de mogelijkheid toe om andere talen te gebruiken en maakt het mogelijk om de gebruikersinterface naar andere talen dan het Engels te vertalen.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['a053d3002acda4b1b3099166b5b20963'] = array(
+    'source' => 'Please, select an area or draw\\none on the map.\\n',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Selecteer of teken een gebied op de kaart.\\n',
     'plid' => 0,
     'plural' => 0,
   );
@@ -25623,6 +25687,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'context' => '',
     'location' => '',
     'translation' => 'Het inhoudstype %name is toegevoegd.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['aaa5f2e052fe20177b140fd552050fa2'] = array(
+    'source' => 'Combine search terms',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'Combineer zoektermen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -27415,6 +27487,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'context' => '',
     'location' => '',
     'translation' => 'term',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['b5113599226faa4522c21c00cd24ef78'] = array(
+    'source' => 'Common name',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'Populaire naam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -29583,6 +29663,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'context' => '',
     'location' => '',
     'translation' => 'Met de link <a href="@create-topic">Forumonderwerp</a> op de pagina <a href="@content-add">Inhoud toevoegen</a> wordt het eerste artikel van een nieuwe discussie aangemaakt.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['c152deb5a62dc76c0606c8b6bfb22494'] = array(
+    'source' => 'specimenTypeStatus',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DL.1670559%253A311622069',
+    'translation' => 'typestatus',
     'plid' => 0,
     'plural' => 0,
   );
@@ -35046,6 +35134,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['e8b688dfaf7b25677a220c092f91d022'] = array(
+    'source' => 'Synonyms',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DEmys%26specificEpithet%3Dorbicularis%26infraspecificEpithet%3Dfritzjuergenobsti&language=nl',
+    'translation' => 'Synoniemen',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['e8ced493938225f1dd71ea059ab9119e'] = array(
     'source' => 'Add style',
     'context' => '',
@@ -35251,6 +35347,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'Het importeren van vertalingen van %filename is mislukt.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['ea14eb68667e0f9be71550906377816c'] = array(
+    'source' => 'Geaccentueerd',
+    'context' => '',
+    'location' => '/admin/structure/features/bioportal_geoview/status',
+    'translation' => 'Uitgelicht',
     'plid' => 0,
     'plural' => 0,
   );
@@ -36526,6 +36630,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['f300a565a5bf64a9bca247625f445250'] = array(
+    'source' => 'collecting start date',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DL++0755257',
+    'translation' => 'verzamelstartdatum',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['f3068e38301c6932d87146d6678615e7'] = array(
     'source' => 'Blocks consist of content or information that complements the main content of the page. Enable or disable optional blocks using the checkboxes below.',
     'context' => '',
@@ -36774,6 +36886,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['f47af6eec48b9c992b51504368746370'] = array(
+    'source' => 'collectors field number',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DZMA.POR.4041',
+    'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['f484570d7cf557020e11ace406901b10'] = array(
     'source' => 'theme',
     'context' => '',
@@ -36899,6 +37019,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'Taxonomiewoordenlijst',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['f562fc3fddec0ea904281c6619501deb'] = array(
+    'source' => 'Synonym',
+    'context' => '',
+    'location' => '/nba/result',
+    'translation' => 'Synoniem',
     'plid' => 0,
     'plural' => 0,
   );
@@ -37855,6 +37983,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['fd3724710458b05443a543e4a2c75ec4'] = array(
+    'source' => 'phase or stage',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DRMNH.INS.823691',
+    'translation' => 'Levensfase',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['fd3e4555c422a3f9a81dcafb0b181a2f'] = array(
     'source' => 'Posts - least active first',
     'context' => '',
@@ -37868,6 +38004,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'Ayamara',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['fd4942649388307c732a6dff9ee594c6'] = array(
+    'source' => 'sexes',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DL.1670559%253A311622069',
+    'translation' => 'sexen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -38746,6 +38890,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:taxonomy']['50ecf82edaaa0ebe562bd255bb2fa406'] = array(
+    'source' => 'Phase or stage',
+    'context' => 'term:23:description',
+    'location' => 'taxonomy:term:23:description',
+    'translation' => 'Levensfase',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:taxonomy']['59449f3e83fbfece0b6a40f7a1d2ccdc'] = array(
     'source' => 'Infraspecific name',
     'context' => 'term:32:description',
@@ -38801,6 +38953,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => 'term:48:description',
     'location' => 'taxonomy:term:48:description',
     'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:taxonomy']['a2e8860f1a35078d03a54753039c0993'] = array(
+    'source' => 'Phase or stage',
+    'context' => 'term:30:description',
+    'location' => 'taxonomy:term:30:description',
+    'translation' => 'Levensfase',
     'plid' => 0,
     'plural' => 0,
   );
