@@ -1,4 +1,7 @@
 <?php
+// Print channels in output y/n = 1/0
+define("DEBUG_CHANNELS", 0);
+
 
 /**
 * DEFINE BLOCKS
@@ -696,7 +699,9 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-//p($channels);
+    if (DEBUG_CHANNELS == 1) {
+        p($channels);
+    }
 
 	return $output;
 }
