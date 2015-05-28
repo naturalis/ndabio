@@ -142,7 +142,7 @@ function ndabioresults_pass ($args = "") {
     global $base_path;
     $langs = language_list(); // Note: No argument
     $langcode = $_GET["language"];
-    if (!empty($langcode)) { 
+    if (!empty($langcode)) {
       variable_set('language_default', $langs[$langcode]);
     }
 
