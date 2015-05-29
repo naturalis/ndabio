@@ -40,6 +40,9 @@
   /* Internet Explorer 10+ */
   color: #cccccc; }
 
+/* BIOP-414 */
+.thematic-search .title {display: none;}
+
 .ndabio-toggle-advanced.icon-triangle-up {
   width: 100%;
   text-align: right;
