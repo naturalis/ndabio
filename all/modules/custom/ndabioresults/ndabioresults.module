@@ -453,6 +453,7 @@ function ndaThematicSearch () {
     $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
 
     $pageHeader = '';
+    ctools_class_add(array('thematic-search'));
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
