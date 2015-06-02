@@ -122,14 +122,12 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-
   $form['ndabioresults_config']['ndabioresults_config_specimen'] = array(
     '#type' => 'fieldset',
     '#title' => t('NBA Specimen services'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-
 
   // Constant: name of specimen service
   $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_namespecimenservice'] = array(
@@ -164,15 +162,12 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-
-
   $form['ndabioresults_config']['ndabioresults_config_taxon'] = array(
     '#type' => 'fieldset',
     '#title' => t('NBA Taxon services'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-
 
   //Constant: name of taxon service
   $form['ndabioresults_config']['ndabioresults_config_taxon']['ndabioresults_config_taxonservice'] = array(
@@ -196,14 +191,12 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-
   $form['ndabioresults_config']['ndabioresults_config_mm'] = array(
     '#type' => 'fieldset',
     '#title' => t('NBA Multimedia servives'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-
 
   //Constant: name of multimedia per specimen service
   $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_specimenmultimediaservice'] = array(

@@ -1,4 +1,7 @@
 <?php
+// Print channels in output y/n = 1/0
+define("DEBUG_CHANNELS", 0);
+
 
 /**
 * DEFINE BLOCKS
@@ -21,13 +24,11 @@ function ndabioresults_menu() {
   );
   $items['nba/result/%'] = array(
     'page callback' => 'ndabioresults_pass',
-    //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
   $items['nba/result'] = array(
     'page callback' => 'ndabioresults_pass',
-    //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
@@ -139,8 +140,8 @@ function ndabioresults_pass ($args = "") {
     global $base_path;
     $langs = language_list(); // Note: No argument
     $langcode = $_GET["language"];
-    if (!empty($langcode)) { 
-      variable_set('language_default', $langs[$langcode]);
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
     }
 
     drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
@@ -702,7 +703,9 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-//p($channels);
+    if (DEBUG_CHANNELS == 1) {
+        p($channels);
+    }
 
 	return $output;
 }
