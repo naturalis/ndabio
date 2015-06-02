@@ -107,7 +107,7 @@ function ndabio_block_view($delta = '') {
   switch ($delta) {
 
     case 'ndabio_languageselect':
-    
+
       if (arg(0) == 'node' && is_numeric(arg(1))) {
         $translations = translation_path_get_translations("node/" . arg(1));
         $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
@@ -137,7 +137,7 @@ function ndabio_block_view($delta = '') {
       }
       else {
         $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
-      }	
+      }
       $block['content'] .= "  </li>";
       if ($language->language == "nl") {
         $block['content'] .= "  <li>";
@@ -611,7 +611,7 @@ function ndabio_advanced_taxonomysearch() {
 
     $list =
       "<div id='search-areas-list' class='small-12 medium-3 columns'>" .
-      "  <input id='search-areas-filter' placeholder='« f" . t("filter") . " »' />" .
+      "  <input id='search-areas-filter' placeholder='« " . t("filter") . " »' />" .
       "  <div id='search-areas-target'></div>" .
       "</div>";
 
