@@ -77,7 +77,8 @@
         </div>
 
         <div id="intro">
-            <?php print $intro; ?>
+
+            <?php print t($intro, array(), array('langcode' => $language->language)); ?>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
               <?php print t('Back'); ?>
@@ -263,7 +264,7 @@
         <div class="row" id="bottom-bar-top">
           <?php if ($show_crumble && $breadcrumb): ?>
             <div class="medium-9 columns crumble">
-              <?php echo t('You are here'); ?>
+              <?php echo t('You are here'); ?>:
               <?php print $breadcrumb; ?>
             </div>
           <?php endif; ?>
