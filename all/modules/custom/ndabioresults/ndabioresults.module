@@ -1,6 +1,7 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 0);
+define("DEBUG_CHANNELS", 1);
+define("PRETTYURLS", 1);
 
 
 /**
@@ -20,28 +21,34 @@ function ndabioresults_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ndabioresults_config_form'),
     'access arguments' => array('access administration pages'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-  $items['nba/result/%'] = array(
-    'page callback' => 'ndabioresults_pass',
-    'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM
   );
   $items['nba/result'] = array(
     'page callback' => 'ndabioresults_pass',
     'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
+    'access callback' => TRUE
+  );
+  $items['taxon'] = array(
+    'page callback' => 'prettyUrlPass',
+    'access callback' => TRUE
+  );
+  $items['specimen'] = array(
+    'page callback' => 'prettyUrlPass',
+    'access callback' => TRUE
+  );
+  $items['multimedia'] = array(
+    'page callback' => 'prettyUrlPass',
+    'access callback' => TRUE
   );
   $items['nba/back'] = array(
     'page callback' => 'ndabioresults_back',
     'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
+    'access callback' => TRUE
   );
-
   $items['nba/ajax'] = array(
    'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
+   'type' => MENU_CALLBACK
   );
 
   return $items;
@@ -62,11 +69,7 @@ function ndabioresults_preprocess_html(&$vars){
     }
 }
 
-
-
 include 'ndabioresults.config.inc';
-
-
 
 
 /**
@@ -123,6 +126,34 @@ function setSpecimenParameters (array $sP, $type) {
     }
     return isset($d) ? $d : null;
 }
+
+function prettyUrlPass () {
+    $path = drupal_get_path_alias();
+    foreach (prettyUrlMapping() as $alias => $service) {
+        if (strpos($path, $alias) === 0) {
+            p(prettyPathToNbaRequest($path, $alias, $service));
+            //return ndaDirectRequest(urldecode($_GET['nba_request']));;
+            return ndabioresults_pass();
+        }
+    }
+}
+
+function prettyPathToNbaRequest ($path, $alias, $service) {
+    $path = str_replace($alias, '', $path);
+    if (strpos($path, '/') === 0) {
+        $path = substr($path, 1);
+    }
+    $s = explode('/', $path);
+    $n = count($s);
+    for ($i = 0; $i < $n; $i += 2) {
+        $d[$s[$i]] = rawurldecode($s[$i + 1]);
+    }
+    if (isset($d)) {
+        $_GET['nba_request'] = urlencode($service . '?' . http_build_query($d));
+    }
+    return $_GET['nba_request'];
+}
+
 
 /**
  * Accepts search form data and returns formatted result
@@ -187,7 +218,7 @@ function ndabioresults_pass ($args = "") {
     else if (isset($_GET['nba_request'])) {
         // @todo: check direct url for injection?
         return ndaDirectRequest(urldecode($_GET['nba_request']));
-     }
+    }
 
     // If both POST and SESSION are empty we have a problem...
     else {
@@ -295,10 +326,8 @@ function ndaSimpleSearch () {
     // Other searches do include geoShape if entered
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
-
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+        $area = (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
             t('area drawn on map'));
-
         $pageHeader =
             _wrap(
                 _wrap(
@@ -2533,7 +2562,19 @@ function translateNdaField ($str) {
  * @return string Drupal url
  */
 function printDrupalLink ($url) {
-    return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
+    if (PRETTYURLS == 0) {
+        return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
+    }
+    $url = substr(str_replace(ndaBaseUrl(), '', urldecode($url)), 1);
+    foreach (prettyUrlMapping() as $alias => $service) {
+        if (strpos($url, $service) === 0) {
+            safe_parse_str(substr(str_replace($service, '', $url), 2), $q);
+            foreach ($q as $k => $v) {
+                $pretty .= '/' . $k . '/' . rawurlencode($v);
+            }
+            return isset($pretty) ? setBasePath() . $alias . $pretty : setBasePath();
+        }
+    }
 }
 
 /**

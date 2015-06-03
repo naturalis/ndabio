@@ -510,6 +510,37 @@ function serviceToFunctions () {
     return $var;
 }
 
+/**
+ * Maps pretty url to NBA request
+ *
+ * @return array Key: pretty url, value: NBA request
+ */
+ function prettyUrlMapping () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+            'taxon/search' => NBATAXONSERVICE,
+            'specimen/name-search' => NBASPECIMENNAMESERVICE,
+            'specimen/search' => NBASPECIMENSERVICE,
+            'multimedia/search' => NBAMULTIMEDIASERVICE,
+            'multimedia/taxon-detail' => NBATAXONMULTIMEDIASERVICE,
+            'multimedia/specimen-detail' => NBASPECIMENMULTIMEDIASERVICE,
+            'taxon/detail' => NBATAXONDETAILSERVICE,
+            'specimen/detail' => NBASPECIMENDETAILSERVICE
+        );
+    }
+    return $var;
+}
+
+
+/**
+ * List of grouped services
+ *
+ * Some services return aggregated results. These require different treatment of
+ * the result. This array lists all grouped result services.
+ *
+ * @return array
+ */
 function groupServices () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
