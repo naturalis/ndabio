@@ -316,6 +316,11 @@
   if ( $_advanced_search_form.length ){
 
     var $_fieldset = $("#edit-extended > div > fieldset[id^='edit']");
+    var lang = $('html').attr('lang');
+    str_prefix = "";
+    if ( lang == "nl" ) {
+      str_prefix = "/nl";
+    }
 
     $_fieldset.each(function(){
       $_me = $(this);
@@ -324,7 +329,7 @@
 
       str_anchor = str_anchor.substring(5);
 
-      str_anchor = "/help#" + str_anchor;
+      str_anchor = str_prefix + "/help#" + str_anchor;
 
       $_me
         .children(":first")
