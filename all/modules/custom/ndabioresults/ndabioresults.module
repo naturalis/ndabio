@@ -1,6 +1,6 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 1);
+define("DEBUG_CHANNELS", 0);
 define("PRETTYURLS", 1);
 
 
@@ -131,7 +131,7 @@ function prettyUrlPass () {
     $path = drupal_get_path_alias();
     foreach (prettyUrlMapping() as $alias => $service) {
         if (strpos($path, $alias) === 0) {
-            p(prettyPathToNbaRequest($path, $alias, $service));
+            prettyPathToNbaRequest($path, $alias, $service);
             //return ndaDirectRequest(urldecode($_GET['nba_request']));;
             return ndabioresults_pass();
         }
