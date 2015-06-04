@@ -8782,6 +8782,14 @@ else {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['3c3662bcb661d6de679c636744c66b62'] = array(
+    'source' => 'sex',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DRMNH.INS.823691',
+    'translation' => 'geslacht',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['3c3ba615798db7340cd94c6e2d59e74e'] = array(
     'source' => 'Factor',
     'context' => '',
@@ -10726,6 +10734,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'context' => '',
     'location' => '',
     'translation' => 'De beschrijving kan gebruikt worden als het label van de link naar het bestand.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['48b3cdc26c65b129b1e0511487dd957b'] = array(
+    'source' => '<div id=\'boxes-box-site_explanation\' class=\'boxes-box\'><div class="boxes-box-content"><p>At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.</p>
+</div></div>',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
     'plid' => 0,
     'plural' => 0,
   );
@@ -16844,7 +16861,7 @@ print t(\'Welkom! Dank voor uw bezoek.\');
     'source' => 'registration number',
     'context' => '',
     'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Fspecimen%2Fget-specimen%2F%3FunitID%3DL++0755257',
-    'translation' => 'registratiennummer',
+    'translation' => 'registratienummer',
     'plid' => 0,
     'plural' => 0,
   );
@@ -33444,6 +33461,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['dc420563e5dd1c2f8f04c3e08993e948'] = array(
+    'source' => 'kingdom',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
+    'translation' => 'rijk',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['dc4471a634140a175ee1a38fefddc4db'] = array(
     'source' => 'Administer vocabularies and terms',
     'context' => '',
@@ -35315,6 +35340,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'De gebruikersnaam mag geen meerdere spaties na elkaar bevatten.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['e9b1e7bc451762a2f9902db395449166'] = array(
+    'source' => 'Phylum',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'Afdeling of stam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -38011,7 +38044,7 @@ Uw account op [site:name] werd geblokkeerd.
     'source' => 'sexes',
     'context' => '',
     'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DL.1670559%253A311622069',
-    'translation' => 'sexen',
+    'translation' => 'geslacht',
     'plid' => 0,
     'plural' => 0,
   );
@@ -38906,6 +38939,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:taxonomy']['5c96e949b8a6a4798d9f51e766fe3930'] = array(
+    'source' => 'Phylum',
+    'context' => 'term:61:description',
+    'location' => 'taxonomy:term:61:description',
+    'translation' => 'Afdeling of stam',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:taxonomy']['736ff2c3b7f214d6b275c845272bda17'] = array(
     'source' => 's_collectorsFieldNumber',
     'context' => 'term:48:name',
@@ -38985,6 +39026,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => 'term:8:description',
     'location' => 'taxonomy:term:8:description',
     'translation' => 'verzamelstartdatum',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:taxonomy']['bfb2697f2368188210ebc43feb6112c3'] = array(
+    'source' => 'Phylum',
+    'context' => 'term:49:description',
+    'location' => 'taxonomy:term:49:description',
+    'translation' => 'Afdeling of stam',
     'plid' => 0,
     'plural' => 0,
   );

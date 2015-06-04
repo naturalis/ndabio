@@ -148,6 +148,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'Collecting start date',
+    'description' => 'Collecting start date',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '2e063a66-a28e-41a7-adf3-596091417b1e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/collecting-start-date',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'dateTimeBegin',
     'description' => 'collecting start date',
     'format' => 'plain_text',
@@ -364,6 +381,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'sexes',
+    'description' => 'sex',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '7153ab73-6bfe-4c7f-b94f-702d9c05e960',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/sexes',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'creator',
     'description' => 'creator',
     'format' => 'plain_text',
@@ -552,7 +586,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'typeStatus',
-    'description' => 'type status',
+    'description' => 'typestatus',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '92f23ba1-2047-4c3d-a05c-a8bc3da60d4b',
@@ -597,6 +631,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/species',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Collectors field number',
+    'description' => 'Collectors field number',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'a3ef2682-4358-45ec-9e67-42995420449d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/collectors-field-number',
         'language' => 'und',
       ),
     ),
@@ -670,6 +721,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'Other specimens',
+    'description' => 'Other specimens',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'cfeae946-83f6-4d6f-842d-d98fdf029e62',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/other-specimens',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'collectorsFieldNumber',
     'description' => 'collectors field number',
     'format' => 'plain_text',
@@ -733,6 +801,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collection-name',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Phase or stage',
+    'description' => 'Phase or stage',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => 'e7f78485-64dc-4488-9183-209c19b2283e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/phase-or-stage',
         'language' => 'und',
       ),
     ),
