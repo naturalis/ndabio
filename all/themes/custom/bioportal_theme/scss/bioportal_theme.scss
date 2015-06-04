@@ -123,6 +123,10 @@
     padding-right: 10px;
   }
 
+  /* BIOP-414 */
+  body.thematic-search .title {display: none;}
+  body.page-nba-result h1#page-title {display:none;}
+
   // IE-8 MESSAGE
   #ie8{
     display: none;
@@ -553,7 +557,7 @@
       height: 50px;
       line-height: 50px;
       text-align: right;
-      color: $gray-8;
+      color: $gray-5;
       font-size: 1.2em;
       font-weight: 300;
       padding-right: 1em;
