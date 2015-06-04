@@ -329,7 +329,7 @@
       $_me
         .children(":first")
           .children(":first")
-            .wrap("<a class='to-help' href='"+str_anchor+"'></a>");
+            .wrap("<a class='to-help' target='_blank' href='"+str_anchor+"'></a>");
 
     })
 
