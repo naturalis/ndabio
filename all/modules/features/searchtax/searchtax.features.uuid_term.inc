@@ -409,7 +409,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_sex',
     'description' => 'Sex',
     'format' => 'plain_text',
-    'weight' => 5,
+    'weight' => 6,
     'uuid' => '2bc7d345-6def-4b59-82c9-a3c4445c5d65',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -446,7 +446,7 @@ function searchtax_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
+      0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
   );
   $terms[] = array(
@@ -1105,7 +1105,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--hide--',
     'description' => '--hide--',
     'format' => NULL,
-    'weight' => 7,
+    'weight' => 8,
     'uuid' => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2355,7 +2355,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--more--',
     'description' => '--more--',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 7,
     'uuid' => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     'language' => 'und',
     'i18n_tsid' => 0,

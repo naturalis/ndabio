@@ -28,6 +28,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'Family',
+    'description' => 'family',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '0ff80917-a4d6-4602-9b20-0d2c40524d35',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/family-0',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'sourceInstitutionID',
     'description' => 'Institution',
     'format' => 'plain_text',
@@ -57,6 +74,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/localitytext',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Specific name',
+    'description' => 'specific name',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '1a4c0770-5950-47b4-9783-716230c7aad4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/specific-name',
         'language' => 'und',
       ),
     ),
@@ -393,6 +427,23 @@ function nbatax_uuid_features_default_terms() {
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sexes',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'Class',
+    'description' => 'class',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '753765da-6c00-4b97-ab94-510e519b662d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/class',
         'language' => 'und',
       ),
     ),
@@ -756,7 +807,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'order',
-    'description' => 'order',
+    'description' => 'orde',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'dfb76785-1107-4c0d-acd7-4e2fa4df4e6a',
