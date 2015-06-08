@@ -30,8 +30,7 @@
             <ul class="right" id="help">
               <li>
                 <a href="<?php global $language;
-  $translations = translation_path_get_translations("node/2");
-  print $base_url . drupal_get_path_alias($translations[$language->language]); ?>">
+  print $base_url . $language->language . "/help?language=" . $language->language; ?>">
                   <span class="icon-help"></span>
                 </a>
               </li>
@@ -271,7 +270,7 @@
 
           <?php if ($show_links): ?>
             <div class="medium-3 columns external-links">
-              <?php print $external_links_menu; ?>
+              <?php print $external_links_menu;  ?>
             </div>
           <?php endif; ?>
 
