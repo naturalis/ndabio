@@ -381,6 +381,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'SpecimenTypeStatus',
+    'description' => 'Typestatus',
+    'format' => 'markdown',
+    'weight' => 0,
+    'uuid' => '639fa982-9878-4584-a0f5-708a14195de3',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/specimentypestatus',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'genus',
     'description' => 'genus',
     'format' => 'plain_text',
