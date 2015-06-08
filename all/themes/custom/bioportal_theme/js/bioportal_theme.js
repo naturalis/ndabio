@@ -317,7 +317,7 @@
 
     var $_fieldset = $("#edit-extended > div > fieldset[id^='edit']");
     var lang = $('html').attr('lang');
-    str_prefix = "";
+    str_prefix = "/en";
     if ( lang == "nl" ) {
       str_prefix = "/nl";
     }
