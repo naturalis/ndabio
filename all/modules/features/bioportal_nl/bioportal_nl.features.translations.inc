@@ -185,6 +185,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['0179897d80f77a41274d87d27772a06e'] = array(
+    'source' => 'larva',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'larve',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['0197fee95db15947d2579b55091916fd'] = array(
     'source' => 'Chinese, Simplified',
     'context' => '',
@@ -384,6 +392,14 @@ function bioportal_nl_translations_defaults() {
     'context' => '',
     'location' => '',
     'translation' => 'Frankrijk',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['030e7a0c88678ad58332b67fe03a78e6'] = array(
+    'source' => 'genus',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
+    'translation' => 'geslacht',
     'plid' => 0,
     'plural' => 0,
   );
@@ -1795,6 +1811,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['0d3fda0bdbb9d619e09cdf3eecba7999'] = array(
+    'source' => 'family',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
+    'translation' => 'familie',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['0d514d2dbd4b1b8165f714d11e8319ad'] = array(
     'source' => 'Administrator role',
     'context' => '',
@@ -1984,6 +2008,14 @@ function bioportal_nl_translations_defaults() {
     'context' => 'vocabulary:1:name',
     'location' => 'taxonomy:vocabulary:1:name',
     'translation' => 'search',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['0e9312087f58f367d001ec9bae8f325a'] = array(
+    'source' => 'egg',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'ei',
     'plid' => 0,
     'plural' => 0,
   );
@@ -4131,6 +4163,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['1d770934d44de09b0d24f04fd01708ba'] = array(
+    'source' => 'mixed',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'gemengd',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['1d9fe54452889aa5977de907662b13e0'] = array(
     'source' => 'Original image',
     'context' => '',
@@ -6212,6 +6252,14 @@ else {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['2ae41fa6dbd644a6846389ad14167167'] = array(
+    'source' => 'copyright',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-taxon-within-result-set%252F%253FunitID%253DAHCYFCQVFOS%253A0163017545',
+    'translation' => 'auteursrecht',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['2afd29472725a07a5527c7095b94e0ed'] = array(
     'source' => 'Image generation in progress. Try again shortly.',
     'context' => '',
@@ -6616,7 +6664,7 @@ else {
     'source' => 'Collection specimens',
     'context' => '',
     'location' => '',
-    'translation' => 'Collectie specimens',
+    'translation' => 'Specimens',
     'plid' => 0,
     'plural' => 0,
   );
@@ -6681,6 +6729,14 @@ else {
     'context' => '',
     'location' => '',
     'translation' => 'Datumnotaties opnieuw instellen',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['2e85a22d0ffa063c211acd8f34952360'] = array(
+    'source' => 'adult',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'volwassen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -12953,6 +13009,14 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['56bc71205673f2329b2716eca1df0100'] = array(
+    'source' => 'hermaphrodite',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'hermafrodiet',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['56c65f3058d946fe9b9f899b11758cf2'] = array(
     'source' => 'This field stores simple on/off or yes/no options.',
     'context' => '',
@@ -18045,7 +18109,7 @@ print t(\'Welkom! Dank voor uw bezoek.\');
     'source' => 'Genus or monomial',
     'context' => '',
     'location' => '',
-    'translation' => 'Geslacht (genus)',
+    'translation' => 'Genus',
     'plid' => 0,
     'plural' => 0,
   );
@@ -18766,6 +18830,14 @@ Uw account op [site:name] is geannuleerd.
     'context' => '',
     'location' => '',
     'translation' => 'open',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['7d04c3b0e707de7d966fbba485415e0e'] = array(
+    'source' => 'Collection specimens by name',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Soorten met specimens',
     'plid' => 0,
     'plural' => 0,
   );
@@ -20242,6 +20314,14 @@ Uw account op [site:name] is geannuleerd.
     'context' => '',
     'location' => '',
     'translation' => 'Ingeschakeld (\'@value\')',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['866da8f728fefd30006abb8628ae7b01'] = array(
+    'source' => 'nymph',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'nimf',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24482,7 +24562,7 @@ Uw account op [site:name] is geannuleerd.
     'source' => 'Order',
     'context' => '',
     'location' => '',
-    'translation' => 'Volgorde',
+    'translation' => 'Orde',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24539,6 +24619,14 @@ Uw account op [site:name] is geannuleerd.
     'context' => '',
     'location' => '',
     'translation' => 'Set wijzigen',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['a2f2ed4f8ebc2cbb4c21a29dc40ab61d'] = array(
+    'source' => 'class',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
+    'translation' => 'klasse',
     'plid' => 0,
     'plural' => 0,
   );
@@ -25863,7 +25951,7 @@ Wachtwoord: het door u ingestelde wachtwoord
     'source' => 'Genus or monomial',
     'context' => 'term:34:description',
     'location' => 'taxonomy:term:34:description',
-    'translation' => 'Geslacht (genus)',
+    'translation' => 'Genus',
     'plid' => 0,
     'plural' => 0,
   );
@@ -28392,6 +28480,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'context' => '',
     'location' => '',
     'translation' => 'Om OpenID te gebruiken dient u eerst een identiteit aan te maken bij een openbare of besloten OpenID-provider. Heeft u nog geen OpenID, maak dan gebruik van één van de <a href="@openid-providers">gratis openbare aanbieders</a>. Meer informatie over OpenID vindt u op <a href="@openid-net">deze website</a>.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['b9dab173a2afee52fcef9b9214219586'] = array(
+    'source' => 'specific name',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
+    'translation' => 'soortnaam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -31232,6 +31328,14 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['cc468714d352a097fb04c4dd2c425524'] = array(
+    'source' => 'juvenile',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'jeugd',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['cc53b90b737c7350eb54d97179ed352f'] = array(
     'source' => 'Monitoring your site',
     'context' => '',
@@ -31389,6 +31493,14 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'context' => '',
     'location' => '',
     'translation' => 'Velden van gebruikersaccounts worden globaal gedefinieerd op de <a href="@fields">Veldenbeheertab</a> of de <a href="@accounts">Accountinstellingenpagina</a>. Als u een veld voor gebruikersaccounts definieert, dan wordt dit aan elke gebruikersaccount toegevoegd. U kunt bijvoorbeeld een lang tekstveld opnemen waarmee gebruikers een biografie kunnen toevoegen.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['ce248a0622efb877834fd2cef789b6f1'] = array(
+    'source' => 'immature',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'onvolwassen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -31677,6 +31789,14 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'context' => '',
     'location' => '',
     'translation' => 'Ontwikkel en test uw PHP-code met behulp van testscripts en voorbeeld databasegegevens voordat de code op een productiesite wordt toegepast.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['cf6910376332f1e3a900c6b260b84af9'] = array(
+    'source' => 'subadult',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl',
+    'translation' => 'bijna volwassen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -34956,6 +35076,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'Ghana',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['e747a0e9ca806563a6c49c9d1cc79c10'] = array(
+    'source' => 'infraspecific name',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DEmys%26specificEpithet%3Dorbicularis%26infraspecificEpithet%3Dfritzjuergenobsti&language=nl',
+    'translation' => 'ondersoort',
     'plid' => 0,
     'plural' => 0,
   );
@@ -38910,7 +39038,7 @@ Uw account op [site:name] werd geblokkeerd.
     'source' => 'Collection specimens by name',
     'context' => 'term:70:name',
     'location' => 'taxonomy:term:70:name',
-    'translation' => 'Collectie specimens per naam',
+    'translation' => 'collectie specimens per naam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39017,7 +39145,7 @@ Uw account op [site:name] werd geblokkeerd.
     'source' => 'Collection specimens by name',
     'context' => 'term:70:description',
     'location' => 'taxonomy:term:70:description',
-    'translation' => 'Collectie specimens per naam',
+    'translation' => 'collectie specimens per naam',
     'plid' => 0,
     'plural' => 0,
   );
