@@ -329,7 +329,7 @@
 
       str_anchor = str_anchor.substring(5);
 
-      str_anchor = str_prefix + "/help#" + str_anchor;
+      str_anchor = str_prefix + "/help#" + str_anchor + "?language=" + lang;
 
       $_me
         .children(":first")

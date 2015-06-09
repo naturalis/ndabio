@@ -117,7 +117,7 @@ button, .button {
     top: -100%; }
   #naturalis-header #title-and-slogan #intro {
     position: absolute;
-    top: 160px;
+    top: 170px;
     color: #ffffff; }
     @media only screen and (max-width: 1024px) {
       #naturalis-header #title-and-slogan #intro p {
@@ -129,7 +129,7 @@ button, .button {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 1em;
+    padding: 1em 1em 1em 1em;
     height: 3em;
     width: 100%;
     text-align: right;
