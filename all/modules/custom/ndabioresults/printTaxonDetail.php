@@ -24,6 +24,7 @@ function printTaxonDetail ($data) {
 
     $output .=
         printCommonNames($data) .
+        printSynonyms($data) .
         printDescriptions($data) .
         printClassifications($data);
 
@@ -40,8 +41,8 @@ function printTaxonDetail ($data) {
     drupal_add_js("jQuery(document).ready(function() { getTotal(getSpecimenRequest, setTaxonSpecimenLink); });", 'inline');
     drupal_add_js("jQuery(document).ready(function() { getTotal(getMultimediaRequest, setTaxonMultimediaLink); });", 'inline');
 
-    $output .= '<h3>' . t('Specimens'). '</h3><p id="taxon_specimens"></p>';
-    $output .= '<h3>' . t('Multimedia'). '</h3><p id="taxon_multimedia"</p>';
+    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="taxon_specimens"></p>';
+    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="taxon_multimedia"</p>';
 
     // Drupal title empty; page title custom
     setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));

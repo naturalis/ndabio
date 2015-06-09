@@ -107,7 +107,7 @@ function ndabio_block_view($delta = '') {
   switch ($delta) {
 
     case 'ndabio_languageselect':
-    
+
       if (arg(0) == 'node' && is_numeric(arg(1))) {
         $translations = translation_path_get_translations("node/" . arg(1));
         $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
@@ -115,7 +115,7 @@ function ndabio_block_view($delta = '') {
       }
       else {
         $currentpath = request_uri();
-        $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl");
+        $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl", "&searchagain=1", "?searchagain=1", "&back", "?back");
         $currentpath = str_replace($cleanup, "", $currentpath);
         if (strpos($currentpath, "?") === FALSE) {
           $currentpath = $currentpath . "?";
@@ -132,7 +132,12 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+      if (strpos($currentpathen, "nba_request") === FALSE) {
+        $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
+      }
+      else {
+        $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+      }
       $block['content'] .= "  </li>";
       if ($language->language == "nl") {
         $block['content'] .= "  <li>";
@@ -140,7 +145,12 @@ function ndabio_block_view($delta = '') {
       else {
         $block['content'] .= "  <li class='active'>";
       }
-      $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+      if (strpos($currentpathnl, "nba_request") === FALSE) {
+        $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
+      }
+      else {
+        $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+      }
       $block['content'] .= "  </li>";
       $block['content'] .= "</ul>";
 
@@ -426,7 +436,7 @@ function ndabio_advanced_taxonomysearch() {
         if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
-            '#title' => $childlabel,
+            '#title' => t($childlabel),
             $fieldsetPrefix . '_andOr' => array(
               '#type' => 'radios',
               '#title' => t('Combine search terms'),
@@ -591,17 +601,17 @@ function ndabio_advanced_taxonomysearch() {
       "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed'>" . t('Municipality') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed'>" . t('Municipality') . " (NL)</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed'>" . t('Nature') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed'>" . t('Nature') . " (NL)</a>" .
       "    </li>" .
       "  </ul>" .
       "</div>";
 
     $list =
       "<div id='search-areas-list' class='small-12 medium-3 columns'>" .
-      "  <input id='search-areas-filter' placeholder='« filter »' />" .
+      "  <input id='search-areas-filter' placeholder='« " . t("filter") . " »' />" .
       "  <div id='search-areas-target'></div>" .
       "</div>";
 

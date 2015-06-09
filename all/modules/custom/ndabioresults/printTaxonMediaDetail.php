@@ -17,9 +17,16 @@ function printTaxonMediaDetail ($data) {
     );
     $alt = implode(' | ', array_filter($altParts));
 
+    // Temp solution to show fullsize images
+    $data['imgSrc'] = str_replace('/comping/', '/original/', $data['imgSrc']);
+
     $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' />";
     if (loadPrettyPhoto($data['imgSrc'])) {
-        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto'>$img</a>\n";
+        $copyright = !empty($data['copyrightText']) ?
+            $copyright = '© ' . $data['copyrightText'] : '';
+        array_unshift($altParts, $data['sourceInstitutionID'], $copyright);
+        $caption = implode('<br/>', array_filter($altParts));
+        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
     }
 
     $output .= $img;
@@ -30,22 +37,20 @@ function printTaxonMediaDetail ($data) {
 	$fields = array(
 	    'source',
     	'creator',
-    	'license',
-	    'title',
+	    'license',
+        'sourceInstitutionID',
 	    'description',
         'copyrightText',
-	    'phasesOrStages',
-        'sexes',
     	'locality',
-    	'date'
+    	'date',
+	    'phaseOrStage',
+        'sexes'
 	);
 	foreach ($fields as $field) {
-		if ($data[$field] != '') {
-		    if ($field == 'source' && !empty($data['sourceUrls'])) {
-                $data['source'] = printSource($data, $data['source']);
-		    }
-		    $output .= printDL(ucfirst(translateNdaField($field)), $data[$field]);
-		}
+		if ($field == 'source' && !empty($data['sourceUrls'])) {
+            $data['source'] = printSource($data, $data['source']);
+	    }
+	    $output .= printDL(ucfirst(translateNdaField($field)), printValue($data[$field]));
 	}
 
     // Drupal title empty; page title custom

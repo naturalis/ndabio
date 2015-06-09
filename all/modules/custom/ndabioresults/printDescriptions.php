@@ -27,7 +27,8 @@ function printDescriptions ($data) {
 	}
 
 	return _wrap(
-		$header . (!empty($output) ? $output : t('No descriptions available')),
+		$header . (!empty($output) ? $output :
+		      "<p class='property-list'>" . t('No descriptions available') . '</p>'),
 		"section",
 		"result-detail-section"
 	);

@@ -21,7 +21,7 @@ function setTaxonSpecimenLink (request, total) {
 		var label = total == 1 ? Drupal.t('Specimen') : Drupal.t('Specimens');
 		jQuery('#taxon_specimens').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' + label + ' (' + total + ')</a>');
 	} else {
-		jQuery('#taxon_specimens').html(Drupal.t('No specimens'));
+		jQuery('#taxon_specimens').html(Drupal.t('No specimens available'));
 	}
 }
 
@@ -31,7 +31,7 @@ function setTaxonMultimediaLink (request, total) {
 	if (total > 0) {
 		jQuery('#taxon_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
 	} else {
-		jQuery('#taxon_multimedia').html(Drupal.t('No multimedia'));
+		jQuery('#taxon_multimedia').html(Drupal.t('No multimedia available'));
 	}
 }
 

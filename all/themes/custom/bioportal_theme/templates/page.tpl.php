@@ -30,8 +30,7 @@
             <ul class="right" id="help">
               <li>
                 <a href="<?php global $language;
-  $translations = translation_path_get_translations("node/2");
-  print $base_url . drupal_get_path_alias($translations[$language->language]); ?>">
+  print $base_url . $language->language . "/help?language=" . $language->language; ?>">
                   <span class="icon-help"></span>
                 </a>
               </li>
@@ -77,7 +76,8 @@
         </div>
 
         <div id="intro">
-            <?php print $intro; ?>
+
+            <?php print t($intro, array(), array('langcode' => $language->language)); ?>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
               <?php print t('Back'); ?>
@@ -263,14 +263,14 @@
         <div class="row" id="bottom-bar-top">
           <?php if ($show_crumble && $breadcrumb): ?>
             <div class="medium-9 columns crumble">
-              <?php echo t('You are here'); ?>
+              <?php echo t('You are here'); ?>:
               <?php print $breadcrumb; ?>
             </div>
           <?php endif; ?>
 
           <?php if ($show_links): ?>
             <div class="medium-3 columns external-links">
-              <?php print $external_links_menu; ?>
+              <?php print $external_links_menu;  ?>
             </div>
           <?php endif; ?>
 

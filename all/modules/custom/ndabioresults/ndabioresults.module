@@ -1,5 +1,7 @@
 <?php
-// TODO: alle includes bij elkaar zetten
+// Print channels in output y/n = 1/0
+define("DEBUG_CHANNELS", 0);
+
 
 /**
 * DEFINE BLOCKS
@@ -22,13 +24,11 @@ function ndabioresults_menu() {
   );
   $items['nba/result/%'] = array(
     'page callback' => 'ndabioresults_pass',
-    //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
   $items['nba/result'] = array(
     'page callback' => 'ndabioresults_pass',
-    //'page arguments' => array(1), //0 = nda, 1 = pass, 2 = *.
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
@@ -85,6 +85,7 @@ function setSpecimenParameters (array $sP, $type) {
         specimenService() => array(
             'collectingStartDate',
             'collectionFieldNumber',
+            'collectorsFieldNumber',
             'gatheringAgent',
             'localityText',
             'phaseOrStage',
@@ -137,6 +138,11 @@ function setSpecimenParameters (array $sP, $type) {
 */
 function ndabioresults_pass ($args = "") {
     global $base_path;
+    $langs = language_list(); // Note: No argument
+    $langcode = $_GET["language"];
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
+    }
 
     drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
@@ -448,6 +454,7 @@ function ndaThematicSearch () {
     $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
 
     $pageHeader = '';
+    ctools_class_add(array('thematic-search'));
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -696,7 +703,9 @@ function performNdaRequest (array $channels = array()) {
 	}
 
     // Debug: print queries
-//p($channels);
+    if (DEBUG_CHANNELS == 1) {
+        p($channels);
+    }
 
 	return $output;
 }
@@ -765,26 +774,27 @@ function queryNda ($channels = array(), $timeout = false) {
  * @return array $output
  */
 function parseSpecimenMediaDetail ($json) {
-	if (!$json || !validJson($json)) {
+    if (!$json || !validJson($json)) {
 		handleError('parseSpecimenMediaDetail: no or invalid json response');
 	}
 	$data = json_decode($json);
 //p($data);
 	$row = $data->searchResults[0];
 
+	foreach ($row->result as $field => $value) {
+		if (!is_array($value) && !is_object($value)) {
+			$output[$field] = $value;
+		}
+	}
+
 	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
-	$output['navigation'] = getNavigation($data);
+	//$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimensMultimediaNames($row);
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
-	$output['title'] = $row->result->title;
-	$output['description'] = $row->result->description;
-	$output['creator'] = $row->result->creator;
-	$output['copyrightText'] = $row->result->copyrightText;
-	$output['phasesOrStages'] = $row->result->phasesOrStages;
-	$output['sexes'] = $row->result->sexes;
-	$output['caption'] = $row->result->caption;
 	$output['imgSrc'] = getImageUrl($row);
-	$output['license'] = $row->result->license;
+	$output['phaseOrStage'] = $row->result->phasesOrStages;
+	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
+	$output['dateTimeBegin'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
 
 	return $output;
 }
@@ -850,21 +860,22 @@ function parseTaxonMediaDetail ($json) {
 	}
 	$data = json_decode($json);
 	$row = $data->searchResults[0];
+
+	foreach ($row->result as $field => $value) {
+		if (!is_array($value) && !is_object($value)) {
+			$output[$field] = $value;
+		}
+	}
+
 	$output['source'] = $row->result->associatedTaxon->sourceSystem->name;
 	$output['acceptedName'] = formatScientificName(
 		$row->result->associatedTaxon->acceptedName->fullScientificName,
 		$row->result->associatedTaxon->acceptedName
 	);
 	$output['names'] = getTaxonMultimediaNames($row);
-	$output['navigation'] = getNavigation($data);
-	$output['title'] = $row->result->title;
-	$output['caption'] = $row->result->caption;
+	$output['phaseOrStage'] = $row->result->phasesOrStages;
+	//$output['navigation'] = getNavigation($data);
 	$output['imgSrc'] = getImageUrl($row);
-	$output['description'] = $row->result->description;
-	$output['creator'] = $row->result->creator;
-	$output['copyrightText'] = $row->result->copyrightText;
-	$output['phasesOrStages'] = $row->result->phasesOrStages;
-	$output['sexes'] = $row->result->sexes;
 	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
 	$output['date'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
 	$output['license'] = $row->result->license;
@@ -933,7 +944,7 @@ function parseTaxonDetail ($json) {
 		}
 		if (!empty($row->result->synonyms)) {
 			foreach ($row->result->synonyms as $i => $synonym) {
-				$output['synonyms'][$source] = formatScientificName(
+				$output['synonyms'][$source][] = formatScientificName(
 					$row->result->synonyms[$i]->fullScientificName,
 					$row->result->synonyms[$i]
 				);
@@ -1031,11 +1042,9 @@ function parseClassification ($classification) {
 
 
 include 'printTaxonDetail.php';
-
 include 'printCommonNames.php';
-
+include 'printSynonyms.php';
 include 'printDescriptions.php';
-
 include 'printClassifications.php';
 
 
@@ -1068,8 +1077,7 @@ function parseSpecimenDetail ($json) {
 	$data = json_decode($json);
 
 	foreach ($data->searchResults[0]->result as $field => $value) {
-		if (!is_array($value) && !is_object($value) &&
-			!in_array($field, $skipFields) && $value != '') {
+		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
 			$output[$field] = setUnitId($value, $field);
 		}
 	}
@@ -2739,4 +2747,19 @@ function loadPrettyPhoto ($imageUrl) {
         return true;
     }
     return false;
+}
+
+/**
+ *
+ * Prints value, changing a few if they meet criteria
+ *
+ * @param string $license
+ * @return string
+ */
+function printValue ($value) {
+    if (strtolower($value) == 'cc0') {
+        return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
+            $value . '</a>';
+    }
+    return $value != '' ? $value : '—';
 }
