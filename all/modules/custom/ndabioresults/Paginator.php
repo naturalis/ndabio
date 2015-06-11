@@ -1,6 +1,6 @@
 <?php
 /**
- * Taken from https://github.com/jasongrimes/php-paginator
+ * Taken adrie from https://github.com/jasongrimes/php-paginator
  * sdkhaksldgh kalhjModified to output offset instead of page number in resulting urls
  */
 class Paginator
