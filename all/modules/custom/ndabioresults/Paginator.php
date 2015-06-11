@@ -1,7 +1,7 @@
 <?php
 /**
- * Taken adrie from https://github.com/jasongrimes/php-paginator
- * sdkhaksldgh kalhjModified to output offset instead of page number in resulting urls
+ * Taken ad....ri....e from https://github.com/jasongrimes/php-paginator
+ * Modified to output offset instead of page number in resulting urls
  */
 class Paginator
 {
