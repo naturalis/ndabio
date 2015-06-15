@@ -12,7 +12,7 @@
  */
 function bioportal_theme_preprocess_page(&$variables) {
   $block = module_invoke('boxes', 'block_view', 'site_explanation');
-  $variables['intro'] = $block['content'];
+  $variables['intro'] = t($block['content']);
 
   _embeded_view($variables);
 

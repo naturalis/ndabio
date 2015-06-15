@@ -410,7 +410,7 @@ function ndabio_advanced_taxonomysearch() {
 
 
       foreach ($children as $child) {
-        $childlabel = $child->description;
+        $childlabel = t($child->description);
         $childsysname = $child->name;
         if (strpos($childsysname, " ") !== FALSE) {
           $temp = explode(" ", $childsysname);
