@@ -14,4 +14,8 @@ resources
 zurb_foundation
   This folder should replace the existing zurb_foundation folder included in the Naturalis installation profile, located here:
     <drupalroot>/profiles/naturalis/themes/contrib/zurb_foundation
-  
+
+    
+Initial setup
+
+Clone this git project to /opt/git/ndabio. Update your Drupal install using the instructions above regarding each folder in this git repository.
