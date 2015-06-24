@@ -1186,7 +1186,7 @@
       // Prevent annoying scroll bars
 
       body{
-        overflow: hidden;
+        // overflow: hidden;
       }
 
       // Show and style nav-burger menu
@@ -1217,5 +1217,38 @@
         }
       }
 
+      // Remove padding from main window
+      .main{
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      #edit-omnisearch--2{
+        padding-left: 1em;
+        padding-right: 1em;
+      }
+
+      .ndabio-advanced-taxonomysearch{
+        height: 100%;
+        overflow: auto;
+      }
+
+      // Make advanced search fields full width
+      // (Rather using css then overriding Naturalis theme functions)
+      #edit-extended .row {
+        & > .large-4, & > .small-7 {
+          width: 100%;
+        }
+
+        label.inline{
+          margin-bottom: 3px;
+          font-size: 11px;
+          color: $gray-4;
+        }
+      }
+
+      #edit-extended > .fieldset-wrapper > fieldset{
+        padding-bottom: 0;
+      }
     }
 

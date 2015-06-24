@@ -27,13 +27,19 @@
       // set auto-height of main container
       $("main").css("min-height",h - 170 );
 
+      // Turn word 'search' into magnifier class
       $("#edit-submit-top")
         .html("<span class='icon-search'></span>");
+
+      // Hide labels from extended search and use placeholder instead
+
+
+
+
+
+
     }
 
-
-
-  //
   // ---------------------------------------------------------
 
 
@@ -198,7 +204,7 @@
   // SEARCH FORM: clear text fields
   // ---------------------------------------------------------
 
-
+  // Create the clear icon
   $("<div class='ndabio-clear-textfield icon-cross hidden' />")
     .insertAfter("input[data-clear]")
     .click(function(){
@@ -210,6 +216,8 @@
     .parent()
     .addClass("input-clearable")
 
+  // Toggle visibility of the clear icon depending on whether or
+  // not the field has content
   $("input[data-clear]")
     .each(function(){
       $_me = $(this);
@@ -457,11 +465,6 @@ function preloader(){
   // ---------------------------------------------------------
   // PRELOADER: remove upon clicking browser back-button
   // ---------------------------------------------------------
-
-
-
-
-
 
 
 //http://stackoverflow.com/a/18120786/960592

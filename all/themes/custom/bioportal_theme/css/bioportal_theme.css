@@ -702,9 +702,6 @@ th .icon-sort_sortable {
     display: none; }
 
 @media only screen and (max-width: 640px) {
-  body {
-    overflow: hidden; }
-
   .top-bar.expanded {
     max-height: 1000px; }
   .top-bar .top-bar-level-2 li:last-child {
@@ -716,6 +713,28 @@ th .icon-sort_sortable {
   .top-bar .text-help {
     display: inline; }
   .top-bar .icon-help, .top-bar .icon-help:before {
-    display: none !important; } }
+    display: none !important; }
+
+  .main {
+    padding-left: 0;
+    padding-right: 0; }
+
+  #edit-omnisearch--2 {
+    padding-left: 1em;
+    padding-right: 1em; }
+
+  .ndabio-advanced-taxonomysearch {
+    height: 100%;
+    overflow: auto; }
+
+  #edit-extended .row > .large-4, #edit-extended .row > .small-7 {
+    width: 100%; }
+  #edit-extended .row label.inline {
+    margin-bottom: 3px;
+    font-size: 11px;
+    color: #b3b3b3; }
+
+  #edit-extended > .fieldset-wrapper > fieldset {
+    padding-bottom: 0; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */

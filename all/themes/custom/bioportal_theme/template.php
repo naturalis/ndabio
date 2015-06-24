@@ -99,3 +99,4 @@ function bioportal_theme_preprocess_html(&$variables) {
     $variables['theme_hook_suggestions'][] = 'html__embed';
   }
 }
+
