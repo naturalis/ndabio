@@ -25,29 +25,6 @@
   $gray-9  : #333333;
   $gray-10 : #1a1a1a;
 
-  /* gray-10  : #1a1a1a; */
-  /* gray-9   : #333333; */
-  /* gray-8   : #4d4d4d; */
-  /* gray-7   : #666666; */
-  /* gray-6   : #808080; */
-  /* gray-5   : #999999; */
-  /* gray-4   : #b3b3b3; */
-  /* gray-3   : #cccccc; */
-  /* gray-2   : #e6e6e6; */
-  /* gray-1   : #f2f2f2; */
-  /* smoke    : #F6F6F4;  */
-  /* ghost    : #EEEDE9;  */
-  /* white    : #ffffff;  */
-  /* black    : #000000;  */
-  /* gray     : #b2b1a8;  */
-  /* brown    : #542e08;  */
-  /* purple   : #3e2782;  */
-  /* green    : #009932;  */
-  /* blue     : #009ee0;  */
-  /* red      : #e3004a;  */
-  /* orange-2 : #f29400;  */
-  /* orange   : #ef6d14;  */
-  /* yellow   : #ffed00;  */
 
 // ICON DEFINITIONS
   $icon-naturalis            : "\e600";
@@ -141,6 +118,7 @@
     right: 0;
   }
 
+
 // GLOBAL SEMANTIC CLASSES
       .scientific-name, .scientific{
         font-style: italic;
@@ -192,10 +170,24 @@
       display: none;
     }
 
-  // BACKGROUND
+  // -- BACKGROUND
 
     .background-gray-9{
       background-color: $gray-9;
+    }
+
+  // -- BURGER MENU
+
+    .top-bar.expanded{
+      @media only screen and (max-width: 640px) {
+        transition: max-height 500ms ease-in-out;
+        max-height: 1000px;
+
+        .top-bar-level-2 li:last-child{
+          margin-bottom: 0;
+        }
+
+      }
     }
 
 // FRONT PAGE
@@ -257,7 +249,7 @@
 
   // -- front-page: BANNER GEOGRAPHICAL SEARCH
     #banner-geographical-search{
-      transition                : background-color 300ms; 
+      transition                : background-color 300ms;
       background-color          : $gray-1;
       &:hover{ background-color : $gray-2;}
       text-align                : center;
@@ -267,7 +259,6 @@
       padding                   : 1em 1em 0 1em;
       box-sizing                : content-box;
       margin                    : 40px 0;
-
 
 
       a{
@@ -403,7 +394,7 @@
       legend{
         background       : none;
         margin           : 0 0 ;
-        height           : 26px; 
+        height           : 26px;
 
       }
 
@@ -422,11 +413,11 @@
         margin-top       : 0.5rem;
       }
 
-      input[type='text'], 
+      input[type='text'],
       select {
         transition: background-color 300ms;
         background-color: $white;
-      
+
         &:focus{
           background-color : $orange;
           color            : white;
@@ -515,7 +506,7 @@
     #edit-submit-bottom{
       width: 120px;
     }
-    
+
     #edit-extended #edit-reset{
        background-color: transparent;
        color: $gray-2;
@@ -679,19 +670,19 @@
 
 // RESULTS
 
-  // -- results : LAYOUT
+  // -- results: LAYOUT
 
     .page-nba-result, .page-explore{
       main {
-        
+
         padding-bottom: 3rem;
 
         table{
           margin-left      : percentage(1/12);
           width            : percentage(11/12);
-          @media only screen and (max-width: 1024px) { 
-            margin-left : 0;   
-            width       : 100%; 
+          @media only screen and (max-width: 1024px) {
+            margin-left : 0;
+            width       : 100%;
           }
         }
 
@@ -795,7 +786,7 @@
     }
 
     .score{
-      
+
       i{
         font-size: 8px;
       }
@@ -813,9 +804,9 @@
       margin-left          : percentage(1/12);
       width                : percentage(11/12);
       overflow             : hidden;
-      @media only screen and (max-width: 1024px) { 
-            margin-left : 0;   
-            width       : 100%; 
+      @media only screen and (max-width: 1024px) {
+            margin-left : 0;
+            width       : 100%;
       }
     }
 
@@ -826,7 +817,7 @@
       margin-bottom        : 1rem;
       background-color     : $ghost;
       float                : left;
-      
+
       &:nth-child(5n){
         clear: right;
       }
@@ -874,7 +865,7 @@
 
       .indent-0{
         &, &:nth-of-type(2n), // overriding ZURB
-        &:hover, &:nth-of-type(2n):hover { 
+        &:hover, &:nth-of-type(2n):hover {
           background-color: $white;
         }
 
@@ -887,7 +878,7 @@
             padding-bottom: 15px;
             transition: padding-bottom 1000ms;
           }
-          
+
           .icon-triangle-right:before{
             content: $icon-triangle-down-right;
           }
@@ -923,7 +914,7 @@
       ul{
         display: table-row;
       }
-      
+
       li{
         display: table-cell;
         background-color: $ghost;
@@ -943,7 +934,7 @@
       background-color: $smoke;
       color: #333;
       padding: 10px 10px 10px percentage( 1 / 10 );
-      @media only screen and (max-width: 1024px) { 
+      @media only screen and (max-width: 1024px) {
         padding-left: 10px;
       }
 
@@ -977,7 +968,7 @@
     }
 
   // -- results: FILTER
-    
+
     .page-nba-result{
       .sidebar-first{
         margin-top: 8px;
@@ -1015,7 +1006,7 @@
     }
 
     .filter-disabled{
-      &, &:hover{ 
+      &, &:hover{
         color: $gray-2;
       }
 
@@ -1057,7 +1048,7 @@
 
     .gm-style{
       font-family: "Arial", "Helvetica", sans-serif;
-      
+
 
     }
 
@@ -1100,8 +1091,8 @@
     }
 
 // DETAIL PAGES
-  
-  // detail-pages: GENERAL
+
+  // -- detail-pages: GENERAL
     .table-property-list{
       display: table;
       width: 100%;
@@ -1124,7 +1115,7 @@
 
       main{
         img{
-          max-height: 600px; 
+          max-height: 600px;
         }
       }
 
@@ -1141,9 +1132,7 @@
       margin-bottom: 24px;
     }
 
- // USER MENU PAGES
-
-  // user menu pages: LOGO
+  // -- detail-pages: USER MENU PAGES: LOGO
 
     .node-type-naturalis-service-menu-page{
       #large-logo{

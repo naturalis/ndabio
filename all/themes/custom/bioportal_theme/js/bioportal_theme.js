@@ -30,7 +30,9 @@
 
       // If the page is wide enough:
       // - Move the header image to the root of the DOM
-      // else, get rid of it alltoghether
+      // - Move the language menu to the root of the DOM
+      // - Move the help icon to the root of the DOM
+
       if ( w >= 1024 ){
 
         // Move image in the DOM and re-position
@@ -51,7 +53,7 @@
               .css({color: '#fff', border: 0, position: "relative"});
 
       } else {
-
+        // Else, remove the header image
         $("#header-image img").remove();
 
       }
@@ -62,7 +64,7 @@
 
 
   // ---------------------------------------------------------
-  // INTRO (more)
+  // INTRO (read more)
   // ---------------------------------------------------------
 
   if ( $("body").hasClass("front") ){
