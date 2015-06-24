@@ -1,27 +1,4 @@
 @charset "UTF-8";
-/* gray-10  : #1a1a1a; */
-/* gray-9   : #333333; */
-/* gray-8   : #4d4d4d; */
-/* gray-7   : #666666; */
-/* gray-6   : #808080; */
-/* gray-5   : #999999; */
-/* gray-4   : #b3b3b3; */
-/* gray-3   : #cccccc; */
-/* gray-2   : #e6e6e6; */
-/* gray-1   : #f2f2f2; */
-/* smoke    : #F6F6F4;  */
-/* ghost    : #EEEDE9;  */
-/* white    : #ffffff;  */
-/* black    : #000000;  */
-/* gray     : #b2b1a8;  */
-/* brown    : #542e08;  */
-/* purple   : #3e2782;  */
-/* green    : #009932;  */
-/* blue     : #009ee0;  */
-/* red      : #e3004a;  */
-/* orange-2 : #f29400;  */
-/* orange   : #ef6d14;  */
-/* yellow   : #ffed00;  */
 ::-webkit-input-placeholder {
   /* WebKit browsers */
   color: #cccccc; }
@@ -100,6 +77,13 @@ button, .button {
 .background-gray-9 {
   background-color: #333333; }
 
+@media only screen and (max-width: 640px) {
+  .top-bar.expanded {
+    transition: max-height 500ms ease-in-out;
+    max-height: 1000px; }
+    .top-bar.expanded .top-bar-level-2 li:last-child {
+      margin-bottom: 0; } }
+
 #naturalis-header #title-and-slogan {
   position: relative;
   top: 0px;
@@ -117,7 +101,7 @@ button, .button {
     top: -100%; }
   #naturalis-header #title-and-slogan #intro {
     position: absolute;
-    top: 160px;
+    top: 170px;
     color: #ffffff; }
     @media only screen and (max-width: 1024px) {
       #naturalis-header #title-and-slogan #intro p {
@@ -129,7 +113,7 @@ button, .button {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 1em;
+    padding: 0 1em 1em 1em;
     height: 3em;
     width: 100%;
     text-align: right;

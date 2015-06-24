@@ -30,7 +30,9 @@
 
       // If the page is wide enough:
       // - Move the header image to the root of the DOM
-      // else, get rid of it alltoghether
+      // - Move the language menu to the root of the DOM
+      // - Move the help icon to the root of the DOM
+
       if ( w >= 1024 ){
 
         // Move image in the DOM and re-position
@@ -51,7 +53,7 @@
               .css({color: '#fff', border: 0, position: "relative"});
 
       } else {
-
+        // Else, remove the header image
         $("#header-image img").remove();
 
       }
@@ -62,7 +64,7 @@
 
 
   // ---------------------------------------------------------
-  // INTRO (more)
+  // INTRO (read more)
   // ---------------------------------------------------------
 
   if ( $("body").hasClass("front") ){
@@ -316,11 +318,11 @@
   if ( $_advanced_search_form.length ){
 
     var $_fieldset = $("#edit-extended > div > fieldset[id^='edit']");
-    var lang = $('html').attr('lang');
-    str_prefix = "/en";
-    if ( lang == "nl" ) {
-      str_prefix = "/nl";
+    var lang = "en";
+    if ( $('body').hasClass( "lang-nl" ) ) {
+      lang = "nl";
     }
+
 
     $_fieldset.each(function(){
       $_me = $(this);
@@ -329,7 +331,7 @@
 
       str_anchor = str_anchor.substring(5);
 
-      str_anchor = str_prefix + "/help#" + str_anchor;
+      str_anchor = "/" + lang + "/help#" + str_anchor + "?language=" + lang;
 
       $_me
         .children(":first")
