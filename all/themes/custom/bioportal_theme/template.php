@@ -31,17 +31,17 @@ function bioportal_theme_preprocess_page(&$variables) {
     $variables['main_grid'] = 'large-7';
     $variables['sidebar_first_grid'] = 'large-2';
     $variables['sidebar_sec_grid'] = 'large-3';
-  
+
   } elseif (empty($left) && !empty($right)) {
     $variables['main_grid'] = 'large-10';
     $variables['sidebar_first_grid'] = '';
     $variables['sidebar_sec_grid'] = 'large-1';
-  
+
   } elseif (!empty($left) && empty($right)) {
     $variables['main_grid'] = 'large-10';
     $variables['sidebar_first_grid'] = 'large-2';
     $variables['sidebar_sec_grid'] = '';
-  
+
   } else {
     $variables['main_grid'] = 'large-12';
     $variables['sidebar_first_grid'] = '';
@@ -61,10 +61,10 @@ function bioportal_theme_ndabio_omnisearch(&$variables){
   $element = $variables['element'];
 
   $output  = "<div class='row collapse'>";
-  $output .= "  <div class='small-9 large-6 large-offset-2 columns'>";
+  $output .= "  <div class='small-10 large-6 large-offset-2 columns'>";
   $output .=      drupal_render( $element['term']);
   $output .= "  </div>";
-  $output .= "  <div class='small-3 large-2 end columns'>";
+  $output .= "  <div class='small-2 large-2 end columns'>";
   $output .=      drupal_render( $element['submit']);
   $output .= "  </div>";
   $output .= "</div>";
@@ -87,10 +87,10 @@ function _embeded_view(&$variables) {
 }
 
 function bioportal_theme_preprocess_html(&$variables) {
-   
+
   drupal_add_css(
-    path_to_theme() . '/css/ie.css', 
-    array('weight' => CSS_THEME, 'browsers' => array('IE' => 'lt IE 7', '!IE' => FALSE), 
+    path_to_theme() . '/css/ie.css',
+    array('weight' => CSS_THEME, 'browsers' => array('IE' => 'lt IE 7', '!IE' => FALSE),
     'preprocess' => FALSE)
   );
 

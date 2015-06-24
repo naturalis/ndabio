@@ -176,20 +176,6 @@
       background-color: $gray-9;
     }
 
-  // -- BURGER MENU
-
-    .top-bar.expanded{
-      @media only screen and (max-width: 640px) {
-        transition: max-height 500ms ease-in-out;
-        max-height: 1000px;
-
-        .top-bar-level-2 li:last-child{
-          margin-bottom: 0;
-        }
-
-      }
-    }
-
 // FRONT PAGE
 
   // -- front-page : INTRO
@@ -1177,3 +1163,59 @@
       background-color: #ffa;
       -webkit-transition: all 1s linear;
     }
+
+
+
+
+
+
+  //  BURGER MENU
+
+    .top-bar{
+      transition: max-height 500ms ease-in-out;
+
+      .text-help{
+        display: none;
+      }
+    }
+
+// RESPONSIVE HACKS
+
+    @media only screen and (max-width: 640px) {
+
+      // Prevent annoying scroll bars
+
+      body{
+        overflow: hidden;
+      }
+
+      // Show and style nav-burger menu
+
+      .top-bar{
+        &.expanded{
+          max-height: 1000px;
+        }
+
+        .top-bar-level-2 li:last-child{
+          margin-bottom: 0;
+        }
+
+        .top-bar-level-1 > li {
+          border: 0;
+        }
+
+        .top-bar-level-2 li a{
+          font-size: 1rem;
+        }
+
+        .text-help{
+          display: inline;
+        }
+
+        .icon-help{
+          &, &:before{ display: none !important; }
+        }
+      }
+
+    }
+

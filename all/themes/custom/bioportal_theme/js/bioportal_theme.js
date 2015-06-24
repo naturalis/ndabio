@@ -7,7 +7,8 @@
 
     var h = $(window).height();
     var w = $(window).width();
-    if (  $("body").hasClass("front")  ){
+
+    if (  $("body").hasClass("front") && w >= 640 ){
       $("main").css("min-height",h - 170 - 160);
     } else {
       $("main").css("min-height",h - 170);
@@ -16,6 +17,24 @@
 
   // ---------------------------------------------------------
 
+
+
+  // ---------------------------------------------------------
+  // RESPONSIVE MAGIC
+  // ---------------------------------------------------------
+
+    if ( w < 640 ){
+      // set auto-height of main container
+      $("main").css("min-height",h - 170 );
+
+      $("#edit-submit-top")
+        .html("<span class='icon-search'></span>");
+    }
+
+
+
+  //
+  // ---------------------------------------------------------
 
 
   // ---------------------------------------------------------
@@ -241,13 +260,6 @@
   // SEARCH FORM: explode expanded search
   // ---------------------------------------------------------
 
-  /*
-    if(  $("#edit-extended input[type='text'][value!='']").size() > 0 ){
-      if (  $("#edit-term").val() == "" ){
-        $(".icon-triangle-down").trigger("click");
-      }
-    }
-*/
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
@@ -258,10 +270,8 @@
 
   // $("#preloader").remove();
 
-
-
-
   // ---------------------------------------------------------
+
 
 
   // ---------------------------------------------------------
