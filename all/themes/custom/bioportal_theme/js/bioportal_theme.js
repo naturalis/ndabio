@@ -23,6 +23,7 @@
   // RESPONSIVE MAGIC
   // ---------------------------------------------------------
 
+    // If were're viewing our beautifull site on a mobile device…
     if ( w < 640 ){
       // set auto-height of main container
       $("main").css("min-height",h - 170 );

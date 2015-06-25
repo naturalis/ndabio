@@ -31,7 +31,7 @@
               <li>
                 <a href="<?php global $language; print $base_url . $language->language . "/help?language=" . $language->language; ?>">
                   <span class="icon-help"></span>
-                  <span class='text-help'>Help</span>
+                  <span class='text-help show-for-small-only'>Help</span>
                 </a>
               </li>
             </ul>
