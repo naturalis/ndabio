@@ -515,7 +515,7 @@
       }
     }
 
-    .to-help{
+    .to-help, .search-explanation{
       color: $white;
       border-bottom:1px dotted $gray;
       cursor: help !important;
@@ -525,6 +525,8 @@
 
       }
     }
+
+
 
 // GEOSEARCH
 
