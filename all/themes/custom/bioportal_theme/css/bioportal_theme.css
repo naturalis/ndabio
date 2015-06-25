@@ -714,18 +714,44 @@ th .icon-sort_sortable {
     display: inline; }
   .top-bar .icon-help, .top-bar .icon-help:before {
     display: none !important; }
+  .top-bar #language-menu {
+    display: block;
+    position: relative;
+    left: 0;
+    width: 100%; }
+    .top-bar #language-menu li {
+      padding-left: 1rem; }
+    .top-bar #language-menu li, .top-bar #language-menu a {
+      display: block;
+      text-align: left;
+      line-height: 40px;
+      color: white;
+      font-size: 1rem; }
+    .top-bar #language-menu .active:before {
+      display: inline-block;
+      width: 1rem;
+      float: left;
+      font-family: 'App2';
+      position: relative;
+      left: -1rem;
+      margin-right: -1rem;
+      content: ""; }
 
   .main {
     padding-left: 0;
     padding-right: 0; }
 
   #edit-omnisearch--2 {
-    padding-left: 1em;
-    padding-right: 1em; }
+    padding-left: 0.5em;
+    padding-right: 0.5em; }
 
   .ndabio-advanced-taxonomysearch {
     height: 100%;
     overflow: auto; }
+
+  #edit-submit-top {
+    padding-left: 16px;
+    padding-right: 16px; }
 
   #edit-extended .row > .large-4, #edit-extended .row > .small-7 {
     width: 100%; }
@@ -735,6 +761,22 @@ th .icon-sort_sortable {
     color: #b3b3b3; }
 
   #edit-extended > .fieldset-wrapper > fieldset {
-    padding-bottom: 0; } }
+    padding-bottom: 0; }
+
+  #edit-extended fieldset fieldset.collapsible legend {
+    margin: 0;
+    font-size: 13px; }
+
+  .crumble {
+    display: none !important; }
+
+  #bottom-bar-bottom ul {
+    margin: 0 !important; }
+  #bottom-bar-bottom li, #bottom-bar-bottom span {
+    display: inline-block;
+    width: 100%;
+    line-height: 40px;
+    font-size: 16px;
+    text-align: center; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */

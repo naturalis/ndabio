@@ -31,12 +31,9 @@
       $("#edit-submit-top")
         .html("<span class='icon-search'></span>");
 
-      // Hide labels from extended search and use placeholder instead
-
-
-
-
-
+      //Re-phrase language names
+      $("#language-menu [href*='language=en']").html("English");
+      $("#language-menu [href*='language=nl']").html("Nederlands");
 
     }
 
