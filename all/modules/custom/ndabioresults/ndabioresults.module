@@ -277,8 +277,8 @@ function ndabioresults_ajax_callback () {
  * @return string Formatted output
  */
 function ndaSimpleSearch () {
-    $pageHeader = ""; //_wrap(t('Search results'),"H1");
 
+    $pageHeader = '';
     $p['_search'] = $_SESSION['ndaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
@@ -306,6 +306,9 @@ function ndaSimpleSearch () {
             );
     };
 
+    $pageHeader .= _wrap(t('Search results for') . ' ' .
+        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "H1");
+
     $services[specimenNamesService()] = $p;
     $services[multimediaService()] = $p;
     $services[specimenService()] = $p;
@@ -332,7 +335,7 @@ function ndaSimpleSearch () {
  */
 function ndaAdvancedSearch () {
 
-    $pageHeader = ""; //_wrap(t('Search results'),"H1");
+    $pageHeader = '';
 
     unset($_SESSION['ndaFilters']);
     $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
@@ -373,6 +376,8 @@ function ndaAdvancedSearch () {
             ), "div", "panel"
         );
     }
+    $pageHeader .= _wrap(t('Search results'),"H1");
+
 
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
