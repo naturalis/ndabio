@@ -104,8 +104,18 @@ function printSpecimenPreview (request, data) {
 	var output = '';
 	for (i = 0; i < data.resultGroups.length; i++) {
 		for (j = 0; j < data.resultGroups[i].searchResults.length; j++) {
+
 			var unitID = data.resultGroups[i].searchResults[j].result.unitID;
 			var collectionType = data.resultGroups[i].searchResults[j].result.collectionType;
+			var recordBasis = data.resultGroups[i].searchResults[j].result.recordBasis;
+			var caption = '';
+
+			if (collectionType !== null && recordBasis !== null) {
+				caption = collectionType + '; ' + recordBasis;
+			} else if (collectionType === null && recordBasis !== null) {
+				caption = recordBasis;
+			}
+
 			for (k = 0; k < data.resultGroups[i].searchResults[j].links.length; k++) {
 				if (data.resultGroups[i].searchResults[j].links[k].rel == '_specimen') {
 					var url = data.resultGroups[i].searchResults[j].links[k].href;
@@ -113,7 +123,7 @@ function printSpecimenPreview (request, data) {
 			}
 			output += '<dl><dt><a href="?nba_request=' +
 				encodeURIComponent(url) + '&noMap">' + unitID + '</a></dt>';
-			output += '<dd>' + collectionType + '</dd></dl>';
+			output += '<dd>' + caption + '</dd></dl>';
 		}
 	};
 	if (parseInt(data.totalSize) > 5) {
