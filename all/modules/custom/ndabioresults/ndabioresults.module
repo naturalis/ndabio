@@ -245,26 +245,22 @@ function logSearch () {
 }
 
 /**
- * Mapping function: distributes parameters to appropriate specimen service
+ * Returns NBA result as JSON, based on given request
  *
- * Distributes specimens search parameters between specimen and specimen name
- * services. Important: list of parameters hould be complete!
- *
- * @param array $sP Search parameters
- * @param string $type Service type
- * @return array Reduced array of search criteria for the service of choice
+ * Returns json from NBA from Ajax call; request should be given as GET parameter.
+ * Optionally this service can return just the total number of records, if getTotal
+ * is provided as GET parameter.
  */
 function ndabioresults_ajax_callback () {
+    drupal_add_http_header('Content-Type', 'application/json');
     if (isset($_GET['nba_request'])) {
         // For the time being this service is used only to retrieve totalSize
         // Therefore maxResults is capped to 1 by default
-        if (isset($_GET['getTotal'])) {
-            $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
-            $data = json_decode((reset($remoteData)));
-            echo $data->totalSize;
-            die();
-        }
         $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
+        if (isset($_GET['getTotal'])) {
+            $data = json_decode((reset($remoteData)));
+            die($data->totalSize);
+        }
         die(reset($remoteData));
     }
     die('Invalid NBA request');

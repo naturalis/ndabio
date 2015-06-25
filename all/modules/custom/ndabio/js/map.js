@@ -16,7 +16,8 @@ var obj_pin = {
     fillOpacity  : 1,
     scale        : 1,
     strokeColor  : 'white',
-    strokeWeight : 1
+    strokeWeight : 1,
+    anchor       : new google.maps.Point(0,22)
 };
 
 

@@ -143,8 +143,8 @@ function printSpecimenDetail ($data) {
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js("jQuery(document).ready(function() {  getTotal(getMultimediaRequest, setSpecimenMultimediaLink); });", 'inline');
-    $output .= '<h3>' . t('Multimedia') . '</h3><p id="specimen_multimedia"</p>';
+    drupal_add_js("jQuery(document).ready(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });", 'inline');
+    $output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia"></p>';
 
     setTitle(t('Specimen') . ' | ' .
         strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
