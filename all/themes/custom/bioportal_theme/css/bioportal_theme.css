@@ -737,7 +737,7 @@ th .icon-sort_sortable {
       margin-right: -1rem;
       content: ""; }
 
-  .main {
+  body.front .main {
     padding-left: 0;
     padding-right: 0; }
 
@@ -777,6 +777,14 @@ th .icon-sort_sortable {
     width: 100%;
     line-height: 40px;
     font-size: 16px;
-    text-align: center; } }
+    text-align: center; }
+
+  .row.collapse .geo-search-label {
+    width: 100%;
+    font-size: 11px;
+    text-align: left;
+    height: 20px;
+    line-height: 20px;
+    color: #1a1a1a; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */

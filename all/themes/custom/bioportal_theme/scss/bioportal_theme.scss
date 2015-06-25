@@ -1250,8 +1250,9 @@
         }
       }
 
-      // Remove padding from main window
-      .main{
+      // Remove padding from main window so the advanced search fields show
+      // nicelu
+      body.front .main{
         padding-left: 0;
         padding-right: 0;
       }
@@ -1312,5 +1313,17 @@
           text-align: center;
         }
       }
+
+      // GEOSEARCH
+
+      .row.collapse  .geo-search-label{
+        width: 100%;
+        font-size: 11px;
+        text-align: left;
+        height: 20px;
+        line-height: 20px;
+        color: $gray-10;
+      }
+
     }
 

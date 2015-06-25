@@ -36,6 +36,10 @@
       $("#language-menu [href*='language=en']").html("English");
       $("#language-menu [href*='language=nl']").html("Nederlands");
 
+      // Geogrpahical search needs some serious re-work.
+      // - Hide the map
+      $("#geographical-search").hide();
+
     }
 
   // ---------------------------------------------------------
