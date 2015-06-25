@@ -15,9 +15,9 @@ function printTaxonDetail ($data) {
     $output .=   "  </span>";
 
     if ( isset($data['commonNames'][$language->language]) ){
-    $output .= "  <span class='vernacular-name'>";
-    $output .=      implode(', ', $data['commonNames'][$language->language]);
-    $output .= "  </span>";
+        $output .= "  <span class='vernacular-name'>";
+        $output .=      implode(', ', $data['commonNames'][$language->language]);
+        $output .= "  </span>";
     }
 
     $output .= "</h2>";
@@ -29,7 +29,7 @@ function printTaxonDetail ($data) {
         printClassifications($data);
 
 //p($data);
-
+/*
     $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
         '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
     $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
@@ -43,6 +43,22 @@ function printTaxonDetail ($data) {
 
     $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="taxon_specimens"></p>';
     $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="taxon_multimedia"</p>';
+*/
+
+    $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
+        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+    $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
+        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+
+    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
+    drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
+    drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
+    drupal_add_js("jQuery(document).ready(function() { getPreview(getSpecimenRequest, setTaxonSpecimenPreview); });", 'inline');
+    drupal_add_js("jQuery(document).ready(function() { getPreview(getMultimediaRequest, setTaxonMultimediaPreview); });", 'inline');
+
+    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="taxon_specimens"></p>';
+    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="taxon_multimedia"</p>';
+
 
     // Drupal title empty; page title custom
     setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
