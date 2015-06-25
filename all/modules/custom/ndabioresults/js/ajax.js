@@ -1,59 +1,4 @@
 /**
- * Fetch the total number of results for NBA request
- *
- * Ajax call to fetch data for the given NBA request.
- * The result is passed on to a callback function printing the data.
- *
- * @param request The NBA request
- * @param callback The callback function
- *
- */function getTotal (request, callback) {
-	jQuery.ajax({
-		url: str_base_path + 'nba/ajax',
-		type: "GET",
-		dataType: "text",
-		data: ({
-			getTotal: 1,
-			nba_request: request
-		}),
-		success: function (totalSize) {
-			callback(request, totalSize);
-		}
-	});
-}
-
-function setTaxonSpecimenLink (request, total) {
-	total = parseInt(total);
-	if (total > 0) {
-		var label = total == 1 ? Drupal.t('Specimen') : Drupal.t('Specimens');
-		jQuery('#taxon_specimens').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' + label + ' (' + total + ')</a>');
-	} else {
-		jQuery('#taxon_specimens').html(Drupal.t('No specimens available'));
-	}
-}
-
-
-function setTaxonMultimediaLink (request, total) {
-	total = parseInt(total);
-	if (total > 0) {
-		jQuery('#taxon_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
-	} else {
-		jQuery('#taxon_multimedia').html(Drupal.t('No multimedia available'));
-	}
-}
-
-
-function setSpecimenMultimediaLink (request, total) {
-	total = parseInt(total);
-	if (total > 0) {
-		jQuery('#specimen_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
-	} else {
-		jQuery('#specimen_multimedia').html(Drupal.t('No multimedia'));
-	}
-}
-
-
-/**
  * Fetch data from NBA request for preview in detail pages
  *
  * Ajax call to fetch data for the given NBA request.
@@ -62,13 +7,16 @@ function setSpecimenMultimediaLink (request, total) {
  * @param request The NBA request
  * @param callback The callback function
 */
-function getPreview (request, callback) {
+function getNbaData (request, callback, requestAppend) {
+	if (typeof requestAppend != "undefined") {
+		request += requestAppend;
+	}
 	jQuery.ajax({
 		url: str_base_path + 'nba/ajax',
 		type: "GET",
 		dataType: "json",
 		data: ({
-			nba_request: request + '&_maxResults=5'
+			nba_request: request
 		}),
 		success: function (response) {
 			callback(request, response);
@@ -77,29 +25,20 @@ function getPreview (request, callback) {
 }
 
 
-function setTaxonSpecimenPreview (request, data) {
+function setSpecimenPreview (request, data) {
 	if (parseInt(data.totalSize) > 0) {
-		jQuery('#taxon_specimens').html(printSpecimenPreview(request, data));
+		jQuery('#nba_specimens').html(printSpecimenPreview(request, data));
 	} else {
-		jQuery('#taxon_specimens').html(Drupal.t('No specimens available'));
+		jQuery('#nba_specimens').html(Drupal.t('No specimens available'));
 	}
 }
 
 
-function setTaxonMultimediaPreview (request, data) {
+function setMultimediaPreview (request, data) {
 	if (parseInt(data.totalSize) > 0) {
-		jQuery('#taxon_multimedia').html(printMultimediaPreview(request, data));
+		jQuery('#nba_multimedia').html(printMultimediaPreview(request, data));
 	} else {
-		jQuery('#taxon_multimedia').html(Drupal.t('No multimedia available'));
-	}
-}
-
-function setSpecimenMultimediaPreview (request) {
-	total = parseInt(total);
-	if (total > 0) {
-		jQuery('#specimen_multimedia').html('<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">Multimedia (' + total + ')</a>');
-	} else {
-		jQuery('#specimen_multimedia').html(Drupal.t('No multimedia availabl'));
+		jQuery('#nba_multimedia').html(Drupal.t('No multimedia available'));
 	}
 }
 
@@ -114,6 +53,7 @@ function setSpecimenMultimediaPreview (request) {
  */
 
 function printMultimediaPreview (request, data) {
+
 	var output = '<div class=​"multimedia-wrapper">​';
 	for (i = 0; i < data.searchResults.length; i++) {
 		var src = data.searchResults[i].result.serviceAccessPoints['MEDIUM_QUALITY'].accessUri;
@@ -122,12 +62,27 @@ function printMultimediaPreview (request, data) {
 				var url = data.searchResults[i].links[j].href;
 			}
 		}
-		var source = data.searchResults[i].result.sourceSystem.name;
-		var creator = data.searchResults[i].result.creator;
+
+		// Default caption is for taxon request
+		var caption = data.searchResults[i].result.sourceSystem.name;
+		var hits = data.searchResults[i].result.creator;
+
+		// Reset if request is specimen multimedia
+		if (data.searchResults[i].result.associatedSpecimen !== null) {
+			hits = caption;
+			// Taxon detail page
+			if (jQuery("div.category").get(0).innerHTML == 'Taxon') {
+				caption = jQuery("span.scientific-name").get(0).innerHTML;
+			// Specimen detail page
+			} else {
+				caption = jQuery("div.property-list dd a").get(0).innerHTML;
+			}
+		}
+
 		output += '<a class="polaroid" href="?nba_request=' + encodeURIComponent(url) + '&noMap">' +
 			'<div class="polaroid-image" style="background-image: url(' + src + ');" alt=""></div>';
 		output += '<div class="polaroid-caption"><div class="image-title">' +
-			source + '</div><div class="image-hits">' + creator + '</div></div></a>';
+			caption + '</div><div class="image-hits">' + hits + '</div></div></a>';
 	};
 	if (parseInt(data.totalSize) > 5) {
 		output += '<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +

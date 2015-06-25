@@ -53,11 +53,11 @@ function printTaxonDetail ($data) {
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
     drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js("jQuery(document).ready(function() { getPreview(getSpecimenRequest, setTaxonSpecimenPreview); });", 'inline');
-    drupal_add_js("jQuery(document).ready(function() { getPreview(getMultimediaRequest, setTaxonMultimediaPreview); });", 'inline');
+    drupal_add_js("jQuery(document).ready(function() { getNbaData(getSpecimenRequest, setSpecimenPreview, '&_maxResults=5'); });", 'inline');
+    drupal_add_js("jQuery(document).ready(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });", 'inline');
 
-    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="taxon_specimens"></p>';
-    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="taxon_multimedia"</p>';
+    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="nba_specimens"></p>';
+    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="nba_multimedia"></p>';
 
 
     // Drupal title empty; page title custom
