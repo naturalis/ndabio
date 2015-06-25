@@ -176,20 +176,6 @@
       background-color: $gray-9;
     }
 
-  // -- BURGER MENU
-
-    .top-bar.expanded{
-      @media only screen and (max-width: 640px) {
-        transition: max-height 500ms ease-in-out;
-        max-height: 1000px;
-
-        .top-bar-level-2 li:last-child{
-          margin-bottom: 0;
-        }
-
-      }
-    }
-
 // FRONT PAGE
 
   // -- front-page : INTRO
@@ -1177,3 +1163,154 @@
       background-color: #ffa;
       -webkit-transition: all 1s linear;
     }
+
+
+
+
+
+
+  //  BURGER MENU
+
+    .top-bar{
+      transition: max-height 500ms ease-in-out;
+
+      .text-help{
+        display: none;
+      }
+    }
+
+// RESPONSIVE HACKS
+
+    @media only screen and (max-width: 640px) {
+
+      // Prevent annoying scroll bars
+
+      body{
+        // overflow: hidden;
+      }
+
+      // Show and style nav-burger menu
+
+      .top-bar{
+        &.expanded{
+          max-height: 1000px;
+        }
+
+        .top-bar-level-2 li:last-child{
+          margin-bottom: 0;
+        }
+
+        .top-bar-level-1 > li {
+          border: 0;
+        }
+
+        .top-bar-level-2 li a{
+          font-size: 1rem;
+        }
+
+        .text-help{
+          display: inline;
+        }
+
+        .icon-help{
+          &, &:before{ display: none !important; }
+        }
+
+        // Make language menu display as oridinary menu-items;
+
+        #language-menu{
+          display: block;
+          position: relative;
+          left: 0;
+          width: 100%;
+
+          li{
+            padding-left: 1rem;
+          }
+
+          li, a{
+            display: block;
+            text-align: left;
+            line-height: 40px;
+            color: white;
+            font-size: 1rem;
+          }
+
+          .active:before{
+            display: inline-block;
+            width: 1rem;
+            float: left;
+            font-family: 'App2';
+            position: relative;
+            left: -1rem;
+            margin-right: -1rem;
+            content: $icon-checkmark;
+          }
+
+        }
+      }
+
+      // Remove padding from main window
+      .main{
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      #edit-omnisearch--2{
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
+      .ndabio-advanced-taxonomysearch{
+        height: 100%;
+        overflow: auto;
+      }
+
+      #edit-submit-top{
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      // Make advanced search fields full width
+      // (Rather using css then overriding Naturalis theme functions)
+      #edit-extended .row {
+        & > .large-4, & > .small-7 {
+          width: 100%;
+        }
+
+        label.inline{
+          margin-bottom: 3px;
+          font-size: 11px;
+          color: $gray-4;
+        }
+      }
+
+      #edit-extended > .fieldset-wrapper > fieldset{
+        padding-bottom: 0;
+     }
+
+      #edit-extended fieldset fieldset.collapsible legend {
+        margin: 0;
+        font-size: 13px;
+      }
+
+      .crumble{
+          display: none !important;
+        }
+
+      #bottom-bar-bottom{
+
+        ul{
+          margin: 0 !important;
+        }
+
+        li, span{
+          display: inline-block;
+          width: 100%;
+          line-height: 40px;
+          font-size: 16px;
+          text-align: center;
+        }
+      }
+    }
+

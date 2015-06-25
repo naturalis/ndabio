@@ -77,13 +77,6 @@ button, .button {
 .background-gray-9 {
   background-color: #333333; }
 
-@media only screen and (max-width: 640px) {
-  .top-bar.expanded {
-    transition: max-height 500ms ease-in-out;
-    max-height: 1000px; }
-    .top-bar.expanded .top-bar-level-2 li:last-child {
-      margin-bottom: 0; } }
-
 #naturalis-header #title-and-slogan {
   position: relative;
   top: 0px;
@@ -702,5 +695,88 @@ th .icon-sort_sortable {
 *:target {
   background-color: #ffa;
   -webkit-transition: all 1s linear; }
+
+.top-bar {
+  transition: max-height 500ms ease-in-out; }
+  .top-bar .text-help {
+    display: none; }
+
+@media only screen and (max-width: 640px) {
+  .top-bar.expanded {
+    max-height: 1000px; }
+  .top-bar .top-bar-level-2 li:last-child {
+    margin-bottom: 0; }
+  .top-bar .top-bar-level-1 > li {
+    border: 0; }
+  .top-bar .top-bar-level-2 li a {
+    font-size: 1rem; }
+  .top-bar .text-help {
+    display: inline; }
+  .top-bar .icon-help, .top-bar .icon-help:before {
+    display: none !important; }
+  .top-bar #language-menu {
+    display: block;
+    position: relative;
+    left: 0;
+    width: 100%; }
+    .top-bar #language-menu li {
+      padding-left: 1rem; }
+    .top-bar #language-menu li, .top-bar #language-menu a {
+      display: block;
+      text-align: left;
+      line-height: 40px;
+      color: white;
+      font-size: 1rem; }
+    .top-bar #language-menu .active:before {
+      display: inline-block;
+      width: 1rem;
+      float: left;
+      font-family: 'App2';
+      position: relative;
+      left: -1rem;
+      margin-right: -1rem;
+      content: ""; }
+
+  .main {
+    padding-left: 0;
+    padding-right: 0; }
+
+  #edit-omnisearch--2 {
+    padding-left: 0.5em;
+    padding-right: 0.5em; }
+
+  .ndabio-advanced-taxonomysearch {
+    height: 100%;
+    overflow: auto; }
+
+  #edit-submit-top {
+    padding-left: 16px;
+    padding-right: 16px; }
+
+  #edit-extended .row > .large-4, #edit-extended .row > .small-7 {
+    width: 100%; }
+  #edit-extended .row label.inline {
+    margin-bottom: 3px;
+    font-size: 11px;
+    color: #b3b3b3; }
+
+  #edit-extended > .fieldset-wrapper > fieldset {
+    padding-bottom: 0; }
+
+  #edit-extended fieldset fieldset.collapsible legend {
+    margin: 0;
+    font-size: 13px; }
+
+  .crumble {
+    display: none !important; }
+
+  #bottom-bar-bottom ul {
+    margin: 0 !important; }
+  #bottom-bar-bottom li, #bottom-bar-bottom span {
+    display: inline-block;
+    width: 100%;
+    line-height: 40px;
+    font-size: 16px;
+    text-align: center; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */

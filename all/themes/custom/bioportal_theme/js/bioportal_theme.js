@@ -7,7 +7,8 @@
 
     var h = $(window).height();
     var w = $(window).width();
-    if (  $("body").hasClass("front")  ){
+
+    if (  $("body").hasClass("front") && w >= 640 ){
       $("main").css("min-height",h - 170 - 160);
     } else {
       $("main").css("min-height",h - 170);
@@ -16,6 +17,28 @@
 
   // ---------------------------------------------------------
 
+
+
+  // ---------------------------------------------------------
+  // RESPONSIVE MAGIC
+  // ---------------------------------------------------------
+
+    // If were're viewing our beautifull site on a mobile device…
+    if ( w < 640 ){
+      // set auto-height of main container
+      $("main").css("min-height",h - 170 );
+
+      // Turn word 'search' into magnifier class
+      $("#edit-submit-top")
+        .html("<span class='icon-search'></span>");
+
+      //Re-phrase language names
+      $("#language-menu [href*='language=en']").html("English");
+      $("#language-menu [href*='language=nl']").html("Nederlands");
+
+    }
+
+  // ---------------------------------------------------------
 
 
   // ---------------------------------------------------------
@@ -179,7 +202,7 @@
   // SEARCH FORM: clear text fields
   // ---------------------------------------------------------
 
-
+  // Create the clear icon
   $("<div class='ndabio-clear-textfield icon-cross hidden' />")
     .insertAfter("input[data-clear]")
     .click(function(){
@@ -191,6 +214,8 @@
     .parent()
     .addClass("input-clearable")
 
+  // Toggle visibility of the clear icon depending on whether or
+  // not the field has content
   $("input[data-clear]")
     .each(function(){
       $_me = $(this);
@@ -241,13 +266,6 @@
   // SEARCH FORM: explode expanded search
   // ---------------------------------------------------------
 
-  /*
-    if(  $("#edit-extended input[type='text'][value!='']").size() > 0 ){
-      if (  $("#edit-term").val() == "" ){
-        $(".icon-triangle-down").trigger("click");
-      }
-    }
-*/
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
@@ -258,10 +276,8 @@
 
   // $("#preloader").remove();
 
-
-
-
   // ---------------------------------------------------------
+
 
 
   // ---------------------------------------------------------
@@ -447,11 +463,6 @@ function preloader(){
   // ---------------------------------------------------------
   // PRELOADER: remove upon clicking browser back-button
   // ---------------------------------------------------------
-
-
-
-
-
 
 
 //http://stackoverflow.com/a/18120786/960592

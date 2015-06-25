@@ -29,9 +29,9 @@
 
             <ul class="right" id="help">
               <li>
-                <a href="<?php global $language;
-  print $base_url . $language->language . "/help?language=" . $language->language; ?>">
+                <a href="<?php global $language; print $base_url . $language->language . "/help?language=" . $language->language; ?>">
                   <span class="icon-help"></span>
+                  <span class='text-help show-for-small-only'>Help</span>
                 </a>
               </li>
             </ul>
@@ -135,7 +135,7 @@
     <?php endif; ?>
 
     <div class="<?php print $main_grid; ?> main columns">
-      
+
       <?php if ($messages && !$zurb_foundation_messages_modal && false): ?>
         <!--/.l-messages -->
         <section class="l-messages row">
