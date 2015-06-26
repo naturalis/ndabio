@@ -479,7 +479,7 @@ function ndabio_advanced_taxonomysearch() {
                     }
                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'      => 'select',
-                      '#title'     => t($catitem->description),
+                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
                       '#options'   => $optionarray,
                       '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
                       '#required'  => FALSE,
@@ -490,7 +490,7 @@ function ndabio_advanced_taxonomysearch() {
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
-                      '#title'         => t($catitem->description),
+                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
                       '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
@@ -509,7 +509,7 @@ function ndabio_advanced_taxonomysearch() {
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'       => 'select',
-                  '#title'      => t($subchildlabel),
+                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                   '#options'    => $optionarray,
                       '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
                   '#inline'     => TRUE,
@@ -518,13 +518,15 @@ function ndabio_advanced_taxonomysearch() {
                 $subchildvalues = "";
               }
               else {
+
+
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
-                  '#title'         => t($subchildlabel),
+                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                   '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
-                  '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname)
+                  '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname )
                 );
               }
             }
@@ -639,6 +641,10 @@ function ndabio_advanced_taxonomysearch() {
   $form['#action'] = url('nba/result');
 
   return ($form);
+}
+
+function _wrap_label( $help, $caption ){
+  return "<span class='search-explanation' title='$help'>$caption</span>";
 }
 
 

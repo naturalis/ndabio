@@ -81,7 +81,7 @@ function printSpecimenDetail ($data) {
 	$output .= _wrap( $data['unitID'] , "h2"  );
 
 	$purl = '<input type="text" value="http://purl.naturalis.nl/' . $data['unitID'] . '"></input>';
-	$output .= _wrap( printDL(t("Persisent URL"), $purl) , "div", "property-list"  );
+	$output .= _wrap( printDL(t("Persisent URL"), $purl) , "div", "property-list purl"  );
 
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");

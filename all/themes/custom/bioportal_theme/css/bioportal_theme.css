@@ -313,12 +313,12 @@ html.js fieldset.collapsible .fieldset-legend {
     color: #ef6d14;
     border-color: #ef6d14; }
 
-.to-help {
+.to-help, .search-explanation {
   color: #ffffff;
   border-bottom: 1px dotted #b2b1a8;
   cursor: help !important;
   transition: color 300ms; }
-  .to-help:hover {
+  .to-help:hover, .search-explanation:hover {
     color: #009ee0; }
 
 .row.collapse .geo-search-label {
@@ -619,6 +619,11 @@ i {
   font-size: 24px;
   position: relative;
   top: 4px; }
+
+.purl input {
+  margin: 0; }
+.purl dt {
+  vertical-align: middle; }
 
 .gm-style {
   font-family: "Arial", "Helvetica", sans-serif; }

@@ -38,7 +38,11 @@
 
       // Geogrpahical search needs some serious re-work.
       // - Hide the map
-      $("#geographical-search").hide();
+
+      $("<a>Watch or draw on map</a>").prependTo("#geographical-search")
+
+      $("#geographical-search")
+      .hide();
 
     }
 
