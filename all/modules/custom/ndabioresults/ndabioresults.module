@@ -27,6 +27,11 @@ function ndabioresults_menu() {
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
+  $items['nba/result'] = array(
+    'page callback' => 'ndabioresults_pass',
+    'load arguments' => array('%map', '%index'),
+    'access callback' => TRUE,
+  );
   $items['nba/ajax'] = array(
    'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
