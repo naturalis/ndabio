@@ -643,6 +643,38 @@ function ndabio_advanced_taxonomysearch() {
   return ($form);
 }
 
+function ndabio_omnisearch_form() {
+  $form = array();
+  $form['omnisearch'] = array(
+    '#type' => 'fieldset',
+    '#theme' => 'ndabio_omnisearch',
+    '#nowrapper' => TRUE,
+    '#attributes' => array( 'class' => array('fieldset-omnisearch'))
+  );
+
+  $form['omnisearch']['term'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Keywords'),
+    '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+    '#required' => FALSE,
+    '#title_display' => 'invisible',
+    '#nowrapper' => TRUE,
+    '#id' => "edit-term",
+    '#attributes' => array( 'name' => 'term')
+   );
+
+  $form['omnisearch']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#nowrapper' => TRUE,
+    '#attributes' => array( 'class' => array('postfix')),
+    '#id' => 'edit-submit-top'
+  );
+  $form['#action'] = url('nba/result');
+
+  return ($form);
+}
+
 function _wrap_label( $help, $caption ){
   return "<span class='search-explanation' title='$help'>$caption</span>";
 }

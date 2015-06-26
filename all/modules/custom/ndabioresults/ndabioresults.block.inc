@@ -52,6 +52,15 @@ function ndabioresults_block_info() {
     'weight' => -10,
     'status' => TRUE,
   );
+  $blocks['ndabioresults_thematicsearchmore'] = array(
+    'info' => t('NBA: Thematic search more block'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'cache' => DRUPAL_NO_CACHE,
+    'pages' => "nba/result\nnba/result*",
+    'region' => "content",
+    'weight' => -9,
+    'status' => TRUE,
+  );
   return $blocks;
 }
 
@@ -210,6 +219,14 @@ function ndabioresults_block_view($delta = '') {
         }
       }
 
+      break;
+    case 'ndabioresults_thematicsearchmore':
+      //Get NBA search term from URL
+      $mytheme = isset($_GET['theme']) ? check_plain($_GET['theme']) : '';
+      $block['content'] = "";
+      if(!empty($mytheme)) {
+        $block['content'] = drupal_render(drupal_get_form('ndabio_omnisearch_form'));
+      }
       break;
   }
   return $block;
