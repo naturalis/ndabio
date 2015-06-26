@@ -27,17 +27,6 @@ function ndabioresults_menu() {
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
-  $items['nba/result'] = array(
-    'page callback' => 'ndabioresults_pass',
-    'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
-  );
-  $items['nba/back'] = array(
-    'page callback' => 'ndabioresults_back',
-    'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
-  );
-
   $items['nba/ajax'] = array(
    'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
@@ -143,15 +132,28 @@ function ndabioresults_pass ($args = "") {
     if (!empty($langcode)) {
         variable_set('language_default', $langs[$langcode]);
     }
+    unset($_SESSION['ndaSearch']['pageTitle']);
+
+
+//unset($_SESSION['ndaHistory'] );
+
+    // Keep track of NBA search history
+    if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
+        if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
+            $_SESSION['ndaHistory'][] = $_GET['nba_request'];
+        } else if (isset($_POST['form_id'])) {
+            $_SESSION['ndaHistory'][] = 'form';
+        } else if (isset($_GET['back'])) {
+            array_pop($_SESSION['ndaHistory']);
+        }
+    }
 
     drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
     drupal_add_http_header('Cache-Control', 'post-check=0, pre-check=0');
     session_cache_limiter("must-revalidate");
-
-    unset($_SESSION['ndaSearch']['pageTitle']);
-
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
+
     // Thematic search
     if (isset($_GET['theme']) && !empty($_GET['theme'])) {
         unset($_SESSION['ndaSearch']);
@@ -159,11 +161,15 @@ function ndabioresults_pass ($args = "") {
         return ndaThematicSearch();
     }
 
-    // Back link clicked; proceed as if POST data was received but retrieve this from SESSION
+    // Back link clicked. Check search history to see if user comes from search form
+    // or from paginated result set. If the latter, use history to navigate; else
+    // proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
         drupal_set_title(t("Search results"));
-
-        if (!empty($_SESSION['ndaSearch']['term'])) {
+        if (isset($_SESSION['ndaHistory']) && !empty($_SESSION['ndaHistory']) &&
+            end($_SESSION['ndaHistory']) != 'form)') {
+            return ndaDirectRequest(end($_SESSION['ndaHistory']));
+        } else if (!empty($_SESSION['ndaSearch']['term'])) {
             return ndaSimpleSearch();
         } else if (!empty($_SESSION['ndaSearch']['theme'])) {
             return ndaThematicSearch();
@@ -187,7 +193,7 @@ function ndabioresults_pass ($args = "") {
     else if (isset($_GET['nba_request'])) {
         // @todo: check direct url for injection?
         return ndaDirectRequest(urldecode($_GET['nba_request']));
-     }
+    }
 
     // If both POST and SESSION are empty we have a problem...
     else {
@@ -2763,4 +2769,14 @@ function printValue ($value) {
             $value . '</a>';
     }
     return $value != '' ? $value : '—';
+}
+
+
+function isSearchService ($r) {
+    foreach (searchServices() as $service) {
+        if (strpos($r, $service) !== false) {
+            return true;
+        }
+    }
+    return false;
 }

@@ -519,3 +519,17 @@ function groupServices () {
     }
     return $var;
 }
+
+function searchServices () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+        $var = array(
+            taxonService(),
+        	specimenNamesService(),
+            multimediaService(),
+        	specimenService()
+        );
+    }
+    return $var;
+
+}
