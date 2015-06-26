@@ -225,7 +225,7 @@ function ndabioresults_block_view($delta = '') {
       $mytheme = isset($_GET['theme']) ? check_plain($_GET['theme']) : '';
       $block['content'] = "";
       if(!empty($mytheme)) {
-        $block['content'] = drupal_render(drupal_get_form('ndabio_omnisearch_form'));
+        //$block['content'] = drupal_render(drupal_get_form('ndabio_omnisearch_form'));
       }
       break;
   }
