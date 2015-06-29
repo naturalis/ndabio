@@ -309,7 +309,7 @@
 
     }
 
-    .ndabio-toggle-advanced{
+    .ndabio-toggle-advanced, .ndabio-toggle-area{
       position           : absolute;
       top                : 0px;
       right              : 0px;
@@ -570,6 +570,80 @@
         max-width: 100%;
         height: 600px;
       }
+
+    #edit-omnisearch--2{
+      width: percentage(10/12);
+      clear: both;
+
+
+      label{
+        width: percentage(2/10);
+      }
+    }
+
+    .form-item-area{
+      width: percentage(10/12);
+      position: relative;
+    }
+
+    #area{
+      width: 100%;
+      clear: both;
+      overflow: hidden;
+      background-color: $gray-1;
+//      max-height: 100px;
+    }
+
+//    #area.expanded{
+//      max-height: auto;
+//    }
+
+
+    body.page-geographic-search{
+
+      #edit-extended{
+        width: 100%;
+        clear: both;
+      }
+
+      label[for='geo-search-area-name'], label[for='edit-term']{
+        float: left;
+        width: percentage(2/10);
+        display: block;
+        text-align: right;
+        line-height: 50px;
+        padding-right: 1em;
+
+      }
+
+      // fields
+      #geo-search-area-name, #edit-term{
+        width: percentage(8/10);
+        float: left;
+        font-size: 1.25rem;
+        height: 50px;
+      }
+
+      #geo-search-area-name{
+        background-color: white;
+      }
+
+      #edit-submit-top{
+        border: none;
+        width: percentage(2/12);
+        position: absolute;
+        right: 0;
+        font-weight: bolder;
+        font-size: 1rem;
+        height: 50px;
+        line-height: 50px;
+      }
+
+    }
+
+
+
+
 
   // -- geoserach: CHAINED-SELECT
     .chained-select{
@@ -1263,7 +1337,7 @@
       }
 
       // Remove padding from main window so the advanced search fields show
-      // nicelu
+      // nicely
       body.front .main{
         padding-left: 0;
         padding-right: 0;

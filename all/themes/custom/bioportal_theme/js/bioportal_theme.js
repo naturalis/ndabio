@@ -43,7 +43,6 @@
 
       $("#geographical-search")
       .hide();
-
     }
 
   // ---------------------------------------------------------
@@ -388,6 +387,7 @@ jQuery.fn.toggleAttr = function(a, b) {
 };
 
 jQuery.fn.swapValAndPlaceholder = function(a, b) {
+    alert("Konijn");
     var c = (b === undefined);
     return this.each(function() {
         if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);

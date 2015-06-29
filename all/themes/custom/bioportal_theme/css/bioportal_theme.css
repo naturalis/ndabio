@@ -164,7 +164,7 @@ button, .button {
   .fieldset-omnisearch input[disabled] {
     color: #b2b1a8; }
 
-.ndabio-toggle-advanced {
+.ndabio-toggle-advanced, .ndabio-toggle-area {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -175,7 +175,7 @@ button, .button {
   line-height: 50px;
   text-align: center;
   cursor: pointer; }
-  .ndabio-toggle-advanced:hover {
+  .ndabio-toggle-advanced:hover, .ndabio-toggle-area:hover {
     color: #009ee0; }
 
 .ndabio-clear-textfield {
@@ -349,6 +349,49 @@ html.js fieldset.collapsible .fieldset-legend {
   width: 640px;
   max-width: 100%;
   height: 600px; }
+
+#edit-omnisearch--2 {
+  width: 83.33333%;
+  clear: both; }
+  #edit-omnisearch--2 label {
+    width: 20%; }
+
+.form-item-area {
+  width: 83.33333%;
+  position: relative; }
+
+#area {
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  background-color: #f2f2f2; }
+
+body.page-geographic-search #edit-extended {
+  width: 100%;
+  clear: both; }
+body.page-geographic-search label[for='geo-search-area-name'], body.page-geographic-search label[for='edit-term'] {
+  float: left;
+  width: 20%;
+  display: block;
+  text-align: right;
+  line-height: 50px;
+  padding-right: 1em; }
+body.page-geographic-search #geo-search-area-name, body.page-geographic-search #edit-term {
+  width: 80%;
+  float: left;
+  font-size: 1.25rem;
+  height: 50px; }
+body.page-geographic-search #geo-search-area-name {
+  background-color: white; }
+body.page-geographic-search #edit-submit-top {
+  border: none;
+  width: 16.66667%;
+  position: absolute;
+  right: 0;
+  font-weight: bolder;
+  font-size: 1rem;
+  height: 50px;
+  line-height: 50px; }
 
 .chained-select ul {
   list-style: none inside none;
