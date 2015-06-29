@@ -139,9 +139,6 @@ function ndabioresults_pass ($args = "") {
     }
     unset($_SESSION['ndaSearch']['pageTitle']);
 
-
-//unset($_SESSION['ndaHistory'] );
-
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
         if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
