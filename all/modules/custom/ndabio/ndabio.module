@@ -441,6 +441,8 @@ function ndabio_advanced_taxonomysearch() {
               '#type' => 'radios',
               '#title' => t('Combine search terms'),
               '#default_value' => 0,
+              '#default_value' => (!empty($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) ?
+                 $_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr'] : 0,
               '#options' => $searchtype,
               '#inline' => TRUE
             ),
