@@ -221,13 +221,15 @@ function ndabioresults_block_view($delta = '') {
 
       break;
     case 'ndabioresults_thematicsearchmore':
-      //Get NBA search term from URL
-      $mytheme = isset($_GET['theme']) ? check_plain($_GET['theme']) : '';
-      $block['content'] = "";
-      if(!empty($mytheme)) {
-        $block['content'] = drupal_render(drupal_get_form('ndabio_omnisearch_form'));
-      }
-      break;
+        $block['content'] = "";
+        $mytheme = isset($_GET['theme']) ? check_plain($_GET['theme']) :
+            (isset($_SESSION['ndaSearch']['theme']) ? $_SESSION['ndaSearch']['theme'] : false);
+        // Only show form on main results screen
+        if ($mytheme &&
+            (!isset($_GET['nba_request']) || isSearchService(urldecode($_GET['nba_request'])))) {
+            $block['content'] = drupal_render(drupal_get_form('ndabio_omnisearch_form'));
+        }
+        break;
   }
   return $block;
 }

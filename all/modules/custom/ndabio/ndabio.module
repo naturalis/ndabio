@@ -655,12 +655,13 @@ function ndabio_omnisearch_form() {
   $form['omnisearch']['term'] = array(
     '#type' => 'textfield',
     '#title' => t('Keywords'),
-    '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+    '#default_value' =>
+        (isset($_SESSION['ndaSearch']['theme_term']) && $loadold) ? $_SESSION['ndaSearch']['theme_term'] : "",
     '#required' => FALSE,
     '#title_display' => 'invisible',
     '#nowrapper' => TRUE,
     '#id' => "edit-term",
-    '#attributes' => array( 'name' => 'term')
+    '#attributes' => array( 'name' => 'theme_term')
    );
 
   $form['omnisearch']['submit'] = array(

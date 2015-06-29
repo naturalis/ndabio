@@ -1,6 +1,6 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 0);
+define("DEBUG_CHANNELS", 1);
 
 
 /**
@@ -139,7 +139,6 @@ function ndabioresults_pass ($args = "") {
     }
     unset($_SESSION['ndaSearch']['pageTitle']);
 
-
 //unset($_SESSION['ndaHistory'] );
 
     // Keep track of NBA search history
@@ -160,9 +159,15 @@ function ndabioresults_pass ($args = "") {
     drupal_add_js("var str_base_path = '$base_path' ", 'inline');
 
     // Thematic search
-    if (isset($_GET['theme']) && !empty($_GET['theme'])) {
-        unset($_SESSION['ndaSearch']);
-        $_SESSION['ndaSearch']['theme'] = $_GET['theme'];
+    if (isset($_GET['theme']) || isset($_POST['theme_term'])) {
+p($_POST);
+        //unset($_SESSION['ndaSearch']);
+        if (!empty($_GET['theme'])) {
+            $_SESSION['ndaSearch']['theme'] = $_GET['theme'];
+        }
+        if (!empty($_POST['theme_term'])) {
+            $_SESSION['ndaSearch']['theme-term'] = $_POST['theme_term'];
+        }
         return ndaThematicSearch();
     }
 
@@ -459,11 +464,18 @@ function serviceUsed ($service) {
 function ndaThematicSearch () {
 
     unset($_SESSION['ndaFilters']);
-    $services[multimediaService()] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $p = array(
+        'theme' => $_SESSION['ndaSearch']['theme'],
+        '_andOr' => 'AND'
+    );
+    if (isset($_SESSION['ndaSearch']['theme-term'])) {
+        $p['_search'] = $_SESSION['ndaSearch']['theme-term'];
+    }
+    $services[multimediaService()] = $p;
+    $services[specimenService()] = $p;
 
-    $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
-    $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    //$services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    //$services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
 
     $pageHeader = '';
     ctools_class_add(array('thematic-search'));
