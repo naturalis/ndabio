@@ -104,6 +104,7 @@
     var $_intro_less_link = $(".intro-less", $_header);
     var $_intro_block     = $(".intro-block", $_header);
     var $_title_slogan    = $("#title-and-slogan", $_header);
+    var display = false;
 
     $_intro_more_link
       .show()
@@ -112,9 +113,17 @@
       .click(function(){
         $_header
           .toggleClass("background-purple")
-          .toggleClass("background-gray-9")
+          .toggleClass("background-gray-9");
+        if ($_intro_less_link.css('display') == 'none') {
+        	$_intro_less_link.show();
+      	}
+        $_intro_less_link
+	    	.click(function() {
+	    		$(this).hide();
+	    	})
         $_title_slogan.toggleClass("off-canvas");
       });
+
   }
 
   // ---------------------------------------------------------
