@@ -25,6 +25,7 @@
 
     // If were're viewing our beautifull site on a mobile device…
     if ( w < 640 ){
+
       // set auto-height of main container
       $("main").css("min-height",h - 170 );
 
@@ -106,7 +107,7 @@
     var display = false;
 
     $_intro_more_link
-      .show()
+      .show();
 
     $_title_slogan
       .click(function(){
@@ -274,6 +275,7 @@
 
   });
 
+    // ---------------------------------------------------------
 
 
 
@@ -285,14 +287,7 @@
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
-
-   // ---------------------------------------------------------
-  // PRELOADER
-  // ---------------------------------------------------------
-
-  // $("#preloader").remove();
-
-  // ---------------------------------------------------------
+    // ---------------------------------------------------------
 
 
 
@@ -385,97 +380,6 @@ jQuery.fn.toggleAttr = function(a, b) {
         else jQuery(this).removeAttr(a);
     });
 };
-
-jQuery.fn.swapValAndPlaceholder = function(a, b) {
-    alert("Konijn");
-    var c = (b === undefined);
-    return this.each(function() {
-        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
-        else jQuery(this).removeAttr(a);
-    });
-};
-
-function preloader(){
-  return;
-
-  (function($) {
-    $("body").addClass("fading");
-
-    $_overlay = $("<div id='preloader'></div>")
-      .appendTo("body")
-      .css({
-        width            : "200px",
-        height           : "200px",
-        backgroundColor  : "#444433",
-        borderRadius     : "5px",
-        position         : "absolute",
-        top              : "50%",
-        left             : "50%",
-        marginLeft       : "-100px",
-        zIndex           : 1000
-      });
-
-    $_canvas = $("<div id='canvas' />")
-      .appendTo($_overlay)
-      .css({
-        width            : "10px",
-        height           : "10px",
-        position         : "absolute",
-        left             : "50%",
-        top              : "50%",
-        overflow         : "show"
-      })
-
-      var b = 0.306349;
-
-      var $_kernel = [];
-
-      for (var n=0; n<63; n++){
-
-        $_kernel[n] = $("<div class='kernel' />")
-          .appendTo($_canvas)
-          .css({
-            width        : "10px",
-            height       : "10px",
-            background   : "white",
-            position     : "absolute",
-            borderRadius : "5px",
-            left         : 0,
-            top          : 0
-          })
-      }
-
-    var t=-63;
-    var go_up = true;
-
-    window.setInterval(function() {
-      if (go_up ){
-        t += 0.2;
-        if ( t> 0 ) go_up = false;
-      } else {
-        t -= 0.2;
-        if ( t < -63 ) go_up = true;
-      }
-
-      for (var n=0; n<63; n++){
-        k = t + n;
-        if (k>0){
-          var teta  = k * 2.3998277;
-          var omega = n * 2.3998277;
-          var r     = Math.round( 7 * Math.sqrt(k) );
-          var num_x = Math.round( r * Math.cos(omega ) );
-          var num_y = Math.round(r * Math.sin(omega  ));
-
-          $_kernel[n].css({
-            left         : num_x,
-            top          : num_y
-          });
-        }
-
-      }
-    }, 25);
-  })(jQuery);
-}
 
   // ---------------------------------------------------------
   // PRELOADER: remove upon clicking browser back-button
