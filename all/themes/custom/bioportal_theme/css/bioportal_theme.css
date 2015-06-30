@@ -392,6 +392,10 @@ body.page-geographic-search #edit-submit-top {
   font-size: 1rem;
   height: 50px;
   line-height: 50px; }
+body.page-geographic-search .ndabio-toggle-area {
+  width: 80%;
+  text-align: right;
+  padding-right: 10px; }
 
 .chained-select ul {
   list-style: none inside none;
@@ -443,7 +447,8 @@ body.page-geographic-search #edit-submit-top {
 
 .item-list ul .row-area {
   line-height: 1.1;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  margin-left: 0.5em; }
 .row-area a {
   color: #542e08; }
   .row-area a.active, .row-area a:hover {

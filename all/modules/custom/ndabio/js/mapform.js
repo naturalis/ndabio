@@ -15,21 +15,19 @@
         .insertAfter( '#geo-search-area-name' )
         .click(function(){
             $("#area").slideToggle("expanded");
+
+            $(".ndabio-toggle-area")
+                .toggleClass("icon-triangle-down")
+                .toggleClass("icon-triangle-up");
         });
 
     $("#geo-search-area-name").click(function(){
         $(".ndabio-toggle-area")
             .trigger("click");
-            return false; // prevent default behaviour
+        return false; // prevent default behaviour
     });
 
     $("#area").slideUp(1000);
-
-
-
-
-
-
 
 
 	// Load VIEWS with areas upon click on area-type
@@ -116,19 +114,6 @@
           }
       });
 	});
-
-
-
-	// Add labels to the omnibox
-	// A bit dirty, but where else to put it?
-
-
-	//$("x.fieldset-omnisearch.form-wrapper .large-offset-2")
-	//	.removeClass("large-offset-2")
-	//	.before("<div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Search') + ":</div>");
-    //
-	//$("x.fieldset-omnisearch.form-wrapper .fieldset-wrapper")
-	//	.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 

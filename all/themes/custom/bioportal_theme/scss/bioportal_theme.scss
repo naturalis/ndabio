@@ -639,6 +639,13 @@
         line-height: 50px;
       }
 
+      // Dirty trick: we make the dropdown 
+      .ndabio-toggle-area{
+        width: percentage(8/10);
+        text-align: right;
+        padding-right: 10px;
+      }
+
     }
 
 
@@ -719,6 +726,7 @@
       .item-list ul & {
         line-height: 1.1;
         margin-bottom: 10px;
+        margin-left: 0.5em;
       }
 
       a{

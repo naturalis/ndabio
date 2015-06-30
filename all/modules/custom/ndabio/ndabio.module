@@ -634,10 +634,10 @@ function ndabio_advanced_taxonomysearch() {
     );
 
 
-    // Re-work the search form. We use existing form-definitions
+    // Re-work the search form. We use andjust existing form-definitions
     // instead of creating them from scratch to keep it DRY
 
-    // - add an extra field for the area
+    // - add an extra field for area selection
     $form['area'] = array(
       '#type' => 'textfield',
       '#id' => 'geo-search-area-name',
