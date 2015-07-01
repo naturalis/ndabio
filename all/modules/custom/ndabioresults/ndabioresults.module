@@ -139,6 +139,8 @@ function ndabioresults_pass ($args = "") {
     }
     unset($_SESSION['ndaSearch']['pageTitle']);
 
+//unset($_SESSION['ndaHistory']);
+
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
         if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
@@ -149,6 +151,8 @@ function ndabioresults_pass ($args = "") {
             array_pop($_SESSION['ndaHistory']);
         }
     }
+
+p($_SESSION['ndaHistory']);
 
     drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
@@ -2876,7 +2880,9 @@ function printMultimediaPreviousNext () {
     // Return "link-less" navigation if request is empty or history is not yet set
     if (!isset($_GET['nba_request']) ||
         !isset($_SESSION['ndaNavigation']['media']['currentSet'])) {
-        return '<p>&lt; Previous | Next &gt;</p>';
+        return '<span class="icon button-icon icon-chevron-up icon-button-disabled"></span>
+            <span class="icon button-icon icon-chevron-down icon-button-disabled"></span>
+            <span class="icon button-icon icon-cross icon-button-disabled"></span>';
     }
 
     $set = $_SESSION['ndaNavigation']['media']['currentSet'];
@@ -2885,13 +2891,13 @@ function printMultimediaPreviousNext () {
     $previousUrl = isset($set[$key - 1]) ? urldecode($set[$key - 1]) : false;
     $nextUrl = isset($set[$key + 1]) ? urldecode($set[$key + 1]) : false;
 
-    $output = '<p>';
+    $output = '<p class="button-bar">';
 
-    $output .= sprintf(
+    $output .= '<span class="button-text">' . sprintf(
         t('%d of %d'),
         $_SESSION['ndaNavigation']['media']['offset'] + $key + 1,
         $_SESSION['ndaNavigation']['media']['total']
-    );
+    ) . '</span>';
 
     if (!empty($previousUrl)) {
         $output .= '<a href="' . printDrupalLink($previousUrl) . '">';

@@ -309,7 +309,7 @@
 
     }
 
-    .ndabio-toggle-advanced{
+    .ndabio-toggle-advanced, .ndabio-toggle-area{
       position           : absolute;
       top                : 0px;
       right              : 0px;
@@ -385,7 +385,6 @@
       }
 
       label{
-        // font-size        : 1.125rem;
         font-size        : 1rem;
         color            : $white;
         line-height      : 0.9em;
@@ -571,6 +570,108 @@
         height: 600px;
       }
 
+    #edit-omnisearch--2{
+      width: percentage(12/12);
+      clear: both;
+
+      & > .fieldset-wrapper{
+        width: percentage(10/12);
+      }
+
+      label{
+        width: percentage(2/10);
+      }
+    }
+
+    .form-item-area{
+      width: percentage(10/12);
+      position: relative;
+    }
+
+    #area{
+      width: 100%;
+      clear: both;
+      overflow: hidden;
+      background-color: $ghost;
+    }
+
+    #area-wrapper{
+      width: 100%;
+      overflow: hidden;
+      padding-bottom: 1em;
+    }
+
+    #submit-wrapper{
+      width: 100%;
+      position: relative;
+      margin-bottom: 100px; //needed to stay clear of the footer
+    }
+
+
+
+
+
+    body.page-geographic-search{
+      main{
+        background-image: url(../img/geo-background.png);
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size:100%;
+
+      }
+
+      #edit-extended{
+        width: 100%;
+        clear: both;
+      }
+
+      label[for='geo-search-area-name'], label[for='edit-term']{
+        float: left;
+        width: percentage(2/10);
+        display: block;
+        text-align: right;
+        line-height: 50px;
+        padding-right: 1em;
+
+      }
+
+      // fields
+      #geo-search-area-name, #edit-term{
+        width: percentage(8/10);
+        float: left;
+        font-size: 1.25rem;
+        height: 50px;
+      }
+
+      #geo-search-area-name{
+        background-color: white;
+        margin-bottom: 0;
+      }
+
+      #edit-submit-top{
+        border: none;
+        width: percentage(2/12);
+        position: absolute;
+        right: 0;
+        font-weight: bolder;
+        font-size: 1rem;
+        height: 50px;
+        line-height: 50px;
+      }
+
+      // Dirty trick: we make the dropdown 
+      .ndabio-toggle-area{
+        width: percentage(8/10);
+        text-align: right;
+        padding-right: 10px;
+      }
+
+    }
+
+
+
+
+
   // -- geoserach: CHAINED-SELECT
     .chained-select{
       ul{
@@ -645,6 +746,7 @@
       .item-list ul & {
         line-height: 1.1;
         margin-bottom: 10px;
+        margin-left: 0.5em;
       }
 
       a{
@@ -1176,11 +1278,6 @@
       -webkit-transition: all 1s linear;
     }
 
-
-
-
-
-
   //  BURGER MENU
 
     .top-bar{
@@ -1263,7 +1360,7 @@
       }
 
       // Remove padding from main window so the advanced search fields show
-      // nicelu
+      // nicely
       body.front .main{
         padding-left: 0;
         padding-right: 0;
@@ -1336,6 +1433,57 @@
         line-height: 20px;
         color: $gray-10;
       }
+
+      body.page-geographic-search{
+        .main{
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        #geo-search-area-name,
+        #edit-term{
+          width: 100%;
+        }
+
+        label[for="geo-search-area-name"],
+        #edit-omnisearch--2 label[for="edit-term"] {
+          width: 100%;
+          text-align: left;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        #edit-omnisearch--2{
+          padding: 0;
+        }
+
+        #edit-omnisearch--2 > .fieldset-wrapper,
+        .form-item-area {
+          width: 100%;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .ndabio-toggle-advanced, .ndabio-toggle-area{
+//          width: 100%;
+          text-align: right;
+          top: 20px;
+          padding-right: 10px !important;
+        }
+
+        #edit-submit-top{
+          width: 100%;
+          position: static;
+        }
+
+        #submit-wrapper{
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+      }
+
+
 
     }
 
