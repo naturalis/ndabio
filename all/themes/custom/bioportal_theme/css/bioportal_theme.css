@@ -351,8 +351,10 @@ html.js fieldset.collapsible .fieldset-legend {
   height: 600px; }
 
 #edit-omnisearch--2 {
-  width: 83.33333%;
+  width: 100%;
   clear: both; }
+  #edit-omnisearch--2 > .fieldset-wrapper {
+    width: 83.33333%; }
   #edit-omnisearch--2 label {
     width: 20%; }
 
@@ -364,8 +366,23 @@ html.js fieldset.collapsible .fieldset-legend {
   width: 100%;
   clear: both;
   overflow: hidden;
-  background-color: #f2f2f2; }
+  background-color: #EEEDE9; }
 
+#area-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 1em; }
+
+#submit-wrapper {
+  width: 100%;
+  position: relative;
+  margin-bottom: 100px; }
+
+body.page-geographic-search main {
+  background-image: url(../img/geo-background.png);
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: 100; }
 body.page-geographic-search #edit-extended {
   width: 100%;
   clear: both; }
@@ -382,7 +399,8 @@ body.page-geographic-search #geo-search-area-name, body.page-geographic-search #
   font-size: 1.25rem;
   height: 50px; }
 body.page-geographic-search #geo-search-area-name {
-  background-color: white; }
+  background-color: white;
+  margin-bottom: 0; }
 body.page-geographic-search #edit-submit-top {
   border: none;
   width: 16.66667%;

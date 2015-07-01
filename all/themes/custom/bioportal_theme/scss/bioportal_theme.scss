@@ -385,7 +385,6 @@
       }
 
       label{
-        // font-size        : 1.125rem;
         font-size        : 1rem;
         color            : $white;
         line-height      : 0.9em;
@@ -572,9 +571,12 @@
       }
 
     #edit-omnisearch--2{
-      width: percentage(10/12);
+      width: percentage(12/12);
       clear: both;
 
+      & > .fieldset-wrapper{
+        width: percentage(10/12);
+      }
 
       label{
         width: percentage(2/10);
@@ -590,16 +592,33 @@
       width: 100%;
       clear: both;
       overflow: hidden;
-      background-color: $gray-1;
-//      max-height: 100px;
+      background-color: $ghost;
     }
 
-//    #area.expanded{
-//      max-height: auto;
-//    }
+    #area-wrapper{
+      width: 100%;
+      overflow: hidden;
+      padding-bottom: 1em;
+    }
+
+    #submit-wrapper{
+      width: 100%;
+      position: relative;
+      margin-bottom: 100px; //needed to stay clear of the footer
+    }
+
+
+
 
 
     body.page-geographic-search{
+      main{
+        background-image: url(../img/geo-background.png);
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size:100%;
+
+      }
 
       #edit-extended{
         width: 100%;
@@ -626,6 +645,7 @@
 
       #geo-search-area-name{
         background-color: white;
+        margin-bottom: 0;
       }
 
       #edit-submit-top{

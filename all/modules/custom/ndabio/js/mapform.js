@@ -19,6 +19,9 @@
             $(".ndabio-toggle-area")
                 .toggleClass("icon-triangle-down")
                 .toggleClass("icon-triangle-up");
+
+            $("#area-wrapper")
+                .toggleClass("background-ghost");
         });
 
     $("#geo-search-area-name").click(function(){

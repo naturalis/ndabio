@@ -643,11 +643,17 @@ function ndabio_advanced_taxonomysearch() {
       '#id' => 'geo-search-area-name',
       '#attributes' => array( 'placeholder' => "Where to search?"),
       '#title' => t("Within"),
-      '#disabled' => true
+      '#disabled' => true,
+      '#prefix' => "<div id='area-wrapper'>",
+      '#suffix' => "</div>"
     );
 
     // - Give the submit button it's own row
     $form['submit'] = $form['omnisearch']['omnisearch']['submit'];
+    $form['submit']["#prefix"] = "<div id='submit-wrapper'>";
+    $form['submit']["#suffix"] = "</div>";
+
+
     unset($form['omnisearch']['omnisearch']['submit']);
 
     $form['omnisearch']['omnisearch']['#nowrapper'] = FALSE;

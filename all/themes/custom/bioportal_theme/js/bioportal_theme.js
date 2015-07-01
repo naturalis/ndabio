@@ -23,7 +23,7 @@
   // RESPONSIVE MAGIC
   // ---------------------------------------------------------
 
-    // If were're viewing our beautifull site on a mobile device…
+    // If were're viewing our site on a mobile device…
     if ( w < 640 ){
 
       // set auto-height of main container
@@ -153,27 +153,34 @@
     // -- search form: behaviour for dropdown button
     $_omnibox.removeAttr("disabled");
     $_submit.removeAttr("disabled");
+    is_front = $("body").hasClass("front");
 
     $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
       .insertAfter( $_omnibox )
       .click(function(){
         $_fieldset_omnisearch.toggleClass("disabled");
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
-        $_submit.toggleAttr("disabled").toggleClass("disabled");
+
+            if ( is_front) $_submit.toggleAttr("disabled").toggleClass("disabled");
+
 
         $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
 
-        $_bottom_submit.css("opacity","0")
 
-        $_advanced_search_form
-          .slideToggle(400, function(){
-            int_x = $_bottom_submit.offset().left;
-            int_y = $_bottom_submit.offset().top;
+                $_bottom_submit.css("opacity","0");
 
-            $(window).trigger('scroll');
+                $_advanced_search_form
+                    .slideToggle(400, function(){
+                        int_x = $_bottom_submit.offset().left;
+                        int_y = $_bottom_submit.offset().top;
 
-            $_bottom_submit.css("opacity","1")
-          });
+                        $(window).trigger('scroll');
+
+                        if ( is_front ) $_bottom_submit.css("opacity", "1");
+
+                    });
+
+
 
         // Exchange value with placeholder value
         if ($_omnibox.val() !== ""){
@@ -195,7 +202,7 @@
   // SEARCH FORM: prevent submit button from scrolling of the page
   // ---------------------------------------------------------
 
-  if ( $_advanced_search_form.length ){
+  if ( $_advanced_search_form.length  && $("body").hasClass("front") ){
     $(window).scroll(function(){
 
         var objectTop = $_bottom_submit.position().top;
