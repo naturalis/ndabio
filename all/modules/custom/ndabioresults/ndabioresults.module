@@ -2535,8 +2535,9 @@ function translateNdaField ($str) {
  * @param string $url NBA search parameters
  * @return string Drupal url
  */
-function printDrupalLink ($url) {
-    return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
+ function printDrupalLink ($url) {
+   global $language;
+    return setBasePath() . 'nba/result?language=' . $language->language . '&nba_request=' . urlencode($url);
 }
 
 /**

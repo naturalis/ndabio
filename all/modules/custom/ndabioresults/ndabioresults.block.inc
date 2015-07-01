@@ -149,12 +149,12 @@ function ndabioresults_block_view($delta = '') {
     case 'ndabioresults_back':
       if ( $_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
-            $block['content'] = "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
+            $block['content'] = "<a href='" . setStartUrl() . "?language=" . $language->language . "'>$icon" . t('Home') . "</a>";
         } else {
-           $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
+           $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1&language=" . $language->language . "'>$icon" . t('Modify search') . "</a>";
         }
       } else {
-          $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
+          $block['content'] = "<a href='?back&language=" . $language->language . "'>$icon" . t('Back to search results') . "</a>";
 	  drupal_set_title(t("Search results"));
       }
 
