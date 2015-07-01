@@ -1,5 +1,7 @@
 (function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
 
+    var is_front = $("body").hasClass("front");
+
 
   // ---------------------------------------------------------
   // auto fit height of MAIN CONTAINER
@@ -30,8 +32,11 @@
       $("main").css("min-height",h - 170 );
 
       // Turn word 'search' into magnifier class
-      $("#edit-submit-top")
-        .html("<span class='icon-search'></span>");
+
+      if (is_front){
+          $("#edit-submit-top")
+              .html("<span class='icon-search'></span>");
+      }
 
       //Re-phrase language names
       $("#language-menu [href*='language=en']").html("English");
@@ -153,7 +158,6 @@
     // -- search form: behaviour for dropdown button
     $_omnibox.removeAttr("disabled");
     $_submit.removeAttr("disabled");
-    is_front = $("body").hasClass("front");
 
     $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
       .insertAfter( $_omnibox )

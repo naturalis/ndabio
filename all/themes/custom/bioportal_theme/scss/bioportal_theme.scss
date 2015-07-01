@@ -1278,11 +1278,6 @@
       -webkit-transition: all 1s linear;
     }
 
-
-
-
-
-
   //  BURGER MENU
 
     .top-bar{
@@ -1438,6 +1433,57 @@
         line-height: 20px;
         color: $gray-10;
       }
+
+      body.page-geographic-search{
+        .main{
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        #geo-search-area-name,
+        #edit-term{
+          width: 100%;
+        }
+
+        label[for="geo-search-area-name"],
+        #edit-omnisearch--2 label[for="edit-term"] {
+          width: 100%;
+          text-align: left;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        #edit-omnisearch--2{
+          padding: 0;
+        }
+
+        #edit-omnisearch--2 > .fieldset-wrapper,
+        .form-item-area {
+          width: 100%;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .ndabio-toggle-advanced, .ndabio-toggle-area{
+//          width: 100%;
+          text-align: right;
+          top: 20px;
+          padding-right: 10px !important;
+        }
+
+        #edit-submit-top{
+          width: 100%;
+          position: static;
+        }
+
+        #submit-wrapper{
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+      }
+
+
 
     }
 

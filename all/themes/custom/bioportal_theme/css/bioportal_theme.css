@@ -382,7 +382,7 @@ body.page-geographic-search main {
   background-image: url(../img/geo-background.png);
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: 100; }
+  background-size: 100%; }
 body.page-geographic-search #edit-extended {
   width: 100%;
   clear: both; }
@@ -856,6 +856,36 @@ th .icon-sort_sortable {
     text-align: left;
     height: 20px;
     line-height: 20px;
-    color: #1a1a1a; } }
+    color: #1a1a1a; }
+
+  body.page-geographic-search .main {
+    padding-left: 0;
+    padding-right: 0; }
+  body.page-geographic-search #geo-search-area-name,
+  body.page-geographic-search #edit-term {
+    width: 100%; }
+  body.page-geographic-search label[for="geo-search-area-name"],
+  body.page-geographic-search #edit-omnisearch--2 label[for="edit-term"] {
+    width: 100%;
+    text-align: left;
+    height: 20px;
+    line-height: 20px; }
+  body.page-geographic-search #edit-omnisearch--2 {
+    padding: 0; }
+  body.page-geographic-search #edit-omnisearch--2 > .fieldset-wrapper,
+  body.page-geographic-search .form-item-area {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px; }
+  body.page-geographic-search .ndabio-toggle-advanced, body.page-geographic-search .ndabio-toggle-area {
+    text-align: right;
+    top: 20px;
+    padding-right: 10px !important; }
+  body.page-geographic-search #edit-submit-top {
+    width: 100%;
+    position: static; }
+  body.page-geographic-search #submit-wrapper {
+    padding-left: 10px;
+    padding-right: 10px; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */
