@@ -1266,7 +1266,8 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-//p($data);
+    setMultimediaNavigation($data);
+
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
 	if (!$output['searchTerms']) {
@@ -2760,7 +2761,7 @@ function loadPrettyPhoto ($imageUrl) {
 
 /**
  *
- * Prints value, changing a few if they meet criteria
+ * Prints value, modifying a few if they meet criteria
  *
  * @param string $license
  * @return string
@@ -2773,7 +2774,12 @@ function printValue ($value) {
     return $value != '' ? $value : '—';
 }
 
-
+/**
+ * Determines if service is a search service (contrary to detail service)
+ *
+ * @param unknown $r Request
+ * @return boolean true/false
+ */
 function isSearchService ($r) {
     foreach (searchServices() as $service) {
         if (strpos($r, $service) !== false) {
@@ -2781,4 +2787,140 @@ function isSearchService ($r) {
         }
     }
     return false;
+}
+
+
+function setMultimediaNavigation ($data) {
+    unset($_SESSION['ndaNavigation']['media']);
+    $_SESSION['ndaNavigation']['media']['total'] = $data->totalSize;
+    // Previous/next set links
+    $navigation = getNavigationPreviousNextSets($data, multimediaService());
+    $_SESSION['ndaNavigation']['media']['nextSet'] = $navigation['next'];
+    $_SESSION['ndaNavigation']['media']['previousSet'] = $navigation['previous'];
+    // Links within results
+    foreach ($data->searchResults as $row) {
+        $_SESSION['ndaNavigation']['media']['currentSet'][] =
+            urldecode(getMultimediaDetailLink($row));
+    }
+}
+
+/**
+ * Sets the urls for the previous/next result sets
+ *
+ * This should be pretty straightforward, as the NBA returns these links in the
+ * response. However, this is not the case for POST requests!
+ *
+ * @param array $data Parsed json data
+ * @param string $service Service, required to determine GET/POST request
+ * @return array $d Array with next and previous links
+ */
+function getNavigationPreviousNextSets ($data, $service) {
+    // POST or GET service?
+    $config = serviceToFunctions();
+    foreach ($data->links as $i => $link) {
+        $links[$link->rel] = $link->href;
+    }
+    // For GET determining the sets is easy
+    if (strtolower($config[$service]['method']) == 'get') {
+        $d['next'] = $links['_self'] != $links['_nextPage'] ?
+            $links['_nextPage'] : false;
+        $d['previous'] = $links['_self'] != $links['_prevPage'] ?
+            $links['_prevPage'] : false;
+    // For POST we need to parse the queryParameters
+    } else {
+        $d['next'] = setNavigationSetLink($data, 'next');
+        $d['previous'] = setNavigationSetLink($data, 'previous');
+    }
+    return $d;
+}
+
+/**
+ * Creates links for previous next result sets for POST request
+ *
+ * If GET request is used, the NBA returns correct links for previous and next
+ * results sets. For POST however, these have to be reconstructed using the
+ * queryParameters.
+ *
+ * @param array $data Parsed json data
+ * @param string $direction previous/next
+ * @return boolean|string
+ */
+function setNavigationSetLink ($data, $direction) {
+    foreach ($data->links as $i => $link) {
+        $links[$link->rel] = $link->href;
+    }
+    $terms = getSearchTerms($data);
+    // Append _offset if this has not been set yet
+    if (!array_key_exists('_offset', $terms)) {
+        $terms['_offset'] = array(0, $data->totalSize - 1);
+    }
+    $_SESSION['ndaNavigation']['media']['offset'] = $terms['_offset'][0];
+    foreach ($terms as $k => $v) {
+        if ($k == '_offset') {
+            if ($direction == 'previous' && ($v[0] - $terms['_maxResults'][0] >= 0)) {
+                $p .= $k . '=' . ($v[0] - $terms['_maxResults'][0])  . '&';
+            } else if ($direction == 'next' &&
+                ($v[0] + $terms['_maxResults'][0] < $terms['_offset'][1])) {
+                 $p .= $k . '=' . ($v[0] + $terms['_maxResults'][0])  . '&';
+            } else {
+                return false;
+            }
+        } else {
+            $p .= $k . '=' . $v[0] . '&';
+        }
+    }
+    return $links['_self'] . urlencode(substr($p, 0, -1));
+}
+
+function printMultimediaPreviousNext () {
+    // Return "link-less" navigation if request is empty or history is not yet set
+    if (!isset($_GET['nba_request']) ||
+        !isset($_SESSION['ndaNavigation']['media']['currentSet'])) {
+        return '<p>&lt; Previous | Next &gt;</p>';
+    }
+
+    $set = $_SESSION['ndaNavigation']['media']['currentSet'];
+    $key = array_search(urldecode($_GET['nba_request']),
+        $_SESSION['ndaNavigation']['media']['currentSet']);
+    $previousUrl = isset($set[$key - 1]) ? urldecode($set[$key - 1]) : false;
+    $nextUrl = isset($set[$key + 1]) ? urldecode($set[$key + 1]) : false;
+
+    $output = '<p>';
+
+    $output .= sprintf(
+        t('%d of %d'),
+        $_SESSION['ndaNavigation']['media']['offset'] + $key + 1,
+        $_SESSION['ndaNavigation']['media']['total']
+    );
+
+    if (!empty($previousUrl)) {
+        $output .= '<a href="' . printDrupalLink($previousUrl) . '">';
+    }
+    $output .= '<span class="icon button-icon icon-chevron-up';
+    if (empty($previousUrl)) {
+        $output .= ' icon-button-disabled';
+    }
+    $output .= '"></span>';
+    if (!empty($previousUrl)) {
+        $output .= '</a>';
+    }
+
+    if (!empty($nextUrl)) {
+        $output .= '<a href="' . printDrupalLink($nextUrl) . '">';
+    }
+    $output .= '<span class="icon button-icon icon-chevron-down';
+    if (empty($nextUrl)) {
+        $output .= ' icon-button-disabled';
+    }
+    $output .= '"></span>';
+    if (!empty($nextUrl)) {
+        $output .= '</a>';
+    }
+
+    $output .= '<a href="?back"><span class="icon button-icon icon-cross"></span></a>';
+
+
+    $output .= '</p>';
+
+    return $output;
 }

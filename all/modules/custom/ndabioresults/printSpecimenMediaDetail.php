@@ -11,6 +11,8 @@ function printSpecimenMediaDetail ($data) {
     $output .= _wrap( '', "h2"  );
     	//$output .= printNavigation($data);
 
+    $output .= printMultimediaPreviousNext();
+
     $altParts = array(
         isset($data['unitID']) ? strip_tags($data['unitID']) : '',
         isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
