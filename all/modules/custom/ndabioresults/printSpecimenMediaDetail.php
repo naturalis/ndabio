@@ -1,5 +1,4 @@
 <?php
-include("printMultimediaPreviousNext.php");
 
 /**
  * Prints multimedia detail
