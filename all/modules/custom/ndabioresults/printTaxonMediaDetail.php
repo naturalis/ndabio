@@ -1,4 +1,6 @@
 <?php
+include("printMultimediaPreviousNext.php");
+
 /**
  * Prints taxon media result
  *
