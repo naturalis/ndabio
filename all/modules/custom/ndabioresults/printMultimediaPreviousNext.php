@@ -1,22 +1,16 @@
 <?php
 function printMultimediaPreviousNext () {
-//p($_SESSION['ndaNavigation']['media']);
-
-    // Return "link-less" navigation if request is empty or history is not yet set
+    // Return no navigation if request is empty or history is not yet set
+    // (eg when user comes frmo bookmark)
     if (!isset($_GET['nba_request']) ||
         !isset($_SESSION['ndaNavigation']['media']['currentSet'])) {
-        return '<span class="icon button-icon icon-chevron-up icon-button-disabled"></span>
-            <span class="icon button-icon icon-chevron-down icon-button-disabled"></span>
-            <span class="icon button-icon icon-cross icon-button-disabled"></span>';
+        return false;
     }
 
     $set = $_SESSION['ndaNavigation']['media']['currentSet'];
     $offset = $_SESSION['ndaNavigation']['media']['offset'];
     $key = array_search(urldecode($_GET['nba_request']),
         $_SESSION['ndaNavigation']['media']['currentSet']);
-
-    //$previousUrl = isset($set[$key - 1]) ? urldecode($set[$key - 1]) : false;
-    //$nextUrl = isset($set[$key + 1]) ? urldecode($set[$key + 1]) : false;
 
     $previousUrl = false;
     // Scroll through set
@@ -27,7 +21,6 @@ function printMultimediaPreviousNext () {
     } else if (!empty($_SESSION['ndaNavigation']['media']['previousSet'])) {
         updatePreviousNext($_SESSION['ndaNavigation']['media']['previousSet']);
         $previousUrl = end($_SESSION['ndaNavigation']['media']['currentSet']);
-        //$key = array_search($previousUrl, $_SESSION['ndaNavigation']['media']['currentSet']);
     }
 
     $nextUrl = false;
@@ -36,11 +29,8 @@ function printMultimediaPreviousNext () {
         $nextUrl = urldecode($set[$key + 1]);
     // Last item of set reached; check if there's a nextSet.
     } else if (!empty($_SESSION['ndaNavigation']['media']['nextSet'])) {
-//p($_SESSION['ndaNavigation']['media']);
         updatePreviousNext($_SESSION['ndaNavigation']['media']['nextSet']);
-//p($_SESSION['ndaNavigation']['media']);
         $nextUrl = reset($_SESSION['ndaNavigation']['media']['currentSet']);
-        //$key = array_search($nextUrl, $_SESSION['ndaNavigation']['media']['currentSet']);
     }
 
     $output = '<p class="button-bar">';
@@ -76,8 +66,6 @@ function printMultimediaPreviousNext () {
     }
 
     $output .= '<a href="?back"><span class="icon button-icon icon-cross"></span></a>';
-
-
     $output .= '</p>';
 
     return $output;
