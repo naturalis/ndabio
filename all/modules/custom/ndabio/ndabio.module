@@ -115,7 +115,7 @@ function ndabio_block_view($delta = '') {
       }
       else {
         $currentpath = request_uri();
-        $cleanup = array("&language=en", "&language=nl", "&searchagain=1", "?searchagain=1", "&back", "?back");
+        $cleanup = array("&searchagain=1", "?searchagain=1", "&back", "?back");
         $currentpath = str_replace($cleanup, "", $currentpath);
         if (strpos($currentpath, "?") === FALSE) {
           $currentpath = $currentpath . "?";
