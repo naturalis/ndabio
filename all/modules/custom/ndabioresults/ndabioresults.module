@@ -137,9 +137,9 @@ function ndabioresults_pass ($args = "") {
     if (!empty($langcode)) {
         variable_set('language_default', $langs[$langcode]);
     }
-    unset($_SESSION['ndaSearch']['pageTitle']);
 
-//unset($_SESSION['ndaHistory']);
+    // SESSION variables that have to be reset for each request
+    unset($_SESSION['ndaSearch']['pageTitle']);
 
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
@@ -147,12 +147,10 @@ function ndabioresults_pass ($args = "") {
             $_SESSION['ndaHistory'][] = $_GET['nba_request'];
         } else if (isset($_POST['form_id'])) {
             $_SESSION['ndaHistory'][] = 'form';
-        } else if (isset($_GET['back'])) {
+        } else if (isset($_GET['back']) && isSearchService($_SESSION['ndaCurrentService'])) {
             array_pop($_SESSION['ndaHistory']);
         }
     }
-
-p($_SESSION['ndaHistory']);
 
     drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
@@ -2793,9 +2791,18 @@ function isSearchService ($r) {
     return false;
 }
 
-
+/**
+ * Sets navigation SESSION for previous/next links in multimedia
+ *
+ * @param array $data Parsed json
+ */
 function setMultimediaNavigation ($data) {
-    unset($_SESSION['ndaNavigation']['media']);
+    // SESSION has already been reset in the background with updatePreviousNext()
+    // Do nothing but switching the reset flag back on.
+    if ($_SESSION['ndaNavigation']['media']['reset'] == 0) {
+        $_SESSION['ndaNavigation']['media']['reset'] = 1;
+        return false;
+    }
     $_SESSION['ndaNavigation']['media']['total'] = $data->totalSize;
     // Previous/next set links
     $navigation = getNavigationPreviousNextSets($data, multimediaService());
@@ -2873,8 +2880,28 @@ function setNavigationSetLink ($data, $direction) {
             $p .= $k . '=' . $v[0] . '&';
         }
     }
-    return $links['_self'] . urlencode(substr($p, 0, -1));
+    return $links['_self'] . urlencode('?' . substr($p, 0, -1));
 }
 
 include("printMultimediaPreviousNext.php");
+
+/**
+ * Background reset of the navigation SESSION
+ *
+ * Called when the user arrives at the first or last item in the navigation set.
+ * The next/previous NBA request is called in the background and the SESSION is
+ * reset. In this special case, the SESSION should not be reset again when the
+ * new page loads. This is handled by setting reset = 0.
+ *
+ * @param string $r NBA request
+ */
+ function updatePreviousNext ($r) {
+    $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
+    if (!empty($json)) {
+        setMultimediaNavigation(json_decode($json));
+        // SESSION has already been reset; make sure it isn't reset again
+        // when the new page loads
+        $_SESSION['ndaNavigation']['media']['reset'] = 0;
+    }
+}
 
