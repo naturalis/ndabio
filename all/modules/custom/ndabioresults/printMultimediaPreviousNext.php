@@ -33,13 +33,17 @@ function printMultimediaPreviousNext () {
         $nextUrl = reset($_SESSION['ndaNavigation']['media']['currentSet']);
     }
 
-    $output = '<p class="button-bar">';
+    $output = '<div class="fornext-bar"><ul>';
 
-    $output .= '<span class="button-text">' . sprintf(
+    // Count
+    $output .= '<li>' . sprintf(
         t('%d of %d'),
         $offset + $key + 1,
         $_SESSION['ndaNavigation']['media']['total']
-    ) . '</span>';
+    ) . '</li>';
+
+    // Previous
+    $output .= "<li>";
 
     if (!empty($previousUrl)) {
         $output .= '<a href="' . printDrupalLink($previousUrl) . '">';
@@ -52,21 +56,32 @@ function printMultimediaPreviousNext () {
     if (!empty($previousUrl)) {
         $output .= '</a>';
     }
+    $output .="</li>";
 
+    // Next
+    $output .= "<li>";
     if (!empty($nextUrl)) {
         $output .= '<a href="' . printDrupalLink($nextUrl) . '">';
     }
+
     $output .= '<span class="icon button-icon icon-chevron-down';
+
     if (empty($nextUrl)) {
         $output .= ' icon-button-disabled';
     }
+
     $output .= '"></span>';
+
+
     if (!empty($nextUrl)) {
         $output .= '</a>';
     }
 
-    $output .= '<a href="?back"><span class="icon button-icon icon-cross"></span></a>';
-    $output .= '</p>';
+    $output .= '</li>';
+
+    // Back
+    $output .= '<li><a href="?back"><span class="icon button-icon icon-cross"></span></a></li>';
+    $output .= '</ul></div>';
 
     return $output;
 }
