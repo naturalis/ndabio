@@ -159,7 +159,7 @@
     $_omnibox.removeAttr("disabled");
     $_submit.removeAttr("disabled");
 
-    $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
+    $("<div class='ndabio-toggle-advanced icon-plus-triangle-down' />")
       .insertAfter( $_omnibox )
       .click(function(){
         $_fieldset_omnisearch.toggleClass("disabled");
@@ -168,7 +168,7 @@
             if ( is_front) $_submit.toggleAttr("disabled").toggleClass("disabled");
 
 
-        $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
+        $(this).toggleClass("icon-plus-triangle-down").toggleClass("icon-triangle-up");
 
 
                 $_bottom_submit.css("opacity","0");
