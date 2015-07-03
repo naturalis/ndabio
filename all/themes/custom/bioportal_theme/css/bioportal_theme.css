@@ -624,6 +624,25 @@ table .icon-location {
   #result-nav a {
     color: #542e08; }
 
+.fornext-bar {
+  list-style: none-inside-none;
+  display: table;
+  width: 100%;
+  outline: 1px solid red; }
+  .fornext-bar li {
+    display: inline-block;
+    background-color: #F6F6F4;
+    display: table-cell;
+    outline: 1px solid green;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px; }
+    .fornext-bar li .icon {
+      font-size: 24px; }
+    .fornext-bar li li:first-child {
+      width: auto; }
+
 .block-ndabioresults-ndabioresults-thematicsearch {
   background-color: #F6F6F4;
   color: #333;

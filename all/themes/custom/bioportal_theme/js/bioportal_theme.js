@@ -168,7 +168,7 @@
             if ( is_front) $_submit.toggleAttr("disabled").toggleClass("disabled");
 
 
-        $(this).toggleClass("icon-plus-triangle-down").toggleClass("icon-triangle-up");
+        $(this).toggleClass("icon-plus- triangle-down").toggleClass("icon-triangle-up");
 
 
                 $_bottom_submit.css("opacity","0");

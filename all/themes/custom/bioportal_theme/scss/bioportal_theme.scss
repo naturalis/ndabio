@@ -687,10 +687,6 @@ $icon-search               : "\e63c";
 
     }
 
-
-
-
-
   // -- geoserach: CHAINED-SELECT
     .chained-select{
       ul{
@@ -1037,6 +1033,35 @@ $icon-search               : "\e63c";
       }
 
     }
+
+  // -- results: PREVNEXT-BAR
+
+  .fornext-bar{
+    list-style: none-inside-none;
+    display: table;
+    width: 100%;
+    outline: 1px solid red;
+
+    li{
+      display: inline-block;
+      background-color: $smoke;
+      display: table-cell;
+      outline: 1px solid green;
+      height: 40px;
+      width: 40px;
+      text-align: center;
+      line-height: 40px;
+
+      .icon{
+        font-size: 24px;
+      }
+
+      li:first-child{
+        width: auto;
+      }
+    }
+
+  }
 
   // -- results: EXPLORE HIHLIGHTS
     .block-ndabioresults-ndabioresults-thematicsearch{
