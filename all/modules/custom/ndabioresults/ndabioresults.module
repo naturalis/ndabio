@@ -2895,13 +2895,16 @@ include("printMultimediaPreviousNext.php");
  *
  * @param string $r NBA request
  */
- function updatePreviousNext ($r) {
+ function updatePreviousNext ($r, $sessionName) {
     $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
     if (!empty($json)) {
         setMultimediaNavigation(json_decode($json));
         // SESSION has already been reset; make sure it isn't reset again
         // when the new page loads
-        $_SESSION['ndaNavigation']['media']['reset'] = 0;
+        $_SESSION['ndaNavigation'][$sessionName]['reset'] = 0;
     }
 }
 
+function resetNavigation () {
+    unset();
+}

@@ -19,7 +19,7 @@ function printMultimediaPreviousNext () {
     // First item of set reached; check if there's a previousSet.
     // If so, reset $_SESSION['ndaNavigation']['media']
     } else if (!empty($_SESSION['ndaNavigation']['media']['previousSet'])) {
-        updatePreviousNext($_SESSION['ndaNavigation']['media']['previousSet']);
+        updatePreviousNext($_SESSION['ndaNavigation']['media']['previousSet'], 'media');
         $previousUrl = end($_SESSION['ndaNavigation']['media']['currentSet']);
     }
 
@@ -29,7 +29,7 @@ function printMultimediaPreviousNext () {
         $nextUrl = urldecode($set[$key + 1]);
     // Last item of set reached; check if there's a nextSet.
     } else if (!empty($_SESSION['ndaNavigation']['media']['nextSet'])) {
-        updatePreviousNext($_SESSION['ndaNavigation']['media']['nextSet']);
+        updatePreviousNext($_SESSION['ndaNavigation']['media']['nextSet'], 'media');
         $nextUrl = reset($_SESSION['ndaNavigation']['media']['currentSet']);
     }
 
