@@ -27,53 +27,72 @@
 
 
 // ICON DEFINITIONS
-  $icon-naturalis            : "\e600";
-  $icon-home                 : "\e601";
-  $icon-search               : "\e602";
-  $icon-help                 : "\e603";
-  $icon-bars                 : "\e604";
-  $icon-cross                : "\e605";
-  $icon-download             : "\e606";
-  $icon-location             : "\e607";
-  $icon-arrow-down           : "\e608";
-  $icon-arrow-left           : "\e609";
-  $icon-arrow-right          : "\e60a";
-  $icon-arrow-up             : "\e60b";
-  $icon-chevron-left         : "\e60c";
-  $icon-chevron-down         : "\e60d";
-  $icon-chevron-right        : "\e60e";
-  $icon-chevron-up           : "\e60f";
-  $icon-decision-path        : "\e610";
-  $icon-double-chevron-down  : "\e611";
-  $icon-double-chevron-left  : "\e612";
-  $icon-double-chevron-right : "\e613";
-  $icon-double-chevron-up    : "\e614";
-  $icon-generate             : "\e615";
-  $icon-triangle-down-right  : "\e616";
-  $icon-triangle-down        : "\e617";
-  $icon-triangle-left        : "\e618";
-  $icon-triangle-right       : "\e619";
-  $icon-triangle-up          : "\e61a";
-  $icon-arrow-back           : "\e61b";
-  $icon-arrow-down-lean      : "\e61c";
-  $icon-arrow-forward        : "\e61d";
-  $icon-arrow-left-lean      : "\e61e";
-  $icon-arrow-right-lean     : "\e61f";
-  $icon-arrow-up-lean        : "\e620";
-  $icon-camera               : "\e621";
-  $icon-checkmark            : "\e622";
-  $icon-database             : "\e623";
-  $icon-play                 : "\e624";
-  $icon-refresh              : "\e625";
-  $icon-sort_1_9             : "\e626";
-  $icon-sort_9_1             : "\e627";
-  $icon-sort_a_z             : "\e628";
-  $icon-sort_z_a             : "\e629";
-  $icon-sort_much_little     : "\e62a";
-  $icon-sort_little_much     : "\e62b";
-  $icon-sort_sortable        : "\e62e";
-  $icon-square_empty         : "\e62c";
-  $icon-square_full          : "\e62d";
+// (Copy paste from Naturalis base theme
+// every time the icon-font is updates)
+$icon-minus                : "\e63d";
+$icon-plus-triangle-down   : "\e63e";
+$icon-plus                 : "\e63f";
+$icon-audio                : "\e600";
+$icon-bullet               : "\e601";
+$icon-camera               : "\e602";
+$icon-database             : "\e603";
+$icon-external             : "\e604";
+$icon-arrow-up-left        : "\e605";
+$icon-sort_1_9             : "\e606";
+$icon-sort_9_1             : "\e607";
+$icon-sort_a_z             : "\e608";
+$icon-sort_little_much     : "\e609";
+$icon-sort_much_little     : "\e60a";
+$icon-sort_sortable        : "\e60b";
+$icon-sort_z_a             : "\e60c";
+$icon-square_empty         : "\e60d";
+$icon-square_full          : "\e60e";
+$icon-tree                 : "\e60f";
+$icon-arrow-back           : "\e610";
+$icon-media-back           : "\e611";
+$icon-media-playback-pause : "\e612";
+$icon-media-playback-start : "\e613";
+$icon-media-seek-backward  : "\e614";
+$icon-media-seek-forward   : "\e615";
+$icon-media-skip-back      : "\e616";
+$icon-media-skip-backward  : "\e617";
+$icon-media-skip-forward   : "\e618";
+$icon-media-skip-next      : "\e619";
+$icon-refresh              : "\e61a";
+$icon-arrow-down-lean      : "\e61b";
+$icon-arrow-down           : "\e61c";
+$icon-arrow-left-lean      : "\e61d";
+$icon-arrow-next           : "\e61e";
+$icon-arrow-right-lean     : "\e61f";
+$icon-arrow-right          : "\e620";
+$icon-arrow-up-lean        : "\e621";
+$icon-arrow-up             : "\e622";
+$icon-checkmark            : "\e623";
+$icon-decision-path        : "\e624";
+$icon-generate             : "\e625";
+$icon-triangle-down-right  : "\e626";
+$icon-arrow-left           : "\e627";
+$icon-double-chevron-down  : "\e628";
+$icon-double-chevron-right : "\e629";
+$icon-double-chevron-up    : "\e62a";
+$icon-pinch                : "\e62b";
+$icon-triangle-down        : "\e62c";
+$icon-triangle-left        : "\e62d";
+$icon-triangle-right       : "\e62e";
+$icon-triangle-up          : "\e62f";
+$icon-bars                 : "\e630";
+$icon-chevron-down         : "\e631";
+$icon-chevron-left         : "\e632";
+$icon-chevron-right        : "\e633";
+$icon-chevron-up           : "\e634";
+$icon-cross                : "\e635";
+$icon-double-chevron-left  : "\e636";
+$icon-download             : "\e637";
+$icon-help                 : "\e638";
+$icon-home                 : "\e639";
+$icon-location             : "\e63a";
+$icon-naturalis            : "\e63b";
+$icon-search               : "\e63c";
 
 // HACKS
 
@@ -473,7 +492,7 @@
         text-transform: lowercase;
         font-weight: 400;
         &:after{
-          font-family: 'App2';
+          font-family: 'Naturalis-UI-Icons';
           position: relative;
           top: 3px;
           content: $icon-double-chevron-up;
@@ -500,7 +519,7 @@
        border-bottom: 1px dotted $gray-5;
        font-weight: normal;
        &:before{
-        font-family: "App2";
+        font-family: "Naturalis-UI-Icons";
         content:  $icon-refresh;
         font-size: 24px;
         font-weight: normal;
@@ -659,7 +678,7 @@
         line-height: 50px;
       }
 
-      // Dirty trick: we make the dropdown 
+      // Dirty trick: we make the dropdown
       .ndabio-toggle-area{
         width: percentage(8/10);
         text-align: right;
@@ -703,7 +722,7 @@
           bottom: 0;
           color: $blue;
           content: $icon-chevron-right;
-          font-family: App2;
+          font-family: Naturalis-UI-Icons;
           font-size: 24px;
         }
       }
@@ -1349,7 +1368,7 @@
             display: inline-block;
             width: 1rem;
             float: left;
-            font-family: 'App2';
+            font-family: 'Naturalis-UI-Icons';
             position: relative;
             left: -1rem;
             margin-right: -1rem;

@@ -285,12 +285,12 @@ html.js fieldset.collapsible .fieldset-legend {
   text-transform: lowercase;
   font-weight: 400; }
   #edit-extended fieldset fieldset.collapsible a:after {
-    font-family: 'App2';
+    font-family: 'Naturalis-UI-Icons';
     position: relative;
     top: 3px;
-    content: ""; }
+    content: ""; }
 #edit-extended fieldset fieldset.collapsible.collapsed a:after {
-  content: ""; }
+  content: ""; }
 
 #edit-submit-bottom {
   width: 120px; }
@@ -303,8 +303,8 @@ html.js fieldset.collapsible .fieldset-legend {
   border-bottom: 1px dotted #999999;
   font-weight: normal; }
   #edit-extended #edit-reset:before {
-    font-family: "App2";
-    content: "";
+    font-family: "Naturalis-UI-Icons";
+    content: "";
     font-size: 24px;
     font-weight: normal;
     position: relative;
@@ -436,8 +436,8 @@ body.page-geographic-search .ndabio-toggle-area {
     right: -2rem;
     bottom: 0;
     color: #009ee0;
-    content: "";
-    font-family: App2;
+    content: "";
+    font-family: Naturalis-UI-Icons;
     font-size: 24px; }
 .chained-select-level-1 a {
   color: #542e08; }
@@ -601,7 +601,7 @@ table .indent-0:not(.expanded):hover td {
   padding-bottom: 15px;
   transition: padding-bottom 1000ms; }
 table .indent-0:not(.expanded):hover .icon-triangle-right:before {
-  content: ""; }
+  content: ""; }
 table .indent-1, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2:nth-of-type(2n) {
   background-color: #F6F6F4; }
 table .indent-2:not(.hidden) + .indent-0 {
@@ -802,11 +802,11 @@ th .icon-sort_sortable {
       display: inline-block;
       width: 1rem;
       float: left;
-      font-family: 'App2';
+      font-family: 'Naturalis-UI-Icons';
       position: relative;
       left: -1rem;
       margin-right: -1rem;
-      content: ""; }
+      content: ""; }
 
   body.front .main {
     padding-left: 0;
