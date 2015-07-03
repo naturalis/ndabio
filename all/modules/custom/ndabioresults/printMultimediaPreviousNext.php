@@ -1,7 +1,7 @@
 <?php
 function printMultimediaPreviousNext () {
     // Return no navigation if request is empty or history is not yet set
-    // (eg when user comes frmo bookmark)
+    // (eg when user comes from bookmark)
     if (!isset($_GET['nba_request']) ||
         !isset($_SESSION['ndaNavigation']['media']['currentSet'])) {
         return false;
@@ -45,35 +45,35 @@ function printMultimediaPreviousNext () {
     // Previous
     $output .= "<li>";
 
-    if (!empty($previousUrl)) {
+    if ($previousUrl) {
         $output .= '<a href="' . printDrupalLink($previousUrl) . '">';
     }
     $output .= '<span class="icon button-icon icon-chevron-up';
-    if (empty($previousUrl)) {
+    if (!$previousUrl) {
         $output .= ' icon-button-disabled';
     }
     $output .= '"></span>';
-    if (!empty($previousUrl)) {
+    if ($previousUrl) {
         $output .= '</a>';
     }
     $output .="</li>";
 
     // Next
     $output .= "<li>";
-    if (!empty($nextUrl)) {
+    if ($nextUrl) {
         $output .= '<a href="' . printDrupalLink($nextUrl) . '">';
     }
 
     $output .= '<span class="icon button-icon icon-chevron-down';
 
-    if (empty($nextUrl)) {
+    if (!$nextUrl) {
         $output .= ' icon-button-disabled';
     }
 
     $output .= '"></span>';
 
 
-    if (!empty($nextUrl)) {
+    if ($nextUrl) {
         $output .= '</a>';
     }
 

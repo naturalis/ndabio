@@ -140,6 +140,7 @@ function ndabioresults_pass ($args = "") {
 
     // SESSION variables that have to be reset for each request
     unset($_SESSION['ndaSearch']['pageTitle']);
+//unset($_SESSION['ndaNavigation']['media']);
 
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
@@ -1268,7 +1269,7 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-    setMultimediaNavigation($data);
+    setNavigation($data, 'media');
 
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
@@ -2796,21 +2797,26 @@ function isSearchService ($r) {
  *
  * @param array $data Parsed json
  */
-function setMultimediaNavigation ($data) {
+function setNavigation ($data, $sessionName) {
     // SESSION has already been reset in the background with updatePreviousNext()
     // Do nothing but switching the reset flag back on.
-    if ($_SESSION['ndaNavigation']['media']['reset'] == 0) {
-        $_SESSION['ndaNavigation']['media']['reset'] = 1;
+    if (isset($_SESSION['ndaNavigation'][$sessionName]['reset']) &&
+        $_SESSION['ndaNavigation'][$sessionName]['reset'] == 0) {
+        $_SESSION['ndaNavigation'][$sessionName]['reset'] = 1;
         return false;
     }
-    $_SESSION['ndaNavigation']['media']['total'] = $data->totalSize;
+    $terms = getSearchTerms($data);
+    $_SESSION['ndaNavigation'][$sessionName]['offset'] =
+        array_key_exists('_offset', $terms) ? $terms['_offset'][0] : 0;
+    $_SESSION['ndaNavigation'][$sessionName]['total'] = $data->totalSize;
     // Previous/next set links
     $navigation = getNavigationPreviousNextSets($data, multimediaService());
-    $_SESSION['ndaNavigation']['media']['nextSet'] = $navigation['next'];
-    $_SESSION['ndaNavigation']['media']['previousSet'] = $navigation['previous'];
+    $_SESSION['ndaNavigation'][$sessionName]['nextSet'] = $navigation['next'];
+    $_SESSION['ndaNavigation'][$sessionName]['previousSet'] = $navigation['previous'];
     // Links within results
+    $_SESSION['ndaNavigation'][$sessionName]['currentSet'] = array();
     foreach ($data->searchResults as $row) {
-        $_SESSION['ndaNavigation']['media']['currentSet'][] =
+        $_SESSION['ndaNavigation'][$sessionName]['currentSet'][] =
             urldecode(getMultimediaDetailLink($row));
     }
 }
@@ -2865,13 +2871,12 @@ function setNavigationSetLink ($data, $direction) {
     if (!array_key_exists('_offset', $terms)) {
         $terms['_offset'] = array(0, $data->totalSize - 1);
     }
-    $_SESSION['ndaNavigation']['media']['offset'] = $terms['_offset'][0];
     foreach ($terms as $k => $v) {
         if ($k == '_offset') {
             if ($direction == 'previous' && ($v[0] - $terms['_maxResults'][0] >= 0)) {
                 $p .= $k . '=' . ($v[0] - $terms['_maxResults'][0])  . '&';
             } else if ($direction == 'next' &&
-                ($v[0] + $terms['_maxResults'][0] < $terms['_offset'][1])) {
+                ($v[0] + $terms['_maxResults'][0] < $data->totalSize - 1)) {
                  $p .= $k . '=' . ($v[0] + $terms['_maxResults'][0])  . '&';
             } else {
                 return false;
@@ -2898,7 +2903,7 @@ include("printMultimediaPreviousNext.php");
  function updatePreviousNext ($r, $sessionName) {
     $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
     if (!empty($json)) {
-        setMultimediaNavigation(json_decode($json));
+        setNavigation(json_decode($json), $sessionName);
         // SESSION has already been reset; make sure it isn't reset again
         // when the new page loads
         $_SESSION['ndaNavigation'][$sessionName]['reset'] = 0;
