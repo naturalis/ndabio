@@ -1036,30 +1036,46 @@ $icon-search               : "\e63c";
 
   // -- results: PREVNEXT-BAR
 
+  // display bar as table
+
   .fornext-bar{
     list-style: none-inside-none;
     display: table;
     width: 100%;
-    outline: 1px solid red;
+
+    ul{
+      display: table-row;
+    }
 
     li{
       display: inline-block;
       background-color: $smoke;
       display: table-cell;
-      outline: 1px solid green;
-      height: 40px;
+      outline: 1px solid white;
       width: 40px;
       text-align: center;
-      line-height: 40px;
+      padding-left: 0.25em;
+      padding-right: 0.25em;
+      color: $brown;
 
-      .icon{
+      a, .icon{
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        color: $brown;
         font-size: 24px;
       }
 
-      li:first-child{
+      &:first-child{
         width: auto;
+        text-align: left;
+      }
+
+      .icon-button-disabled{
+        color: $gray-4;
       }
     }
+
 
   }
 

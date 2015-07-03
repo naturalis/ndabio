@@ -627,21 +627,30 @@ table .icon-location {
 .fornext-bar {
   list-style: none-inside-none;
   display: table;
-  width: 100%;
-  outline: 1px solid red; }
+  width: 100%; }
+  .fornext-bar ul {
+    display: table-row; }
   .fornext-bar li {
     display: inline-block;
     background-color: #F6F6F4;
     display: table-cell;
-    outline: 1px solid green;
-    height: 40px;
+    outline: 1px solid white;
     width: 40px;
     text-align: center;
-    line-height: 40px; }
-    .fornext-bar li .icon {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    color: #542e08; }
+    .fornext-bar li a, .fornext-bar li .icon {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      color: #542e08;
       font-size: 24px; }
-    .fornext-bar li li:first-child {
-      width: auto; }
+    .fornext-bar li:first-child {
+      width: auto;
+      text-align: left; }
+    .fornext-bar li .icon-button-disabled {
+      color: #b3b3b3; }
 
 .block-ndabioresults-ndabioresults-thematicsearch {
   background-color: #F6F6F4;
