@@ -2906,5 +2906,5 @@ include("printMultimediaPreviousNext.php");
 }
 
 function resetNavigation () {
-    unset();
+    unset($_SESSION['ndaNavigation']['media']);
 }
