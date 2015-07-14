@@ -1,6 +1,6 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 0);
+define("DEBUG_CHANNELS", 1);
 
 
 /**
@@ -87,6 +87,8 @@ function setSpecimenParameters (array $sP, $type) {
             'sex',
             'taxonomicStatus',
             'typeStatus',
+            'sourceSystem',
+            'collectionType',
             '_geoShape'
         ),
         specimenNamesService() => array(
