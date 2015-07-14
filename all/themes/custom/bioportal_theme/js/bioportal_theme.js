@@ -1,7 +1,5 @@
 (function ($, Drupal) { Drupal.behaviors.bioportal_theme = { attach: function(context, settings) {
 
-    var is_front = $("body").hasClass("front");
-
 
   // ---------------------------------------------------------
   // auto fit height of MAIN CONTAINER
@@ -25,18 +23,14 @@
   // RESPONSIVE MAGIC
   // ---------------------------------------------------------
 
-    // If were're viewing our site on a mobile device…
+    // If were're viewing our beautifull site on a mobile device…
     if ( w < 640 ){
-
       // set auto-height of main container
       $("main").css("min-height",h - 170 );
 
       // Turn word 'search' into magnifier class
-
-      if (is_front){
-          $("#edit-submit-top")
-              .html("<span class='icon-search'></span>");
-      }
+      $("#edit-submit-top")
+        .html("<span class='icon-search'></span>");
 
       //Re-phrase language names
       $("#language-menu [href*='language=en']").html("English");
@@ -49,6 +43,7 @@
 
       $("#geographical-search")
       .hide();
+
     }
 
   // ---------------------------------------------------------
@@ -112,7 +107,7 @@
     var display = false;
 
     $_intro_more_link
-      .show();
+      .show()
 
     $_title_slogan
       .click(function(){
@@ -159,32 +154,26 @@
     $_omnibox.removeAttr("disabled");
     $_submit.removeAttr("disabled");
 
-    $("<div class='ndabio-toggle-advanced icon-plus-triangle-down' />")
+    $("<div class='ndabio-toggle-advanced icon-triangle-down' />")
       .insertAfter( $_omnibox )
       .click(function(){
         $_fieldset_omnisearch.toggleClass("disabled");
         $_omnibox.toggleAttr("disabled").toggleClass("disabled");
+        $_submit.toggleAttr("disabled").toggleClass("disabled");
 
-            if ( is_front) $_submit.toggleAttr("disabled").toggleClass("disabled");
+        $(this).toggleClass("icon-triangle-down").toggleClass("icon-triangle-up");
 
+        $_bottom_submit.css("opacity","0")
 
-        $(this).toggleClass("icon-plus- triangle-down").toggleClass("icon-triangle-up");
+        $_advanced_search_form
+          .slideToggle(400, function(){
+            int_x = $_bottom_submit.offset().left;
+            int_y = $_bottom_submit.offset().top;
 
+            $(window).trigger('scroll');
 
-                $_bottom_submit.css("opacity","0");
-
-                $_advanced_search_form
-                    .slideToggle(400, function(){
-                        int_x = $_bottom_submit.offset().left;
-                        int_y = $_bottom_submit.offset().top;
-
-                        $(window).trigger('scroll');
-
-                        if ( is_front ) $_bottom_submit.css("opacity", "1");
-
-                    });
-
-
+            $_bottom_submit.css("opacity","1")
+          });
 
         // Exchange value with placeholder value
         if ($_omnibox.val() !== ""){
@@ -206,7 +195,7 @@
   // SEARCH FORM: prevent submit button from scrolling of the page
   // ---------------------------------------------------------
 
-  if ( $_advanced_search_form.length  && $("body").hasClass("front") ){
+  if ( $_advanced_search_form.length ){
     $(window).scroll(function(){
 
         var objectTop = $_bottom_submit.position().top;
@@ -286,7 +275,6 @@
 
   });
 
-    // ---------------------------------------------------------
 
 
 
@@ -298,7 +286,14 @@
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
-    // ---------------------------------------------------------
+
+   // ---------------------------------------------------------
+  // PRELOADER
+  // ---------------------------------------------------------
+
+  // $("#preloader").remove();
+
+  // ---------------------------------------------------------
 
 
 
@@ -391,6 +386,96 @@ jQuery.fn.toggleAttr = function(a, b) {
         else jQuery(this).removeAttr(a);
     });
 };
+
+jQuery.fn.swapValAndPlaceholder = function(a, b) {
+    var c = (b === undefined);
+    return this.each(function() {
+        if((c && !jQuery(this).is("["+a+"]")) || (!c && b)) jQuery(this).attr(a,a);
+        else jQuery(this).removeAttr(a);
+    });
+};
+
+function preloader(){
+  return;
+
+  (function($) {
+    $("body").addClass("fading");
+
+    $_overlay = $("<div id='preloader'></div>")
+      .appendTo("body")
+      .css({
+        width            : "200px",
+        height           : "200px",
+        backgroundColor  : "#444433",
+        borderRadius     : "5px",
+        position         : "absolute",
+        top              : "50%",
+        left             : "50%",
+        marginLeft       : "-100px",
+        zIndex           : 1000
+      });
+
+    $_canvas = $("<div id='canvas' />")
+      .appendTo($_overlay)
+      .css({
+        width            : "10px",
+        height           : "10px",
+        position         : "absolute",
+        left             : "50%",
+        top              : "50%",
+        overflow         : "show"
+      })
+
+      var b = 0.306349;
+
+      var $_kernel = [];
+
+      for (var n=0; n<63; n++){
+
+        $_kernel[n] = $("<div class='kernel' />")
+          .appendTo($_canvas)
+          .css({
+            width        : "10px",
+            height       : "10px",
+            background   : "white",
+            position     : "absolute",
+            borderRadius : "5px",
+            left         : 0,
+            top          : 0
+          })
+      }
+
+    var t=-63;
+    var go_up = true;
+
+    window.setInterval(function() {
+      if (go_up ){
+        t += 0.2;
+        if ( t> 0 ) go_up = false;
+      } else {
+        t -= 0.2;
+        if ( t < -63 ) go_up = true;
+      }
+
+      for (var n=0; n<63; n++){
+        k = t + n;
+        if (k>0){
+          var teta  = k * 2.3998277;
+          var omega = n * 2.3998277;
+          var r     = Math.round( 7 * Math.sqrt(k) );
+          var num_x = Math.round( r * Math.cos(omega ) );
+          var num_y = Math.round(r * Math.sin(omega  ));
+
+          $_kernel[n].css({
+            left         : num_x,
+            top          : num_y
+          });
+        }
+
+      }
+    }, 25);
+  })(jQuery);
+}
 
   // ---------------------------------------------------------
   // PRELOADER: remove upon clicking browser back-button

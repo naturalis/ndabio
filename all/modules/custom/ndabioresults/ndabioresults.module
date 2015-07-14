@@ -1269,7 +1269,9 @@ function parseMultimedia ($json) {
 		handleError('parseMultimedia: no or invalid json response');
 	}
 	$data = json_decode($json);
-    setNavigation($data, 'media');
+
+    // @TODO: disabled navigation for the time being
+	// setNavigation($data, 'media');
 
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);

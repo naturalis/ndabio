@@ -629,47 +629,9 @@ function ndabio_advanced_taxonomysearch() {
           'geocode_leave_marker' => TRUE,
         ),
       ),
-      '#prefix' => '<div id="area"><div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
-      '#suffix' => '<div id=\'map-canvas\'></div></div>' . $links . $list. "</div><!-- /#area -->"
+      '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
+      '#suffix' => '<div id=\'map-canvas\'></div></div>' . $links . $list,
     );
-
-
-    // Re-work the search form. We use andjust existing form-definitions
-    // instead of creating them from scratch to keep it DRY
-
-    // - add an extra field for area selection
-    $form['area'] = array(
-      '#type' => 'textfield',
-      '#id' => 'geo-search-area-name',
-      '#attributes' => array( 'placeholder' => "Where to search?"),
-      '#title' => t("Within"),
-      '#disabled' => true,
-      '#prefix' => "<div id='area-wrapper'>",
-      '#suffix' => "</div>"
-    );
-
-    // - Give the submit button it's own row
-    $form['submit'] = $form['omnisearch']['omnisearch']['submit'];
-    $form['submit']["#prefix"] = "<div id='submit-wrapper'>";
-    $form['submit']["#suffix"] = "</div>";
-
-
-    unset($form['omnisearch']['omnisearch']['submit']);
-
-    $form['omnisearch']['omnisearch']['#nowrapper'] = FALSE;
-    unset( $form['omnisearch']['omnisearch']['#theme'] );
-    $form['omnisearch']['omnisearch']['term']['#title_display'] = 'before';
-    $form['omnisearch']['omnisearch']['term']['#title'] = 'Search for';
-    $form['omnisearch']['omnisearch']['term']['#attributes'] = array( 'placeholder' => "Enter search terms");
-
-    //  - Re-arrange the fields(ets)
-    $form['area']['#weight'] = -50;
-    $form['omnisearch']['#weight'] = 30;
-    $form['extended']['#weight'] = 40;
-    $form['submit']['#weight'] = 50;
-
-//    kpr($form);
-
   }
   $form[$sysname]['submit'] = array(
     '#type' => 'submit',

@@ -27,72 +27,53 @@
 
 
 // ICON DEFINITIONS
-// (Copy paste from Naturalis base theme
-// every time the icon-font is updates)
-$icon-minus                : "\e63d";
-$icon-plus-triangle-down   : "\e63e";
-$icon-plus                 : "\e63f";
-$icon-audio                : "\e600";
-$icon-bullet               : "\e601";
-$icon-camera               : "\e602";
-$icon-database             : "\e603";
-$icon-external             : "\e604";
-$icon-arrow-up-left        : "\e605";
-$icon-sort_1_9             : "\e606";
-$icon-sort_9_1             : "\e607";
-$icon-sort_a_z             : "\e608";
-$icon-sort_little_much     : "\e609";
-$icon-sort_much_little     : "\e60a";
-$icon-sort_sortable        : "\e60b";
-$icon-sort_z_a             : "\e60c";
-$icon-square_empty         : "\e60d";
-$icon-square_full          : "\e60e";
-$icon-tree                 : "\e60f";
-$icon-arrow-back           : "\e610";
-$icon-media-back           : "\e611";
-$icon-media-playback-pause : "\e612";
-$icon-media-playback-start : "\e613";
-$icon-media-seek-backward  : "\e614";
-$icon-media-seek-forward   : "\e615";
-$icon-media-skip-back      : "\e616";
-$icon-media-skip-backward  : "\e617";
-$icon-media-skip-forward   : "\e618";
-$icon-media-skip-next      : "\e619";
-$icon-refresh              : "\e61a";
-$icon-arrow-down-lean      : "\e61b";
-$icon-arrow-down           : "\e61c";
-$icon-arrow-left-lean      : "\e61d";
-$icon-arrow-next           : "\e61e";
-$icon-arrow-right-lean     : "\e61f";
-$icon-arrow-right          : "\e620";
-$icon-arrow-up-lean        : "\e621";
-$icon-arrow-up             : "\e622";
-$icon-checkmark            : "\e623";
-$icon-decision-path        : "\e624";
-$icon-generate             : "\e625";
-$icon-triangle-down-right  : "\e626";
-$icon-arrow-left           : "\e627";
-$icon-double-chevron-down  : "\e628";
-$icon-double-chevron-right : "\e629";
-$icon-double-chevron-up    : "\e62a";
-$icon-pinch                : "\e62b";
-$icon-triangle-down        : "\e62c";
-$icon-triangle-left        : "\e62d";
-$icon-triangle-right       : "\e62e";
-$icon-triangle-up          : "\e62f";
-$icon-bars                 : "\e630";
-$icon-chevron-down         : "\e631";
-$icon-chevron-left         : "\e632";
-$icon-chevron-right        : "\e633";
-$icon-chevron-up           : "\e634";
-$icon-cross                : "\e635";
-$icon-double-chevron-left  : "\e636";
-$icon-download             : "\e637";
-$icon-help                 : "\e638";
-$icon-home                 : "\e639";
-$icon-location             : "\e63a";
-$icon-naturalis            : "\e63b";
-$icon-search               : "\e63c";
+  $icon-naturalis            : "\e600";
+  $icon-home                 : "\e601";
+  $icon-search               : "\e602";
+  $icon-help                 : "\e603";
+  $icon-bars                 : "\e604";
+  $icon-cross                : "\e605";
+  $icon-download             : "\e606";
+  $icon-location             : "\e607";
+  $icon-arrow-down           : "\e608";
+  $icon-arrow-left           : "\e609";
+  $icon-arrow-right          : "\e60a";
+  $icon-arrow-up             : "\e60b";
+  $icon-chevron-left         : "\e60c";
+  $icon-chevron-down         : "\e60d";
+  $icon-chevron-right        : "\e60e";
+  $icon-chevron-up           : "\e60f";
+  $icon-decision-path        : "\e610";
+  $icon-double-chevron-down  : "\e611";
+  $icon-double-chevron-left  : "\e612";
+  $icon-double-chevron-right : "\e613";
+  $icon-double-chevron-up    : "\e614";
+  $icon-generate             : "\e615";
+  $icon-triangle-down-right  : "\e616";
+  $icon-triangle-down        : "\e617";
+  $icon-triangle-left        : "\e618";
+  $icon-triangle-right       : "\e619";
+  $icon-triangle-up          : "\e61a";
+  $icon-arrow-back           : "\e61b";
+  $icon-arrow-down-lean      : "\e61c";
+  $icon-arrow-forward        : "\e61d";
+  $icon-arrow-left-lean      : "\e61e";
+  $icon-arrow-right-lean     : "\e61f";
+  $icon-arrow-up-lean        : "\e620";
+  $icon-camera               : "\e621";
+  $icon-checkmark            : "\e622";
+  $icon-database             : "\e623";
+  $icon-play                 : "\e624";
+  $icon-refresh              : "\e625";
+  $icon-sort_1_9             : "\e626";
+  $icon-sort_9_1             : "\e627";
+  $icon-sort_a_z             : "\e628";
+  $icon-sort_z_a             : "\e629";
+  $icon-sort_much_little     : "\e62a";
+  $icon-sort_little_much     : "\e62b";
+  $icon-sort_sortable        : "\e62e";
+  $icon-square_empty         : "\e62c";
+  $icon-square_full          : "\e62d";
 
 // HACKS
 
@@ -328,7 +309,7 @@ $icon-search               : "\e63c";
 
     }
 
-    .ndabio-toggle-advanced, .ndabio-toggle-area{
+    .ndabio-toggle-advanced{
       position           : absolute;
       top                : 0px;
       right              : 0px;
@@ -404,6 +385,7 @@ $icon-search               : "\e63c";
       }
 
       label{
+        // font-size        : 1.125rem;
         font-size        : 1rem;
         color            : $white;
         line-height      : 0.9em;
@@ -492,7 +474,7 @@ $icon-search               : "\e63c";
         text-transform: lowercase;
         font-weight: 400;
         &:after{
-          font-family: 'Naturalis-UI-Icons';
+          font-family: 'App2';
           position: relative;
           top: 3px;
           content: $icon-double-chevron-up;
@@ -519,7 +501,7 @@ $icon-search               : "\e63c";
        border-bottom: 1px dotted $gray-5;
        font-weight: normal;
        &:before{
-        font-family: "Naturalis-UI-Icons";
+        font-family: "App2";
         content:  $icon-refresh;
         font-size: 24px;
         font-weight: normal;
@@ -589,104 +571,6 @@ $icon-search               : "\e63c";
         height: 600px;
       }
 
-    #edit-omnisearch--2{
-      width: percentage(12/12);
-      clear: both;
-
-      & > .fieldset-wrapper{
-        width: percentage(10/12);
-      }
-
-      label{
-        width: percentage(2/10);
-      }
-    }
-
-    .form-item-area{
-      width: percentage(10/12);
-      position: relative;
-    }
-
-    #area{
-      width: 100%;
-      clear: both;
-      overflow: hidden;
-      background-color: $ghost;
-    }
-
-    #area-wrapper{
-      width: 100%;
-      overflow: hidden;
-      padding-bottom: 1em;
-    }
-
-    #submit-wrapper{
-      width: 100%;
-      position: relative;
-      margin-bottom: 100px; //needed to stay clear of the footer
-    }
-
-
-
-
-
-    body.page-geographic-search{
-      main{
-        background-image: url(../img/geo-background.png);
-        background-position: center bottom;
-        background-repeat: no-repeat;
-        background-size:100%;
-
-      }
-
-      #edit-extended{
-        width: 100%;
-        clear: both;
-      }
-
-      label[for='geo-search-area-name'], label[for='edit-term']{
-        float: left;
-        width: percentage(2/10);
-        display: block;
-        text-align: right;
-        line-height: 50px;
-        padding-right: 1em;
-
-      }
-
-      // fields
-      #geo-search-area-name, #edit-term{
-        width: percentage(8/10);
-        float: left;
-        font-size: 1.25rem;
-        height: 50px;
-      }
-
-      #geo-search-area-name{
-        background-color: white;
-        margin-bottom: 0;
-      }
-
-      #edit-submit-top{
-        border: none;
-        width: percentage(2/12);
-        position: absolute;
-        right: 0;
-        font-weight: bolder;
-        font-size: 1rem;
-        height: 50px;
-        line-height: 50px;
-      }
-
-      // Dirty trick: we make the dropdown
-      .ndabio-toggle-area{
-        width: percentage(8/10);
-        text-align: right;
-        padding-right: 10px;
-      }
-
-    }
-
   // -- geoserach: CHAINED-SELECT
     .chained-select{
       ul{
@@ -718,7 +602,7 @@ $icon-search               : "\e63c";
           bottom: 0;
           color: $blue;
           content: $icon-chevron-right;
-          font-family: Naturalis-UI-Icons;
+          font-family: App2;
           font-size: 24px;
         }
       }
@@ -761,7 +645,6 @@ $icon-search               : "\e63c";
       .item-list ul & {
         line-height: 1.1;
         margin-bottom: 10px;
-        margin-left: 0.5em;
       }
 
       a{
@@ -1034,51 +917,6 @@ $icon-search               : "\e63c";
 
     }
 
-  // -- results: PREVNEXT-BAR
-
-  // display bar as table
-
-  .fornext-bar{
-    list-style: none-inside-none;
-    display: table;
-    width: 100%;
-
-    ul{
-      display: table-row;
-    }
-
-    li{
-      display: inline-block;
-      background-color: $smoke;
-      display: table-cell;
-      outline: 1px solid white;
-      width: 40px;
-      text-align: center;
-      padding-left: 0.25em;
-      padding-right: 0.25em;
-      color: $brown;
-
-      a, .icon{
-        display: inline-block;
-        height: 40px;
-        line-height: 40px;
-        color: $brown;
-        font-size: 24px;
-      }
-
-      &:first-child{
-        width: auto;
-        text-align: left;
-      }
-
-      .icon-button-disabled{
-        color: $gray-4;
-      }
-    }
-
-
-  }
-
   // -- results: EXPLORE HIHLIGHTS
     .block-ndabioresults-ndabioresults-thematicsearch{
       background-color: $smoke;
@@ -1338,6 +1176,11 @@ $icon-search               : "\e63c";
       -webkit-transition: all 1s linear;
     }
 
+
+
+
+
+
   //  BURGER MENU
 
     .top-bar{
@@ -1409,7 +1252,7 @@ $icon-search               : "\e63c";
             display: inline-block;
             width: 1rem;
             float: left;
-            font-family: 'Naturalis-UI-Icons';
+            font-family: 'App2';
             position: relative;
             left: -1rem;
             margin-right: -1rem;
@@ -1420,7 +1263,7 @@ $icon-search               : "\e63c";
       }
 
       // Remove padding from main window so the advanced search fields show
-      // nicely
+      // nicelu
       body.front .main{
         padding-left: 0;
         padding-right: 0;
@@ -1493,57 +1336,6 @@ $icon-search               : "\e63c";
         line-height: 20px;
         color: $gray-10;
       }
-
-      body.page-geographic-search{
-        .main{
-          padding-left: 0;
-          padding-right: 0;
-        }
-
-        #geo-search-area-name,
-        #edit-term{
-          width: 100%;
-        }
-
-        label[for="geo-search-area-name"],
-        #edit-omnisearch--2 label[for="edit-term"] {
-          width: 100%;
-          text-align: left;
-          height: 20px;
-          line-height: 20px;
-        }
-
-        #edit-omnisearch--2{
-          padding: 0;
-        }
-
-        #edit-omnisearch--2 > .fieldset-wrapper,
-        .form-item-area {
-          width: 100%;
-          padding-left: 10px;
-          padding-right: 10px;
-        }
-
-        .ndabio-toggle-advanced, .ndabio-toggle-area{
-//          width: 100%;
-          text-align: right;
-          top: 20px;
-          padding-right: 10px !important;
-        }
-
-        #edit-submit-top{
-          width: 100%;
-          position: static;
-        }
-
-        #submit-wrapper{
-          padding-left: 10px;
-          padding-right: 10px;
-        }
-
-      }
-
-
 
     }
 

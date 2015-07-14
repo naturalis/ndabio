@@ -8,31 +8,6 @@
 	$_search_areas_target = $("#search-areas-target"); // target div for list of areas
 
 
-    // Make the geographic search area behave as dropdown
-
-    // - Add Drop Down button to  'within' field
-    $("<div class='ndabio-toggle-area icon-triangle-down' />")
-        .insertAfter( '#geo-search-area-name' )
-        .click(function(){
-            $("#area").slideToggle("expanded");
-
-            $(".ndabio-toggle-area")
-                .toggleClass("icon-triangle-down")
-                .toggleClass("icon-triangle-up");
-
-            $("#area-wrapper")
-                .toggleClass("background-ghost");
-        });
-
-    $("#geo-search-area-name").click(function(){
-        $(".ndabio-toggle-area")
-            .trigger("click");
-        return false; // prevent default behaviour
-    });
-
-    $("#area").slideUp(1000);
-
-
 	// Load VIEWS with areas upon click on area-type
 	$("a[data-rel='ajax']").click(function(){
 
@@ -66,11 +41,11 @@
 
 			// Handle click on area-name
 			$_search_areas_target.find('.row-area a').click(function() {
-                $("#geo-search-area-name").val( $(this).html() );
-                $(".row-area a").removeClass("active");
-                $(this).addClass("active");
-                plotMapArea(this.id.substr(4));
-                return false;
+
+				$(".row-area a").removeClass("active");
+				$(this).addClass("active");
+				plotMapArea(this.id.substr(4));
+				return false;
 
 			});
 
@@ -117,6 +92,18 @@
           }
       });
 	});
+
+	// Add labels to the omnibox
+	// A bit dirty, but where else to put it?
+//	$("#edit-term")
+//		.attr("placeholder","« " + Drupal.t('All records') + " »");
+
+	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
+		.removeClass("large-offset-2")
+		.before("<div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Search') + ":</div>");
+
+	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 
