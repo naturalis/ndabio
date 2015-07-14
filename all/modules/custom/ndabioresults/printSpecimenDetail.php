@@ -11,6 +11,8 @@ function printSpecimenDetail ($data) {
     $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
         $data['gatheringEvent']['siteCoordinates']['lon'] : false;
 
+    drupal_add_js("jQuery(document).ready(function() { jQuery('#purl').focus().select(); });", 'inline');
+
     if ($lat && $lon) {
         // Add Google Maps scripts from ndabio module (REQUIRED!)
         global $base_root, $base_path;
@@ -80,8 +82,9 @@ function printSpecimenDetail ($data) {
 	$output  = _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
 
-	$purl = '<input type="text" value="http://purl.naturalis.nl/' . $data['unitID'] . '"></input>';
-	$output .= _wrap( printDL(t("Persisent URL"), $purl) , "div", "property-list purl"  );
+	$purl = '<input style="cursor: help;" id="purl" type="text" value="http://purl.naturalis.nl/' . $data['unitID'] .
+	   '" title="' . t('Help text here') . '" onclick="selectText(purl);"></input>';
+	$output .= _wrap(printDL(t("Persisent URL"), $purl), "div", "property-list purl");
 
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");
