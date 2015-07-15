@@ -2903,7 +2903,7 @@ function setNavigationSetLink ($data, $direction) {
     return $links['_self'] . urlencode('?' . substr($p, 0, -1));
 }
 
-include("printMultimediaPreviousNext.php");
+include("printPreviousNext.php");
 
 /**
  * Background reset of the navigation SESSION
