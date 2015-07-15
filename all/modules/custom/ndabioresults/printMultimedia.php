@@ -19,6 +19,8 @@ function printMultimedia ($data) {
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    $searchId = isset($data['searchTerms']) ? setSearchId($data['searchTerms']) : false;
+
     setTitle($headTitle, $pageTitle);
 
     $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
@@ -38,6 +40,9 @@ function printMultimedia ($data) {
         }
 
         $mmHit = printMultimediaHit($row);
+
+        // Append searchId as a search term after each url; used for navigation
+        $row['url'] .= urlencode('&searchID=' . $searchId);
 
         $output .=
           "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .

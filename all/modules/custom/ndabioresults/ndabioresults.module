@@ -1,6 +1,6 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 1);
+define("DEBUG_CHANNELS", 0);
 
 
 /**
@@ -1273,10 +1273,12 @@ function parseMultimedia ($json) {
 	$data = json_decode($json);
 
     // @TODO: disabled navigation for the time being
-	// setNavigation($data, 'media');
+//unset($_SESSION['ndaNavigation']);
+	setNavigation($data);
 
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);
+
 	if (!$output['searchTerms']) {
 		handleError('parseMultimedia: invalid json response');
 	}
@@ -2799,37 +2801,46 @@ function isSearchService ($r) {
 /**
  * Sets navigation SESSION for previous/next links in multimedia
  *
+ * Returns the searchId, which can be usedfor background updating of
+ * the navigation SESSION.
+ *
  * @param array $data Parsed json
+ * @return string $searchId
  */
-function setNavigation ($data, $sessionName) {
+function setNavigation ($data) {
     // SESSION has already been reset in the background with updatePreviousNext()
     // Do nothing but switching the reset flag back on.
-    if (isset($_SESSION['ndaNavigation'][$sessionName]['reset']) &&
-        $_SESSION['ndaNavigation'][$sessionName]['reset'] == 0) {
-        $_SESSION['ndaNavigation'][$sessionName]['reset'] = 1;
-        return false;
-    }
     $terms = getSearchTerms($data);
-    $_SESSION['ndaNavigation'][$sessionName]['offset'] =
+    $searchId = setSearchId($terms);
+
+    // Search has already been stored previously
+    if (isset($_SESSION['ndaNavigation'][$searchId])) {
+        return $searchId;
+    }
+
+    $_SESSION['ndaNavigation'][$searchId]['offset'] =
         array_key_exists('_offset', $terms) ? $terms['_offset'][0] : 0;
-    $_SESSION['ndaNavigation'][$sessionName]['total'] = $data->totalSize;
+    $_SESSION['ndaNavigation'][$searchId]['total'] = $data->totalSize;
     // Previous/next set links
     $navigation = getNavigationPreviousNextSets($data, multimediaService());
-    $_SESSION['ndaNavigation'][$sessionName]['nextSet'] = $navigation['next'];
-    $_SESSION['ndaNavigation'][$sessionName]['previousSet'] = $navigation['previous'];
+    $_SESSION['ndaNavigation'][$searchId]['nextSet'] = $navigation['next'];
+    $_SESSION['ndaNavigation'][$searchId]['previousSet'] = $navigation['previous'];
     // Links within results
-    $_SESSION['ndaNavigation'][$sessionName]['currentSet'] = array();
+    $_SESSION['ndaNavigation'][$searchId]['currentSet'] = array();
     foreach ($data->searchResults as $row) {
-        $_SESSION['ndaNavigation'][$sessionName]['currentSet'][] =
-            urldecode(getMultimediaDetailLink($row));
+        $_SESSION['ndaNavigation'][$searchId]['currentSet'][] =
+            stripNbaBaseUrl(getMultimediaDetailLink($row)) . '&searchID=' . $searchId;
     }
+
+    return $searchId;
 }
 
 /**
  * Sets the urls for the previous/next result sets
  *
  * This should be pretty straightforward, as the NBA returns these links in the
- * response. However, this is not the case for POST requests!
+ * response. However, this is not the case for POST requests! These have to
+ * created from the search terms.
  *
  * @param array $data Parsed json data
  * @param string $service Service, required to determine GET/POST request
@@ -2903,17 +2914,43 @@ include("printMultimediaPreviousNext.php");
  * new page loads. This is handled by setting reset = 0.
  *
  * @param string $r NBA request
+ * @return string Updated $searchId
  */
- function updatePreviousNext ($r, $sessionName) {
+ function updatePreviousNext ($r) {
     $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
     if (!empty($json)) {
-        setNavigation(json_decode($json), $sessionName);
-        // SESSION has already been reset; make sure it isn't reset again
-        // when the new page loads
-        $_SESSION['ndaNavigation'][$sessionName]['reset'] = 0;
+        // Set new SESSION and return new searchId
+        return setNavigation(json_decode($json));
     }
 }
 
-function resetNavigation () {
-    unset($_SESSION['ndaNavigation']['media']);
+/**
+ *  Sets unique id for search terms
+ *
+ *  Creates a hash based on the search terms. Used for navigation purpose.
+ *
+ * @param array $terms Search terms
+ */
+function setSearchId ($terms) {
+    ksort($terms);
+    return md5(serialize($terms));
+}
+
+/**
+ *  Get search id from NBA request
+ *
+ * @param string $r NBA request
+ * @return string|false
+ */
+function getSearchId ($r) {
+    safe_parse_str(urldecode($r), $q);
+    return isset($q['searchID']) ? $q['searchID'] : false;
+}
+
+function stripNbaBaseUrl ($url) {
+    $url = str_replace(ndaBaseUrl(), '', urldecode($url));
+    if ($url[0] == '/') {
+        $url = substr($url, 1);
+    }
+    return $url;
 }
