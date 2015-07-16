@@ -8,15 +8,17 @@
  * @param callback The callback function
 */
 function getNbaData (request, callback, requestAppend) {
+	// Separate NBA request from what is passed on to callback function
+	var nbaRequest = request;
 	if (typeof requestAppend != "undefined") {
-		request += requestAppend;
+		nbaRequest += requestAppend;
 	}
 	jQuery.ajax({
 		url: str_base_path + 'nba/ajax',
 		type: "GET",
 		dataType: "json",
 		data: ({
-			nba_request: request
+			nba_request: nbaRequest
 		}),
 		success: function (response) {
 			callback(request, response);
