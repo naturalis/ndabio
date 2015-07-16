@@ -82,9 +82,13 @@ function printSpecimenDetail ($data) {
 	$output  = _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
 
-	$purl = '<input style="cursor: help;" id="purl" type="text" value="http://purl.naturalis.nl/' . $data['unitID'] .
-	   '" title="' . t('Help text here') . '" onclick="selectText(purl);"></input>';
-	$output .= _wrap(printDL(t("Persisent URL"), $purl), "div", "property-list purl");
+	$purl = '<input id="purl" type="text" ' .
+	   'value="http://data.biodiversitydata.nl/naturalis/specimen/' .
+	   $data['unitID'] . '"></input>';
+	$output .= '<div class="property-list">
+	   <dl><dt style="cursor: help; width: 100%;" title="' . t('Help text here') . '">'.
+	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
+	   </div>';
 
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");

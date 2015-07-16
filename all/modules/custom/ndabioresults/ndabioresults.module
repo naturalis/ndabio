@@ -51,8 +51,8 @@ function ndabioresults_preprocess_html(&$vars){
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
         $vars['classes_array'][] = "nba-result-detail";
     }
-    if (isset($_SESSION['ndaSearch']['pageTitle']) && current_path() == 'nba/result') {
-        $vars['head_title'] = $_SESSION['ndaSearch']['pageTitle'] . ' | BioPortal';
+    if (isset($_SESSION['ndaPageTitle']) && current_path() == 'nba/result') {
+        $vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
     }
 }
 
@@ -141,8 +141,7 @@ function ndabioresults_pass ($args = "") {
     }
 
     // SESSION variables that have to be reset for each request
-    unset($_SESSION['ndaSearch']['pageTitle']);
-//unset($_SESSION['ndaNavigation']['media']);
+    unset($_SESSION['ndaPageTitle']);
 
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
@@ -805,6 +804,7 @@ function parseSpecimenMediaDetail ($json) {
 	//$output['navigation'] = getNavigation($data);
 	$output['names'] = getSpecimensMultimediaNames($row);
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
+	$output['mediaUnitID'] = $row->result->unitID;
 	$output['imgSrc'] = getImageUrl($row);
 	$output['phaseOrStage'] = $row->result->phasesOrStages;
 	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
@@ -2631,7 +2631,7 @@ function decimalToDMS ($lat, $lon) {
  * @param string $page Page title
  */
 function setTitle ($head, $page = '') {
-    $_SESSION['ndaSearch']['pageTitle'] = $head;
+    $_SESSION['ndaPageTitle'] = $head;
     drupal_set_title($page);
 }
 

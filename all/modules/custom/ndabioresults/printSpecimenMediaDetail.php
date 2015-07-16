@@ -8,11 +8,19 @@
  */
 function printSpecimenMediaDetail ($data) {
 //p($data);
-    $output  = _wrap( t("Media item")   , "div", "category");
-    $output .= _wrap( '', "h2"  );
-    	//$output .= printNavigation($data);
+    drupal_add_js("jQuery(document).ready(function() { jQuery('#purl').focus().select(); });", 'inline');
 
-    $output .= printMultimediaPreviousNext();
+    $output  = _wrap(t("Media item"), "div", "category");
+    $output .= _wrap('', "h2");
+
+    $output .= printPreviousNext();
+
+	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
+	   $data['mediaUnitID'] . '"></input>';
+	$output .= '<div class="property-list">
+	   <dl><dt style="cursor: help; width: 100%;" title="' . t('Help text here') . '">'.
+	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
+	   </div>';
 
     $altParts = array(
         isset($data['unitID']) ? strip_tags($data['unitID']) : '',

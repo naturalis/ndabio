@@ -156,16 +156,18 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_back':
-      if ( $_SESSION['ndaRequestType'] == 'form') {
+    if ($_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
             $block['content'] = "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
         } else {
            $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
         }
-      } else {
-          $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
-	  drupal_set_title(t("Search results"));
-      }
+    } else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+        $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
+        drupal_set_title(t("Search results"));
+    } else {
+        $block['content'] = '&nbsp;';
+    }
 
 
       break;

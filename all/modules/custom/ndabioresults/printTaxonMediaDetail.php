@@ -12,7 +12,7 @@ function printTaxonMediaDetail ($data) {
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
 
-    $output .= printMultimediaPreviousNext();
+    $output .= printPreviousNext();
 
     $altParts = array(
         isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
