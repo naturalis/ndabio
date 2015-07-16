@@ -105,58 +105,63 @@ function ndabio_block_view($delta = '') {
 
   $block = array();
   switch ($delta) {
+        case 'ndabio_languageselect':
 
-    case 'ndabio_languageselect':
+            if (arg(0) == 'node' && is_numeric(arg(1))) {
+                $translations = translation_path_get_translations("node/" . arg(1));
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+            } else {
+                $currentpath = request_uri();
+                $cleanup = array(
+                    "&language=en",
+                    "&language=nl",
+                    "?language=en",
+                    "?language=nl",
+                    "&searchagain=1",
+                    "?searchagain=1",
+                    "&back",
+                    "?back"
+                );
+                $currentpath = str_replace($cleanup, "", $currentpath);
+                if (strpos($currentpath, "?") === FALSE) {
+                    $currentpath = $currentpath . "?";
+                }
+                else {
+                    $currentpath = $currentpath . "&";
+                }
+                $currentpathnl = $currentpathen = $currentpath;
+            }
 
-      if (arg(0) == 'node' && is_numeric(arg(1))) {
-        $translations = translation_path_get_translations("node/" . arg(1));
-        $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
-        $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
-      }
-      else {
-        $currentpath = request_uri();
-        $cleanup = array("&language=en", "&language=nl", "?language=en", "?language=nl", "&searchagain=1", "?searchagain=1", "&back", "?back");
-        $currentpath = str_replace($cleanup, "", $currentpath);
-        if (strpos($currentpath, "?") === FALSE) {
-          $currentpath = $currentpath . "?";
-        }
-        else {
-          $currentpath = $currentpath . "&";
-        }
-        $currentpathnl = $currentpathen = $currentpath;
-      }
-    $block['content']  = "<ul class='right' id='language-menu'>";
-      if ($language->language == "en") {
-        $block['content'] .= "  <li>";
-      }
-      else {
-        $block['content'] .= "  <li class='active'>";
-      }
-      if (strpos($currentpathen, "nba_request") === FALSE) {
-        $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
-      }
-      else {
-        $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
-      }
-      $block['content'] .= "  </li>";
-      if ($language->language == "nl") {
-        $block['content'] .= "  <li>";
-      }
-      else {
-        $block['content'] .= "  <li class='active'>";
-      }
-      if (strpos($currentpathnl, "nba_request") === FALSE) {
-        $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
-      }
-      else {
-        $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
-      }
-      $block['content'] .= "  </li>";
-      $block['content'] .= "</ul>";
+            $block['content'] = "<ul class='right' id='language-menu'>";
+            if ($language->language == "en") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathen, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+            }
+            $block['content'] .= "  </li>";
 
-    break;
-  }
-  return $block;
+            if ($language->language == "nl") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathnl, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+            }
+            $block['content'] .= "  </li>";
+            $block['content'] .= "</ul>";
+
+            break;
+    }
+    return $block;
 }
 
 
