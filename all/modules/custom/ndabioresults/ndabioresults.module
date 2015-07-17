@@ -464,7 +464,14 @@ function ndaThematicSearch () {
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
 
     $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    // Sort multimedia by specimen name
+    $services[multimediaService()]['_sort'] = 'identifications.scientificName.fullScientificName';
+    $services[multimediaService()]['_sortDirection'] = 'ASC';
+
     $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    // Sort specimens by registration number
+    $services[specimenService()]['_sort'] = 'unitID';
+    $services[specimenService()]['_sortDirection'] = 'ASC';
 
     $pageHeader = '';
     ctools_class_add(array('thematic-search'));
@@ -480,7 +487,9 @@ function ndaThematicSearch () {
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from thematic search';
 
-    $pageBody = performNdaRequest(setChannels($services));
+    // We have to override the default sort and sort direction for thematic search
+    // Add true flag to setChannels()
+    $pageBody = performNdaRequest(setChannels($services, true));
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
@@ -595,7 +604,7 @@ function dataPosted ($services) {
  * @param array Service array (service name => search parameters)
  * @return array|void Channels for curl
  */
-function setChannels (array $services) {
+function setChannels (array $services, $overrideDefault = false) {
     $i = 0;
     $serviceSettings = serviceToFunctions();
 	foreach ($services as $s => $p) {
@@ -604,8 +613,12 @@ function setChannels (array $services) {
 
 	        // Append default search parameters for form
 	        $p['_maxResults'] = maxResultsInitial();
-	        $p['_sort'] = defaultSort();
-	        $p['_sortDirection'] = defaultSortDirection();
+	        // Allow override for default sort and sort direction
+	        // for special cases (thematic search)
+	        if (!$overrideDefault) {
+    	        $p['_sort'] = defaultSort();
+    	        $p['_sortDirection'] = defaultSortDirection();
+	        }
 
 	        if (isGroupService($s)) {
     	        $p['_groupMaxResults'] = maxGroupResults();
