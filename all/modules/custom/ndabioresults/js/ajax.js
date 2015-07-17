@@ -86,7 +86,8 @@ function printMultimediaPreview (request, data) {
 			} else {
 				jQuery('div.property-list dl').each(function() {
 				    if (this.firstChild.innerHTML == Drupal.t("Scientific name")) {
-				    	caption = this.lastChild.innerHTML;
+				    	var $caption = jQuery(this.lastChild.innerHTML);
+				    	caption = $caption.is("a") ? $caption[0].innerHTML : this.lastChild.innerHTML
 				    	return false;
 					}
 				});
