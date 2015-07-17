@@ -276,6 +276,11 @@
   });
 
 
+  // Change more to less and vice versa
+  $(".fieldset-title").click(function(){
+	  this.lastChild.data = this.lastChild.data == Drupal.t('More') ?
+	       Drupal.t('Less') : Drupal.t('More');
+  });
 
 
 
