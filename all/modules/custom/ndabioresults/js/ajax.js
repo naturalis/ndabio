@@ -59,6 +59,13 @@ function printMultimediaPreview (request, data) {
 	var output = '<div class=​"multimedia-wrapper">​';
 	for (i = 0; i < data.searchResults.length; i++) {
 		var src = data.searchResults[i].result.serviceAccessPoints['MEDIUM_QUALITY'].accessUri;
+
+        // Reset url if media is mp4
+        if (data.searchResults[i].result.serviceAccessPoints['MEDIUM_QUALITY'].format == 'video/mp4') {
+            src = str_base_path +
+                'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+        }
+
 		for (j = 0; j < data.searchResults[i].links.length; j++) {
 			if (data.searchResults[i].links[j].rel == '_multimedia') {
 				var url = data.searchResults[i].links[j].href;
@@ -77,7 +84,12 @@ function printMultimediaPreview (request, data) {
 				caption = jQuery("span.scientific-name").get(0).innerHTML;
 			// Specimen detail page
 			} else {
-				caption = jQuery("div.property-list dd a").get(0).innerHTML;
+				jQuery('div.property-list dl').each(function() {
+				    if (this.firstChild.innerHTML == Drupal.t("Scientific name")) {
+				    	caption = this.lastChild.innerHTML;
+				    	return false;
+					}
+				});
 			}
 		}
 
