@@ -11,7 +11,10 @@ function printSpecimenDetail ($data) {
     $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
         $data['gatheringEvent']['siteCoordinates']['lon'] : false;
 
-    drupal_add_js("jQuery(document).ready(function() { jQuery('#purl').focus().select(); });", 'inline');
+    drupal_add_js(
+        "jQuery(function() { jQuery('#purl').focus().select(); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
 
     if ($lat && $lon) {
         // Add Google Maps scripts from ndabio module (REQUIRED!)
@@ -21,7 +24,10 @@ function printSpecimenDetail ($data) {
         drupal_add_js($path . "/js/map.js", array('weight' => 1));
         drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
             variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
-        drupal_add_js("jQuery(document).ready(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });", 'inline');
+        drupal_add_js(
+            "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });",
+            array('type' => 'inline', 'scope' => 'footer')
+        );
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js("var specimenMarker = " .
             json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
@@ -39,7 +45,10 @@ function printSpecimenDetail ($data) {
         drupal_add_js($path . "/js/mapcode/mapcode.js", array('weight' => 1));
         drupal_add_js($path . "/js/mapcode/ndata.js", array('weight' => 1));
         drupal_add_js($path . "/js/library.js", array('weight' => 1));
-        drupal_add_js("jQuery(document).ready(function() { setMapcode(); });", 'inline');
+        drupal_add_js(
+            "jQuery(function() { setMapcode(); });",
+            array('type' => 'inline', 'scope' => 'footer')
+        );
     }
 
 	// Determines order to print field/value;
@@ -155,7 +164,10 @@ function printSpecimenDetail ($data) {
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js("jQuery(document).ready(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });", 'inline');
+    drupal_add_js(
+        "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
     $output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia"></p>';
 
     setTitle(t('Specimen') . ' | ' .

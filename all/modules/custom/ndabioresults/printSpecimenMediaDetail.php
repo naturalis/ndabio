@@ -8,7 +8,10 @@
  */
 function printSpecimenMediaDetail ($data) {
 //p($data);
-    drupal_add_js("jQuery(document).ready(function() { jQuery('#purl').focus().select(); });", 'inline');
+    drupal_add_js(
+        "jQuery(function() { jQuery('#purl').focus().select(); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
 
     $output  = _wrap(t("Media item"), "div", "category");
     $output .= _wrap('', "h2");
