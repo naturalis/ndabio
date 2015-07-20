@@ -543,20 +543,34 @@ table .indent-2:not(.hidden) + .indent-0 {
 table .icon-location {
   font-size: 18px; }
 
-#result-nav {
+.fornext-bar {
+  list-style: none-inside-none;
   display: table;
-  border-spacing: 3px;
-  width: 100%; }
-  #result-nav ul {
+  width: 100%;
+  margin-bottom: 25px; }
+  .fornext-bar ul {
     display: table-row; }
-  #result-nav li {
+  .fornext-bar li {
+    display: inline-block;
+    background-color: #F6F6F4;
     display: table-cell;
-    background-color: #EEEDE9;
-    height: 40px;
-    line-height: 40px;
-    text-align: center; }
-  #result-nav a {
+    outline: 1px solid white;
+    width: 40px;
+    text-align: center;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
     color: #542e08; }
+    .fornext-bar li a, .fornext-bar li .icon {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      color: #542e08;
+      font-size: 24px; }
+    .fornext-bar li:first-child {
+      width: auto;
+      text-align: left; }
+    .fornext-bar li .icon-button-disabled {
+      color: #b3b3b3; }
 
 .block-ndabioresults-ndabioresults-thematicsearch {
   background-color: #F6F6F4;
