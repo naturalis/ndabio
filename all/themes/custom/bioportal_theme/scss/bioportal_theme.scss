@@ -892,30 +892,48 @@
       }
     }
 
-  // -- results: NAVIGATION
+  // -- results: PREVNEXT-BAR
 
-    #result-nav{
-      display: table;
-      border-spacing: 3px;
-      width: 100%;
+  // display bar as table
 
-      ul{
-        display: table-row;
-      }
+  .fornext-bar{
+    list-style: none-inside-none;
+    display: table;
+    width: 100%;
 
-      li{
-        display: table-cell;
-        background-color: $ghost;
+    ul{
+      display: table-row;
+    }
+
+    li{
+      display: inline-block;
+      background-color: $smoke;
+      display: table-cell;
+      outline: 1px solid white;
+      width: 40px;
+      text-align: center;
+      padding-left: 0.25em;
+      padding-right: 0.25em;
+      color: $brown;
+
+      a, .icon{
+        display: inline-block;
         height: 40px;
         line-height: 40px;
-        text-align: center;
-      }
-
-      a{
         color: $brown;
+        font-size: 24px;
       }
 
+      &:first-child{
+        width: auto;
+        text-align: left;
+      }
+
+      .icon-button-disabled{
+        color: $gray-4;
+      }
     }
+  }
 
   // -- results: EXPLORE HIHLIGHTS
     .block-ndabioresults-ndabioresults-thematicsearch{
