@@ -85,9 +85,9 @@ function printSpecimenDetail ($data) {
 	$purl = '<input id="purl" type="text" ' .
 	   'value="http://data.biodiversitydata.nl/naturalis/specimen/' .
 	   $data['unitID'] . '"></input>';
-	$helpText = '';
+	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will to try to assure the permanent character of this PURL.');
 	$output .= '<div class="property-list">
-	   <dl><dt style="cursor: help; width: 100%;" title="' . t($helpText) . '">'.
+	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
 	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
 	   </div>';
 
