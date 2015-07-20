@@ -1,6 +1,6 @@
 <?php
 
-define("NBABASEURL", "http://10.42.1.163:8080/v0/");
+define("NBABASEURL", "http://api.biodiversitydata.nl/v0/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);

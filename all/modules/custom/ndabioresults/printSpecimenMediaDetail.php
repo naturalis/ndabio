@@ -17,8 +17,9 @@ function printSpecimenMediaDetail ($data) {
 
 	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
 	   $data['mediaUnitID'] . '"></input>';
+	$helpText = '';
 	$output .= '<div class="property-list">
-	   <dl><dt style="cursor: help; width: 100%;" title="' . t('Help text here') . '">'.
+	   <dl><dt style="cursor: help; width: 100%;" title="' . t($helpText) . '">'.
 	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
 	   </div>';
 
