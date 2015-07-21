@@ -81,6 +81,7 @@ function ndabioresults_block_view($delta = '') {
 
   $SHOWS_RESULTS = (
     $_SESSION['ndaPageDetail'] == 'result from simple form' ||
+    $_SESSION['ndaPageDetail'] == 'result from thematic search' ||
     $_SESSION['ndaPageDetail'] == 'results taxa' ||
     $_SESSION['ndaPageDetail'] == 'results multimedia' ||
     $_SESSION['ndaPageDetail'] == 'results specimens' ||
