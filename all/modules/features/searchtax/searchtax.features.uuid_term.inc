@@ -104,7 +104,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--more--',
     'description' => '--more--',
     'format' => NULL,
-    'weight' => 5,
+    'weight' => 6,
     'uuid' => '0db9da4a-2338-418c-be05-383749713024',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -376,6 +376,43 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'm_sourceSystem',
+    'description' => 'Source',
+    'format' => 'markdown',
+    'weight' => 1,
+    'uuid' => '252b758f-e225-426d-96ac-b3b9f68f7637',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Brahms|Naturalis Collectie Registratie Systeem|Nederlands Soortenregister',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/msourcesystem',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
+    ),
+  );
+  $terms[] = array(
     'name' => 'm_phylum',
     'description' => 'Phylum',
     'format' => NULL,
@@ -409,7 +446,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_sex',
     'description' => 'Sex',
     'format' => 'plain_text',
-    'weight' => 6,
+    'weight' => 8,
     'uuid' => '2bc7d345-6def-4b59-82c9-a3c4445c5d65',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -497,7 +534,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 't_genusOrMonomial',
     'description' => 'Genus',
     'format' => 'plain_text',
-    'weight' => 2,
+    'weight' => 3,
     'uuid' => '33ab617b-d485-42a7-a592-c530998e9409',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -557,7 +594,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'Taxa',
     'description' => 'Taxa',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 2,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -587,7 +624,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_family',
     'description' => 'Family',
     'format' => NULL,
-    'weight' => 1,
+    'weight' => 3,
     'uuid' => '381d3a69-a9c4-46ae-b921-6c8eb5d00dc9',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -611,6 +648,36 @@ function searchtax_uuid_features_default_terms() {
     ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
+    ),
+  );
+  $terms[] = array(
+    'name' => 's_collectionType',
+    'description' => 'Collection name',
+    'format' => 'markdown',
+    'weight' => 2,
+    'uuid' => '3a89190c-0b9a-4593-9557-3154b8a8042e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(),
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/scollectiontype',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
     ),
   );
   $terms[] = array(
@@ -707,7 +774,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_phaseOrStage',
     'description' => 'Phase or stage',
     'format' => 'plain_text',
-    'weight' => 5,
+    'weight' => 7,
     'uuid' => '44d14c91-3410-470f-988d-7fb0634772c5',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -934,7 +1001,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 's_phaseOrStage',
     'description' => 'Phase or stage',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 5,
     'uuid' => '56d49d5a-2348-4289-a578-61bb5c947bd9',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1075,7 +1142,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_genusOrMonomial',
     'description' => 'Genus or monomial',
     'format' => NULL,
-    'weight' => 2,
+    'weight' => 4,
     'uuid' => '618d5d30-d174-43d1-9345-d57654a4b03c',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1105,7 +1172,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--hide--',
     'description' => '--hide--',
     'format' => NULL,
-    'weight' => 8,
+    'weight' => 10,
     'uuid' => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1135,7 +1202,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'Multimedia',
     'description' => 'Multimedia',
     'format' => 'plain_text',
-    'weight' => 0,
+    'weight' => 3,
     'uuid' => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1232,7 +1299,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'Collection specimens',
     'description' => 'Collection specimens',
     'format' => 'plain_text',
-    'weight' => 2,
+    'weight' => 1,
     'uuid' => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1337,7 +1404,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'omnisearch',
     'description' => 'term',
     'format' => NULL,
-    'weight' => 74,
+    'weight' => 79,
     'uuid' => '7a6d1b8b-574f-4dfb-b74b-e4ea17e9d3e5',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1356,11 +1423,78 @@ function searchtax_uuid_features_default_terms() {
     'url_alias' => array(),
   );
   $terms[] = array(
+    'name' => 's_sourceSystem',
+    'description' => 'Source',
+    'format' => 'markdown',
+    'weight' => 1,
+    'uuid' => '7d4df160-0941-49ae-9c74-30ba7d7372e2',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Brahms|Naturalis Collectie Registratie Systeem',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/ssourcesystem',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
+    ),
+  );
+  $terms[] = array(
+    'name' => 'm_collectionType',
+    'description' => 'Collection name',
+    'format' => 'markdown',
+    'weight' => 2,
+    'uuid' => '7f03c683-b1d3-4cc5-aaca-4b7a24af3be9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(),
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mcollectiontype',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
+    ),
+  );
+  $terms[] = array(
     'name' => 't_specificEpithet',
     'description' => 'Specific name
 ',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 4,
     'uuid' => '93674884-b99c-442a-9bee-aec1175ac576',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1397,7 +1531,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 's_sex',
     'description' => 'Sex',
     'format' => 'plain_text',
-    'weight' => 4,
+    'weight' => 6,
     'uuid' => '93f35ff9-dd82-4884-ba0b-efdaf8fdfbea',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1442,7 +1576,7 @@ function searchtax_uuid_features_default_terms() {
     'description' => 'Locality
 ',
     'format' => 'plain_text',
-    'weight' => 2,
+    'weight' => 4,
     'uuid' => '98cbc05f-3f0d-44e2-aa57-ef06fc984d80',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1546,7 +1680,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'extended',
     'description' => 'extended',
     'format' => NULL,
-    'weight' => 75,
+    'weight' => 80,
     'uuid' => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1566,9 +1700,9 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_collectorsFieldNumber',
-    'description' => 'Collectors field number',
+    'description' => 'Field number collector',
     'format' => 'plain_text',
-    'weight' => 6,
+    'weight' => 8,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1657,7 +1791,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--hide--',
     'description' => '--hide--',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 7,
     'uuid' => 'abf15890-2907-4350-a0b2-8a3ec2e44512',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1742,7 +1876,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 's_typeStatus',
     'description' => 'Type status',
     'format' => 'plain_text',
-    'weight' => 1,
+    'weight' => 3,
     'uuid' => 'b8256f66-b26d-4fc7-8842-cc48feeede11',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1786,7 +1920,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 's_gatheringAgent',
     'description' => 'Collector',
     'format' => 'plain_text',
-    'weight' => 5,
+    'weight' => 7,
     'uuid' => 'bb2c083f-90cd-4a64-8c78-d90f19563ea4',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1914,7 +2048,7 @@ function searchtax_uuid_features_default_terms() {
     'description' => 'Infraspecific name
 ',
     'format' => 'plain_text',
-    'weight' => 4,
+    'weight' => 5,
     'uuid' => 'c7eaee57-8365-48b1-9bc5-eddbeba8210d',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2166,7 +2300,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'm_specificEpithet',
     'description' => 'Specific name',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 5,
     'uuid' => 'deb807f4-558d-49ec-973b-057a4b570e47',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2266,7 +2400,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 'Collection specimens by name',
     'description' => 'Collection specimens by name',
     'format' => 'plain_text',
-    'weight' => 1,
+    'weight' => 0,
     'uuid' => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2313,10 +2447,47 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 't_sourceSystem',
+    'description' => 'Source',
+    'format' => 'markdown',
+    'weight' => 1,
+    'uuid' => 'eff23bd4-46a4-4f1b-93cd-b8e506d20c11',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Catalogue Of Life|Nederlands Soortenregister',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/tsourcesystem',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
+    ),
+  );
+  $terms[] = array(
     'name' => 'm_typeStatus',
     'description' => 'Type status',
     'format' => 'plain_text',
-    'weight' => 4,
+    'weight' => 6,
     'uuid' => 'f25d70fd-e86b-4719-86a1-d8916b17f840',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2355,7 +2526,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => '--more--',
     'description' => '--more--',
     'format' => NULL,
-    'weight' => 7,
+    'weight' => 9,
     'uuid' => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2380,7 +2551,7 @@ function searchtax_uuid_features_default_terms() {
     'name' => 't_family',
     'description' => 'Family',
     'format' => NULL,
-    'weight' => 1,
+    'weight' => 2,
     'uuid' => 'fceb4c7d-3ac5-4e70-ac7e-f810b8b3643c',
     'language' => 'und',
     'i18n_tsid' => 0,
