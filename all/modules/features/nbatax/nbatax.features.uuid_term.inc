@@ -586,7 +586,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'source',
-    'description' => 'source system',
+    'description' => 'source',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '89d0de23-7446-4a26-8728-485896e4e9cb',
@@ -654,7 +654,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'typeStatus',
-    'description' => 'typestatus',
+    'description' => 'type status',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '92f23ba1-2047-4c3d-a05c-a8bc3da60d4b',
@@ -773,7 +773,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'numberOfSpecimen',
-    'description' => 'Count',
+    'description' => 'number of specimens',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'cd856700-a807-4794-b17e-cd9d2620e087',
@@ -824,7 +824,7 @@ function nbatax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'order',
-    'description' => 'orde',
+    'description' => 'order',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'dfb76785-1107-4c0d-acd7-4e2fa4df4e6a',
