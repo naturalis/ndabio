@@ -13,6 +13,32 @@ function bioportal_nl_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_count';
+  $strongarm->value = 2;
+  $export['language_count'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_default';
+  $strongarm->value = (object) array(
+    'language' => 'nl',
+    'name' => 'Dutch',
+    'native' => 'Nederlands',
+    'direction' => '0',
+    'enabled' => '1',
+    'plurals' => '2',
+    'formula' => '($n!=1)',
+    'domain' => '',
+    'prefix' => 'nl',
+    'weight' => '0',
+    'javascript' => '3Yig-Ms_2FMqKfDThuMqncr4V2HUotW3Xm7MZg6Z9hk',
+  );
+  $export['language_default'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'language_negotiation_language';
   $strongarm->value = array(
     'locale-session' => array(
@@ -28,6 +54,13 @@ function bioportal_nl_strongarm() {
         'language' => 'locale_language_from_user',
       ),
       'file' => 'includes/locale.inc',
+    ),
+    'locale-browser' => array(
+      'callbacks' => array(
+        'language' => 'locale_language_from_browser',
+      ),
+      'file' => 'includes/locale.inc',
+      'cache' => 0,
     ),
     'language-default' => array(
       'callbacks' => array(
@@ -97,10 +130,10 @@ function bioportal_nl_strongarm() {
   $strongarm->name = 'locale_language_providers_weight_language';
   $strongarm->value = array(
     'locale-session' => '-10',
-    'language-default' => '-6',
-    'locale-url' => '-8',
     'locale-user' => '-9',
+    'locale-url' => '-8',
     'locale-browser' => '-7',
+    'language-default' => '-6',
   );
   $export['locale_language_providers_weight_language'] = $strongarm;
 
