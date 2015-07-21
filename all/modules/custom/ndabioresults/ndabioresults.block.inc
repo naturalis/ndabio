@@ -79,14 +79,14 @@ function ndabioresults_block_view($delta = '') {
   $_link_disabled =  array('attributes' => array('class' => 'filter-disabled'));
   $_link_active =  array('attributes' => array('class' => 'filter-active'));
 
-  $SHOWS_RESULTS = (
-    $_SESSION['ndaPageDetail'] == 'result from simple form' ||
-    $_SESSION['ndaPageDetail'] == 'result from thematic search' ||
-    $_SESSION['ndaPageDetail'] == 'results taxa' ||
-    $_SESSION['ndaPageDetail'] == 'results multimedia' ||
-    $_SESSION['ndaPageDetail'] == 'results specimens' ||
-    $_SESSION['ndaPageDetail'] == 'result from advanced form'
-  ) ;
+    $SHOWS_RESULTS = in_array($_SESSION['ndaPageDetail'], array(
+         'result from simple form',
+         'result from thematic search',
+         'results taxa',
+         'results multimedia',
+         'results specimens',
+         'result from advanced form'
+    ));
 
   switch ($delta) {
 
