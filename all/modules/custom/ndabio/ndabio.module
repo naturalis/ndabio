@@ -24,6 +24,24 @@ define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
  */
 
 /**
+ *
+ **/
+function ndabio_boot() {
+  //Execute on every page, check langauge env.
+  $langs = language_list(); // Note: No argument
+  $langcode = $_GET["language"];
+  if (!empty($langcode)) {
+    variable_set('language_default', $langs[$langcode]);
+    $_SESSION["currentlanguage"] = $langs[$langcode];
+  }
+  elseif (!empty($_SESSION["currentlanguage"])) {
+    $langcode = $_SESSION["currentlanguage"];
+    variable_set('language_default', $langs[$langcode]);
+  } 
+}
+
+
+/**
  * Implements hook_menu().
  */
 function ndabio_menu() {
