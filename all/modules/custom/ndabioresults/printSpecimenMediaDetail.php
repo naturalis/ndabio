@@ -87,6 +87,6 @@ function printSpecimenMediaDetail ($data) {
     // Drupal title empty; page title custom
     setTitle(t('Multimedia') . ' | ' . strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
 
-	return $output . "</dd>";
+	return $output . "</dd>\n</div>\n";
 }
 ?>

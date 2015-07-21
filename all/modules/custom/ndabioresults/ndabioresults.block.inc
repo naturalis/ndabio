@@ -172,19 +172,11 @@ function ndabioresults_block_view($delta = '') {
 
       break;
 
-    case 'ndabioresults_navigation':
-      //$block['subject'] = '<none>';
 
+    // Used now to create some space on detail pages
+    case 'ndabioresults_navigation':
       if ( !$SHOWS_RESULTS ){
-      $block['content'] =
-        "<div id='result-nav'>"
-        // ._list_items( array(
-        //   _item(array('7 van 35'    )),
-        //   _item(array("<i class='icon-triangle-up'></i>"     )),
-        //   _item(array("<i class='icon-triangle-down'></i>"     )),
-        //   _item(array("<i class='icon-cross'></i>"     ))
-        // ))
-        ."</div>";
+        $block['content'] =  '&nbsp;';
       }
 
 
