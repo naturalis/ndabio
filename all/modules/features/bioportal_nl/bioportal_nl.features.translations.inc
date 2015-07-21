@@ -1667,6 +1667,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['0bfad2958e5471ef613f4a1a07a924bc'] = array(
+    'source' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['0c090e413a36e797b0a6f837b56e04ed'] = array(
     'source' => 'Cocos (Keeling) Islands',
     'context' => '',
@@ -21494,6 +21502,14 @@ Uw account op [site:name] is geannuleerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['8e4267ad894fe6ff705590c907ac52fe'] = array(
+    'source' => 'To Naturalis.nl',
+    'context' => '',
+    'location' => '/admin_menu/flush-cache?token=jo_16nRxSEFiiZOt_zvxX9Oz5sCLWCSFfa3CK258lwY&destination=search/advancednda',
+    'translation' => 'Naar Naturalis.nl',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['8e49bc6f3b18cde7dc1f94072ab7bf59'] = array(
     'source' => 'Your account will be blocked and you will no longer be able to log in. All of your content will be hidden from everyone but administrators.',
     'context' => '',
@@ -29323,6 +29339,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['beb34f28f954feb3efd68e98042490c8'] = array(
+    'source' => 'Field number collector',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['bebd38011265cc9ca332791054106ef5'] = array(
     'source' => 'Ash',
     'context' => '',
@@ -31332,7 +31356,7 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'source' => 'juvenile',
     'context' => '',
     'location' => '/search/advancednda?language=nl',
-    'translation' => 'jeugd',
+    'translation' => 'juveniel',
     'plid' => 0,
     'plural' => 0,
   );
@@ -32459,7 +32483,7 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
   $translations['nl:default']['d3da97e2d9aee5c8fbe03156ad051c99'] = array(
     'source' => 'More',
     'context' => '',
-    'location' => 'ndabio/ndabio.module:380',
+    'location' => 'ndabio/ndabio.module:380; sites/all/themes/custom/bioportal_theme/js/bioportal_theme.js',
     'translation' => 'Meer',
     'plid' => 0,
     'plural' => 0,
@@ -33056,6 +33080,14 @@ Uw aanvraag voor een account wacht momenteel op goedkeuring. Zodra de aanvraag i
     'context' => '',
     'location' => '',
     'translation' => 'Bestaand veld toevoegen: selecteer een veldtype.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['d81558ed9858d79c5c0e557b688eb607'] = array(
+    'source' => 'Naar Naturalis.nl',
+    'context' => '',
+    'location' => '/admin/modules?render=overlay',
+    'translation' => 'To Naturalis.nl',
     'plid' => 0,
     'plural' => 0,
   );
@@ -35594,7 +35626,7 @@ Uw account op [site:name] werd geblokkeerd.
   $translations['nl:default']['ea72c7b6e71d7fb9e24950f308d47f5a'] = array(
     'source' => 'Scientific name',
     'context' => '',
-    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DMNH.AVES.110071',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DMNH.AVES.110071; sites/all/modules/custom/ndabioresults/js/ajax.js',
     'translation' => 'Wetenschappelijke naam',
     'plid' => 0,
     'plural' => 0,
@@ -35762,7 +35794,7 @@ Uw account op [site:name] werd geblokkeerd.
   $translations['nl:default']['eb92025cb8c66f1850c13a9b602a1856'] = array(
     'source' => 'Show all',
     'context' => '',
-    'location' => '/nba/result?language=nl',
+    'location' => '/nba/result?language=nl; sites/all/modules/custom/ndabioresults/js/ajax.js',
     'translation' => 'Toon alle',
     'plid' => 0,
     'plural' => 0,
@@ -39026,6 +39058,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:taxonomy']['15d0f1376101e103a4d7457698b096a9'] = array(
+    'source' => 'Field number collector',
+    'context' => 'term:48:description',
+    'location' => 'taxonomy:term:48:description',
+    'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:taxonomy']['2bbd3ba38020b674e2df396d861e8bdf'] = array(
     'source' => 'm_collectorsFieldNumber',
     'context' => 'term:12:name',
@@ -39117,11 +39157,11 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
-  $translations['nl:taxonomy']['a2cc64cf4be3dcdeda7b522ed0746bff'] = array(
-    'source' => 'Collectors field number',
-    'context' => 'term:48:description',
-    'location' => 'taxonomy:term:48:description',
-    'translation' => 'Veldnummer verzamelaar',
+  $translations['nl:taxonomy']['a13edf3eba32f96ef30a80829f3a1649'] = array(
+    'source' => 's_sourceSystem',
+    'context' => 'term:134:name',
+    'location' => 'taxonomy:term:134:name',
+    'translation' => 's_sourceSystem',
     'plid' => 0,
     'plural' => 0,
   );
