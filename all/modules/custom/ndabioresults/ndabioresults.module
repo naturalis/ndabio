@@ -2821,8 +2821,6 @@ function isSearchService ($r) {
  * @return string $searchId
  */
 function setNavigation ($data) {
-    // SESSION has already been reset in the background with updatePreviousNext()
-    // Do nothing but switching the reset flag back on.
     $terms = getSearchTerms($data);
     $searchId = setSearchId($terms);
 

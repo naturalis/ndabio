@@ -1,15 +1,16 @@
 <?php
 function printPreviousNext () {
-    // Return no navigation if request is empty or history is not yet set
-    // (eg when user comes from bookmark)
-
-    if (!isset($_GET['nba_request']) || !getSearchId($_GET['nba_request'])) {
+    // Skip navigation if request is empty
+    if (!isset($_GET['nba_request'])) {
+        return false;
+    }
+    $searchId = getSearchId($_GET['nba_request']);
+    // Skip navigation if searchId is missing or SESSION does not exist
+    if (!$searchId || !isset($_SESSION['ndaNavigation'][$searchId])) {
         return false;
     }
 
-    $searchId = getSearchId($_GET['nba_request']);
     $request = stripNbaBaseUrl($_GET['nba_request']);
-
     $set = $_SESSION['ndaNavigation'][$searchId]['currentSet'];
     $offset = $_SESSION['ndaNavigation'][$searchId]['offset'];
     $key = array_search(stripNbaBaseUrl($_GET['nba_request']),
