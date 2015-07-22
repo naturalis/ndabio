@@ -12609,6 +12609,14 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['53fdaf61b67393c50f7062facc3260b6'] = array(
+    'source' => 'Cite as',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DWAG.1753571',
+    'translation' => 'Citeer als',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['541bfdf122c812d6d1964441a079d8bc'] = array(
     'source' => 'For more information, refer to the specific topics listed in the next section or to the <a href="@handbook">online Drupal handbooks</a>. You may also post at the <a href="@forum">Drupal forum</a> or view the wide range of <a href="@support">other support options</a> available.',
     'context' => '',
@@ -24322,7 +24330,7 @@ Uw account op [site:name] is geannuleerd.
     'source' => 'Please, select an area or draw\\none on the map.\\n',
     'context' => '',
     'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Selecteer of teken een gebied op de kaart.\\n',
+    'translation' => 'Selecteer AUB een gebied of teken\\ner een op de kaart.\\n',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24867,6 +24875,14 @@ Deze link verloopt binnen één dag. Er gebeurt niets als deze link niet binnen 
     'context' => '',
     'location' => '',
     'translation' => 'Er zijn geen reacties die verwijderd kunnen worden, of de geselecteerde reacties zijn al door een andere beheerder verwijderd.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['a43cb3f479c4f5f6a3b53ad1ec5fcfa1'] = array(
+    'source' => 'Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will to try to assure the permanent character of this PURL.',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DL%2B%2B0001582',
+    'translation' => 'Als u dit object wilt citeren dan verzoeken wij u gebruik te maken van deze PURL (Persistent Uniform Resource Locator). Naturalis stelt alles in het werk om het permanente karakter van deze PURL te garanderen.',
     'plid' => 0,
     'plural' => 0,
   );
