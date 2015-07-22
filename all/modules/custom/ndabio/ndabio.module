@@ -36,7 +36,7 @@ function ndabio_boot() {
   }
   elseif (isset($_SESSION["currentlanguage"])) {
     $langcode = $_SESSION["currentlanguage"];
-    variable_set('language_default', $langs[$langcode]);
+    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
   } 
 }
 
