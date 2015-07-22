@@ -214,9 +214,12 @@ function ndabioresults_pass ($args = "") {
  * Logs searches to Drupal
  *
  * Agregates data from search form (as SESSION data) and stores search and
- * user data in Drupal database (search_log content type)
+ * user data in json file for use in Kibana. Optiionally the same datab can
+ * also be saved to the Drupal database (search_log content type).
+ *
+ *  * @param boolean $saveToDb When provided, data is also saved to database
  */
-function logSearch () {
+function logSearch ($saveToDb = false) {
     foreach ($_SESSION['ndaSearch'] as $k => $v) {
         $skip = array(
             'op', 'form_build_id', 'form_token', 'form_id'
@@ -236,24 +239,26 @@ function logSearch () {
     $file = variable_get('ndabioresults_config_log', NBALOG); // "/tmp/bioportal.log.json";
     file_put_contents($file, json_encode($data) . "\r\n", FILE_APPEND);
 
-    $node = new stdClass();
-    $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .
-            ' | ' . $data['field_timestamp'];
-    $node->type = "search_log";
-    node_object_prepare($node);
+    if ($saveToDb) {
+        $node = new stdClass();
+        $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .
+                ' | ' . $data['field_timestamp'];
+        $node->type = "search_log";
+        node_object_prepare($node);
 
-    $node->language = LANGUAGE_NONE; // Or 'en' if locale is enabled
-    $node->uid = $user->uid;
-    $node->status = 0; //(1 or 0): published or not
-    $node->promote = 0; //(1 or 0): promoted to front page
-    $node->comment = 0; // 0 = comments disabled
-    foreach ($data as $k => $v) {
-        if ($v != '') {
-            $node->{$k}[$node->language][0]['value'] = $v;
+        $node->language = LANGUAGE_NONE; // Or 'en' if locale is enabled
+        $node->uid = $user->uid;
+        $node->status = 0; //(1 or 0): published or not
+        $node->promote = 0; //(1 or 0): promoted to front page
+        $node->comment = 0; // 0 = comments disabled
+        foreach ($data as $k => $v) {
+            if ($v != '') {
+                $node->{$k}[$node->language][0]['value'] = $v;
+            }
         }
+        $node = node_submit($node); // Prepare node for saving
+        node_save($node);
     }
-    $node = node_submit($node); // Prepare node for saving
-    node_save($node);
 }
 
 /**
