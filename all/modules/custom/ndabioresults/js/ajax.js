@@ -56,7 +56,7 @@ function setMultimediaPreview (request, data) {
 
 function printMultimediaPreview (request, data) {
 
-	var output = '<div class=​"multimedia-wrapper">​';
+	var output = "<div style='overflow: hidden;'>​";
 	for (i = 0; i < data.searchResults.length; i++) {
 		var src = data.searchResults[i].result.serviceAccessPoints['MEDIUM_QUALITY'].accessUri;
 
@@ -97,10 +97,11 @@ function printMultimediaPreview (request, data) {
 		output += '<a class="polaroid" href="?nba_request=' + encodeURIComponent(url) + '&noMap">' +
 			'<div class="polaroid-image" style="background-image: url(' + src + ');" alt=""></div>';
 		output += '<div class="polaroid-caption"><div class="image-title">' +
-			caption + '</div><div class="image-hits">' + hits + '</div></div></a>';
+			caption + '</div><div class="image-hits">' + hits + "</div>\n</div>\n</a>\n";
 	};
+	output += "\n</div>\n";
 	if (parseInt(data.totalSize) > 5) {
-		output += '<a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
+		output += '<div><a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
 			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all') + ' ' + data.totalSize + ' ' +
 			Drupal.t('multimedia') + '</a></div>';
 	}

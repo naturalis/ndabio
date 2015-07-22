@@ -56,8 +56,7 @@
 
         alert(
           Drupal.t(
-            "Please, select an area or draw\n" +
-            "one on the map.\n"
+            "Please, select an area or draw one on the map."
           )
         );
 
@@ -65,9 +64,9 @@
 
         alert(
           Drupal.t(
-            "Please, make sure that you complete \n" +
-            "at least one field and that it contains more\n" +
-            "then three characters.\n"
+            "Please, make sure that you complete " +
+            "at least one field and that it contains more " +
+            "then three characters."
           )
         );
 
