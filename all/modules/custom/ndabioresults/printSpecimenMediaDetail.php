@@ -9,7 +9,7 @@
 function printSpecimenMediaDetail ($data) {
 //p($data);
     drupal_add_js(
-        "jQuery(function() { jQuery('#purl').focus().select(); });",
+        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         array('type' => 'inline', 'scope' => 'footer')
     );
 
