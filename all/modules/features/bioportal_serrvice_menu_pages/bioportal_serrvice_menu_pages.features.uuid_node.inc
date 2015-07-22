@@ -154,17 +154,17 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 <p>Het BioPortal biedt vier mogelijkheden om deze gegevens te doorzoeken:</p>
 
 <ul>
-	<li><a href="#simple-search"><em>simple search</em> </a></li>
-	<li><a href="#advanced-search"><em>advanced search</em> </a></li>
-	<li><a href="#geo-search"><em>geographic search</em> </a></li>
-	<li><a href="#explore"><em>Bijzondere collecties</em> </a></li>
+	<li><a href="#simple-search"><em>zoeken</em> </a></li>
+	<li><a href="#advanced-search"><em>geavanceerd zoeken</em> </a></li>
+	<li><a href="#geo-search"><em>geografisch zoeken</em> </a></li>
+	<li><a href="#explore"><em>bijzondere collecties</em> </a></li>
 </ul>
 
-<p>&nbsp;</p>
+<p>&nbsp;<a name="simple-search"></a></p>
 
 <h2>Zoeken</h2>
 
-<p><a name="simple-search"></a></p>
+<p>&nbsp;</p>
 
 <h3>Zoeken</h3>
 
@@ -174,21 +174,23 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Wanneer je een zoekopdracht uitvoert die uit meer dan één zoekterm bestaat, worden&nbsp;resultaten getoond waarin één, sommige of alle termen voorkomen.&nbsp;De resultaten worden zo weergegeven dat de best matchende bovenaan komt te staan.</p>
 
+<p>Bij een simple search wordt een zoekterm geanalyseerd en dat leidt in het geval van meerdere termen tot een opdeling in brokjes. Dit zijn allemaal potentiele zoektermen die als een OR worden behandeld en dit kan zorgen voor een groot aantal zoekresultaten.</p>
+
 <p><a name="advanced-search"></a><a name="multimedia"></a><a name="taxa"></a><a name="collection-specimens-by-name"></a><a name="collection-specimens"></a>Je kan geen gebruik maken van haakjes of zogenoemde <em> wildcards. </em>Om zoektermen te combineren kan je gebruik maken van de <a href="#advanced-search"> Advanced search </a></p>
 
 <p>&nbsp;</p>
 
 <h3>Geavanceerd zoeken</h3>
 
-<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kun&nbsp;je de resultaten beperken tot de <a href="#category"> categorieën</a>&nbsp;(<a href="#multimedia">multimedia</a>, <a href="#specimen"> exemplaren</a>&nbsp;of <a href="#taxa"> taxa</a>) en specifieke velden.</p>
+<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kun&nbsp;je de resultaten beperken tot de categorieën&nbsp;(multimedia, exemplaren&nbsp;of taxa) en specifieke velden.</p>
 
 <p>Wanneer je voor meer categorieën zoektermen opgeeft, worden voor elke categorie resultaten getoond.</p>
 
 <p>Als je binnen een categorie meerdere zoekvelden invult, worden aanvankelijk slechts resultaten getoond die beide termen bevatten. Je <em>beperkt</em> hier het aantal resultaten mee.</p>
 
-<p>Wanneer je “Or” kiest voor “combine search terms” krijg je daarbij resultaten te zien die één van beide termen bevatten en breidt je de resultaten dus uit.</p>
+<p><a name="geo-search"></a>Wanneer je “Or” kiest voor “combine search terms” krijg je daarbij resultaten te zien die één van beide termen bevatten en breidt je de resultaten dus uit.</p>
 
-<p><a name="geo-search"></a></p>
+<p>&nbsp;</p>
 
 <h3>Geografisch zoeken</h3>
 
@@ -196,9 +198,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Alleen resultaten waarvan de geografische coördinaten van de vindplaats opgenomen zijn in de bronsystemen, worden hier getoond.&nbsp;De resultaten zijn daarom altijd beperkt tot specimens en multimedia.</p>
 
-<p>We maken gebruik van verschillende <a href="/nl/colofon#sources" target="_blank">bronnen</a>. Daardoor kan het voorkomen dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden in de gedetaileerdheid van de begrenzing.</p>
+<p><a name="explore"></a>We maken gebruik van verschillende <a href="/nl/colofon#sources?language=nl" target="_blank">bronnen</a>. Daardoor kan het voorkomen dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden in de gedetaileerdheid van de begrenzing.</p>
 
-<p><a name="explore"></a></p>
+<p>&nbsp;</p>
 
 <h3>Bijzondere collecties</h3>
 
@@ -396,6 +398,10 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 	<li>Staatsbosbeheer: ESRI-files from nature reserves (Jac Hakkens)</li>
 	<li>Vereniging Natuurmonumenten: ESRI-files from nature reserves(Rombout de Wijs)</li>
 </ul>
+
+<h2>Data beschikbaarheid</h2>
+
+<p>Naturalis onderschrijft de <a href="http://www.bouchoutdeclaration.org/">Bouchout Declaration</a>. De Bouchout Declaration streeft ernaar om digitale informatie over biodiversiteit publiek beschikbaar te maken. Hierdoor stimuleren en demonstreren we onze commitment aan vrij onderzoek.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -426,7 +432,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Terms of use</h2>
 
-<p>Unless otherwise stated, for the content on this site the Creative Commons Zero declaration (CC0) applies. This means that any form of reuse of the content of this site is permitted, except when for a piece of content (such as a photo or a document) copyright is indicated.</p>
+<p>Unless otherwise stated, for the content on this site the <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero</a> declaration (CC0) applies. This means that any form of reuse of the content of this site is permitted, except when for a piece of content (such as a photo or a document) copyright is indicated.</p>
+
+<p>Naturalis signed the <a href="http://www.bouchoutdeclaration.org/" target="_blank">Bouchout declaration</a> which aims to promote openness of biodiversity data and encourage digital access to those data.</p>
 
 <h2>Website design and construction</h2>
 
@@ -513,7 +521,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Gebruiksvoorwaarden</h2>
 
-<p>Tenzij anders aangegeven is op de gegevens op deze site de&nbsp;<a href="http://creativecommons.nl/uitleg/" style="text-decoration: none;"><u>Creative Commons</u></a>&nbsp;Zero verklaring van toepassing. Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
+<p>Tenzij anders aangegeven is op de gegevens op deze site de&nbsp;<a href="http://creativecommons.nl/uitleg/">Creative Commons</a>&nbsp;Zero (CC0) verklaring van toepassing. Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
+
+<p>Naturalis heeft de <a href="http://www.bouchoutdeclaration.org/" target="_blank">Bouchout Declaratie</a> ondertekend. Hiermee stimuleren en demonstreren we onze commitment aan vrij onderzoek. We streven er dan ook naar om digitale informatie over biodiversiteit publiek beschikbaar te maken via kanalen zoals dit portaal.</p>
 
 <h2>Ontwerp en technische realisatie</h2>
 
@@ -639,7 +649,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Netherlands Biodiversity API is een biodiversiteitsdataservice</h2>
 
-<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens door het&nbsp;<a href="http://www.naturalis.nl" style="text-decoration: none;" target="_blank"><u>Naturalis Biodiversity Center</u></a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, namelijk specimen-, multimedia- en taxongegevens.</p>
+<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens door het&nbsp;<a href="http://www.naturalis.nl" target="_blank"><u>Naturalis Biodiversity Center</u></a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, namelijk specimen-, multimedia- en taxongegevens.</p>
 
 <h2>Netherlands Biodiversity API biedt mogelijkheden</h2>
 
@@ -651,7 +661,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h2>Netherlands Biodiversity API is vrij toegankelijk</h2>
 
-<p>Naturalis zet al haar data in het open domein onder<a href="http://creativecommons.nl/uitleg/">&nbsp;</a><a href="http://creativecommons.nl/uitleg/" target="_blank"><u>CC0-licentie</u></a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft dus geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.</p>
+<p>Naturalis zet al haar data in het open domein onder&nbsp;<a href="http://creativecommons.nl/uitleg/" target="_blank"><u>CC0-licentie</u></a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft dus geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.</p>
 
 <h2>Netherlands Biodiversity API en compatibiliteit</h2>
 
@@ -661,7 +671,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Informatie of vragen over de Netherlands Biodiversity API</p>
 
-<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Github </a>vindt u meer functionele en technische informatie over de API.</p>
+<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank"><u>Github</u></a> vindt u meer functionele en technische informatie over de API.</p>
 
 <p>Voor vragen, verzoeken en opmerkingen kunt u mailen met: <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
 
