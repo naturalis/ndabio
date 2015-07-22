@@ -1454,6 +1454,14 @@ function searchtax_uuid_features_default_terms() {
         'alias' => 'search/ssourcesystem',
         'language' => 'und',
       ),
+      1 => array(
+        'alias' => 'search/ssourcesystemname',
+        'language' => 'und',
+      ),
+      2 => array(
+        'alias' => 'search/ssourcesystem',
+        'language' => 'und',
+      ),
     ),
     'parent' => array(
       0 => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',

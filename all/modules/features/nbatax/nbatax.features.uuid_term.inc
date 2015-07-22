@@ -755,6 +755,23 @@ function nbatax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
+    'name' => 'GatheringEvent',
+    'description' => 'GatheringEvent',
+    'format' => 'plain_text',
+    'weight' => 0,
+    'uuid' => 'bb018b96-ff8e-49d0-8101-e7cc1714b33b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'nba2text',
+    'metatags' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'nba2text/gatheringevent',
+        'language' => 'und',
+      ),
+    ),
+  );
+  $terms[] = array(
     'name' => 'recordBasis',
     'description' => 'basis of record',
     'format' => 'plain_text',

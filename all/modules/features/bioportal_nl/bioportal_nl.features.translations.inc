@@ -4091,6 +4091,14 @@ function bioportal_nl_translations_defaults() {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['1cfdf0e8d0c87a228c1f40d9bee7888b'] = array(
+    'source' => 'Less',
+    'context' => '',
+    'location' => 'sites/all/themes/custom/bioportal_theme/js/bioportal_theme.js',
+    'translation' => 'Minder',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['1d0ae385ad9573d57c112c3f2fd40a62'] = array(
     'source' => 'The home page URL left by the comment author.',
     'context' => '',
@@ -7980,6 +7988,14 @@ else {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['36aa183c16a1eccbbb4cbaf95d54afe8'] = array(
+    'source' => 'Please, make sure that you complete at least one field and that it contains more then three characters.',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Voer AUB minimaal een zoekveld in met een term van tenminste drie karakters.',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['36b5c019128aae727809738c5cfef2c5'] = array(
     'source' => 'Bouvet Island',
     'context' => '',
@@ -9315,6 +9331,14 @@ else {
     'context' => '',
     'location' => '/nba/result',
     'translation' => 'Populaire naam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['3fbb7c3475892a154f5122746ebdd7a4'] = array(
+    'source' => 'GatheringEvent',
+    'context' => '',
+    'location' => '/nba/result?nba_request=specimen%2Fget-specimen%3FunitID%3DRMNH.AVES.110043&language=nl',
+    'translation' => 'Verzamelgebeurtenis',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24214,14 +24238,6 @@ Uw account op [site:name] is geannuleerd.
     'plid' => 0,
     'plural' => 0,
   );
-  $translations['nl:default']['9f36519a7eb32a78b935661be950441f'] = array(
-    'source' => 'Please, make sure that you complete \\nat least one field and that it contains more\\nthen three characters.\\n',
-    'context' => '',
-    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Vul in ieder geval een zoekveld in\\nmet minimaal drie karakters.\\n',
-    'plid' => 0,
-    'plural' => 0,
-  );
   $translations['nl:default']['9f3b3f02f112f982b538f27ce08b6edb'] = array(
     'source' => 'Using the Color module allows you to easily change the color of links, backgrounds, text, and other theme elements. To change the color settings for a compatible theme, select the <em>Settings</em> link for your theme on the <a href=\'@configure\'>Themes administration page</a>. If you don\'t see a color picker on that page, then your theme is not compatible with the color module. If you are sure that the theme does indeed support the color module, but the color picker does not appear, then <a href=\'@troubleshoot\'>follow these troubleshooting procedures</a>.',
     'context' => '',
@@ -24323,14 +24339,6 @@ Uw account op [site:name] is geannuleerd.
     'context' => '',
     'location' => '',
     'translation' => 'Voegt de mogelijkheid toe om andere talen te gebruiken en maakt het mogelijk om de gebruikersinterface naar andere talen dan het Engels te vertalen.',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translations['nl:default']['a053d3002acda4b1b3099166b5b20963'] = array(
-    'source' => 'Please, select an area or draw\\none on the map.\\n',
-    'context' => '',
-    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Selecteer AUB een gebied of teken\\ner een op de kaart.\\n',
     'plid' => 0,
     'plural' => 0,
   );
@@ -24875,14 +24883,6 @@ Deze link verloopt binnen één dag. Er gebeurt niets als deze link niet binnen 
     'context' => '',
     'location' => '',
     'translation' => 'Er zijn geen reacties die verwijderd kunnen worden, of de geselecteerde reacties zijn al door een andere beheerder verwijderd.',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translations['nl:default']['a43cb3f479c4f5f6a3b53ad1ec5fcfa1'] = array(
-    'source' => 'Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will to try to assure the permanent character of this PURL.',
-    'context' => '',
-    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DL%2B%2B0001582',
-    'translation' => 'Als u dit object wilt citeren dan verzoeken wij u gebruik te maken van deze PURL (Persistent Uniform Resource Locator). Naturalis stelt alles in het werk om het permanente karakter van deze PURL te garanderen.',
     'plid' => 0,
     'plural' => 0,
   );
@@ -35676,6 +35676,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => 'De naam die gebruikt wordt om een anonieme (niet ingelogde) gebruiker aan te duiden.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['ead96fc4e793fc34ac37d75ba5e1c381'] = array(
+    'source' => 'Please, select an area or draw one on the map.',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Selecteer AUB een gebied of teken er een op de kaart.',
     'plid' => 0,
     'plural' => 0,
   );
