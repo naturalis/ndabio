@@ -38432,6 +38432,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['fe7f1ca03296af8122b9cfc2ec3bdc76'] = array(
+    'source' => 'Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.',
+    'context' => '',
+    'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DRMNH.AVES.110011',
+    'translation' => 'Als u dit object wilt citeren dan verzoeken wij u gebruik te maken van deze PURL (Persistent Uniform Resource Locator). Naturalis stelt alles in het werk om het permanente karakter van deze PURL te garanderen.',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['fe875d38abe3058a2e5a306cfee7b23d'] = array(
     'source' => 'Scale and crop',
     'context' => '',
