@@ -410,7 +410,7 @@ function ndabio_advanced_taxonomysearch() {
         );
 
     }
-    $searchtype = array(0 => t('And'), 1 => t('Or'));
+    $searchtype = array(1 => t('Or'), 0 => t('And'));
 
     drupal_add_js("var expandAdvanced = $expandedFlag;", 'inline');
     drupal_add_js(
