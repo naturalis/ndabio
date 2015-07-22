@@ -55,19 +55,13 @@
       if ( $("body").hasClass("page-geographic-search") ){
 
         alert(
-          Drupal.t(
-            "Please, select an area or draw one on the map."
-          )
+          Drupal.t("Please, select an area or draw one on the map.")
         );
 
       } else {
 
         alert(
-          Drupal.t(
-            "Please, make sure that you complete " +
-            "at least one field and that it contains more " +
-            "then three characters."
-          )
+          Drupal.t("Please, make sure that you complete at least one field and that it contains more then three characters.")
         );
 
       }
