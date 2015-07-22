@@ -85,7 +85,8 @@ function ndabioresults_block_view($delta = '') {
          'results taxa',
          'results multimedia',
          'results specimens',
-         'result from advanced form'
+         'result from advanced form',
+         'results specimens by name'
     ));
 
   switch ($delta) {
