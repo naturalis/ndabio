@@ -2405,8 +2405,8 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'Collection specimens by name',
-    'description' => 'Collection specimens by name',
+    'name' => 'Species with specimen',
+    'description' => 'Species with specimen',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
