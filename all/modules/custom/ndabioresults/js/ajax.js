@@ -56,7 +56,7 @@ function setMultimediaPreview (request, data) {
 
 function printMultimediaPreview (request, data) {
 
-	var output = "<div style='overflow: hidden;'>​";
+	var output = "<div style='overflow: hidden;'>";
 	for (i = 0; i < data.searchResults.length; i++) {
 		var src = data.searchResults[i].result.serviceAccessPoints['MEDIUM_QUALITY'].accessUri;
 

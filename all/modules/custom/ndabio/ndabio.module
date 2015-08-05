@@ -368,7 +368,7 @@ function setStoredMapCenter () {
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch() {
-    global $base_root, $base_path;
+    global $base_root, $base_path, $language;
 
     // Set default values for searchagain
     $expandedFlag = $storedGid = -1;
@@ -465,18 +465,22 @@ function ndabio_advanced_taxonomysearch() {
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
+	  $defaultvalue = 1;
+	  if (isset($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
+            $defaultvalue = intval($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']);
+          }
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => t($childlabel),
             $fieldsetPrefix . '_andOr' => array(
               '#type' => 'radios',
               '#title' => t('Combine search terms'),
-              '#default_value' => (!empty($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) ?
-                 $_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr'] : 1,
+              '#default_value' => $defaultvalue, 
               '#options' => $searchtype,
               '#inline' => TRUE
             ),
           );
+
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
             $subchildsysname = $subchild->name;
@@ -632,13 +636,13 @@ function ndabio_advanced_taxonomysearch() {
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
       "  <ul>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed'>" . t('Countries') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed'>" . t('Municipality') . " (NL)</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed'>" . t('Nature') . " (NL)</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
       "    </li>" .
       "  </ul>" .
       "</div>";
