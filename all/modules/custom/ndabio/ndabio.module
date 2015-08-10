@@ -27,6 +27,7 @@ define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
  *
  **/
 function ndabio_boot() {
+  global $language;
   //Execute on every page, check langauge env.
   $langs = language_list(); // Note: No argument
   if (isset($_GET["language"])) {
@@ -37,7 +38,10 @@ function ndabio_boot() {
   elseif (isset($_SESSION["currentlanguage"])) {
     $langcode = $_SESSION["currentlanguage"];
     if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
-  } 
+  }
+  else {
+    $language = $langs[$langcode];
+  }
 }
 
 

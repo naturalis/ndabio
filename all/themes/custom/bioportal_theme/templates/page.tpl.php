@@ -67,7 +67,7 @@
         <?php endif; ?>
 
         <?php if ($site_slogan): ?>
-          <h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
+          <h2 title="<?php print t($site_slogan); ?>" class="site-slogan"><?php print t($site_slogan); ?></h2>
         <?php endif; ?>
 
         <div class="intro-more hidden">

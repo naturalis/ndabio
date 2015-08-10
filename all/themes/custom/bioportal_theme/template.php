@@ -4,7 +4,22 @@
  * Implements template_preprocess_html().
  *
  */
-
+  global $language;
+  //Execute on every page, check langauge env.
+  $langs = language_list(); // Note: No argument
+  if (isset($_GET["language"])) {
+    $langcode = $_GET["language"];
+    variable_set('language_default', $langs[$langcode]);
+    $_SESSION["currentlanguage"] = $langcode;
+  }
+  elseif (isset($_SESSION["currentlanguage"])) {
+    $langcode = $_SESSION["currentlanguage"];
+    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
+    $language = $langs[$_SESSION["currentlanguage"]];
+  }
+  else {
+    $language = $langs['nl'];
+  }
 
 /**
  * Implements template_preprocess_page
