@@ -40,7 +40,7 @@ function ndabio_boot() {
     if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
   }
   else {
-    $language = $langs[$langcode];
+    $language = $langs['nl'];
   }
 }
 
@@ -472,7 +472,7 @@ function ndabio_advanced_taxonomysearch() {
 	  $defaultvalue = 1;
 	  if (isset($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
             $defaultvalue = intval($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']);
-          }
+	  }
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
             '#title' => t($childlabel),
