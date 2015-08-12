@@ -448,7 +448,7 @@ function ndabio_advanced_taxonomysearch() {
         '#value' => 'Reset',
         '#nowrapper' => TRUE,
         '#attributes' => array(
-          'onclick' => 'this.form.reset(); return false;',
+          'onclick' => "this.form.reset(); document.getElementById('edit-x-andor-0').checked=false; document.getElementById('edit-s-andor-0').checked=false; document.getElementById('edit-t-andor-0').checked=false; document.getElementById('edit-m-andor-0').checked=false; document.getElementById('edit-s-collectiontype').value=''; document.getElementById('edit-m-collectiontype').value=''; document.getElementById('edit-m-sourcesystem').value=''; document.getElementById('edit-s-sourcesystem').value=''; document.getElementById('edit-t-sourcesystem').value=''; return false;",
           'class' => array("reset-button"),
         )
       );
