@@ -42,6 +42,7 @@ function printTaxonMediaDetail ($data) {
     	'creator',
 	    'license',
         'sourceInstitutionID',
+        'collectionType',
 	    'description',
         'copyrightText',
     	'locality',
