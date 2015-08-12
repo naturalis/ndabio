@@ -515,7 +515,12 @@ function ndabio_advanced_taxonomysearch() {
                     unset($optionarray);
                     $optionarray[""] = ""; //First entry is an empty string
                     foreach (explode("|", $lvalues) as $optionitem) {
-                      $optionarray[$optionitem] = t($optionitem);
+		      $optioncode = $optionitem;
+                      if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
+                      if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
+                      if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
+                      if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
+                      $optionarray[$optioncode] = t($optionitem);
                     }
                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'      => 'select',
@@ -545,7 +550,12 @@ function ndabio_advanced_taxonomysearch() {
                 unset($optionarray);
                 $optionarray[""] = ""; //First entry is an empty string
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
-                  $optionarray[$optionitem] = t($optionitem);
+		  $optioncode = $optionitem;
+                  if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
+                  if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
+                  if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
+                  if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
+                  $optionarray[$optioncode] = t($optionitem);
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'       => 'select',
@@ -580,7 +590,12 @@ function ndabio_advanced_taxonomysearch() {
             unset($optionarray);
             $optionarray[""] = ""; //First entry is an empty string
             foreach (explode("|", $childvalues) as $optionitem ) {
-              $optionarray[$optionitem] = $optionitem;
+		  $optioncode = $optionitem;
+                  if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
+                  if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
+                  if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
+                  if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
+                  $optionarray[$optioncode] = t($optionitem);
             }
             $form[$sysname][$childsysname] = array(
               '#type'       => 'select',
