@@ -516,10 +516,6 @@ function ndabio_advanced_taxonomysearch() {
                     $optionarray[""] = ""; //First entry is an empty string
                     foreach (explode("|", $lvalues) as $optionitem) {
 		      $optioncode = $optionitem;
-                      if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
-                      if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
-                      if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
-                      if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
                       $optionarray[$optioncode] = t($optionitem);
                     }
                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
@@ -551,10 +547,6 @@ function ndabio_advanced_taxonomysearch() {
                 $optionarray[""] = ""; //First entry is an empty string
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
 		  $optioncode = $optionitem;
-                  if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
-                  if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
-                  if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
-                  if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
                   $optionarray[$optioncode] = t($optionitem);
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
@@ -591,10 +583,6 @@ function ndabio_advanced_taxonomysearch() {
             $optionarray[""] = ""; //First entry is an empty string
             foreach (explode("|", $childvalues) as $optionitem ) {
 		  $optioncode = $optionitem;
-                  if ($optioncode == "Naturalis - Zoology and Geology catalogues") $optioncode = "CRS"; 
-                  if ($optioncode == "Naturalis - Botany catalogues") $optioncode = "BRAHMS"; 
-                  if ($optioncode == "Naturalis - Nederlands Soortenregister") $optioncode = "NSR"; 
-                  if ($optioncode == "Species 2000 - Catalogue Of Life") $optioncode = "COL"; 
                   $optionarray[$optioncode] = t($optionitem);
             }
             $form[$sysname][$childsysname] = array(
