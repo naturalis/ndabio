@@ -1,6 +1,6 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 0);
+define("DEBUG_CHANNELS", 1);
 
 
 /**
@@ -359,6 +359,8 @@ function ndaAdvancedSearch () {
     $services[taxonService()] = setSectionParameters($_SESSION['ndaSearch'], 't_');
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
+
+p($services);
 
     // Special case for specimen/search: unset this service if only geoShape is present;
     // results of specimen/name-search and specimen/search will then be identical
@@ -2018,7 +2020,8 @@ function getHits ($row, $stripTags = true) {
     // Exclude matches in these fields
     $noHits = array(
         'fullScientificName',
-        'theme'
+        'theme',
+        'raw'
     );
 	foreach ($row->matchInfo as $info) {
 		// Extract field from path.to.field; field is the last part
