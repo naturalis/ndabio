@@ -360,7 +360,7 @@ function ndaAdvancedSearch () {
     $services[specimenService()] = setSectionParameters($_SESSION['ndaSearch'], 's_');
     $services[specimenNamesService()] = setSectionParameters($_SESSION['ndaSearch'], 'n_');
 
-p($services);
+p($_SESSION['ndaSearch']);
 
     // Special case for specimen/search: unset this service if only geoShape is present;
     // results of specimen/name-search and specimen/search will then be identical
