@@ -48,14 +48,14 @@
 
 
 
-    // Done validating, let's face the consquences:
+    // Done validating, let's face the consequences:
 
     if (int_valid < 1){
 
       if ( $("body").hasClass("page-geographic-search") ){
 
         alert(
-          Drupal.t("Please, select an area or draw one on the map.")
+          Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
         );
 
       } else {
