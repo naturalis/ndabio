@@ -656,7 +656,7 @@ function ndabio_advanced_taxonomysearch() {
 
     $list =
       "<div id='search-areas-list' class='small-12 medium-3 columns'>" .
-      "  <input id='search-areas-filter' placeholder='« " . t("filter") . " »' />" .
+      "  <input id='search-areas-filter' placeholder='« " . t("type to find") . " »' />" .
       "  <div id='search-areas-target'></div>" .
       "</div>";
 
