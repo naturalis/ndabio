@@ -45,7 +45,13 @@
 <!-- Sorry no IE7 support! -->
 <!-- @see http://foundation.zurb.com/docs/index.html#basicHTMLMarkup -->
 
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if lt IE 9]><html class="no-js lt-ie9" lang="en">
+<script>
+<!--
+    alert("You need a more recent version of Internet Explorer to properly view this site.");
+//-->
+</script>
+<![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="<?php global $language; echo $language->language; ?>"><!--<![endif]-->
 <head>
   <?php print $head; ?>
