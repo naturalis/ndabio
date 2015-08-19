@@ -479,7 +479,7 @@ function ndabio_advanced_taxonomysearch() {
             $fieldsetPrefix . '_andOr' => array(
               '#type' => 'radios',
               '#title' => t('Combine search terms'),
-              '#default_value' => $defaultvalue, 
+              '#default_value' => $defaultvalue,
               '#options' => $searchtype,
               '#inline' => TRUE
             ),
@@ -516,7 +516,7 @@ function ndabio_advanced_taxonomysearch() {
                     $optionarray[""] = ""; //First entry is an empty string
                     foreach (explode("|", $lvalues) as $optionitem) {
 		      $optioncode = $optionitem;
-                      $optionarray[$optioncode] = t($optionitem);
+                      $optionarray[$optioncode] = $optionitem;
                     }
                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'      => 'select',
