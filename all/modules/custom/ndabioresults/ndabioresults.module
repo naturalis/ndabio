@@ -171,7 +171,7 @@ function ndabioresults_pass ($args = "") {
     // or from paginated result set. If the latter, use history to navigate; else
     // proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
-        drupal_set_title(t("Search results"));
+       drupal_set_title(t("Search results"));
         if (isset($_SESSION['ndaHistory']) && !empty($_SESSION['ndaHistory']) &&
             end($_SESSION['ndaHistory']) != 'form') {
             return ndaDirectRequest(end($_SESSION['ndaHistory']));
@@ -2970,4 +2970,8 @@ function stripNbaBaseUrl ($url) {
         $url = substr($url, 1);
     }
     return $url;
+}
+
+function setAnchor ($a) {
+    return str_replace('/', '_', $a);
 }

@@ -158,20 +158,23 @@ function ndabioresults_block_view($delta = '') {
       break;
 
     case 'ndabioresults_back':
+
+    $output = '<div id="navigation-block">';
+
     if ($_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
-            $block['content'] = "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
+            $output .= "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
         } else {
-           $block['content'] = "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
+           $output .= "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
         }
     } else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
-        $block['content'] = "<a href='?back'>$icon" . t('Back to search results') . "</a>";
+        $output .= "<a href='?back'>$icon" . t('Back to search results') . "</a>";
         drupal_set_title(t("Search results"));
     } else {
-        $block['content'] = '&nbsp;';
+        $output .= '&nbsp;';
     }
 
-
+      $block['content'] = $output . '</div>';
       break;
 
 
