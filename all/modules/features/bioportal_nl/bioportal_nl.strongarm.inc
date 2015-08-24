@@ -32,7 +32,7 @@ function bioportal_nl_strongarm() {
     'domain' => '',
     'prefix' => 'nl',
     'weight' => '0',
-    'javascript' => 'IjuPFq9-quf031fp42MvM2zn4luJl-WC6cE0siRb0Bw',
+    'javascript' => 'WsI3f7k-wHNsqY94yPrXRo-9iv_1FESkl5MRNxoU-qE',
   );
   $export['language_default'] = $strongarm;
 

@@ -392,11 +392,18 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'm_sourceSystem',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(
       'und' => array(
         0 => array(
-          'value' => 'Brahms|Naturalis Collectie Registratie Systeem|Nederlands Soortenregister',
+          'value' => 'Naturalis - Zoology and Geology catalogues|Naturalis - Botany catalogues|Naturalis - Nederlands Soortenregister',
           'format' => NULL,
         ),
       ),
@@ -667,8 +674,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 's_collectionType',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Amphibia and Reptilia|Botany|Bryozoa|Cainozoic Mollusca|Chelicerata and Myriapoda|Cnidaria|Collembola|Crustacea|Echinodermata|Hymenoptera|Lepidoptera|Mammalia|Micropaleontology|Mineralogy|Paleontology Invertebrates|Paleontology|Petrology|Porifera|Vermes',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'metatags' => array(),
     'url_alias' => array(
       0 => array(
@@ -1140,8 +1161,8 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_genusOrMonomial',
-    'description' => 'Genus or monomial',
-    'format' => NULL,
+    'description' => 'Genus',
+    'format' => 'markdown',
     'weight' => 4,
     'uuid' => '618d5d30-d174-43d1-9345-d57654a4b03c',
     'language' => 'und',
@@ -1297,7 +1318,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Collection specimens',
-    'description' => 'Collection specimens',
+    'description' => 'Collection specimens by other terms',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
@@ -1439,11 +1460,18 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 's_sourceSystem',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'field_ndavalues' => array(
       'und' => array(
         0 => array(
-          'value' => 'Brahms|Naturalis Collectie Registratie Systeem',
+          'value' => 'Naturalis - Zoology and Geology catalogues|Naturalis - Botany catalogues',
           'format' => NULL,
         ),
       ),
@@ -1484,8 +1512,22 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
+    'field_ndasystem' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'm_collectionType',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'field_ndavalues' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Arts|Aves|Botany|Cainozoic Mollusca|Chelicerata and Myriapoda|Hymenoptera|Lepidoptera|Micropaleontology|Nederlandse soorten en exoten|Paleobotany|Paleontology Invertebrates|Paleontology|Vermes',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'metatags' => array(),
     'url_alias' => array(
       0 => array(
@@ -1708,7 +1750,7 @@ function searchtax_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_collectorsFieldNumber',
-    'description' => 'Field number collector',
+    'description' => 'Collectors field number',
     'format' => 'plain_text',
     'weight' => 8,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
@@ -2405,7 +2447,7 @@ function searchtax_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'Species with specimen',
+    'name' => 'Species x',
     'description' => 'Species with specimen',
     'format' => 'plain_text',
     'weight' => 0,
@@ -2475,7 +2517,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndavalues' => array(
       'und' => array(
         0 => array(
-          'value' => 'Catalogue Of Life|Nederlands Soortenregister',
+          'value' => 'Naturalis - Nederlands Soortenregister|Species 2000 - Catalogue Of Life',
           'format' => NULL,
         ),
       ),
