@@ -135,7 +135,7 @@ function setSpecimenParameters (array $sP, $type) {
 function ndabioresults_pass ($args = "") {
     global $base_path;
     $langs = language_list(); // Note: No argument
-    $langcode = $_GET["language"];
+    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
     if (!empty($langcode)) {
         variable_set('language_default', $langs[$langcode]);
     }

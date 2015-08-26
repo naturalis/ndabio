@@ -171,7 +171,7 @@ function printSpecimenDetail ($data) {
     $output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia"></p>';
 
     setTitle(t('Specimen') . ' | ' .
-        strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
+        strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output;
 }
