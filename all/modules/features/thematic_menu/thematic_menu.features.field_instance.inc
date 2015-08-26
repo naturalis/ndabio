@@ -54,7 +54,8 @@ function thematic_menu_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-naturalis_featured_content-field_nba_search_term'
+  // Exported field_instance:
+  // 'node-naturalis_featured_content-field_nba_search_term'
   $field_instances['node-naturalis_featured_content-field_nba_search_term'] = array(
     'bundle' => 'naturalis_featured_content',
     'default_value' => NULL,
