@@ -86,14 +86,10 @@ function printSpecimenDetail ($data) {
 	// Reorder input array
 	$data = array_merge(array_flip($fieldOrder), $data);
 
-//p($data);
-
 	$output  = _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
 
-	$purl = '<input id="purl" type="text" ' .
-	   'value="http://data.biodiversitydata.nl/naturalis/specimen/' .
-	   $data['unitID'] . '"></input>';
+	$purl = '<input id="purl" type="text" value="' . $data['unitGUID'] . '"></input>';
 	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
 	$output .= '<div class="property-list">
 	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
