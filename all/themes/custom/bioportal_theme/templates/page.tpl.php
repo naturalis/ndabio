@@ -270,7 +270,11 @@
 
           <?php if ($show_links): ?>
             <div class="medium-3 columns external-links">
-              <?php print $external_links_menu;  ?>
+              <ul class="links">
+                <li>
+                  <a target="_blank" href="http://www.naturalis.nl">Naturalis.nl</a>
+                </li>
+              </ul>
             </div>
           <?php endif; ?>
 
@@ -286,9 +290,11 @@
       <div>
         <div class='row' id="bottom-bar-bottom">
           <?php if ($show_crumble): ?>
-            <span class="copyright">
-              &copy; Naturalis 2014
-            </span>
+            <ul>
+              <li>
+                Copyright <?php echo date('Y'); ?> Naturalis
+              </li>
+            </ul>
           <?php endif; ?>
 
           <?php if ($show_service_menu): ?>

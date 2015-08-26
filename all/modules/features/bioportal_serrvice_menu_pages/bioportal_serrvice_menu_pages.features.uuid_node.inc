@@ -147,9 +147,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Op deze site kan je zoeken op multimedia, specimen (collectie-exemplaren), taxa (o.a. soortbeschrijvingen) en op dieren, planten, paddenstoelen, fossielen en stenen.</p>
+        'value' => '<p>Op deze site kan je zoeken op multimedia, specimen (collectie-exemplaren), taxa (o.a. soortbeschrijvingen) en op dieren, planten, paddenstoelen, fossielen, mineralen en stenen.</p>
 
-<p>De informatie komt uit de catalogi van Naturalis Biodiversity Center te Leiden, uit het <a href="http://www.nederlandsesoorten.nl/"> Nederlands Soorten register</a>&nbsp;en uit de <a href="http://www.catalogueoflife.org/"> Catalogue of Life </a></p>
+<p>De informatie komt uit de catalogi van Naturalis Biodiversity Center te Leiden, uit het <a href="http://www.nederlandsesoorten.nl/" target="_blank"> Nederlands Soorten register</a>&nbsp;en uit de <a href="http://www.catalogueoflife.org/" target="_blank"> Catalogue of Life </a></p>
 
 <p>Het BioPortal biedt vier mogelijkheden om deze gegevens te doorzoeken:</p>
 
@@ -168,7 +168,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Zoeken</h3>
 
-<p>De zoekmachine in het Bioportaal gebruikt jouw zoektermen om de verschillende&nbsp;bronnen te doorzoeken. Hij kijkt daarbij naar alle relevante&nbsp;velden, zoals de <em>populaire naam</em>,&nbsp;<em>wetenschappelijke naam</em>, vindplaats en registratienummer.</p>
+<p>De zoekmachine in het Bioportal gebruikt jouw zoektermen om de verschillende&nbsp;bronnen te doorzoeken. Hij kijkt daarbij naar alle relevante&nbsp;velden, zoals de <em>populaire naam</em>,&nbsp;<em>wetenschappelijke naam</em>, vindplaats en registratienummer.</p>
 
 <p><em>Voorbeeld</em> : je kan zowel op [ bruine rat ] als op [ rattus norvegicus ] zoeken.</p>
 
@@ -182,7 +182,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Geavanceerd zoeken</h3>
 
-<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kun&nbsp;je de resultaten beperken tot de categorieën&nbsp;(multimedia, exemplaren&nbsp;of taxa) en specifieke velden.</p>
+<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kun&nbsp;je de resultaten beperken tot de categorieën&nbsp;(multimedia, specimen&nbsp;of taxa) en specifieke velden.</p>
+
+<p>Binnen de rubrieken specimens en multimedia is het ook mogelijk te zoeken binnen een bepaalde collectie door de naam van een specifieke collectie te kiezen in het veld Collectienaam.</p>
 
 <p>Wanneer je voor meer categorieën zoektermen opgeeft, worden voor elke categorie resultaten getoond.</p>
 
@@ -204,7 +206,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Bijzondere collecties</h3>
 
-<p>Een eenvoudige en snelle manier van zoeken is “Bijzondere collecties”. Hiermee zie je alle exemplaren die behoren tot een van de bijzondere collecties van Naturalis. Je krijgt direct alle resultaten te zien.</p>
+<p>Een eenvoudige en snelle manier van zoeken is “Bijzondere collecties”. Hiermee zie je alle specimen die behoren tot een van de bijzondere collecties van Naturalis. Je krijgt direct alle resultaten te zien.</p>
 
 <h2>Zoekresultaten</h2>
 
@@ -212,7 +214,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Name resolution</h3>
 
-<p>Het BioPortaal zal trachten jouw zoekterm te <em>matchen</em> met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/"> Nederlands Soorten Register </a> en de <a href="http://www.catalogueoflife.org/"> Catalogue of Life </a></p>
+<p>Het BioPortal zal trachten jouw zoekterm te <em>matchen</em> met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soorten Register</a> en de <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a></p>
 
 <ol>
 	<li>
@@ -263,7 +265,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 	<p>Volledige <em>match</em> op de naam van het geslacht</p>
 	</li>
 	<li>
-	<p>Gedeeltelijke <em>match</em> op de wetenschappelijke nam</p>
+	<p>Gedeeltelijke <em>match</em> op de wetenschappelijke naam</p>
 	</li>
 	<li>
 	<p>Volledige <em>match</em> op enig ander veld</p>
@@ -288,15 +290,14 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 	<p>Taxa (soortbeschrijvingen)</p>
 	</li>
 	<li>
-	<p>Exemplaren met de zoekterm in de soortnaam.&nbsp;Resultaten waarvan in de taxonomische informatie van het exemplaar de zoekterm voorkomt</p>
+	<p>Specimen met de zoekterm in de soortnaam.&nbsp;Resultaten waarvan in de taxonomische informatie van het specimen de zoekterm voorkomt</p>
 	</li>
 	<li>
-	<p>Exemplaren met de zoekterm in een ander veld.&nbsp;Resultaten waarbij de zoekterm voorkomt in bijvoorbeeld collectie-informatie, geografische informatie of informatie met betrekking tot datum en tijd. “Rat” geeft bijvoorbeeld ook resultaten die “Rat Island” als vindplaats hebben</p>
+	<p>Specimens met de zoekterm in een ander veld.&nbsp;Resultaten waarbij de zoekterm voorkomt in bijvoorbeeld collectie-informatie, geografische informatie of informatie met betrekking tot datum en tijd. “Rat” geeft bijvoorbeeld ook resultaten die “Rat Island” als vindplaats hebben</p>
 	</li>
 </ol>
 
-<p>Exemplaren (of specimen) zijn verwijzingen naar en beschrijvingen van objecten die zijn opgeslagen in de collectie van Naturalis (en soms ook daarbuiten). Deze beschrijvingen kunnen veel verschillende velden bevatten.</p>
-',
+<p>Specimens zijn verwijzingen naar en beschrijvingen van objecten die zijn opgeslagen in de collectie van Naturalis (en soms ook daarbuiten). Deze beschrijvingen kunnen veel verschillende velden bevatten.</p>',
         'summary' => '',
         'format' => 'full_html',
         'safe_summary' => '',
@@ -326,7 +327,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>The Netherlands Biodiversity API is a biodiversity data service</h2>
 
-<p>The Netherlands Biodiversity API is a modern data service for scientists, application developers, national and regional government bodies and anyone else interested in biodiversity and biodiversity-related data. The provision of biodiversity-related data by the<a href="http://www.naturalis.nl/" style="text-decoration: none;" target="_blank">&nbsp;</a><a href="http://www.naturalis.nl/" style="font-size: 13.3333330154419px; line-height: 27.7333316802979px;">Naturalis Biodiversity Center</a>&nbsp;is the starting point for this service. By granting access to its very extensive catalogue, historical and recent data relating to a variety of species will be made available, including specimen, multimedia and taxon data.</p>
+<p>The Netherlands Biodiversity API is a modern data service for scientists, application developers, national and regional government bodies and anyone else interested in biodiversity and biodiversity-related data. The provision of biodiversity-related data by the <a href="http://www.naturalis.nl/"  target="_blank">Naturalis Biodiversity Center</a>&nbsp;is the starting point for this service. By granting access to its very extensive catalogue, historical and recent data relating to a variety of species will be made available, including specimen, multimedia and taxon data.</p>
 
 <h2>Netherlands Biodiversity API offers a raft of possibilities</h2>
 
@@ -338,7 +339,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h2>Netherlands Biodiversity API is freely accessible</h2>
 
-<p>Naturalis has opted to place all its data in the public domain under&nbsp;<a href="https://creativecommons.org/choose/zero/" style="text-decoration: none;" target="_blank"><u>CC zero licence</u></a>, making it free for all to use. In other words, users require no authorisation to gain access to the biodiversity data.</p>
+<p>Naturalis has opted to place all its data in the public domain under&nbsp;<a href="https://creativecommons.org/choose/zero/"  target="_blank">CC0 licence</a>, making it free for all to use. In other words, users require no authorisation to gain access to the biodiversity data.</p>
 
 <h2>Netherlands Biodiversity API and compatibility</h2>
 
@@ -348,7 +349,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Further information or questions about the Netherlands Biodiversity API</p>
 
-<p><a href="http://docs.biodiversitydata.nl" style="text-decoration: none;" target="_blank"><u>Github</u></a>&nbsp;offers more functional and technical information.</p>
+<p><a href="http://docs.biodiversitydata.nl"  target="_blank">Github</a>&nbsp;offers more functional and technical information.</p>
 
 <p>For questions, requests or comments, please mail to: <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
 
@@ -432,7 +433,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Terms of use</h2>
 
-<p>Unless otherwise stated, for the content on this site the <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero</a> declaration (CC0) applies. This means that any form of reuse of the content of this site is permitted, except when for a piece of content (such as a photo or a document) copyright is indicated.</p>
+<p>Unless otherwise stated, for the content on this site the <a href="https://creativecommons.org/publicdomain/zero/1.0/"  target="_blank">Creative Commons Zero</a> declaration (CC0) applies. This means that any form of reuse of the content of this site is permitted, except when for a piece of content (such as a photo or a document) copyright is indicated.</p>
 
 <p>Naturalis signed the <a href="http://www.bouchoutdeclaration.org/" target="_blank">Bouchout declaration</a> which aims to promote openness of biodiversity data and encourage digital access to those data.</p>
 
@@ -521,7 +522,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Gebruiksvoorwaarden</h2>
 
-<p>Tenzij anders aangegeven is op de gegevens op deze site de&nbsp;<a href="http://creativecommons.nl/uitleg/">Creative Commons</a>&nbsp;Zero (CC0) verklaring van toepassing. Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
+<p>Tenzij anders aangegeven is op de gegevens op deze site de&nbsp;<a href="http://creativecommons.nl/uitleg/"  target="_blank">Creative Commons</a>&nbsp;Zero (CC0) verklaring van toepassing. Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
 
 <p>Naturalis heeft de <a href="http://www.bouchoutdeclaration.org/" target="_blank">Bouchout Declaratie</a> ondertekend. Hiermee stimuleren en demonstreren we onze commitment aan vrij onderzoek. We streven er dan ook naar om digitale informatie over biodiversiteit publiek beschikbaar te maken via kanalen zoals dit portaal.</p>
 
@@ -572,7 +573,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 	<tbody>
 		<tr>
 			<td style="width:50%">E-mail</td>
-			<td>bioportal@naturalis.nl</td>
+			<td><a href="mailto:bioportal@naturalis.nl">bioportal@naturalis.nl</a></td>
 		</tr>
 	</tbody>
 </table>
@@ -604,18 +605,6 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 		<tr>
 			<td>Office address</td>
 			<td>Darwinweg 2, 2333 CR Leiden</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>Chamber of Commerce</td>
-			<td>41169515</td>
-		</tr>
-		<tr>
-			<td>VAT-number</td>
-			<td>NL803595943B01</td>
 		</tr>
 	</tbody>
 </table>
@@ -649,7 +638,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       0 => array(
         'value' => '<h2>Netherlands Biodiversity API is een biodiversiteitsdataservice</h2>
 
-<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens door het&nbsp;<a href="http://www.naturalis.nl" target="_blank"><u>Naturalis Biodiversity Center</u></a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, namelijk specimen-, multimedia- en taxongegevens.</p>
+<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens door het&nbsp;<a href="http://www.naturalis.nl" target="_blank">Naturalis Biodiversity Center</a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, namelijk specimen-, multimedia- en taxongegevens.</p>
 
 <h2>Netherlands Biodiversity API biedt mogelijkheden</h2>
 
@@ -661,7 +650,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h2>Netherlands Biodiversity API is vrij toegankelijk</h2>
 
-<p>Naturalis zet al haar data in het open domein onder&nbsp;<a href="http://creativecommons.nl/uitleg/" target="_blank"><u>CC0-licentie</u></a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft dus geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.</p>
+<p>Naturalis zet al haar data in het open domein onder&nbsp;<a href="http://creativecommons.nl/uitleg/" target="_blank">CC0-licentie</a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft dus geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.</p>
 
 <h2>Netherlands Biodiversity API en compatibiliteit</h2>
 
@@ -671,7 +660,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Informatie of vragen over de Netherlands Biodiversity API</p>
 
-<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank"><u>Github</u></a> vindt u meer functionele en technische informatie over de API.</p>
+<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Github</a> vindt u meer functionele en technische informatie over de API.</p>
 
 <p>Voor vragen, verzoeken en opmerkingen kunt u mailen met: <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
 

@@ -23,11 +23,13 @@ function printMultimedia ($data) {
 
     setTitle($headTitle, $pageTitle);
 
-    $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
+    $output = '<div id="' . multimediaService() . '"></div>';
+    $output .= sprintf(
+        '<h2>%s <span class="count">(%s)</span></h2>',
         t('Multimedia'),
         _formatNumber($data['total'])
     );
-    $output  .= "<div class='multimedia-wrapper'>";
+    $output .= "<div class='multimedia-wrapper'>";
 
     foreach ($data['results'] as $i => $row) {
     	$w = "240";

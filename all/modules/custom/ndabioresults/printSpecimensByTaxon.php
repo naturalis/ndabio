@@ -86,9 +86,17 @@ function printSpecimensByTaxon ($data) {
     */
 
     $count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
-    $output = sprintf('<h2>%s %s</h2>', t('Species with specimens'), $count);
 
-    $output .= sprintf('<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self']));
+    $output = '<div id="' . specimenNamesService() . '"></div>';
+    $output .= sprintf(
+        '<h2>%s %s</h2>',
+        t('Species with specimens'),
+        $count
+    );
+    $output .= sprintf(
+        '<table id="specimensByTaxon"><thead>%s</thead>',
+        printHeaders($headers, $data['self'])
+    );
 
     foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";

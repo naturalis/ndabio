@@ -399,7 +399,7 @@ function bioportal_nl_translations_defaults() {
     'source' => 'genus',
     'context' => '',
     'location' => '/nba/result?nba_request=http%3A%2F%2Fapi.biodiversitydata.nl%2Fv0%2F%2Ftaxon%2Fget-taxon%2F%3Fgenus%3DMicrotus%26specificEpithet%3Darvalis',
-    'translation' => 'geslacht',
+    'translation' => 'genus',
     'plid' => 0,
     'plural' => 0,
   );
@@ -1264,6 +1264,14 @@ function bioportal_nl_translations_defaults() {
     'context' => '',
     'location' => '',
     'translation' => 'Folder voor publieke bestanden',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['0963d06eaf483e1a1c204a51f2d2f058'] = array(
+    'source' => 'Species with specimen',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Soorten met specimens',
     'plid' => 0,
     'plural' => 0,
   );
@@ -2648,6 +2656,14 @@ function bioportal_nl_translations_defaults() {
     'context' => '',
     'location' => '',
     'translation' => 'De beschikbare updategegevens voor %title zijn gecontroleerd.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['12b5ebda78ddae0f9fe02ad991e6a5af'] = array(
+    'source' => 'type to find',
+    'context' => '',
+    'location' => '/geographic-search?language=nl&back',
+    'translation' => 'typ om te vinden',
     'plid' => 0,
     'plural' => 0,
   );
@@ -5564,6 +5580,14 @@ else {
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['2609965885c8110f4de4fb5614dd07dc'] = array(
+    'source' => 'Browse Dutch natural history collections',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Blader door Nederlandse natuurhistorische collecties',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['261e818736ac3798b888949dd433e318'] = array(
     'source' => 'Go to last page',
     'context' => '',
@@ -7513,6 +7537,14 @@ else {
     'context' => '',
     'location' => '',
     'translation' => 'De grootte van het bestand.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['3368b0851da49f06d4c69758cf85ac92'] = array(
+    'source' => 'Collection name',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Collectienaam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -30683,6 +30715,14 @@ Wachtwoord: het door u ingestelde wachtwoord
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:default']['c7e2d02a5b48b01d782212734cf8e413'] = array(
+    'source' => 'Please, select an area or draw one on the map. This can be combined with a text search.',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Selecteer AUB een gebied of teken er een op de kaart. Dit kan gecombineerd worden met een tekstzoekopdracht.',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:default']['c7e77acc6a324c68e6f56d4758b98cc3'] = array(
     'source' => 'The book module offers a means to organize a collection of related content pages, collectively known as a book. When viewed, this content automatically displays links to adjacent book pages, providing a simple navigation system for creating and reviewing structured content.',
     'context' => '',
@@ -32413,6 +32453,14 @@ Deze link is slechts één keer te gebruiken en zal u doorverwijzen naar een pag
     'context' => '',
     'location' => '',
     'translation' => 'Rechtsboven',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['d374d94e355f88964f4b40916bfe9bb6'] = array(
+    'source' => 'Search results for',
+    'context' => '',
+    'location' => '/nba/result',
+    'translation' => 'Zoekresultaten voor',
     'plid' => 0,
     'plural' => 0,
   );
@@ -35276,6 +35324,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => '',
     'location' => '',
     'translation' => '@pass, @fail en @exception',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:default']['e872f5df5c207f4392f5fea8bda2cb6f'] = array(
+    'source' => 'Collection specimens by other terms',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Collectie specimens op overige termen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39090,11 +39146,11 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
-  $translations['nl:taxonomy']['15d0f1376101e103a4d7457698b096a9'] = array(
-    'source' => 'Field number collector',
-    'context' => 'term:48:description',
-    'location' => 'taxonomy:term:48:description',
-    'translation' => 'Veldnummer verzamelaar',
+  $translations['nl:taxonomy']['114e731d035c76f93072acc9aef2e18f'] = array(
+    'source' => 'Collection specimens by other terms',
+    'context' => 'term:105:description',
+    'location' => 'taxonomy:term:105:description',
+    'translation' => 'Collectie specimens op overige termen',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39103,14 +39159,6 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => 'term:12:name',
     'location' => 'taxonomy:term:12:name',
     'translation' => 'Veldnummer verzamelaar',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translations['nl:taxonomy']['30f8a0b720bc5f81f9904b5684c50f90'] = array(
-    'source' => 'Collection specimens by name',
-    'context' => 'term:70:name',
-    'location' => 'taxonomy:term:70:name',
-    'translation' => 'collectie specimens per naam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39159,15 +39207,15 @@ Uw account op [site:name] werd geblokkeerd.
     'source' => 'Collection specimens',
     'context' => 'term:105:name',
     'location' => 'taxonomy:term:105:name',
-    'translation' => 'Collectie specimens',
+    'translation' => 'Collectie specimens op overige termen',
     'plid' => 0,
     'plural' => 0,
   );
-  $translations['nl:taxonomy']['8dff997433cd6dac37345e39e59f025a'] = array(
-    'source' => 'Collection specimens',
-    'context' => 'term:105:description',
-    'location' => 'taxonomy:term:105:description',
-    'translation' => 'Collectie specimens',
+  $translations['nl:taxonomy']['8d96f7c846406f347e049594b08532e5'] = array(
+    'source' => 'Species x',
+    'context' => 'term:70:name',
+    'location' => 'taxonomy:term:70:name',
+    'translation' => 'Soorten met specimens',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39197,6 +39245,14 @@ Uw account op [site:name] werd geblokkeerd.
     'plid' => 0,
     'plural' => 0,
   );
+  $translations['nl:taxonomy']['a2cc64cf4be3dcdeda7b522ed0746bff'] = array(
+    'source' => 'Collectors field number',
+    'context' => 'term:48:description',
+    'location' => 'taxonomy:term:48:description',
+    'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
   $translations['nl:taxonomy']['a2e8860f1a35078d03a54753039c0993'] = array(
     'source' => 'Phase or stage',
     'context' => 'term:30:description',
@@ -39210,14 +39266,6 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => 'term:17:description',
     'location' => 'taxonomy:term:17:description',
     'translation' => 'Registratienummer',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translations['nl:taxonomy']['afb40a121dc0514d7673ac8bd36689a3'] = array(
-    'source' => 'Collection specimens by name',
-    'context' => 'term:70:description',
-    'location' => 'taxonomy:term:70:description',
-    'translation' => 'collectie specimens per naam',
     'plid' => 0,
     'plural' => 0,
   );
@@ -39242,6 +39290,14 @@ Uw account op [site:name] werd geblokkeerd.
     'context' => 'term:58:description',
     'location' => 'taxonomy:term:58:description',
     'translation' => 'Ondersoort',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translations['nl:taxonomy']['c1fcabdd919dda3791824b8acb95946b'] = array(
+    'source' => 'Species with specimen',
+    'context' => 'term:70:description',
+    'location' => 'taxonomy:term:70:description',
+    'translation' => 'Soorten met specimens',
     'plid' => 0,
     'plural' => 0,
   );

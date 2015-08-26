@@ -54,11 +54,13 @@ function printSpecimens ($data) {
 		)
 	);
 
-  $output  = sprintf('<h2>%s <span class="count">(%s)</span></h2>',
-    t('Specimens'),
-    _formatNumber($data['total'])
-  );
-  $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $data['self']));
+    $output = '<div id="' . specimenService() . '"></div>';
+    $output .= sprintf(
+        '<h2>%s <span class="count">(%s)</span></h2>',
+        t('Specimens'),
+        _formatNumber($data['total'])
+    );
+    $output .= sprintf('<table><thead>%s</thead><tbody>', printHeaders($headers, $data['self']));
 
   foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";
