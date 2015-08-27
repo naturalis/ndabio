@@ -7,7 +7,7 @@
  * @return string Formatted output
  */
 function printSpecimenMediaDetail ($data) {
-p($data);
+//p($data);
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         array('type' => 'inline', 'scope' => 'footer')
