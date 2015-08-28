@@ -86,8 +86,12 @@ function printMultimediaPreview (request, data) {
 			} else {
 				jQuery('div.property-list dl').each(function() {
 				    if (this.firstChild.innerHTML == Drupal.t("Scientific name")) {
-				    	var $caption = jQuery(this.lastChild.innerHTML);
-				    	caption = $caption.is("a") ? $caption[0].innerHTML : this.lastChild.innerHTML
+				    	try {
+					    	var $caption = jQuery(this.lastChild.innerHTML);
+					    	caption = $caption.is("a") ? $caption[0].innerHTML : this.lastChild.innerHTML;
+				    	} catch (err) {
+					    	caption = this.lastChild.innerHTML;
+				    	}
 				    	return false;
 					}
 				});
