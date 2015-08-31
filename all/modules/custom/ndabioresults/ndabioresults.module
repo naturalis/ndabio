@@ -2113,6 +2113,7 @@ function parseTaxa ($json) {
     			);
 		} else if ($d['type'] == 'common') {
 			$d['description'] = t('Common name(s)') . ': ';
+
 			foreach ($row->searchResults[0]->matchInfo as $i => $info) {
                 $vernaculars[] = highlightSearchTerms(
     				strip_tags($info->valueHighlighted),
@@ -2120,6 +2121,18 @@ function parseTaxa ($json) {
     		    );
 			}
 			$d['description'] .= implode(', ', $vernaculars);
+			/*
+            foreach ($row->searchResults[0]->matchInfo as $i => $info) {
+                $hits = explode('<span class="search_hit">', $info->valueHighlighted);
+                foreach ($hits as $hit) {
+                    $vernaculars[] = highlightSearchTerms(
+            			trim(strip_tags($hit)),
+            			$output['searchTerms']
+            	    );
+                }
+            }
+            $d['description'] .= implode(', ', array_filter($vernaculars));
+            */
 			unset($vernaculars);
 		}
 
@@ -2160,6 +2173,34 @@ function getTaxonSynonymOffset ($row) {
         }
     }
     return false;
+
+    // Replacement function for Ezelsoor
+/*
+    $fields = $hits = array();
+    // Determine offset of search results in synonyms
+    // First create array with field => hit
+    foreach ($row->searchResults[0]->matchInfo as $i => $info) {
+        // Path should start with synonym.
+        if (strpos($info->path, 'synonym') === 0) {
+            // Possible hits are all listed in a single row, as such:
+            // <span class="search_hit">HIT</span>
+            $hightlights = explode('</span><span class="search_hit">', $info->valueHighlighted);
+            $fields[str_replace('synonyms.', '', $info->path)] =
+                array_unique(array_map('strip_tags', $hightlights));
+        }
+    }
+    foreach ($row->searchResults[0]->result->synonyms as $i => $synonym) {
+        foreach ($fields as $field => $matches) {
+            foreach ($matches as $match) {
+                if ($synonym->$field == $match) {
+                    $hits[$i][] = $match;
+                }
+            }
+        }
+    }
+    $hits = array_map('count', $hits);
+    return array_search(max($hits), $hits);
+*/
 }
 
 /** Prints no result message
