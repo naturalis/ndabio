@@ -81,7 +81,9 @@ function printMultimediaPreview (request, data) {
 			hits = caption;
 			// Taxon detail page
 			if (jQuery("div.category").get(0).innerHTML == 'Taxon') {
-				caption = jQuery("span.scientific-name").get(0).innerHTML;
+				// Disabled getting species name because of NDA bug, show registration number instead
+				//caption = jQuery("span.scientific-name").get(0).innerHTML;
+				caption = data.searchResults[i].result.associatedSpecimen.unitID;
 			// Specimen detail page
 			} else {
 				jQuery('div.property-list dl').each(function() {
