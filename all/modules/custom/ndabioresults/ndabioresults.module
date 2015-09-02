@@ -144,11 +144,17 @@ function ndabioresults_pass ($args = "") {
     unset($_SESSION['ndaPageTitle']);
 
     // Keep track of NBA search history
-    if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back'])) {
+    if (isset($_GET['nba_request']) || isset($_POST['form_id']) || isset($_GET['back']) || isset($_GET['theme'])) {
+        // Add direct requests to history if they are search service requests...
         if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
-            $_SESSION['ndaHistory'][] = $_GET['nba_request'];
+             $_SESSION['ndaHistory'][] = $_GET['nba_request'];
+        // ... or from the search form of course
         } else if (isset($_POST['form_id'])) {
             $_SESSION['ndaHistory'][] = 'form';
+        // ... or from a menu link to a theme
+        } else if (isset($_GET['theme'])) {
+            $_SESSION['ndaHistory'][] = 'theme';
+            // If coming from a back link itself, remove the link from history
         } else if (isset($_GET['back']) && isSearchService($_SESSION['ndaCurrentService'])) {
             array_pop($_SESSION['ndaHistory']);
         }
@@ -172,8 +178,10 @@ function ndabioresults_pass ($args = "") {
     // proceed as if POST data was received but retrieve this from SESSION
     if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
        drupal_set_title(t("Search results"));
-        if (isset($_SESSION['ndaHistory']) && !empty($_SESSION['ndaHistory']) &&
-            end($_SESSION['ndaHistory']) != 'form') {
+
+       $lastSearch = isset($_SESSION['ndaHistory']) && !empty($_SESSION['ndaHistory']) ?
+            end($_SESSION['ndaHistory']) : false;
+       if ($lastSearch && $lastSearch != 'form' && $lastSearch != 'theme') {
             return ndaDirectRequest(end($_SESSION['ndaHistory']));
         } else if (!empty($_SESSION['ndaSearch']['term'])) {
             return ndaSimpleSearch();
