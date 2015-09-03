@@ -10,16 +10,29 @@ var mapStyle = {
 	zIndex: 1
 }
 
-var obj_pin = {
-    path         : 'M18.2,11l-4.7,10.1C13.2,21.6,12.6,22,12,22c-0.6,0-1.2-0.4-1.5-0.9L5.8,11c-0.3-0.7-0.4-1.5-0.4-2.3 C5.3,5,8.3,2,12,2c3.7,0,6.7,3,6.7,6.7C18.7,9.5,18.6,10.3,18.2,11z M12,5.3c-1.8,0-3.3,1.5-3.3,3.3c0,1.8,1.5,3.3,3.3,3.3 c1.8,0,3.3-1.5,3.3-3.3C15.3,6.8,13.8,5.3,12,5.3z',
-    fillColor    : '#542e08',
-    fillOpacity  : 1,
-    scale        : 1,
-    strokeColor  : 'white',
-    strokeWeight : 1,
-    anchor       : new google.maps.Point(0,22)
+var pin = {
+    path: 'M18.2,11l-4.7,10.1C13.2,21.6,12.6,22,12,22c-0.6,0-1.2-0.4-1.5-0.9L5.8,11c-0.3-0.7-0.4-1.5-0.4-2.3 C5.3,5,8.3,2,12,2c3.7,0,6.7,3,6.7,6.7C18.7,9.5,18.6,10.3,18.2,11z M12,5.3c-1.8,0-3.3,1.5-3.3,3.3c0,1.8,1.5,3.3,3.3,3.3 c1.8,0,3.3-1.5,3.3-3.3C15.3,6.8,13.8,5.3,12,5.3z',
+    fillColor: '#542e08',
+    fillOpacity: 1,
+    scale: 1,
+    strokeColor: 'white',
+    strokeWeight: 1,
+    size: new google.maps.Size(14, 20),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(7, 20)
 };
 
+var overlapPin = {
+    path: pin.path,
+    fillColor: '#009ee0',
+    fillOpacity: pin.fillOpacity,
+    scale: pin.scale,
+    strokeColor: 'black',
+    strokeWeight: pin.strokeWeight,
+    size: pin.size,
+    origin: pin.origin,
+    anchor: pin.anchor
+};
 
 function getShapeGeometry() {
 	if (selectedShape.type == 'polygon') {
@@ -62,9 +75,9 @@ function getRectangleGeometry() {
 function initialize() {
 
 	var mapOptions = {
-	  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
-	  mapTypeId: 'satellite',
-	  zoom: setZoomLevel()
+		center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
+		mapTypeId: 'satellite',
+		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
@@ -135,7 +148,7 @@ function initializeSpecimens() {
 		var marker = new google.maps.Marker({
 	      position     : myLatlng,
 	      name         : this.name,
-	      icon         : obj_pin,
+	      icon         : pin,
 	      assemblageID : this.assemblageID,
 	      source       : this.source,
 	      unitID       : this.unitID,
@@ -163,6 +176,73 @@ function initializeSpecimens() {
 	});
 }
 
+/*
+ * Nieuwe functie met spider voor Ezelsoor
+
+function initializeSpecimens() {
+	var mapOptions = {
+		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
+		  mapTypeId: 'satellite',
+		  zoom: setZoomLevel()
+		};
+	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+	feature = {
+		type: "Feature",
+		geometry: geoShape
+	};
+	map.data.addGeoJson(feature);
+	map.data.setStyle(mapStyle);
+	zoom(map);
+
+	var oms = new OverlappingMarkerSpiderfier(map, {
+		markersWontMove: true,
+		markersWontHide: true,
+		legWeight: 1.2
+	});
+	oms.legColors.highlighted[google.maps.MapTypeId.SATELLITE] = '#c30041';
+	var infowindow = new google.maps.InfoWindow({
+	    maxWidth: 350
+	});
+
+	oms.addListener('click', function(marker, event) {
+		infowindow.setContent(createInfoText(marker));
+		infowindow.open(map, marker);
+	});
+    oms.addListener('spiderfy', function(markers) {
+        for (var i = 0; i < markers.length; i++) {
+        	markers[i].setIcon(overlapPin);
+        }
+        infowindow.close();
+      });
+      oms.addListener('unspiderfy', function(markers) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setIcon(pin);
+        }
+      });
+
+	jQuery.each(specimenMarkers, function() {
+		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
+		var marker = new google.maps.Marker({
+	      position: myLatlng,
+	      name: this.name,
+	      icon: pin,
+	      assemblageID: this.assemblageID,
+	      source: this.source,
+	      unitID: this.unitID,
+	      localityText: this.localityText,
+	      date: this.date,
+	      taxonUrl: this.taxonUrl,
+	      url: this.url
+		});
+
+		marker.setMap(map);
+		oms.addMarker(marker);
+		markers.push(marker);
+	});
+}
+*/
+
 function initializeSpecimenDetail() {
 
 	var myLatlng = new google.maps.LatLng(specimenMarker.lat, specimenMarker.lon);
@@ -176,7 +256,7 @@ function initializeSpecimenDetail() {
 
 	var marker = new google.maps.Marker({
 		position: myLatlng,
-		icon: obj_pin,
+		icon: pin,
 	});
 
 	marker.setMap(map);

@@ -16,6 +16,7 @@ function printSpecimensByMap ($data) {
     $path = drupal_get_path('module', 'ndabio');
     drupal_add_css($path . "/css/ndabio_style.css");
     drupal_add_js($path . "/js/map.js", array('weight' => 1));
+    drupal_add_js($path . "/js/oms.min.js", array('weight' => 1));
     drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
         variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
     drupal_add_js(
