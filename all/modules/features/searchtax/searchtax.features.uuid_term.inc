@@ -665,7 +665,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndavalues' => array(
       'und' => array(
         0 => array(
-          'value' => 'Amphibia and Reptilia|Aves|Botany|Cainozoic Mollusca|Cnidaria|Coleoptera|Collembola|Crustacea|Diptera|Echinodermata|Hemiptera|Hymnoptera|Lepidoptera|Mammalia|Micropaleontology|Mineralogy|Mollusca|Odonata|Paleontology Invertebrates|Petrology|Porifera',
+          'value' => 'Amphibia and Reptilia|Aves|Botany|Cainozoic Mollusca|Cnidaria|Coleoptera|Collembola|Crustacea|Diptera|Echinodermata|Hemiptera|Hymenoptera|Lepidoptera|Mammalia|Micropaleontology|Mineralogy|Mollusca|Odonata|Paleontology Invertebrates|Petrology|Porifera',
           'format' => NULL,
         ),
       ),
