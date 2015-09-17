@@ -1315,9 +1315,8 @@ function parseMultimedia ($json) {
 	foreach ($data->searchResults as $row) {
 		$type = !empty($row->result->associatedTaxon) ? 'associatedTaxon' :
             'associatedSpecimen';
-		$d['title'] = $row->result->title;
-		$d['format'] =
-		$d['caption'] = $row->result->caption;
+		$d['title'] = $type == 'associatedTaxon' ? $row->result->title : '';
+		$d['caption'] = $type == 'associatedTaxon' ? $row->result->caption : '';
 		$d['score'] = $row->percentage;
 		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
