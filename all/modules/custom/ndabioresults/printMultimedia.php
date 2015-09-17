@@ -54,7 +54,7 @@ function printMultimedia ($data) {
           "  <div class='polaroid-caption'>".
           "    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
                     (!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>";
-         $output .= empty($row['caption']) ?
+         $output .= !empty($row['caption']) ?
            "    <div class='image-hits'>" . $row['caption'] . "</div>" : '';
          $output .= $mmHit ?
            "    <div class='image-hits'>" . $mmHit ."</div>" : '';
