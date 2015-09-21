@@ -125,6 +125,7 @@ function initialize() {
  	}
 }
 
+/*
 function initializeSpecimens() {
 	var mapOptions = {
 		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
@@ -175,9 +176,7 @@ function initializeSpecimens() {
 		markers.push(marker);
 	});
 }
-
-/*
- * Nieuwe functie met spider voor Ezelsoor
+*/
 
 function initializeSpecimens() {
 	var mapOptions = {
@@ -241,7 +240,6 @@ function initializeSpecimens() {
 		markers.push(marker);
 	});
 }
-*/
 
 function initializeSpecimenDetail() {
 
