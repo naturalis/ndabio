@@ -2171,6 +2171,7 @@ function parseTaxa ($json) {
  * @return int|void $i
  */
 function getTaxonSynonymOffset ($row) {
+/*
     $path = $row->searchResults[0]->matchInfo[0]->path;
     $field = str_replace('synonyms.', '', $path);
     foreach ($row->searchResults[0]->result->synonyms as $i => $synonyms) {
@@ -2180,9 +2181,7 @@ function getTaxonSynonymOffset ($row) {
         }
     }
     return false;
-
-    // Replacement function for Ezelsoor
-/*
+*/
     $fields = $hits = array();
     // Determine offset of search results in synonyms
     // First create array with field => hit
@@ -2207,7 +2206,6 @@ function getTaxonSynonymOffset ($row) {
     }
     $hits = array_map('count', $hits);
     return array_search(max($hits), $hits);
-*/
 }
 
 /** Prints no result message
