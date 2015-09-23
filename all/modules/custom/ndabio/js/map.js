@@ -271,8 +271,10 @@ function createInfoText(marker) {
 		'<div class="marker-unitID">' + '<a href="?nba_request=' +
 			marker.url + '">' + marker.unitID + '</a>' + '</div>' +
 		'<div class="marker-source">' + marker.source + '</div>' +
-		'<div class="marker-localityText">' + marker.localityText + '</div>' +
-		'<div class="marker-date">' + (marker.date != null ? marker.date : '-') + '</div>' +
+		'<div class="marker-localityText">' +
+			(marker.localityText != null ? marker.localityText : '-') + '</div>' +
+		'<div class="marker-date">' +
+			(marker.date != null ? marker.date : '-') + '</div>' +
 		'</div>';
 }
 
