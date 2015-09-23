@@ -18,13 +18,16 @@ function printSpecimenMediaDetail ($data) {
 
     $output .= printPreviousNext();
 
+    /* For the time being disable PURL for media
+     *
 	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
 	   $data['mediaUnitID'] . '"></input>';
 	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
-//	$output .= '<div class="property-list">
-//	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
-//	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
-//	   </div>';
+	$output .= '<div class="property-list">
+	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
+	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
+	   </div>';
+    */
 
     $altParts = array(
         isset($data['unitID']) ? strip_tags($data['unitID']) : '',
@@ -33,8 +36,10 @@ function printSpecimenMediaDetail ($data) {
     );
     $alt = implode(' | ', array_filter($altParts));
 
-    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' />";
-    if (loadPrettyPhoto($data['imgSrc'])) {
+    list($width, $height) = loadPrettyPhoto($data['imgSrc']);
+    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
+        "style='width: {$width}px; height: {$height}px;'/>";
+    if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
             $copyright = '© ' . $data['copyrightText'] : '';
         $institution = $data['sourceInstitutionID'] .
