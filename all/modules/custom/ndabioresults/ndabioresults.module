@@ -2816,8 +2816,9 @@ function safe_parse_str ($source, &$target) {
  * @return array
  */
 function loadPrettyPhoto ($imageUrl) {
+    $maxWidth = $maxHeight = 600;
     $img = @getimagesize($imageUrl);
-    if ($img && $img[0] > 600 || $img[1] > 600) {
+    if ($img && $img[0] > $maxWidth || $img[1] > $maxHeight) {
         $path = drupal_get_path('module', 'ndabioresults');
         drupal_add_css($path . "/css/prettyPhoto.css");
         drupal_add_js($path . "/js/jquery.prettyPhoto.js");
@@ -2828,9 +2829,19 @@ function loadPrettyPhoto ($imageUrl) {
                 });
             });',
             array('type' => 'inline', 'scope' => 'footer'));
-        return true;
     }
-    return false;
+    if (!$img) {
+        return array(0, 0);
+    }
+    if ($img[0] < $maxWidth && $img[1] < $maxHeight) {
+        return array($img[0], $img[1]);
+    }
+    if ($img[0] > $maxWidth && $img[0] >= $img[1]) {
+        return array($maxWidth, round($img[1] * $maxWidth / $img[0]));
+    }
+    if ($img[1] > $maxHeight && $img[1] >= $img[0]) {
+        return array(round($img[0] * $maxHeight / $img[1]), $maxHeight);
+    }
 }
 
 /**

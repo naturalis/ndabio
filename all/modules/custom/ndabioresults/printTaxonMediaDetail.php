@@ -23,14 +23,21 @@ function printTaxonMediaDetail ($data) {
     // Temp solution to show fullsize images
     $data['imgSrc'] = str_replace('/comping/', '/original/', $data['imgSrc']);
 
-    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' />";
-    if (loadPrettyPhoto($data['imgSrc'])) {
+    list($width, $height) = loadPrettyPhoto($data['imgSrc']);
+    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
+        "style='width: {$width}px; height: {$height}px;'/>";
+    if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
             $copyright = '© ' . $data['copyrightText'] : '';
         array_unshift($altParts, $data['sourceInstitutionID'], $copyright);
         $caption = implode('<br/>', array_filter($altParts));
         $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
     }
+
+
+
+
+
 
     $output .= $img;
 
