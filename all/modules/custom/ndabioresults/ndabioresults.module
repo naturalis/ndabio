@@ -2840,7 +2840,7 @@ function loadPrettyPhoto ($imageUrl) {
         return array($maxWidth, round($img[1] * $maxWidth / $img[0]));
     }
     if ($img[1] > $maxHeight && $img[1] >= $img[0]) {
-        return array(round($img[0] * 600 / $img[1]), 600);
+        return array(round($img[0] * $maxHeight / $img[1]), $maxHeight);
     }
 }
 
