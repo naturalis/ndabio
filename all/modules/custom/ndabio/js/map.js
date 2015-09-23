@@ -77,6 +77,7 @@ function initialize() {
 	var mapOptions = {
 		center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		mapTypeId: 'satellite',
+		streetViewControl: false,
 		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -182,6 +183,7 @@ function initializeSpecimens() {
 	var mapOptions = {
 		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		  mapTypeId: 'satellite',
+		  streetViewControl: false,
 		  zoom: setZoomLevel()
 		};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
