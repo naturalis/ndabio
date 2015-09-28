@@ -56,6 +56,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-11-28 15:48:07 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -90,6 +91,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 12:23:44 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -124,6 +126,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:58:21 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -301,6 +304,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:37:22 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -357,6 +361,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-11-27 09:44:48 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -405,6 +410,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 12:14:58 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -451,6 +457,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:41:00 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -492,6 +499,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 10:26:10 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -538,6 +546,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 11:42:51 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -606,6 +615,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-22 13:22:53 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -662,6 +672,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 10:18:47 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
