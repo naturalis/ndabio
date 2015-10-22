@@ -70,21 +70,6 @@ function printSpecimensByTaxon ($data) {
 		)
 	);
 
-    /*
-    if (isset($data['searchTerms']['_search'])  ){
-
-      $term  = _wrap(  implode( $data['searchTerms']['_search']   , ",") , "span", "term"  );
-      $expl  = _wrap(  t('(occurring in the species&apos; name)')        , "span", "explanation");
-      $count = _wrap(  '(' ._formatNumber($data['total']) . ')', "span", "count");
-      $output  = sprintf('<h2>%s %s %s %s</h2>', t('Specimens with'), $term, $count, $expl );
-    } else {
-      $count = _wrap(  "(" . _formatNumber($data['total']) . ")", "span", "count");
-
-      $expl  = _wrap(  t('(grouped by species name)')        , "span", "explanation");
-      $output  = sprintf('<h2>%s %s %s</h2>', t('Specimens'), $count, $expl );
-    }
-    */
-
     $count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
 
     $output = '<div id="' . specimenNamesService() . '"></div>';
@@ -114,7 +99,7 @@ function printSpecimensByTaxon ($data) {
 		      "<a href='" . printDrupalLink(
                 specimenNamesService() . '?_geoShape=[session]&' .
 		      '&identifications.scientificName.fullScientificName.raw=' .
-		      urlencode(urlencode($row['fullScientificName'])) . '&_showMap&_maxResults=100') .
+		      urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
 		      "' class='icon-location'></a>" : '') .
 		  "</td>";
 		// Source(s)
