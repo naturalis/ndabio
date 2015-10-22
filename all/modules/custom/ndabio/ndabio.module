@@ -515,7 +515,7 @@ function ndabio_advanced_taxonomysearch() {
                     unset($optionarray);
                     $optionarray[""] = ""; //First entry is an empty string
                     foreach (explode("|", $lvalues) as $optionitem) {
-		              $optioncode = $optionitem == '-- any --' ? 'NOT_NULL' : $optionitem;
+		              $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
                       $optionarray[$optioncode] = $optionitem;
                     }
                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
@@ -546,7 +546,7 @@ function ndabio_advanced_taxonomysearch() {
                 unset($optionarray);
                 $optionarray[""] = ""; //First entry is an empty string
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
-		          $optioncode = $optionitem == '-- any --' ? 'NOT_NULL' : $optionitem;
+		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
                   $optionarray[$optioncode] = t($optionitem);
                 }
                 $form[$sysname][$childsysname][$subchildsysname] = array(
@@ -582,7 +582,7 @@ function ndabio_advanced_taxonomysearch() {
             unset($optionarray);
             $optionarray[""] = ""; //First entry is an empty string
             foreach (explode("|", $childvalues) as $optionitem ) {
-		          $optioncode = $optionitem == '-- any --' ? 'NOT_NULL' : $optionitem;
+		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
                   $optionarray[$optioncode] = t($optionitem);
             }
             $form[$sysname][$childsysname] = array(
