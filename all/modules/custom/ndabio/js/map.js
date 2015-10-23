@@ -250,6 +250,7 @@ function initializeSpecimenDetail() {
 	var mapOptions = {
 		center: myLatlng,
 		mapTypeId: 'satellite',
+		streetViewControl: false
 		zoom: 7
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
