@@ -10,7 +10,7 @@
 function searchtax_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_ndadatatype'
+  // Exported field_base: 'field_ndadatatype'.
   $field_bases['field_ndadatatype'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -32,7 +32,7 @@ function searchtax_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_ndageorelevance'
+  // Exported field_base: 'field_ndageorelevance'.
   $field_bases['field_ndageorelevance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -57,7 +57,7 @@ function searchtax_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_ndasystem'
+  // Exported field_base: 'field_ndasystem'.
   $field_bases['field_ndasystem'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -79,7 +79,7 @@ function searchtax_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_ndavalues'
+  // Exported field_base: 'field_ndavalues'.
   $field_bases['field_ndavalues'] = array(
     'active' => 1,
     'cardinality' => 1,

@@ -10,7 +10,7 @@
 function searchtax_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'taxonomy_term-search-field_ndadatatype'
+  // Exported field_instance: 'taxonomy_term-search-field_ndadatatype'.
   $field_instances['taxonomy_term-search-field_ndadatatype'] = array(
     'bundle' => 'search',
     'default_value' => NULL,
@@ -43,7 +43,7 @@ function searchtax_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-search-field_ndageorelevance'
+  // Exported field_instance: 'taxonomy_term-search-field_ndageorelevance'.
   $field_instances['taxonomy_term-search-field_ndageorelevance'] = array(
     'bundle' => 'search',
     'default_value' => array(
@@ -80,7 +80,7 @@ function searchtax_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-search-field_ndasystem'
+  // Exported field_instance: 'taxonomy_term-search-field_ndasystem'.
   $field_instances['taxonomy_term-search-field_ndasystem'] = array(
     'bundle' => 'search',
     'default_value' => NULL,
@@ -114,7 +114,7 @@ function searchtax_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-search-field_ndavalues'
+  // Exported field_instance: 'taxonomy_term-search-field_ndavalues'.
   $field_instances['taxonomy_term-search-field_ndavalues'] = array(
     'bundle' => 'search',
     'default_value' => NULL,

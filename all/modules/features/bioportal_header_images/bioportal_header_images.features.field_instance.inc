@@ -10,7 +10,8 @@
 function bioportal_header_images_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-ndabio_header_image-field_ndabio_header_image'
+  // Exported field_instance:
+  // 'node-ndabio_header_image-field_ndabio_header_image'.
   $field_instances['node-ndabio_header_image-field_ndabio_header_image'] = array(
     'bundle' => 'ndabio_header_image',
     'deleted' => 0,

@@ -10,7 +10,7 @@
 function geozones_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-national_search_area-field_country_nl'
+  // Exported field_instance: 'node-national_search_area-field_country_nl'.
   $field_instances['node-national_search_area-field_country_nl'] = array(
     'bundle' => 'national_search_area',
     'default_value' => NULL,
@@ -50,7 +50,7 @@ function geozones_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-national_search_area-field_geojson'
+  // Exported field_instance: 'node-national_search_area-field_geojson'.
   $field_instances['node-national_search_area-field_geojson'] = array(
     'bundle' => 'national_search_area',
     'default_value' => NULL,
@@ -90,7 +90,7 @@ function geozones_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-national_search_area-field_iso'
+  // Exported field_instance: 'node-national_search_area-field_iso'.
   $field_instances['node-national_search_area-field_iso'] = array(
     'bundle' => 'national_search_area',
     'default_value' => NULL,
@@ -130,7 +130,7 @@ function geozones_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-national_search_area-field_source'
+  // Exported field_instance: 'node-national_search_area-field_source'.
   $field_instances['node-national_search_area-field_source'] = array(
     'bundle' => 'national_search_area',
     'default_value' => NULL,
@@ -170,7 +170,7 @@ function geozones_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-national_search_area-field_type'
+  // Exported field_instance: 'node-national_search_area-field_type'.
   $field_instances['node-national_search_area-field_type'] = array(
     'bundle' => 'national_search_area',
     'default_value' => NULL,
