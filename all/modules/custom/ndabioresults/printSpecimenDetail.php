@@ -118,26 +118,23 @@ function printSpecimenDetail ($data) {
 
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= isset($value['dateTimeBegin']) ?
-    			    printDL(ucfirst(translateNdaField('dateTimeBegin')), $value['dateTimeBegin']) :
-                    '';
-			    $output .= isset($value['gatheringAgents']) ?
-    			    printDL(ucfirst(translateNdaField('gatheringAgents')), implode(', ', $value['gatheringAgents'])) :
-			          '';
-			    $output .= isset($value['localityText']) ?
-    			    printDL(ucfirst(translateNdaField('localityText')), $value['localityText']) :
-                    '';
+                $output .= printDL(ucfirst(translateNdaField('dateTimeBegin')),
+                    printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : ''));
+			    $output .= printDL(ucfirst(translateNdaField('gatheringAgents')),
+			        printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
+			    $output .= printDL(ucfirst(translateNdaField('localityText')),
+                    printValue(isset($value['localityText']) ? $value['localityText'] : ''));
 
-			    if (!empty($value['siteCoordinates'])) {
-                    $output .= printDL(ucfirst(translateNdaField('siteCoordinates')),
-                        decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
+			    $coordinates = isset($value['siteCoordinates']) && !empty($value['siteCoordinates']) ?
+                    decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
-                        $value['siteCoordinates']['lon'] . ')'
-                    );
-                    // Mapcodes
-                    $output .= '<dl><dt>Mapcode(s)</dt><dd id="mapcode"></dd></dl>';
+                        $value['siteCoordinates']['lon'] . ')' :
+                        '';
 
-			    }
+                $output .= printDL(ucfirst(translateNdaField('siteCoordinates')), printValue($coordinates));
+                if (!empty($coordinates)) {
+                    $output .= '<dl><dt>Mapcode(s)</dt><dd id="mapcode"></dd></dl>';
+                }
 			}
 
 		} else {
