@@ -1,5 +1,7 @@
 <?php
 /**
  * @file
- * Drupal needs this blank file.
+ * Code for the searchtax feature.
  */
+
+include_once 'searchtax.features.inc';

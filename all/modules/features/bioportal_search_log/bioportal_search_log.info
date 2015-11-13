@@ -1,7 +1,7 @@
 name = Bioportal search log
 core = 7.x
 package = Bioportal
-version = 7.x-0.1
+version = 7.x-0.2
 project = bioportal_search_log
 dependencies[] = ctools
 dependencies[] = features

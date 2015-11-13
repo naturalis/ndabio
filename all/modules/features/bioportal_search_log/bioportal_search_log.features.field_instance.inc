@@ -10,7 +10,7 @@
 function bioportal_search_log_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-search_log-field_category'
+  // Exported field_instance: 'node-search_log-field_category'.
   $field_instances['node-search_log-field_category'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -56,7 +56,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_geoshape'
+  // Exported field_instance: 'node-search_log-field_geoshape'.
   $field_instances['node-search_log-field_geoshape'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -114,7 +114,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_gid'
+  // Exported field_instance: 'node-search_log-field_gid'.
   $field_instances['node-search_log-field_gid'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -160,7 +160,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_ip_address'
+  // Exported field_instance: 'node-search_log-field_ip_address'.
   $field_instances['node-search_log-field_ip_address'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -218,7 +218,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_location'
+  // Exported field_instance: 'node-search_log-field_location'.
   $field_instances['node-search_log-field_location'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -276,7 +276,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_andor'
+  // Exported field_instance: 'node-search_log-field_m_andor'.
   $field_instances['node-search_log-field_m_andor'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -334,7 +334,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_classname'
+  // Exported field_instance: 'node-search_log-field_m_classname'.
   $field_instances['node-search_log-field_m_classname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -392,7 +392,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_family'
+  // Exported field_instance: 'node-search_log-field_m_family'.
   $field_instances['node-search_log-field_m_family'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -450,7 +450,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_genusormonomial'
+  // Exported field_instance: 'node-search_log-field_m_genusormonomial'.
   $field_instances['node-search_log-field_m_genusormonomial'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -508,7 +508,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_infraspecificepithet'
+  // Exported field_instance: 'node-search_log-field_m_infraspecificepithet'.
   $field_instances['node-search_log-field_m_infraspecificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -566,7 +566,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_kingdom'
+  // Exported field_instance: 'node-search_log-field_m_kingdom'.
   $field_instances['node-search_log-field_m_kingdom'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -624,7 +624,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_order'
+  // Exported field_instance: 'node-search_log-field_m_order'.
   $field_instances['node-search_log-field_m_order'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -682,7 +682,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_phaseorstage'
+  // Exported field_instance: 'node-search_log-field_m_phaseorstage'.
   $field_instances['node-search_log-field_m_phaseorstage'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -740,7 +740,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_phylum'
+  // Exported field_instance: 'node-search_log-field_m_phylum'.
   $field_instances['node-search_log-field_m_phylum'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -798,7 +798,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_sex'
+  // Exported field_instance: 'node-search_log-field_m_sex'.
   $field_instances['node-search_log-field_m_sex'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -856,7 +856,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_specificepithet'
+  // Exported field_instance: 'node-search_log-field_m_specificepithet'.
   $field_instances['node-search_log-field_m_specificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -914,7 +914,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_typestatus'
+  // Exported field_instance: 'node-search_log-field_m_typestatus'.
   $field_instances['node-search_log-field_m_typestatus'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -972,7 +972,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_m_vernacularname'
+  // Exported field_instance: 'node-search_log-field_m_vernacularname'.
   $field_instances['node-search_log-field_m_vernacularname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1030,7 +1030,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_mapcenter'
+  // Exported field_instance: 'node-search_log-field_mapcenter'.
   $field_instances['node-search_log-field_mapcenter'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1088,7 +1088,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_andor'
+  // Exported field_instance: 'node-search_log-field_n_andor'.
   $field_instances['node-search_log-field_n_andor'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1146,7 +1146,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_classname'
+  // Exported field_instance: 'node-search_log-field_n_classname'.
   $field_instances['node-search_log-field_n_classname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1204,7 +1204,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_family'
+  // Exported field_instance: 'node-search_log-field_n_family'.
   $field_instances['node-search_log-field_n_family'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1262,7 +1262,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_genusormonomial'
+  // Exported field_instance: 'node-search_log-field_n_genusormonomial'.
   $field_instances['node-search_log-field_n_genusormonomial'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1320,7 +1320,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_infraspecificepithet'
+  // Exported field_instance: 'node-search_log-field_n_infraspecificepithet'.
   $field_instances['node-search_log-field_n_infraspecificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1378,7 +1378,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_kingdom'
+  // Exported field_instance: 'node-search_log-field_n_kingdom'.
   $field_instances['node-search_log-field_n_kingdom'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1436,7 +1436,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_order'
+  // Exported field_instance: 'node-search_log-field_n_order'.
   $field_instances['node-search_log-field_n_order'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1494,7 +1494,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_phylum'
+  // Exported field_instance: 'node-search_log-field_n_phylum'.
   $field_instances['node-search_log-field_n_phylum'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1552,7 +1552,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_specificepithet'
+  // Exported field_instance: 'node-search_log-field_n_specificepithet'.
   $field_instances['node-search_log-field_n_specificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1610,7 +1610,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_n_vernacularname'
+  // Exported field_instance: 'node-search_log-field_n_vernacularname'.
   $field_instances['node-search_log-field_n_vernacularname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1668,7 +1668,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_andor'
+  // Exported field_instance: 'node-search_log-field_s_andor'.
   $field_instances['node-search_log-field_s_andor'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1726,7 +1726,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_collectionfieldnumber'
+  // Exported field_instance: 'node-search_log-field_s_collectionfieldnumber'.
   $field_instances['node-search_log-field_s_collectionfieldnumber'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1784,7 +1784,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_gatheringagent'
+  // Exported field_instance: 'node-search_log-field_s_gatheringagent'.
   $field_instances['node-search_log-field_s_gatheringagent'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1842,7 +1842,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_localitytext'
+  // Exported field_instance: 'node-search_log-field_s_localitytext'.
   $field_instances['node-search_log-field_s_localitytext'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1900,7 +1900,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_phaseorstage'
+  // Exported field_instance: 'node-search_log-field_s_phaseorstage'.
   $field_instances['node-search_log-field_s_phaseorstage'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -1958,7 +1958,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_sex'
+  // Exported field_instance: 'node-search_log-field_s_sex'.
   $field_instances['node-search_log-field_s_sex'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2016,7 +2016,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_typestatus'
+  // Exported field_instance: 'node-search_log-field_s_typestatus'.
   $field_instances['node-search_log-field_s_typestatus'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2074,7 +2074,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_s_unitid'
+  // Exported field_instance: 'node-search_log-field_s_unitid'.
   $field_instances['node-search_log-field_s_unitid'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2132,7 +2132,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_search_type'
+  // Exported field_instance: 'node-search_log-field_search_type'.
   $field_instances['node-search_log-field_search_type'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2190,7 +2190,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_andor'
+  // Exported field_instance: 'node-search_log-field_t_andor'.
   $field_instances['node-search_log-field_t_andor'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2248,7 +2248,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_classname'
+  // Exported field_instance: 'node-search_log-field_t_classname'.
   $field_instances['node-search_log-field_t_classname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2306,7 +2306,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_expert'
+  // Exported field_instance: 'node-search_log-field_t_expert'.
   $field_instances['node-search_log-field_t_expert'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2364,7 +2364,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_expertorganisation'
+  // Exported field_instance: 'node-search_log-field_t_expertorganisation'.
   $field_instances['node-search_log-field_t_expertorganisation'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2422,7 +2422,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_family'
+  // Exported field_instance: 'node-search_log-field_t_family'.
   $field_instances['node-search_log-field_t_family'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2480,7 +2480,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_genusormonomial'
+  // Exported field_instance: 'node-search_log-field_t_genusormonomial'.
   $field_instances['node-search_log-field_t_genusormonomial'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2538,7 +2538,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_infraspecificepithet'
+  // Exported field_instance: 'node-search_log-field_t_infraspecificepithet'.
   $field_instances['node-search_log-field_t_infraspecificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2596,7 +2596,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_kingdom'
+  // Exported field_instance: 'node-search_log-field_t_kingdom'.
   $field_instances['node-search_log-field_t_kingdom'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2654,7 +2654,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_order'
+  // Exported field_instance: 'node-search_log-field_t_order'.
   $field_instances['node-search_log-field_t_order'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2712,7 +2712,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_phylum'
+  // Exported field_instance: 'node-search_log-field_t_phylum'.
   $field_instances['node-search_log-field_t_phylum'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2770,7 +2770,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_specificepithet'
+  // Exported field_instance: 'node-search_log-field_t_specificepithet'.
   $field_instances['node-search_log-field_t_specificepithet'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2828,7 +2828,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_subgenus'
+  // Exported field_instance: 'node-search_log-field_t_subgenus'.
   $field_instances['node-search_log-field_t_subgenus'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2886,7 +2886,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_taxonomicstatus'
+  // Exported field_instance: 'node-search_log-field_t_taxonomicstatus'.
   $field_instances['node-search_log-field_t_taxonomicstatus'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -2944,7 +2944,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_t_vernacularname'
+  // Exported field_instance: 'node-search_log-field_t_vernacularname'.
   $field_instances['node-search_log-field_t_vernacularname'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -3002,7 +3002,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_term'
+  // Exported field_instance: 'node-search_log-field_term'.
   $field_instances['node-search_log-field_term'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -3060,7 +3060,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_timestamp'
+  // Exported field_instance: 'node-search_log-field_timestamp'.
   $field_instances['node-search_log-field_timestamp'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -3118,7 +3118,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_user_agent'
+  // Exported field_instance: 'node-search_log-field_user_agent'.
   $field_instances['node-search_log-field_user_agent'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
@@ -3176,7 +3176,7 @@ function bioportal_search_log_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-search_log-field_zoomlevel'
+  // Exported field_instance: 'node-search_log-field_zoomlevel'.
   $field_instances['node-search_log-field_zoomlevel'] = array(
     'bundle' => 'search_log',
     'default_value' => NULL,
