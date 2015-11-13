@@ -56,6 +56,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-11-28 15:48:07 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -90,6 +91,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 12:23:44 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -124,7 +126,81 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-10-21 12:58:21 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Contact',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_service_menu_page',
+  'language' => 'nl',
+  'created' => 1418588269,
+  'tnid' => 6,
+  'translate' => 0,
+  'uuid' => '3e237a01-bd06-477b-a693-da1c7686f9f1',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<h2>Vragen en suggesties over BioPortal</h2>
+
+<table border="0" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="width:50%">E-mail</td>
+			<td><a href="mailto:bioportal@naturalis.nl">bioportal@naturalis.nl</a></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Naturalis Biodiversity Center</h2>
+
+<table border="0" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="width:50%">Bezoekadres</td>
+			<td>Darwinweg 2, 2333 CR Leiden</td>
+		</tr>
+		<tr>
+			<td>Postadres</td>
+			<td>Postbus 9517, 2300 RA Leiden</td>
+		</tr>
+		<tr>
+			<td>Telefoonnummer</td>
+			<td>+ 31-(0)71 568 7600</td>
+		</tr>
+		<tr>
+			<td>Fax</td>
+			<td>+ 31-(0)71 568 7666</td>
+		</tr>
+		<tr>
+			<td>E-mail</td>
+			<td><a href="mailto:contact@naturalis.nl">contact@naturalis.nl</a></td>
+		</tr>
+		<tr>
+			<td>Kantoor</td>
+			<td>Darwinweg 2, 2333 CR Leiden</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-12-14 20:17:49 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -301,10 +377,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-10-21 12:37:22 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -361,11 +434,96 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-11-27 09:44:48 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Disclaimer',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_service_menu_page',
+  'language' => 'nl',
+  'created' => 1418387013,
+  'tnid' => 1,
+  'translate' => 0,
+  'uuid' => '4514bac5-0a1e-4989-ad4a-97a99e38a28c',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p><strong>Aan het op bioportal.naturalis.nl juist weergeven van informatie is door de redactie van Naturalis Biodiversity Center uiterste zorg besteed.</strong></p>
+
+<p>Naturalis Biodiversity Center aanvaardt echter geen enkele aansprakelijkheid voor schade als gevolg van het gebruik, op welke wijze dan ook, van de aangeboden informatie op deze internetsite.</p>
+
+<h2>Rechten</h2>
+
+<p>De redactie heeft alles in het werk gesteld om bij het gebruik van data, teksten en beelden op deze site geen belangen van derden te schenden. Een ieder die niettemin meent dat op deze site materiaal gebruikt is zonder dat daarover met hem of haar als mogelijke rechthebbende afspraken zijn gemaakt, verzoeken wij contact op te nemen met de redactie (bioportal@naturalis.nl).﻿</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-12-12 12:23:33 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Over',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'nl',
+  'created' => 1418379974,
+  'tnid' => 5,
+  'translate' => 0,
+  'uuid' => '5096646a-2b8b-421e-b079-cd59a510e839',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuur(historische) informatie: van basisgegevens van collectieobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis, de taxonomische data van Species 2000 en de soortinformatie van het Soortenregister, met behulp van de <u><a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a></u>. Op deze manier word er een directe link gelegd tussen historische en actuele informatie.</p>
+
+<p>Momenteel is een omvangrijk deel van de Naturalis collecties via het Bioportal te vinden. Het gaat om miljoenen objecten, zowel specimens als multimedia. &nbsp;</p>
+
+<p>De informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van&nbsp;wetenschappelijk gegarandeerde kwaliteit samen zijn te raadplegen.</p>
+
+<p>Het BioPortal bevraagt via de NBA de databronnen van diverse organisaties:</p>
+
+<p>Bronnen van het&nbsp;<a href="http://www.naturalis.nl" style="text-decoration: none;" target="_blank"><u>Naturalis Biodiversity Center</u></a></p>
+
+<ul>
+	<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
+	<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
+	<li>Nederlands Soortenregister: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
+</ul>
+
+<p>Bronnen van&nbsp;<a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank"><u>Species 2000</u></a></p>
+
+<ul>
+	<li>Catalogue of Life: taxonomische namenlijst van wereldwijd voorkomende soorten.</li>
+</ul>
+
+<p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
+
+<p>Vier hoogtepunten uit de Naturalis collecties worden speciaal uitgelicht in het portaal, waaronder de wereldberoemde&nbsp;<a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=nl&amp;back" style="text-decoration: none;" target="_blank"><u>Siebold collectie</u></a>. Via het hoofdmenu, Bijzondere collecties, zijn ze direct te bekijken.</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-12-12 10:26:14 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -413,6 +571,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 12:14:58 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -459,10 +618,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-10-21 12:41:00 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -504,6 +660,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'metatags' => array(),
   'date' => '2014-12-12 10:26:10 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -550,11 +707,106 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-12-12 11:42:51 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Colofon',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_service_menu_page',
+  'language' => 'nl',
+  'created' => 1418384361,
+  'tnid' => 4,
+  'translate' => 0,
+  'uuid' => '9a48e336-4f8f-40f2-954c-8a5e89ba8e66',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<h2>Gebruiksvoorwaarden</h2>
+
+<p>Tenzij anders aangegeven is op de gegevens op deze site de <a href="http://creativecommons.nl/uitleg/" style="text-decoration:none;"><u>Creative Commons</u></a> Zero verklaring van toepassing. Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
+
+<h2>Ontwerp en technische realisatie</h2>
+
+<p>Naturalis Biodiversity Center</p>
+
+<h2>Databronnen</h2>
+
+<ul>
+	<li>Naturalis Biodiversity Center (botanische en zoölogische specimen, soortinformatie)</li>
+	<li>Species 2000 &amp; ITIS Catalogue of Life: Annual Checklist 2014</li>
+	<li>Natura 2000: ESRI-bestanden van gemeenten (Annemiek Adams)</li>
+	<li>Staatsbosbeheer: ESRI-bestanden van natuurgebieden (Jac Hakkens)</li>
+	<li>Vereniging Natuurmonumenten: ESRI-bestanden van natuurgebieden (Rombout de Wijs)</li>
+</ul>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-12-12 11:39:21 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'About',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'en',
+  'created' => 1413985040,
+  'tnid' => 5,
+  'translate' => 0,
+  'uuid' => '9c021310-9a55-495b-b798-dbbc56a1c5bb',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to species and natural history, from basic data about collection objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitised details about the Naturalis collections, Species 2000 classification and species information from Nederlands Soortenregister, using the <u><a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a></u>. BioPortal directly links historical with present information.</p>
+
+<p>Currently, millions of Naturalis objects can be accessed through the BioPortal. This information will continue to be further extended with all the data linked together in the NBA, so that in the Netherlands we will be able to use a single website that enables us to consult a full range of digital sources, with a guaranteed level of scientific quality.</p>
+
+<p>Via the NBA, the BioPortal can access the data sources from multiple organisations:</p>
+
+<p>Data sources from <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank"><u>Naturalis Biodiversity Center</u></a></p>
+
+<ul>
+	<li>Zoology and Geology catalogues: zoological, paleontological, mineralogical and petrological specimen and multimedia objects</li>
+	<li>Botany catalogues: botanic specimen and multimedia objects</li>
+	<li>Nederlands Soortenregister: taxonomic name lists with additional descriptions and multimedia of Dutch species</li>
+</ul>
+
+<p>Data sources from <a href="http://www.species2000.org/" style="text-decoration:none;" target="_blank"><u>Species 2000</u></a></p>
+
+<ul>
+	<li>Catalogue of Life: taxonomic name lists of species occurring worldwide</li>
+</ul>
+
+<p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
+
+<p>Within the portal, special Naturalis collections will be spotlighted, and thanks to their own menu, Explore highlights, easily scrollable. For example, take a look at the world famous <a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=en" style="text-decoration:none;" target="_blank"><u>Siebold collection</u></a>.</p>
+
+<div>&nbsp;</div>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-10-22 13:37:20 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -622,10 +874,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-10-22 13:22:53 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -682,11 +931,137 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
+  'metatags' => array(),
   'date' => '2014-12-12 10:18:47 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Help',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_help',
+  'language' => 'en',
+  'created' => 1418640288,
+  'tnid' => 2,
+  'translate' => 0,
+  'uuid' => 'f5db4539-d3d6-4008-8725-ad5156f4be66',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>On this site, you can search for multimedia, specimens (collection specimens) and taxa (species descriptions of animals, plants, fungi), fossils, minerals and rocks.</p>
+
+<p>The information will be supplied from the catalogues of <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank"><u>Naturalis Biodiversity Center</u></a> in Leiden, from the <a href="http://www.nederlandsesoorten.nl/" style="text-decoration:none;" target="_blank"><u>Nederlands Soortenregister</u></a> and the <a href="http://www.catalogueoflife.org/" style="text-decoration:none;" target="_blank"><u>Catalogue of Life</u></a>.</p>
+
+<p>On pratically every specimen-page a PURL (Persistent Uniform Resource Locator) is present. You can cite the object described here by using this PURL. Naturalis will try to assure the permanent character of this PURL.</p>
+
+<p>The BioPortal offers four possibilities for browsing through this data:</p>
+
+<ul>
+	<li><a href="#simple-search">&nbsp;<em>simple search</em></a></li>
+	<li><a href="#advanced-search">&nbsp;<em>advanced search</em></a></li>
+	<li><em><a href="#geo-search">geographic search</a></em></li>
+	<li><em><a name="simple-search"></a><a href="#explore-highlights">explore highlights</a></em></li>
+</ul>
+
+<h2><strong>Searching</strong></h2>
+
+<p><br />
+<strong>Simple Search</strong></p>
+
+<p>Bioportal works in the same way as other well-known search engines: it uses your search terms to browse through our sources. Within its search operations, it will examine all the fields specified in the <em>advanced search</em> (such as popular name, scientific name or discovery location) and will even browse fields not accessible via the <em>advanced search</em>.</p>
+
+<p><em>Example</em>: you can search for either [ brown rat ] or [ rattus norvegicus ].</p>
+
+<p>If you type more than one search term, we will display all the results in which one, some or all of the terms occur, but we will head the list with results with the best match.</p>
+
+<p>When you make a simple search the search term will be analysed and if there are more terms the search is divided into various parts. All these parts lead to potential search results and are combined with an OR, which can lead to very big search result sets.</p>
+
+<p><a name="advanced-search"></a>It is not possible to use brackets or so-called <em>wildcards. </em>All foreign characters will be ignored in the query. To combine search terms, simply use the <em><a href="#advanced-search">Advanced Search</a></em> option.</p>
+
+<p>&nbsp;</p>
+
+<h3><strong>Advanced Search</strong></h3>
+
+<p>By clicking on the triangle symbol in the entry field, you will leave the <em>simple search </em>application, and start an <em>advanced search</em>. This means that you will limit your results to the category in which you are searching (multimedia, specimens or taxa) and to the specific fields in which you are searching.</p>
+
+<p>If you enter search terms for more than one category, the result for each category will be shown.</p>
+
+<p>If you enter more than one search field within a single category, initially, those results will be shown that include one or more of the terms.</p>
+
+<p>If you opt to use ‘And’ for ‘Combine search terms’, the search engine will only display results that contain all terms; in other words you will reduce the number of results.</p>
+
+<p>For each category &nbsp;you can limit your query by selecting a specific source (e.g. Botany or Zoology and Geology catalogues).</p>
+
+<p><a name="geo-search"></a>Within the categories specimens and multimedia, you also have the option to restrict your search to a specific collection by selecting its name in the Collection name field.&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3><strong>Geographic Search</strong></h3>
+
+<p>You can use a geographic search to rapidly limit the number of search results to a particular area. The area can be selected from a list of areas on the right-hand side of the map, or drawn onto the map.</p>
+
+<p>The results will always be limited to collection specimen and multimedia. Within this search type, only those results for which the geographical coordinates of the discovery location are stored in the source systems will be displayed.</p>
+
+<p><em><a id="explore-highlights" name="explore-highlights"></a></em>We make use of a range of different <a href="/colophon#sources?language=en" target="_blank">sources</a>. This means that in some cases, areas may be listed more than once. These areas will often differ in terms of degree of detail of the boundaries.</p>
+
+<p>&nbsp;</p>
+
+<h3><strong>Explore Highlights</strong></h3>
+
+<p>A simple and rapid search method is ‘Explore Highlights’. This search will result in a reproduction of all specimens that belong to one of the Special Collections at Naturalis. The results will be displayed immediately.</p>
+
+<h2><strong>Search results</strong></h2>
+
+<p>The aim of BioPortal is to deliver the results you are looking for quickly, and with that in mind, the system will use <em>name resolution</em> and <em>ranking</em>.</p>
+
+<h3><strong>Name resolution</strong></h3>
+
+<p>The BioPortal will attempt to <em>match</em> your search term to a scientific name. This will be achieved by browsing through various fields in the <u><a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a></u> and the <u><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a></u>.</p>
+
+<p>1. &nbsp;&nbsp;&nbsp;Scientific name<br />
+○ &nbsp;&nbsp;&nbsp;&nbsp;For example: <em>“Rattus norvegicus”</em><br />
+2. &nbsp;&nbsp;&nbsp;A list of popular names in various languages<br />
+○ &nbsp;&nbsp;&nbsp;&nbsp;One example is ‘Bruine Rat’ (Dutch) or “Brown Rat ” (English)<br />
+3. &nbsp;&nbsp;&nbsp;Higher orders<br />
+○ &nbsp;&nbsp;&nbsp;&nbsp;For example “Rodentia” for the biological order rodents</p>
+
+<p>This scientific name is then used to browse through multimedia and specimens. This may mean that your original query will not necessarily be literally reproduced in certain results.</p>
+
+<h3><strong>Ranking</strong></h3>
+
+<p>The search results will be ranked according to</p>
+
+<p>1. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the scientific name<br />
+2. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the species name<br />
+3. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the genus name<br />
+4. &nbsp;&nbsp;&nbsp;Partial <em>match</em> for the scientific name<br />
+5. &nbsp;&nbsp;&nbsp;Full <em>match</em> for any other field<br />
+6. &nbsp;&nbsp;&nbsp;Partial <em>match</em> for any other field<br />
+7. &nbsp; &nbsp;The number of times a matched is found/&nbsp;The importance of a field</p>
+
+<p><strong>Categories</strong><br />
+<br />
+The search results are divided into four categories:</p>
+
+<p>1. &nbsp;&nbsp;&nbsp;Multimedia: pictures, sound or moving images from all data<br />
+2. &nbsp;&nbsp;&nbsp;Taxa (species description)<br />
+3. &nbsp;&nbsp;&nbsp;Specimens with the search term in the species name.&nbsp;Generates results if the search term occurs in the &nbsp;taxonomical information of the specimen<br />
+4. &nbsp;&nbsp;&nbsp;Specimens with the search term in another field.&nbsp;Generates results if the search term occurs in (for example) collection information, geographical information or information relating to time and dates.&nbsp;‘Rat’ also generates results for ‘Rat Island in Plymouth, UK.</p>
+
+<p>Specimens are references to and descriptions of objects stored in the Naturalis collection (and sometimes other collections). These descriptions can contain many different fields.</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'metatags' => array(),
+  'date' => '2014-12-15 10:44:48 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   return $nodes;
