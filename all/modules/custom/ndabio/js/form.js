@@ -124,3 +124,20 @@
 		});
 	});
 })(jQuery);
+
+function clearForm () {
+	// Reset entire form
+	jQuery("#ndabio-advanced-taxonomysearch").trigger("reset");
+	// Uncheck all radio buttons
+	jQuery('input[type=radio]').prop('checked',false);
+	// Check all 'Or' options
+	jQuery('#edit-n-andor-1').prop("checked", true)
+	jQuery('#edit-s-andor-1').prop("checked", true)
+	jQuery('#edit-m-andor-1').prop("checked", true)
+	jQuery('#edit-t-andor-1').prop("checked",true);
+
+	//"this.form.reset(); document.getElementById('edit-n-andor-1').checked='checked'; document.getElementById('edit-s-andor-1').checked='checked'; document.getElementById('edit-t-andor-1').checked=false; document.getElementById('edit-m-andor-1').checked=false; document.getElementById('edit-s-collectiontype').value=''; document.getElementById('edit-m-collectiontype').value=''; document.getElementById('edit-m-sourcesystem').value=''; document.getElementById('edit-s-sourcesystem').value=''; document.getElementById('edit-t-sourcesystem').value=''; return false;"
+
+}
+
+
