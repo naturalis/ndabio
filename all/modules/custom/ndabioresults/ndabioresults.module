@@ -1329,8 +1329,12 @@ function parseMultimedia ($json) {
 		$d['url'] = getMultimediaDetailLink($row);
 		$d['source'] = !empty($row->result->{$type}->sourceSystem) ?
             $row->result->{$type}->sourceSystem->name : '';
-
 		list($d['imgSrc'], $d['format']) = getImageData($row);
+		// Reset image url if this is stored in MediaLib;
+		// use medium format to speed up loading times
+		if (strpos($d['imgSrc'], 'medialib') !== false) {
+            $d['imgSrc'] = str_replace('format/large', 'format/medium', $d['imgSrc']);
+		}
 		$d['hits'] = getHits($row, false);
 		$d['taxon'] = getMultimediaTaxon($row, $output['searchTerms']);
 		$d['unitID'] = getMultimediaUnitId($row, $output['searchTerms']);
