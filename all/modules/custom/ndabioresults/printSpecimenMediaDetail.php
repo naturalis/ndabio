@@ -76,7 +76,7 @@ function printSpecimenMediaDetail ($data) {
 	    'collectionType',
         'description',
         'copyrightText',
-    	'localityText',
+    	'locality',
     	'dateTimeBegin',
         'sexes',
 	    'specimenTypeStatus',

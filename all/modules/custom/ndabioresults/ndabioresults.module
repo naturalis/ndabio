@@ -834,9 +834,15 @@ function parseSpecimenMediaDetail ($json) {
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
 	$output['mediaUnitID'] = $row->result->unitID;
 	$output['imgSrc'] = getImageUrl($row);
-	$output['phaseOrStage'] = $row->result->phasesOrStages;
-	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
-	$output['dateTimeBegin'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
+	$output['phaseOrStage'] = !empty($row->result->phasesOrStages) ?
+	   $row->result->phasesOrStages :
+	   $row->result->associatedSpecimen->phaseOrStage;
+	$output['locality'] = !empty($row->result->gatheringEvents[0]->localityText) ?
+	   $row->result->gatheringEvents[0]->localityText :
+	   $row->result->associatedSpecimen->gatheringEvent->localityText;
+	$output['dateTimeBegin'] = !empty($row->result->gatheringEvents[0]->dateTimeBegin) ?
+	   timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin) :
+	   timeStampToDate($row->result->associatedSpecimen->gatheringEvent->dateTimeBegin);
 
 	return $output;
 }
