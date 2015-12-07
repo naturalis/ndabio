@@ -2972,6 +2972,7 @@ function setNavigationSetLink ($data, $direction) {
     if (!array_key_exists('_offset', $terms)) {
         $terms['_offset'] = array(0, $data->totalSize - 1);
     }
+    $p = '';
     foreach ($terms as $k => $v) {
         if ($k == '_offset') {
             if ($direction == 'previous' && ($v[0] - $terms['_maxResults'][0] >= 0)) {
