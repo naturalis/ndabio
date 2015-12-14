@@ -8097,15 +8097,6 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Filtered text (user selects text format)', array(), array('context' => ''));
-  $translations['nl:default']['3164d346b3e2867cda38e567b4b907a9'] = array(
-    'source' => '-- all --',
-    'context' => '',
-    'location' => '/?language=nl&back',
-    'translation' => '-- alle --',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('-- all --', array(), array('context' => ''));
   $translations['nl:default']['31688c95991e073ad5a49307eae3d63a'] = array(
     'source' => 'Edit image effect',
     'context' => '',
@@ -35739,15 +35730,6 @@ This link can only be used once to log in and will lead you to a page where you 
     'plural' => 0,
   );
   $translatables[] = t('Expiration of cached pages', array(), array('context' => ''));
-  $translations['nl:default']['ce989826d3e7ac8c3fc1a3edd1cbe039'] = array(
-    'source' => '-- any --',
-    'context' => '',
-    'location' => '/?language=nl&back',
-    'translation' => '-- elke --',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('-- any --', array(), array('context' => ''));
   $translations['nl:default']['ce9ff4c0410d35afbc2206ab23c8759d'] = array(
     'source' => 'Yoruba',
     'context' => '',
@@ -44167,6 +44149,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('m_collectorsFieldNumber', array(), array('context' => 'term:12:name'));
+  $translations['nl:taxonomy']['3c2021cc147e3356eef93d38395c7e4d'] = array(
+    'source' => 'Species n',
+    'context' => 'term:70:name',
+    'location' => 'taxonomy:term:70:name',
+    'translation' => 'Soorten met specimens',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Species n', array(), array('context' => 'term:70:name'));
   $translations['nl:taxonomy']['4a52dbd2174923dc270a8d5dd5d4b41e'] = array(
     'source' => 'Infraspecific name
 ',
@@ -44223,15 +44214,6 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collection specimens', array(), array('context' => 'term:105:name'));
-  $translations['nl:taxonomy']['8d96f7c846406f347e049594b08532e5'] = array(
-    'source' => 'Species x',
-    'context' => 'term:70:name',
-    'location' => 'taxonomy:term:70:name',
-    'translation' => 'Soorten met specimens',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Species x', array(), array('context' => 'term:70:name'));
   $translations['nl:taxonomy']['9d2edb09c1f6d072f6053de8de13cfc8'] = array(
     'source' => 'Specific name
 ',

@@ -110,13 +110,13 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p><strong>Every effort has been taken to ensure the accuracy of the information on bioportal.naturalis.nl.</strong></p>
+        'value' => '<p>Every effort has been taken to ensure the accuracy of the information on bioportal.naturalis.nl.&nbsp;</p>
 
 <p>However, Naturalis Biodiversity Center excludes all and any liability for damage resulting from the use, in whatever manner, of information supplied on this site.</p>
 
 <h2>Intellectual Property Rights</h2>
 
-<p>Every effort has been taken to protect the interests of third parties when using data, texts and pictures. If, however, you believe that this site contains material that is subject to intellectual property rights, without agreements having been reached with the rightful owner, please contact the web editors (bioportal@naturalis.nl).</p>
+<p>Every effort has been taken to protect the interests of third parties when using data, texts and pictures. If, however, you believe that this site contains material that is subject to intellectual property rights, without agreements having been reached with the rightful owner, please contact the web editors (<a href="mailto:bioportal@naturalis.nl">bioportal@naturalis.nl</a>).</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -124,6 +124,10 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-21 12:58:21 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -216,7 +220,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Op deze site kun je zoeken op multimedia, specimens (collectie-exemplaren), taxa (o.a. soortbeschrijvingen) en op dieren, planten, paddenstoelen), fossielen, mineralen en stenen.</p>
+        'value' => '<p>Op deze site kun je zoeken op multimedia, specimens (collectie-exemplaren), taxa (dieren, planten, paddenstoelen), fossielen, mineralen en stenen.</p>
 
 <p>De informatie komt uit de catalogi van <a href="http://www.naturalis.nl" style="text-decoration:none;">Naturalis Biodiversity Center</a> te Leiden, uit het <a href="http://www.nederlandsesoorten.nl/" style="text-decoration:none;">Nederlands Soortenregister</a> en uit de <a href="http://www.catalogueoflife.org/" style="text-decoration:none;">Catalogue of Life</a>.</p>
 
@@ -247,7 +251,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Bij een simple search wordt een zoekterm geanalyseerd en dat leidt in het geval van meerdere termen tot een opdeling in brokjes. Dit zijn allemaal potentiele zoektermen die als een OR worden behandeld en dit kan zorgen voor een groot aantal zoekresultaten.</p>
 
-<p><a name="advanced-search"></a><a name="multimedia"></a><a name="taxa"></a><a name="collection-specimens-by-name"></a><a name="collection-specimens"></a>Je kan geen gebruik maken van haakjes of zogenoemde <em> wildcards. </em>Om zoektermen te combineren kan je gebruik maken van de <a href="#advanced-search"> Advanced search </a></p>
+<p><a name="advanced-search"></a><a name="multimedia"></a><a name="taxa"></a><a name="collection-specimens-by-name"></a><a name="collection-specimens"></a>Je kan geen gebruik maken van haakjes of zogenoemde <em> wildcards. </em>Om zoektermen te combineren kan je gebruik maken van de <a href="#advanced-search"> Geavanceerd zoeken</a></p>
 
 <p>&nbsp;</p>
 
@@ -267,9 +271,9 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Geografisch zoeken</h3>
 
-<p>Geografisch zoeken kan gebruikt worden om de zoekresultaten te beperken tot een bepaald gebied. Dit gebied kan gekozen worden uit de lijst gebieden rechts van de kaart of op de kaart getekend worden. Selecteer om zelf een gebied te tekenen het polygoon- of rechthoek-symbool midden bovenin de kaart, en klik vervolgens in de kaart om het gebied te tekenen. Wanneer je een polygoon tekent, kun je hem sluiten door dubbel te klikken.</p>
+<p>Geografisch zoeken kan gebruikt worden om de zoekresultaten te beperken tot een bepaald gebied. Dit gebied kan gekozen worden uit de lijst gebieden rechts van de kaart of op de kaart getekend worden. Selecteer om zelf een gebied te tekenen het polygoon- of rechthoek-symbool midden bovenin de kaart, en klik vervolgens in de kaart om het gebied te tekenen.</p>
 
-<p>Alleen resultaten waarvan de geografische coördinaten van de vindplaats opgenomen zijn in de bronsystemen, worden hier getoond. De resultaten zijn daarom altijd beperkt tot specimens en multimedia.</p>
+<p>Alleen resultaten waarvan de geografische coördinaten van de vindplaats opgenomen zijn in de bronsystemen worden hier getoond. De resultaten zijn daarom altijd beperkt tot specimens en multimedia.</p>
 
 <p><a name="explore"></a>We maken gebruik van verschillende <a href="/nl/colofon#sources?language=nl" target="_blank">bronnen</a>. Daardoor kan het voorkomen dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden in de gedetaileerdheid van de begrenzing.</p>
 
@@ -285,7 +289,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <h3>Name resolution</h3>
 
-<p>Het BioPortal zal trachten jouw zoekterm te <em>matchen</em> met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soorten Register</a> en de <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a></p>
+<p>Het BioPortal zal trachten jouw zoekterm te <em>matchen</em> met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a> en de <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a></p>
 
 <ol>
 	<li>
@@ -494,7 +498,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuur(historische) informatie: van basisgegevens van collectieobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis, de taxonomische data van Species 2000 en de soortinformatie van het Soortenregister, met behulp van de <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. Op deze manier wordt er een directe link gelegd tussen historische en actuele informatie.</p>
+        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuur(historische) informatie: van basisgegevens van collectieobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis, de taxonomische data van <a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a> en de soortinformatie van het <a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlandse Soortenregister</a>, met behulp van de <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. Op deze manier wordt er een directe link gelegd tussen historische en actuele informatie.</p>
 
 <p>Momenteel is een omvangrijk deel van de Naturalis collecties via het Bioportal te vinden. Het gaat om miljoenen objecten, zowel specimens als multimedia. &nbsp;</p>
 
@@ -502,18 +506,18 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>Het BioPortal bevraagt via de NBA de databronnen van diverse organisaties:</p>
 
-<p>Bronnen van het&nbsp;<a href="http://www.naturalis.nl" style="text-decoration: none;" target="_blank">Naturalis Biodiversity Center</a></p>
+<h2>Bronnen van het&nbsp;<a href="http://www.naturalis.nl" style="text-decoration: none;" target="_blank">Naturalis Biodiversity Center</a></h2>
 
 <ul>
 	<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
 	<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
-	<li>Nederlands Soortenregister: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
+	<li><a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlandse Soortenregister</a>: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
 </ul>
 
-<p>Bronnen van&nbsp;<a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a></p>
+<h2>Bronnen van&nbsp;<a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a></h2>
 
 <ul>
-	<li>Catalogue of Life: taxonomische namenlijst van wereldwijd voorkomende soorten.</li>
+	<li><a href="http://www.catalogueoflife.org" target="_blank">Catalogue of Life</a>: taxonomische namenlijst van wereldwijd voorkomende soorten.</li>
 </ul>
 
 <p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
@@ -791,29 +795,29 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to species and natural history, from basic data about collection objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitised details about the Naturalis collections, Species 2000 classification and species information from Nederlands Soortenregister, using the <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. BioPortal directly links historical with present information.</p>
+        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to species and natural history, from basic data about collection objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitised details about the Naturalis collections, <a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a> classification and species information from <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a>, using the <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. BioPortal directly links historical with present information.</p>
 
 <p>Currently, millions of Naturalis objects can be accessed through the BioPortal. This information will continue to be further extended with all the data linked together in the NBA, so that in the Netherlands we will be able to use a single website that enables us to consult a full range of digital sources, with a guaranteed level of scientific quality.</p>
 
 <p>Via the NBA, the BioPortal can access the data sources from multiple organisations:</p>
 
-<p>Data sources from <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a></p>
+<h2>Data sources from <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a></h2>
 
 <ul>
 	<li>Zoology and Geology catalogues: zoological, paleontological, mineralogical and petrological specimen and multimedia objects</li>
 	<li>Botany catalogues: botanic specimen and multimedia objects</li>
-	<li>Nederlands Soortenregister: taxonomic name lists with additional descriptions and multimedia of Dutch species</li>
+	<li><a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a>: taxonomic name lists with additional descriptions and multimedia of Dutch species</li>
 </ul>
 
-<p>Data sources from <a href="http://www.species2000.org/" style="text-decoration:none;" target="_blank">Species 2000</a></p>
+<h2>Data sources from <a href="http://www.species2000.org/" style="text-decoration:none;" target="_blank">Species 2000</a></h2>
 
 <ul>
-	<li>Catalogue of Life: taxonomic name lists of species occurring worldwide</li>
+	<li><a href="http://www.catalogueoflife.org" target="_blank">Catalogue of Life</a>: taxonomic name lists of species occurring worldwide</li>
 </ul>
 
 <p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
 
-<p>Within the portal, special Naturalis collections will be spotlighted. Thanks to their own menu—Explore highlights—they are easily scrollable. For example, take a look at the world famous <a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=en" style="text-decoration:none;" target="_blank">Siebold collection</a>.</p>
+<p>Within the portal, special Naturalis collections will be spotlighted. Thanks to their own menu — Explore highlights — they are easily scrollable. For example, take a look at the world famous <a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=en" style="text-decoration:none;" target="_blank">Siebold collection</a>.</p>
 
 <div>&nbsp;</div>
 ',
@@ -991,7 +995,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 <p><br />
 <strong>Simple Search</strong></p>
 
-<p>Bioportal works in the same way as other well-known search engines: it uses your search terms to browse through our sources. Within its search operations, it will examine all the fields specified in the advanced search (such as popular name, scientific name or discovery location) and will even browse fields not accessible via the advanced search.</p>
+<p>Bioportal works in the same way as other well-known search engines: it uses your search terms to browse our sources. Within its search operations, it will examine all the fields specified in the advanced search (such as popular name, scientific name or discovery location) and will even browse fields not accessible via the advanced search.</p>
 
 <p>Example: you can search for either [ brown rat ] or [ rattus norvegicus ].</p>
 
@@ -999,7 +1003,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>When you make a simple search the search term will be analysed and if there are more terms the search is divided into various parts. All these parts lead to potential search results and are combined with an OR, which can lead to very big search result sets.</p>
 
-<p><a name="advanced-search"></a>It is not possible to use brackets or so-called wildcards. All foreign characters will be ignored in the query. To combine search terms, simply use the <a href="#advanced-search">Advanced Search</a> option.</p>
+<p><a name="advanced-search"></a>It is not possible to use brackets or so-called wildcards. All foreign characters will be ignored in the query. To combine search terms, use the <a href="#advanced-search">Advanced Search</a> option.</p>
 
 <p>&nbsp;</p>
 
@@ -1009,7 +1013,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
 
 <p>If you enter search terms for more than one category, the result for each category will be shown.</p>
 
-<p>If you enter more than one search field within a single category, initially, those results will be shown that include &nbsp;one of the two terms.</p>
+<p>If you enter more than one search field within a single category, initially, those results will be shown that include one of the two terms.</p>
 
 <p>If you opt to use ‘And’ for ‘Combine search terms’, the search engine will display results that contain both terms; in other words you will reduce the number of results.</p>
 
