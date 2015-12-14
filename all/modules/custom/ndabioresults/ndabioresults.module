@@ -1163,10 +1163,18 @@ function getSpecimenTaxonNames ($row, $links = false) {
 				$id->scientificName->fullScientificName,
 				$id->scientificName
 			),
-			'url' => getTaxonUrl($links, $id->scientificName)
+			'url' => getTaxonUrl($links, $id->scientificName),
+		    'preferred' => $id->preferred ? 1 : 0
 		);
 	}
-	return isset($output) ? $output : false;
+
+	if (isset($output)) {
+    	usort($output, function($a, $b) {
+            return $b['preferred'] - $a['preferred'];
+        });
+	    return $output;
+	}
+	return false;
 }
 
 /**
