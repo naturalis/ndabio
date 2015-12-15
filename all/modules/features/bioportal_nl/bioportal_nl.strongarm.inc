@@ -22,17 +22,17 @@ function bioportal_nl_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'language_default';
   $strongarm->value = (object) array(
-    'language' => 'en',
-    'name' => 'English',
-    'native' => 'English',
+    'language' => 'nl',
+    'name' => 'Dutch',
+    'native' => 'Nederlands',
     'direction' => '0',
     'enabled' => '1',
-    'plurals' => '0',
-    'formula' => '',
+    'plurals' => '2',
+    'formula' => '($n!=1)',
     'domain' => '',
-    'prefix' => 'en',
+    'prefix' => 'nl',
     'weight' => '0',
-    'javascript' => '',
+    'javascript' => 'WsI3f7k-wHNsqY94yPrXRo-9iv_1FESkl5MRNxoU-qE',
   );
   $export['language_default'] = $strongarm;
 

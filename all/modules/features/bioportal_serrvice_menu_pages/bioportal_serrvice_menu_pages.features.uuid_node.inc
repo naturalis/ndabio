@@ -76,7 +76,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p><strong>Aan het op bioportal.naturalis.nl juist weergeven van informatie is door de redactie van Naturalis Biodiversity Center uiterste zorg besteed.</strong></p>
+        'value' => '<h2>Aan het op bioportal.naturalis.nl juist weergeven van informatie is door de redactie van Naturalis Biodiversity Center uiterste zorg besteed.</h2>
 
 <p>Naturalis Biodiversity Center aanvaardt echter geen enkele aansprakelijkheid voor schade als gevolg van het gebruik, op welke wijze dan ook, van de aangeboden informatie op deze internetsite.</p>
 
@@ -90,6 +90,10 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2014-12-12 12:23:44 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -110,7 +114,7 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Every effort has been taken to ensure the accuracy of the information on bioportal.naturalis.nl.&nbsp;</p>
+        'value' => '<h2>Every effort has been taken to ensure the accuracy of the information on bioportal.naturalis.nl.&nbsp;</h2>
 
 <p>However, Naturalis Biodiversity Center excludes all and any liability for damage resulting from the use, in whatever manner, of information supplied on this site.</p>
 

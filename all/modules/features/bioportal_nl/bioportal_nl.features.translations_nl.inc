@@ -8817,6 +8817,21 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Created role of name: @name, id: @rid', array(), array('context' => ''));
+  $translations['nl:default']['355477b68a4d2b5f65282a6170986d42'] = array(
+    'source' => '<div id=\'boxes-box-site_explanation\' class=\'boxes-box\'><div class="boxes-box-content"><p>At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.</p>
+</div><div class="boxes-box-controls"><ul class="links"><li class="edit first active"><a href="/?plugin_key=simple&amp;boxes_delta=site_explanation" class="use-ajax active">Edit Box</a></li>
+<li class="cancel last active"><a href="/" class="active">Annuleren</a></li>
+</ul></div></div>',
+    'context' => '',
+    'location' => '/',
+    'translation' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met behulp van deze website kun je door informatie over collectie-exemplaren en soorten zoeken, informatie die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('<div id=\'boxes-box-site_explanation\' class=\'boxes-box\'><div class="boxes-box-content"><p>At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.</p>
+</div><div class="boxes-box-controls"><ul class="links"><li class="edit first active"><a href="/?plugin_key=simple&amp;boxes_delta=site_explanation" class="use-ajax active">Edit Box</a></li>
+<li class="cancel last active"><a href="/" class="active">Annuleren</a></li>
+</ul></div></div>', array(), array('context' => ''));
   $translations['nl:default']['35672c32b820b866cd8d161b1a149731'] = array(
     'source' => 'Triggers are events on your site, such as new content being added or a user logging in. The Trigger module associates these triggers with actions (functional tasks), such as unpublishing content containing certain keywords or e-mailing an administrator. The <a href="@url">Actions settings page</a> contains a list of existing actions and provides the ability to create and configure advanced actions (actions requiring configuration, such as an e-mail address or a list of banned words).',
     'context' => '',
@@ -12231,8 +12246,8 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'source' => '<div id=\'boxes-box-site_explanation\' class=\'boxes-box\'><div class="boxes-box-content"><p>At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.</p>
 </div></div>',
     'context' => '',
-    'location' => '/?language=nl&back',
-    'translation' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
+    'location' => '/',
+    'translation' => '<p>Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met behulp van deze website kun je door informatie over collectie-exemplaren en soorten zoeken, informatie die is verzameld door Naturalis en andere Nederlandse organisaties.</p>',
     'plid' => 0,
     'plural' => 0,
   );
@@ -40534,15 +40549,6 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Performing updates through the user interface', array(), array('context' => ''));
-  $translations['nl:default']['ec0e7bf5e8095017d68ab2aba4df498e'] = array(
-    'source' => 'At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.',
-    'context' => '',
-    'location' => '/node/1?language=nl',
-    'translation' => 'Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen en mineralen. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.', array(), array('context' => ''));
   $translations['nl:default']['ec211f7c20af43e742bf2570c3cb84f9'] = array(
     'source' => 'Add',
     'context' => '',
