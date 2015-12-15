@@ -48,7 +48,7 @@
 <!--[if lt IE 9]><html class="no-js lt-ie9" lang="en">
 <script>
 <!--
-    alert("You need a more recent version of Internet Explorer to properly view this site.");
+    alert("This site requires Internet Explorer 9 or higher.\n\nIf you see this message in a recent version of IE, please press F12 for 'F12 developers tools' and make sure 'Browser Mode' and 'Document Mode' are set to IE9 or higher.");
 //-->
 </script>
 <![endif]-->
