@@ -42,6 +42,7 @@ function ndabio_boot() {
   else {
     $language = $langs['nl'];
   }
+
 }
 
 
@@ -49,6 +50,18 @@ function ndabio_boot() {
  * Implements hook_menu().
  */
 function ndabio_menu() {
+  $urlAlias = drupal_lookup_path('alias',"nl/help");
+  if($urlAlias == '' ) {
+    $nlpath['alias'] = "nl/help";
+    $nlpath['source'] = "node/2";
+    $nlpath['language'] = "nl";
+    path_save($nlpath);
+    $enpath['alias'] = "en/help";
+    $enpath['source'] = "node/3765";
+    $enpath['language'] = "en";
+    path_save($enpath);
+  }
+ 
   //Configuration page
   $items['admin/config/naturalis/ndabio'] = array(
     'title' => 'NDABIO GMap config',
