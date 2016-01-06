@@ -52,10 +52,16 @@ function ndabio_boot() {
 function ndabio_menu() {
   $urlAlias = drupal_lookup_path('alias',"nl/help");
   if($urlAlias == '' ) {
+    $path1['alias'] = "nl/help";
+    $path1['source'] = "node/2";
+    path_save($path1);
     $nlpath['alias'] = "nl/help";
     $nlpath['source'] = "node/2";
     $nlpath['language'] = "nl";
     path_save($nlpath);
+    $path2['alias'] = "en/help";
+    $path2['source'] = "node/3765";
+    path_save($path2);
     $enpath['alias'] = "en/help";
     $enpath['source'] = "node/3765";
     $enpath['language'] = "en";
