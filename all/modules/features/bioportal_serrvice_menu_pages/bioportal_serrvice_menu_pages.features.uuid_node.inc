@@ -990,7 +990,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
 
 <p>The information will be supplied from the catalogues of <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a> in Leiden, from the <a href="http://www.nederlandsesoorten.nl/" style="text-decoration:none;" target="_blank">Nederlands Soortenregister</a> and the <a href="http://www.catalogueoflife.org/" style="text-decoration:none;" target="_blank">Catalogue of Life</a>.</p>
 
-<p>On pratically every specimen-page a PURL (Persistent Uniform Resource Locator) is present. You can cite the object described here by using this PURL. Naturalis will try to assure the permanent character of this PURL.</p>
+<p>On practically every specimen-page a PURL (Persistent Uniform Resource Locator) is present. You can cite the object described here by using this PURL. Naturalis will try to assure the permanent character of this PURL.</p>
 
 <p>The BioPortal offers four possibilities for browsing this data:</p>
 
