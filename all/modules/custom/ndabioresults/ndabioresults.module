@@ -830,7 +830,7 @@ function parseSpecimenMediaDetail ($json) {
 
 	$output['source'] = $row->result->associatedSpecimen->sourceSystem->name;
 	//$output['navigation'] = getNavigation($data);
-	$output['names'] = getSpecimensMultimediaNames($row);
+	$output['names'] = getSpecimenNames($row, array('idBlock' => 'associatedSpecimens'));
 	$output['unitID'] = setUnitId($row->result->associatedSpecimen->unitID);
 	$output['mediaUnitID'] = $row->result->unitID;
 	$output['imgSrc'] = getImageUrl($row);
@@ -847,24 +847,6 @@ function parseSpecimenMediaDetail ($json) {
 	return $output;
 }
 
-/**
- * Gets scientific names for specimen media detail response
- *
- * @param array $row Search results section of NBA response
- * @return array|void Array with formatted names and their links
- */
-function getSpecimensMultimediaNames ($row) {
-	foreach ($row->result->associatedSpecimen->identifications as $i => $name) {
-		$output[] = array(
-			'name' => formatScientificName(
-				$name->scientificName->fullScientificName,
-				$name->scientificName
-			),
-			'url' => getTaxonUrl($row->links, $name->scientificName)
-		);
-	}
-	return isset($output) ? $output : false;
-}
 
 /**
  * Returns url for a taxon associated with the specimen
@@ -1133,7 +1115,7 @@ function parseSpecimenDetail ($json) {
 	$output['collectionType'] = $data->searchResults[0]->result->collectionType;
 	$output['source'] = isset($data->searchResults[0]->result->sourceSystem) ?
 	   $data->searchResults[0]->result->sourceSystem->name : '';
-	$output['names'] = getSpecimenTaxonNames($data->searchResults[0], $data->links);
+	$output['names'] = getSpecimenNames($data->searchResults[0], array('links' => $data->links));
 	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
 	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
 	$output['license'] = $data->searchResults[0]->result->license;
@@ -1143,21 +1125,27 @@ function parseSpecimenDetail ($json) {
 	return $output;
 }
 
+
 /**
  * Scientific names and their urls for a specimen
  *
- * @param array $row Identification section of NBA response
- * @param array $links Links to taxa (optional: if not provided links will be extracted from NBA response)
+ * @param array $row Individual record in NBA response
+ * @param array $p: options
+ *    links => links to species (optional)
+ *    idBLock => alternate id block (optional)
  * @return array|void Array of names and their urls
  */
-function getSpecimenTaxonNames ($row, $links = false) {
-    if (!isset($row->result->identifications) || empty($row->result->identifications)) {
+function getSpecimenNames ($row, $p) {
+    $links = isset($p['links']) ? $p['links'] : $row->links;
+    $idBlock = isset($p['idBlock']) ?
+        $row->result->associatedSpecimen->identifications :
+        $row->result->identifications;
+
+    if (empty($idBlock)) {
         return array();
     }
-    if (!$links) {
-        $links = $row->links;
-    }
-    foreach ($row->result->identifications as $i => $id) {
+
+    foreach ($idBlock as $i => $id) {
 		$output[] = array(
 			'name' => formatScientificName(
 				$id->scientificName->fullScientificName,
@@ -1174,8 +1162,9 @@ function getSpecimenTaxonNames ($row, $links = false) {
         });
 	    return $output;
 	}
-	return false;
+	return array();
 }
+
 
 /**
  * Vernacular names for a specimen
@@ -1407,7 +1396,7 @@ function parseSpecimens ($json) {
 		$d['hits'] = getHits($row, false);
 		$d['source'] = $row->result->sourceSystem->name;
 		$d['score'] = $row->percentage;
-		$d['names'] = getSpecimenTaxonNames($row);
+		$d['names'] = getSpecimenNames($row);
 		$output['results'][] = $d;
 	}
 
