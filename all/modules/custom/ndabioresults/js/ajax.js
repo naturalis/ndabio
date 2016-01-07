@@ -124,6 +124,7 @@ function printMultimediaPreview (request, data) {
 
 function printSpecimenPreview (request, data) {
 	var output = '';
+	var printedUnitIDs = [];
 	for (i = 0; i < data.resultGroups.length; i++) {
 		for (j = 0; j < data.resultGroups[i].searchResults.length; j++) {
 
@@ -131,6 +132,12 @@ function printSpecimenPreview (request, data) {
 			var collectionType = data.resultGroups[i].searchResults[j].result.collectionType;
 			var recordBasis = data.resultGroups[i].searchResults[j].result.recordBasis;
 			var caption = '';
+
+			if (jQuery.inArray(unitID, printedUnitIDs) == -1) {
+				printedUnitIDs.push(unitID);
+			} else {
+				continue;
+			}
 
 			if (collectionType !== null && recordBasis !== null) {
 				caption = collectionType + '; ' + recordBasis;
@@ -148,6 +155,9 @@ function printSpecimenPreview (request, data) {
 			output += '<dd>' + caption + '</dd></dl>';
 		}
 	};
+
+	console.dir(printedUnitIDs);
+
 	if (parseInt(data.totalSize) > 5) {
 		output += '<div style="margin-top: 12px;"><a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
 			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all') + ' ' + data.totalSize + ' ' +
