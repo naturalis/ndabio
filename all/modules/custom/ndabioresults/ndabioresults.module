@@ -2826,7 +2826,6 @@ function safe_parse_str ($source, &$target) {
  */
 function loadPrettyPhoto ($imageUrl) {
     $maxWidth = $maxHeight = 600;
-die(p(getimagesize($imageUrl)));
     $img = @getimagesize($imageUrl);
     if ($img && $img[0] > $maxWidth || $img[1] > $maxHeight) {
         $path = drupal_get_path('module', 'ndabioresults');
