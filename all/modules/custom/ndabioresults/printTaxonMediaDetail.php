@@ -47,7 +47,8 @@ function printTaxonMediaDetail ($data) {
 	$fields = array(
 	    'source',
     	'creator',
-	    'license',
+	    // disabled BIOP-601
+	    //'license',
         'sourceInstitutionID',
         'collectionType',
 	    'description',
