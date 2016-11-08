@@ -156,8 +156,6 @@ function printSpecimenPreview (request, data) {
 		}
 	};
 
-	console.dir(printedUnitIDs);
-
 	if (parseInt(data.totalSize) > 5) {
 		output += '<div style="margin-top: 12px;"><a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
 			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all') + ' ' + data.totalSize + ' ' +
