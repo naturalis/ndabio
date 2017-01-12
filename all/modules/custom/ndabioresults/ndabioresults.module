@@ -3,6 +3,7 @@
 define("DEBUG_CHANNELS", 1);
 
 
+require_once 'parse_functions.php';
 require_once 'print_functions.php';
 
 
@@ -823,14 +824,6 @@ function queryNda ($channels = array(), $timeout = false) {
 }
 
 
-// include 'printSpecimenMediaDetail.php';
-
-
-
-// include 'printTaxonMediaDetail.php';
-
-
-
 
 /**
  * NSR id of a taxon
@@ -848,15 +841,6 @@ function getTaxonId ($data) {
 }
 
 
-// include 'printTaxonDetail.php';
-// include 'printCommonNames.php';
-// include 'printSynonyms.php';
-// include 'printDescriptions.php';
-// include 'printClassifications.php';
-
-
-
-
 /**
  * Strips base url from string
  *
@@ -866,13 +850,6 @@ function getTaxonId ($data) {
 function stripBaseUrl ($url) {
     return str_replace(urlencode(ndaBaseUrl()), '', $url);
 }
-
-
-// include 'printSpecimenDetail.php';
-
-// include 'printNavigation.php';
-
-// include 'printNamesWithLinks.php';
 
 
 /**
@@ -887,20 +864,6 @@ function timeStampToDate ($v) {
     }
     return null;
 }
-
-
-
-// include 'printMultimedia.php';
-// include 'printMatches.php';
-
-
-
-// include 'printSpecimens.php';
-
-// include 'printHits.php';
-
-// include 'printSpecimenTaxa.php';
-
 
 
 /**
@@ -1277,19 +1240,6 @@ function reverse_parse_url ($parsed_url) {
     $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
     return "$scheme$user$pass$host$port$path$query$fragment";
 }
-
-
-
-// include 'printSpecimensByTaxon.php';
-// include 'printSpecimensByMap.php';
-// include 'printSpecimenCollection.php';
-
-
-// include 'printHeaders.php';
-
-
-
-// include 'printTaxa.php';
 
 
 /**
@@ -1958,7 +1908,6 @@ function setNavigationSetLink ($data, $direction) {
     return $links['_self'] . urlencode('?' . substr($p, 0, -1));
 }
 
-//include("printPreviousNext.php");
 
 /**
  * Background reset of the navigation SESSION
