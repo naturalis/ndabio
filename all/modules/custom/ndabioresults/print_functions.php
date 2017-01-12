@@ -1439,3 +1439,56 @@ function printNoResults () {
         t('Please try again'). '</a>!';
 }
 
+/**
+ * Shorthand function to pad "filler" tds
+ *
+ * @param int $i How many tds should be padded?
+ * @return string|void
+ */
+function padTds ($i) {
+	if ((int)$i > 0) {
+		return "<td colspan='$i'></td>";
+	}
+	return null;
+}
+
+
+/**
+ * Prints description list
+ *
+ * @param string $field
+ * @param string $value
+ * @return string
+ */
+function printDL ($field, $value) {
+  return "<dl><dt>$field</dt><dd>$value</dd></dl>";
+}
+
+/**
+ * Prints table row
+ *
+ * @param string $field
+ * @param string $value
+ * @return string
+ */
+function printTableRow ($field, $value) {
+	return "<tr><td>" . ($field != '' ? t(translateNdaField($field)) : '') . "</td><td>" .
+		($value != '' ? $value : '') . "</td></tr>";
+}
+
+
+
+/**
+ *
+ * Prints value, modifying a few if they meet criteria
+ *
+ * @param string $license
+ * @return string
+ */
+function printValue ($value) {
+    if (strtolower($value) == 'cc0') {
+        return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
+            $value . '</a>';
+    }
+    return $value != '' ? $value : '—';
+}
