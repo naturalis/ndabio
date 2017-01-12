@@ -3,6 +3,9 @@
 define("DEBUG_CHANNELS", 1);
 
 
+require_once 'printFunctions.php';
+
+
 /**
 * DEFINE BLOCKS
 */
@@ -37,9 +40,20 @@ function ndabioresults_menu() {
    'access arguments' => array('access content'),
    'type' => MENU_CALLBACK,
   );
+  $items['taxon'] = array(
+    'page callback' => 'nda_taxon_callback',
+    'access callback' => TRUE,
+  );
 
   return $items;
 }
+
+
+function nda_taxon_callback ($taxon = '', $searchRequest = '') {
+    return $taxon . '<br>' . $searchRequest;
+}
+
+
 
 /**
  * Implements template_preprocess_html().
@@ -876,7 +890,7 @@ function getTaxonUrl ($links, $scientificName) {
 	return false;
 }
 
-include 'printSpecimenMediaDetail.php';
+// include 'printSpecimenMediaDetail.php';
 
 /**
  * Parses taxon media detail json to PHP array
@@ -935,7 +949,7 @@ function getTaxonMultimediaNames ($row) {
 
 
 
-include 'printTaxonMediaDetail.php';
+// include 'printTaxonMediaDetail.php';
 
 
 /**
@@ -1071,11 +1085,11 @@ function parseClassification ($classification) {
 }
 
 
-include 'printTaxonDetail.php';
-include 'printCommonNames.php';
-include 'printSynonyms.php';
-include 'printDescriptions.php';
-include 'printClassifications.php';
+// include 'printTaxonDetail.php';
+// include 'printCommonNames.php';
+// include 'printSynonyms.php';
+// include 'printDescriptions.php';
+// include 'printClassifications.php';
 
 
 /**
@@ -1214,11 +1228,11 @@ function stripBaseUrl ($url) {
 }
 
 
-include 'printSpecimenDetail.php';
+// include 'printSpecimenDetail.php';
 
-include 'printNavigation.php';
+// include 'printNavigation.php';
 
-include 'printNamesWithLinks.php';
+// include 'printNamesWithLinks.php';
 
 /**
  * Gets other specimens in "specimen collection" (Brahms)
@@ -1365,8 +1379,8 @@ function getMultimediaDetailLink ($row) {
 }
 
 
-include 'printMultimedia.php';
-include 'printMatches.php';
+// include 'printMultimedia.php';
+// include 'printMatches.php';
 
 /**
  * Parses specimen data json to PHP array
@@ -1412,11 +1426,11 @@ function parseSpecimens ($json) {
 	return isset($output) ? $output : false;
 }
 
-include 'printSpecimens.php';
+// include 'printSpecimens.php';
 
-include 'printHits.php';
+// include 'printHits.php';
 
-include 'printSpecimenTaxa.php';
+// include 'printSpecimenTaxa.php';
 
 /**
  * Gets unit id associated with multimedia
@@ -2049,9 +2063,9 @@ function getHits ($row, $stripTags = true) {
 	return isset($hits) ? $hits : array();
 }
 
-include 'printSpecimensByTaxon.php';
-include 'printSpecimensByMap.php';
-include 'printSpecimenCollection.php';
+// include 'printSpecimensByTaxon.php';
+// include 'printSpecimensByMap.php';
+// include 'printSpecimenCollection.php';
 
 /**
  * Shorthand function to pad "filler" tds
@@ -2083,7 +2097,7 @@ function getSpecimenInCollectionUrl ($row, $i) {
 	return null;
 }
 
-include 'printHeaders.php';
+// include 'printHeaders.php';
 
 /**
  * Parses taxon json to PHP array
@@ -2217,16 +2231,8 @@ function getTaxonSynonymOffset ($row) {
     return array_search(max($hits), $hits);
 }
 
-/** Prints no result message
- *
- * @return string Translated string with url back to form
- */
-function printNoResults () {
-    return t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
-        t('Please try again'). '</a>!';
-}
 
-include 'printTaxa.php';
+// include 'printTaxa.php';
 
 
 /**
@@ -2987,7 +2993,7 @@ function setNavigationSetLink ($data, $direction) {
     return $links['_self'] . urlencode('?' . substr($p, 0, -1));
 }
 
-include("printPreviousNext.php");
+//include("printPreviousNext.php");
 
 /**
  * Background reset of the navigation SESSION
