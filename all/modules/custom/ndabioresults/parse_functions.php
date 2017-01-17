@@ -1041,3 +1041,51 @@ function decorateDescription ($row) {
 		t($row['rank']));
 }
 
+/**
+ * Gets Show all... link
+ *
+ * Show all link is shown only when the user does not come from a form and
+ * when the number of results exceeds the maximum number of initial results.
+ * The latter setting depends on the fact if it's a service that has regulr or grouped
+ * results.
+ *
+ * @param array $data Parsed json
+ * @param boolean $groupResult Service has grouped results?
+ * @return string|void Url
+ */
+function getShowAll ($data, $groupResult = false) {
+	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
+	    getTotalRows($data) > maxResultsInitial()) {
+	    $self = getSelfLink($data);
+	    if (!empty($self)) {
+            return setUrlPars(
+                geoShapeToSession($self, true),
+                array('_maxResults' => $groupResult ? maxGroupResults() : maxResults()),
+                true
+            );
+	    }
+	}
+	return null;
+}
+
+/**
+ * Gets sort parameter
+ *
+ * Gets sort parameter from self link or, if self link is not provided,
+ * returns default value
+ *
+ * @param string $self Self link
+ * @param boolean $groupResult Service has grouped results?
+ * @return string Result from self link or default value if self link is not provided
+ */
+function getSort ($self, $groupResult = false) {
+    $p = $groupResult ? '_groupSort' : '_sort';
+    if (!empty($self)) {
+        $value = getUrlParValue(urldecode($self), $p);
+        if (!empty($value)) {
+            return $value;
+        }
+    }
+    return $groupResult ? defaultGroupSort() : defaultSort();
+}
+
