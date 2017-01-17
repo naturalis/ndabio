@@ -67,7 +67,7 @@ function ndabio_menu() {
     $enpath['language'] = "en";
     path_save($enpath);
   }
- 
+
   //Configuration page
   $items['admin/config/naturalis/ndabio'] = array(
     'title' => 'NDABIO GMap config',
@@ -307,7 +307,7 @@ function ndabio_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Check if a string is JOSN.
+ * Check if a string is JSON.
  * @param string
  * @return boolean
  */
@@ -489,7 +489,7 @@ function ndabio_advanced_taxonomysearch() {
         if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
-	  $defaultvalue = 1;
+	  $defaultvalue = 0;
 	  if (isset($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
             $defaultvalue = intval($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']);
 	  }
@@ -702,6 +702,7 @@ function ndabio_advanced_taxonomysearch() {
   );
   global $language;
   $form['#action'] = url('nba/result');
+  $form['#method'] = 'get';
 
   return ($form);
 }
