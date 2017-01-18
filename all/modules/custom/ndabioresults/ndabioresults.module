@@ -2,17 +2,25 @@
 // Print channels in output y/n = 1/0
 define("DEBUG_CHANNELS", 1);
 
-
 // Drupal
 require_once 'ndabioresults.config.inc';
 require_once 'ndabioresults.block.inc';
 
-// Parse/print out of module
+// Libraries
 require_once 'parse_functions.php';
 require_once 'print_functions.php';
-
-// Classes
 require_once 'Paginator.php';
+
+// Initialize BioPortal client
+// Can't get autoloader to work, problem with namespaces in Drupal 7?
+$clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/';
+require_once $clientPath . 'AbstractClass.php';
+require_once $clientPath . 'Client.php';
+require_once $clientPath . 'QuerySpec.php';
+require_once $clientPath . 'Condition.php';
+use nl\naturalis\bioportal\Client as Client;
+use nl\naturalis\bioportal\QuerySpec as QuerySpec;
+use nl\naturalis\bioportal\Condition as Condition;
 
 
 
@@ -55,7 +63,10 @@ function ndabioresults_menu() {
 
 
 function nda_taxon_callback ($taxon = '', $searchRequest = '') {
-    return $taxon . '<br>' . $searchRequest;
+    $client = new \nl\naturalis\bioportal\Client();
+    $client->setNbaUrl('http://145.136.242.170:8080/v2/');
+    return $client->getNbaUrl();
+    return 'henk' . $taxon . '<br>' . $searchRequest;
 }
 
 
