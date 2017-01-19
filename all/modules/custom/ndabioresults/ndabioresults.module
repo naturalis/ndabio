@@ -24,6 +24,8 @@ use nl\naturalis\bioportal\Condition as Condition;
 
 
 
+
+
 /**
  * Implements hook_menu().
  */
@@ -53,6 +55,15 @@ function ndabioresults_menu() {
    'access arguments' => array('access content'),
    'type' => MENU_CALLBACK,
   );
+
+
+  /* This is the new shit */
+
+  $items['result'] = array(
+    'page callback' => 'ndabioresults_pass',
+    'load arguments' => array('%map', '%index'),
+    'access callback' => TRUE,
+  );
   $items['taxon'] = array(
     'page callback' => 'nda_taxon_callback',
     'access callback' => TRUE,
@@ -63,13 +74,141 @@ function ndabioresults_menu() {
 
 
 function nda_taxon_callback ($taxon = '', $searchRequest = '') {
-    $client = new \nl\naturalis\bioportal\Client();
-    $client->setNbaUrl('http://145.136.242.170:8080/v2/');
-    return $client->getNbaUrl();
-    return 'henk' . $taxon . '<br>' . $searchRequest;
+    global $client, $nbaFieldTypes;
+    initClient();
+
+    $search = [
+        'className' => 'aves',
+        'species' => 'fuscus',
+        'genus' => 'larus',
+        'andOr' => 'or',
+        'offset' => 100,
+        'maxResults' => '500'
+    ];
+
+    $q = buildQuery('taxon', $search);
+
+
+    return p($q);
+
+    //return p($client->all()->getMapping());
+    //return 'henk' . $taxon . '<br>' . $searchRequest;
+}
+
+function buildQuery ($service, $terms = array()) {
+    $conditions = array();
+    foreach ($terms as $field => $value) {
+        $statement = array();
+        // Exclude search flags; these will be processed later
+        if (!in_array($field, searchFlags())) {
+            // Get NBA path(s) for field
+            $nbaPaths = array($field);
+            if (isset(nbaFieldMapping()[$service][$field])) {
+                $nbaPaths = nbaFieldMapping()[$service][$field];
+            }
+            // Get NBA field type
+            foreach ($nbaPaths as $path) {
+                $statement[$path] = setConditionOperator($service, $path);
+            }
+        }
+        if (!empty($statement)) {
+            $first = key($statement);
+            foreach ($statement as $path => $operator) {
+                if ($first == $path) {
+                    $condition = new Condition($path, $operator, $value);
+                    continue;
+                }
+                $condition->addOr($path, $operator, $value);
+            }
+            $conditions[] = $condition;
+        }
+    }
+    $query = new QuerySpec();
+    foreach ($conditions as $c) {
+        $query->addCondition($c);
+    }
+    if (isset($terms['andOr']) && !empty($terms['andOr'])) {
+        $query->setLogicalOperator($terms['andOr']);
+    }
+    if (isset($terms['offset']) && !empty($terms['offset'])) {
+        $query->setFrom($terms['offset']);
+    }
+    if (isset($terms['maxResults']) && !empty($terms['maxResults'])) {
+        $query->setSize($terms['maxResults']);
+    }
+    if (isset($terms['sort']) && !empty($terms['sort'])) {
+        $sortDirection = true;
+        if (isset($terms['sortDirection']) && strtolower($terms['sortDirection']) == 'desc') {
+            $sortDirection = false;
+        }
+        $query->sortBy($terms['sort'], $sortDirection);
+    }
+    return $query;
+}
+
+/*
+ * Set operator (LIKE, EQUALS, etc) for condition.
+ * Fairly simple now, as we only have string fields in BioPortal.
+ * Will become more compilated once we allow searches on date or int fields.
+ */
+function setConditionOperator ($service, $nbaPath) {
+    if (isset($_SESSION['nba_field_types'][$service][$nbaPath])) {
+        $type = $_SESSION['nba_field_types'][$service][$nbaPath];
+        return strpos($type, '[like]') !== false ? 'LIKE' : 'MATCHES';
+    }
+    return 'EQUALS_IC';
+}
+
+function getMappingProperties ($mapping, $prefix = '') {
+    $r = [];
+    foreach ($mapping['properties'] as $k => $v) {
+        if (isset($v['properties'])) {
+            $r = $r + getMappingProperties($v, $prefix . $k . '.');
+        } else {
+            $r[$prefix . $k] = $v['type'] . (isset($v['fields']['like']) ? ' [like]' : '');
+        }
+    }
+    return $r;
+}
+
+/*
+ * Initialise client and store mapping in session if it hasn't been created already
+ */
+function initClient () {
+    global $client, $nbaFieldTypes;
+    $client = new Client();
+    $client->setNbaUrl(ndaBaseUrl());
+    if (!isset($_SESSION['nba_field_types'])) {
+        $r = $client->all()->getMapping();
+        foreach ($r as $service => $json) {
+            $_SESSION['nba_field_types'][$service] = getMappingProperties(json_decode($json, true));
+        }
+    }
+    $nbaFieldTypes = $_SESSION['nba_field_types'];
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* The old stuff */
 
 /**
  * Implements template_preprocess_html().

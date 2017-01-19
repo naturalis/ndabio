@@ -254,7 +254,7 @@ function ndaBaseUrl () {
 function searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset', 'raw');
+         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset', 'raw', 'size');
     }
     return $var;
 }
@@ -532,4 +532,261 @@ function searchServices () {
     }
     return $var;
 
+}
+
+
+function nbaFieldMapping ()
+{
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+        $var = array(
+            'multimedia' => [
+                'className' => [
+                    'identifications.defaultClassification.className'
+                ],
+                'class' => [
+                    'identifications.defaultClassification.className'
+                ],
+                'family' => [
+                    'identifications.defaultClassification.family'
+                ],
+                'genusOrMonomial' => [
+                    'identifications.defaultClassification.genus',
+                    'identifications.scientificName.genusOrMonomial'
+                ],
+                'genus' => [
+                    'identifications.defaultClassification.genus',
+                    'identifications.scientificName.genusOrMonomial'
+                ],
+                'kingdom' => [
+                    'identifications.defaultClassification.kingdom'
+                ],
+                'localityText' => [
+                    'gatheringEvents.localityText'
+                ],
+                'locality' => [
+                    'gatheringEvents.localityText'
+                ],
+                'order' => [
+                    'identifications.defaultClassification.order'
+                ],
+                'phaseOrStage' => [
+                    'phasesOrStages'
+                ],
+                'phylum' => [
+                    'identifications.defaultClassification.phylum'
+                ],
+                'registrationNumber' => [
+                    'unitID'
+                ],
+                'sex' => [
+                    'sexes'
+                ],
+                'sourceSystem' => [
+                    'sourceSystem.name'
+                ],
+                'scientificName' => [
+                    'identifications.scientificName.fullScientificName'
+                ],
+                'specificEpithet' => [
+                    'identifications.defaultClassification.specificEpithet',
+                    'identifications.scientificName.specificEpithet'
+                ],
+                'species' => [
+                    'identifications.defaultClassification.specificEpithet',
+                    'identifications.scientificName.specificEpithet'
+                ],
+                'infraspecificEpithet' => [
+                    'identifications.defaultClassification.infraspecificEpithet',
+                    'identifications.scientificName.infraspecificEpithet'
+                ],
+                'subspecies' => [
+                    'identifications.defaultClassification.infraspecificEpithet',
+                    'identifications.scientificName.infraspecificEpithet'
+                ],
+                'typeStatus' => [
+                    'specimenTypeStatus'
+                ],
+                'vernacularName' => [
+                    'identifications.vernacularNames.name'
+                ],
+                'commonName' => [
+                    'identifications.vernacularNames.name'
+                ]
+            ],
+            'specimen' => [
+                'className' => [
+                    'identifications.defaultClassification.className'
+                ],
+                'class' => [
+                    'identifications.defaultClassification.className'
+                ],
+                'collectingStartDate' => [
+                    'gatheringEvent.dateTimeBegin'
+                ],
+                'collectorsFieldNumber' => [
+                    'collectorsFieldNumber'
+                ],
+                'gatheringAgent' => [
+                    'gatheringEvent.gatheringPersons.fullName',
+                    'gatheringEvent.gatheringOrganizations.name'
+                ],
+                'collector' => [
+                    'gatheringEvent.gatheringPersons.fullName',
+                    'gatheringEvent.gatheringOrganizations.name'
+                ],
+                'family' => [
+                    'identifications.defaultClassification.family'
+                ],
+                'genusOrMonomial' => [
+                    'identifications.defaultClassification.genus',
+                    'identifications.scientificName.genusOrMonomial'
+                ],
+                'genus' => [
+                    'identifications.defaultClassification.genus',
+                    'identifications.scientificName.genusOrMonomial'
+                ],
+                'kingdom' => [
+                    'identifications.defaultClassification.kingdom'
+                ],
+                'localityText' => [
+                    'gatheringEvent.localityText'
+                ],
+                'locality' => [
+                    'gatheringEvent.localityText'
+                ],
+                'order' => [
+                    'identifications.defaultClassification.order'
+                ],
+                'phylum' => [
+                    'identifications.defaultClassification.phylum'
+                ],
+                'registrationNumber' => [
+                    'unitID'
+                ],
+                'collectionType' => [
+                    'collectionType'
+                ],
+                'sourceSystem' => [
+                    'sourceSystem.name'
+                ],
+                'scientificName' => [
+                    'identifications.scientificName.fullScientificName'
+                ],
+                'specificEpithet' => [
+                    'identifications.defaultClassification.specificEpithet',
+                    'identifications.scientificName.specificEpithet'
+                ],
+                'species' => [
+                    'identifications.defaultClassification.specificEpithet',
+                    'identifications.scientificName.specificEpithet'
+                ],
+                'infraspecificEpithet' => [
+                    'identifications.defaultClassification.infraspecificEpithet',
+                    'identifications.scientificName.infraspecificEpithet'
+                ],
+                'subgenus' => [
+                    'identifications.defaultClassification.subgenus',
+                    'identifications.scientificName.subgenus'
+                ],
+                'subspecies' => [
+                    'identifications.defaultClassification.infraspecificEpithet',
+                    'identifications.scientificName.infraspecificEpithet'
+                ],
+                'vernacularName' => [
+                    'identifications.vernacularNames.name'
+                ],
+                'commonName' => [
+                    'identifications.vernacularNames.name'
+                ]
+            ],
+            'taxon' => [
+                'className' => [
+                    'defaultClassification.className'
+                ],
+                'class' => [
+                    'defaultClassification.className'
+                ],
+                'expert' => [
+                    'experts.fullName',
+                    'synonyms.experts.fullName',
+                    'vernacularNames.experts.fullName'
+                ],
+                'expertOrganisation' => [
+                    'experts.organization.name',
+                    'synonyms.experts.organization.name',
+                    'vernacularNames.organization.name'
+                ],
+                'family' => [
+                    'defaultClassification.family'
+                ],
+                'subgenus' => [
+                    'defaultClassification.subgenus',
+                    'acceptedName.subgenus'
+                ],
+                'subgenusAny' => [
+                    'defaultClassification.subgenus',
+                    'acceptedName.subgenus',
+                    'synonyms.subgenus'
+                ],
+                'genus' => [
+                    'defaultClassification.genus',
+                    'acceptedName.genusOrMonomial'
+                ],
+                'genusOrMonomial' => [
+                    'defaultClassification.genus',
+                    'acceptedName.genusOrMonomial'
+                ],
+                'genusAny' => [
+                    'defaultClassification.genus',
+                    'acceptedName.genusOrMonomial',
+                    'synonyms.genusOrMonomial'
+                ],
+                'order' => [
+                    'defaultClassification.order'
+                ],
+                'phylum' => [
+                    'defaultClassification.phylum'
+                ],
+                'specificEpithet' => [
+                    'defaultClassification.specificEpithet',
+                    'acceptedName.specificEpithet'
+                ],
+                'species' => [
+                    'defaultClassification.specificEpithet',
+                    'acceptedName.specificEpithet'
+                ],
+                'speciesAny' => [
+                    'defaultClassification.specificEpithet',
+                    'acceptedName.specificEpithet',
+                    'synonyms.specificEpithet'
+                ],
+                'infraspecificEpithet' => [
+                    'defaultClassification.infraspecificEpithet',
+                    'acceptedName.infraspecificEpithet'
+                ],
+                'subspecies' => [
+                    'defaultClassification.infraspecificEpithet',
+                    'acceptedName.infraspecificEpithet'
+                ],
+                'taxonomicStatus' => [
+                    'synonyms.taxonomicStatus',
+                    'acceptedName.taxonomicStatus'
+                ],
+                'vernacularName' => [
+                    'vernacularNames.name'
+                ],
+                'commonName' => [
+                    'vernacularNames.name'
+                ],
+                'kingdom' => [
+                    'defaultClassification.kingdom'
+                ],
+                'sourceSystem' => [
+                    'sourceSystem.name'
+                ],
+            ]
+        );
+    }
+    return $var;
 }
