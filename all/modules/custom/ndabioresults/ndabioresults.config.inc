@@ -254,7 +254,8 @@ function ndaBaseUrl () {
 function searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset', 'raw', 'size');
+         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset',
+            'raw', 'size', 'from', 'logicalOperator');
     }
     return $var;
 }

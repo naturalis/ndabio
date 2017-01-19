@@ -81,15 +81,16 @@ function nda_taxon_callback ($taxon = '', $searchRequest = '') {
         'className' => 'aves',
         'species' => 'fuscus',
         'genus' => 'larus',
-        'andOr' => 'or',
-        'offset' => 100,
-        'maxResults' => '500'
+        'logicalOperator' => 'and',
+        'from' => 0,
+        'size' => '500'
     ];
 
     $q = buildQuery('taxon', $search);
 
+    $client->taxon()->querySpec($q);
 
-    return p($q);
+    return print_r($client->query());
 
     //return p($client->all()->getMapping());
     //return 'henk' . $taxon . '<br>' . $searchRequest;
@@ -127,14 +128,14 @@ function buildQuery ($service, $terms = array()) {
     foreach ($conditions as $c) {
         $query->addCondition($c);
     }
-    if (isset($terms['andOr']) && !empty($terms['andOr'])) {
-        $query->setLogicalOperator($terms['andOr']);
+    if (isset($terms['logicalOperator']) && !empty($terms['logicalOperator'])) {
+        $query->setLogicalOperator($terms['logicalOperator']);
     }
-    if (isset($terms['offset']) && !empty($terms['offset'])) {
-        $query->setFrom($terms['offset']);
+    if (isset($terms['from']) && !empty($terms['from'])) {
+        $query->setFrom($terms['from']);
     }
-    if (isset($terms['maxResults']) && !empty($terms['maxResults'])) {
-        $query->setSize($terms['maxResults']);
+    if (isset($terms['size']) && !empty($terms['size'])) {
+        $query->setSize($terms['size']);
     }
     if (isset($terms['sort']) && !empty($terms['sort'])) {
         $sortDirection = true;
