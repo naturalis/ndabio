@@ -10,15 +10,6 @@ define("NBAMAXGROUPRESULTS", 10);
 define("NBADEFAULTGROUPSORT", '_score');
 define("NBADEFAULTSORTGROUPDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
-define("NBASPECIMENSERVICE", 'specimen/search');
-define("NBASPECIMENNAMESERVICE", 'specimen/name-search');
-define("NBASPECIMENDETAILSERVICE", 'specimen/get-specimen');
-define("NBASPECIMENMULTIMEDIASERVICE", 'multimedia/get-multimedia-object-for-specimen-within-result-set');
-define("NBATAXONSERVICE", 'taxon/search');
-define("NBATAXONDETAILSERVICE", 'taxon/get-taxon');
-define("NBATAXONMULTIMEDIASERVICE", 'multimedia/get-multimedia-object-for-taxon-within-result-set');
-define("NBAMULTIMEDIASERVICE", 'multimedia/search');
-
 
 
 function ndabioresults_config_form($form, &$form_state) {
@@ -119,115 +110,6 @@ function ndabioresults_config_form($form, &$form_state) {
     '#size' => 10,
     '#maxlength' => 10,
     '#description' => t('Maximum number of pages in the paginator.') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
-    '#required' => TRUE
-  );
-
-  $form['ndabioresults_config']['ndabioresults_config_specimen'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('NBA Specimen services'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
-  // Constant: name of specimen service
-  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_namespecimenservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of specimen service'),
-    '#default_value' => variable_get('ndabioresults_config_namespecimenservice', NBASPECIMENSERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENSERVICE,
-    '#required' => TRUE
-  );
-
-  // Constant: name of specimen name service
-  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimennameservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of specimen name service'),
-    '#default_value' => variable_get('ndabioresults_config_specimennameservice', NBASPECIMENNAMESERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of specimen name service.') . '<br />' . t('Default') . ': ' . NBASPECIMENNAMESERVICE,
-    '#required' => TRUE
-  );
-
-  // Constant: name of specimen detail service
-  $form['ndabioresults_config']['ndabioresults_config_specimen']['ndabioresults_config_specimendetailservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of specimen detail service'),
-    '#default_value' => variable_get('ndabioresults_config_specimendetailservice', NBASPECIMENDETAILSERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of specimen detail service.') . '<br />' . t('Default') . ': ' . NBASPECIMENDETAILSERVICE,
-    '#required' => TRUE
-  );
-
-  $form['ndabioresults_config']['ndabioresults_config_taxon'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('NBA Taxon services'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
-  //Constant: name of taxon service
-  $form['ndabioresults_config']['ndabioresults_config_taxon']['ndabioresults_config_taxonservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of taxon service'),
-    '#default_value' => variable_get('ndabioresults_config_taxonservice', NBATAXONSERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of taxon service.') . '<br />' . t('Default') . ': ' . NBATAXONSERVICE,
-    '#required' => TRUE
-  );
-
-  //Constant: name of taxon detail service
-  $form['ndabioresults_config']['ndabioresults_config_taxon']['ndabioresults_config_taxondetailservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of taxon detail service'),
-    '#default_value' => variable_get('ndabioresults_config_taxondetailservice', NBATAXONDETAILSERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of taxon detail service.') . '<br />' . t('Default') . ': ' . NBATAXONDETAILSERVICE,
-    '#required' => TRUE
-  );
-
-  $form['ndabioresults_config']['ndabioresults_config_mm'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('NBA Multimedia servives'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
-  //Constant: name of multimedia per specimen service
-  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_specimenmultimediaservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of multimedia per specimen service'),
-    '#default_value' => variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of multimedia per specimen service.') . '<br />' . t('Default') . ': ' . NBASPECIMENMULTIMEDIASERVICE,
-    '#required' => TRUE
-  );
-
-  //Constant: name of multimedia per taxon service
-  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_taxonmultimediaservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of multimedia per taxon service'),
-    '#default_value' => variable_get('ndabioresults_config_taxonmultimediaservice', NBATAXONMULTIMEDIASERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of multimedia per taxon service.') . '<br />' . t('Default') . ': ' . NBATAXONMULTIMEDIASERVICE,
-    '#required' => TRUE
-  );
-
-  //Constant: name of multimedia service
-  $form['ndabioresults_config']['ndabioresults_config_mm']['ndabioresults_config_multimediaservice'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Name of multimedia service'),
-    '#default_value' => variable_get('ndabioresults_config_multimediaservice', NBAMULTIMEDIASERVICE),
-    '#size' => 50,
-    '#maxlength' => 100,
-    '#description' => t('Name of multimedia service.') . '<br />' . t('Default') . ': ' . NBAMULTIMEDIASERVICE,
     '#required' => TRUE
   );
 
@@ -338,98 +220,10 @@ function maxPagesInPaginator () {
 
 
 /**
- * Constant: name of specimen service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function specimenService () {
-  return variable_get('ndabioresults_config_namespecimenservice', NBASPECIMENSERVICE);
-}
-
-/**
- * Constant: name of specimen name service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function specimenNamesService () {
-  return variable_get('ndabioresults_config_specimennameservice', NBASPECIMENNAMESERVICE);
-}
-
-/**
- * Constant: name of specimen detail service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function specimenDetailService () {
-  return variable_get('ndabioresults_config_specimendetailservice', NBASPECIMENDETAILSERVICE);
-}
-
-/**
- * Constant: name of multimedia per specimen service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function specimenMultimediaService () {
-  return variable_get('ndabioresults_config_specimenmultimediaservice', NBASPECIMENMULTIMEDIASERVICE);
-}
-
-/**
- * Constant: name of taxon service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function taxonService () {
-  return variable_get('ndabioresults_config_taxonservice', NBATAXONSERVICE);
-}
-
-/**
- * Constant: name of taxon detail service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function taxonDetailService () {
-  return variable_get('ndabioresults_config_taxondetailservice', NBATAXONDETAILSERVICE);
-}
-
-/**
- * Constant: name of multimedia per taxon service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function taxonMultimediaService () {
-  return variable_get('ndabioresults_config_taxonmultimediaservice', NBATAXONMULTIMEDIASERVICE);
-}
-
-/**
- * Constant: name of multimedia service
- *
- * @todo Config option in module?
- *
- * @return string
- */
-function multimediaService () {
-  return variable_get('ndabioresults_config_multimediaservice', NBAMULTIMEDIASERVICE);
-}
-
-/**
  * Constant: order of search results output
  *
  * Determines print order of search result, currently
- * multimedia, taxon, specimen name, specimen.
+ * multimedia, taxon, specimen.
  *
  * @return array
  */
@@ -437,10 +231,9 @@ function resultOrder () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
-        	multimediaService(),
-        	taxonService(),
-        	specimenNamesService(),
-        	specimenService()
+        	'multimedia',
+        	'taxon',
+        	'specimen',
         );
     }
     return $var;
@@ -511,30 +304,17 @@ function serviceToFunctions () {
     return $var;
 }
 
-function groupServices () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-        $var = array(
-        	//specimenNamesService()
-        );
-    }
-    return $var;
-}
-
 function searchServices () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-        $var = array(
-            taxonService(),
-        	specimenNamesService(),
-            multimediaService(),
-        	specimenService()
+         $var = array(
+        	'multimedia',
+        	'taxon',
+        	'specimen',
         );
     }
     return $var;
-
 }
-
 
 function nbaFieldMapping ()
 {
