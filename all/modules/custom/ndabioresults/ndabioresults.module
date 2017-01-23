@@ -185,11 +185,13 @@ function initClient() {
 function nbaFieldTypes() {
     if (!isset($_SESSION['nba_settings']['field_types']) ||
         empty($_SESSION['nba_settings']['field_types'])) {
-        $r = nbaClient()->all()->getMapping();
+        $client = initClient();
+        $r = $client->all()->getMapping();
         foreach ($r as $service => $json) {
             $_SESSION['nba_settings']['field_types'][$service] =
                 getMappingProperties(json_decode($json, true));
         }
+        unset($client);
     }
     return $_SESSION['nba_settings']['field_types'];
 }
@@ -330,7 +332,7 @@ function nbaAdvancedSearch () {
 	}
 
     // Debug: print queries
-    if (PRINT_QUERIES == 1) {
+    if (PRINT_QUERIES == 1 && !empty($debug)) {
         p($debug);
     }
 

@@ -66,17 +66,6 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
-  // Maximum results for grouped results (currently only specimen name search)
-  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxgroupresults'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Maximum grouped results'),
-    '#default_value' => variable_get('ndabioresults_config_maxgroupresults', NBAMAXGROUPRESULTS),
-    '#size' => 10,
-    '#maxlength' => 10,
-    '#description' => t('Number of maximum results for grouped results.') . '<br />' . t('Default') . ': ' . NBAMAXGROUPRESULTS,
-    '#required' => TRUE
-  );
-
   // Constant: default sort field
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsort'] = array(
     '#type' => 'textfield',
