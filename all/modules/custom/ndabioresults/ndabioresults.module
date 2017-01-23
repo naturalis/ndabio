@@ -1,6 +1,8 @@
 <?php
 // Print channels in output y/n = 1/0
-define("DEBUG_CHANNELS", 1);
+define("PRINT_QUERIES", 1);
+define("PRINT_QUERIES_ENCODED", 0);
+
 
 // Drupal
 require_once 'ndabioresults.config.inc';
@@ -291,11 +293,18 @@ function nbaAdvancedSearch () {
         if (serviceUsed($p)) {
             // Cap results on first page
             $p['size'] = maxResultsInitial();
+
             // Init client, construct query, fetch results in $remoteData
             $client = initClient();
             $query = buildQuery($service, $p);
             $client->{$service}()->querySpec($query);
             $remoteData[$service] = $client->query();
+
+            // Store query if user wants to print it on screen
+            if (PRINT_QUERIES == 1) {
+                $encoded = PRINT_QUERIES_ENCODED == 0 ? false : true;
+                $debug[$service] = $client->{$service}()->getQuerySpec($encoded);
+            }
         }
     }
 
@@ -321,8 +330,8 @@ function nbaAdvancedSearch () {
 	}
 
     // Debug: print queries
-    if (DEBUG_CHANNELS == 1) {
-        p($channels);
+    if (PRINT_QUERIES == 1) {
+        p($debug);
     }
 
 	return $output;
