@@ -1,0 +1,13 @@
+name = Bioportal Theme Settings
+core = 7.x
+package = Bioportal
+dependencies[] = bioportal_header_images
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = image
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = theme_bioportal_theme_settings
+features[variable][] = theme_default
+features[variable][] = theme_settings

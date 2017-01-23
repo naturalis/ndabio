@@ -1,0 +1,745 @@
+<?php
+
+/**
+ * @file
+ * Naturalis bioportal module used to integrate Drupal with the Naturalis Data API formally
+ * known as the NDA.
+ * @version 0.1
+ * @author Naturalis
+ * @package Bioportal
+ */
+
+/**
+ * Default value for the GMAP key. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
+define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
+
+
+/**
+ * DEFINE CUSTOM PAGES
+ * Module administration and all custom pages. Each page includes a callback where the
+ * page functionality is defined.
+ * @package custompages
+ */
+
+/**
+ *
+ **/
+function ndabio_boot() {
+  global $language;
+  //Execute on every page, check langauge env.
+  $langs = language_list(); // Note: No argument
+  if (isset($_GET["language"])) {
+    $langcode = $_GET["language"];
+    variable_set('language_default', $langs[$langcode]);
+    $_SESSION["currentlanguage"] = $langcode;
+  }
+  elseif (isset($_SESSION["currentlanguage"])) {
+    $langcode = $_SESSION["currentlanguage"];
+    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
+  }
+  else {
+    $language = $langs['nl'];
+  }
+
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function ndabio_menu() {
+  $urlAlias = drupal_lookup_path('alias',"nl/help");
+  if($urlAlias == '' ) {
+    $path1['alias'] = "nl/help";
+    $path1['source'] = "node/2";
+    path_save($path1);
+    $nlpath['alias'] = "nl/help";
+    $nlpath['source'] = "node/2";
+    $nlpath['language'] = "nl";
+    path_save($nlpath);
+    $path2['alias'] = "en/help";
+    $path2['source'] = "node/3765";
+    path_save($path2);
+    $enpath['alias'] = "en/help";
+    $enpath['source'] = "node/3765";
+    $enpath['language'] = "en";
+    path_save($enpath);
+  }
+
+  //Configuration page
+  $items['admin/config/naturalis/ndabio'] = array(
+    'title' => 'NDABIO GMap config',
+    'description' => 'Configuration for Naturalis module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ndabio_config_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['search/geosearch'] = array(
+    'page callback' => 'ndabio_displayform',
+    'page arguments' => array('geo'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['geographic-search'] = array(
+    'page callback' => 'ndabio_displayform',
+    'page arguments' => array('geo'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['explore/%'] = array(
+    'page callback' => 'ndabio_searchthematic',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  //Currently used as front page
+  $items['search/advancednda'] = array(
+    'page callback' => 'ndabio_displayform',
+    'access arguments' => array('access content'),
+    'title' => 'Advanced Naturalis Data Search',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  /*
+   * Page used by javascript to retrieve geo coordinates based on a nid.
+   */
+  $items['naturalis/ajax'] = array(
+   'page callback' => 'ndabio_ajax_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
+    $items['naturalis/clear_map_data'] = array(
+   'page callback' => 'ndabio_clear_map_data_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function ndabio_block_info() {
+  $blocks['ndabio_languageselect'] = array(
+    'info' => t('NBA: Language select'),
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'region' => 'sidebar_first',
+    'status' => FALSE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ndabio_block_view($delta = '') {
+  global $base_url, $base_root, $base_path;
+  global $language;
+
+  $block = array();
+  switch ($delta) {
+        case 'ndabio_languageselect':
+
+            if (arg(0) == 'node' && is_numeric(arg(1))) {
+                $translations = translation_path_get_translations("node/" . arg(1));
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+            } else {
+                $currentpath = request_uri();
+                $cleanup = array(
+                    "&language=en",
+                    "&language=nl",
+                    "?language=en",
+                    "?language=nl",
+                    "&searchagain=1",
+                    "?searchagain=1",
+                    "&back",
+                    "?back"
+                );
+                $currentpath = str_replace($cleanup, "", $currentpath);
+                if (strpos($currentpath, "?") === FALSE) {
+                    $currentpath = $currentpath . "?";
+                }
+                else {
+                    $currentpath = $currentpath . "&";
+                }
+                $currentpathnl = $currentpathen = $currentpath;
+            }
+
+            $block['content'] = "<ul class='right' id='language-menu'>";
+            if ($language->language == "en") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathen, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+            }
+            $block['content'] .= "  </li>";
+
+            if ($language->language == "nl") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathnl, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+            }
+            $block['content'] .= "  </li>";
+            $block['content'] .= "</ul>";
+
+            break;
+    }
+    return $block;
+}
+
+
+
+function ndabio_searchthematic($var1, $stitle = "") {
+  drupal_set_message("Thematic search");
+  session_unset();
+  $_POST['searchtype'] = 'thematicsearch';
+  $_POST['searchkey'] = $var1;
+  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+  //$_POST['term'] = $var1;
+  $_POST['s_theme'] = $var1;
+  $_POST['m_theme'] = $var1;
+
+  return ndabioresults_pass();
+}
+
+function ndabio_clear_map_data_callback() {
+    $_SESSION['ndaSearch']['geoShape'] = false;
+    $_SESSION['ndaSearch']['location'] = false;
+    $_SESSION['ndaSearch']['gid'] = false;
+    $_SESSION['ndaSearch']['zoomLevel'] = false;
+    $_SESSION['ndaSearch']['category'] = false;
+    die('Session data cleared');
+}
+
+/**
+* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
+* The resulting page is used as input for the map, so no additional Drupal processing should take place.
+* To avoid additional Drupal theming being applied the function ends with a die()
+*/
+function ndabio_ajax_callback() {
+  if (!empty($_GET["nid"])) {
+    $geonode = intval($_GET["nid"]);
+    $sql = "SELECT n.nid, n.title, g.field_geojson_value, s.field_source_value, t.field_type_value FROM {node} n , {field_data_field_geojson} g, {field_data_field_source} s, {field_data_field_type} t WHERE n.nid = $geonode AND n.nid = t.entity_id AND n.nid = g.entity_id AND n.nid = t.entity_id";
+    $row = db_query($sql)->fetchObject();
+    if ($row) {
+    //Display data in json format
+      echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+    }
+    die(); //die() is required to avoid displaying the entire drupal interface
+  }
+}
+
+
+/**
+ * Form used to configure the ndabio module.
+ */
+function ndabio_config_form($form, &$form_state) {
+  $form['ndabio_config'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Naturalis Data API config')
+  );
+  $form['ndabio_config']['ndabio_config_gmapkey'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Google maps key'),
+    '#default_value' => variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY),
+    '#size' => 140,
+    '#maxlength' => 200,
+    '#description' => t('The key used by Google maps for a geographic search.') . '<br />' .
+      t('Default') . ': ' . NDABIO_GMAPKEY,
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ *
+ */
+function ndabio_displayform($arg1 = "") {
+  drupal_add_js(drupal_get_path('module', 'ndabio') .'/js/form.js');
+
+  if ($arg1 === "geo") variable_set("geosearch", "1");
+  else variable_set("geosearch", "0");
+  $form = drupal_get_form('ndabio_advanced_taxonomysearch');
+
+
+
+  return (drupal_render($form));
+}
+
+/**
+ *
+ */
+function _wrap_inner_grid_cols(&$form_element, $n = 6) {
+  if (!isset($form_element['#prefix'])) $form_element['#prefix'] = '';
+  if (!isset($form_element['#suffix'])) $form_element['#prefix'] = '';
+  $form_element['#prefix'] = $form_element['#suffix'] . "<div class='small-$n columns'>";
+  $form_element['#suffix'] = "</div>" . $form_element['#suffix'];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ndabio_theme($existing, $type, $theme, $path) {
+  //Provide a theme function for the 'omnisearch' field
+  $data['ndabio_omnisearch'] = array(
+    'render element' => 'element',
+  );
+  return $data;
+}
+
+/**
+ * Check if a string is JSON.
+ * @param string
+ * @return boolean
+ */
+function isJson($string) {
+  json_decode($string);
+  return (json_last_error() == JSON_ERROR_NONE);
+}
+
+
+
+
+/**
+ * DEFINE CUSTOM (BASIC) SEARCH
+ */
+
+
+/**
+ * Implements hook_search_page().
+ */
+function ndabio_search_page($results) {
+  //drupal_set_message("Naturalis: ndabio_search_page");
+
+  $output['prefix']['#markup'] = '<h2>' . t('Search results') . '</h2>' ;
+  $output['prefix']['#markup'] .= '<ol class="search-results">';
+
+  if (!empty($results)) {
+    foreach ($results as $entry) {
+      $output[] = array(
+        '#theme' => 'search_result',
+        '#result' => $entry,
+        '#module' => 'naturalis',
+      );
+    }
+  }
+  $output['suffix']['#markup'] = '</ol>' . theme('pager');
+
+  return $output;
+}
+
+function setExpandedFlag () {
+    foreach ($_SESSION['ndaSearch'] as $k => $v) {
+        // All true search parameters als formatted as x_etc
+        if ($k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+function setStoredZoomLevel () {
+    if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
+        return $_SESSION['ndaSearch']['zoomLevel'];
+    }
+    return -1;
+}
+
+function setStoredCategory () {
+    if (isset($_SESSION['ndaSearch']['category']) && $_SESSION['ndaSearch']['category'] != '') {
+        return $_SESSION['ndaSearch']['category'];
+    }
+    return -1;
+}
+
+
+function setStoredGeoShape () {
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
+        isset($_SESSION['ndaSearch']['gid']) && empty($_SESSION['ndaSearch']['gid'])) {
+        return json_encode($_SESSION['ndaSearch']['geoShape']);
+    }
+    return -1;
+}
+
+function setStoredMapCenter () {
+    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
+         return $_SESSION['ndaSearch']['mapCenter'];
+    }
+    return null;
+}
+
+/**
+ * 'search' TAXONOMY TO ADVANCED SEARCH FORM
+ */
+function ndabio_advanced_taxonomysearch() {
+    global $base_root, $base_path, $language;
+
+    // Set default values for searchagain
+    $expandedFlag = $storedGid = -1;
+
+    $loadold = 0;
+    if (!empty($_GET['searchagain'])) {
+        if (intval($_GET['searchagain']) == 1) {
+            $expandedFlag = setExpandedFlag();
+            $storedGid = isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']) ?
+                $_SESSION['ndaSearch']['gid'] : -1;
+
+            $loadold = 1;
+        }
+    }
+    $geosearch = 0;
+
+    if (variable_get('geosearch') == '1') {
+
+        drupal_set_title(t("Geographic search"));
+        $geosearch = 1;
+        $path = drupal_get_path('module', 'ndabio');
+        drupal_add_css($path . "/css/ndabio_style.css");
+        drupal_add_js($path . "/js/map.js", array('weight' => 1));
+        drupal_add_js($path . "/js/mapform.js", array('weight' => 1));
+        drupal_add_js("var str_base_path = '$base_path';", 'inline');
+
+        drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
+        drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
+        drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
+        drupal_add_js('var storedMapCenter = "' . setStoredMapCenter() . '";', 'inline');
+        drupal_add_js('var storedCategory = ' . setStoredCategory() . ';', 'inline');
+
+        drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
+        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
+            variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        drupal_add_js(
+            "jQuery(function() { google.maps.event.addDomListener(window, 'load', initialize); });",
+            array('type' => 'inline', 'scope' => 'footer')
+        );
+
+    }
+    $searchtype = array(0 => t('And'), 1 => t('Or'));
+
+    drupal_add_js("var expandAdvanced = $expandedFlag;", 'inline');
+    drupal_add_js(
+        "jQuery(function() { jQuery('#edit-term').focus(); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
+
+  $machine_name = "search";
+  $v = taxonomy_vocabulary_machine_name_load($machine_name);
+  $terms = taxonomy_get_tree($v->vid, 0, 1, TRUE);
+
+  $form = array();
+  foreach ($terms as $item) {
+    $name = $item->name;
+    $label = $item->description;
+    $sysname = $item->name;
+    if (!empty($item->field_ndasystem)) $sysname = $item->field_ndasystem['und'][0]['safe_value'];
+
+    $children = taxonomy_get_children($item->tid, $item->vid);
+    if ($children) {
+      $form[$sysname] = array(
+        '#type' => 'fieldset',
+        '#id' => "edit-$sysname",
+        //'#attributes' => array( 'form_id' => 'ndabio_advanced_taxonomysearch'),
+        '#collapsed' => ($loadold) ? FALSE : TRUE,
+        //'#title' => $label,
+      );
+
+      $form[$sysname]['reset'] = array(
+        '#type' => 'button',
+        '#value' => 'Reset',
+        '#nowrapper' => TRUE,
+        '#attributes' => array(
+          'onclick' => "clearForm();",
+          'class' => array("reset-button"),
+        )
+      );
+
+
+      foreach ($children as $child) {
+        $childlabel = $child->description;
+        $childsysname = $child->name;
+        if (strpos($childsysname, " ") !== FALSE) {
+          $temp = explode(" ", $childsysname);
+          $fieldsetPrefix = drupal_strtolower(drupal_substr(end($temp), 0, 1));
+        }
+        else {
+          $fieldsetPrefix = drupal_strtolower(drupal_substr($childsysname, 0, 1));
+        }
+        $childgeorelevance = 0;
+        if (!empty($child->field_ndageorelevance)) $childgeorelevance = $child->field_ndageorelevance['und'][0]['value'];
+        if (!empty($child->field_ndasystem)) $childsysname = $child->field_ndasystem['und'][0]['safe_value'];
+        $subchildren = taxonomy_get_children($child->tid, $child->vid);
+        if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
+	  $defaultvalue = 0;
+	  if (isset($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
+            $defaultvalue = intval($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']);
+	  }
+          $form[$sysname][$childsysname] = array(
+            '#type' => 'fieldset',
+            '#title' => t($childlabel),
+            $fieldsetPrefix . '_andOr' => array(
+              '#type' => 'radios',
+              '#title' => t('Combine search terms'),
+              '#default_value' => $defaultvalue,
+              '#options' => $searchtype,
+              '#inline' => TRUE
+            ),
+          );
+
+          foreach ($subchildren as $subchild) {
+            $subchildlabel = $subchild->description;
+            $subchildsysname = $subchild->name;
+            $subchildvalues = "";
+            if (!empty($subchild->field_ndasystem)) $subchildsysname = $subchild->field_ndasystem['und'][0]['safe_value'];
+            if (!empty($subchild->field_ndavalues)) $subchildvalues = $subchild->field_ndavalues['und'][0]['safe_value'];
+
+            //Special category, hide or pulldown fields
+            if (($subchild->name == "--more--") || ($subchild->name == "--hide--")) {
+              //--more-- will be grouped in a new fieldset
+              //--hide-- will be ignored (not added to the form)
+
+              $category = taxonomy_get_children($subchild->tid, $subchild->vid);
+              if ($category && ($subchild->name == "--more--")) {
+                $form[$sysname][$childsysname][$subchildsysname][$subchild->name] = array(
+                  '#type'        => 'fieldset',
+                  '#title'       => t("More"),
+                  '#collapsible' => TRUE,
+                  '#collapsed'   => TRUE,
+                  '#attributes'  => array('collapsed' => "true", 'collapsible' => 'true', 'class' => array("collapsible", "collapsed", "form-wrapper"))
+                );
+
+                //put all children in group
+                foreach ($category as $catitem) {
+                  $lvalues = "";
+                  if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
+                  if ($lvalues != "") {
+                    unset($optionarray);
+                    $optionarray[""] = ""; //First entry is an empty string
+                    foreach (explode("|", $lvalues) as $optionitem) {
+		              $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
+                      $optionarray[$optioncode] = $optionitem;
+                    }
+                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                      '#type'      => 'select',
+                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                      '#options'   => $optionarray,
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                      '#required'  => FALSE,
+                      '#inline'    => TRUE,
+                    );
+
+                  }
+                  else {
+                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                      '#type'          => 'textfield',
+                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                      '#required'      => FALSE,
+                      '#inline'        => TRUE,
+                    );
+                  }
+                }
+              }
+            }
+            else {
+              //Default search fields
+              if ($subchildvalues != "") {
+                unset($optionarray);
+                $optionarray[""] = ""; //First entry is an empty string
+                foreach (explode("|", $subchildvalues) as $optionitem ) {
+		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
+                  $optionarray[$optioncode] = t($optionitem);
+                }
+                $form[$sysname][$childsysname][$subchildsysname] = array(
+                  '#type'       => 'select',
+                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                  '#options'    => $optionarray,
+                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                  '#inline'     => TRUE,
+                  '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+                );
+                $subchildvalues = "";
+              }
+              else {
+
+
+                $form[$sysname][$childsysname][$subchildsysname] = array(
+                  '#type'          => 'textfield',
+                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                  '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                  '#required'      => FALSE,
+                  '#inline'        => TRUE,
+                  '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname )
+                );
+              }
+            }
+          }
+        }
+        else {
+          //Default search fields
+          $childvalues = "";
+          if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
+          if ($childvalues != "") {
+            unset($optionarray);
+            $optionarray[""] = ""; //First entry is an empty string
+            foreach (explode("|", $childvalues) as $optionitem ) {
+		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
+                  $optionarray[$optioncode] = t($optionitem);
+            }
+            $form[$sysname][$childsysname] = array(
+              '#type'       => 'select',
+              '#title'      => t($childlabel),
+              '#options'    => $optionarray,
+              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#inline'     => TRUE,
+              '#attributes' => array('data-clear' => "", 'name' => $childsysname)
+            );
+            $subchildvalues = "";
+          }
+          else {
+            $form[$sysname][$childsysname]['#type'] = array(
+              '#type'          => 'textfield',
+              '#title'         => t($childlabel),
+              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#required'      => FALSE,
+              '#inline'        => TRUE,
+              '#attributes'    => array('data-clear' => "", 'name' => $childsysname)
+            );
+          }
+        }
+      }
+    }
+    else {
+      // Omnisearch Box
+      $form[$sysname]['omnisearch'] = array(
+        '#type' => 'fieldset',
+        '#theme' => 'ndabio_omnisearch',
+        '#nowrapper' => TRUE,
+        '#attributes' => array( 'class' => array('fieldset-omnisearch'))
+      );
+
+      $form[$sysname]['omnisearch']['term'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Keywords'),
+        '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+        '#required' => FALSE,
+        '#title_display' => 'invisible',
+        '#nowrapper' => TRUE,
+        '#id' => "edit-term",
+        '#attributes' => array( 'name' => 'term')
+       );
+
+      $form[$sysname]['omnisearch']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Search'),
+        '#nowrapper' => TRUE,
+        '#attributes' => array( 'class' => array('postfix')),
+        '#id' => 'edit-submit-top'
+      );
+    }
+  }
+
+  if ($geosearch) {
+    $links =
+      "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
+      "  <ul>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
+      "    </li>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
+      "    </li>" .
+      "    <li>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
+      "    </li>" .
+      "  </ul>" .
+      "</div>";
+
+    $list =
+      "<div id='search-areas-list' class='small-12 medium-3 columns'>" .
+      "  <input id='search-areas-filter' placeholder='« " . t("type to find") . " »' />" .
+      "  <div id='search-areas-target'></div>" .
+      "</div>";
+
+    $form['gmap'] = array(
+      '#type' => 'gmap',
+      '#map' => 'gmap',
+      '#settings' => array(
+        'zoom' => 1,
+        'id' => 'gmapx',
+        'behavior' => array(
+          'geocode_leave_marker' => TRUE,
+        ),
+      ),
+      '#prefix' => '<div id=\'geographical-search\' class=\'small-12 medium-7 columns\'>',
+      '#suffix' => '<div id=\'map-canvas\'></div></div>' . $links . $list,
+    );
+  }
+  $form[$sysname]['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#nowrapper' => TRUE,
+    '#id' => 'edit-submit-bottom'
+  );
+  global $language;
+  $form['#action'] = url('nba/result');
+  $form['#method'] = 'get';
+
+  return ($form);
+}
+
+function ndabio_omnisearch_form() {
+  $form = array();
+  $form['omnisearch'] = array(
+    '#type' => 'fieldset',
+    '#theme' => 'ndabio_omnisearch',
+    '#nowrapper' => TRUE,
+    '#attributes' => array( 'class' => array('fieldset-omnisearch'))
+  );
+
+  $form['omnisearch']['term'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Keywords'),
+    '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+    '#required' => FALSE,
+    '#title_display' => 'invisible',
+    '#nowrapper' => TRUE,
+    '#id' => "edit-term",
+    '#attributes' => array( 'name' => 'term')
+   );
+
+  $form['omnisearch']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#nowrapper' => TRUE,
+    '#attributes' => array( 'class' => array('postfix')),
+    '#id' => 'edit-submit-top'
+  );
+  $form['#action'] = url('nba/result');
+
+  return ($form);
+}
+
+function _wrap_label( $help, $caption ){
+  return "<span class='search-explanation' title='$help'>$caption</span>";
+}
+
+

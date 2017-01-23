@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * Code for the thematic menu feature.
+ */
+
+include_once 'thematic_menu.features.inc';
+/**
+ * @file
+ * Code for the thematic menu feature.
+ */
+
+include_once 'thematic_menu.features.menu_links.inc';

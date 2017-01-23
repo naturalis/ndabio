@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Naturalis module.
+ */
+ 
+/**
+ * Implements hook_install().
+ */
+function ndabio_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ndabio_uninstall() {
+  variable_del('ndabio_copyright_url');
+  variable_del('ndabio_copyright_label');
+
+  variable_del('ndabio_config_nda');
+  variable_del('ndabio_config_jsonp');
+  variable_del('ndabio_config_gmapkey');
+}

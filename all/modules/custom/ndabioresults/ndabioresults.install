@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * This module installs, update and uninstall functions for the Naturalis module.
+ */
+ 
+/**
+ * Implements hook_install().
+ */
+function ndabioresults_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ndabioresults_uninstall() {
+}

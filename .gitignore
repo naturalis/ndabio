@@ -5,4 +5,3 @@ all/modules/features/bioportal_search_areas_g_l
 all/themes/custom/bioportal_theme/templates/_page.tpl.php
 all/themes/custom/bioportal_theme/.sass-cache
 all/modules/custom/geo_nodes
-all/modules/contrib

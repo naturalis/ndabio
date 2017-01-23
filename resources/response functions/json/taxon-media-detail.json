@@ -1,0 +1,134 @@
+{
+  "totalSize" : 2,
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://nda.naturalis.nl/media/66278"
+  }, {
+    "rel" : "prev",
+    "href" : "http://nda.naturalis.nl/media/66276"
+  }, {
+    "rel" : "next",
+    "href" : "http://nda.naturalis.nl/media/66280"
+  }, {
+    "rel" : "taxon-detail",
+    "href" : "http://nda.naturalis.nl/taxon/NSR-1234567"
+  } ],
+  "searchTerms" : null,
+  "searchResults" : [ {
+    "score" : 0.0,
+    "actualType" : null,
+    "links" : null,
+    "matchInfo" : null,
+    "result" : {
+      "title" : "title_54",
+      "caption" : "De leuke Malus Mill.",
+      "description" : "description_41",
+      "serviceAccessPoints" : {
+        "MEDIUM_QUALITY" : {
+          "accessUri" : "http://medialib.naturalis.nl/NSR-123457",
+          "format" : "JPEG",
+          "variant" : "MEDIUM_QUALITY"
+        }
+      },
+      "type" : null,
+      "taxonCount" : 1431169736,
+      "subjectParts" : null,
+      "subjectOrientations" : null,
+      "phasesOrStages" : null,
+      "sexes" : null,
+      "scientificNames" : [ {
+        "fullScientificName" : "fullScientificName_24",
+        "taxonomicStatus" : null,
+        "genusOrMonomial" : "genusOrMonomial_94",
+        "subgenus" : "subgenus_46",
+        "specificEpithet" : "specificEpithet_2",
+        "infraspecificEpithet" : "infraspecificEpithet_17",
+        "infraspecificMarker" : "infraspecificMarker_37",
+        "nameAddendum" : "nameAddendum_18",
+        "authorshipVerbatim" : "authorshipVerbatim_63",
+        "author" : "author_61",
+        "year" : "year_9",
+        "reference" : null,
+        "expert" : null
+      } ],
+      "defaultClassifications" : [ {
+        "kingdom" : "kingdom_78",
+        "phylum" : "phylum_28",
+        "className" : "className_76",
+        "order" : "order_67",
+        "superFamily" : "superFamily_74",
+        "family" : "family_30",
+        "genus" : "genus_90",
+        "subgenus" : "subgenus_39",
+        "specificEpithet" : "specificEpithet_66",
+        "infraspecificEpithet" : "infraspecificEpithet_10",
+        "infraspecificRank" : "infraspecificRank_12"
+      } ],
+      "systemClassifications" : null,
+      "taxon" : {
+        "sourceSystem" : {
+          "code" : "NSR",
+          "name" : "Nationaal Soortenregister"
+        },
+        "sourceSystemId" : "NSR-1234567",
+        "acceptedName" : {
+          "fullScientificName" : "fullScientificName_24",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_94",
+          "subgenus" : "subgenus_46",
+          "specificEpithet" : "specificEpithet_2",
+          "infraspecificEpithet" : "infraspecificEpithet_17",
+          "infraspecificMarker" : "infraspecificMarker_37",
+          "nameAddendum" : "nameAddendum_18",
+          "authorshipVerbatim" : "authorshipVerbatim_63",
+          "author" : "author_61",
+          "year" : "year_9",
+          "reference" : null,
+          "expert" : null
+        },
+        "taxonRank" : "taxonRank_81",
+        "defaultClassification" : {
+          "kingdom" : "kingdom_78",
+          "phylum" : "phylum_28",
+          "className" : "className_76",
+          "order" : "order_67",
+          "superFamily" : "superFamily_74",
+          "family" : "family_30",
+          "genus" : "genus_90",
+          "subgenus" : "subgenus_39",
+          "specificEpithet" : "specificEpithet_66",
+          "infraspecificEpithet" : "infraspecificEpithet_10",
+          "infraspecificRank" : "infraspecificRank_12"
+        },
+        "systemClassification" : null,
+        "synonyms" : null,
+        "descriptions" : null,
+        "commonNames" : [ {
+        "name" : "name_28",
+        "language" : "en",
+        "preferred" : true,
+        "expert" : {
+          "name" : "name_89",
+          "organization" : "organization_11"
+        }
+      } ],
+        "occurrences" : null,
+        "validName" : {
+          "fullScientificName" : "fullScientificName_24",
+          "taxonomicStatus" : null,
+          "genusOrMonomial" : "genusOrMonomial_94",
+          "subgenus" : "subgenus_46",
+          "specificEpithet" : "specificEpithet_2",
+          "infraspecificEpithet" : "infraspecificEpithet_17",
+          "infraspecificMarker" : "infraspecificMarker_37",
+          "nameAddendum" : "nameAddendum_18",
+          "authorshipVerbatim" : "authorshipVerbatim_63",
+          "author" : "author_61",
+          "year" : "year_9",
+          "reference" : null,
+          "expert" : null
+        }
+      }
+    }
+  } ]
+}

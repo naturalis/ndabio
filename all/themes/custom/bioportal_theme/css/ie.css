@@ -1,0 +1,5 @@
+/* Welcome to Compass. Use this file to write IE specific override styles. */
+
+ #ie8{
+    display: block !important;
+  }
