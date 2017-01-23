@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Bioportal search log feature.
- */
-
-include_once 'bioportal_search_log.features.inc';

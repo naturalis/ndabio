@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the searchtax feature.
- */
-
-include_once 'searchtax.features.inc';
