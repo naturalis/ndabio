@@ -4,11 +4,8 @@ define("NBABASEURL", "http://api.biodiversitydata.nl/v0/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
-define("NBADEFAULTSORT", '_score');
+define("NBADEFAULTSORT", 'score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
-define("NBAMAXGROUPRESULTS", 10);
-define("NBADEFAULTGROUPSORT", '_score');
-define("NBADEFAULTSORTGROUPDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
 
 
@@ -251,54 +248,24 @@ function serviceToFunctions () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
-        	taxonService() => array(
+        	'taxon' => array(
         		'parse' => 'parseTaxa',
         		'print' => 'printTaxa',
         	    'info' => 'results taxa',
         	    'method' => 'get'
         	),
-        	specimenNamesService() => array(
-        		'parse' => 'parseSpecimensByTaxon',
-        		'print' => 'printSpecimensByTaxon',
-        	    'info' => 'results specimens by name',
-        	    'method' => 'post'
-        	),
-            multimediaService() => array(
+            'multimedia' => array(
         		'parse' => 'parseMultimedia',
         		'print' => 'printMultimedia',
         	    'info' => 'results multimedia',
         	    'method' => 'post'
         	),
-        	specimenService() => array(
+        	'specimen' => array(
         		'parse' => 'parseSpecimens',
         		'print' => 'printSpecimens',
         	    'info' => 'results specimens',
         	    'method' => 'post'
         	),
-        	specimenDetailService() => array(
-        		'parse' => 'parseSpecimenDetail',
-        		'print' => 'printSpecimenDetail',
-        	    'info' => 'detail specimen',
-        	    'method' => 'get'
-        	),
-        	taxonDetailService() => array(
-        		'parse' => 'parseTaxonDetail',
-        		'print' => 'printTaxonDetail',
-        	    'info' => 'detail taxon',
-        	    'method' => 'get'
-        	),
-        	taxonMultimediaService() => array(
-        		'parse' => 'parseTaxonMediaDetail',
-        		'print' => 'printTaxonMediaDetail',
-        	    'info' => 'detail multimedia by taxon',
-        	    'method' => 'get'
-        	),
-        	specimenMultimediaService() => array(
-        		'parse' => 'parseSpecimenMediaDetail',
-        		'print' => 'printSpecimenMediaDetail',
-        	    'info' => 'detail multimedia by specimen',
-        	    'method' => 'get'
-        	)
         );
     }
     return $var;

@@ -438,8 +438,8 @@ function parseMultimedia ($json) {
 	$data = json_decode($json);
 
     // @TODO: disabled navigation for the time being
-//unset($_SESSION['ndaNavigation']);
-	setNavigation($data);
+// unset($_SESSION['ndaNavigation']);
+// setNavigation($data);
 
 	$output['searchTerms'] = getSearchTerms($data);
 	$output['total'] = getTotalRows($data);

@@ -109,7 +109,7 @@ function buildQuery ($service, $terms = array()) {
             }
             // Get NBA field type
             foreach ($nbaPaths as $path) {
-                $statement[$path] = setConditionOperator($service, $path);
+                $statement[$path] = setConditionOperator($service, $path, $value);
             }
         }
         if (!empty($statement)) {
@@ -148,14 +148,15 @@ function buildQuery ($service, $terms = array()) {
 }
 
 /*
- * Set operator (LIKE, EQUALS, etc) for condition.
- * Fairly simple now, as we only have string fields in BioPortal.
+ * Sets operator (LIKE, EQUALS, etc) for condition.
+ * Fairly simple now, as we only search string fields in BioPortal.
  * Will become more compilated once we allow searches on date or int fields.
  */
-function setConditionOperator ($service, $nbaPath) {
-    if (isset($_SESSION['nba_field_types'][$service][$nbaPath])) {
-        $type = $_SESSION['nba_field_types'][$service][$nbaPath];
-        return strpos($type, '[like]') !== false ? 'LIKE' : 'MATCHES';
+function setConditionOperator ($service, $nbaPath, $value = '') {
+
+    if (isset(nbaFieldTypes()[$service][$nbaPath])) {
+        $type = nbaFieldTypes()[$service][$nbaPath];
+        return likeOperatorAllowed($type, $value) ? 'LIKE' : 'MATCHES';
     }
     return 'EQUALS_IC';
 }
@@ -172,30 +173,232 @@ function getMappingProperties ($mapping, $prefix = '') {
     return $r;
 }
 
-/*
- * Initialise client and store mapping in session if it hasn't been created already
- */
-function initClient () {
-    global $client, $nbaFieldTypes;
+
+function initClient() {
     $client = new Client();
     $client->setNbaUrl(ndaBaseUrl());
-    if (!isset($_SESSION['nba_field_types'])) {
-        $r = $client->all()->getMapping();
+    return $client;
+}
+
+function nbaFieldTypes() {
+    if (!isset($_SESSION['nba_settings']['field_types']) ||
+        empty($_SESSION['nba_settings']['field_types'])) {
+        $r = nbaClient()->all()->getMapping();
         foreach ($r as $service => $json) {
-            $_SESSION['nba_field_types'][$service] = getMappingProperties(json_decode($json, true));
+            $_SESSION['nba_settings']['field_types'][$service] =
+                getMappingProperties(json_decode($json, true));
         }
     }
-    $nbaFieldTypes = $_SESSION['nba_field_types'];
+    return $_SESSION['nba_settings']['field_types'];
+}
+
+function nbaMinLikeStringSize () {
+    return 3;
+}
+
+function nbaMaxLikeStringSize () {
+    return 15;
+}
+
+function likeOperatorAllowed ($type, $value = '') {
+    return strpos($type, '[like]') !== false &&
+        strlen($value) >= nbaMinLikeStringSize() &&
+        strlen($value) <= nbaMinLikeStringSize();
 }
 
 
 
 
+/**
+ * Accepts search form data and returns formatted result
+ *
+ * The main function that actually processes the incoming GET data, stores the
+ * GET data in a SESSION, distributes the search to the appropriate channels
+ * and returns the formatted output.
+ *
+ * Headers were added to avoid problems with "Webpage has expired" in IE after
+ * hitting back button
+ *
+ * @return string The formatted output
+*/
+function ndabioresults_pass ($args = "") {
+    global $base_path;
+
+    $langs = language_list(); // Note: No argument
+    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
+    }
+
+    drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+    drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
+    drupal_add_http_header('Cache-Control', 'post-check=0, pre-check=0');
+    session_cache_limiter("must-revalidate");
+    drupal_add_js("var str_base_path = '$base_path' ", 'inline');
+
+    // GET data from the search form?
+    // If so, add to SESSION or replace existing SESSION data
+    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        drupal_set_title(t("Search results"));
+        $_SESSION['ndaSearch'] = $_GET;
+        logSearch();
+        return empty($_SESSION['ndaSearch']['term']) ? nbaAdvancedSearch() : nbaSimpleSearch();
+    }
+}
 
 
 
 
+/**
+ * Distributes search parameters of the advanced search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function nbaAdvancedSearch () {
+    $pageHeader = '';
 
+    $services['multimedia'] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services['taxon'] = setSectionParameters($_SESSION['ndaSearch'], 't_');
+    $services['specimen'] = setSectionParameters($_SESSION['ndaSearch'], 's_');
+
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ?
+            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+        $pageHeader =
+            _wrap(
+                _wrap(
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
+                   "h1"
+            ), "div", "panel"
+        );
+    }
+    $pageHeader .= _wrap(t('Search results'),"H1");
+
+    // Test if anything has been posted; if not return with error message
+    if (!dataPosted($services)) {
+        return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
+            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+    }
+
+    // Get json response for each service that provides search parameters
+    foreach ($services as $service => $p) {
+        if (serviceUsed($p)) {
+            // Cap results on first page
+            $p['size'] = maxResultsInitial();
+            // Init client, construct query, fetch results in $remoteData
+            $client = initClient();
+            $query = buildQuery($service, $p);
+            $client->{$service}()->querySpec($query);
+            $remoteData[$service] = $client->query();
+        }
+    }
+
+	// Reorder responses in print order if more than one response
+	if (count($remoteData) > 1) {
+	   $remoteData = sortArrayByArray($remoteData, resultOrder());
+	}
+
+	// Map functions to each channel result: parses and prints data
+	$output = '';
+	$serviceToFunctions = serviceToFunctions();
+	foreach ($remoteData as $service => $json) {
+		if (!isset($serviceToFunctions[$service]) || empty($json)) {
+			continue;
+		}
+		$parseFunction = isset($serviceToFunctions[$service]['parse']) ?
+		    $serviceToFunctions[$service]['parse'] : false;
+		$printFunction = isset($serviceToFunctions[$service]['print']) ?
+		    $serviceToFunctions[$service]['print'] : false;
+		if (!empty($parseFunction) && !empty($printFunction)) {
+		    $output .= $printFunction($parseFunction($json));
+		}
+	}
+
+    // Debug: print queries
+    if (DEBUG_CHANNELS == 1) {
+        p($channels);
+    }
+
+	return $output;
+
+
+
+
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from advanced form';
+
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+}
+
+
+/**
+ * Distributes search parameter of the simple search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function nbaSimpleSearch () {
+
+    return 'Not so fast...';
+
+    $pageHeader = '';
+    $p['_search'] = $_SESSION['ndaSearch']['term'];
+
+    // Taxon search does not include geoShape and should not be invoked when coming from geo form
+    // when a search are has been entered
+    if (!isset($_SESSION['ndaSearch']['gid']) || empty($_SESSION['ndaSearch']['gid']) &&
+        empty($_SESSION['ndaSearch']['geoShape'])) {
+        $services[taxonService()] = $p;
+    }
+
+    // Other searches do include geoShape if entered
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('area drawn on map'));
+
+        $pageHeader =
+            _wrap(
+                _wrap(
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
+                   "h1"
+                ), "div", "panel"
+            );
+    };
+
+    $pageHeader .= _wrap(t('Search results for') . ' ' .
+        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "H1");
+
+    $services[specimenNamesService()] = $p;
+    $services[multimediaService()] = $p;
+    $services[specimenService()] = $p;
+
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    unset($_SESSION['ndaFilters']);
+    $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from simple form';
+
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+}
 
 
 
@@ -297,7 +500,7 @@ function setSpecimenParameters (array $sP, $type) {
  * hitting back button
  *
  * @return string The formatted output
-*/
+
 function ndabioresults_pass ($args = "") {
     global $base_path;
     $langs = language_list(); // Note: No argument
@@ -384,6 +587,7 @@ function ndabioresults_pass ($args = "") {
         drupal_goto('');
     }
 }
+*/
 
 /**
  * Logs searches to Drupal
@@ -467,7 +671,7 @@ function ndabioresults_ajax_callback () {
  * the appropriate channels and returns formatted result
  *
  * @return string Formatted output
- */
+
 function ndaSimpleSearch () {
 
     $pageHeader = '';
@@ -515,6 +719,7 @@ function ndaSimpleSearch () {
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
+*/
 
 /**
  * Distributes search parameters of the advanced search to appropiate services and returns
@@ -524,7 +729,7 @@ function ndaSimpleSearch () {
  * the appropriate channels and returns formatted result
  *
  * @return string Formatted output
- */
+
 function ndaAdvancedSearch () {
 
     $pageHeader = '';
@@ -586,6 +791,7 @@ function ndaAdvancedSearch () {
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
+*/
 
 /**
  * Sets url to search form
@@ -622,7 +828,8 @@ function setBasePath () {
  * @return boolean
  */
 function serviceUsed ($service) {
-    if (count($service) == 2 && isset($service['_geoShape']) && isset($service['_andOr'])) {
+    if (empty(count($service)) ||
+        count($service) == 2 && isset($service['geoShape']) && isset($service['logicalOperator'])) {
         return false;
     }
     return true;
@@ -800,13 +1007,6 @@ function setChannels (array $services, $overrideDefault = false) {
     	        $p['_sortDirection'] = defaultSortDirection();
 	        }
 
-	        if (isGroupService($s)) {
-    	        $p['_groupMaxResults'] = maxGroupResults();
-    	        $p['_groupSort'] = defaultGroupSort();
-    	        $p['_groupSortDirection'] = defaultGroupSortDirection();
-    	        unset($p['_sort'], $p['_sortDirection']);
-	        }
-
 	        $channels[$i]['request'] = $s;
     		$channels[$i]['url'] = ndaBaseUrl() . $s;
     		$channels[$i]['method'] = $serviceSettings[$s]['method'];
@@ -837,17 +1037,17 @@ function setSectionParameters (array $post, $typeId = '') {
     $d = array();
     foreach ($post as $k => $v) {
         if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
-            $d[str_replace($typeId, '', $k)] = $v;
+            $d[str_replace($typeId, '', $k)] = trim($v);
         }
     }
     // Append geoShape if entered
     if (isset($post['geoShape']) && !empty($post['geoShape']) &&
         in_array($typeId, array('m_', 's_', 'n_'))) {
-        $d['_geoShape'] = $post['geoShape'];
+        $d['geoShape'] = $post['geoShape'];
     }
     if (countSearchParameters($d) >= 1) {
         // Reset andOr parameter to _andOr and values to and/or
-        $d['_andOr'] = $d['andOr'] == 0 ? 'AND' : 'OR';
+        $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';
         unset($d['andOr']);
         return $d;
     }
@@ -1789,16 +1989,6 @@ function _wrap ($input, $tag = "div", $class = ""){
 
 
 /**
- * Tests if service is regular or grouped service
- *
- * @param string $service
- * @return boolean
- */
-function isGroupService ($service) {
-    return in_array($service, groupServices());
-}
-
-/**
  * Helper function that parses query string into array
  *
  * Alternate function for parse_url that preserves periods and other special
@@ -1913,7 +2103,7 @@ function isSearchService ($r) {
  *
  * @param array $data Parsed json
  * @return string $searchId
- */
+*/
 function setNavigation ($data) {
     $terms = getSearchTerms($data);
     $searchId = setSearchId($terms);
@@ -2020,7 +2210,7 @@ function setNavigationSetLink ($data, $direction) {
  *
  * @param string $r NBA request
  * @return string Updated $searchId
- */
+
  function updatePreviousNext ($r) {
     $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
     if (!empty($json)) {
@@ -2028,6 +2218,7 @@ function setNavigationSetLink ($data, $direction) {
         return setNavigation(json_decode($json));
     }
 }
+*/
 
 /**
  *  Sets unique id for search terms
