@@ -2469,7 +2469,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'n_specificEpithet',
+          'value' => 's_specificEpithet',
           'format' => NULL,
         ),
       ),
