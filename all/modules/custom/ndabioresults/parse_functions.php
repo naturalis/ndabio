@@ -847,6 +847,92 @@ function getSpecimenInCollectionUrl ($row, $i) {
 	return null;
 }
 
+/**
+ * Total size
+ *
+ * Number of results in json response
+ *
+ * @param array $data Parsed json
+ * @return number|boolean
+ */
+function getTotalRows ($data, $groupResult = false) {
+	if (isset($data->totalSize)) {
+		return (int)$data->totalSize;
+	}
+	return false;
+}
+
+/**
+ * Special case function for number of results in json response within a grouped result
+ *
+ * @param array $data Parsed json
+ * @return number|boolean
+ */
+function getTotalRowsWithinGroup ($data) {
+	if (isset($data->resultGroups[0]->totalSize)) {
+		return (int)$data->resultGroups[0]->totalSize;
+	}
+	return false;
+}
+
+/**
+ * Gets query parameters
+ *
+ * @param array $data Parsed json
+ * @return array|void Parameters
+*/
+function getSearchTerms ($data) {
+	if (isset($data->queryParameters)) {
+		return (array)$data->queryParameters;
+	}
+	return false;
+}
+
+
+function setQueryTerms ($service) {
+    // Search form
+    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        $terms = setSectionParameters($_GET, $service[0] . '_');
+    // "Direct link"
+    } else {
+        $terms = $_GET;
+    }
+
+    if (!isset($_GET['sort']) || empty($_GET['sort'])) {
+        $terms['sort'] = NBADEFAULTSORT;
+    }
+    if (!isset($_GET['sortDirection']) || empty($_GET['sortDirection'])) {
+        $terms['sortDirection'] = NBADEFAULTSORTDIRECTION;
+    }
+    if (!isset($_GET['size']) || empty($_GET['size'])) {
+        $terms['size'] = NBAMAXRESULTS;
+    }
+    if (!isset($_GET['from']) || $_GET['from'] == '') {
+        $terms['from'] = 0;
+    }
+
+    $_SESSION['nbaQueryTerms'][$service] = $terms;
+    return $terms;
+}
+
+function getQueryTerms ($service) {
+    return isset($_SESSION['nbaQueryTerms'][$service]) ?
+        $_SESSION['nbaQueryTerms'][$service] : false;
+}
+
+function getQueryFields ($service) {
+    if (isset($_SESSION['nbaQueryTerms'][$service])) {
+        $queryTerms = $_SESSION['nbaQueryTerms'][$service];
+        foreach (searchFlags() as $flag) {
+            if (isset($queryTerms[$flag])) {
+                unset($queryTerms[$flag]);
+            }
+        }
+        return $queryTerms;
+    }
+    return false;
+}
+
 
 /**
  * Parses taxon json to PHP array
@@ -862,15 +948,18 @@ function parseTaxa ($json) {
 	$data = json_decode($json);
 
 	$output['total'] = getTotalRows($data);
-	$output['searchTerms'] = getSearchTerms($data);
+	$output['searchTerms'] = getQueryTerms('taxon');
+
+	p($output['searchTerms']); die();
+
 	if (!$output['searchTerms']) {
 		handleError('parseTaxon: invalid json response');
 	}
-	if ($output['total'] == 0 || empty($data->resultGroups)) {
+	if ($output['total'] == 0 || empty($data->resultSet)) {
 	    $output['results'] = array();
         return $output;
 	}
-	foreach ($data->resultGroups as $row) {
+	foreach ($data->resultSet as $row) {
 		$d = array();
 		// Accepted scientific name, synonym, or common name
 		$d['type'] = getResultType($row);
@@ -932,6 +1021,46 @@ function parseTaxa ($json) {
 	}
 
 	return isset($output) ? $output : false;
+}
+
+/**
+ *
+ * Gets offset for synonym/common name in taxon response
+ *
+ * Returns offset of result; used only for synonyms and common names to
+ * determine the array key containing the hit
+ *
+ * NOTE: currently not in use because final NBA response does not match
+ * mock object for which this function was developed...
+ *
+ * @param array $row Parsed json
+ * @return unknown
+ */
+function getResultOffset ($row) {
+	preg_match('/\[(.*?)\]/', $row->searchResults[0]->matchInfo[0]->path, $m);
+	return $m[1];
+}
+
+/**
+ * Gets result type (accepted/synonym/common) for taxon
+ *
+ * Returns type of result:
+ * acceptedName.fullScientificName
+ * acceptedName.synonyms[0].scientificName.fullScientificName
+ * acceptedName.commonNames[0].name
+ *
+ * @param array $row Parsed json
+ * @return string accepted/synonym/common
+
+function getResultType ($row) {
+	$path = $row->searchResults[0]->matchInfo[0]->path;
+	return strpos($path, 'synonym') !== false ? 'synonym' :
+		(strpos($path, 'vernacularNames') !== false ? 'common' : 'accepted');
+}
+ */
+
+function getResultType ($row, $terms) {
+
 }
 
 /** Gets offset of matched synonym in taxon response

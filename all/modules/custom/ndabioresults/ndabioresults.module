@@ -155,10 +155,9 @@ function buildQuery ($service, $terms = array()) {
  * Will become more compilated once we allow searches on date or int fields.
  */
 function setConditionOperator ($service, $nbaPath, $value = '') {
-
     if (isset(nbaFieldTypes()[$service][$nbaPath])) {
-        $type = nbaFieldTypes()[$service][$nbaPath];
-        return likeOperatorAllowed($type, $value) ? 'LIKE' : 'MATCHES';
+        return likeOperatorAllowed(nbaFieldTypes()[$service][$nbaPath], $value) ?
+            'LIKE' : 'MATCHES';
     }
     return 'EQUALS_IC';
 }
@@ -205,9 +204,9 @@ function nbaMaxLikeStringSize () {
 }
 
 function likeOperatorAllowed ($type, $value = '') {
-    return strpos($type, '[like]') !== false &&
+    return strpos($type, '[like]') &&
         strlen($value) >= nbaMinLikeStringSize() &&
-        strlen($value) <= nbaMinLikeStringSize();
+        strlen($value) <= nbaMaxLikeStringSize();
 }
 
 
@@ -225,7 +224,7 @@ function likeOperatorAllowed ($type, $value = '') {
  *
  * @return string The formatted output
 */
-function ndabioresults_pass ($args = "") {
+function ndabioresults_pass ($service = '') {
     global $base_path;
 
     $langs = language_list(); // Note: No argument
@@ -234,20 +233,20 @@ function ndabioresults_pass ($args = "") {
         variable_set('language_default', $langs[$langcode]);
     }
 
-    drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
-    drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
-    drupal_add_http_header('Cache-Control', 'post-check=0, pre-check=0');
-    session_cache_limiter("must-revalidate");
-    drupal_add_js("var str_base_path = '$base_path' ", 'inline');
+    // Direct link
+    if (!empty($service)) {
+        setQueryTerms($service);
+    }
 
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         drupal_set_title(t("Search results"));
-        $_SESSION['ndaSearch'] = $_GET;
+        $_SESSION['ndaForm'] = $_GET;
         logSearch();
-        return empty($_SESSION['ndaSearch']['term']) ? nbaAdvancedSearch() : nbaSimpleSearch();
+        return empty($_SESSION['ndaForm']['term']) ? nbaAdvancedSearch() : nbaSimpleSearch();
     }
+
 }
 
 
@@ -264,6 +263,9 @@ function ndabioresults_pass ($args = "") {
  */
 function nbaAdvancedSearch () {
     $pageHeader = '';
+
+    // Delete previous search terms when performing new query
+    unset($_SESSION['nbaQueryTerms']);
 
     $services['multimedia'] = setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services['taxon'] = setSectionParameters($_SESSION['ndaSearch'], 't_');
@@ -294,13 +296,19 @@ function nbaAdvancedSearch () {
     foreach ($services as $service => $p) {
         if (serviceUsed($p)) {
             // Cap results on first page
-            $p['size'] = maxResultsInitial();
+            if (!isset($p['size'])) {
+                $p['size'] = maxResultsInitial();
+            }
 
             // Init client, construct query, fetch results in $remoteData
             $client = initClient();
             $query = buildQuery($service, $p);
             $client->{$service}()->querySpec($query);
             $remoteData[$service] = $client->query();
+
+            // Save service-specific query to session;
+            // used for further navigation
+            setQueryTerms($service);
 
             // Store query if user wants to print it on screen
             if (PRINT_QUERIES == 1) {
@@ -316,7 +324,7 @@ function nbaAdvancedSearch () {
 	}
 
 	// Map functions to each channel result: parses and prints data
-	$output = '';
+	$pageBody = '';
 	$serviceToFunctions = serviceToFunctions();
 	foreach ($remoteData as $service => $json) {
 		if (!isset($serviceToFunctions[$service]) || empty($json)) {
@@ -327,7 +335,7 @@ function nbaAdvancedSearch () {
 		$printFunction = isset($serviceToFunctions[$service]['print']) ?
 		    $serviceToFunctions[$service]['print'] : false;
 		if (!empty($parseFunction) && !empty($printFunction)) {
-		    $output .= $printFunction($parseFunction($json));
+		    $pageBody .= $printFunction($parseFunction($json));
 		}
 	}
 
@@ -336,17 +344,10 @@ function nbaAdvancedSearch () {
         p($debug);
     }
 
-	return $output;
-
-
-
-
     // Set session with NBA query type;
     // used to determine if show all should be printed
     $_SESSION['ndaRequestType'] = 'form';
     $_SESSION['ndaPageDetail'] = 'result from advanced form';
-
-    $pageBody = performNdaRequest(setChannels($services));
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
@@ -839,7 +840,7 @@ function setBasePath () {
  * @return boolean
  */
 function serviceUsed ($service) {
-    if (empty(count($service)) ||
+    if (count($service) == 0 ||
         count($service) == 2 && isset($service['geoShape']) && isset($service['logicalOperator'])) {
         return false;
     }
@@ -1053,11 +1054,11 @@ function setSectionParameters (array $post, $typeId = '') {
     }
     // Append geoShape if entered
     if (isset($post['geoShape']) && !empty($post['geoShape']) &&
-        in_array($typeId, array('m_', 's_', 'n_'))) {
+        in_array($typeId, array('m_', 's_'))) {
         $d['geoShape'] = $post['geoShape'];
     }
     if (countSearchParameters($d) >= 1) {
-        // Reset andOr parameter to _andOr and values to and/or
+        // Rewrite andOr to logicalOperator
         $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';
         unset($d['andOr']);
         return $d;
@@ -1563,81 +1564,7 @@ function validJson ($string) {
 	return is_object(json_decode($string));
 }
 
-/**
- * Gets result type (accepted/synonym/common) for taxon
- *
- * Returns type of result:
- * acceptedName.fullScientificName
- * acceptedName.synonyms[0].scientificName.fullScientificName
- * acceptedName.commonNames[0].name
- *
- * @param array $row Parsed json
- * @return string accepted/synonym/common
- */
-function getResultType ($row) {
-	$path = $row->searchResults[0]->matchInfo[0]->path;
-	return strpos($path, 'synonym') !== false ? 'synonym' :
-		(strpos($path, 'vernacularNames') !== false ? 'common' : 'accepted');
-}
 
-/**
- *
- * Gets offset for synonym/common name in taxon response
- *
- * Returns offset of result; used only for synonyms and common names to
- * determine the array key containing the hit
- *
- * NOTE: currently not in use because final NBA response does not match
- * mock object for which this function was developed...
- *
- * @param array $row Parsed json
- * @return unknown
- */
-function getResultOffset ($row) {
-	preg_match('/\[(.*?)\]/', $row->searchResults[0]->matchInfo[0]->path, $m);
-	return $m[1];
-}
-
-/**
- * Total size
- *
- * Number of results in json response
- *
- * @param array $data Parsed json
- * @return number|boolean
- */
-function getTotalRows ($data, $groupResult = false) {
-	if (isset($data->totalSize)) {
-		return (int)$data->totalSize;
-	}
-	return false;
-}
-
-/**
- * Special case function for number of results in json response within a grouped result
- *
- * @param array $data Parsed json
- * @return number|boolean
- */
-function getTotalRowsWithinGroup ($data) {
-	if (isset($data->resultGroups[0]->totalSize)) {
-		return (int)$data->resultGroups[0]->totalSize;
-	}
-	return false;
-}
-
-/**
- * Gets query parameters
- *
- * @param array $data Parsed json
- * @return array|void Parameters
- */
-function getSearchTerms ($data) {
-	if (isset($data->queryParameters)) {
-		return (array)$data->queryParameters;
-	}
-	return false;
-}
 
 /**
  * Creates properly formatted scientific name

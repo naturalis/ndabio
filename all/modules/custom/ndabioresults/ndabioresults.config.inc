@@ -1,10 +1,10 @@
 <?php
 
-define("NBABASEURL", "http://api.biodiversitydata.nl/v0/");
+define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
 define("NBAMAXRESULTS", 100);
-define("NBADEFAULTSORT", 'score');
+define("NBADEFAULTSORT", '_score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
 
@@ -122,8 +122,14 @@ function ndaBaseUrl () {
 function searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
-         $var = array('andOr', 'sort', 'sortDirection', 'maxResults', 'offset',
-            'raw', 'size', 'from', 'logicalOperator');
+         $var = array(
+            'sort',
+            'sortDirection',
+            'size',
+            'from',
+            'logicalOperator',
+            'andOr',
+         );
     }
     return $var;
 }
