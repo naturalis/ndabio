@@ -1,4 +1,14 @@
 <?php
+// Load shared library
+require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
+
+// Namespaces not defined in common.inc
+use nl\naturalis\bioportal\QuerySpec as QuerySpec;
+use nl\naturalis\bioportal\Condition as Condition;
+
+initBioPortalClient();
+
+
 
 /**
  * @file
@@ -741,5 +751,3 @@ function ndabio_omnisearch_form() {
 function _wrap_label( $help, $caption ){
   return "<span class='search-explanation' title='$help'>$caption</span>";
 }
-
-

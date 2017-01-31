@@ -3,27 +3,19 @@
 define("PRINT_QUERIES", 1);
 define("PRINT_QUERIES_ENCODED", 0);
 
-
 // Drupal
 require_once 'ndabioresults.config.inc';
 require_once 'ndabioresults.block.inc';
 
 // Libraries
-require_once 'parse_functions.php';
-require_once 'print_functions.php';
+require_once 'common.inc';
+require_once 'ndabioresults.parse.inc';
+require_once 'ndabioresults.print.inc';
 require_once 'Paginator.php';
 
-// Initialize BioPortal client
-// Can't get autoloader to work, problem with namespaces in Drupal 7?
-$clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/';
-require_once $clientPath . 'AbstractClass.php';
-require_once $clientPath . 'Client.php';
-require_once $clientPath . 'QuerySpec.php';
-require_once $clientPath . 'Condition.php';
-use nl\naturalis\bioportal\Client as Client;
+// Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
-
 
 
 
@@ -175,16 +167,11 @@ function getMappingProperties ($mapping, $prefix = '') {
 }
 
 
-function initClient() {
-    $client = new Client();
-    $client->setNbaUrl(ndaBaseUrl());
-    return $client;
-}
 
 function nbaFieldTypes() {
     if (!isset($_SESSION['nba_settings']['field_types']) ||
         empty($_SESSION['nba_settings']['field_types'])) {
-        $client = initClient();
+        $client = initBioPortalClient();
         $r = $client->all()->getMapping();
         foreach ($r as $service => $json) {
             $_SESSION['nba_settings']['field_types'][$service] =
@@ -301,7 +288,7 @@ function nbaAdvancedSearch () {
             }
 
             // Init client, construct query, fetch results in $remoteData
-            $client = initClient();
+            $client = initBioPortalClient();
             $query = buildQuery($service, $p);
             $client->{$service}()->querySpec($query);
             $remoteData[$service] = $client->query();
