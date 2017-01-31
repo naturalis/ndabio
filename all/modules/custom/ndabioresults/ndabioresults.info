@@ -1,5 +1,7 @@
 name = ndabioresults
-description = "ndabioresults"
 version = "7.x-0.1"
+description = Naturalis bioportal results module"
 core = 7.x
+package = "Naturalis Biodiversity API"
+dependencies[] = ndabio
 configure = admin/config/naturalis/ndaresult

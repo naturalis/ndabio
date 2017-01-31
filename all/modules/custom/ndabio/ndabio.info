@@ -1,5 +1,7 @@
 name = NdaBio
-description = "Naturalis bioportal module"
 version = "7.x-0.1"
+description = "Naturalis bioportal module"
 core = 7.x
+package = "Naturalis Biodiversity API"
+dependencies[] = ndabioresults
 configure = admin/config/naturalis
