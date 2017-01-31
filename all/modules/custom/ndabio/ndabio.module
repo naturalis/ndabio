@@ -6,7 +6,44 @@ require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
-initBioPortalClient();
+$client = initBioPortalClient();
+$client->getGeoAreas();
+
+
+$advancedMenu['specimen']['sourceSystem'] =
+    array_keys($client->specimen()->getDistinctValues('sourceSystem.name'));
+$advancedMenu['specimen']['collectionType'] =
+    array_keys($client->specimen()->getDistinctValues('collectionType'));
+$advancedMenu['specimen']['typeStatus'] =
+    array_keys($client->specimen()->getDistinctValues('typeStatus'));
+$advancedMenu['specimen']['sex'] =
+    array_keys($client->specimen()->getDistinctValues('sex'));
+$advancedMenu['specimen']['kingdom'] =
+    array_keys($client->specimen()
+        ->getDistinctValues('identifications.defaultClassification.kingdom'));
+$advancedMenu['taxon']['sourceSystem'] =
+    array_keys($client->specimen()->getDistinctValues('sourceSystem'));
+$advancedMenu['taxon']['sourceSystem'] =
+    array_keys($client->taxon()->getDistinctValues('sourceSystem.name'));
+$advancedMenu['multimedia']['sourceSystem'] =
+    array_keys($client->multimedia()->getDistinctValues('sourceSystem.name'));
+$advancedMenu['multimedia']['collectionType'] =
+    array_keys($client->multimedia()->getDistinctValues('collectionType'));
+$advancedMenu['multimedia']['collectionType'] =
+    array_keys($client->multimedia()->getDistinctValues('collectionType'));
+
+
+
+
+function getDistinctValues ($service, $nbaPath) {
+    $client = initBioPortalClient();
+    $d = $client->{$service}()->getDistinctValues($nbaPath);
+    unset($client);
+    return array_keys(json_decode($d));
+}
+
+
+//die($client->specimen()->getDistinctValues('sourceSystem.name'));
 
 
 
@@ -751,3 +788,4 @@ function ndabio_omnisearch_form() {
 function _wrap_label( $help, $caption ){
   return "<span class='search-explanation' title='$help'>$caption</span>";
 }
+

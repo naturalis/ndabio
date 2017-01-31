@@ -1893,13 +1893,6 @@ function setTitle ($head, $page = '') {
 }
 
 /**
- * Shorthand function for print_r()
- */
- function p ($a) {
-   echo '<pre>'; print_r($a); echo "</pre>\n\n";
-}
-
-/**
  * Formats string between tags and optionally appends class
  *
  * @param string $input

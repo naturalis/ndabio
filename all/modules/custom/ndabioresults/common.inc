@@ -17,3 +17,11 @@ function initBioPortalClient() {
     $client->setNbaUrl(ndaBaseUrl());
     return $client;
 }
+
+/**
+ * Shorthand function for print_r()
+ */
+ function p ($a) {
+   echo '<pre>'; print_r($a); echo "</pre>\n\n";
+}
+
