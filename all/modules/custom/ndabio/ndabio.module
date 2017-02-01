@@ -6,44 +6,91 @@ require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
-$client = initBioPortalClient();
-$client->getGeoAreas();
 
 
-$advancedMenu['specimen']['sourceSystem'] =
-    array_keys($client->specimen()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['specimen']['collectionType'] =
-    array_keys($client->specimen()->getDistinctValues('collectionType'));
-$advancedMenu['specimen']['typeStatus'] =
-    array_keys($client->specimen()->getDistinctValues('typeStatus'));
-$advancedMenu['specimen']['sex'] =
-    array_keys($client->specimen()->getDistinctValues('sex'));
-$advancedMenu['specimen']['kingdom'] =
-    array_keys($client->specimen()
-        ->getDistinctValues('identifications.defaultClassification.kingdom'));
-$advancedMenu['taxon']['sourceSystem'] =
-    array_keys($client->specimen()->getDistinctValues('sourceSystem'));
-$advancedMenu['taxon']['sourceSystem'] =
-    array_keys($client->taxon()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['multimedia']['sourceSystem'] =
-    array_keys($client->multimedia()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['multimedia']['collectionType'] =
-    array_keys($client->multimedia()->getDistinctValues('collectionType'));
-$advancedMenu['multimedia']['collectionType'] =
-    array_keys($client->multimedia()->getDistinctValues('collectionType'));
+function getGeoAreas () {
+    $nbaGeoAreas = &drupal_static(__FUNCTION__);
+    if (!$nbaGeoAreas) {
+        $cacheId = 'nbaGeoAreas';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaGeoAreas = $cache->data;
+            return $nbaGeoAreas;
+        }
+        $client = initBioPortalClient();
+        $nbaGeoAreas = $client->getGeoAreas();
+        cache_set($cacheId, $nbaGeoAreas);
+    }
+    return $nbaGeoAreas;
+}
 
-
-
-
-function getDistinctValues ($service, $nbaPath) {
-    $client = initBioPortalClient();
-    $d = $client->{$service}()->getDistinctValues($nbaPath);
-    unset($client);
-    return array_keys(json_decode($d));
+function advancedSelects () {
+    $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
+    if (!$nbaAdvancedSelects) {
+        $cacheId = 'nbaAdvancedSelects';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaAdvancedSelects = $cache->data;
+            return $nbaAdvancedSelects;
+        }
+        $nbaAdvancedSelects['s_sourceSystem'] =
+            getDistinctValues('specimen', 'sourceSystem.name');
+        $nbaAdvancedSelects['s_collectionType'] =
+            getDistinctValues('specimen', 'collectionType');
+        $nbaAdvancedSelects['s_typeStatus'] =
+            getDistinctValues('specimen', 'typeStatus');
+        $nbaAdvancedSelects['s_sex'] =
+            getDistinctValues('specimen', 'sex');
+        $nbaAdvancedSelects['s_kingdom'] =
+            getDistinctValues('specimen', 'identifications.defaultClassification.kingdom');
+        $nbaAdvancedSelects['t_sourceSystem'] =
+            getDistinctValues('taxon', 'sourceSystem.name');
+        $nbaAdvancedSelects['t_kingdom'] =
+            getDistinctValues('taxon', 'defaultClassification.kingdom');
+        $nbaAdvancedSelects['m_sourceSystem'] =
+            getDistinctValues('multimedia', 'sourceSystem.name');
+        $nbaAdvancedSelects['m_collectionType'] =
+            getDistinctValues('multimedia', 'collectionType');
+        $nbaAdvancedSelects['m_typeStatus'] =
+            getDistinctValues('multimedia', 'specimenTypeStatus');
+        $nbaAdvancedSelects['m_phaseOrStage'] =
+            getDistinctValues('multimedia', 'phasesOrStages');
+        $nbaAdvancedSelects['m_sex'] =
+            getDistinctValues('multimedia', 'sexes');
+        $nbaAdvancedSelects['m_kingdom'] =
+            getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom');
+    }
+    return $nbaAdvancedSelects;
 }
 
 
-//die($client->specimen()->getDistinctValues('sourceSystem.name'));
+
+
+
+//p(advancedSelects());
+
+
+
+/*
+ * $field = name of form field
+ * $taxonomy = Drupal values for taxonomy (old situation): indicates if --all-- option should be printed
+ * $selected = option that should be select in form
+ */
+function setAdvancedSelect ($field, $taxonomy = '') {
+    if (!isset(advancedSelects()[$field])) {
+        return false;
+    }
+    // First entry is an empty string
+    $select[""] = "";
+    // Add --all-- option if this is set in taxonomy value
+    if (strpos($taxonomy, '-- all --') !== false) {
+        $select['NOT_NULL'] = '-- ' . t('all') . ' --';
+    }
+    foreach (advancedSelects()[$field] as $option) {
+        $select[$option] = $option;
+    }
+    return $select;
+}
 
 
 
@@ -161,13 +208,99 @@ function ndabio_menu() {
    'type' => MENU_CALLBACK,
   );
 
-    $items['naturalis/clear_map_data'] = array(
+  $items['naturalis/clear_map_data'] = array(
    'page callback' => 'ndabio_clear_map_data_callback',
    'access arguments' => array('access content'),
    'type' => MENU_CALLBACK,
   );
 
+  $items['new_areas'] = array(
+    'page callback' => 'nda_areas_callback',
+    'access callback' => TRUE,
+  );
+
+
   return $items;
+}
+
+
+
+function nda_areas_callback ($type = false) {
+    if (!$type) {
+        return false;
+    }
+    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
+    if ($type == 'country') {
+        // First print favourites (hard-coded)
+        $f['en'] = ['Curaçao', 'Indonesia', 'Netherlands', 'Saint Martin', 'Suriname'];
+        $f['nl'] = ['Curaçao', 'Indonesië', 'Nederland', 'Sint Maarten', 'Suriname'];
+        echo printGeoFavourites(createGeoList('Country', $language, $f));
+        // Complete list
+        echo printGeoList(createGeoList('Country', $language));
+    } else if ($type == 'municipality') {
+        // Fix names that do not start with a letter
+        $fixes = [
+            "'s-Gravenhage" => 'Den Haag',
+            "'s-Hertogenbosch" => 'Den Bosch',
+        ];
+        echo printGeoList(fixGeoList(createGeoList('Municipality', $language), $fixes));
+    } else {
+        echo printGeoList(createGeoList(ucfirst($type), $language));
+    }
+}
+
+function createGeoList ($type, $language, $intersect = false) {
+    $all = json_decode(getGeoAreas(), true);
+    if (!isset($all[$type])) {
+        return [];
+    }
+    $list = $all[$type];
+    foreach ($list as $item) {
+        $d[$item['id']] = isset($item["locality_{$language}"]) ?
+            $item["locality_{$language}"] : $item['locality_en'];
+    }
+    if ($intersect && is_array($intersect)) {
+        $d = array_intersect($d, $intersect[$language]);
+    }
+    asort($d);
+    return $d;
+}
+
+function fixGeoList ($list, $fixes = []) {
+    if (empty($fixes)) {
+        return $list;
+    }
+    foreach ($list as $id => $item) {
+        if (isset($fixes[$item])) {
+            $list[$id] = $fixes[$item];
+        }
+    }
+    asort($list);
+    return $list;
+}
+
+function printGeoFavourites ($list) {
+    $output = "<div class=\"item-list\">\n<h3>" . t('Highlighted') . "</h3>\n<ul>\n";
+    foreach ($list as $id => $item) {
+        $output .= '<li class="row-area"><a id="' . $id . '">' . $item . "</a></li>\n";
+    }
+    return $output .= "</ul></div>\n";
+}
+
+function printGeoList ($list) {
+    $output = $letter = $prevLetter = '';
+    foreach ($list as $id => $item) {
+        $letter = strtoupper($item[0]);
+        if ($letter != $prevLetter) {
+            if ($prevLetter != '') {
+                $output .= "</ul>\n</div>\n";
+            }
+            $output .= "<div class=\"item-list\">\n<h3>$letter</h3>\n<ul>\n";
+        }
+        $output .= '<li class="row-area"><a id="' . $id . '">' . $item . "</a></li>\n";
+        $prevLetter = $letter;
+    }
+    return $output .= "</ul></div>\n";
 }
 
 
@@ -575,6 +708,8 @@ function ndabio_advanced_taxonomysearch() {
 
                 //put all children in group
                 foreach ($category as $catitem) {
+
+                    /*
                   $lvalues = "";
                   if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
                   if ($lvalues != "") {
@@ -583,17 +718,31 @@ function ndabio_advanced_taxonomysearch() {
                     foreach (explode("|", $lvalues) as $optionitem) {
 		              $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
                       $optionarray[$optioncode] = $optionitem;
-                    }
-                   $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
-                      '#type'      => 'select',
-                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
-                      '#options'   => $optionarray,
-                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
-                      '#required'  => FALSE,
-                      '#inline'    => TRUE,
+                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                        '#type'      => 'select',
+                        '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                        '#options'   => $optionarray,
+                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                        '#required'  => FALSE,
+                        '#inline'    => TRUE,
                     );
+                    }
+                    */
 
-                  }
+                // New way to create select: it should be present in advancedSelects().
+                // Taxonomy value will still be needed to indicate if --all-- option should be printed!
+                if (isset(advancedSelects()[$catitem->name])) {
+                    $options = setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
+                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+                        '#type'      => 'select',
+                        '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                        '#options'   => $options,
+                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                        '#required'  => FALSE,
+                        '#inline'    => TRUE,
+                    );
+                }
+
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
@@ -608,23 +757,38 @@ function ndabio_advanced_taxonomysearch() {
             }
             else {
               //Default search fields
+
+                /*
               if ($subchildvalues != "") {
                 unset($optionarray);
                 $optionarray[""] = ""; //First entry is an empty string
                 foreach (explode("|", $subchildvalues) as $optionitem ) {
 		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
                   $optionarray[$optioncode] = t($optionitem);
-                }
+
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'       => 'select',
                   '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                   '#options'    => $optionarray,
-                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                  '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
                   '#inline'     => TRUE,
                   '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                 );
                 $subchildvalues = "";
-              }
+                }
+                */
+
+                if (isset(advancedSelects()[$subchildsysname])) {
+                    $options = setAdvancedSelect($subchildsysname, $subchildvalues);
+                    $form[$sysname][$childsysname][$subchildsysname] = array(
+                        '#type'       => 'select',
+                        '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                        '#options'    => $options,
+                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                        '#inline'     => TRUE,
+                        '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+                    );
+                }
               else {
 
 
@@ -642,6 +806,8 @@ function ndabio_advanced_taxonomysearch() {
         }
         else {
           //Default search fields
+
+/*
           $childvalues = "";
           if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
           if ($childvalues != "") {
@@ -661,7 +827,23 @@ function ndabio_advanced_taxonomysearch() {
             );
             $subchildvalues = "";
           }
-          else {
+*/
+
+
+                if (isset(advancedSelects()[$childsysname])) {
+                    $options = setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
+                    $form[$sysname][$childsysname][$subchildsysname] = array(
+                        '#type'       => 'select',
+                        '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                        '#options'    => $options,
+                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                        '#inline'     => TRUE,
+                        '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+                    );
+                }
+
+
+         else {
             $form[$sysname][$childsysname]['#type'] = array(
               '#type'          => 'textfield',
               '#title'         => t($childlabel),
@@ -709,13 +891,13 @@ function ndabio_advanced_taxonomysearch() {
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
       "  <ul>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "new_areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "new_areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
       "    </li>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
+      "      <a data-rel='ajax' href='" . $base_root . $base_path . "new_areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
       "    </li>" .
       "  </ul>" .
       "</div>";
