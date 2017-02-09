@@ -914,11 +914,7 @@ function ndabio_advanced_taxonomysearch() {
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
       "  <ul>" .
       "    <li>" .
-<<<<<<< HEAD
-      "      <a data-rel='ajax' href='http://bioportal.naturalis.nl/areas/country?response_type=embed&language=nl'>" . t('Countries') . "</a>" .
-=======
       "      <a data-rel='ajax' href='" . $base_root . $base_path . "new_areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
->>>>>>> v2.0-dev
       "    </li>" .
       "    <li>" .
       "      <a data-rel='ajax' href='" . $base_root . $base_path . "new_areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
