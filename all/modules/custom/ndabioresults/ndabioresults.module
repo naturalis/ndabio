@@ -69,7 +69,6 @@ function ndabioresults_menu() {
 
 function nda_taxon_callback ($taxon = '', $searchRequest = '') {
     global $client, $nbaFieldTypes;
-    initClient();
 
     $search = [
         'className' => 'aves',
@@ -148,38 +147,9 @@ function buildQuery ($service, $terms = array()) {
  */
 function setConditionOperator ($service, $nbaPath, $value = '') {
     if (isset(nbaFieldTypes()[$service][$nbaPath])) {
-        return likeOperatorAllowed(nbaFieldTypes()[$service][$nbaPath], $value) ?
-            'LIKE' : 'MATCHES';
+        return getOperatorFromMapping(nbaFieldTypes()[$service][$nbaPath], $value);
     }
-    return 'EQUALS_IC';
-}
-
-function getMappingProperties ($mapping, $prefix = '') {
-    $r = [];
-    foreach ($mapping['properties'] as $k => $v) {
-        if (isset($v['properties'])) {
-            $r = $r + getMappingProperties($v, $prefix . $k . '.');
-        } else {
-            $r[$prefix . $k] = $v['type'] . (isset($v['fields']['like']) ? ' [like]' : '');
-        }
-    }
-    return $r;
-}
-
-
-
-function nbaFieldTypes() {
-    if (!isset($_SESSION['nba_settings']['field_types']) ||
-        empty($_SESSION['nba_settings']['field_types'])) {
-        $client = initBioPortalClient();
-        $r = $client->all()->getMapping();
-        foreach ($r as $service => $json) {
-            $_SESSION['nba_settings']['field_types'][$service] =
-                getMappingProperties(json_decode($json, true));
-        }
-        unset($client);
-    }
-    return $_SESSION['nba_settings']['field_types'];
+    return 'EQUALS';
 }
 
 function nbaMinLikeStringSize () {
@@ -190,8 +160,21 @@ function nbaMaxLikeStringSize () {
     return 15;
 }
 
-function likeOperatorAllowed ($type, $value = '') {
-    return strpos($type, '[like]') &&
+/*
+ * Get operator from mapping. If present it's separated by a pipe symbol
+ */
+function getOperatorFromMapping ($type, $value) {
+    $p = explode('|', $type);
+    if (isset($p[1])) {
+        if (trim($p[1]) == 'LIKE' && !likeOperatorAllowed($value)) {
+            return 'MATCHES';
+        }
+        return trim($p[1]);
+    }
+}
+
+function likeOperatorAllowed ($value = '') {
+    return
         strlen($value) >= nbaMinLikeStringSize() &&
         strlen($value) <= nbaMaxLikeStringSize();
 }
@@ -211,7 +194,7 @@ function likeOperatorAllowed ($type, $value = '') {
  *
  * @return string The formatted output
 */
-function ndabioresults_pass ($service = '') {
+function ndabioresults_pass ($service = null) {
     global $base_path;
 
     $langs = language_list(); // Note: No argument
@@ -221,7 +204,7 @@ function ndabioresults_pass ($service = '') {
     }
 
     // Direct link
-    if (!empty($service)) {
+    if (!is_null($service)) {
         setQueryTerms($service);
     }
 
@@ -229,9 +212,9 @@ function ndabioresults_pass ($service = '') {
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         drupal_set_title(t("Search results"));
-        $_SESSION['ndaForm'] = $_GET;
+        $_SESSION['ndaSearch'] = $_GET;
         logSearch();
-        return empty($_SESSION['ndaForm']['term']) ? nbaAdvancedSearch() : nbaSimpleSearch();
+        return empty($_SESSION['ndaSearch']['term']) ? nbaAdvancedSearch() : nbaSimpleSearch();
     }
 
 }
@@ -310,6 +293,7 @@ function nbaAdvancedSearch () {
 	   $remoteData = sortArrayByArray($remoteData, resultOrder());
 	}
 
+/*
 	// Map functions to each channel result: parses and prints data
 	$pageBody = '';
 	$serviceToFunctions = serviceToFunctions();
@@ -325,11 +309,14 @@ function nbaAdvancedSearch () {
 		    $pageBody .= $printFunction($parseFunction($json));
 		}
 	}
+*/
 
     // Debug: print queries
     if (PRINT_QUERIES == 1 && !empty($debug)) {
         p($debug);
     }
+
+    die();
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
@@ -337,6 +324,52 @@ function nbaAdvancedSearch () {
     $_SESSION['ndaPageDetail'] = 'result from advanced form';
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+}
+
+
+
+function setQueryTerms ($service) {
+    // Search form
+    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
+        $terms = setSectionParameters($_GET, $service[0] . '_');
+    // "Direct link"
+    } else {
+        $terms = $_GET;
+    }
+
+    if (!isset($_GET['sort']) || empty($_GET['sort'])) {
+        $terms['sort'] = NBADEFAULTSORT;
+    }
+    if (!isset($_GET['sortDirection']) || empty($_GET['sortDirection'])) {
+        $terms['sortDirection'] = NBADEFAULTSORTDIRECTION;
+    }
+    if (!isset($_GET['size']) || empty($_GET['size'])) {
+        $terms['size'] = NBAMAXRESULTS;
+    }
+    if (!isset($_GET['from']) || $_GET['from'] == '') {
+        $terms['from'] = 0;
+    }
+
+    $_SESSION['nbaQueryTerms'][$service] = $terms;
+    return $terms;
+}
+
+function getQueryTerms ($service) {
+    return isset($_SESSION['nbaQueryTerms'][$service]) ?
+        $_SESSION['nbaQueryTerms'][$service] : false;
+}
+
+function getQueryFields ($service) {
+    if (isset($_SESSION['nbaQueryTerms'][$service])) {
+        $queryTerms = $_SESSION['nbaQueryTerms'][$service];
+        foreach (searchFlags() as $flag) {
+            if (isset($queryTerms[$flag])) {
+                unset($queryTerms[$flag]);
+            }
+        }
+        return $queryTerms;
+    }
+    return false;
 }
 
 
@@ -1199,21 +1232,6 @@ function getTaxonId ($data) {
 function stripBaseUrl ($url) {
     return str_replace(urlencode(ndaBaseUrl()), '', $url);
 }
-
-
-/**
- * Converts timestamp in milliseconds to year-month-day
- *
- * @param string $v
- * @return string
- */
-function timeStampToDate ($v) {
-    if (!empty($v)) {
-        return date('Y-m-d', $v / 1000);
-    }
-    return null;
-}
-
 
 /**
  * Replaces registration numbers with multiple spaces with non-breaking spaces

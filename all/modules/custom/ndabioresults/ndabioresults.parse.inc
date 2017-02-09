@@ -889,50 +889,6 @@ function getSearchTerms ($data) {
 }
 
 
-function setQueryTerms ($service) {
-    // Search form
-    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
-        $terms = setSectionParameters($_GET, $service[0] . '_');
-    // "Direct link"
-    } else {
-        $terms = $_GET;
-    }
-
-    if (!isset($_GET['sort']) || empty($_GET['sort'])) {
-        $terms['sort'] = NBADEFAULTSORT;
-    }
-    if (!isset($_GET['sortDirection']) || empty($_GET['sortDirection'])) {
-        $terms['sortDirection'] = NBADEFAULTSORTDIRECTION;
-    }
-    if (!isset($_GET['size']) || empty($_GET['size'])) {
-        $terms['size'] = NBAMAXRESULTS;
-    }
-    if (!isset($_GET['from']) || $_GET['from'] == '') {
-        $terms['from'] = 0;
-    }
-
-    $_SESSION['nbaQueryTerms'][$service] = $terms;
-    return $terms;
-}
-
-function getQueryTerms ($service) {
-    return isset($_SESSION['nbaQueryTerms'][$service]) ?
-        $_SESSION['nbaQueryTerms'][$service] : false;
-}
-
-function getQueryFields ($service) {
-    if (isset($_SESSION['nbaQueryTerms'][$service])) {
-        $queryTerms = $_SESSION['nbaQueryTerms'][$service];
-        foreach (searchFlags() as $flag) {
-            if (isset($queryTerms[$flag])) {
-                unset($queryTerms[$flag]);
-            }
-        }
-        return $queryTerms;
-    }
-    return false;
-}
-
 
 /**
  * Parses taxon json to PHP array
@@ -949,8 +905,6 @@ function parseTaxa ($json) {
 
 	$output['total'] = getTotalRows($data);
 	$output['searchTerms'] = getQueryTerms('taxon');
-
-	p($output['searchTerms']); die();
 
 	if (!$output['searchTerms']) {
 		handleError('parseTaxon: invalid json response');
