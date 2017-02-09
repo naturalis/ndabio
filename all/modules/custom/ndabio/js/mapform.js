@@ -17,7 +17,7 @@
 
 		$_geo_filter.val("");
 
-		$_active_link.css( 'cursor', 'wait' );
+		$_active_link.css('cursor', 'wait');
 		$("a[data-rel='ajax']").parent().removeClass("active");
 		$_active_link.parent().addClass("active");
 
@@ -44,7 +44,7 @@
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
-				plotMapArea(this.id.substr(4));
+				plotMapArea(this.id, language);
 				return false;
 
 			});
@@ -95,8 +95,8 @@
 
 	// Add labels to the omnibox
 	// A bit dirty, but where else to put it?
-	$("#edit-term")
-		.attr("placeholder","« " + Drupal.t('All records') + " »");
+//	$("#edit-term")
+//		.attr("placeholder","« " + Drupal.t('All records') + " »");
 
 	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
 		.removeClass("large-offset-2")

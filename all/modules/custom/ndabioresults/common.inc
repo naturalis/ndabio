@@ -46,15 +46,25 @@ function getMappingProperties ($mapping, $prefix = '') {
             $r = $r + getMappingProperties($v, $prefix . $k . '.');
         } else {
             $operator = '';
-            if (isset($v['fields']['like'])) {
-                $operator = 'LIKE';
-            } else if (isset($v['fields']['analyzed'])) {
-                $operator = 'MATCHES';
-            } else if (isset($v['fields']['ignoreCase'])) {
-                $operator = 'EQUALS_IC';
+            // Text, type of analyzer determines operator
+            if ($v['type'] == 'keyword') {
+                if (isset($v['fields']['like'])) {
+                    $operator = 'LIKE';
+                } else if (isset($v['fields']['analyzed'])) {
+                    $operator = 'MATCHES';
+                } else if (isset($v['fields']['ignoreCase'])) {
+                    $operator = 'EQUALS_IC';
+                } else {
+                    $operator = 'EQUALS';
+                }
+            // Geo
+            } else if ($v['type'] == 'geo_shape') {
+                $operator = 'IN';
+            // Other types (date etc) may go here, but currently not in use
             } else {
                 $operator = 'EQUALS';
             }
+
             $r[$prefix . $k] = $v['type'] . ($operator != '' ? " | $operator" : '');
         }
     }

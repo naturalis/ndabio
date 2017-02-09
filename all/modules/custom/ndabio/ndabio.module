@@ -413,7 +413,7 @@ function ndabio_clear_map_data_callback() {
 * Output a json formatted detail page with geo coordinates based on the nid passed in the url.
 * The resulting page is used as input for the map, so no additional Drupal processing should take place.
 * To avoid additional Drupal theming being applied the function ends with a die()
-*/
+
 function ndabio_ajax_callback() {
   if (!empty($_GET["nid"])) {
     $geonode = intval($_GET["nid"]);
@@ -422,6 +422,37 @@ function ndabio_ajax_callback() {
     if ($row) {
     //Display data in json format
       echo '{"nid":' . $geonode . ',"locality":' . json_encode($row->title) . ',"source":' . json_encode($row->field_source_value) . ',"geometry":' . $row->field_geojson_value . '}';
+    }
+    die(); //die() is required to avoid displaying the entire drupal interface
+  }
+}
+*/
+
+
+/**
+* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
+* The resulting page is used as input for the map, so no additional Drupal processing should take place.
+* To avoid additional Drupal theming being applied the function ends with a die()
+*/
+function ndabio_ajax_callback() {
+  if (!empty($_GET["nid"])) {
+    $nid = $_GET["nid"];
+    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
+    $client = initBioPortalClient();
+    $geo = json_decode($client->geo()->find($nid));
+    if (isset($geo->shape)) {
+        // locality is sometimes empty in Dutch;
+        $locality = $geo->locality;
+        if ($language == 'nl' && $geo->areaType == 'Country' &&
+            !empty($geo->countryNL) && $geo->countryNL != '\N') {
+            $locality = $geo->countryNL;
+        }
+        echo json_encode([
+            'nid' => $nid,
+            'locality' => $locality,
+            'source' => $geo->source,
+            'geometry' => $geo->shape
+        ]);
     }
     die(); //die() is required to avoid displaying the entire drupal interface
   }
@@ -598,6 +629,7 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js($path . "/js/mapform.js", array('weight' => 1));
         drupal_add_js("var str_base_path = '$base_path';", 'inline');
 
+        drupal_add_js('var language = "' . $language->language . '";', 'inline');
         drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
         drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
         drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
@@ -620,10 +652,6 @@ function ndabio_advanced_taxonomysearch() {
         "jQuery(function() { jQuery('#edit-term').focus(); });",
         array('type' => 'inline', 'scope' => 'footer')
     );
-
-
-  // Reads the taxonomy "search"
-  // http://localhost/drupal/bioportal/#overlay=admin/structure/taxonomy/search
 
   $machine_name = "search";
   $v = taxonomy_vocabulary_machine_name_load($machine_name);
@@ -890,25 +918,6 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
 
-  // if ($geosearch) {
-  //   $links =
-  //     "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
-  //     "  <ul>" .
-  //     "    <li>" .
-  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
-  //     "    </li>" .
-  //     "    <li>" .
-  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
-  //     "    </li>" .
-  //     "    <li>" .
-  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
-  //     "    </li>" .
-  //     "  </ul>" .
-  //     "</div>";
-
-// http://bioportal.naturalis.nl/areas/country?response_type=embed&language=nl
-// http://localhost/drupal/bioportal/sites/default/files/country.html
-
   if ($geosearch) {
     $links =
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
@@ -924,7 +933,6 @@ function ndabio_advanced_taxonomysearch() {
       "    </li>" .
       "  </ul>" .
       "</div>";
-
 
     $list =
       "<div id='search-areas-list' class='small-12 medium-3 columns'>" .

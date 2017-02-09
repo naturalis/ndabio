@@ -98,7 +98,7 @@
 					var target = $("#search-areas-target a.active").first();
 					// From form, selected area
 					if (target.length > 0) {
-						gid = target.attr("id").substr(4) ;
+						gid = target.attr("id");
 						location = target.text();
 						$("#search-areas-types ul li").each(function(i){
 							if ($(this).hasClass('active')) {
@@ -109,7 +109,7 @@
 					} else {
 						gid = storedGid;
 					}
-					geoShape = JSON.stringify(geometry);
+					geoShape = '';
 				}
 			}
 

@@ -284,6 +284,12 @@ function nbaFieldMapping ()
     if (!isset($var)) {
         $var = array(
             'multimedia' => [
+                'geoShape' => [
+                    'gatheringEvents.siteCoordinates.geoShape'
+                ],
+                'gid' => [
+                    'gatheringEvents.siteCoordinates.geoShape'
+                ],
                 'className' => [
                     'identifications.defaultClassification.className'
                 ],
@@ -358,6 +364,12 @@ function nbaFieldMapping ()
                 ]
             ],
             'specimen' => [
+                'geoShape' => [
+                    'gatheringEvent.siteCoordinates.geoShape'
+                ],
+                'gid' => [
+                    'gatheringEvent.siteCoordinates.geoShape'
+                ],
                 'className' => [
                     'identifications.defaultClassification.className'
                 ],

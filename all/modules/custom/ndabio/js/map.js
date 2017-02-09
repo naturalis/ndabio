@@ -122,62 +122,9 @@ function initialize() {
 		map.data.setStyle(mapStyle);
 		zoom(map, false);
  	} else if (storedGid != -1) {
- 		plotMapArea(storedGid, false);
+ 		plotMapArea(storedGid, language, false);
  	}
 }
-
-/*
-function initializeSpecimens() {
-	var mapOptions = {
-		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
-		  mapTypeId: 'satellite',
-		  zoom: setZoomLevel()
-		};
-	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-	feature = {
-		type: "Feature",
-		geometry: geoShape
-	};
-	map.data.addGeoJson(feature);
-	map.data.setStyle(mapStyle);
-	zoom(map);
-
-	var previousInfowindow = false;
-
-	jQuery.each(specimenMarkers, function() {
-		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
-		var marker = new google.maps.Marker({
-	      position     : myLatlng,
-	      name         : this.name,
-	      icon         : pin,
-	      assemblageID : this.assemblageID,
-	      source       : this.source,
-	      unitID       : this.unitID,
-	      localityText : this.localityText,
-	      date         : this.date,
-	      taxonUrl     : this.taxonUrl,
-	      url		   : this.url
-		});
-
-		var infowindow = new google.maps.InfoWindow({
-		    content: createInfoText(marker),
-		    maxWidth: 350
-		});
-
-		google.maps.event.addListener(marker, 'click', function() {
-			if (previousInfowindow) {
-				previousInfowindow.close();
-		    }
-			previousInfowindow = infowindow;
-			infowindow.open(map, marker);
-		});
-
-		marker.setMap(map);
-		markers.push(marker);
-	});
-}
-*/
 
 function initializeSpecimens() {
 	var mapOptions = {
@@ -294,12 +241,15 @@ function setSelection(shape) {
 }
 
 
-function plotMapArea(gid, fit) {
+function plotMapArea(gid, language, fit) {
 
 	if (!gid || typeof str_base_path == 'undefined') {
 		return;
 	}
 
+	if (typeof language == 'undefined') {
+		var language = 'en';
+	}
 	if (typeof fit == 'undefined') {
 		var fit = true;
 	}
@@ -308,7 +258,7 @@ function plotMapArea(gid, fit) {
 		url: str_base_path + 'naturalis/ajax',
 		type: "GET",
 		dataType: "json",
-		data: ( {nid: gid} ),
+		data: ( {nid: gid, language: language} ),
 		success: function (json) {
 			clearMap();
 			if (json) {

@@ -67,19 +67,37 @@ function ndabioresults_menu() {
 }
 
 
-function nda_taxon_callback ($taxon = '', $searchRequest = '') {
-    global $client, $nbaFieldTypes;
+function nda_taxon_callback ($taxon = false, $search = false) {
+    // Test if anything has been posted; if not return with error message
+    if (!$taxon && !$search) {
+        return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
+            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+    }
 
-    $search = [
-        'className' => 'aves',
-        'species' => 'fuscus',
-        'genus' => 'larus',
-        'logicalOperator' => 'and',
-        'from' => 0,
-        'size' => '500'
-    ];
+    $client = initBioPortalClient();
 
-    $q = buildQuery('taxon', $search);
+    // Only taxon is set: fetch data based on scientific name
+    if (!$search) {
+        $taxon = str_replace('_', ' ', $taxon);
+        $p = explode(' ', $taxon);
+        $c = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
+        if (count($p) == 2) {
+            $c->addAnd('acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
+            $c->addAnd('taxonRank', 'EQUALS', 'species');
+        }
+        if (count($p) == 3) {
+            $c->addAnd('acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
+        }
+        $q = new QuerySpec();
+        $q->addCondition($c);
+        die($client->taxon()->querySpec($q)->query());
+    }
+    die();
+
+    $query = buildQuery('taxon', $p);
+    $client->{$service}()->querySpec($query);
+    $remoteData[$service] = $client->query();
+
 
     $client->taxon()->querySpec($q);
 
@@ -171,6 +189,7 @@ function getOperatorFromMapping ($type, $value) {
         }
         return trim($p[1]);
     }
+    return 'EQUALS';
 }
 
 function likeOperatorAllowed ($value = '') {
@@ -232,6 +251,8 @@ function ndabioresults_pass ($service = null) {
  * @return string Formatted output
  */
 function nbaAdvancedSearch () {
+
+//    p(nbaFieldTypes ()); die();
     $pageHeader = '';
 
     // Delete previous search terms when performing new query
@@ -265,10 +286,8 @@ function nbaAdvancedSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $p) {
         if (serviceUsed($p)) {
-            // Cap results on first page
-            if (!isset($p['size'])) {
-                $p['size'] = maxResultsInitial();
-            }
+            // Cap results
+            $p['size'] = maxResultsInitial();
 
             // Init client, construct query, fetch results in $remoteData
             $client = initBioPortalClient();
@@ -311,12 +330,12 @@ function nbaAdvancedSearch () {
 	}
 */
 
+	p($_SESSION['nbaQueryTerms']);
+
     // Debug: print queries
     if (PRINT_QUERIES == 1 && !empty($debug)) {
         p($debug);
     }
-
-    die();
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
@@ -336,20 +355,6 @@ function setQueryTerms ($service) {
     } else {
         $terms = $_GET;
     }
-
-    if (!isset($_GET['sort']) || empty($_GET['sort'])) {
-        $terms['sort'] = NBADEFAULTSORT;
-    }
-    if (!isset($_GET['sortDirection']) || empty($_GET['sortDirection'])) {
-        $terms['sortDirection'] = NBADEFAULTSORTDIRECTION;
-    }
-    if (!isset($_GET['size']) || empty($_GET['size'])) {
-        $terms['size'] = NBAMAXRESULTS;
-    }
-    if (!isset($_GET['from']) || $_GET['from'] == '') {
-        $terms['from'] = 0;
-    }
-
     $_SESSION['nbaQueryTerms'][$service] = $terms;
     return $terms;
 }
@@ -860,11 +865,7 @@ function setBasePath () {
  * @return boolean
  */
 function serviceUsed ($service) {
-    if (count($service) == 0 ||
-        count($service) == 2 && isset($service['geoShape']) && isset($service['logicalOperator'])) {
-        return false;
-    }
-    return true;
+    return countSearchParameters($service) > 0;
 }
 
 /**
@@ -1062,20 +1063,25 @@ function setChannels (array $services, $overrideDefault = false) {
  *
  * @return array|void Filtered key => value pairs
  */
-function setSectionParameters (array $post, $typeId = '') {
+function setSectionParameters (array $terms, $typeId = '') {
     if ($typeId == '') {
-        return $post;
+        return $terms;
     }
     $d = array();
-    foreach ($post as $k => $v) {
+    foreach ($terms as $k => $v) {
         if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
             $d[str_replace($typeId, '', $k)] = trim($v);
         }
     }
     // Append geoShape if entered
-    if (isset($post['geoShape']) && !empty($post['geoShape']) &&
+    if (isset($terms['geoShape']) && !empty($terms['geoShape']) &&
         in_array($typeId, array('m_', 's_'))) {
-        $d['geoShape'] = $post['geoShape'];
+        $d['geoShape'] = $terms['geoShape'];
+    }
+    // Same for gid
+    if (isset($terms['gid']) && !empty($terms['gid']) &&
+        in_array($typeId, array('m_', 's_'))) {
+        $d['gid'] = $terms['gid'];
     }
     if (countSearchParameters($d) >= 1) {
         // Rewrite andOr to logicalOperator
