@@ -10,27 +10,27 @@ $client = initBioPortalClient();
 $client->getGeoAreas();
 
 
-$advancedMenu['specimen']['sourceSystem'] =
-    array_keys($client->specimen()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['specimen']['collectionType'] =
-    array_keys($client->specimen()->getDistinctValues('collectionType'));
-$advancedMenu['specimen']['typeStatus'] =
-    array_keys($client->specimen()->getDistinctValues('typeStatus'));
-$advancedMenu['specimen']['sex'] =
-    array_keys($client->specimen()->getDistinctValues('sex'));
-$advancedMenu['specimen']['kingdom'] =
-    array_keys($client->specimen()
-        ->getDistinctValues('identifications.defaultClassification.kingdom'));
-$advancedMenu['taxon']['sourceSystem'] =
-    array_keys($client->specimen()->getDistinctValues('sourceSystem'));
-$advancedMenu['taxon']['sourceSystem'] =
-    array_keys($client->taxon()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['multimedia']['sourceSystem'] =
-    array_keys($client->multimedia()->getDistinctValues('sourceSystem.name'));
-$advancedMenu['multimedia']['collectionType'] =
-    array_keys($client->multimedia()->getDistinctValues('collectionType'));
-$advancedMenu['multimedia']['collectionType'] =
-    array_keys($client->multimedia()->getDistinctValues('collectionType'));
+// $advancedMenu['specimen']['sourceSystem'] =
+//     array_keys($client->specimen()->getDistinctValues('sourceSystem.name'));
+// $advancedMenu['specimen']['collectionType'] =
+//     array_keys($client->specimen()->getDistinctValues('collectionType'));
+// $advancedMenu['specimen']['typeStatus'] =
+//     array_keys($client->specimen()->getDistinctValues('typeStatus'));
+// $advancedMenu['specimen']['sex'] =
+//     array_keys($client->specimen()->getDistinctValues('sex'));
+// $advancedMenu['specimen']['kingdom'] =
+//     array_keys($client->specimen()
+//         ->getDistinctValues('identifications.defaultClassification.kingdom'));
+// $advancedMenu['taxon']['sourceSystem'] =
+//     array_keys($client->specimen()->getDistinctValues('sourceSystem'));
+// $advancedMenu['taxon']['sourceSystem'] =
+//     array_keys($client->taxon()->getDistinctValues('sourceSystem.name'));
+// $advancedMenu['multimedia']['sourceSystem'] =
+//     array_keys($client->multimedia()->getDistinctValues('sourceSystem.name'));
+// $advancedMenu['multimedia']['collectionType'] =
+//     array_keys($client->multimedia()->getDistinctValues('collectionType'));
+// $advancedMenu['multimedia']['collectionType'] =
+//     array_keys($client->multimedia()->getDistinctValues('collectionType'));
 
 
 
@@ -488,6 +488,10 @@ function ndabio_advanced_taxonomysearch() {
         array('type' => 'inline', 'scope' => 'footer')
     );
 
+
+  // Reads the taxonomy "search"
+  // http://localhost/drupal/bioportal/#overlay=admin/structure/taxonomy/search
+
   $machine_name = "search";
   $v = taxonomy_vocabulary_machine_name_load($machine_name);
   $terms = taxonomy_get_tree($v->vid, 0, 1, TRUE);
@@ -704,12 +708,31 @@ function ndabio_advanced_taxonomysearch() {
     }
   }
 
+  // if ($geosearch) {
+  //   $links =
+  //     "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
+  //     "  <ul>" .
+  //     "    <li>" .
+  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
+  //     "    </li>" .
+  //     "    <li>" .
+  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
+  //     "    </li>" .
+  //     "    <li>" .
+  //     "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/nature?response_type=embed&language=" . $language->language . "'>" . t('Nature') . " (NL)</a>" .
+  //     "    </li>" .
+  //     "  </ul>" .
+  //     "</div>";
+
+// http://bioportal.naturalis.nl/areas/country?response_type=embed&language=nl
+// http://localhost/drupal/bioportal/sites/default/files/country.html
+
   if ($geosearch) {
     $links =
       "<div id='search-areas-types' class='small-12 medium-2 columns chained-select chained-select-level-1'>" .
       "  <ul>" .
       "    <li>" .
-      "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/country?response_type=embed&language=" . $language->language . "'>" . t('Countries') . "</a>" .
+      "      <a data-rel='ajax' href='http://bioportal.naturalis.nl/areas/country?response_type=embed&language=nl'>" . t('Countries') . "</a>" .
       "    </li>" .
       "    <li>" .
       "      <a data-rel='ajax' href='" . $base_root . $base_path . "areas/municipality?response_type=embed&language=" . $language->language . "'>" . t('Municipality') . " (NL)</a>" .
@@ -719,6 +742,7 @@ function ndabio_advanced_taxonomysearch() {
       "    </li>" .
       "  </ul>" .
       "</div>";
+
 
     $list =
       "<div id='search-areas-list' class='small-12 medium-3 columns'>" .

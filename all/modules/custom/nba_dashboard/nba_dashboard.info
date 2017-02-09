@@ -1,0 +1,4 @@
+name = NBA Dashboard
+description = Page for displaying stats
+core = 7.x
+package = "Naturalis Biodiversity API"

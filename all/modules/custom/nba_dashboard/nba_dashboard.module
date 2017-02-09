@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function nba_dashboard_init() {
+  $module_path = drupal_get_path('module', 'nba_dashboard');
+  drupal_add_js($module_path . '/nba_dashboard.js');
+  drupal_add_css($module_path . '/nba_dashboard.css');
+}
+
+/* 
+ * Implements hook_menu()
+ */
+function nba_dashboard_menu() {
+  $items = array();
+
+  $items['dashboard'] = array(
+    'title' => 'Dashboard Page',
+    'description' => 'Some crazy stats ...',
+    'page callback' => 'basic_dashboard',
+    'access arguments' => array('access content'),
+    );
+
+  return $items;
+}
+
+
+function basic_dashboard() {
+  $content = array();
+
+  // Two very simple page elements
+
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => 'Dashboard page',
+    '#prefix' => '<h1 class="dashboard-title">',
+    '#suffix' => '</h1>',
+    );
+
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => 'demo',
+    '#prefix' => '<div id="dashboard">',
+    '#suffix' => '</div>',
+    );
+
+  return $content;
+}

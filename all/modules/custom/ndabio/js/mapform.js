@@ -95,8 +95,8 @@
 
 	// Add labels to the omnibox
 	// A bit dirty, but where else to put it?
-//	$("#edit-term")
-//		.attr("placeholder","« " + Drupal.t('All records') + " »");
+	$("#edit-term")
+		.attr("placeholder","« " + Drupal.t('All records') + " »");
 
 	$(".fieldset-omnisearch.form-wrapper .large-offset-2")
 		.removeClass("large-offset-2")
