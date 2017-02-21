@@ -15,6 +15,16 @@
  */
 define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 
+/**
+ * An extra css file is added, to allow for some modifications of the admin theme (seven)
+ */ 
+function bioportal_admin_style_preprocess_html(&$variables) {
+  global $theme;
+  if (theme == 'seven') {
+    drupal_add_css(drupal_get_path('module', 'ndabio') . '/css/ndabio_admin_style.css', array('weight' => CSS_THEME));
+  }
+}
+
 
 /**
  * DEFINE CUSTOM PAGES
