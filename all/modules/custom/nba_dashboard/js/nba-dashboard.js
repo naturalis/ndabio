@@ -116,7 +116,7 @@ function initialize()
 	{
 		buffer2.push(fetchTemplate( 'serviceContainerRowTpl' ).replace('%CONTAINERS%',buffer1.join("\n")));
 	}
-	$( mainDiv ).html(buffer2.join("\n"));
+	jQuery( mainDiv ).html(buffer2.join("\n"));
 }
 
 function runService( s )
