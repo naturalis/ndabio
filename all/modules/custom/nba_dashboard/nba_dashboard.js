@@ -1,8 +1,9 @@
 jQuery(document).ready(function()
 {
-	jQuery('#dashboardContent').text("Hello world!?");
+	
 	acquireInlineTemplates();
 	initialize();
+	jQuery('#dashboardContent').text("Hello world!?");
 //	run();
 
 });
