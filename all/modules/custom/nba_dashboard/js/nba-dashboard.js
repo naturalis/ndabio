@@ -128,7 +128,7 @@ function runService( s )
 		url: urlRemoteRetrieve + encodeURIComponent(url),
 		success:function(raw)
 		{
-			//console.dir(raw);
+			console.dir(raw);
 			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
