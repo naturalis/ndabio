@@ -40,9 +40,9 @@ var inline_templates=Array();
 
 function acquireInlineTemplates()
 {
-	$( '.inline-templates' ).each(function()
+	jQuery( '.inline-templates' ).each(function()
 	{
-		var content=$(this).html().trim();
+		var content=jQuery(this).html().trim();
 		
 		var cStart='<!--';
 		var cEnd='-->';
@@ -52,12 +52,12 @@ function acquireInlineTemplates()
 			content=content.substring(cStart.length,content.length-cEnd.length);
 		}
 		
-		if ($(this).attr('fake-html')==true)
+		if (jQuery(this).attr('fake-html')==true)
 		{
-			content=renderFakeHtml( $(this).html() );
+			content=renderFakeHtml( jQuery(this).html() );
 		}
 		
-		inline_templates.push({id:$(this).attr('id'),tpl:content,use:0});
+		inline_templates.push({id:jQuery(this).attr('id'),tpl:content,use:0});
 	});
 }
 
@@ -65,7 +65,7 @@ function fetchTemplate( name )
 {
 	var template="";
 
-	$.each(inline_templates, function( index, value )
+	jQuery.each(inline_templates, function( index, value )
 	{
 		if( value && value.id==name )
 		{
