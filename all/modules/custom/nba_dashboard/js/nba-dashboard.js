@@ -23,6 +23,7 @@ var colorSchemes= {
 };
 
 var services=[
+/*
 	{
 		id: "worldMap",
 		service: "Country",
@@ -32,6 +33,7 @@ var services=[
 		class: { container: "double", svg: "worldmap" },
 		callback: function(service,data) { printMap(service,data); }
 	},
+*/
 	{
 		id: "recordBasis",
 		service: "Record basis",
