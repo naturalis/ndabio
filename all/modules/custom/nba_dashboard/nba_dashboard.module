@@ -3,16 +3,29 @@
 /**
  * Implements hook_init().
  */
-function nba_dashboard_init() {
+function nba_dashboard_init()
+{
   $module_path = drupal_get_path('module', 'nba_dashboard');
+
   drupal_add_js($module_path . '/nba_dashboard.js');
+  
+  drupal_add_js($module_path . '/js/nba-dashboard.js');
+  drupal_add_js($module_path . '/js/inline_templates.js');
+  drupal_add_js($module_path . '/js/d3.v3.min.js');
+  drupal_add_js($module_path . '/js/Donut3D.js');
+  drupal_add_js($module_path . '/js/topojson.v1.min.js');
+
   drupal_add_css($module_path . '/nba_dashboard.css');
+  drupal_add_css($module_path . '/css/style.css');
+  drupal_add_css($module_path . '/css/inline_templates.css');
+  
 }
 
 /* 
  * Implements hook_menu()
  */
-function nba_dashboard_menu() {
+function nba_dashboard_menu()
+{
   $items = array();
 
   $items['dashboard'] = array(
@@ -26,10 +39,9 @@ function nba_dashboard_menu() {
 }
 
 
-function basic_dashboard() {
+function basic_dashboard()
+{
   $content = array();
-
-  // Two very simple page elements
 
   $content['raw_markup'] = array(
     '#type' => 'markup',
@@ -41,9 +53,23 @@ function basic_dashboard() {
   $content['raw_markup'] = array(
     '#type' => 'markup',
     '#markup' => 'demo',
-    '#prefix' => '<div id="dashboard">',
+    '#prefix' => '<div id="dashboardContent">',
     '#suffix' => '</div>',
     );
 
+	$content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => '<!-- <div class="serviceRow"> %CONTAINERS% </div>  -->',
+    '#prefix' => '<div class="inline-templates" id="serviceContainerRowTpl">',
+    '#suffix' => '</div>',
+    );
+	
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => '<!-- <div class="service%CLASS%" id="%ID%"><div class="outer"><div class="inner"></div></div></div> -->',
+    '#prefix' => '<div class="inline-templates" id="serviceContainerTpl">',
+    '#suffix' => '</div>',
+    );
+	
   return $content;
 }

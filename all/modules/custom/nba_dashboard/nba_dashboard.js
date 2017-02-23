@@ -1,6 +1,8 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function()
+{
+	acquireInlineTemplates();
+	initialize();
+//	run();
 
-   // jQuery methods go here...
-   jQuery('#dashboard').text("Hello world!?");
 
 });
