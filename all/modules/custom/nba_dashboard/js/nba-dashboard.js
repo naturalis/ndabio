@@ -91,7 +91,7 @@ var services=[
 ];
 
 var nba={
-	domain: "http://145.136.242.164",
+	domain: "http://145.136.242.166",
 	port: "8080",
 	basePath: "/v2",
 }
@@ -123,12 +123,12 @@ function runService( s )
 {
 	var url=nba.domain + (nba.port ? ":"+nba.port : "") + nba.basePath + s.path;
 
-	$.ajax({
+	jQuery.ajax({
 		url: "remote.php?url=" + encodeURIComponent(url),
 		success:function(raw)
 		{
 			//console.dir(raw);
-			var data=$.parseJSON(raw);
+			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
 	});
@@ -169,7 +169,7 @@ function printList( service, data )
 		buffer.push(fetchTemplate( 'listItemsTpl' ).replace('%ITEM%',list[i].item).replace('%COUNT%',list[i].count));
 	}
 	
-	$('#'+service.id).find('.inner').html(
+	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
 			.replace('%TITLE%',service.service)
 			.replace('%LIST%',buffer.join("\n"))
@@ -189,7 +189,7 @@ function printSingleListItem( service, data, index )
 		}
 	}
 
-	$('#'+service.id).find('.inner').html(
+	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
 			.replace('%COUNT%',list[i].count)
 			.replace('%ITEM%',service.label ? service.label : list[i].item)
@@ -205,14 +205,14 @@ function printPieChart( service, data )
 	list.sort(sortListByCount);
 	if (service.listlimit) list.splice(service.listlimit,list.length-service.listlimit);
 
-	$('#'+service.id).find('.inner').html(
+	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
 			.replace('%TITLE%',service.service)
 			.replace('%SVG_CLASS%',service.class && service.class.svg ? service.class.svg : "")
 	);
 
-	var w=$("#"+service.id).find('.inner').width();
-	var h=$("#"+service.id).find('.inner').height()-100;
+	var w=jQuery("#"+service.id).find('.inner').width();
+	var h=jQuery("#"+service.id).find('.inner').height()-100;
 	
 	var d=[];
 	for(var i=0;i<list.length;i++)
@@ -232,7 +232,7 @@ function printMap(service,data)
 {
 	//https://bl.ocks.org/ChumaA/385a269db46ae56444772b62f1ae82bf
 
-	$('#'+service.id).find('.inner').html(
+	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
 			.replace('%TITLE%',service.service)
 			.replace('%SVG_CLASS%',service.class && service.class.svg ? service.class.svg : "")
@@ -246,8 +246,8 @@ function printMap(service,data)
 
 	var width = 700, height = 400;
 
-//	var width=$("#"+service.id).find('.inner').width();
-//	var height=$("#"+service.id).find('.inner').height();
+//	var width=jQuery("#"+service.id).find('.inner').width();
+//	var height=jQuery("#"+service.id).find('.inner').height();
 
 	
 	var minDocCount = 0, quantiles = {};
