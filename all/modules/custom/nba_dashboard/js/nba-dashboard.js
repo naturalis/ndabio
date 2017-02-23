@@ -99,10 +99,12 @@ var nba={
 
 var containersPerRow=3;
 
+var logStage=2;
 
-function log( msg ) 
+function log( msg, stage ) 
 {
-	console.log( msg );
+	//return;
+	if (stage>=logStage) console.log( msg );
 }
 
 function initialize()
@@ -134,7 +136,7 @@ function runService( s )
 		url: urlRemoteRetrieve + encodeURIComponent(url),
 		success:function(raw)
 		{
-			log(raw);
+			log(raw,1);
 			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
@@ -145,7 +147,7 @@ function run()
 {
 	for(var i=0;i<services.length;i++)
 	{
-		log("running "+services[i].service);
+		log("running "+services[i].service,2);
 		runService( services[i] );
 	}
 }
@@ -177,10 +179,8 @@ function printList( service, data )
 		buffer.push(fetchTemplate( 'listItemsTpl' ).replace('%ITEM%',list[i].item).replace('%COUNT%',list[i].count));
 	}
 	
-	log(fetchTemplate( service.template )
-			.replace('%TITLE%',service.service)
-			.replace('%LIST%',buffer.join("\n")));
-	
+	log("data "+services[i].service+": "+buffer.join("\n"),2);
+
 	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
 			.replace('%TITLE%',service.service)
