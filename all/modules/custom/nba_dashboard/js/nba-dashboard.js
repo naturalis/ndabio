@@ -127,7 +127,7 @@ function runService( s )
 		url: "remote.php?url=" + encodeURIComponent(url),
 		success:function(raw)
 		{
-			//console.dir(raw);
+			console.dir(raw);
 			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
