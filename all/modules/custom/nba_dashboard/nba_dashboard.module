@@ -43,28 +43,28 @@ function basic_dashboard()
 {
   $content = array();
 
-  $content['raw_markup'] = array(
+  $content['raw_markup'][] = array(
     '#type' => 'markup',
     '#markup' => 'Dashboard page',
     '#prefix' => '<h1 class="dashboard-title">',
     '#suffix' => '</h1>',
     );
 
-  $content['raw_markup'] = array(
+  $content['raw_markup'][] = array(
     '#type' => 'markup',
     '#markup' => 'demo',
     '#prefix' => '<div id="dashboardContent">',
     '#suffix' => '</div>',
     );
 
-	$content['raw_markup'] = array(
+	$content['raw_markup'][] = array(
     '#type' => 'markup',
     '#markup' => '<!-- <div class="serviceRow"> %CONTAINERS% </div>  -->',
     '#prefix' => '<div class="inline-templates" id="serviceContainerRowTpl">',
     '#suffix' => '</div>',
     );
 	
-  $content['raw_markup'] = array(
+  $content['raw_markup'][] = array(
     '#type' => 'markup',
     '#markup' => '<!-- <div class="service%CLASS%" id="%ID%"><div class="outer"><div class="inner"></div></div></div> -->',
     '#prefix' => '<div class="inline-templates" id="serviceContainerTpl">',
