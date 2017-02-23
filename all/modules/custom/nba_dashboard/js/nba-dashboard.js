@@ -55,7 +55,7 @@ var services=[
 		service: "Collection type Top 10",
 		path: "/specimen/getDistinctValues/collectionType",
 		listlimit: 10,
-		colorscheme: colorSchemes.set03_5,
+		colorscheme: colorSchemes.greens_5,
 		template: "canvasTpl",
 		class: { svg: "standard" },
 		callback: function(service,data) { printPieChart(service,data); }
