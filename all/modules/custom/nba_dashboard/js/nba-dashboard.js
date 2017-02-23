@@ -13,6 +13,7 @@ http://api.biodiversitydata.nl/v2/specimen/getDistinctValues/recordBasis
 */
 
 var mainDiv="#dashboardContent";
+var urlRemoteRetrieve = "/sites/all/modules/custom/nba_dashboard/remote.php?url=";
 
 var colorSchemes= {
 	rainbow_16: ['#001f3f','#0074D9','#7FDBFF','#39CCCC','#3D9970','#2ECC40','#01FF70','#FFDC00','#FF851B','#FF4136','#85144b','#F012BE','#B10DC9','#111111','#AAAAAA','#DDDDDD'],
@@ -124,10 +125,10 @@ function runService( s )
 	var url=nba.domain + (nba.port ? ":"+nba.port : "") + nba.basePath + s.path;
 
 	jQuery.ajax({
-		url: "remote.php?url=" + encodeURIComponent(url),
+		url: urlRemoteRetrieve + encodeURIComponent(url),
 		success:function(raw)
 		{
-			console.dir(raw);
+			//console.dir(raw);
 			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
