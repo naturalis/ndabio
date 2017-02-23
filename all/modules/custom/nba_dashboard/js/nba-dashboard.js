@@ -179,7 +179,7 @@ function printList( service, data )
 		buffer.push(fetchTemplate( 'listItemsTpl' ).replace('%ITEM%',list[i].item).replace('%COUNT%',list[i].count));
 	}
 	
-	log("data "+services[i].service+": "+buffer.join("\n"),2);
+	log("data "+service.service+": "+buffer.join("\n"),2);
 
 	jQuery('#'+service.id).find('.inner').html(
 		fetchTemplate( service.template )
