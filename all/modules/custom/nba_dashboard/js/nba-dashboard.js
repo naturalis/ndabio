@@ -128,7 +128,7 @@ function runService( s )
 		url: urlRemoteRetrieve + encodeURIComponent(url),
 		success:function(raw)
 		{
-			console.dir(raw);
+			//console.dir(raw);
 			var data=jQuery.parseJSON(raw);
 			s.callback(s,data); 
 		}
@@ -231,6 +231,8 @@ function printPieChart( service, data )
 
 function printMap(service,data)
 {
+	return;
+	
 	//https://bl.ocks.org/ChumaA/385a269db46ae56444772b62f1ae82bf
 
 	jQuery('#'+service.id).find('.inner').html(
