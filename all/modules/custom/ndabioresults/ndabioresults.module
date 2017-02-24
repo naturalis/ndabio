@@ -1,7 +1,7 @@
 <?php
 // Print channels in output y/n = 1/0
 define("PRINT_QUERIES", 1);
-define("PRINT_QUERIES_ENCODED", 0);
+define("PRINT_QUERIES_ENCODED", 1);
 
 // Drupal
 require_once 'ndabioresults.config.inc';
@@ -56,22 +56,143 @@ function ndabioresults_menu() {
   $items['result'] = array(
     'page callback' => 'ndabioresults_pass',
     'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
+    'access callback' => true,
   );
   $items['taxon'] = array(
     'page callback' => 'nda_taxon_callback',
-    'access callback' => TRUE,
+    'access callback' => true,
   );
-
+  $items['multimedia'] = array(
+  		'page callback' => 'nda_multimedia_callback',
+  		'access callback' => true,
+  );
+  
   return $items;
 }
+
+function nda_multimedia_callback ($id = false, $search = false) {
+	// Test if anything has been posted; if not return with error message
+	if (!$id) {
+		return printOops();
+	}
+
+	$service = 'multimedia';
+	$client = initBioPortalClient();
+	
+	// Only id is set: fetch data
+	if (!$search) {
+		$result = new stdClass();
+		// Build query
+		$condition = new Condition('unitID', 'EQUALS', $id);
+		$query = new QuerySpec();
+		$query->addCondition($condition);
+		// Fetch data
+		$data = json_decode($client->{$service}()->querySpec($query)->query());
+		$result->data = $data->resultSet[0]->item;
+		if (isset($result->data->exception)) {
+			return printOops();
+		}
+	// Search pattern included: fetch navigation
+	} else {
+		// Convert query to parameters
+		safe_parse_str($search, $p);
+		// If from isn't an integer, someone has been messing with the url
+		// Print error, otherwise PHP client will throw an exception
+		if (!ctype_digit(strval($p['from']))) {
+			return printOops();
+		}
+		// Make sure a maximum of three records is fetched; we don't need more
+		$p['size'] = 3;
+		// Build query
+		$query = buildQuery($service, $p);
+		// Fetch data set
+		$set = json_decode($client->{$service}()->querySpec($query)->query());
+		if (isset($set->exception)) {
+			return printOops();
+		}
+		
+		// Extract data for current id, plus ids of previous and next result
+		$result = getDetailPageDataAndNavigationFromSet($set, $id);
+	}
+	if (isset($result->previousId)) {
+		echo '<a href="' . printDetailPagePreviousLink($service, $result, $search) . '">previous</a> ';
+	}
+	if (isset($result->nextId)) {
+		echo '<a href="' . printDetailPageNextLink($service, $result, $search) . '">next</a>';
+	}
+	echo '<br><img style="max-height: 500px; max-width: 500px;" src="' . $result->data->serviceAccessPoints[0]->accessUri . '">';
+
+
+	//return print_r($client->query());
+
+	//return p($client->all()->getMapping());
+	//return 'henk' . $taxon . '<br>' . $searchRequest;
+}
+
+function printDetailPagePreviousLink ($service, $result, $search) {
+	if (isset($result->previousId)) {
+		safe_parse_str($search, $p);
+		// Strip size if it was provided; we don't need it
+		if (isset($p['size'])) {
+			unset($p['size']);
+		}
+		// Only proceed if size has been set; otherwise url has been tampered with
+		// We have already validated that $p['from'] is an integer
+		if (isset($p['from'])) {
+			$p['from'] = $p['from'] == 0 ? $p['from'] : $p['from'] - 1;
+			return setBasePath() . $service . '/' . $result->previousId . '/' . http_build_query($p);
+		}
+	}
+	return null;
+}
+
+function printDetailPageNextLink ($service, $result, $search) {
+	if (isset($result->nextId)) {
+		safe_parse_str($search, $p);
+		// Strip size if it was provided; we don't need it
+		if (isset($p['size'])) {
+			unset($p['size']);
+		}
+		// Only proceed if size has been set; otherwise url has been tampered with
+		// We have already validated that $p['from'] is an integer
+		if (isset($p['from'])) {
+			$p['from'] = !isset($result->previousId) ? $p['from'] : $p['from'] + 1;
+			return setBasePath() . $service . '/' . $result->nextId . '/' . http_build_query($p);
+		}
+	}
+	return null;
+}
+
+function getDetailPageDataAndNavigationFromSet ($set, $id) {
+	$result = new stdClass();
+	$result->data = false;
+	foreach ($set->resultSet as $i => $row) {
+		if (isset($row->item->unitID) && $row->item->unitID == $id) {
+			$result->data = $row->item;
+			break;
+		}
+	}
+	if (isset($set->resultSet[($i - 1)]->item->unitID)) {
+		$result->previousId = $set->resultSet[($i - 1)]->item->unitID;
+	}
+	if (isset($set->resultSet[($i + 1)]->item->unitID)) {
+		$result->nextId = $set->resultSet[($i + 1)]->item->unitID;
+	}
+	return $result;
+}
+
+
+function printOops () {
+	return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
+		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+}
+
 
 
 function nda_taxon_callback ($taxon = false, $search = false) {
     // Test if anything has been posted; if not return with error message
-    if (!$taxon && !$search) {
-        return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
-            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+    if (!$taxon) {
+    	printOops();
     }
 
     $client = initBioPortalClient();
@@ -82,17 +203,16 @@ function nda_taxon_callback ($taxon = false, $search = false) {
         $p = explode(' ', $taxon);
         $c = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
         if (count($p) == 2) {
-            $c->addAnd('acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
-            $c->addAnd('taxonRank', 'EQUALS', 'species');
+            $c->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
+            $c->setAnd('taxonRank', 'EQUALS', 'species');
         }
         if (count($p) == 3) {
-            $c->addAnd('acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
+            $c->setAnd('acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
         }
         $q = new QuerySpec();
         $q->addCondition($c);
         die($client->taxon()->querySpec($q)->query());
     }
-    die();
 
     $query = buildQuery('taxon', $p);
     $client->{$service}()->querySpec($query);
@@ -130,7 +250,7 @@ function buildQuery ($service, $terms = array()) {
                     $condition = new Condition($path, $operator, $value);
                     continue;
                 }
-                $condition->addOr($path, $operator, $value);
+                $condition->setOr($path, $operator, $value);
             }
             $conditions[] = $condition;
         }
@@ -252,7 +372,7 @@ function ndabioresults_pass ($service = null) {
  */
 function nbaAdvancedSearch () {
 
-//    p(nbaFieldTypes ()); die();
+//p(nbaFieldTypes()); die();
     $pageHeader = '';
 
     // Delete previous search terms when performing new query
@@ -1929,58 +2049,6 @@ function _wrap ($input, $tag = "div", $class = ""){
   return "<$tag$class>$input</$tag>";
 }
 
-
-/**
- * Helper function that parses query string into array
- *
- * Alternate function for parse_url that preserves periods and other special
- * characters in parameter names
- *
- * @param array $target Output
- * @param string $source Input
- * @return array
- */
-function safe_parse_str ($source, &$target) {
-    if (!$source) {
-        return;
-    }
-    $keys = $target = array();
-    $source = preg_replace_callback(
-        '/
-        # Match at start of string or &
-        (?:^|(?<=&))
-        # Exclude cases where the period is in brackets, e.g. foo[bar.blarg]
-        [^=&\[]*
-        # Affected cases: periods and spaces
-        (?:\.|%20)
-        # Keep matching until assignment, next variable, end of string or
-        # start of an array
-        [^=&\[]*
-        /x',
-        function ($key) use (&$keys) {
-            $keys[] = $key = base64_encode(urldecode($key[0]));
-            return urlencode($key);
-        },
-        $source
-    );
-    parse_str($source, $data);
-    foreach ($data as $key => $val) {
-        // Only unprocess encoded keys
-        if (!in_array($key, $keys)) {
-            $target[$key] = $val;
-            continue;
-        }
-
-        $key = base64_decode($key);
-        $target[$key] = $val;
-
-        if ($keep) {
-            // Keep a copy in the underscore key version
-            $key = preg_replace('/(\.| )/', '_', $key);
-            $target[$key] = $val;
-        }
-    }
-}
 
 /**
  * Determines if prettyPhoto library should be loaded

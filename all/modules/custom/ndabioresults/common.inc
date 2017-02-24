@@ -1,11 +1,16 @@
 <?php
+// @TODO: restore caching of NBA field map!
+
+
+
+
 // Make module config globally available
 require_once 'ndabioresults.config.inc';
 
 // Initialize BioPortal client
 // Can't get autoloader to work, problem with namespaces in Drupal 7?
 $clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/';
-require_once $clientPath . 'AbstractClass.php';
+require_once $clientPath . 'Common.php';
 require_once $clientPath . 'Client.php';
 require_once $clientPath . 'QuerySpec.php';
 require_once $clientPath . 'Condition.php';
@@ -29,9 +34,9 @@ function nbaFieldTypes () {
             return $nbaFieldTypes;
         }
         $client = initBioPortalClient();
-        $r = $client->all()->getMapping();
+        $r = $client->all()->getAllowedOperators();
         foreach ($r as $service => $json) {
-            $nbaFieldTypes[$service] = getMappingProperties(json_decode($json, true));
+            $nbaFieldTypes[$service] = getOptimalOperators(json_decode($json, true));
         }
         unset($client);
         cache_set($cacheId, $nbaFieldTypes);
@@ -39,6 +44,20 @@ function nbaFieldTypes () {
     return $nbaFieldTypes;
 }
 
+/* Type nog fixen, nu permanent keyword */
+function getOptimalOperators ($fields) {
+	foreach ($fields as $path => $operators) {
+		foreach (['LIKE', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
+			if (in_array($operator, $operators)) {
+				$r[$path] = 'keyword | ' . $operator;
+				break;
+			}
+		}
+	}
+	return isset($r) ? $r : false;
+}
+
+/* Defunct for older NBA method */
 function getMappingProperties ($mapping, $prefix = '') {
     $r = [];
     foreach ($mapping['properties'] as $k => $v) {
@@ -71,6 +90,7 @@ function getMappingProperties ($mapping, $prefix = '') {
     return $r;
 }
 
+
 function getDistinctValues ($service, $nbaPath) {
     $client = initBioPortalClient();
     $d = $client->{$service}()->getDistinctValues($nbaPath);
@@ -100,6 +120,58 @@ function timeStampToDate ($v) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
+
+/**
+ * Helper function that parses query string into array
+ *
+ * Alternate function for parse_url that preserves periods and other special
+ * characters in parameter names
+ *
+ * @param array $target Output
+ * @param string $source Input
+ * @return array
+ */
+function safe_parse_str ($source, &$target) {
+	if (!$source) {
+		return;
+	}
+	$keys = $target = array();
+	$source = preg_replace_callback(
+		'/
+        # Match at start of string or &
+        (?:^|(?<=&))
+        # Exclude cases where the period is in brackets, e.g. foo[bar.blarg]
+        [^=&\[]*
+        # Affected cases: periods and spaces
+        (?:\.|%20)
+        # Keep matching until assignment, next variable, end of string or
+        # start of an array
+        [^=&\[]*
+        /x',
+		function ($key) use (&$keys) {
+			$keys[] = $key = base64_encode(urldecode($key[0]));
+			return urlencode($key);
+		},
+		$source
+	);
+	parse_str($source, $data);
+	foreach ($data as $key => $val) {
+		// Only unprocess encoded keys
+		if (!in_array($key, $keys)) {
+			$target[$key] = $val;
+			continue;
+		}
+
+		$key = base64_decode($key);
+		$target[$key] = $val;
+
+		if ($keep) {
+			// Keep a copy in the underscore key version
+			$key = preg_replace('/(\.| )/', '_', $key);
+			$target[$key] = $val;
+		}
+	}
+}
 
 
 

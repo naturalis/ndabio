@@ -136,7 +136,6 @@ function ndabio_boot() {
   else {
     $language = $langs['nl'];
   }
-
 }
 
 
