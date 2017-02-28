@@ -70,6 +70,13 @@ function ndabioresults_menu() {
   return $items;
 }
 
+
+
+/*
+ * Aanpassen: geen souceSystemID maar id!!
+ */
+
+
 function nda_multimedia_callback ($id = false, $search = false) {
 	// Test if anything has been posted; if not return with error message
 	if (!$id) {
@@ -88,8 +95,8 @@ function nda_multimedia_callback ($id = false, $search = false) {
 		$query->addCondition($condition);
 		// Fetch data
 		$data = json_decode($client->{$service}()->querySpec($query)->query());
-		$result->data = $data->resultSet[0]->item;
-		if (isset($result->data->exception)) {
+		$result->{$service} = $data->resultSet[0]->item;
+		if (isset($result->{$service}->exception)) {
 			return printOops();
 		}
 	// Search pattern included: fetch navigation
@@ -107,27 +114,73 @@ function nda_multimedia_callback ($id = false, $search = false) {
 		$query = buildQuery($service, $p);
 		// Fetch data set
 		$set = json_decode($client->{$service}()->querySpec($query)->query());
+		// We got an error; go oops
 		if (isset($set->exception)) {
 			return printOops();
 		}
-		
 		// Extract data for current id, plus ids of previous and next result
-		$result = getDetailPageDataAndNavigationFromSet($set, $id);
+		$result = getDetailPageDataAndNavigationFromSet($service, $set, $id);
 	}
+	// Get associated taxon/specimen
+	/*
+	if (isset($result->{$service}->associatedSpecimenReference) &&
+		!empty($result->{$service}->associatedSpecimenReference)) {
+		$condition = new Condition('sourceSystemId', 'EQUALS',
+			$result->{$service}->associatedSpecimenReference);
+		$query = new QuerySpec();
+		$query->addCondition($condition);
+		// Fetch data
+		$data = json_decode($client->specimen()->querySpec($query)->query());
+		$result->{$service}->associatedSpecimen = $data->resultSet[0]->item;
+	} else if (isset($result->{$service}->associatedTaxonReference) &&
+		!empty($result->{$service}->associatedTaxonReference)) {
+		$condition = new Condition('sourceSystemId', 'EQUALS',
+				$result->{$service}->associatedTaxonReference);
+		$query = new QuerySpec();
+		$query->addCondition($condition);
+		// Fetch data
+		$data = json_decode($client->taxon()->querySpec($query)->query());
+		$result->{$service}->associatedTaxon = $data->resultSet[0]->item;
+	}
+	*/
+	
+	getMultimediaAssociatedObject($result);
+	
 	if (isset($result->previousId)) {
 		echo '<a href="' . printDetailPagePreviousLink($service, $result, $search) . '">previous</a> ';
 	}
 	if (isset($result->nextId)) {
 		echo '<a href="' . printDetailPageNextLink($service, $result, $search) . '">next</a>';
 	}
-	echo '<br><img style="max-height: 500px; max-width: 500px;" src="' . $result->data->serviceAccessPoints[0]->accessUri . '">';
+	echo '<br><img style="max-height: 500px; max-width: 500px;" src="' . $result->{$service}->serviceAccessPoints[0]->accessUri . '">';
 
+	p($result->{$service});
 
 	//return print_r($client->query());
 
 	//return p($client->all()->getMapping());
 	//return 'henk' . $taxon . '<br>' . $searchRequest;
 }
+
+
+function getMultimediaAssociatedObject (&$result) {
+	$client = initBioPortalClient();
+	foreach (['taxon', 'specimen'] as $service) {
+		$field = 'associated' . ucfirst($service) . 'Reference';
+		if (isset($result->multimedia->{$field}) && 
+			!empty($result->multimedia->{$field})) {
+			$appendedField = 'associated' . ucfirst($service);
+			$condition = new Condition('sourceSystemId', 'EQUALS', $result->multimedia->{$field});
+			$query = new QuerySpec();
+			$query->addCondition($condition);
+			$data = json_decode($client->{$service}()->querySpec($query)->query());
+			$result->multimedia->{$appendedField} = $data->resultSet[0]->item;
+			unset($client, $query, $condition);
+			return $result;
+		}
+	}
+}
+
 
 function printDetailPagePreviousLink ($service, $result, $search) {
 	if (isset($result->previousId)) {
@@ -163,12 +216,12 @@ function printDetailPageNextLink ($service, $result, $search) {
 	return null;
 }
 
-function getDetailPageDataAndNavigationFromSet ($set, $id) {
+function getDetailPageDataAndNavigationFromSet ($service, $set, $id) {
 	$result = new stdClass();
-	$result->data = false;
+	$result->{$service} = false;
 	foreach ($set->resultSet as $i => $row) {
 		if (isset($row->item->unitID) && $row->item->unitID == $id) {
-			$result->data = $row->item;
+			$result->{$service} = $row->item;
 			break;
 		}
 	}

@@ -28,15 +28,15 @@ function nbaFieldTypes () {
     $nbaFieldTypes = &drupal_static(__FUNCTION__);
     if (!$nbaFieldTypes) {
         $cacheId = 'nbaFieldTypes';
-        $cache = cache_get($cacheId, 'cache');
+        $cache = cache_get($cacheId, 'cache'); 
         if ($cache && !empty($cache->data)) {
             $nbaFieldTypes = $cache->data;
             return $nbaFieldTypes;
         }
         $client = initBioPortalClient();
-        $r = $client->all()->getAllowedOperators();
+        $r = $client->all()->getFieldInfo();
         foreach ($r as $service => $json) {
-            $nbaFieldTypes[$service] = getOptimalOperators(json_decode($json, true));
+            $nbaFieldTypes[$service] = getOptimalOperators(json_decode($json));
         }
         unset($client);
         cache_set($cacheId, $nbaFieldTypes);
@@ -44,13 +44,18 @@ function nbaFieldTypes () {
     return $nbaFieldTypes;
 }
 
-/* Type nog fixen, nu permanent keyword */
+/* Meer dan geo_shape en keyword hebben we voorlopig niet */
 function getOptimalOperators ($fields) {
-	foreach ($fields as $path => $operators) {
-		foreach (['LIKE', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
-			if (in_array($operator, $operators)) {
-				$r[$path] = 'keyword | ' . $operator;
-				break;
+	foreach ($fields as $path => $field) {
+		if ($field->type == 'geo_shape') {
+			$r[$path] = $field->type . ' | IN';
+		}
+		if ($field->type == 'keyword') {
+			foreach (['LIKE', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
+				if (in_array($operator, $field->allowedOperators)) {
+					$r[$path] = $field->type . ' | ' . $operator;
+					break;
+				}
 			}
 		}
 	}
