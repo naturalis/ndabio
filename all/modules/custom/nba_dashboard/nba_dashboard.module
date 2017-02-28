@@ -3,16 +3,29 @@
 /**
  * Implements hook_init().
  */
-function nba_dashboard_init() {
+function nba_dashboard_init()
+{
   $module_path = drupal_get_path('module', 'nba_dashboard');
+
   drupal_add_js($module_path . '/nba_dashboard.js');
+  
+  drupal_add_js($module_path . '/js/nba-dashboard.js');
+  drupal_add_js($module_path . '/js/inline_templates.js');
+  drupal_add_js($module_path . '/js/d3.v3.min.js');
+  drupal_add_js($module_path . '/js/Donut3D.js');
+  drupal_add_js($module_path . '/js/topojson.v1.min.js');
+
   drupal_add_css($module_path . '/nba_dashboard.css');
+  drupal_add_css($module_path . '/css/style.css');
+  drupal_add_css($module_path . '/css/inline_templates.css');
+  
 }
 
 /* 
  * Implements hook_menu()
  */
-function nba_dashboard_menu() {
+function nba_dashboard_menu()
+{
   $items = array();
 
   $items['dashboard'] = array(
@@ -26,24 +39,65 @@ function nba_dashboard_menu() {
 }
 
 
-function basic_dashboard() {
-  $content = array();
+function basic_dashboard()
+{
+	$content = array();
 
-  // Two very simple page elements
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => 'demo',
+		'#prefix' => '<div id="dashboardContent">',
+		'#suffix' => '</div>',
+	);
 
-  $content['raw_markup'] = array(
-    '#type' => 'markup',
-    '#markup' => 'Dashboard page',
-    '#prefix' => '<h1 class="dashboard-title">',
-    '#suffix' => '</h1>',
-    );
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <div class="serviceRow"> %CONTAINERS% </div>  -->',
+		'#prefix' => '<div class="inline-templates" id="serviceContainerRowTpl">',
+		'#suffix' => '</div>',
+	);
+	
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <div class="service%CLASS%" id="%ID%"><div class="outer"><div class="inner"></div></div></div> -->',
+		'#prefix' => '<div class="inline-templates" id="serviceContainerTpl">',
+		'#suffix' => '</div>',
+	);
 
-  $content['raw_markup'] = array(
-    '#type' => 'markup',
-    '#markup' => 'demo',
-    '#prefix' => '<div id="dashboard">',
-    '#suffix' => '</div>',
-    );
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <h3>%TITLE%</h3><ol>%LIST%</ol> -->',
+		'#prefix' => '<div class="inline-templates" id="listTpl">',
+		'#suffix' => '</div>',
+	);
 
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <li>%ITEM%: %COUNT%</li> -->',
+		'#prefix' => '<div class="inline-templates" id="listItemsTpl">',
+		'#suffix' => '</div>',
+	);
+
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <h2>%COUNT%</h2><h3>%ITEM%</h3> -->',
+		'#prefix' => '<div class="inline-templates" id="singleItemTpl">',
+		'#suffix' => '</div>',
+	);
+
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <h3>%TITLE%</h3> <svg></svg><ul>%LIST%</ul> -->',
+		'#prefix' => '<div class="inline-templates" id="canvasListTpl">',
+		'#suffix' => '</div>',
+	);
+
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => '<!-- <h3>%TITLE%</h3><svg class="%SVG_CLASS%"></svg> -->',
+		'#prefix' => '<div class="inline-templates" id="canvasTpl">',
+		'#suffix' => '</div>',
+	);
+	
   return $content;
 }
