@@ -208,9 +208,9 @@ function printTaxonDetail ($data) {
 
 //p($data);
 
-    $getSpecimenRequest = ndaBaseUrl() . specimenNamesService() .
+    $getSpecimenRequest = NBABASEURL() . specimenNamesService() .
         '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
-    $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
+    $getMultimediaRequest = NBABASEURL() . multimediaService() .
         '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
@@ -858,7 +858,7 @@ function printSpecimenDetail ($data) {
 
 	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
 
-    $getMultimediaRequest = ndaBaseUrl() . multimediaService() .
+    $getMultimediaRequest = NBABASEURL() . multimediaService() .
         '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
@@ -952,10 +952,10 @@ function printPreviousNext () {
         return false;
     }
 
-    $request = stripNbaBaseUrl($_GET['nba_request']);
+    $request = stripNBABASEURL($_GET['nba_request']);
     $set = $_SESSION['ndaNavigation'][$searchId]['currentSet'];
     $offset = $_SESSION['ndaNavigation'][$searchId]['offset'];
-    $key = array_search(stripNbaBaseUrl($_GET['nba_request']),
+    $key = array_search(stripNBABASEURL($_GET['nba_request']),
         $_SESSION['ndaNavigation'][$searchId]['currentSet']);
 
     $previousUrl = false;

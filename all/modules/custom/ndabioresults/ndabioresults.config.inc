@@ -110,7 +110,7 @@ function ndabioresults_config_form($form, &$form_state) {
  *
  * @return string
  */
-function ndaBaseUrl () {
+function NBABASEURL () {
   return variable_get('ndabioresults_config_baseurl', NBABASEURL);
 }
 
@@ -540,7 +540,11 @@ function nbaFieldMapping ()
                 'sourceSystem' => [
                     'sourceSystem.name'
                 ],
-            ]
+            ],
+                		
+        		
+        		
+        		
         );
     }
     return $var;

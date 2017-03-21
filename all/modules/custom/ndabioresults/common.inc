@@ -13,6 +13,7 @@ $clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioporta
 require_once $clientPath . 'Common.php';
 require_once $clientPath . 'Client.php';
 require_once $clientPath . 'QuerySpec.php';
+require_once $clientPath . 'NameGroupQuerySpec.php';
 require_once $clientPath . 'Condition.php';
 
 use nl\naturalis\bioportal\Client as Client;
@@ -20,7 +21,7 @@ use nl\naturalis\bioportal\Client as Client;
 
 function initBioPortalClient () {
     $client = new Client();
-    $client->setNbaUrl(ndaBaseUrl());
+    $client->setNbaUrl(NBABASEURL());
     return $client;
 }
 
