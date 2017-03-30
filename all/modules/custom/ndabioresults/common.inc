@@ -19,7 +19,7 @@ require_once $clientPath . 'Condition.php';
 use nl\naturalis\bioportal\Client as Client;
 
 
-function initBioPortalClient () {
+function _initBioPortalClient () {
     $client = new Client();
     $client->setNbaUrl(NBABASEURL());
     return $client;
@@ -34,10 +34,10 @@ function nbaFieldTypes () {
             $nbaFieldTypes = $cache->data;
             return $nbaFieldTypes;
         }
-        $client = initBioPortalClient();
+        $client = _initBioPortalClient();
         $r = $client->all()->getFieldInfo();
         foreach ($r as $service => $json) {
-            $nbaFieldTypes[$service] = getOptimalOperators(json_decode($json));
+            $nbaFieldTypes[$service] = _getOptimalOperators(json_decode($json));
         }
         unset($client);
         cache_set($cacheId, $nbaFieldTypes);
@@ -46,7 +46,7 @@ function nbaFieldTypes () {
 }
 
 /* Meer dan geo_shape en keyword hebben we voorlopig niet */
-function getOptimalOperators ($fields) {
+function _getOptimalOperators ($fields) {
 	foreach ($fields as $path => $field) {
 		if ($field->type == 'geo_shape') {
 			$r[$path] = $field->type . ' | IN';
@@ -63,42 +63,9 @@ function getOptimalOperators ($fields) {
 	return isset($r) ? $r : false;
 }
 
-/* Defunct for older NBA method */
-function getMappingProperties ($mapping, $prefix = '') {
-    $r = [];
-    foreach ($mapping['properties'] as $k => $v) {
-        if (isset($v['properties'])) {
-            $r = $r + getMappingProperties($v, $prefix . $k . '.');
-        } else {
-            $operator = '';
-            // Text, type of analyzer determines operator
-            if ($v['type'] == 'keyword') {
-                if (isset($v['fields']['like'])) {
-                    $operator = 'LIKE';
-                } else if (isset($v['fields']['analyzed'])) {
-                    $operator = 'MATCHES';
-                } else if (isset($v['fields']['ignoreCase'])) {
-                    $operator = 'EQUALS_IC';
-                } else {
-                    $operator = 'EQUALS';
-                }
-            // Geo
-            } else if ($v['type'] == 'geo_shape') {
-                $operator = 'IN';
-            // Other types (date etc) may go here, but currently not in use
-            } else {
-                $operator = 'EQUALS';
-            }
 
-            $r[$prefix . $k] = $v['type'] . ($operator != '' ? " | $operator" : '');
-        }
-    }
-    return $r;
-}
-
-
-function getDistinctValues ($service, $nbaPath) {
-    $client = initBioPortalClient();
+function _getDistinctValues ($service, $nbaPath) {
+    $client = _initBioPortalClient();
     $d = $client->{$service}()->getDistinctValues($nbaPath);
     unset($client);
     $values = array_keys(json_decode($d, true));
@@ -179,5 +146,55 @@ function safe_parse_str ($source, &$target) {
 	}
 }
 
+
+/**
+ * Formats string between tags and optionally appends class
+ *
+ * @param string $input
+ * @param string $tag
+ * @param string $class
+ * @return string
+ */
+function _wrap ($input, $tag = "div", $class = ""){
+	$class = ($class == "" ? "": " class='$class'" );
+	return "<$tag$class>$input</$tag>";
+}
+
+
+/**
+ * Helper callback function for highlightMatch()
+ */
+function _fsub1 ($m) {
+	return chr(14) . preg_replace_callback('(<(.*?)>)', '_fsub2', $m[0]) . chr(7);
+}
+
+/**
+ * Helper callback function for highlightMatch()
+ */
+function _fsub2 ($m) {
+	return chr(7) . $m[0] . chr(14);
+}
+
+/**
+ * Formats number to English/Dutch systems
+ *
+ * Customized internationalisation to format number that only works for EN/NL
+ *
+ * @param int/string $n Input number
+ * @return string Formatted number
+ */
+function _formatNumber ($n) {
+	global $language;
+	if ($language->language == 'nl') {
+		return number_format($n, 0, ',', '.');
+	}
+	return number_format($n);
+}
+
+
+function _printOops () {
+	return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
+		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+}
 
 

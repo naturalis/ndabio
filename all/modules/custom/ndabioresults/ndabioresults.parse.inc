@@ -1151,6 +1151,53 @@ function getShowAll ($data, $groupResult = false) {
 	return null;
 }
 
+function _setShowAllQuery ($total, $criteria) {
+	if ($total > maxResultsInitial()) {
+		$criteria['size'] = maxResults();
+		return http_build_query($criteria);
+	}
+	return null;
+}
+
+
+
+function _parseSpecimens ($data) {
+	$output['total'] = getTotalRows($data);
+	foreach ($data->resultSet as $row) {
+		$d = array();
+		// to do: add highlighting, author, italics
+		$d['name'] = $row->item->name;
+		$d['url'] = _setSpecimensAllLink($row);
+		// to do: add author, italics
+		$d['fullScientificName'] = $row->item->name;
+		$d['count'] = $row->item->specimenCount;
+		$d['sources'] = getSpecimenSources($row);
+		$d['score'] = 1;
+		foreach ($row->item->specimens as $i => $sp) {
+			$specimen = $sp->specimenDetails;
+			$assemblageID = $specimen->assemblageID;
+			$s['unitID'] = setUnitId($specimen->unitID);
+			$s['recordBasis'] = $specimen->recordBasis;
+			$s['kindOfUnit'] = $specimen->kindOfUnit;
+			$s['preparationType'] = $specimen->preparationType;
+			$s['collectionType'] = $specimen->collectionType;
+			$s['url'] = 'specimen/' . urlencode($specimen->unitID);
+			$s['score'] = 0;
+			empty($assemblageID) ? $d['specimens'][] = $s :
+				$d['sets'][$assemblageID][] = $s;
+		}
+		$d['allLink'] = $d['count'] > maxResultsInitial() ?
+			_setSpecimensAllLink($row) : '';
+		$output['results'][] = $d;
+	}
+	
+	$output['self'] = getSelfLink($data);
+	$output['showAll'] = 'result/specimen/?' . 
+		_setShowAllQuery($output['total'], $_SESSION['nbaQueryTerms']['names.specimens']);
+	$output['paginator'] = getPaginator($data);
+	return $output;
+}
+
 /**
  * Gets sort parameter
  *

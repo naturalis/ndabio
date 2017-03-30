@@ -17,7 +17,7 @@ function getGeoAreas () {
             $nbaGeoAreas = $cache->data;
             return $nbaGeoAreas;
         }
-        $client = initBioPortalClient();
+        $client = _initBioPortalClient();
         $nbaGeoAreas = $client->getGeoAreas();
         cache_set($cacheId, $nbaGeoAreas);
     }
@@ -34,40 +34,68 @@ function advancedSelects () {
             return $nbaAdvancedSelects;
         }
         $nbaAdvancedSelects['s_sourceSystem'] =
-            getDistinctValues('specimen', 'sourceSystem.name');
+        	_createAdvancedSelect('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
-            getDistinctValues('specimen', 'collectionType');
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'collectionType'));
         $nbaAdvancedSelects['s_typeStatus'] =
-            getDistinctValues('specimen', 'typeStatus');
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'typeStatus'));
         $nbaAdvancedSelects['s_sex'] =
-            getDistinctValues('specimen', 'sex');
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'sex'));
         $nbaAdvancedSelects['s_kingdom'] =
-            getDistinctValues('specimen', 'identifications.defaultClassification.kingdom');
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['t_sourceSystem'] =
-            getDistinctValues('taxon', 'sourceSystem.name');
+        	//_setArrayKeyFromValue(_getDistinctValues('taxon', 'sourceSystem.name'));
+        	_createAdvancedSelect('taxon', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['t_kingdom'] =
-            getDistinctValues('taxon', 'defaultClassification.kingdom');
+        	_setArrayKeyFromValue(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_sourceSystem'] =
-            getDistinctValues('multimedia', 'sourceSystem.name');
+        	//_setArrayKeyFromValue(_getDistinctValues('multimedia', 'sourceSystem.name'));
+        	_createAdvancedSelect('multimedia', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['m_collectionType'] =
-            getDistinctValues('multimedia', 'collectionType');
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'collectionType'));
         $nbaAdvancedSelects['m_typeStatus'] =
-            getDistinctValues('multimedia', 'specimenTypeStatus');
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'specimenTypeStatus'));
         $nbaAdvancedSelects['m_phaseOrStage'] =
-            getDistinctValues('multimedia', 'phasesOrStages');
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'phasesOrStages'));
         $nbaAdvancedSelects['m_sex'] =
-            getDistinctValues('multimedia', 'sexes');
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'sexes'));
         $nbaAdvancedSelects['m_kingdom'] =
-            getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom');
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
     }
     return $nbaAdvancedSelects;
 }
 
 
+/*
+ * Cannot use _getDistinctValues for select with different option-value pairs
+ * (specifically sourceSystem, where option should be different from value)
+ * Both fields should be linked of course!
+  */
+function _createAdvancedSelect ($service, $optionPath, $valuePath) {
+	$options = _getDistinctValues($service, $optionPath);
+	$client = _initBioPortalClient();
+	foreach ($options as $option) {
+		$condition = new Condition($optionPath, 'EQUALS', $option);
+		$query = new QuerySpec();
+		$query->addCondition($condition)->setSize(1);
+		$data = json_decode($client->{$service}()->querySpec($query)->query());
+		// Convert NBA path to object path
+		$pathArray = explode('.', $valuePath);
+		$objPath = $data->resultSet[0]->item;
+		foreach ($pathArray as $deeper) {
+			$objPath = $objPath->{$deeper};
+		}
+		$output[$option] = $objPath;
+	}
+	return isset($output)? $output : array();
+}
 
-
-
-//p(advancedSelects());
+function _setArrayKeyFromValue ($array) {
+	foreach ($array as $k => $v) {
+		$output[$v] = $v;
+	}
+	return isset($output) ? $output : array();
+}
 
 
 
@@ -76,7 +104,7 @@ function advancedSelects () {
  * $taxonomy = Drupal values for taxonomy (old situation): indicates if --all-- option should be printed
  * $selected = option that should be select in form
  */
-function setAdvancedSelect ($field, $taxonomy = '') {
+function _setAdvancedSelect ($field, $taxonomy = '') {
     if (!isset(advancedSelects()[$field])) {
         return false;
     }
@@ -86,8 +114,8 @@ function setAdvancedSelect ($field, $taxonomy = '') {
     if (strpos($taxonomy, '-- all --') !== false) {
         $select['NOT_NULL'] = '-- ' . t('all') . ' --';
     }
-    foreach (advancedSelects()[$field] as $option) {
-        $select[$option] = $option;
+    foreach (advancedSelects()[$field] as $option => $value) {
+    	$select[$option] = $value;
     }
     return $select;
 }
@@ -437,7 +465,7 @@ function ndabio_ajax_callback() {
   if (!empty($_GET["nid"])) {
     $nid = $_GET["nid"];
     $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
-    $client = initBioPortalClient();
+    $client = _initBioPortalClient();
     $geo = json_decode($client->geo()->find($nid));
     if (isset($geo->shape)) {
         // locality is sometimes empty in Dutch;
@@ -763,7 +791,7 @@ function ndabio_advanced_taxonomysearch() {
                 // New way to create select: it should be present in advancedSelects().
                 // Taxonomy value will still be needed to indicate if --all-- option should be printed!
                 if (isset(advancedSelects()[$catitem->name])) {
-                    $options = setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
+                    $options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                         '#type'      => 'select',
                         '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
@@ -810,7 +838,7 @@ function ndabio_advanced_taxonomysearch() {
                 */
 
                 if (isset(advancedSelects()[$subchildsysname])) {
-                    $options = setAdvancedSelect($subchildsysname, $subchildvalues);
+                    $options = _setAdvancedSelect($subchildsysname, $subchildvalues);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
                         '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
@@ -862,7 +890,7 @@ function ndabio_advanced_taxonomysearch() {
 
 
                 if (isset(advancedSelects()[$childsysname])) {
-                    $options = setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
+                    $options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
                         '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),

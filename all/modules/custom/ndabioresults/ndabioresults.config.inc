@@ -1,12 +1,26 @@
 <?php
 
+// todo: get dynamically from NBA!
+function nbaMinLikeStringSize () {
+	return 3;
+}
+
+function nbaMaxLikeStringSize () {
+	return 15;
+}
+
+
+
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
+define("NBAINITMAXGROUPRESULTS", 10);
 define("NBAMAXRESULTS", 100);
 define("NBADEFAULTSORT", '_score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
+
+
 
 
 function ndabioresults_config_form($form, &$form_state) {
@@ -55,17 +69,28 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
+  // Maximum results per group for initial "overview"
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxgroupresults'] = array(
+  		'#type' => 'textfield',
+  		'#title' => t('NBA Maximum results per group'),
+  		'#default_value' => variable_get('ndabioresults_config_initialmaxgroupresults', NBAINITMAXGROUPRESULTS),
+  		'#size' => 10,
+  		'#maxlength' => 10,
+  		'#description' => t('Number of maximum results per grouped result for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXGROUPRESULTS,
+  		'#required' => TRUE
+  );
+  
   // Maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxresults'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Maximum results'),
-    '#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
-    '#size' => 10,
-    '#maxlength' => 10,
-    '#description' => t('Number of maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
-    '#required' => TRUE
+  		'#type' => 'textfield',
+  		'#title' => t('NBA Maximum results'),
+  		'#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
+  		'#size' => 10,
+  		'#maxlength' => 10,
+  		'#description' => t('Number of maximum results for subsequent queries.') . '<br />' . t('Default') . ': ' . NBAMAXRESULTS,
+  		'#required' => TRUE
   );
-
+  
   // Constant: default sort field
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsort'] = array(
     '#type' => 'textfield',
@@ -158,8 +183,8 @@ function maxResults () {
  *
  * @return integer
  */
-function maxGroupResults () {
-  return variable_get('ndabioresults_config_maxgroupresults', NBAMAXGROUPRESULTS);
+function maxGroupResultsInitial () {
+  return variable_get('ndabioresults_config_initialmaxgroupresults', NBAINITMAXGROUPRESULTS);
 }
 
 
@@ -230,6 +255,7 @@ function resultOrder () {
     }
     return $var;
 }
+
 
 /**
  * Mapping function: maps service to parse/print functions
@@ -332,7 +358,7 @@ function nbaFieldMapping ()
                     'sexes'
                 ],
                 'sourceSystem' => [
-                    'sourceSystem.name'
+                    'sourceSystem.code'
                 ],
                 'scientificName' => [
                     'identifications.scientificName.fullScientificName'
@@ -419,11 +445,8 @@ function nbaFieldMapping ()
                 'registrationNumber' => [
                     'unitID'
                 ],
-                'collectionType' => [
-                    'collectionType'
-                ],
                 'sourceSystem' => [
-                    'sourceSystem.name'
+                    'sourceSystem.code'
                 ],
                 'scientificName' => [
                     'identifications.scientificName.fullScientificName'
@@ -538,14 +561,15 @@ function nbaFieldMapping ()
                     'defaultClassification.kingdom'
                 ],
                 'sourceSystem' => [
-                    'sourceSystem.name'
+                    'sourceSystem.code'
                 ],
             ],
-                		
-        		
-        		
-        		
         );
     }
     return $var;
+}
+
+function specimenHitFields () {
+	
+
 }
