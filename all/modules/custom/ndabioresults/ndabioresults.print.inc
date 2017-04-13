@@ -1,5 +1,96 @@
 <?php
 
+function _printSpecimenMediaDetail ($data) {
+//p($data);
+    drupal_add_js(
+        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
+
+    $output  = _wrap(t("Media item"), "div", "category");
+    $output .= _wrap('', "h2");
+    $output .= _printPreviousNext($data['totalSize'], $data['offset'], 
+    	$data['previousUrl'], $data['nextUrl']);
+
+    
+    /* For the time being disable PURL for media
+     *
+	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
+	   $data['mediaUnitID'] . '"></input>';
+	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
+	$output .= '<div class="property-list">
+	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
+	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
+	   </div>';
+    */
+
+    $altParts = array(
+        isset($data['unitID']) ? strip_tags($data['unitID']) : '',
+        isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
+        isset($data['caption']) ? strip_tags($data['caption']) : ''
+    );
+    $alt = implode(' | ', array_filter($altParts));
+    
+    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
+    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
+        "style='width: {$width}px; height: {$height}px;'/>";
+    if ($width > 0) {
+        $copyright = !empty($data['copyrightText']) ?
+            $copyright = '© ' . $data['copyrightText'] : '';
+        $institution = $data['sourceInstitutionID'] .
+            (!empty($data['sourceID']) ? ' (' . $data['sourceID'] . ')' : '');
+        array_unshift($altParts, $institution, $copyright);
+        $caption = implode('<br/>', array_filter($altParts));
+        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
+    }
+
+    if (_isMp4($data['imgSrc'])) {
+        $output .= '<video src="' . $data['imgSrc'] . '" type="video/mp4" autoplay controls></video>';
+    } else {
+	   $output .= $img;
+    }
+
+	$output .= "<div class='property-list'>";
+
+	if (!empty($data['unitID'])) {
+		$output .= _printDL(
+            ucfirst(_translateNdaField('unitID')),
+            '<a href="' . setBasePath() . 'specimen/' . urlencode($data['unitID']) . '">' . 
+				$data['unitID'] . '</a>'
+		);
+	}
+	if (!empty($data['names'])) {
+		$output .= _printNamesWithLinks($data['names'], t('Scientific name'));
+	}
+
+	$fields = array(
+        'source',
+        'creator',
+        'license',
+        'sourceInstitutionID',
+	    'collectionType',
+        'description',
+        'copyrightText',
+    	'locality',
+    	'dateTimeBegin',
+        'sexes',
+	    'specimenTypeStatus',
+        'phaseOrStage'
+	);
+
+  	foreach ($fields as $field) {
+		$output .= _printDL(
+            ucfirst(_translateNdaField($field)),
+		    is_array($data[$field]) ? implode(', ', $data[$field]) : _printValue($data[$field])
+		);
+	}
+
+    // Drupal title empty; page title custom
+    _setTitle(t('Multimedia') . ' | ' . strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
+
+	return $output . "</dd>\n</div>\n";
+}
+
 
 
 /**
@@ -8,24 +99,22 @@
  * @param array $data Parsed json data
  * @return string Formatted output
  */
-function printTaxonMediaDetail ($data) {
+function _printTaxonMediaDetail ($data) {
 //p($data);
 
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
 
-    $output .= printPreviousNext();
+    $output .= _printPreviousNext($data['totalSize'], $data['offset'], 
+    	$data['previousUrl'], $data['nextUrl']);
 
     $altParts = array(
-        isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
+        isset($data['acceptedName']) ? strip_tags($data['acceptedName']) : '',
         isset($data['caption']) ? strip_tags($data['caption']) : ''
     );
     $alt = implode(' | ', array_filter($altParts));
 
-    // Temp solution to show fullsize images
-    $data['imgSrc'] = str_replace('/comping/', '/original/', $data['imgSrc']);
-
-    list($width, $height) = loadPrettyPhoto($data['imgSrc']);
+    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
     $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
@@ -36,16 +125,11 @@ function printTaxonMediaDetail ($data) {
         $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
     }
 
-
-
-
-
-
     $output .= $img;
 
     $output .= "<div class='property-list'>";
-    $output .= printNamesWithLinks($data['names'], t('Scientific name'));
-
+    $output .= printDL(t('Scientific name'), 
+    	'<a href="' . $data['acceptedNameUrl'] . '">' . $data['acceptedName'] . '</a>');
 	$fields = array(
 	    'source',
     	'creator',
@@ -61,16 +145,193 @@ function printTaxonMediaDetail ($data) {
 	);
 	foreach ($fields as $field) {
 		if ($field == 'source' && !empty($data['sourceUrls'])) {
-            $data['source'] = printSource($data, $data['source']);
+            $data['source'] = _printSource($data, $data['source']);
 	    }
-	    $output .= printDL(ucfirst(translateNdaField($field)), printValue($data[$field]));
+	    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
 	}
 
     // Drupal title empty; page title custom
-	setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
+	_setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
 
     return $output . "</div>";
 }
+
+
+/**
+ * Prints taxon identifications for specimen (used only for non-name search)
+ *
+ * Replaces default <span> with <span class="result-query">
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
+function _printNamesWithLinks ($details, $fieldLabel) {
+	$output = '';
+	foreach ($details as $i => $detail) {
+		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
+		$name = !empty($name) ? $name : '&mdash;';
+		$t = !empty($detail['url']) ?
+			'<a href="' . $detail['url'] . '">' . $name . '</a>' : $name;
+		$output .= printDL(($i == 0 ? t($fieldLabel) : ''), $t);
+	}
+	return !empty($output) ? $output : null;
+}
+
+
+function _printPreviousNext ($total, $offset, $previousUrl = null, $nextUrl = null) {
+    $output = '<div class="fornext-bar"><ul>' .
+		'<li>' . sprintf(t('%d of %d'), $offset, $total) . '</li>';
+
+    // Previous
+    $output .= "<li>";
+    if (!empty($previousUrl)) {
+        $output .= '<a href="' . $previousUrl . '">';
+    }
+    $output .= '<span class="icon button-icon icon-chevron-up';
+    if (empty($previousUrl)) {
+        $output .= ' icon-button-disabled';
+    }
+    $output .= '"></span>';
+    if (!empty($previousUrl)) {
+        $output .= '</a>';
+    }
+    $output .="</li>";
+
+    // Next
+    $output .= "<li>";
+    if (!empty($nextUrl)) {
+        $output .= '<a href="' . $nextUrl . '">';
+    }
+    $output .= '<span class="icon button-icon icon-chevron-down';
+    if (empty($nextUrl)) {
+        $output .= ' icon-button-disabled';
+    }
+    $output .= '"></span>';
+    if (!empty($nextUrl)) {
+        $output .= '</a>';
+    }
+    $output .= '</li>';
+
+    // Back
+    $output .= '<li><a href="?back"><span class="icon button-icon icon-cross"></span></a></li>';
+    $output .= '</ul></div>';
+
+    return $output;
+}
+
+
+/**
+ * Prints multimedia
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
+function _printMultimedia ($data) {
+	
+	if (empty($data['results'])) {
+		return false;
+	}
+	
+	//p($data);
+	
+	// Drupal title empty; page title custom
+	$headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+		t('Search results') : t('Explore highlights');
+	$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+	
+	setTitle($headTitle, $pageTitle);
+	
+	$output = '<div id="multimedia"></div>';
+	$output .= sprintf(
+		'<h2>%s <span class="count">(%s)</span></h2>',
+		t('Multimedia'),
+		_formatNumber($data['total'])
+	);
+	$output .= "<div class='multimedia-wrapper'>";
+	
+	foreach ($data['results'] as $i => $row) {
+		$w = "240";
+		$h = 100 + $i * 50;
+		
+		// Reset imgUrl if media is mp4
+		if ($row['format'] == 'video/mp4') {
+			$row['imgSrc'] = setBasePath() .
+				'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+		}
+		
+		$mmHit = printMultimediaHit($row);
+				
+		$output .=
+		"<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
+		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
+		"  <div class='polaroid-caption'>".
+		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
+		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>";
+		$output .= !empty($row['caption']) ?
+		"    <div class='image-hits'>" . $row['caption'] . "</div>" : '';
+		$output .= $mmHit ?
+		"    <div class='image-hits'>" . $mmHit ."</div>" : '';
+		$output .= "  </div>" .
+				"</a>";
+	}
+	
+	$output .=  "</div>";
+	$output = _markUp($output);
+	
+	$output .= printShowAll($data);
+	$output .= printPaginator($data);
+	
+	return $output;
+}
+
+
+/**
+ * Prints specimen rows in result table
+ *
+ * Returns collection/set of specimens or just a specimen if a collection contains a single entry;
+ * also provides the Show [x] specimens link if appropriate.
+ *
+ * @param array $row Parsed json data
+ * @param int $i Offset
+ * @return string Formatted output
+ */
+function _printSpecimenCollection ($row, $i) {
+	$output = '';
+	// Single specimen
+	if (isset($row['specimens'])) {
+		foreach ($row['specimens'] as $specimen) {
+			$info = implode('; ', array_filter(array(
+					ucfirst($specimen['kindOfUnit']),
+					$specimen['preparationType']
+			)));
+			$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
+			$specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>" .
+			"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td></tr>";
+		}
+		
+		// Specimen collection/set
+	} else if (isset($row['sets'])) {
+		foreach ($row['sets'] as $set => $specimens) {
+			$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
+			$set . "</td>" . padTds(4) . "</tr>";
+			foreach ($specimens as $j => $specimen) {
+				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
+				. "<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+				"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>";
+			}
+		}
+	}
+	if (!empty($row['allLink'])) {
+		$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
+		'<a href="' . $row['allLink'] . '">' . t('All') . ' ' .
+		$row['count'] . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>";
+	}
+	return $output;
+}
+
+
+
+
 
 
 /**
@@ -208,9 +469,9 @@ function printTaxonDetail ($data) {
 
 //p($data);
 
-    $getSpecimenRequest = NBABASEURL() . specimenNamesService() .
+    $getSpecimenRequest = nbaBaseUrl() . specimenNamesService() .
         '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
-    $getMultimediaRequest = NBABASEURL() . multimediaService() .
+    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
         '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
@@ -405,18 +666,18 @@ function _printSpecimens ($data) {
 	
 	$headers = array(
 			'identifications.scientificName.fullScientificName' => array(
-					'label' => t('Name'),
-					'sort' => 'ASC',
-					'icon' => array(
-							'ASC' => 'icon-sort_a_z',
-							'DESC' => 'icon-sort_z_a'
-					),
-					'url' => setSortUrl(
-							$nameSortFlag,
-							'ASC',
-							$data['self'],
-							false
-							)
+				'label' => t('Name'),
+				'sort' => 'ASC',
+				'icon' => array(
+					'ASC' => 'icon-sort_a_z',
+					'DESC' => 'icon-sort_z_a'
+				),
+				'url' => setSortUrl(
+					$nameSortFlag,
+					'ASC',
+					$data['self'],
+					false
+				)
 			),
 			'count' => array(
 					'label' => ''
@@ -447,9 +708,9 @@ function _printSpecimens ($data) {
 	
 	$output = '<div id="specimen"></div>';
 	$output .= sprintf(
-			'<h2>%s %s</h2>',
-			t('Species with specimens'),
-			$count
+		'<h2>%s %s</h2>',
+		t('Species with specimens'),
+		$count
 	);
 	$output .= sprintf(
 		'<table id="specimensByTaxon"><thead>%s</thead>',
@@ -468,19 +729,19 @@ function _printSpecimens ($data) {
 		// Map icon
 		$output .= "<td>" .
 				(isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
-						&& !isset($_GET['noMap']) ?
-						"<a href='" . printDrupalLink(
-								specimenNamesService() . '?_geoShape=[session]&' .
-								'&identifications.scientificName.fullScientificName.raw=' .
-								urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
-						"' class='icon-location'></a>" : '') .
-						"</td>";
+				&& !isset($_GET['noMap']) ?
+				"<a href='" . printDrupalLink(
+					specimenNamesService() . '?_geoShape=[session]&' .
+					'&identifications.scientificName.fullScientificName.raw=' .
+					urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
+				"' class='icon-location'></a>" : '') .
+				"</td>";
 		// Source(s)
 		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
 		// Match
 		$output .= "<td>" . decorateScore($row['score']) . "</td>";
 		$output .= "</tr>";
-		$output .= printSpecimenCollection($row, $i);
+		$output .= _printSpecimenCollection($row, $i);
 	}
 	
 	$output .= "</table>";
@@ -964,7 +1225,7 @@ function printSpecimenDetail ($data) {
 
 	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
 
-    $getMultimediaRequest = NBABASEURL() . multimediaService() .
+    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
         '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
@@ -981,51 +1242,6 @@ function printSpecimenDetail ($data) {
 	return $output;
 }
 
-
-
-/**
- * Prints specimen rows in result table
- *
- * Returns collection/set of specimens or just a specimen if a collection contains a single entry;
- * also provides the Show [x] specimens link if appropriate.
- *
- * @param array $row Parsed json data
- * @param int $i Offset
- * @return string Formatted output
- */
-function printSpecimenCollection ($row, $i) {
-    $output = '';
-	// Single specimen
-    if (isset($row['specimens'])) {
-        foreach ($row['specimens'] as $specimen) {
-            $info = implode('; ', array_filter(array(
-                ucfirst($specimen['kindOfUnit']),
-                $specimen['preparationType']
-            )));
-            $output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
-		    $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>" .
-            "<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td></tr>";
-        }
-
-    // Specimen collection/set
-    } else if (isset($row['sets'])) {
-        foreach ($row['sets'] as $set => $specimens) {
-        	$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
-        	   $set . "</td>" . padTds(4) . "</tr>";
-        	foreach ($specimens as $j => $specimen) {
-        	    $output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
-                . "<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-                "<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>";
-        	}
-        }
-    }
-    if (!empty($row['allLink'])) {
-        $output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
-        	'<a href="' . $row['allLink'] . '">' . t('All') . ' ' .
-        	$row['count'] . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>";
-    }
-	return $output;
-}
 
 
 
@@ -1176,95 +1392,8 @@ function printNavigation ($data) {
 }
 
 
-/**
- * Prints taxon identifications for specimen (used only for non-name search)
- *
- * Replaces default <span> with <span class="result-query">
- *
- * @param array $row Parsed json data
- * @return string|void Formatted output
- */
-function printNamesWithLinks ($details, $fieldLabel) {
-	$output = '';
-	foreach ($details as $i => $detail) {
-		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
-		$name = !empty($name) ? $name : '&mdash;';
-		$t = !empty($detail['url']) ?
-			'<a href="' . printDrupalLink($detail['url']) . '">' . $name . '</a>' : $name;
-		$output .= printDL(($i == 0 ? t($fieldLabel) : ''), $t);
-	}
-	return !empty($output) ? $output : null;
-}
 
 
-
-/**
- * Prints multimedia
- *
- * @param array $data Parsed json data
- * @return string Formatted output
- */
-function printMultimedia ($data) {
-
-    if (empty($data['results'])) {
-        return false;
-    }
-
-//p($data);
-
-    // Drupal title empty; page title custom
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-        t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    $searchId = isset($data['searchTerms']) ? setSearchId($data['searchTerms']) : false;
-
-    setTitle($headTitle, $pageTitle);
-
-    $output = '<div id="' . multimediaService() . '"></div>';
-    $output .= sprintf(
-        '<h2>%s <span class="count">(%s)</span></h2>',
-        t('Multimedia'),
-        _formatNumber($data['total'])
-    );
-    $output .= "<div class='multimedia-wrapper'>";
-
-    foreach ($data['results'] as $i => $row) {
-    	$w = "240";
-        $h = 100 + $i * 50;
-
-        // Reset imgUrl if media is mp4
-        if ($row['format'] == 'video/mp4') {
-            $row['imgSrc'] = setBasePath() .
-                'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
-        }
-
-        $mmHit = printMultimediaHit($row);
-
-        // Append searchId as a search term after each url; used for navigation
-        $row['url'] .= urlencode('&searchID=' . $searchId);
-
-        $output .=
-          "<a class='polaroid' href='" . printDrupalLink($row['url']). "' title='" . $row['title'] . "'>" .
-          "  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
-          "  <div class='polaroid-caption'>".
-          "    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
-                    (!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>";
-         $output .= !empty($row['caption']) ?
-           "    <div class='image-hits'>" . $row['caption'] . "</div>" : '';
-         $output .= $mmHit ?
-           "    <div class='image-hits'>" . $mmHit ."</div>" : '';
-         $output .= "  </div>" .
-          "</a>";
-    }
-
-    $output .=  "</div>";
-    $output = _markUp($output);
-
-    $output .= printShowAll($data);
-    $output .= printPaginator($data);
-
-  return $output;
-}
 
 /**
  * Only prints first hit
@@ -1291,12 +1420,13 @@ function printMultimediaHit ($row) {
             $replace = array(
                 'name' => t('Common name')
             );
+            
             if (isset($replace[$field])) {
                 $field = $replace[$field];
             }
-			return ucfirst(translateNdaField($field)) . ': ' .
-				str_replace('<span class="search_hit">', '<span class="result-query">', $hit);
+			$hits[] = ucfirst(translateNdaField($field)) . ': ' . $hit;
 		}
+		return implode('<br>', $hits);
 	}
 	return false;
 }
@@ -1384,6 +1514,24 @@ function printHeaders ($headers, $self) {
 	}
 	return $output . "</tr>";
 }
+
+
+
+
+/**
+ * Prints single source as formatted html
+ *
+ * @param array $data
+ * @param string $source
+ * @return string Formatted html
+ */
+function _printSource($data, $source) {
+    if (isset($data['sourceUrls'][$source])) {
+        return '<a href="' . $data['sourceUrls'][$source] . '" target="_blank">' . $source . '</a>';
+    }
+    return $source;
+}
+
 
 
 /**
@@ -1598,3 +1746,30 @@ function printValue ($value) {
     }
     return $value != '' ? $value : '—';
 }
+
+/**
+ * Prints description list
+ *
+ * @param string $field
+ * @param string $value
+ * @return string
+ */
+function _printDL ($field, $value) {
+	return "<dl><dt>$field</dt><dd>$value</dd></dl>";
+}
+
+/**
+ *
+ * Prints value, modifying a few if they meet criteria
+ *
+ * @param string $license
+ * @return string
+ */
+function _printValue ($value) {
+    if (strtolower($value) == 'cc0') {
+        return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
+            $value . '</a>';
+    }
+    return $value != '' ? $value : '—';
+}
+

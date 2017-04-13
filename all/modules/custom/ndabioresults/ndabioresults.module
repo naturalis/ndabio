@@ -1,7 +1,8 @@
 <?php
 // Print channels in output y/n = 1/0
 define("PRINT_QUERIES", 1);
-define("PRINT_QUERIES_ENCODED", 0);
+define("PRINT_QUERIES_ENCODED", 1);
+define("PRINT_TERMS_AND_PATHS", 1);
 
 // Drupal
 require_once 'ndabioresults.config.inc';
@@ -89,8 +90,6 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		return _printOops();
 	}
 	
-	//p(nbaFieldTypes()); die();
-
 	$service = 'multimedia';
 	$client = _initBioPortalClient();
 	
@@ -103,23 +102,24 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$query->addCondition($condition);
 		// Fetch data
 		$data = json_decode($client->{$service}()->querySpec($query)->query());
-		$result->{$service} = $data->resultSet[0]->item;
-		if (isset($result->{$service}->exception)) {
+		if (isset($data->exception)) {
 			return _printOops();
 		}
+		$data = $data->resultSet[0]->item;
 	// Search pattern included: fetch navigation
 	} else {
 		// Convert query to parameters
 		safe_parse_str($search, $p);
 		// If from isn't an integer, someone has been messing with the url
-		// Print error, otherwise PHP client will throw an exception
-		if (!ctype_digit(strval($p['from']))) {
-			return _printOops();
+		// Reconstruct $search
+		if (!isset($p['from']) || !ctype_digit(strval($p['from']))) {
+			$p['from'] = 0;
+			$search = http_build_query($p);
 		}
 		// Make sure a maximum of three records is fetched; we don't need more
 		$p['size'] = 3;
 		// Build query
-		$query = _buildQuery($service, $p);
+		$query = _buildQuery($service, $p);		
 		// Fetch data set
 		$set = json_decode($client->{$service}()->querySpec($query)->query());
 		// We got an error; go oops
@@ -127,20 +127,30 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$result = _getDetailPageDataAndNavigationFromSet($service, $set, $id);
+		$data = _setDetailPageNavigation($service, $search, $set, $id, $p['from']);
 	}
 	
-	_getMultimediaAssociatedObject($result);
+	_setMultimediaAssociatedObject($data);
 	
-	if (isset($result->previousId)) {
-		echo '<a href="' . _printDetailPagePreviousLink($service, $result, $search) . '">previous</a> ';
+	if (isset($data->associatedTaxon)) {
+		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
+	} else {
+		return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 	}
-	if (isset($result->nextId)) {
-		echo '<a href="' . _printDetailPageNextLink($service, $result, $search) . '">next</a>';
-	}
-	echo '<br><img style="max-height: 500px; max-width: 500px;" src="' . $result->{$service}->serviceAccessPoints[0]->accessUri . '">';
 
-	p($result->{$service});
+	
+
+	
+	if (isset($data->previousUrl)) {
+		echo '<a href="' . $data->previousUrl . '">previous</a> ';
+	}
+	if (isset($data->nextUrl)) {
+		echo '<a href="' . $data->nextUrl . '">next</a>';
+	}
+	echo '<br><img style="max-height: 500px; max-width: 500px;" src="' . $data->serviceAccessPoints[0]->accessUri . '">';
+
+	p($data);
+
 
 	//return print_r($client->query());
 
@@ -149,18 +159,14 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 }
 
 
-function _getMultimediaAssociatedObject (&$result) {
+function _setMultimediaAssociatedObject (&$data) {
 	$client = _initBioPortalClient();
 	foreach (['taxon', 'specimen'] as $service) {
 		$field = 'associated' . ucfirst($service) . 'Reference';
-		if (isset($result->multimedia->{$field}) && 
-			!empty($result->multimedia->{$field})) {
+		if (isset($data->{$field}) && !empty($data->{$field})) {
 			$appendedField = 'associated' . ucfirst($service);
-			$condition = new Condition('sourceSystemId', 'EQUALS', $result->multimedia->{$field});
-			$query = new QuerySpec();
-			$query->addCondition($condition);
-			$data = json_decode($client->{$service}()->querySpec($query)->query());
-			$result->multimedia->{$appendedField} = $data->resultSet[0]->item;
+			$data->{$appendedField} = 
+			json_decode($client->{$service}()->find($data->{$field}));
 			unset($client, $query, $condition);
 			return $result;
 		}
@@ -168,8 +174,8 @@ function _getMultimediaAssociatedObject (&$result) {
 }
 
 
-function _printDetailPagePreviousLink ($service, $result, $search) {
-	if (isset($result->previousId)) {
+function _setDetailPagePreviousLink ($service, $search, $previousId) {
+	if (isset($previousId)) {
 		safe_parse_str($search, $p);
 		// Strip size if it was provided; we don't need it
 		if (isset($p['size'])) {
@@ -179,14 +185,14 @@ function _printDetailPagePreviousLink ($service, $result, $search) {
 		// We have already validated that $p['from'] is an integer
 		if (isset($p['from'])) {
 			$p['from'] = $p['from'] == 0 ? $p['from'] : $p['from'] - 1;
-			return setBasePath() . $service . '/' . $result->previousId . '/' . http_build_query($p);
+			return setBasePath() . $service . '/' . $previousId . '/' . http_build_query($p);
 		}
 	}
 	return null;
 }
 
-function _printDetailPageNextLink ($service, $result, $search) {
-	if (isset($result->nextId)) {
+function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
+	if (isset($nextId)) {
 		safe_parse_str($search, $p);
 		// Strip size if it was provided; we don't need it
 		if (isset($p['size'])) {
@@ -195,33 +201,36 @@ function _printDetailPageNextLink ($service, $result, $search) {
 		// Only proceed if size has been set; otherwise url has been tampered with
 		// We have already validated that $p['from'] is an integer
 		if (isset($p['from'])) {
-			$p['from'] = !isset($result->previousId) ? $p['from'] : $p['from'] + 1;
-			return setBasePath() . $service . '/' . $result->nextId . '/' . http_build_query($p);
+			$p['from'] = !isset($previousId) ? $p['from'] : $p['from'] + 1;
+			return setBasePath() . $service . '/' . $nextId . '/' . http_build_query($p);
 		}
 	}
 	return null;
 }
 
-function _getDetailPageDataAndNavigationFromSet ($service, $set, $id) {
-	$result = new stdClass();
-	$result->{$service} = false;
+function _setDetailPageNavigation ($service, $search, $set, $id, $from) {
+	$previousId = $nextId = null;
+	$output = new stdClass();
 	foreach ($set->resultSet as $i => $row) {
 		if (isset($row->item->unitID) && $row->item->unitID == $id) {
-			$result->{$service} = $row->item;
+			$output = $row->item;
 			break;
 		}
 	}
+	$output->offset = $from + 2;
 	if (isset($set->resultSet[($i - 1)]->item->unitID)) {
-		$result->previousId = $set->resultSet[($i - 1)]->item->unitID;
+		$previousId = $set->resultSet[($i - 1)]->item->unitID;
+	} else {
+		$output->offset = 1;
 	}
 	if (isset($set->resultSet[($i + 1)]->item->unitID)) {
-		$result->nextId = $set->resultSet[($i + 1)]->item->unitID;
+		$nextId = $set->resultSet[($i + 1)]->item->unitID;
 	}
-	return $result;
+	$output->previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
+	$output->nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
+	$output->totalSize = $set->totalSize;
+	return $output;
 }
-
-
-
 
 function _nba_taxon_callback ($taxon = false, $search = false) {
     // Test if anything has been posted; if not return with error message
@@ -263,22 +272,24 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
     //return p($client->all()->getMapping());
     //return 'henk' . $taxon . '<br>' . $searchRequest;
 }
-
-/* When we are querying specimen or taxon services, by default the query will be
+	
+	/*
+ * When we are querying specimen or taxon services, by default the query will be
  * redirected to the names service. The switch can be overridden by setting the
- * third parameter to true; in that case the specimen or taxon service is queried 
+ * third parameter to true; in that case the specimen or taxon service is queried
  * instead.
-*/
+ */
 
-function _buildQuery ($service, $terms = array()) {
+
+function _buildQuery ($service, $terms = array(), $save = true) {
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
-		list($service, $prefix) = explode('.', $service);
-		$lookupService = $prefix == 'taxa' ? 'taxon' : 'specimen';
-		$prefix .= '.';
+		list($service, $type) = explode('.', $service);
+		$lookupService = $type == 'taxa' ? 'taxon' : 'specimen';
+		$type .= '.';
 		$query = new NameGroupQuerySpec();
 	} else {
-		$prefix = '';
+		$type = '';
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
@@ -294,12 +305,16 @@ function _buildQuery ($service, $terms = array()) {
             }
             // Get NBA field type
             foreach ($nbaPaths as $path) {
-            	$path = $prefix . $path;
+            	$path = $type . $path;
             	// Names identifications are buried even deeper...
             	if ($service == 'names' && strpos($path, '.identifications.') !== false) {
             		$path = str_replace('identifications', 'matchingIdentifications', $path);
             	}
-            	$statement[$path] = _setConditionOperator($service, $path, $value);
+            	$statement[$path] = _getConditionOperator($service, $path, $value);
+            	$paths[$path] = [
+            		'operator' => $statement[$path],
+            		'value' => $value,
+            	];
             }
         }
         if (!empty($statement)) {
@@ -314,6 +329,12 @@ function _buildQuery ($service, $terms = array()) {
             $conditions[] = $condition;
         }
     }
+    // Store paths for reusal
+    if (isset($paths) && $save) {
+    	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
+    		substr($type, 0, -1)]['paths'] = $paths;
+    }
+    // Compile querySpec
     foreach ($conditions as $c) {
         $query->addCondition($c);
     }
@@ -343,7 +364,7 @@ function _buildQuery ($service, $terms = array()) {
  * Fairly simple now, as we only search string fields in BioPortal.
  * Will become more compilated once we allow searches on date or int fields.
  */
-function _setConditionOperator ($service, $nbaPath, $value = '') {
+function _getConditionOperator ($service, $nbaPath, $value = '') {
     if (isset(nbaFieldTypes()[$service][$nbaPath])) {
         return _getOperatorFromMapping(nbaFieldTypes()[$service][$nbaPath], $value);
     }
@@ -413,6 +434,24 @@ function _nba_general_result_callback ($service = null) {
 
 }
 
+function _getTaxonFromNba ($taxon) {
+	$client = _initBioPortalClient();
+	$p = explode(' ', $taxon);
+	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
+	if (count($p) == 2) {
+		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
+		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS');
+	}
+	if (count($p) == 3) {
+		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
+	}
+	$query = new NameGroupQuerySpec();
+	$query->addCondition($c);
+    $data = json_decode($client->names()->querySpec($query)->query());
+	return isset($data->resultSet) ? $data->resultSet : false;
+}
+
+
 
 
 
@@ -431,7 +470,7 @@ function _nbaAdvancedSearch () {
     $pageHeader = '';
 
     // Delete previous search terms when performing new query
-    unset($_SESSION['nbaQueryTerms']);
+    unset($_SESSION['nbaQuery']);
 
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
@@ -464,11 +503,8 @@ function _nbaAdvancedSearch () {
             $p['size'] = maxResultsInitial();
 
             // Init client, construct query, fetch results in $remoteData
-            $client = _initBioPortalClient();
-            $query = _buildQuery($service, $p);
-            $client
-            	->{substr($service, 0, strpos($service, '.'))}()
-            	->querySpec($query);
+            $client = _setClientService(_initBioPortalClient(), $service);
+            $client->querySpec(_buildQuery($service, $p));
             $remoteData[$service] = $client->query();
 
             // Save service-specific query to session;
@@ -478,17 +514,14 @@ function _nbaAdvancedSearch () {
             // Store query if user wants to print it on screen
             if (PRINT_QUERIES == 1) {
                 $encoded = PRINT_QUERIES_ENCODED == 0 ? false : true;
-                $debug[$service] = 
-                	$client
-                		->{substr($service, 0, strpos($service, '.'))}()
-                		->getQuerySpec($encoded);
+                $debug[$service] = $client->getQuerySpec($encoded);
             }
-        }
+         }
     }
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
-		// to do!
+		$pageBody .= _printMultimedia(_parseMultimedia(json_decode($remoteData['multimedia'])));
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
@@ -496,7 +529,7 @@ function _nbaAdvancedSearch () {
 //die(p($data));
 		
 		
-		return _printSpecimens(_parseSpecimens($data));
+		$pageBody .= _printSpecimens(_parseSpecimens($data));
 	}
 	
 	
@@ -532,6 +565,10 @@ function _nbaAdvancedSearch () {
     if (PRINT_QUERIES == 1 && !empty($debug)) {
         p($debug);
     }
+    if (PRINT_TERMS_AND_PATHS == 1 && !empty($_SESSION['nbaQuery'])) {
+    	p($_SESSION['nbaQuery']);
+    }
+     
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
@@ -556,7 +593,7 @@ function _setSpecimensAllLink ($row) {
 	return isset($output) ? $output : '';
 }
 
-function getSpecimenSources ($row) {
+function _setSpecimenSources ($row) {
 	foreach ($row->item->specimens as $i => $specimen) {
 		$output[$specimen->specimenDetails->sourceSystem->name] = $i;
 	}
@@ -600,18 +637,18 @@ function _setQueryTerms ($service) {
     } else {
         $terms = $_GET;
     }
-    $_SESSION['nbaQueryTerms'][$service] = $terms;
+    $_SESSION['nbaQuery'][$service]['terms'] = $terms;
     return $terms;
 }
 
-function getQueryTerms ($service) {
-    return isset($_SESSION['nbaQueryTerms'][$service]) ?
-        $_SESSION['nbaQueryTerms'][$service] : false;
+function _getQueryTerms ($service) {
+    return isset($_SESSION['nbaQuery'][$service]['terms']) ?
+		$_SESSION['nbaQuery'][$service]['terms'] : false;
 }
 
-function getQueryFields ($service) {
-    if (isset($_SESSION['nbaQueryTerms'][$service])) {
-        $queryTerms = $_SESSION['nbaQueryTerms'][$service];
+function _getQuerySearchTerms ($service) {
+	if (isset($_SESSION['nbaQuery'][$service]['terms'])) {
+		$queryTerms = $_SESSION['nbaQuery'][$service]['terms'];
         foreach (searchFlags() as $flag) {
             if (isset($queryTerms[$flag])) {
                 unset($queryTerms[$flag]);
@@ -622,6 +659,24 @@ function getQueryFields ($service) {
     return false;
 }
 
+
+function _getQueryPaths ($service) {
+	return isset($_SESSION['nbaQuery'][$service]['paths']) ?
+		$_SESSION['nbaQuery'][$service]['paths']: false;
+}
+
+function _getPaginator ($data) {
+	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
+		$paginator = new Paginator(
+			getTotalRows($data),
+			setPaginatorItemsPerPage($groupResult),
+			setPaginatorCurrentPage($data, $groupResult),
+			setPaginatorUrl($data, $groupResult)
+		);
+		return $paginator->toHtml();
+	}
+	return null;
+}
 
 /**
  * Distributes search parameter of the simple search to appropiate services and returns
@@ -1192,7 +1247,7 @@ function ndaDirectRequest ($r) {
             }
 
             $channels[0]['request'] = $service;
-    		$channels[0]['url'] = NBABASEURL() . $service;
+            $channels[0]['url'] = nbaBaseUrl() . $service;
     		$channels[0]['method'] = $d['method'];
     		// If ES request parameter contains dots, these should be replaced with @ and reverted to
     		// dots at this point
@@ -1234,7 +1289,7 @@ function ndaAjaxRequest ($r, $maxResults = false) {
             }
 
             $channels[0]['request'] = $service;
-    		$channels[0]['url'] = NBABASEURL() . $service;
+    		$channels[0]['url'] = nbaBaseUrl() . $service;
     		$channels[0]['method'] = $d['method'];
     		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
             return queryNda($channels);
@@ -1286,7 +1341,7 @@ function setChannels (array $services, $overrideDefault = false) {
 	        }
 
 	        $channels[$i]['request'] = $s;
-    		$channels[$i]['url'] = NBABASEURL() . $s;
+    		$channels[$i]['url'] = nbaBaseUrl() . $s;
     		$channels[$i]['method'] = $serviceSettings[$s]['method'];
     		$channels[$i]['postfields'] =  http_build_query($p);
     		$i++;
@@ -1331,6 +1386,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
     if (countSearchParameters($d) >= 1) {
         // Rewrite andOr to logicalOperator
         $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';
+        $d['from'] = isset($d['from']) ? $d['from'] : 0;
         unset($d['andOr']);
         return $d;
     }
@@ -1481,26 +1537,9 @@ function getTaxonId ($data) {
  * @return string $url Stripped url
  */
 function stripBaseUrl ($url) {
-    return str_replace(urlencode(NBABASEURL()), '', $url);
+    return str_replace(urlencode(nbaBaseUrl()), '', $url);
 }
 
-/**
- * Replaces registration numbers with multiple spaces with non-breaking spaces
- *
- * Some Brahms registration numbers contain double spaces, e.g. L  012345;
- * If these are used without modification, they are presented on the site with
- * a single space, and these numbers cannot be properly copy/pasted to search fields.
- *
- * @param string $string
- * @param string $field Extra parameter so function can be used in loop over json data
- * @return string $string
- */
-function setUnitId ($string, $field = false) {
-    if (!$field || $field == 'unitID') {
-        return str_replace(' ', '&nbsp;', $string);
-    }
-    return $string;
-}
 
 /**
  * Reverses setUnitId()
@@ -1919,7 +1958,7 @@ function getScientificNameElementsWithDuplicates ($name) {
  * @param string $url Url to multimedia file
  * @return boolean
  */
-function isMp4 ($url) {
+function _isMp4 ($url) {
     $headers = get_headers($url);
     foreach ($headers as $i => $v) {
         if (strpos($v, 'mp4') !== false) {
@@ -1955,36 +1994,7 @@ function decorateScore ($score) {
 }
 
 
-/**
- * Highlight match
- *
- * Experimental highlight function from Linnaeus NG by Maarten Schermer
- *
- * @param string $haystack Input string
- * @param array $needles Matches
- * @return string
- */
-function highlightMatch ($haystack, $needles) {
 
-    // Intermediate set required to prevent highlighting of html
-    $f = array('<span class="scientific">', '</span>', '&nbsp;', '<span class="result-query">');
-    $r = array(chr(4), chr(7), chr(13), chr(14));
-    $haystack = str_replace($f, $r, $haystack);
-
-    foreach ($needles as $needle) {
-	    $needle = trim($needle);
-	    if (!is_string($needle) || stripos(strip_tags($haystack), $needle)===false || is_null($needle)) {
-			continue;
-		}
-		$q = str_split($needle);
-		$x = ')(\<[^<]*\>)*(';
-		$q = str_replace('( )','(\s*)', '('.implode($x, $q) . ')');
-		$haystack = preg_replace_callback('/' . $q.'/i', '_fsub1', $haystack);
-	}
-
-	// Restore temporarily replaced tags
-	return str_replace($r, $f, $haystack);
-}
 
 
 /**
@@ -2055,30 +2065,6 @@ function printDrupalLink ($url) {
     return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
 }
 
-/**
- * Beautifies source output
- *
- * @param string $string
- * @return string
- */
-function _markUp($string){
-  $result = $string;
-  $result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
-
-  $result = str_replace(
-    array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'"),
-    array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' "),
-    $result
-  );
-
-  $result = str_replace(
-    array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>"),
-    array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>"),
-    $result
-  );
-
-  return $result;
-}
 
 /**
  * Translates decimal coordinate pair to DMS
@@ -2144,7 +2130,7 @@ function setTitle ($head, $page = '') {
  * @param string $source Input
  * @return array
  */
-function loadPrettyPhoto ($imageUrl) {
+function _loadPrettyPhoto ($imageUrl) {
     $maxWidth = $maxHeight = 600;
     $img = @getimagesize($imageUrl);
     if ($img && $img[0] > $maxWidth || $img[1] > $maxHeight) {
@@ -2338,7 +2324,7 @@ function getSearchId ($r) {
 }
 
 function stripNBABASEURL ($url) {
-    $url = str_replace(NBABASEURL(), '', urldecode($url));
+    $url = str_replace(nbaBaseUrl(), '', urldecode($url));
     if ($url[0] == '/') {
         $url = substr($url, 1);
     }
@@ -2348,3 +2334,36 @@ function stripNBABASEURL ($url) {
 function setAnchor ($a) {
     return str_replace('/', '_', $a);
 }
+
+
+/**
+ * Translates NBA fields (usually ABCD/DC) to proper English
+ *
+ * Uses Drupal nba2text Taxonomy for translation
+ *
+ * @param string $str Input string
+ * @return string Translated string
+ */
+function _translateNdaField ($str) {
+    $machine_name = "nba2text";
+    $myvalue = taxonomy_get_term_by_name($str, $machine_name);
+    if (is_array($myvalue)) {
+        $myvalues = array_shift($myvalue);
+        if(!empty($myvalues)) {
+            return t($myvalues->description);
+        }
+    }
+    return t($str);
+}
+
+/**
+ * Sets head and (optionally) page title
+ *
+ * @param string $head Head title
+ * @param string $page Page title
+ */
+function _setTitle ($head, $page = '') {
+    $_SESSION['ndaPageTitle'] = $head;
+    drupal_set_title($page);
+}
+

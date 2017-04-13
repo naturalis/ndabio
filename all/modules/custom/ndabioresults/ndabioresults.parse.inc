@@ -1,4 +1,479 @@
 <?php
+
+function _parseMultimedia ($data) {
+	if (!isset($data->resultSet) || empty($data->resultSet)) {
+		return false;
+	}
+	
+	$service = 'multimedia';
+	$output['total'] = _getTotalRows($data);
+	
+	foreach ($data->resultSet as $i => $row) {
+		$type = isset($row->item->associatedTaxonReference) && 
+			!empty($row->item->associatedTaxonReference) ?  'taxon' : 'specimen';
+		$d['title'] = $type == 'taxon' && isset($row->result->title) ? 
+			$row->result->title : null;
+		$d['caption'] = $type == 'taxon' && isset($row->result->caption) ?
+			$row->result->caption : null;
+		$d['url'] = setBasePath() . $service . '/' . urlencode($row->item->unitID) . '/' . 
+			http_build_query(_setDetailSearchTerms($service, $i));
+		$d['source'] = isset($row->item->sourceSystem->name) ? 
+			$row->item->sourceSystem->name : null;
+		$d['imgSrc'] = isset($row->item->serviceAccessPoints[0]->accessUri) ?
+			$row->item->serviceAccessPoints[0]->accessUri: null;
+		$d['format'] = isset($row->item->serviceAccessPoints[0]->format) ?
+			$row->item->serviceAccessPoints[0]->format: null;
+		// Reset image url if this is stored in MediaLib;
+		// use medium format to speed up loading times
+		if (strpos($d['imgSrc'], 'medialib') !== false) {
+			$d['imgSrc'] = str_replace('format/large', 'format/medium', $d['imgSrc']);
+		}
+		$hits = _getHits($service, $row->item);
+		$d['hits'] = _setMultimediaHits($hits);
+		$d['taxon'] = _getMultimediaScientificNames($row, $hits);
+		$d['unitID'] = _getMultimediaUnitId($row, $hits);
+		$output['results'][] = $d;
+	}
+
+	$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
+		_setShowAllQuery($output['total'], _getQueryTerms($service));
+	$output['paginator'] = _getPaginator($data);
+	
+//p($output);	
+	return isset($output) ? $output : false;
+}
+
+/**
+ * Parses specimen media detail json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
+function _parseSpecimenMediaDetail ($data) {
+	if (!isset($data->id)) {
+		return false;
+	}
+	foreach ((array) $data as $field => $value) {
+		if (!is_array($value) && !is_object($value)) {
+			$output[$field] = $value;
+		}
+	}
+	$output['source'] = $data->sourceSystem->name;
+	$output['names'] = _getSpecimenNames($data->associatedSpecimen->identifications);
+	$output['unitID'] = _setUnitId($data->associatedSpecimen->unitID);
+	$output['mediaUnitID'] = $data->unitID;
+	$output['imgSrc'] = isset($data->serviceAccessPoints[0]->accessUri) ?
+		$data->serviceAccessPoints[0]->accessUri: null;
+	$output['phaseOrStage'] = isset($data->phasesOrStages) ?
+	    $data->phasesOrStages :
+		isset($data->associatedSpecimen->phaseOrStage) ? 
+			$data->associatedSpecimen->phaseOrStage : null;
+	$output['locality'] = isset($data->gatheringEvents[0]->localityText) ?
+	   $data->gatheringEvents[0]->localityText :
+	   isset($data->associatedSpecimen->gatheringEvent->localityText) ?
+			$data->associatedSpecimen->gatheringEvent->localityText : null;
+	$output['dateTimeBegin'] = isset($data->gatheringEvents[0]->dateTimeBegin) ?
+		_dateTimeToDate($data->gatheringEvents[0]->dateTimeBegin) :
+		isset($data->associatedSpecimen->gatheringEvent->dateTimeBegin) ?
+	   		_dateTimeToDate($data->associatedSpecimen->gatheringEvent->dateTimeBegin) : null;
+//p($output);
+	return $output;
+}
+
+
+
+/**
+ * Parses taxon media detail json to PHP array
+ *
+ * @param string $json NBA response
+ * @return array $output
+ */
+function _parseTaxonMediaDetail ($data) {
+	if (!isset($data->id)) {
+		return false;
+	}
+	foreach ((array) $data as $field => $value) {
+		if (!is_array($value) && !is_object($value)) {
+			$output[$field] = $value;
+		}
+	}
+	$output['source'] = $data->sourceSystem->name;
+	$output['acceptedName'] = _getScientificName($data->associatedTaxon);
+	$output['acceptedNameUrl'] = _getTaxonUrl($data->associatedTaxon);
+	$output['phaseOrStage'] = isset($data->phasesOrStages) ?
+		$data->phasesOrStages : null;
+	$output['imgSrc'] = isset($data->serviceAccessPoints[0]->accessUri) ?
+		$data->serviceAccessPoints[0]->accessUri: null;
+	$output['locality'] = isset($data->gatheringEvents[0]->localityText) ?
+		$data->gatheringEvents[0]->localityText : null;
+	$output['date'] = isset($data->gatheringEvents[0]->dateTimeBegin) ?
+		_dateTimeToDate($data->gatheringEvents[0]->dateTimeBegin) : null;
+	$output['license'] = $data->license;
+	$output['sourceUrls'][$output['source']] = $data->associatedTaxon->recordURI;
+	
+//p($output);
+	
+	return $output;
+}
+
+function _getScientificName ($object, $full = true) {
+	// Can be used to generate a full italicized name (default) or 
+	// a simple non-formatted name without authorship
+	$elements = $full ? scientificNameElements() : scientificNameElementsInItalics();
+	// Name can be stored in either acceptedName (taxon) or 
+	// scientificName (specimen); try both
+	foreach (['acceptedName', 'scientificName'] as $path) {
+		foreach ($elements as $i => $element) {
+			$name[$i] = isset($object->{$path}->{$element}) && 
+				!empty(trim($object->{$path}->{$element})) ?
+				trim($object->{$path}->{$element}) : null;
+			// Italics only for full option
+			if (!empty($name[$i]) && $full &&
+				in_array($element, scientificNameElementsInItalics())) {
+				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+			}
+		}
+		if (!empty(array_filter($name))) {
+			return implode(' ', array_filter($name));
+		}
+	}
+	return null;
+}
+
+
+function _getTaxonUrl ($object, $checkNba = true) {
+	// Name can be stored in either acceptedName (taxon) or 
+	// scientificName (specimen); try both
+	foreach (['acceptedName', 'scientificName'] as $path) {
+		foreach (scientificNameElementsInItalics() as $i => $element) {
+			$name[$i] = isset($object->{$path}->{$element}) &&
+				!empty(trim($object->{$path}->{$element})) ?
+				trim($object->{$path}->{$element}) : null;
+		}
+		if (!empty(array_filter($name))) {
+			$url = setBasePath() . 'taxon/' . implode('_', array_filter($name));
+		}
+	}
+	// Only fetch if we're sure taxon exists in NBA
+	if (!$checkNba || $checkNba && _getTaxonFromNba(_getScientificName($object, false))) {
+		return $url;
+	}
+	return null;
+}
+
+function _setDetailSearchTerms ($service, $i) {
+	$from = (int)_getQueryTerms($service)['from'];
+	$detailTerms = _getQuerySearchTerms($service);
+	$detailTerms['from'] = $i == 0 ? 0 : $i - 1;
+	return $detailTerms;
+}
+
+function _setMultimediaHits ($hits = []) {
+	foreach ($hits as $path => $hit) {
+		if (in_array($path, nameHits()['multimedia'])) {
+			unset($hits[$path]);
+		}
+	}
+	return _highlightHits('multimedia', $hits);
+}
+
+function _getMultimediaScientificNames ($row, $hits = []) {
+	$paths = _getQueryPaths('multimedia');
+	foreach ($row->item->identifications as $id) {
+		$name = [];
+		foreach (scientificNameElements()as $i => $element) {
+			$name[$i] = isset($id->scientificName->{$element}) && 
+				!empty(trim($id->scientificName->{$element})) ? 
+				trim($id->scientificName->{$element}) : '';
+			// Highlight (assume always LIKE operator for name fields)
+			if (isset($hits['identifications.scientificName.' . $element])) {
+				$name[$i] = _highlightMatch($id->scientificName->{$element}, 
+					[$paths['identifications.scientificName.' . $element]['value']]);
+			}
+			// Italics
+			if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+			}
+		}
+		if (!empty($name)) {
+			$names[] = implode(' ', array_filter($name));
+		}
+	}
+	return isset($names) ? implode(', ', $names) : false;
+}
+
+function _getMultimediaUnitId ($row, $hits = []) {
+	if (isset($row->item->associatedSpecimenReference)) {
+		$pos = strpos($row->item->associatedSpecimenReference, '@');
+		$id = substr($row->item->associatedSpecimenReference, 0, $pos);
+		// Highlight
+		if (isset($hits['unitID'])) {
+			$highlight = _highlightMatch($id, ['unitID']);
+			$id = str_replace($id, _setUnitId($id), $highlight);
+		}
+		return $id;
+	}
+	return null;
+}
+
+
+function _parseSpecimens ($data) {
+//p($data);
+	if (!isset($data->resultSet) || empty($data->resultSet)) {
+		return false;
+	}
+	
+	$output['total'] = _getTotalRows($data);
+	
+	//@todo: from
+	//$from = (int) _getQueryTerms($service)['from'];
+	
+	foreach ($data->resultSet as $row) {
+		$d = array();
+		// to do: add highlighting, author, italics
+		$d['name'] = ucfirst($row->item->name);
+		$d['url'] = _setSpecimensAllLink($row);
+		// to do: add author, italics
+		//$d['fullScientificName'] = $row->item->name;
+		$d['count'] = $row->item->specimenCount;
+		$d['sources'] = _setSpecimenSources($row);
+		$d['score'] = 0;
+		foreach ($row->item->specimens as $i => $sp) {
+			$specimen = $sp->specimenDetails;
+			$s['unitID'] = _setUnitId($specimen->unitID);
+			$s['recordBasis'] = $specimen->recordBasis;
+			$s['kindOfUnit'] = $specimen->kindOfUnit;
+			$s['preparationType'] = $specimen->preparationType;
+			$s['collectionType'] = $specimen->collectionType;
+			$s['url'] = 'specimen/' . urlencode($specimen->unitID);
+			$s['hits'] = _getHits('names.specimens', $sp);
+			$s['score'] = 0;
+			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
+				$d['sets'][$specimen->assemblageID][] = $s;
+		}
+		$d['allLink'] = $d['count'] > maxResultsInitial() ?
+			_setSpecimensAllLink($row) : '';
+		$output['results'][] = $d;
+	}
+	
+	//$output['self'] = getSelfLink($data);
+	$output['showAll'] = setBasePath() . 'result/specimen/?' .
+		_setShowAllQuery($output['total'], _getQueryTerms('names.specimens'));
+	$output['paginator'] = _getPaginator($data);
+//p($output);
+	return $output;
+}
+
+function _getHits ($service, $result) {
+	// Path used are stored in session
+	$queryPaths = _getQueryPaths($service);
+	if (!$queryPaths) {
+		return false;
+	}
+	foreach ($queryPaths as $path => $item) {
+		// Convert NBA path to object path
+		$pathElements = explode('.', $path);
+		// Chop off first part of path in case of names service
+		if (strpos($service, '.') !== false) {
+			unset($pathElements[0]);
+		}
+		$hits = _getHitInResult($pathElements, $result, 
+			$item['value'], $item['operator']);
+		if (!empty($hits)) {
+			$output[$path] = $hits[0];
+		}
+	}
+	return isset($output) ? $output : false;
+}
+
+function _getHitInResult ($pathElements, $result, $value, $operator) {
+	//print_r($object);
+	if (!$pathElements || !$result || !$value || !$operator) {
+		return false;
+	}
+	$hits = [];
+	// Append pathElements to object path; as object will contain arrays with
+	// child objects, we need to approach this recursively, tracking progress
+	foreach ($pathElements as $deeper) {
+		if (isset($result->{$deeper})) {
+			$result = $result->{$deeper};
+			// Current path is tracked in $pathTracker
+			$pathTracker = !isset($pathTracker) ?
+				array_splice($pathElements, 1) : array_splice($pathTracker, 1);
+			// Must go recursive if object contains array of child objects...
+			if (is_array($result)) {
+				foreach ($result as $row) {
+					$hits = $hits + 
+						_getHitInResult($pathTracker, $row, $value, $operator);
+				}
+			}
+			// Tracker is empty, we must have reached the correct path
+			if (empty($pathTracker)) {
+				// Operator determines if we have a hit: LIKE...
+				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
+				// ... MATCHES or EQUALS_IC	
+					($operator == 'MATCHES' || $operator == 'EQUALS_IC' && 
+						preg_match("/\b$value\b/i", $result)) ||
+				// ... EQUALS
+					($operator == 'EQUALS' && $value === $operator)) {
+					$hits[] = $result;
+				}
+			}
+		}
+	}
+	return $hits;
+}
+
+/* Highlight and reduces path to last word to facilitate translation */
+function _highlightHits ($service, $hits) {
+	$paths = _getQueryPaths($service);
+	foreach ($hits as $path => $hit) {
+		$output[array_pop(explode('.', $path))] = _highlightMatch($hit, [$paths[$path]['value']]);
+	}
+	return $output;
+}
+
+
+/**
+ * Highlight match
+ *
+ * Experimental highlight function from Linnaeus NG by Maarten Schermer
+ *
+ * @param string $haystack Input string
+ * @param array $needles Matches
+ * @return string
+ */
+function _highlightMatch ($haystack, $needles) {
+	// Intermediate set required to prevent highlighting of html
+	$f = [
+		'<span class="scientific">',
+		'</span>',
+		'&nbsp;',
+		'<span class="result-query">'
+	];
+	$r = [
+		chr(4),
+		chr(7),
+		chr(13),
+		chr(14)
+	];
+	$haystack = str_replace($f, $r, $haystack);
+	
+	foreach ($needles as $needle) {
+		$needle = trim($needle);
+		if (!is_string($needle) || stripos(strip_tags($haystack), $needle) === false || 
+			is_null($needle)) {
+			continue;
+		}
+		$q = str_split($needle);
+		$x = ')(\<[^<]*\>)*(';
+		$q = str_replace('( )', '(\s*)', '(' . implode($x, $q) . ')');
+		$haystack = preg_replace_callback('/' . $q . '/i', function ($m) {
+			return chr(14) . preg_replace_callback('(<(.*?)>)', function ($m) {
+				return chr(7) . $m[0] . chr(14);
+			}, $m[0]) . chr(7);
+		}, $haystack);
+	}
+	// Restore temporarily replaced tags
+	return str_replace($r, $f, $haystack);
+}
+
+
+function _setShowAllQuery ($total, $criteria) {
+	if ($total > maxResultsInitial()) {
+		$criteria['size'] = maxResults();
+		return http_build_query($criteria);
+	}
+	return null;
+}
+
+/**
+ * Total size
+ *
+ * Number of results in json response
+ *
+ * @param array $data Parsed json
+ * @return number|boolean
+ */
+function _getTotalRows ($data) {
+	if (isset($data->totalSize)) {
+		return (int)$data->totalSize;
+	}
+	return false;
+}
+
+/**
+ * Replaces registration numbers with multiple spaces with non-breaking spaces
+ *
+ * Some Brahms registration numbers contain double spaces, e.g. L  012345;
+ * If these are used without modification, they are presented on the site with
+ * a single space, and these numbers cannot be properly copy/pasted to search fields.
+ *
+ * @param string $string
+ * @param string $field Extra parameter so function can be used in loop over json data
+ * @return string $string
+ */
+function _setUnitId ($string, $field = false) {
+	if (!$field || $field == 'unitID') {
+		return str_replace(' ', '&nbsp;', $string);
+	}
+	return $string;
+}
+
+
+/**
+ * Scientific names and their urls for a specimen
+ *
+ * @param array $row Individual record in NBA response
+ * @param array $p: options
+ *    links => links to species (optional)
+ *    idBLock => alternate id block (optional)
+ * @return array|void Array of names and their urls
+ */
+function _getSpecimenNames ($identifications = []) {
+    foreach ($identifications as $id) {
+    	$name = _getScientificName($id);
+    	if (!empty($name)) {
+			$output[] = [
+				'name' => $name,
+				'url' => _getTaxonUrl($id),
+			    'preferred' => $id->preferred ? 1 : 0
+			];
+    	}
+	}
+	if (isset($output)) {
+    	usort($output, function($a, $b) {
+            return $b['preferred'] - $a['preferred'];
+        });
+	    return $output;
+	}
+	return [];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Parses specimen media detail json to PHP array
  *
@@ -39,43 +514,6 @@ function parseSpecimenMediaDetail ($json) {
 }
 
 
-
-
-/**
- * Parses taxon media detail json to PHP array
- *
- * @param string $json NBA response
- * @return array $output
- */
-function parseTaxonMediaDetail ($json) {
-	if (!$json || !validJson($json)) {
-		handleError('parseTaxonMediaDetail: no or invalid json response');
-	}
-	$data = json_decode($json);
-	$row = $data->searchResults[0];
-
-	foreach ($row->result as $field => $value) {
-		if (!is_array($value) && !is_object($value)) {
-			$output[$field] = $value;
-		}
-	}
-
-	$output['source'] = $row->result->associatedTaxon->sourceSystem->name;
-	$output['acceptedName'] = formatScientificName(
-		$row->result->associatedTaxon->acceptedName->fullScientificName,
-		$row->result->associatedTaxon->acceptedName
-	);
-	$output['names'] = getTaxonMultimediaNames($row);
-	$output['phaseOrStage'] = $row->result->phasesOrStages;
-	//$output['navigation'] = getNavigation($data);
-	$output['imgSrc'] = getImageUrl($row);
-	$output['locality'] = $row->result->gatheringEvents[0]->localityText;
-	$output['date'] = timeStampToDate($row->result->gatheringEvents[0]->dateTimeBegin);
-	$output['license'] = $row->result->license;
-	$output['sourceUrls'][$output['source']] = $row->result->associatedTaxon->recordURI;
-
-	return $output;
-}
 
 
 
@@ -284,22 +722,6 @@ function getSourceUrls ($data) {
         $urls[$row->result->sourceSystem->name] = $row->result->recordURI;
     }
     return isset($urls) ? $urls : null;
-}
-
-
-
-/**
- * Prints single source as formatted html
- *
- * @param array $data
- * @param string $source
- * @return string Formatted html
- */
-function printSource($data, $source) {
-    if (isset($data['sourceUrls'][$source])) {
-        return '<a href="' . $data['sourceUrls'][$source] . '" target="_blank">' . $source . '</a>';
-    }
-    return $source;
 }
 
 
@@ -1151,52 +1573,8 @@ function getShowAll ($data, $groupResult = false) {
 	return null;
 }
 
-function _setShowAllQuery ($total, $criteria) {
-	if ($total > maxResultsInitial()) {
-		$criteria['size'] = maxResults();
-		return http_build_query($criteria);
-	}
-	return null;
-}
 
 
-
-function _parseSpecimens ($data) {
-	$output['total'] = getTotalRows($data);
-	foreach ($data->resultSet as $row) {
-		$d = array();
-		// to do: add highlighting, author, italics
-		$d['name'] = $row->item->name;
-		$d['url'] = _setSpecimensAllLink($row);
-		// to do: add author, italics
-		$d['fullScientificName'] = $row->item->name;
-		$d['count'] = $row->item->specimenCount;
-		$d['sources'] = getSpecimenSources($row);
-		$d['score'] = 1;
-		foreach ($row->item->specimens as $i => $sp) {
-			$specimen = $sp->specimenDetails;
-			$assemblageID = $specimen->assemblageID;
-			$s['unitID'] = setUnitId($specimen->unitID);
-			$s['recordBasis'] = $specimen->recordBasis;
-			$s['kindOfUnit'] = $specimen->kindOfUnit;
-			$s['preparationType'] = $specimen->preparationType;
-			$s['collectionType'] = $specimen->collectionType;
-			$s['url'] = 'specimen/' . urlencode($specimen->unitID);
-			$s['score'] = 0;
-			empty($assemblageID) ? $d['specimens'][] = $s :
-				$d['sets'][$assemblageID][] = $s;
-		}
-		$d['allLink'] = $d['count'] > maxResultsInitial() ?
-			_setSpecimensAllLink($row) : '';
-		$output['results'][] = $d;
-	}
-	
-	$output['self'] = getSelfLink($data);
-	$output['showAll'] = 'result/specimen/?' . 
-		_setShowAllQuery($output['total'], $_SESSION['nbaQueryTerms']['names.specimens']);
-	$output['paginator'] = getPaginator($data);
-	return $output;
-}
 
 /**
  * Gets sort parameter

@@ -135,7 +135,7 @@ function ndabioresults_config_form($form, &$form_state) {
  *
  * @return string
  */
-function NBABASEURL () {
+function nbaBaseUrl () {
   return variable_get('ndabioresults_config_baseurl', NBABASEURL);
 }
 
@@ -569,7 +569,82 @@ function nbaFieldMapping ()
     return $var;
 }
 
-function specimenHitFields () {
-	
 
+function nameHits ()
+{
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = array(
+			'multimedia' => [
+				'identifications.defaultClassification.genus',
+				'identifications.scientificName.genusOrMonomial',
+				'identifications.defaultClassification.specificEpithet',
+				'identifications.scientificName.specificEpithet',
+				'identifications.defaultClassification.infraspecificEpithet',
+				'identifications.scientificName.infraspecificEpithet',
+			],			
+			'specimen' => [
+				'identifications.defaultClassification.genus',
+				'identifications.scientificName.genusOrMonomial',
+				'identifications.defaultClassification.specificEpithet',
+				'identifications.scientificName.specificEpithet',
+				'identifications.defaultClassification.infraspecificEpithet',
+				'identifications.scientificName.infraspecificEpithet',
+			],
+			'taxon' => [
+				'defaultClassification.genus',
+				'acceptedName.genusOrMonomial',
+				'defaultClassification.specificEpithet',
+				'acceptedName.specificEpithet',
+				'defaultClassification.infraspecificEpithet',
+				'acceptedName.infraspecificEpithet',
+			],
+			'names.specimens' => [
+				'specimens.matchingIdentifications.defaultClassification.genus',
+				'specimens.matchingIdentifications.scientificName.genusOrMonomial',
+				'specimens.matchingIdentifications.defaultClassification.specificEpithet',
+				'specimens.matchingIdentifications.scientificName.specificEpithet',
+				'specimens.matchingIdentifications.defaultClassification.infraspecificEpithet',
+				'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
+			],
+			'names.taxa' => [
+				'taxa.defaultClassification.genus',
+				'taxa.acceptedName.genusOrMonomial',
+				'taxa.defaultClassification.specificEpithet',
+				'taxa.acceptedName.specificEpithet',
+				'taxa.defaultClassification.infraspecificEpithet',
+				'taxa.acceptedName.infraspecificEpithet',
+			], 
+		);
+	}
+	return $var;
+}
+
+
+function scientificNameElements ()
+{
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = [
+			'genusOrMonomial', 
+			'specificEpithet', 
+			'infraspecificMarker',
+			'infraspecificEpithet', 
+			'authorshipVerbatim',
+		];
+	}
+	return $var;
+}
+
+function scientificNameElementsInItalics ()
+{
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = [
+			'genusOrMonomial',
+			'specificEpithet',
+			'infraspecificEpithet',
+		];
+	}
+	return $var;
 }

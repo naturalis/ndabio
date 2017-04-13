@@ -27,12 +27,14 @@ function getGeoAreas () {
 function advancedSelects () {
     $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
     if (!$nbaAdvancedSelects) {
+    	/*
         $cacheId = 'nbaAdvancedSelects';
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaAdvancedSelects = $cache->data;
             return $nbaAdvancedSelects;
         }
+        */
         $nbaAdvancedSelects['s_sourceSystem'] =
         	_createAdvancedSelect('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
@@ -88,13 +90,6 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 		$output[$option] = $objPath;
 	}
 	return isset($output)? $output : array();
-}
-
-function _setArrayKeyFromValue ($array) {
-	foreach ($array as $k => $v) {
-		$output[$v] = $v;
-	}
-	return isset($output) ? $output : array();
 }
 
 

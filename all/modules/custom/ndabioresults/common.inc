@@ -10,19 +10,22 @@ require_once 'ndabioresults.config.inc';
 // Initialize BioPortal client
 // Can't get autoloader to work, problem with namespaces in Drupal 7?
 $clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/';
-require_once $clientPath . 'Common.php';
-require_once $clientPath . 'Client.php';
-require_once $clientPath . 'QuerySpec.php';
-require_once $clientPath . 'NameGroupQuerySpec.php';
-require_once $clientPath . 'Condition.php';
+require_once $clientPath . 'Loader.php';
 
 use nl\naturalis\bioportal\Client as Client;
 
 
 function _initBioPortalClient () {
     $client = new Client();
-    $client->setNbaUrl(NBABASEURL());
+    $client->setNbaUrl(nbaBaseUrl());
     return $client;
+}
+
+function _setClientService (&$client, $service) {
+	if (strpos($service, '.') !== false) {
+		$service = substr($service, 0, strpos($service, '.'));
+	}
+	return $client->{$service}();
 }
 
 function nbaFieldTypes () {
@@ -79,9 +82,23 @@ function _getDistinctValues ($service, $nbaPath) {
  * @param string $v
  * @return string
  */
-function timeStampToDate ($v) {
+function _timeStampToDate ($v) {
     if (!empty($v)) {
         return date('Y-m-d', $v / 1000);
+    }
+    return null;
+}
+
+
+/**
+ * Converts timestamp in milliseconds to year-month-day
+ *
+ * @param string $v
+ * @return string
+ */
+function _dateTimeToDate ($v) {
+    if (!empty($v)) {
+        return date('Y-m-d', strtotime($v));
     }
     return null;
 }
@@ -161,19 +178,6 @@ function _wrap ($input, $tag = "div", $class = ""){
 }
 
 
-/**
- * Helper callback function for highlightMatch()
- */
-function _fsub1 ($m) {
-	return chr(14) . preg_replace_callback('(<(.*?)>)', '_fsub2', $m[0]) . chr(7);
-}
-
-/**
- * Helper callback function for highlightMatch()
- */
-function _fsub2 ($m) {
-	return chr(7) . $m[0] . chr(14);
-}
 
 /**
  * Formats number to English/Dutch systems
@@ -195,6 +199,39 @@ function _formatNumber ($n) {
 function _printOops () {
 	return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
 		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+}
+
+/**
+ * Beautifies source output
+ *
+ * @param string $string
+ * @return string
+ */
+function _markUp ($string){
+	$result = $string;
+	$result = preg_replace('/^\s+|\n|\r|\s+$/m', '', $result);
+	
+	$result = str_replace(
+		array("    <h2",  "<table",        "<thead",      "<tbody",      "<tr",        "<td",        "<th ",   "<a class='polaroid'"),
+		array("\n\n<h2","\n\n<table","\n\n\t<thead","\n\n\t<tbody","\n\t\t<tr","\n\t\t\t<td","\n\t\t\t<th ", "\n<a class='polaroid' "),
+		$result
+	);
+	
+	$result = str_replace(
+		array(  "</table",    "</thead",    "</tbody",     "</tr",        "</td",        "</th>"),
+		array("\n</table","\n\t</thead","\n\t</tbody","\n\t\t</tr","\n\t\t\t</td","\n\t\t\t</th>"),
+		$result
+	);
+	
+	return $result;
+}
+
+
+function _setArrayKeyFromValue ($array) {
+	foreach ($array as $k => $v) {
+		$output[$v] = $v;
+	}
+	return isset($output) ? $output : array();
 }
 
 

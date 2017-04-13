@@ -160,6 +160,7 @@ function ndabioresults_block_view($delta = '') {
     case 'ndabioresults_back':
 
     $output = '<div id="navigation-block">';
+    
 
     if ($_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
