@@ -60,6 +60,11 @@ function ndabioresults_menu() {
 	    'load arguments' => array('%map', '%index'),
 	    'access callback' => true,
 	);
+	$items['result/multimedia'] = array(
+	    'page callback' => '_nba_multimedia_result_callback',
+	    'load arguments' => array('%map', '%index'),
+	    'access callback' => true,
+	);
 	$items['result/specimen'] = array(
 	  	'page callback' => '_nba_specimen_result_callback',
 	  	'load arguments' => array('%map', '%index'),
@@ -393,6 +398,51 @@ function _likeOperatorAllowed ($value = '') {
 }
 
 
+function _nba_multimedia_result_callback ($search = false) {
+    global $base_path;
+
+    $service = 'multimedia';
+	$client = _initBioPortalClient();
+	
+    // Test if anything has been posted; if not return with error message
+    if (!$search) {
+        _printOops();
+    }
+
+    $langs = language_list(); // Note: No argument
+    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
+    }
+
+	// Convert query to parameters
+	safe_parse_str($search, $p);
+	// If from isn't an integer, someone has been messing with the url
+	// Reconstruct $search
+	if (!isset($p['from']) || !ctype_digit(strval($p['from']))) {
+		$p['from'] = 0;
+		$search = http_build_query($p);
+	}
+	// Make sure a maximum of three records is fetched; we don't need more
+	$p['size'] = maxResults();
+	// Build query
+	$query = _buildQuery($service, $p);		
+	// Fetch data set
+	$data = json_decode($client->{$service}()->querySpec($query)->query());
+	
+	// We got an error; go oops
+	if (isset($data->exception)) {
+		return _printOops();
+	}
+			
+	
+	return _printMultimedia(_parseMultimedia($data, ['paginator']));
+	
+	p($data);
+	
+
+		
+}
 
 
 /**
@@ -407,20 +457,12 @@ function _likeOperatorAllowed ($value = '') {
  *
  * @return string The formatted output
 */
-function _nba_general_result_callback ($service = null) {
+function _nba_general_result_callback () {
     global $base_path;
-
-//p(nbaFieldTypes()); die();
-    
     $langs = language_list(); // Note: No argument
     $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
     if (!empty($langcode)) {
         variable_set('language_default', $langs[$langcode]);
-    }
-
-    // Direct link
-    if (!is_null($service)) {
-        _setQueryTerms($service);
     }
 
     // GET data from the search form?
@@ -521,14 +563,12 @@ function _nbaAdvancedSearch () {
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
-		$pageBody .= _printMultimedia(_parseMultimedia(json_decode($remoteData['multimedia'])));
+		$data = json_decode($remoteData['multimedia']);
+		$pageBody .= _printMultimedia(_parseMultimedia($data, ['showAll']));
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
 		$data = _enrichSpecimenData(json_decode($remoteData['names.specimens'])); 
-//die(p($data));
-		
-		
 		$pageBody .= _printSpecimens(_parseSpecimens($data));
 	}
 	
@@ -666,17 +706,54 @@ function _getQueryPaths ($service) {
 }
 
 function _getPaginator ($data) {
-	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
-		$paginator = new Paginator(
-			getTotalRows($data),
-			setPaginatorItemsPerPage($groupResult),
-			setPaginatorCurrentPage($data, $groupResult),
-			setPaginatorUrl($data, $groupResult)
-		);
-		return $paginator->toHtml();
-	}
-	return null;
+	$paginator = new Paginator(
+		_getTotalRows($data),
+		maxResults(),
+		_setPaginatorCurrentPage(),
+		_setPaginatorUrl($data)
+	);
+	return $paginator->toHtml();
 }
+
+
+/**
+ * Sets current page number for paginator
+ *
+ * @param boolean $groupResult Regular or grouped service?
+ * @return int Current page number dependent of grouped or not
+ */
+function _setPaginatorCurrentPage ($search) {
+	$terms = _getQueryTerms();
+    return getOffset($data) / maxResults() + 1;
+}
+
+/**
+ *
+ * Sets url for paginator
+ *
+ * Strips offset from self link and replaces this with placeholder for paginator
+ *
+ * @param array $data Json
+ * @param boolean $groupResult
+ * @return string Url
+ */
+function _setPaginatorUrl ($data, $search) {
+    $offset = 'from';
+    return printDrupalLink(
+        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_' . $offset . '='
+    ) . '(:num)';
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Distributes search parameter of the simple search to appropiate services and returns

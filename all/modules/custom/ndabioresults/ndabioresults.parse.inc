@@ -1,6 +1,6 @@
 <?php
 
-function _parseMultimedia ($data) {
+function _parseMultimedia ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
@@ -34,10 +34,15 @@ function _parseMultimedia ($data) {
 		$d['unitID'] = _getMultimediaUnitId($row, $hits);
 		$output['results'][] = $d;
 	}
-
-	$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
-		_setShowAllQuery($output['total'], _getQueryTerms($service));
-	$output['paginator'] = _getPaginator($data);
+	// Show all link
+	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+		$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
+			_setShowAllQuery($output['total'], _getQueryTerms($service));
+	}
+	// Paginator
+	if (in_array('paginator', $options)) {
+		$output['paginator'] = _getPaginator($data);
+	}
 	
 //p($output);	
 	return isset($output) ? $output : false;
