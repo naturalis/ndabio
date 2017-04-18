@@ -9,8 +9,13 @@ function _printSpecimenMediaDetail ($data) {
 
     $output  = _wrap(t("Media item"), "div", "category");
     $output .= _wrap('', "h2");
-    $output .= _printPreviousNext($data['totalSize'], $data['offset'], 
-    	$data['previousUrl'], $data['nextUrl']);
+    $output .= _printPreviousNext([
+    	'total' => $data['totalSize'], 
+    	'offset' => $data['offset'], 
+    	'previousUrl' => $data['previousUrl'], 
+    	'nextUrl' => $data['nextUrl'],
+    	'backUrl' => $data['backUrl'],
+    ]);
 
     
     /* For the time being disable PURL for media
@@ -105,9 +110,14 @@ function _printTaxonMediaDetail ($data) {
     $output  = _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
 
-    $output .= _printPreviousNext($data['totalSize'], $data['offset'], 
-    	$data['previousUrl'], $data['nextUrl']);
-
+    $output .= _printPreviousNext([
+    	'total' => $data['totalSize'], 
+    	'offset' => $data['offset'], 
+    	'previousUrl' => $data['previousUrl'], 
+    	'nextUrl' => $data['nextUrl'],
+    	'backUrl' => $data['backUrl'],
+    ]);
+    
     $altParts = array(
         isset($data['acceptedName']) ? strip_tags($data['acceptedName']) : '',
         isset($data['caption']) ? strip_tags($data['caption']) : ''
@@ -178,9 +188,13 @@ function _printNamesWithLinks ($details, $fieldLabel) {
 }
 
 
-function _printPreviousNext ($total, $offset, $previousUrl = null, $nextUrl = null) {
+function _printPreviousNext ($p) {
+	$previousUrl = isset($p['previousUrl']) ? $p['previousUrl'] : null;
+	$nextUrl = isset($p['nextUrl']) ? $p['nextUrl'] : null;
+	$backUrl = isset($p['backUrl']) ? $p['backUrl'] : null;
+	
     $output = '<div class="fornext-bar"><ul>' .
-		'<li>' . sprintf(t('%d of %d'), $offset, $total) . '</li>';
+		'<li>' . sprintf(t('%d of %d'), $p['offset'], $p['total']) . '</li>';
 
     // Previous
     $output .= "<li>";
@@ -211,10 +225,21 @@ function _printPreviousNext ($total, $offset, $previousUrl = null, $nextUrl = nu
         $output .= '</a>';
     }
     $output .= '</li>';
-
+    
     // Back
-    $output .= '<li><a href="?back"><span class="icon button-icon icon-cross"></span></a></li>';
-    $output .= '</ul></div>';
+    $output .= "<li>";
+    if (!empty($backUrl)) {
+        $output .= '<a href="' . $backUrl . '">';
+    }
+    $output .= '<span class="icon button-icon icon-cross';
+    if (empty($backUrl)) {
+        $output .= ' icon-button-disabled';
+    }
+    $output .= '"></span>';
+    if (!empty($backUrl)) {
+        $output .= '</a>';
+    }
+    $output .= '</li></ul></div>';
 
     return $output;
 }
@@ -232,7 +257,9 @@ function _printMultimedia ($data) {
 		return false;
 	}
 	
-	//p($data);
+//p($data);
+	
+	$service = 'multimedia';
 	
 	// Drupal title empty; page title custom
 	$headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
@@ -278,8 +305,8 @@ function _printMultimedia ($data) {
 	$output .=  "</div>";
 	$output = _markUp($output);
 	
-	$output .= printShowAll($data);
-	$output .= printPaginator($data);
+	$output .= _printShowAll($data);
+	$output .= _printPaginator($data);
 	
 	return $output;
 }
@@ -1251,7 +1278,7 @@ function printSpecimenDetail ($data) {
  * @param array $row Parsed json data
  * @return string Formatted output
  */
-function printShowAll ($data) {
+function _printShowAll ($data) {
     $output = '';
     if (!isset($data['showAll']) || empty($data['showAll'])) {
         return $output;
@@ -1363,7 +1390,7 @@ function printPreviousNext () {
  * @param array $row Parsed json data
  * @return string Formatted output
  */
-function printPaginator ($data) {
+function _printPaginator ($data) {
     return _wrap($data['paginator'], "div", "paginator-wrapper small-12 columns");
 }
 

@@ -36,12 +36,12 @@ function _parseMultimedia ($data, $options = []) {
 	}
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
-		$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
+		$output['showAll'] = setBasePath() . 'result/' . $service . '/?' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
-		$output['paginator'] = _getPaginator($data);
+		$output['paginator'] = _getPaginator($service, $output['total']);
 	}
 	
 //p($output);	
@@ -167,10 +167,10 @@ function _getTaxonUrl ($object, $checkNba = true) {
 }
 
 function _setDetailSearchTerms ($service, $i) {
-	$from = (int)_getQueryTerms($service)['from'];
-	$detailTerms = _getQuerySearchTerms($service);
-	$detailTerms['from'] = $i == 0 ? 0 : $i - 1;
-	return $detailTerms;
+	$from = (int) _getQueryTerms($service)['from'];
+	$terms = _getServiceSearchTerms($service);
+	$terms['from'] = $from + $i == 0 ? 0 : $from + $i - 1;
+	return $terms;
 }
 
 function _setMultimediaHits ($hits = []) {
@@ -1169,20 +1169,6 @@ function parseSpecimensByMap ($data) {
 	return isset($output) ? $output : false;
 }
 
-
-
-/**
- * Gets _offset from json
- *
- * @param array $data Json
- * @return int Offset
- */
-function getOffset ($data) {
-    if (isset($data->queryParameters->_offset[0])) {
-        return $data->queryParameters->_offset[0];
-    }
-    return 0;
-}
 
 /**
  * Gets _groupOffset from json

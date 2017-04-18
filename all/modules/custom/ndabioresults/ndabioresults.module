@@ -76,7 +76,7 @@ function ndabioresults_menu() {
 	  );
 	$items['multimedia'] = array(
 		'page callback' => '_nba_multimedia_callback',
-	  	'access callback' => true,
+		'access callback' => true,
 	);
 	  
 	return $items;
@@ -132,6 +132,8 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
+//p(_setDetailPageNavigation($service, $search, $set, $id, $p['from'])); die();
+		
 		$data = _setDetailPageNavigation($service, $search, $set, $id, $p['from']);
 	}
 	
@@ -213,6 +215,13 @@ function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
 	return null;
 }
 
+function _setDetailPageBackLink ($service, $search, $from) {
+	// Need to reset search to correct from value
+	safe_parse_str($search, $p);
+	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
+	return setBasePath() . 'result/' . $service . '/' . http_build_query($p);
+}
+
 function _setDetailPageNavigation ($service, $search, $set, $id, $from) {
 	$previousId = $nextId = null;
 	$output = new stdClass();
@@ -233,6 +242,10 @@ function _setDetailPageNavigation ($service, $search, $set, $id, $from) {
 	}
 	$output->previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
 	$output->nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
+	$output->backUrl =  _setDetailPageBackLink($service, $search, $from);
+	
+	
+	
 	$output->totalSize = $set->totalSize;
 	return $output;
 }
@@ -404,27 +417,34 @@ function _nba_multimedia_result_callback ($search = false) {
     $service = 'multimedia';
 	$client = _initBioPortalClient();
 	
-    // Test if anything has been posted; if not return with error message
-    if (!$search) {
-        _printOops();
+    // Try to get search parameters from url
+    if ($search) {
+		safe_parse_str($search, $p);
+	// Revert to session to fetch terms (non-preferred backup option!)
+    } else {
+    	$p = _getQueryTerms($service);
     }
-
+    
+    // No search terms; die with grace
+    if (!$p || !_getSearchTerms($p)) {
+    	_printOops();
+    }
+    
     $langs = language_list(); // Note: No argument
     $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
     if (!empty($langcode)) {
         variable_set('language_default', $langs[$langcode]);
     }
 
-	// Convert query to parameters
-	safe_parse_str($search, $p);
 	// If from isn't an integer, someone has been messing with the url
 	// Reconstruct $search
 	if (!isset($p['from']) || !ctype_digit(strval($p['from']))) {
 		$p['from'] = 0;
-		$search = http_build_query($p);
 	}
-	// Make sure a maximum of three records is fetched; we don't need more
+	// Display full set on this page
 	$p['size'] = maxResults();
+	// Save query
+	_setQueryTerms($service, $p);
 	// Build query
 	$query = _buildQuery($service, $p);		
 	// Fetch data set
@@ -434,14 +454,8 @@ function _nba_multimedia_result_callback ($search = false) {
 	if (isset($data->exception)) {
 		return _printOops();
 	}
-			
 	
 	return _printMultimedia(_parseMultimedia($data, ['paginator']));
-	
-	p($data);
-	
-
-		
 }
 
 
@@ -666,16 +680,13 @@ function _enrichSpecimenData (&$data) {
 }
 
 
-function _setQueryTerms ($service) {
+function _setQueryTerms ($service, $terms = false) {
     // Search form
-    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
+    if (!$terms) {
     	// Names again...
     	$section = strpos($service, '.') !== false ?
     		substr($service, strpos($service, '.') + 1, 1) . '_' : $service[0] . '_';
         $terms = _setSectionParameters($_GET, $section);
-    // "Direct link"
-    } else {
-        $terms = $_GET;
     }
     $_SESSION['nbaQuery'][$service]['terms'] = $terms;
     return $terms;
@@ -686,15 +697,24 @@ function _getQueryTerms ($service) {
 		$_SESSION['nbaQuery'][$service]['terms'] : false;
 }
 
-function _getQuerySearchTerms ($service) {
+function _getSearchTerms (array $terms) {
+	foreach (searchFlags() as $flag) {
+		if (isset($terms[$flag])) {
+			unset($terms[$flag]);
+		}
+	}
+	return !empty($terms) ? $terms : false;
+}
+
+function _getServiceSearchTerms ($service) {
 	if (isset($_SESSION['nbaQuery'][$service]['terms'])) {
-		$queryTerms = $_SESSION['nbaQuery'][$service]['terms'];
+		$terms = $_SESSION['nbaQuery'][$service]['terms'];
         foreach (searchFlags() as $flag) {
-            if (isset($queryTerms[$flag])) {
-                unset($queryTerms[$flag]);
+            if (isset($terms[$flag])) {
+                unset($terms[$flag]);
             }
         }
-        return $queryTerms;
+        return $terms;
     }
     return false;
 }
@@ -705,12 +725,12 @@ function _getQueryPaths ($service) {
 		$_SESSION['nbaQuery'][$service]['paths']: false;
 }
 
-function _getPaginator ($data) {
+function _getPaginator ($service, $total) {
 	$paginator = new Paginator(
-		_getTotalRows($data),
+		$total,
 		maxResults(),
-		_setPaginatorCurrentPage(),
-		_setPaginatorUrl($data)
+		_setPaginatorCurrentPage($service),
+		_setPaginatorUrl($service)
 	);
 	return $paginator->toHtml();
 }
@@ -722,9 +742,8 @@ function _getPaginator ($data) {
  * @param boolean $groupResult Regular or grouped service?
  * @return int Current page number dependent of grouped or not
  */
-function _setPaginatorCurrentPage ($search) {
-	$terms = _getQueryTerms();
-    return getOffset($data) / maxResults() + 1;
+function _setPaginatorCurrentPage ($service) {
+    return _getOffset($service) / maxResults() + 1;
 }
 
 /**
@@ -737,12 +756,56 @@ function _setPaginatorCurrentPage ($search) {
  * @param boolean $groupResult
  * @return string Url
  */
-function _setPaginatorUrl ($data, $search) {
-    $offset = 'from';
-    return printDrupalLink(
-        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_' . $offset . '='
-    ) . '(:num)';
+function _setPaginatorUrl ($service) {
+	// Strip off the from component of the url
+    $search = basename(setBasePath() . current_path());
+    safe_parse_str($search, $p);
+    if (isset($p['from'])) {
+    	unset($p['from']);
+    }
+    return setBasePath() . str_replace($search, '', current_path()) . 
+    	http_build_query($p) . '&from=(:num)';
 }
+
+/**
+ * Gets _offset from json
+ *
+ * @param array $data Json
+ * @return int Offset
+ */
+function _getOffset ($service) {
+    if (isset(_getQueryTerms($service)['from'])) {
+        return _getQueryTerms($service)['from'];
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
