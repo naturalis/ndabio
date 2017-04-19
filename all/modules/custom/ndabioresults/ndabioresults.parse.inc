@@ -36,7 +36,7 @@ function _parseMultimedia ($data, $options = []) {
 	}
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
-		$output['showAll'] = setBasePath() . 'result/' . $service . '/?' .
+		$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
