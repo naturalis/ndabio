@@ -290,15 +290,13 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
     //return p($client->all()->getMapping());
     //return 'henk' . $taxon . '<br>' . $searchRequest;
 }
-	
+
 	/*
  * When we are querying specimen or taxon services, by default the query will be
  * redirected to the names service. The switch can be overridden by setting the
  * third parameter to true; in that case the specimen or taxon service is queried
  * instead.
  */
-
-
 function _buildQuery ($service, $terms = array(), $save = true) {
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
@@ -311,13 +309,13 @@ function _buildQuery ($service, $terms = array(), $save = true) {
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
-    $conditions = array();
+    $conditions = [];
     foreach ($terms as $field => $value) {
-        $statement = array();
+        $statement = [];
         // Exclude search flags; these will be processed later
         if (!in_array($field, searchFlags())) {
             // Get NBA path(s) for field
-            $nbaPaths = array($field);
+            $nbaPaths = [$field];
             if (isset(nbaFieldMapping()[$lookupService][$field])) {
                 $nbaPaths = nbaFieldMapping()[$lookupService][$field];
             }
@@ -522,15 +520,17 @@ function _getTaxonFromNba ($taxon) {
  */
 function _nbaAdvancedSearch () {
 
-//p(nbaFieldTypes()); die();
     $pageHeader = '';
 
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
 
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
+    
+ //@todo: enable other services!!!!   
+    
+//    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
+//    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $area =  (!empty($_SESSION['ndaSearch']['location']) ?
@@ -1507,7 +1507,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
     if ($typeId == '') {
         return $terms;
     }
-    $d = array();
+    $d = [];
     foreach ($terms as $k => $v) {
         if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
             $d[str_replace($typeId, '', $k)] = trim($v);
@@ -1515,16 +1515,16 @@ function _setSectionParameters (array $terms, $typeId = '') {
     }
     // Append geoShape if entered
     if (isset($terms['geoShape']) && !empty($terms['geoShape']) &&
-        in_array($typeId, array('m_', 's_'))) {
+        in_array($typeId, ['m_', 's_'])) {
         $d['geoShape'] = $terms['geoShape'];
     }
     // Same for gid
     if (isset($terms['gid']) && !empty($terms['gid']) &&
-        in_array($typeId, array('m_', 's_'))) {
-        $d['gid'] = $terms['gid'];
+        in_array($typeId, ['m_', 's_'])) {
+        $d['gid'] = _setNbaGid($terms['gid']);
     }
     if (countSearchParameters($d) >= 1) {
-        // Rewrite andOr to logicalOperator
+    	// Rewrite andOr to logicalOperator
         $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';
         $d['from'] = isset($d['from']) ? $d['from'] : 0;
         unset($d['andOr']);
@@ -1532,7 +1532,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
     }
     // If only andOr flag is set, nothing has been entered;
     // return empty array
-    return array();
+    return [];
 }
 
 /**

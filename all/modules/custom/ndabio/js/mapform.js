@@ -30,7 +30,7 @@
 
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
-				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid);
+				var target = $_search_areas_target.find('.row-area a#' + storedGid);
 				if (target.length > 0) {
 					target.addClass('active');
 					$_search_areas_target.scrollTo(target);
