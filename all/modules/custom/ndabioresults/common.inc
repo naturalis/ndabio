@@ -3,6 +3,8 @@
 
 
 
+include("ndabioresults.block.inc");
+
 
 // Make module config globally available
 require_once 'ndabioresults.config.inc';

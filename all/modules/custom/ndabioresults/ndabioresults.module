@@ -617,10 +617,10 @@ function _nbaAdvancedSearch () {
 
     // Debug: print queries
     if (PRINT_QUERIES == 1 && !empty($debug)) {
-        p($debug);
+        // p($debug);
     }
     if (PRINT_TERMS_AND_PATHS == 1 && !empty($_SESSION['nbaQuery'])) {
-    	p($_SESSION['nbaQuery']);
+    	// p($_SESSION['nbaQuery']);
     }
      
 
