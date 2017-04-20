@@ -483,7 +483,7 @@ function _nba_general_result_callback () {
         drupal_set_title(t("Search results"));
         $_SESSION['ndaSearch'] = $_GET;
         logSearch();
-        return empty($_SESSION['ndaSearch']['term']) ? _nbaAdvancedSearch() : nbaSimpleSearch();
+        return empty($_SESSION['ndaSearch']['term']) ? _nbaAdvancedSearch() : _nbaSimpleSearch();
     }
 
 }
@@ -779,6 +779,89 @@ function _getOffset ($service) {
     }
     return 0;
 }
+
+
+
+function _simpleSearchMapping () {
+	foreach (nbaFieldMapping() as $service => $d) {
+		$servicePaths = [];
+		foreach ($d as $field => $paths) {
+			$servicePaths = array_merge($servicePaths, $paths);
+		}
+		$output[$service] = array_unique($servicePaths);
+		sort($output[$service]);
+	}
+	return isset($output) ? $output : false;
+}
+
+
+
+/**
+ * Distributes search parameter of the simple search to appropiate services and returns
+ * formatted output
+ *
+ * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
+ * the appropriate channels and returns formatted result
+ *
+ * @return string Formatted output
+ */
+function _nbaSimpleSearch () {
+
+    p(_simpleSearchMapping()); die();
+    
+    
+    
+    
+
+    $pageHeader = '';
+    $p['_search'] = $_SESSION['ndaSearch']['term'];
+
+    // Taxon search does not include geoShape and should not be invoked when coming from geo form
+    // when a search are has been entered
+    if (!isset($_SESSION['ndaSearch']['gid']) || empty($_SESSION['ndaSearch']['gid']) &&
+        empty($_SESSION['ndaSearch']['geoShape'])) {
+        $services[taxonService()] = $p;
+    }
+
+    // Other searches do include geoShape if entered
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+
+        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('area drawn on map'));
+
+        $pageHeader =
+            _wrap(
+                _wrap(
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
+                   "h1"
+                ), "div", "panel"
+            );
+    };
+
+    $pageHeader .= _wrap(t('Search results for') . ' ' .
+        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "H1");
+
+    $services[specimenNamesService()] = $p;
+    $services[multimediaService()] = $p;
+    $services[specimenService()] = $p;
+
+    // Set session with NBA query type;
+    // used to determine if show all should be printed
+    unset($_SESSION['ndaFilters']);
+    $_SESSION['ndaRequestType'] = 'form';
+    $_SESSION['ndaPageDetail'] = 'result from simple form';
+
+    $pageBody = performNdaRequest(setChannels($services));
+
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+}
+
+
+
+
 
 
 
