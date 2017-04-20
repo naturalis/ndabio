@@ -8,7 +8,7 @@ use nl\naturalis\bioportal\Condition as Condition;
 
 
 
-function getGeoAreas () {
+function nbaGeoAreas () {
     $nbaGeoAreas = &drupal_static(__FUNCTION__);
     if (!$nbaGeoAreas) {
         $cacheId = 'nbaGeoAreas';
@@ -18,7 +18,7 @@ function getGeoAreas () {
             return $nbaGeoAreas;
         }
         $client = _initBioPortalClient();
-        $nbaGeoAreas = $client->getGeoAreas();
+        $nbaGeoAreas = $client->getGeoAreas(true);
         cache_set($cacheId, $nbaGeoAreas);
     }
     return $nbaGeoAreas;
@@ -27,14 +27,12 @@ function getGeoAreas () {
 function advancedSelects () {
     $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
     if (!$nbaAdvancedSelects) {
-    	/*
         $cacheId = 'nbaAdvancedSelects';
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaAdvancedSelects = $cache->data;
             return $nbaAdvancedSelects;
         }
-        */
         $nbaAdvancedSelects['s_sourceSystem'] =
         	_createAdvancedSelect('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
@@ -92,6 +90,11 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 	return isset($output)? $output : array();
 }
 
+/* Must be used to correctly format NBA gid */
+function _setNbaGid ($gid) {
+	$gid = str_replace('gid_', '', $gid);
+	return strpos($gid, '@') === false ? $gid . '@GEO' : $gid;
+}
 
 
 /*
@@ -272,7 +275,7 @@ function nda_areas_callback ($type = false) {
 }
 
 function createGeoList ($type, $language, $intersect = false) {
-    $all = json_decode(getGeoAreas(), true);
+    $all = json_decode(nbaGeoAreas(), true);
     if (!isset($all[$type])) {
         return [];
     }
@@ -304,7 +307,7 @@ function fixGeoList ($list, $fixes = []) {
 function printGeoFavourites ($list) {
     $output = "<div class=\"item-list\">\n<h3>" . t('Highlighted') . "</h3>\n<ul>\n";
     foreach ($list as $id => $item) {
-        $output .= '<li class="row-area"><a id="' . $id . '">' . $item . "</a></li>\n";
+        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
     }
     return $output .= "</ul></div>\n";
 }
@@ -319,7 +322,7 @@ function printGeoList ($list) {
             }
             $output .= "<div class=\"item-list\">\n<h3>$letter</h3>\n<ul>\n";
         }
-        $output .= '<li class="row-area"><a id="' . $id . '">' . $item . "</a></li>\n";
+        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
         $prevLetter = $letter;
     }
     return $output .= "</ul></div>\n";
@@ -461,7 +464,7 @@ function ndabio_ajax_callback() {
     $nid = $_GET["nid"];
     $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
     $client = _initBioPortalClient();
-    $geo = json_decode($client->geo()->find($nid));
+    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
     if (isset($geo->shape)) {
         // locality is sometimes empty in Dutch;
         $locality = $geo->locality;
@@ -606,8 +609,11 @@ function setStoredCategory () {
 
 
 function setStoredGeoShape () {
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) &&
-        isset($_SESSION['ndaSearch']['gid']) && empty($_SESSION['ndaSearch']['gid'])) {
+    if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
+    	$client = _initBioPortalClient();
+    	return json_encode($client->getGeoJsonForGid(_setNbaGid($_SESSION['ndaSearch']['gid'])));
+    }
+	if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         return json_encode($_SESSION['ndaSearch']['geoShape']);
     }
     return -1;
@@ -652,7 +658,7 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js("var str_base_path = '$base_path';", 'inline');
 
         drupal_add_js('var language = "' . $language->language . '";', 'inline');
-        drupal_add_js('var storedGid = ' . $storedGid . ';', 'inline');
+        drupal_add_js('var storedGid = "' . $storedGid . '";', 'inline');
         drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
         drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
         drupal_add_js('var storedMapCenter = "' . setStoredMapCenter() . '";', 'inline');

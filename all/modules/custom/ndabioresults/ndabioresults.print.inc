@@ -55,6 +55,12 @@ function _printSpecimenMediaDetail ($data) {
 	   $output .= $img;
     }
 
+    if (strpos($data['imgSrc'], 'medialib') !== false) {
+    	$output .= 
+	    	'<div><a href="' . str_replace('large', 'master', $data['imgSrc']) . '">
+			<i class="icon-arrow-right"></i>Download master image</a></div>';
+    }
+    
 	$output .= "<div class='property-list'>";
 
 	if (!empty($data['unitID'])) {
