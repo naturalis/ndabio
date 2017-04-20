@@ -36,17 +36,17 @@ function ndabioresults_menu() {
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['nba/result/%'] = array(
+  $items['result/%'] = array(
     'page callback' => 'ndabioresults_pass',
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
-  $items['nba/result'] = array(
+  $items['result'] = array(
     'page callback' => 'ndabioresults_pass',
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
-  $items['nba/ajax'] = array(
+  $items['ajax'] = array(
    'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
    'type' => MENU_CALLBACK,
@@ -617,10 +617,10 @@ function _nbaAdvancedSearch () {
 
     // Debug: print queries
     if (PRINT_QUERIES == 1 && !empty($debug)) {
-        p($debug);
+        // p($debug);
     }
     if (PRINT_TERMS_AND_PATHS == 1 && !empty($_SESSION['nbaQuery'])) {
-    	p($_SESSION['nbaQuery']);
+    	// p($_SESSION['nbaQuery']);
     }
      
 
