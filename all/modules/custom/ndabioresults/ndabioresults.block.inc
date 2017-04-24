@@ -79,88 +79,41 @@ function ndabioresults_block_view($delta = '') {
   $_link_disabled =  array('attributes' => array('class' => 'filter-disabled'));
   $_link_active =  array('attributes' => array('class' => 'filter-active'));
 
-    $SHOWS_RESULTS = in_array($_SESSION['ndaPageDetail'], array(
-         'result from simple form',
-         'result from thematic search',
-         'results taxa',
-         'results multimedia',
-         'results specimens',
-         'result from advanced form',
-         'results specimens by name'
-    ));
 
   switch ($delta) {
-
-    case 'ndabioresults_collected_date':
-      if ( $SHOWS_RESULTS ){
-
-        // $block['subject'] = t('Collection date');
-
-        // $block['content'] =
-        //   _list_items( array(
-        //     _item(array('All periods','filter-selected')),
-        //     _item(array('After 2010' ,'filter-enabled')),
-        //     _item(array('Before 2010','filter-enabled')),
-        //     _item(array('custom'     ,'filter-enabled','')),
-        //   ));
-      }
-
-      break;
-
-    case 'ndabioresults_source':
-      // $block['subject'] = t('Sources');
-
-      // $block['content'] =
-      //   _list_items( array(
-      //     _item(array('Naturalis',          'filter-selected')),
-      //     _item(array('the Netherlands',    'filter-disabled')),
-      //     _item(array('Worldwide & the Web','filter-disabled')),
-      //   ));
-
-      break;
-
-    case 'ndabioresults_category':
-      if ( $SHOWS_RESULTS  ){
-
-       $block['subject'] = t('Categories');
-
-        $multimediaUrl = isset($_SESSION['ndaFilters']['multimedia']) && !empty($_SESSION['ndaFilters']['multimedia']) ?
-            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['multimedia']) . '">Multimedia</a>' : null;
-        $taxonUrl = isset($_SESSION['ndaFilters']['taxon']) && !empty($_SESSION['ndaFilters']['taxon']) ?
-            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['taxon']) . '">Taxa</a>' : null;
-        $specimenNameUrl = isset($_SESSION['ndaFilters']['specimenName']) && !empty($_SESSION['ndaFilters']['specimenName']) ?
-            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['specimenName']) . '">' . t('Taxa with specimens') . '</a>' : null;
-        $specimenUrl = isset($_SESSION['ndaFilters']['specimen']) && !empty($_SESSION['ndaFilters']['specimen']) ?
-            '<a href="' . printDrupalLink($_SESSION['ndaFilters']['specimen']) . '">' . t('Specimens') . '</a>' : null;
-
-        $block['content'] =
-          _list_items( array(
-            _item(array(
-                !empty($multimediaUrl) ? $multimediaUrl : 'Multimedia',
-                !empty($multimediaUrl) ? 'filter-selected' : 'filter-disabled'
-            )),
-            _item(array(
-                !empty($taxonUrl) ? $taxonUrl : 'Taxa',
-                !empty($taxonUrl) ? 'filter-selected' : 'filter-disabled'
-            )),
-            _item(array(
-                !is_null($specimenNameUrl) ? $specimenNameUrl : t('Taxa with specimens'),
-                !is_null($specimenNameUrl) ? 'filter-selected' : 'filter-disabled'
-            )),
-            _item(array(
-                !empty($specimenUrl) ? $specimenUrl : t('Specimens'),
-                !empty($specimenUrl) ? 'filter-selected' : 'filter-disabled'
-            )),
-            _item(array('Observations','filter-disabled')),
-          ));
-      }
-
-      break;
 
     case 'ndabioresults_back':
 
     $output = '<div id="navigation-block">';
-
+    
+    $pathComponents = explode('/', current_path());
+    
+    // General result page; go to back to search page
+    if (count($pathComponents) == 1 && $pathComponents[0] == 'result') {
+    	$output .= "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
+    
+    // List page for category
+    } else if (count($pathComponents) > 1 && $pathComponents[0] == 'result') {
+    	$output .= '<a href="' . _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']) .
+    		'">' . $icon . t('Back to general results') . '</a>';
+    	drupal_set_title(t("Search results"));
+    	
+    // Detail page
+    } else if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon']) && 
+    	count($pathComponents) == 3) {
+    	safe_parse_str($pathComponents[2], $p);
+    	$from = isset($p['from']) ? $p['from'] : 0;
+		$href = _setDetailPageBackLink($pathComponents[0], $pathComponents[2], $from);  
+		$output .= '<a href="' . $href . '">' . $icon . t('Back to search results') . '</a>';
+    
+    // Fallback
+  	} else {
+        $output .= '&nbsp;';
+    }
+    
+    //$output .= current_path();
+    
+/*
     if ($_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
             $output .= "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
@@ -173,7 +126,7 @@ function ndabioresults_block_view($delta = '') {
     } else {
         $output .= '&nbsp;';
     }
-
+*/
       $block['content'] = $output . '</div>';
       break;
 

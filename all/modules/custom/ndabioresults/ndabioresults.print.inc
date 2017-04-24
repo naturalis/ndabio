@@ -66,7 +66,7 @@ function _printSpecimenMediaDetail ($data) {
 	if (!empty($data['unitID'])) {
 		$output .= _printDL(
             ucfirst(_translateNdaField('unitID')),
-            '<a href="' . setBasePath() . 'specimen/' . urlencode($data['unitID']) . '">' . 
+            '<a href="' . _setBasePath() . 'specimen/' . urlencode($data['unitID']) . '">' . 
 				$data['unitID'] . '</a>'
 		);
 	}
@@ -361,6 +361,42 @@ function _printSpecimenCollection ($row, $i) {
 	}
 	return $output;
 }
+
+/** Prints no result message
+ *
+ * @return string Translated string with url back to form
+ */
+function _printNoResults () {
+    return t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
+        t('Please try again'). '</a>!';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

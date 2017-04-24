@@ -379,15 +379,23 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.infraspecificEpithet',
                     'identifications.scientificName.infraspecificEpithet'
                 ],
+/*  
+ * @todo: restore when fields is reinstated!!          		
                 'typeStatus' => [
                     'specimenTypeStatus'
                 ],
-                'vernacularName' => [
+ */
+            	'vernacularName' => [
                     'identifications.vernacularNames.name'
                 ],
                 'commonName' => [
                     'identifications.vernacularNames.name'
-                ]
+                ],
+ /*           		
+            	'collectionType' => [
+            		'collectionType'
+            	]
+ */
             ],
             'specimen' => [
                 'geoShape' => [
@@ -401,9 +409,6 @@ function nbaFieldMapping ()
                 ],
                 'class' => [
                     'identifications.defaultClassification.className'
-                ],
-                'collectingStartDate' => [
-                    'gatheringEvent.dateTimeBegin'
                 ],
                 'collectorsFieldNumber' => [
                     'collectorsFieldNumber'
@@ -476,7 +481,15 @@ function nbaFieldMapping ()
                 ],
                 'commonName' => [
                     'identifications.vernacularNames.name'
-                ]
+                ],
+            	'typeStatus' => [
+            		'identifications.typeStatus'
+            	],
+ /*           		
+            	'collectionType' => [
+            		'collectionType'
+            	]
+ */
             ],
             'taxon' => [
                 'className' => [
@@ -485,40 +498,23 @@ function nbaFieldMapping ()
                 'class' => [
                     'defaultClassification.className'
                 ],
-                'expert' => [
-                    'experts.fullName',
-                    'synonyms.experts.fullName',
-                    'vernacularNames.experts.fullName'
-                ],
-                'expertOrganisation' => [
-                    'experts.organization.name',
-                    'synonyms.experts.organization.name',
-                    'vernacularNames.organization.name'
-                ],
                 'family' => [
                     'defaultClassification.family'
                 ],
                 'subgenus' => [
-                    'defaultClassification.subgenus',
-                    'acceptedName.subgenus'
-                ],
-                'subgenusAny' => [
                     'defaultClassification.subgenus',
                     'acceptedName.subgenus',
                     'synonyms.subgenus'
                 ],
                 'genus' => [
                     'defaultClassification.genus',
-                    'acceptedName.genusOrMonomial'
+                    'acceptedName.genusOrMonomial',
+                    'synonyms.genusOrMonomial',
                 ],
                 'genusOrMonomial' => [
                     'defaultClassification.genus',
-                    'acceptedName.genusOrMonomial'
-                ],
-                'genusAny' => [
-                    'defaultClassification.genus',
                     'acceptedName.genusOrMonomial',
-                    'synonyms.genusOrMonomial'
+                    'synonyms.genusOrMonomial',
                 ],
                 'order' => [
                     'defaultClassification.order'
@@ -528,13 +524,10 @@ function nbaFieldMapping ()
                 ],
                 'specificEpithet' => [
                     'defaultClassification.specificEpithet',
-                    'acceptedName.specificEpithet'
+                    'acceptedName.specificEpithet',
+                    'synonyms.specificEpithet'
                 ],
                 'species' => [
-                    'defaultClassification.specificEpithet',
-                    'acceptedName.specificEpithet'
-                ],
-                'speciesAny' => [
                     'defaultClassification.specificEpithet',
                     'acceptedName.specificEpithet',
                     'synonyms.specificEpithet'

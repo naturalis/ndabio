@@ -15,7 +15,7 @@ function _parseMultimedia ($data, $options = []) {
 			$row->result->title : null;
 		$d['caption'] = $type == 'taxon' && isset($row->result->caption) ?
 			$row->result->caption : null;
-		$d['url'] = setBasePath() . $service . '/' . urlencode($row->item->unitID) . '/' . 
+		$d['url'] = _setBasePath() . $service . '/' . urlencode($row->item->unitID) . '/' . 
 			http_build_query(_setDetailSearchTerms($service, $i));
 		$d['source'] = isset($row->item->sourceSystem->name) ? 
 			$row->item->sourceSystem->name : null;
@@ -36,7 +36,7 @@ function _parseMultimedia ($data, $options = []) {
 	}
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
-		$output['showAll'] = setBasePath() . 'result/' . $service . '/' .
+		$output['showAll'] = _setBasePath() . 'result/' . $service . '/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
@@ -156,7 +156,7 @@ function _getTaxonUrl ($object, $checkNba = true) {
 				trim($object->{$path}->{$element}) : null;
 		}
 		if (!empty(array_filter($name))) {
-			$url = setBasePath() . 'taxon/' . implode('_', array_filter($name));
+			$url = _setBasePath() . 'taxon/' . implode('_', array_filter($name));
 		}
 	}
 	// Only fetch if we're sure taxon exists in NBA
@@ -262,7 +262,7 @@ function _parseSpecimens ($data) {
 	}
 	
 	//$output['self'] = getSelfLink($data);
-	$output['showAll'] = setBasePath() . 'result/specimen/?' .
+	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
 		_setShowAllQuery($output['total'], _getQueryTerms('names.specimens'));
 	$output['paginator'] = _getPaginator($data);
 //p($output);
