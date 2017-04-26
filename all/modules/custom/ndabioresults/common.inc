@@ -179,6 +179,23 @@ function _wrap ($input, $tag = "div", $class = ""){
 	return "<$tag$class>$input</$tag>";
 }
 
+function array_column_recursive (array $haystack, $needle) {
+    $found = [];
+    array_walk_recursive($haystack, function($value, $key) use (&$found, $needle) {
+        if ($key == $needle)
+            $found[] = $value;
+    });
+    return $found;
+}
+
+/**
+ * Validates json
+ *
+ * @param boolean Valid?
+ */
+function _isValidJson ($string) {
+	return is_object(json_decode($string));
+}
 
 
 /**

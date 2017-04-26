@@ -200,7 +200,7 @@ function _printPreviousNext ($p) {
 	$backUrl = isset($p['backUrl']) ? $p['backUrl'] : null;
 	
     $output = '<div class="fornext-bar"><ul>' .
-		'<li>' . sprintf(t('%d of %d'), $p['offset'], $p['total']) . '</li>';
+		'<li>' . sprintf(t('%s of %s'), _formatNumber($p['offset']), _formatNumber($p['total'])) . '</li>';
 
     // Previous
     $output .= "<li>";

@@ -122,6 +122,7 @@ function _parseTaxonMediaDetail ($data) {
 }
 
 function _getScientificName ($object, $full = true) {
+//p($object);	
 	// Can be used to generate a full italicized name (default) or 
 	// a simple non-formatted name without authorship
 	$elements = $full ? scientificNameElements() : scientificNameElementsInItalics();
@@ -139,6 +140,12 @@ function _getScientificName ($object, $full = true) {
 			}
 		}
 		if (!empty(array_filter($name))) {
+			// Some specimens don't have a properly formatted name;
+			// revert to fullScientificName + authorshipVerbatim
+			if ($path == 'scientificName' && empty($name[0])) {
+				$name[0] = $object->{$path}->fullScientificName;
+				unset($name[1], $name[2], $name[3]);
+			}
 			return implode(' ', array_filter($name));
 		}
 	}
@@ -160,7 +167,8 @@ function _getTaxonUrl ($object, $checkNba = true) {
 		}
 	}
 	// Only fetch if we're sure taxon exists in NBA
-	if (!$checkNba || $checkNba && _getTaxonFromNba(_getScientificName($object, false))) {
+	if (!$checkNba || $checkNba && !is_null(_getScientificName($object, false)) &&
+		_getTaxonFromNba(_getScientificName($object, false))) {
 		return $url;
 	}
 	return null;
@@ -436,13 +444,13 @@ function _setUnitId ($string, $field = false) {
  * @return array|void Array of names and their urls
  */
 function _getSpecimenNames ($identifications = []) {
-    foreach ($identifications as $id) {
-    	$name = _getScientificName($id);
+    foreach ($identifications as $identification) {
+    	$name = _getScientificName($identification);
     	if (!empty($name)) {
 			$output[] = [
 				'name' => $name,
-				'url' => _getTaxonUrl($id),
-			    'preferred' => $id->preferred ? 1 : 0
+				//'url' => _getTaxonUrl($identification),
+			    'preferred' => $identification->preferred ? 1 : 0
 			];
     	}
 	}

@@ -90,7 +90,7 @@ function ndabioresults_block_view($delta = '') {
     
     // General result page; go to back to search page
     if (count($pathComponents) == 1 && $pathComponents[0] == 'result') {
-    	$output .= "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
+    	$output .= "<a href='" . _setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
     
     // List page for category
     } else if (count($pathComponents) > 1 && $pathComponents[0] == 'result') {

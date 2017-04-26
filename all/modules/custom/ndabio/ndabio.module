@@ -91,7 +91,10 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 }
 
 /* Must be used to correctly format NBA gid */
-function _setNbaGid ($gid) {
+function _setNbaGid ($gid = false) {
+	if (!$gid) {
+		return false;
+	}
 	$gid = str_replace('gid_', '', $gid);
 	return strpos($gid, '@') === false ? $gid . '@GEO' : $gid;
 }
