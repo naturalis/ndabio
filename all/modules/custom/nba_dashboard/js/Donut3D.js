@@ -126,7 +126,7 @@
 		slices.selectAll(".percent").data(_data).enter().append("text").attr("class", "percent")
 			.attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
 			.attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));})
-			.text(getValue).each(function(d){this._current=d;});				
+			.text("").each(function(d){this._current=d;});				
 	}
 	
 	this.Donut3D = Donut3D;
