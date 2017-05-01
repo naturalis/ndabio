@@ -34,10 +34,10 @@ function _printSpecimenMediaDetail ($data) {
         isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
         isset($data['caption']) ? strip_tags($data['caption']) : ''
     );
-    $alt = implode(' | ', array_filter($altParts));
+    $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
     
     list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
+    $img = "<img src=\"" . $data['imgSrc'] . "\" alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
@@ -46,7 +46,7 @@ function _printSpecimenMediaDetail ($data) {
             (!empty($data['sourceID']) ? ' (' . $data['sourceID'] . ')' : '');
         array_unshift($altParts, $institution, $copyright);
         $caption = implode('<br/>', array_filter($altParts));
-        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
+        $img = "<a href='" . $data['imgSrc'] . "' rel=\"prettyPhoto\" title=\"$caption\">$img</a>\n";
     }
 
     if (_isMp4($data['imgSrc'])) {
@@ -128,17 +128,17 @@ function _printTaxonMediaDetail ($data) {
         isset($data['acceptedName']) ? strip_tags($data['acceptedName']) : '',
         isset($data['caption']) ? strip_tags($data['caption']) : ''
     );
-    $alt = implode(' | ', array_filter($altParts));
+    $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
 
     list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src='" . $data['imgSrc'] . "' alt='$alt' title='$alt' " .
+    $img = "<img src='" . $data['imgSrc'] . "' alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
             $copyright = '© ' . $data['copyrightText'] : '';
         array_unshift($altParts, $data['sourceInstitutionID'], $copyright);
         $caption = implode('<br/>', array_filter($altParts));
-        $img = "<a href='" . $data['imgSrc'] . "' rel='prettyPhoto' title='$caption'>$img</a>\n";
+        $img = "<a href='" . $data['imgSrc'] . "' rel=\"prettyPhoto\" title=\"$caption\">$img</a>\n";
     }
 
     $output .= $img;

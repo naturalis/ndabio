@@ -1,7 +1,7 @@
 <?php
 // Print channels in output y/n = 1/0
 define("PRINT_QUERIES", 1);
-define("PRINT_QUERIES_ENCODED", 1);
+define("PRINT_QUERIES_ENCODED", 0);
 define("PRINT_TERMS_AND_PATHS", 0);
 
 // Drupal
@@ -95,6 +95,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		return _printOops();
 	}
 	
+	_setLanguage();
 	$service = 'multimedia';
 	$client = _initBioPortalClient();
 	
@@ -113,28 +114,16 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$data = $data->resultSet[0]->item;
 	// Search pattern included: fetch navigation
 	} else {
-		// Convert query to parameters
-		safe_parse_str($search, $p);
-		// If from isn't an integer, someone has been messing with the url
-		// Reconstruct $search
-		if (!isset($p['from']) || !ctype_digit(strval($p['from']))) {
-			$p['from'] = 0;
-			$search = http_build_query($p);
-		}
-		// Make sure a maximum of three records is fetched; we don't need more
-		$p['size'] = 3;
-		// Build query
-		$query = _buildQuery($service, $p);
-		
-		// Fetch data set
+		$terms = _getQueryTerms($service, $search);		
+		$terms['size'] = 3;		// Build query
+		$query = _buildQuery($service, _termsToQuerySpec($service, $terms));
 		$set = json_decode($client->{$service}()->querySpec($query)->query());
+		
 		// We got an error; go oops
 		if (isset($set->exception)) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-//p(_setDetailPageNavigation($service, $search, $set, $id, $p['from'])); die();
-		
 		$data = _setDetailPageNavigation($service, $search, $set, $id, $p['from']);
 	}
 	
@@ -142,9 +131,8 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	
 	if (isset($data->associatedTaxon)) {
 		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
-	} else {
-		return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 	}
+	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
 
@@ -274,7 +262,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 }
 
 
-function _buildQuery ($service, $terms = array(), $save = true) {
+function _buildQuery ($service, $terms = array(), $useOr = false) {
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
 		list($service, $type) = explode('.', $service);
@@ -289,8 +277,6 @@ function _buildQuery ($service, $terms = array(), $save = true) {
 
     foreach ($terms as $field => $value) {
     	$statement = [];
-    	// Split term up if it contains multiple words
-    	$elements = array_unique(array_map('trim', explode(' ', trim($value))));
     	// Exclude search flags; these will be processed later
         if (!in_array($field, searchFlags())) {
             // Get NBA path(s) for field
@@ -312,22 +298,31 @@ function _buildQuery ($service, $terms = array(), $save = true) {
             	]; 
             }
         }
-        // We can't string conditions together yet; store instead
+        // Group associated statements
 		if (!empty($statement)) {
 			$statements[] = [
 				'statement' => $statement,
-				'elements' => $elements,
+				'value' => $value,
+				'multipleOperator' => $useOr ? 'setOr' : 'setAnd',
 			];
 		}
     }
+	
+    // Store paths for term highlighting
+    if (isset($paths)) {
+    	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
+    		substr($type, 0, -1)]['paths'] = $paths;
+    }
     
+    // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
-		$elements = $d['elements'];
-		$first = true;
-		$condition = false;
-		foreach ($elements as $element) {
+		$elements = array_unique(array_map('trim', explode(' ', trim($d['value']))));
+		$andOr = $d['multipleOperator'];		
+		$condition = $elementConditions = [];
+		foreach ($elements as $element) {			
+			$first = true;
 			foreach ($statement as $path => $operator) {
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
@@ -357,42 +352,48 @@ function _buildQuery ($service, $terms = array(), $save = true) {
 				}
 				$condition->setOr($path, $operator, $element);
 			}
+			// We may have multiple terms that should be stringed together
+			if (!empty($condition)) {
+				$elementConditions[] = $condition;
+			}
 		}
-		if ($condition) {
-			// Delete duplicates from simple search by using condition as key
-			$conditions[serialize($condition)] = $condition;
+		// Single term query; store as is
+		if (count($elementConditions) == 1) {
+			$conditions[serialize($elementConditions[0])] = $elementConditions[0];
+		// Term is split into multiple elements; 
+		// string together using provided logical operator
+		} else if (!empty($elementConditions)) {
+			foreach ($elementConditions as $i => $elementCondition) {
+		    	if ($i == 0) {
+		    		$multipleCondition = $elementCondition;
+		    		continue;
+		    	}
+		    	$multipleCondition->{$andOr}($elementCondition);
+			}
+			$conditions[serialize($multipleCondition)] = $multipleCondition;
 		}
-	}
-    
-    // Store paths for reusal
-    if (isset($paths) && $save) {
-    	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
-    		substr($type, 0, -1)]['paths'] = $paths;
-    }
-    
-    // Compile main condition
+	}  
+    // Compile final condition
     foreach (array_values($conditions) as $i => $condition) {
     	$andOr = 'setAnd';
         if (isset($terms['logicalOperator']) && !empty($terms['logicalOperator'])) {
 	        $andOr = 'set' . ucfirst(strtolower($terms['logicalOperator']));
 	    }
     	if ($i == 0) {
-    		$mainCondition = $condition;
+    		$finalCondition = $condition;
     		continue;
     	}
-    	$mainCondition->{$andOr}($condition);
+    	$finalCondition->{$andOr}($condition);
     }
-    if (isset($mainCondition)) {
-    	$query->addCondition($mainCondition);
+    if (isset($finalCondition)) {
+    	$query->addCondition($finalCondition);
     }
-    
     // Add map condition if present
     if (isset($geoShape)) {
     	$geoCondition = new Condition($geoShape['path'], 'IN', $geoShape['value']);
     	$query->addCondition($geoCondition);
     	$query->setLogicalOperator('and');
     }
-    
     // Add search flags
     if (isset($terms['from']) && !empty($terms['from'])) {
         $query->setFrom($terms['from']);
@@ -450,39 +451,24 @@ function _likeOperatorAllowed ($value = '') {
 function _nba_multimedia_result_callback ($search = false) {
     global $base_path;
 
+	_setLanguage();
     $service = 'multimedia';
 	$client = _initBioPortalClient();
 	
-    // Try to get search parameters from url
-    if ($search) {
-		safe_parse_str($search, $p);
-	// Revert to session to fetch terms (non-preferred backup option!)
-    } else {
-    	$p = _getQueryTerms($service);
-    }
+    $terms = _getQueryTerms($service, $search);
     
     // No search terms; die with grace
-    if (!$p || !_getSearchTerms($p)) {
+    if (!$terms) {
     	_printOops();
     }
     
-    $langs = language_list(); // Note: No argument
-    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
-    if (!empty($langcode)) {
-        variable_set('language_default', $langs[$langcode]);
-    }
-
-	// If from isn't an integer, someone has been messing with the url
-	// Reconstruct $search
-	if (!isset($p['from']) || !ctype_digit(strval($p['from']))) {
-		$p['from'] = 0;
-	}
 	// Display full set on this page
-	$p['size'] = maxResults();
+	$terms['size'] = maxResults();
 	// Save query
-	_setQueryTerms($service, $p);
+	_setQueryTerms($service, $terms);
+	
 	// Build query
-	$query = _buildQuery($service, $p);		
+	$query = _buildQuery($service, _termsToQuerySpec($service, $terms));		
 	// Fetch data set
 	$data = json_decode($client->{$service}()->querySpec($query)->query());
 	
@@ -492,6 +478,15 @@ function _nba_multimedia_result_callback ($search = false) {
 	}
 	
 	return _printMultimedia(_parseMultimedia($data, ['paginator']));
+}
+
+
+function _setLanguage () {
+    $langs = language_list(); // Note: No argument
+    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
+    }
 }
 
 
@@ -509,12 +504,8 @@ function _nba_multimedia_result_callback ($search = false) {
 */
 function _nba_general_result_callback () {
     global $base_path;
-    $langs = language_list(); // Note: No argument
-    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
-    if (!empty($langcode)) {
-        variable_set('language_default', $langs[$langcode]);
-    }
-
+	_setLanguage();
+    
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
@@ -724,9 +715,34 @@ function _setQueryTerms ($service, $terms = false) {
     return $terms;
 }
 
-function _getQueryTerms ($service) {
+function _getStoredQueryTerms ($service) {
     return isset($_SESSION['nbaQuery'][$service]['terms']) ?
 		$_SESSION['nbaQuery'][$service]['terms'] : false;
+}
+
+function _getQueryTerms ($service, $search) {
+	// Convert query string to parameters
+	if ($search) {
+		safe_parse_str($search, $terms);
+	// Revert to stored terms to fetch terms (non-preferred!)
+    } else if ($service) {
+    	$terms = _getStoredQueryTerms($service);
+    }
+	if (!$terms) {
+		return false;
+	}
+	if (!isset($terms['from']) || !ctype_digit(strval($terms['from']))) {
+		$terms['from'] = 0;
+	}
+	return $terms;
+}
+
+function _termsToQuerySpec ($service, $terms) {
+	// Simple search
+    if (isset($terms) && isset($terms['term'])) {
+		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
+	}
+	return $terms;
 }
 
 function _getSearchTerms (array $terms) {
@@ -806,15 +822,15 @@ function _setPaginatorUrl ($service) {
  * @return int Offset
  */
 function _getOffset ($service) {
-    if (isset(_getQueryTerms($service)['from'])) {
-        return _getQueryTerms($service)['from'];
+    if (isset(_getStoredQueryTerms($service)['from'])) {
+        return _getStoredQueryTerms($service)['from'];
     }
     return 0;
 }
 
 
 
-function _setSimpleTerms ($service, $term, $additionalTerms = []) {
+function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
 	if (strpos($service, '.') !== false) {
 		$parts = explode('.', $service);
 		$service = $parts[1] == 'taxa' ? 'taxon' : 'specimen';
@@ -822,10 +838,10 @@ function _setSimpleTerms ($service, $term, $additionalTerms = []) {
 	if (isset(nbaFieldMapping()[$service])) {
 		// Remove gid and search from mapping
 		$mapping = array_diff_key(nbaFieldMapping()[$service], 
-			array_flip(['gid', 'search']));
+			array_flip(['gid', 'term']));
 		// Remove search from additional terms
-		if (isset($additionalTerms['search'])) {
-			unset($additionalTerms['search']);
+		if (isset($additionalTerms['term'])) {
+			unset($additionalTerms['term']);
 		}
 		foreach ($mapping as $field => $paths) {
 			$terms[$field] = $term;
@@ -888,7 +904,7 @@ function _nbaSimpleSearch ($term) {
     	}
     }
 */    
-    $p['search'] = $_SESSION['ndaSearch']['term'];
+    $p['term'] = $_SESSION['ndaSearch']['term'];
     
     
     // @todo: enable specimens and taxa!!
@@ -923,12 +939,12 @@ function _nbaSimpleSearch ($term) {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Cap results
-		$p = _setSimpleTerms($service, $terms['search'], $p);
+		$p = _setSimpleQueryTerms($service, $terms['term'], $p);
 		$p['size'] = maxResultsInitial();
 
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
-        $client->querySpec(_buildQuery($service, $p));
+        $client->querySpec(_buildQuery($service, $p, true));
 		$remoteData[$service] = $client->query();
 		
 		// Save service-specific query to session;

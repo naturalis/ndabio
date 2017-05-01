@@ -37,7 +37,7 @@ function _parseMultimedia ($data, $options = []) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/' . $service . '/' .
-			_setShowAllQuery($output['total'], _getQueryTerms($service));
+			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
@@ -175,7 +175,7 @@ function _getTaxonUrl ($object, $checkNba = true) {
 }
 
 function _setDetailSearchTerms ($service, $i) {
-	$from = (int) _getQueryTerms($service)['from'];
+	$from = (int) _getStoredQueryTerms($service)['from'];
 	$terms = _getServiceSearchTerms($service);
 	$terms['from'] = $from + $i == 0 ? 0 : $from + $i - 1;
 	return $terms;
@@ -194,7 +194,7 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 	$paths = _getQueryPaths('multimedia');
 	foreach ($row->item->identifications as $id) {
 		$name = [];
-		foreach (scientificNameElements()as $i => $element) {
+		foreach (scientificNameElements() as $i => $element) {
 			$name[$i] = isset($id->scientificName->{$element}) && 
 				!empty(trim($id->scientificName->{$element})) ? 
 				trim($id->scientificName->{$element}) : '';
@@ -209,6 +209,10 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 			}
 		}
 		if (!empty($name)) {
+			if (empty($name[0])) {
+				$name[0] = $id->scientificName->fullScientificName;
+				unset($name[1], $name[2], $name[3]);
+			}
 			$names[] = implode(' ', array_filter($name));
 		}
 	}
@@ -239,7 +243,7 @@ function _parseSpecimens ($data) {
 	$output['total'] = _getTotalRows($data);
 	
 	//@todo: from
-	//$from = (int) _getQueryTerms($service)['from'];
+	//$from = (int) _getStoredQueryTerms($service)['from'];
 	
 	foreach ($data->resultSet as $row) {
 		$d = array();
@@ -271,7 +275,7 @@ function _parseSpecimens ($data) {
 	
 	//$output['self'] = getSelfLink($data);
 	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
-		_setShowAllQuery($output['total'], _getQueryTerms('names.specimens'));
+		_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
 	$output['paginator'] = _getPaginator($data);
 //p($output);
 	return $output;
@@ -316,8 +320,10 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 			// Must go recursive if object contains array of child objects...
 			if (is_array($result)) {
 				foreach ($result as $row) {
-					$hits = $hits + 
-						_getHitInResult($pathTracker, $row, $value, $operator);
+					$newHits = _getHitInResult($pathTracker, $row, $value, $operator);
+					if (!empty($newHits)) {
+						$hits = $hits + $newHits;
+					}
 				}
 			}
 			// Tracker is empty, we must have reached the correct path
