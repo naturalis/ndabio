@@ -90,14 +90,16 @@ function _printSpecimenMediaDetail ($data) {
 	);
 
   	foreach ($fields as $field) {
-		$output .= _printDL(
-            ucfirst(_translateNdaField($field)),
-		    is_array($data[$field]) ? implode(', ', $data[$field]) : _printValue($data[$field])
-		);
+  		if (isset($data[$field])) {
+			$output .= _printDL(
+	            ucfirst(_translateNdaField($field)),
+			    is_array($data[$field]) ? implode(', ', $data[$field]) : _printValue($data[$field])
+			);
+  		}
 	}
 
     // Drupal title empty; page title custom
-    _setTitle(t('Multimedia') . ' | ' . strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
+    _setTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output . "</dd>\n</div>\n";
 }
@@ -160,10 +162,12 @@ function _printTaxonMediaDetail ($data) {
         'sexes'
 	);
 	foreach ($fields as $field) {
-		if ($field == 'source' && !empty($data['sourceUrls'])) {
-            $data['source'] = _printSource($data, $data['source']);
-	    }
-	    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
+		if (isset($data[$field])) {
+			if ($field == 'source' && !empty($data['sourceUrls'])) {
+	            $data['source'] = _printSource($data, $data['source']);
+		    }
+		    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
+		}
 	}
 
     // Drupal title empty; page title custom
@@ -1433,7 +1437,10 @@ function printPreviousNext () {
  * @return string Formatted output
  */
 function _printPaginator ($data) {
-    return _wrap($data['paginator'], "div", "paginator-wrapper small-12 columns");
+	if (isset($data['paginator'])) {
+    	return _wrap($data['paginator'], "div", "paginator-wrapper small-12 columns");
+	}
+	return null;
 }
 
 

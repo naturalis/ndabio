@@ -143,9 +143,9 @@ function _setMultimediaAssociatedObject (&$data) {
 		if (isset($data->{$field}) && !empty($data->{$field})) {
 			$appendedField = 'associated' . ucfirst($service);
 			$data->{$appendedField} = 
-			json_decode($client->{$service}()->find($data->{$field}));
+				json_decode($client->{$service}()->find($data->{$field}));
 			unset($client, $query, $condition);
-			return $result;
+			return $data;
 		}
 	}
 }
@@ -891,7 +891,7 @@ function _localityInNba ($locality) {
  */
 function _nbaSimpleSearch ($term) {
 
-    $pageHeader = '';
+    $pageHeader = $pageBody = '';
 	
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
@@ -2335,12 +2335,14 @@ function getScientificNameElementsWithDuplicates ($name) {
  * @return boolean
  */
 function _isMp4 ($url) {
-    $headers = get_headers($url);
-    foreach ($headers as $i => $v) {
-        if (strpos($v, 'mp4') !== false) {
-            return true;
-        }
-    }
+	if ($url) {
+	    $headers = get_headers($url);
+	    foreach ($headers as $i => $v) {
+	        if (strpos($v, 'mp4') !== false) {
+	            return true;
+	        }
+	    }
+	}
     return false;
 }
 

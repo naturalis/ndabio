@@ -44,7 +44,7 @@ function _parseMultimedia ($data, $options = []) {
 		$output['paginator'] = _getPaginator($service, $output['total']);
 	}
 	
-//p($output);	
+p($output);	
 	return isset($output) ? $output : false;
 }
 
@@ -331,10 +331,10 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 				// Operator determines if we have a hit: LIKE...
 				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
 				// ... MATCHES or EQUALS_IC	
-					($operator == 'MATCHES' || $operator == 'EQUALS_IC' && 
+					(($operator == 'MATCHES' || $operator == 'EQUALS_IC') && 
 						preg_match("/\b$value\b/i", $result)) ||
 				// ... EQUALS
-					($operator == 'EQUALS' && $value === $operator)) {
+					($operator == 'EQUALS' && $value == $result)) {
 					$hits[] = $result;
 				}
 			}
