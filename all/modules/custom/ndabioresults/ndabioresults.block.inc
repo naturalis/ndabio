@@ -91,12 +91,13 @@ function ndabioresults_block_view($delta = '') {
     // General result page; go to back to search page
     if (count($pathComponents) == 1 && $pathComponents[0] == 'result') {
     	$output .= "<a href='" . _setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
-    
+    	//drupal_set_title(t("Search results"));
+    	
     // List page for category
     } else if (count($pathComponents) > 1 && $pathComponents[0] == 'result') {
     	$output .= '<a href="' . _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']) .
     		'">' . $icon . t('Back to general results') . '</a>';
-    	drupal_set_title(t("Search results"));
+    	//drupal_set_title(t("Search results"));
     	
     // Detail page
     } else if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon']) && 

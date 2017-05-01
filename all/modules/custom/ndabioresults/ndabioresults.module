@@ -96,6 +96,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	}
 	
 	_setLanguage();
+	
 	$service = 'multimedia';
 	$client = _initBioPortalClient();
 	
@@ -450,8 +451,8 @@ function _likeOperatorAllowed ($value = '') {
 
 function _nba_multimedia_result_callback ($search = false) {
     global $base_path;
-
 	_setLanguage();
+	
     $service = 'multimedia';
 	$client = _initBioPortalClient();
 	
@@ -504,7 +505,8 @@ function _setLanguage () {
 */
 function _nba_general_result_callback () {
     global $base_path;
-	_setLanguage();
+	_setHeadTitle(t("Search results"));	
+    _setLanguage();
     
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
@@ -2740,8 +2742,7 @@ function _translateNdaField ($str) {
  * @param string $head Head title
  * @param string $page Page title
  */
-function _setTitle ($head, $page = '') {
-    $_SESSION['ndaPageTitle'] = $head;
-    drupal_set_title($page);
+function _setHeadTitle ($title) {
+    drupal_set_title($title);
 }
 

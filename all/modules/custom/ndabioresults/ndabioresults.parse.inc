@@ -46,7 +46,7 @@ function _parseMultimedia ($data, $options = []) {
 		$output['paginator'] = _getPaginator($service, $output['total']);
 	}
 	
-p($output);	
+//p($output);	
 	return isset($output) ? $output : false;
 }
 
@@ -218,7 +218,7 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 			$names[] = implode(' ', array_filter($name));
 		}
 	}
-	return isset($names) ? implode(', ', $names) : false;
+	return isset($names) ? implode('; ', $names) : false;
 }
 
 function _getMultimediaUnitId ($row, $hits = []) {

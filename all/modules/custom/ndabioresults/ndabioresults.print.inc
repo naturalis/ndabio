@@ -99,7 +99,7 @@ function _printSpecimenMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-    _setTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
+    //_setHeadTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output . "</dd>\n</div>\n";
 }
@@ -171,7 +171,7 @@ function _printTaxonMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-	_setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
+	_setHeadTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
 
     return $output . "</div>";
 }
@@ -267,6 +267,9 @@ function _printMultimedia ($data) {
 		return false;
 	}
 	
+	_setHeadTitle(t("Search results"));	
+	
+	
 //p($data);
 	
 	$service = 'multimedia';
@@ -275,8 +278,6 @@ function _printMultimedia ($data) {
 	$headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
 		t('Search results') : t('Explore highlights');
 	$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-	
-	_setTitle($headTitle, $pageTitle);
 	
 	$output = '<div id="multimedia"></div>';
 	$output .= sprintf(
@@ -317,6 +318,7 @@ function _printMultimedia ($data) {
 	
 	$output .= _printShowAll($data);
 	$output .= _printPaginator($data);
+
 	
 	return $output;
 }
