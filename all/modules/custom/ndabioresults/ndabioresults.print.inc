@@ -276,7 +276,7 @@ function _printMultimedia ($data) {
 		t('Search results') : t('Explore highlights');
 	$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
 	
-	setTitle($headTitle, $pageTitle);
+	_setTitle($headTitle, $pageTitle);
 	
 	$output = '<div id="multimedia"></div>';
 	$output .= sprintf(
@@ -292,16 +292,16 @@ function _printMultimedia ($data) {
 		
 		// Reset imgUrl if media is mp4
 		if ($row['format'] == 'video/mp4') {
-			$row['imgSrc'] = setBasePath() .
+			$row['imgSrc'] = _setBasePath() .
 				'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
 		}
 		
-		$mmHit = printMultimediaHit($row);
+		$mmHit = _printMultimediaHit($row);
 				
 		$output .=
 		"<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
 		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
-		"  <div class='polaroid-caption'>".
+		"  <div class='polaroid-caption'>" .
 		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
 		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>";
 		$output .= !empty($row['caption']) ?
@@ -1477,7 +1477,7 @@ function printNavigation ($data) {
  * @param array $row Parsed json
  * @return string|void
  */
-function printMultimediaHit ($row) {
+function _printMultimediaHit ($row) {
 	if (isset($row['hits']) && !empty($row['hits'])) {
 		foreach ($row['hits'] as $field => $hit) {
 		    // Skip hits that are part of the scientific name

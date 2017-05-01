@@ -7,14 +7,16 @@ function _parseMultimedia ($data, $options = []) {
 	
 	$service = 'multimedia';
 	$output['total'] = _getTotalRows($data);
+
+//p($data);
 	
 	foreach ($data->resultSet as $i => $row) {
 		$type = isset($row->item->associatedTaxonReference) && 
 			!empty($row->item->associatedTaxonReference) ?  'taxon' : 'specimen';
-		$d['title'] = $type == 'taxon' && isset($row->result->title) ? 
-			$row->result->title : null;
-		$d['caption'] = $type == 'taxon' && isset($row->result->caption) ?
-			$row->result->caption : null;
+		$d['title'] = $type == 'taxon' && isset($row->item->title) ? 
+			$row->item->title : null;
+		$d['caption'] = $type == 'taxon' && isset($row->item->caption) ?
+			$row->item->caption : null;
 		$d['url'] = _setBasePath() . $service . '/' . urlencode($row->item->unitID) . '/' . 
 			http_build_query(_setDetailSearchTerms($service, $i));
 		$d['source'] = isset($row->item->sourceSystem->name) ? 
