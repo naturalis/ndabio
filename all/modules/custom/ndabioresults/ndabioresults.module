@@ -124,7 +124,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$data = _setDetailPageNavigation($service, $search, $set, $id, $p['from']);
+		$data = _setDetailPageNavigation($service, $search, $set, $id, $terms['from']);
 	}
 	
 	_setMultimediaAssociatedObject($data);

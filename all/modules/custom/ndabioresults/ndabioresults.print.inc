@@ -144,7 +144,7 @@ function _printTaxonMediaDetail ($data) {
     $output .= $img;
 
     $output .= "<div class='property-list'>";
-    $output .= printDL(t('Scientific name'), 
+    $output .= _printDL(t('Scientific name'), 
     	'<a href="' . $data['acceptedNameUrl'] . '">' . $data['acceptedName'] . '</a>');
 	$fields = array(
 	    'source',
