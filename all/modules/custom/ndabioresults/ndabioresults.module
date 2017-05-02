@@ -117,7 +117,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	} else {
 		$terms = _getQueryTerms($service, $search);		
 		$terms['size'] = 3;		// Build query
-		$query = _buildQuery($service, _termsToQuerySpec($service, $terms));
+		$query = _buildQuery($service, $terms);
 		$set = json_decode($client->{$service}()->querySpec($query)->query());
 		
 		// We got an error; go oops
