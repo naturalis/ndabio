@@ -263,8 +263,14 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 }
 
 
-function _buildQuery ($service, $terms = array(), $useOr = false) {
-	$nbaOperator = $useOr ? 'setOr' : 'setAnd';
+function _buildQuery ($service, $terms = array()) {
+	// Set global operator: 'and' for advanced, 'or' for simple.
+	// For simple search we need to translate 'term'.
+	$nbaOperator = 'setAnd';
+    if (isset($terms) && isset($terms['term'])) {
+		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
+		$nbaOperator = 'setOr';
+	}
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
 		list($service, $type) = explode('.', $service);
@@ -330,7 +336,8 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
 				// Test if LIKE is still allowed; if not change to MATCHES
 				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
 					$operator = 'MATCHES';
-				}				
+				}	
+				
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
 					// geoShape arrives from simple search as area name
@@ -352,6 +359,7 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
 						continue;
 					}
 				}
+				
 				if ($first) {
 					$condition = new Condition($path, $operator, $element);
 					$first = false;
@@ -544,7 +552,8 @@ function _nba_multimedia_result_callback ($search = false) {
 	_setQueryTerms($service, $terms);
 	
 	// Build query
-	$query = _buildQuery($service, _termsToQuerySpec($service, $terms));		
+	$query = _buildQuery($service, $terms);	
+	
 	// Fetch data set
 	$data = json_decode($client->{$service}()->querySpec($query)->query());
 	
@@ -1019,12 +1028,11 @@ function _nbaSimpleSearch ($term) {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Cap results
-		$p = _setSimpleQueryTerms($service, $terms['term'], $p);
 		$p['size'] = maxResultsInitial();
 
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
-        $client->querySpec(_buildQuery($service, $p, true));
+        $client->querySpec(_buildQuery($service, $p));
 		$remoteData[$service] = $client->query();
 		
 		// Save service-specific query to session;
