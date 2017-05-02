@@ -264,6 +264,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 
 
 function _buildQuery ($service, $terms = array(), $useOr = false) {
+	$nbaOperator = $useOr ? 'setOr' : 'setAnd';
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
 		list($service, $type) = explode('.', $service);
@@ -304,7 +305,7 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
 			$statements[] = [
 				'statement' => $statement,
 				'value' => $value,
-				'multipleOperator' => $useOr ? 'setOr' : 'setAnd',
+				'operator' => $nbaOperator,
 			];
 		}
     }
@@ -315,16 +316,21 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
     		substr($type, 0, -1)]['paths'] = $paths;
     }
     
+ //p($statements); die(); 
+    
     // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
 		$elements = array_unique(array_map('trim', explode(' ', trim($d['value']))));
-		$andOr = $d['multipleOperator'];		
-		$condition = $elementConditions = [];
+		$condition = $subconditions = null;
 		foreach ($elements as $element) {			
 			$first = true;
 			foreach ($statement as $path => $operator) {
+				// Test if LIKE is still allowed; if not change to MATCHES
+				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
+					$operator = 'MATCHES';
+				}				
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
 					// geoShape arrives from simple search as area name
@@ -351,29 +357,59 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
 					$first = false;
 					continue;
 				}
-				$condition->setOr($path, $operator, $element);
+				$condition->{$nbaOperator}($path, $operator, $element);
 			}
-			// We may have multiple terms that should be stringed together
 			if (!empty($condition)) {
-				$elementConditions[] = $condition;
+				$subconditions[] = [
+					'condition'	=> $condition,
+					'operator' => $d['operator'],
+				];
 			}
 		}
-		// Single term query; store as is
-		if (count($elementConditions) == 1) {
-			$conditions[serialize($elementConditions[0])] = $elementConditions[0];
-		// Term is split into multiple elements; 
-		// string together using provided logical operator
-		} else if (!empty($elementConditions)) {
-			foreach ($elementConditions as $i => $elementCondition) {
-		    	if ($i == 0) {
-		    		$multipleCondition = $elementCondition;
-		    		continue;
-		    	}
-		    	$multipleCondition->{$andOr}($elementCondition);
-			}
-			$conditions[serialize($multipleCondition)] = $multipleCondition;
+		
+		
+//p($subconditions);		
+		
+		
+		// First make some sense of conditions and subconditions, plus remove potential
+		// duplicate queries (in particular those from auto-generated simple search). 
+		// Use serialized version of condition as array key to accomplish this.
+		// Option 1. No subconditions, clip redundant information
+		if (count($subconditions) == 1) {
+			$conditions[serialize($subconditions[0]['condition'])] = 
+				$subconditions[0]['condition'];
+		// Option 2. Subconditions, reformat to slightly more concise notation
+		} else if (!empty($subconditions[0]['condition'])) {
+			$conditions[serialize(array_column($subconditions, 'condition'))] = [
+				'conditions' => array_column($subconditions, 'condition'),
+				'operator' => $subconditions[0]['operator'],
+			];
 		}
-	}  
+	} 
+//die();	
+	
+//p($conditions); die();	
+	
+	// Logical operator is used to compile main condition (logical operator 
+	// for querySpec is always 'and', reserved for geo search!)
+	$andOr = 'setAnd';
+	if (isset($terms['logicalOperator']) && !empty($terms['logicalOperator'])) {
+		$andOr = 'set' . ucfirst(strtolower($terms['logicalOperator']));
+	}
+	// Compile final condition
+	foreach (array_values($conditions) as $i => $condition) {
+    	if ($i == 0) {
+    		$mainCondition = _appendCondition($condition, $andOr);
+    		continue;
+    	}
+    	$mainCondition = _appendCondition($condition, $andOr, $mainCondition);
+    }
+    
+    
+//p($finalCondition); die();
+	
+	/*
+	
     // Compile final condition
     foreach (array_values($conditions) as $i => $condition) {
     	$andOr = 'setAnd';
@@ -386,16 +422,30 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
     	}
     	$finalCondition->{$andOr}($condition);
     }
-    if (isset($finalCondition)) {
-    	$query->addCondition($finalCondition);
+    
+    */
+    
+    
+    
+    
+    
+    if (isset($mainCondition)) {
+    	$query->addCondition($mainCondition);
     }
     // Add map condition if present
     if (isset($geoShape)) {
-    	$geoCondition = new Condition($geoShape['path'], 'IN', $geoShape['value']);
-    	$query->addCondition($geoCondition);
-    	$query->setLogicalOperator('and');
+	    $query
+	    	->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']))
+    		->setLogicalOperator('and');
     }
-    // Add search flags
+    
+
+    /*
+/header('Content-Type: application/json');
+die($query->getQuerySpec(false));
+*/
+    	
+     // Add search flags
     if (isset($terms['from']) && !empty($terms['from'])) {
         $query->setFrom($terms['from']);
     }
@@ -411,6 +461,34 @@ function _buildQuery ($service, $terms = array(), $useOr = false) {
     }
     
     return $query;
+}
+
+
+function _appendCondition ($condition, $andOr, $appendTo = false) {
+	if (!$appendTo) {
+		if (is_object($condition)) {
+			return $condition;
+		}
+		foreach ($condition['conditions'] as $i => $subcondition) {
+			if ($i == 0) {
+				$output = $subcondition;
+				continue;
+			}
+			$output->{$andOr}($subcondition);
+		}
+		return $output;
+	}
+	if (is_object($condition)) {
+		return $appendTo->{$andOr}($condition);
+	}
+	foreach ($condition['conditions'] as $i => $subcondition) {
+		if ($i == 0) {
+			$output = $subcondition;
+			continue;
+		}
+		$output->{$condition['operator']}($subcondition);
+	}
+	return $appendTo->{$andOr}($output);
 }
 
 
@@ -434,9 +512,6 @@ function _getConditionOperator ($service, $nbaPath, $value = '') {
 function _getOperatorFromMapping ($type, $value) {
     $p = explode('|', $type);
     if (isset($p[1])) {
-        if (trim($p[1]) == 'LIKE' && !_likeOperatorAllowed($value)) {
-            return 'MATCHES';
-        }
         return trim($p[1]);
     }
     return 'EQUALS';
@@ -600,8 +675,11 @@ function _nbaAdvancedSearch () {
 
             // Store query if user wants to print it on screen
             if (PRINT_QUERIES == 1) {
-                $encoded = PRINT_QUERIES_ENCODED == 0 ? false : true;
-                $debug[$service] = $client->getQuerySpec($encoded);
+                if (PRINT_QUERIES_ENCODED == 1) {
+                	$debug[$service] = $client->getQuerySpec();
+                } else {
+                	$debug[$service] = _prettyJson($client->getQuerySpec(false));
+                }
             }
          }
     }
@@ -954,9 +1032,12 @@ function _nbaSimpleSearch ($term) {
 		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
 		
 		// Store query if user wants to print it on screen
-		if (PRINT_QUERIES == 1) {
-			$encoded = PRINT_QUERIES_ENCODED == 0 ? false : true;
-			$debug[$service] = $client->getQuerySpec($encoded);
+        if (PRINT_QUERIES == 1) {
+			if (PRINT_QUERIES_ENCODED == 1) {
+				$debug[$service] = $client->getQuerySpec();
+			} else {
+				$debug[$service] = _prettyJson($client->getQuerySpec(false));
+			}
 		}
     }
     

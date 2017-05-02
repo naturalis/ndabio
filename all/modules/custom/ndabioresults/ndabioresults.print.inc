@@ -99,7 +99,7 @@ function _printSpecimenMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-    //_setHeadTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
+    _setHeadTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
 
 	return $output . "</dd>\n</div>\n";
 }

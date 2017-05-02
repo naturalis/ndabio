@@ -188,6 +188,11 @@ function array_column_recursive (array $haystack, $needle) {
     return $found;
 }
 
+
+function _prettyJson ($json) {
+	return json_encode(json_decode($json), JSON_PRETTY_PRINT);
+}
+
 /**
  * Validates json
  *
