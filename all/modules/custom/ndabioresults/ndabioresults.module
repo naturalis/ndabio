@@ -1,9 +1,4 @@
 <?php
-// Print channels in output y/n = 1/0
-define("PRINT_QUERIES", 1);
-define("PRINT_QUERIES_ENCODED", 0);
-define("PRINT_TERMS_AND_PATHS", 0);
-
 // Drupal
 require_once 'ndabioresults.config.inc';
 require_once 'ndabioresults.block.inc';
@@ -19,6 +14,10 @@ use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\NameGroupQuerySpec as NameGroupQuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
+// Clear previously stored debug info
+_initDebug();
+// Set language (copied from v1, dunno if necessary)
+_setLanguage();
 
 
 
@@ -95,8 +94,6 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		return _printOops();
 	}
 	
-	_setLanguage();
-	
 	$service = 'multimedia';
 	$client = _initBioPortalClient();
 	
@@ -107,6 +104,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$condition = new Condition('unitID', 'EQUALS', $id);
 		$query = new QuerySpec();
 		$query->addCondition($condition);
+		
+		_addDebugMessage('single item', $query);
+		
 		// Fetch data
 		$data = json_decode($client->{$service}()->querySpec($query)->query());
 		if (isset($data->exception)) {
@@ -117,8 +117,10 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	} else {
 		$terms = _getQueryTerms($service, $search);		
 		$terms['size'] = 3;		
-		// Build query
+
 		$query = _buildQuery($service, $terms);
+		_addDebugMessage('previous, current and next item', $query);
+		
 		$set = json_decode($client->{$service}()->querySpec($query)->query());
 		
 		// We got an error; go oops
@@ -132,9 +134,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	_setMultimediaAssociatedObject($data);
 	
 	if (isset($data->associatedTaxon)) {
-		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
+		return _printDebug() . _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
 	}
-	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
+	return _printDebug() . _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
 
@@ -146,6 +148,7 @@ function _setMultimediaAssociatedObject (&$data) {
 			$appendedField = 'associated' . ucfirst($service);
 			$data->{$appendedField} = 
 				json_decode($client->{$service}()->find($data->{$field}));
+			_addDebugMessage('Associated ' . $service, $client->getNbaQueryUrl());
 			unset($client, $query, $condition);
 			return $data;
 		}
@@ -535,7 +538,6 @@ function _likeOperatorAllowed ($value = '') {
 
 function _nba_multimedia_result_callback ($search = false) {
     global $base_path;
-	_setLanguage();
 	
     $service = 'multimedia';
 	$client = _initBioPortalClient();
@@ -556,18 +558,11 @@ function _nba_multimedia_result_callback ($search = false) {
 	$query = _buildQuery($service, $terms);	
 	
 	// Store query in case user wants to print it on screen
-	if (nbaDebugEncoded() == 1) {
-		$debug = $client->getQuerySpec(true);
-	} else {
-		$debug = _prettyJson($client->getQuerySpec());
-	}
+	_addDebugMessage($service, $query);
 	
 	// Fetch data set
 	$data = json_decode($client->{$service}()->querySpec($query)->query());
 		
-	
-	
-	
 	// We got an error; go oops
 	if (isset($data->exception)) {
 		return _printOops();
@@ -601,7 +596,6 @@ function _setLanguage () {
 function _nba_general_result_callback () {
     global $base_path;
 	_setHeadTitle(t("Search results"));	
-    _setLanguage();
     
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
@@ -647,8 +641,6 @@ function _getTaxonFromNba ($taxon) {
  */
 function _nbaAdvancedSearch () {
 
-    $pageHeader = '';
-
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
 
@@ -658,21 +650,6 @@ function _nbaAdvancedSearch () {
 //    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
 //    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $area = (!empty($_SESSION['ndaSearch']['location']) ?
-            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
-        $pageHeader =
-            _wrap(
-                _wrap(
-                    t("Showing only results in")
-                   . " "
-                   . _wrap($area, "span", "term"),
-                   "h1"
-            ), "div", "panel"
-        );
-    }
-    $pageHeader .= _wrap(t('Search results'), "h1");
-
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
         _printOops();
@@ -692,15 +669,25 @@ function _nbaAdvancedSearch () {
             // Save service-specific query to session;
             // used for further navigation
             _setQueryTerms($service);
-				
-        	// Store query in case user wants to print it on screen
-			if (nbaDebugEncoded() == 1) {
-				$debug[$service] = $client->getQuerySpec(true);
-			} else {
-				$debug[$service] = _prettyJson($client->getQuerySpec());
-			}
+			_addDebugMessage($service, $client);
         }
     }
+
+    $pageHeader = _printDebug();    
+    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+        $area = (!empty($_SESSION['ndaSearch']['location']) ?
+            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+        $pageHeader .=
+            _wrap(
+                _wrap(
+                    t("Showing only results in")
+                   . " "
+                   . _wrap($area, "span", "term"),
+                   "h1"
+            ), "div", "panel"
+        );
+    }
+    $pageHeader .= _wrap(t('Search results'), "h1");
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
@@ -740,8 +727,7 @@ function _nbaAdvancedSearch () {
 	}
 */
 
-    return _printDebug($debug) . $pageHeader . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 // Assume data on genus, species, infraspecies can be deduced from data first specimen
@@ -944,7 +930,7 @@ function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
 
 function _localityInNba ($locality) {
 	$locality = ucfirst($locality);
-	$nbaAreas = json_decode(nbaGeoAreas(), true);
+	$nbaAreas = (array) json_decode(nbaGeoAreas(), true);
 	$suffices = [
 		'Landschap Noord-Holland',
 		'Staatsbosbeheer',
@@ -980,7 +966,6 @@ function _localityInNba ($locality) {
  */
 function _nbaSimpleSearch ($term) {
 
-    $pageHeader = $pageBody = '';
 	
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
@@ -1038,17 +1023,13 @@ function _nbaSimpleSearch ($term) {
 		// Save service-specific query to session;
 		// used for further navigation
 		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
-		
-		// Store query in case user wants to print it on screen
-		if (nbaDebugEncoded() == 1) {
-			$debug[$service] = $client->getQuerySpec(true);
-		} else {
-			$debug[$service] = _prettyJson($client->getQuerySpec());
-		}
+		_addDebugMessage($service, $client);
     }
     
+    $pageHeader = _printDebug(); 
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "h1");
+    $pageBody = '';
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
@@ -1065,7 +1046,7 @@ function _nbaSimpleSearch ($term) {
 		// to do!
 	}
 
-    return _printDebug($debug) . $pageHeader . 
+    return $pageHeader . 
     	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 

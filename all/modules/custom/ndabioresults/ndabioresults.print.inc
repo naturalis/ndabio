@@ -1852,8 +1852,8 @@ function _printValue ($value) {
 }
 
 
-function _printDebug ($debug = false) {
-    if (nbaDebug() == 1 && !empty($debug)) {
+function _printDebug () {
+    if (nbaDebug() == 1 && !empty(_getDebug())) {
 	    drupal_add_js(
 	        "jQuery(function() { 
 				jQuery('#nba-debug-link').click(function(){ 
@@ -1864,11 +1864,11 @@ function _printDebug ($debug = false) {
 	        array('type' => 'inline', 'scope' => 'footer')
 	    );
     	$output = '<div id="nba-debug" style="padding: 20px; margin-top: 10px; border: 3px solid red;">
-			<span style="font-weight:bold;">NBA QuerySpec</span>
+			<span style="font-weight:bold;">NBA query</span>
 			[<span id="nba-debug-link" style="color: #009ee0; cursor: pointer;">show</span>] 
 			<div id="nba-debug-query" style="margin-top: 10px; font-size: 13px; display: none;">';
-        foreach  ($debug as $service => $query) {
-        	$output .= "<div style='font-weight:bold; margin-bottom: 10px;'>$service:</div>
+        foreach  (_getDebug() as $service => $query) {
+        	$output .= "<div style='font-weight:bold; margin: 10px 0;'>" . ucfirst($service) . ":</div>
 				<pre style='overflow: hidden;'>$query</pre>";
         }
         return $output . '</div></div>';

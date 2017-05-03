@@ -193,6 +193,29 @@ function _prettyJson ($json) {
 	return json_encode(json_decode($json), JSON_PRETTY_PRINT);
 }
 
+function _initDebug () {
+	$_SESSION['nbaDebug'] = null;
+}
+
+function _addDebugMessage ($service = false, $message = false) {
+	if ($service && $message) {
+		// QuerySpec/Client is passed; use ->getQuerySpec()
+		if (is_object($message) && method_exists($message, 'getQuerySpec')) {
+			if (nbaDebugEncoded() == 1) {
+				$message = $message->getQuerySpec(true);
+			} else {
+				$message = _prettyJson($message->getQuerySpec());
+			}
+		}
+		// String is passed
+		$_SESSION['nbaDebug'][$service] = $message;
+	}
+}
+
+function _getDebug () {
+	return $_SESSION['nbaDebug'];
+}
+
 /**
  * Validates json
  *
