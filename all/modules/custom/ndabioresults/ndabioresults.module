@@ -682,15 +682,13 @@ function _nbaAdvancedSearch () {
             // Save service-specific query to session;
             // used for further navigation
             _setQueryTerms($service);
-
-            // Store query if user wants to print it on screen
-            if (PRINT_QUERIES == 1) {
-                if (PRINT_QUERIES_ENCODED == 1) {
-                	$debug[$service] = $client->getQuerySpec();
-                } else {
-                	$debug[$service] = _prettyJson($client->getQuerySpec(false));
-                }
-            }
+				
+			// Store query if user wants to print it on screen
+			if (nbaDebugEncoded() == 1) {
+				$debug[$service] = $client->getQuerySpec(true);
+			} else {
+				$debug[$service] = _prettyJson($client->getQuerySpec());
+			}
          }
     }
 
@@ -735,12 +733,7 @@ function _nbaAdvancedSearch () {
 	//p($_SESSION['nbaQueryTerms']);
 
     // Debug: print queries
-    if (PRINT_QUERIES == 1 && !empty($debug)) {
-        p($debug);
-    }
-    if (PRINT_TERMS_AND_PATHS == 1 && !empty($_SESSION['nbaQuery'])) {
-    	p($_SESSION['nbaQuery']);
-    }
+    _printDebug($debug);
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
@@ -1040,13 +1033,11 @@ function _nbaSimpleSearch ($term) {
 		// used for further navigation
 		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
 		
-		// Store query if user wants to print it on screen
-        if (PRINT_QUERIES == 1) {
-			if (PRINT_QUERIES_ENCODED == 1) {
-				$debug[$service] = $client->getQuerySpec();
-			} else {
-				$debug[$service] = _prettyJson($client->getQuerySpec(false));
-			}
+		// Store query in case user wants to print it on screen
+		if (nbaDebugEncoded() == 1) {
+			$debug[$service] = $client->getQuerySpec(true);
+		} else {
+			$debug[$service] = _prettyJson($client->getQuerySpec());
 		}
     }
     
@@ -1068,15 +1059,8 @@ function _nbaSimpleSearch ($term) {
 		// to do!
 	}
 
-    // Debug: print queries
-    if (PRINT_QUERIES == 1 && !empty($debug)) {
-        p($debug);
-    }
-    if (PRINT_TERMS_AND_PATHS == 1 && !empty($_SESSION['nbaQuery'])) {
-    	p($_SESSION['nbaQuery']);
-    }
-    
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    return _printDebug($debug) . $pageHeader . 
+    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 /**

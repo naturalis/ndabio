@@ -19,6 +19,8 @@ define("NBAMAXRESULTS", 100);
 define("NBADEFAULTSORT", '_score');
 define("NBADEFAULTSORTDIRECTION", 'DESC');
 define("NBAMAXPAGESINPAGINATOR", 20);
+define("NBADEBUG", 0);
+define("NBADEBUGENCODED", 0);
 
 
 
@@ -124,6 +126,28 @@ function ndabioresults_config_form($form, &$form_state) {
     '#required' => TRUE
   );
 
+  // Constant: maximum results for subsequent queries
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_debug'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Display NBA QuerySpec'),
+    '#default_value' => variable_get('ndabioresults_config_debug', NBADEBUG),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('DEBUG: Display query sent to the NBA.') . '<br />' . t('Default') . ': ' . NBADEBUG,
+    '#required' => TRUE
+  );
+  
+  // Constant: maximum results for subsequent queries
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_debug_encoded'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Display NBA QuerySpec url-encoded'),
+    '#default_value' => variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('DEBUG: Url-encoded QuerySpec which can be used directly to query the NBA') . '<br />' . t('Default') . ': ' . NBADEBUGENCODED,
+    '#required' => TRUE
+  );
+  
   return system_settings_form($form);
 }
 
@@ -234,6 +258,16 @@ function defaultGroupSortDirection () {
 function maxPagesInPaginator () {
   return variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR);
 }
+
+
+function nbaDebug () {
+  return variable_get('ndabioresults_config_debug', NBADEBUG);
+}
+
+function nbaDebugEncoded () {
+  return variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED);
+}
+
 
 
 /**
