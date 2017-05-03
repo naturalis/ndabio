@@ -1856,18 +1856,20 @@ function _printDebug ($debug = false) {
     if (nbaDebug() == 1 && !empty($debug)) {
 	    drupal_add_js(
 	        "jQuery(function() { 
-				jQuery('#nba-debug-show').click(function(){ jQuery('#nba-debug-query').show(); } ); 
-				jQuery('#nba-debug-hide').click(function(){ jQuery('#nba-debug-query').hide(); } ); 
+				jQuery('#nba-debug-link').click(function(){ 
+					jQuery('#nba-debug-query').toggle(200); 
+					jQuery(this).text((jQuery(this).text() == 'hide') ? 'show' : 'hide');
+				}); 
 			});",
 	        array('type' => 'inline', 'scope' => 'footer')
 	    );
-    	$output = '<div id="nba-debug" style="padding: 25px; margin-top: 10px; border: 1px solid red;">
+    	$output = '<div id="nba-debug" style="padding: 20px; margin-top: 10px; border: 3px solid red;">
 			<span style="font-weight:bold;">NBA QuerySpec</span>
-			[<span id="nba-debug-show" style="color: #009ee0; cursor: pointer;">show</span>] 
-			[<span id="nba-debug-hide" style="color: #009ee0; cursor: pointer;">hide</span>]
+			[<span id="nba-debug-link" style="color: #009ee0; cursor: pointer;">show</span>] 
 			<div id="nba-debug-query" style="margin-top: 10px; font-size: 13px; display: none;">';
         foreach  ($debug as $service => $query) {
-        	$output .= "<div style='font-weight:bold; margin-bottom: 10px;'>$service:</div><pre>$query</pre>";
+        	$output .= "<div style='font-weight:bold; margin-bottom: 10px;'>$service:</div>
+				<pre style='overflow: hidden;'>$query</pre>";
         }
         return $output . '</div></div>';
     }

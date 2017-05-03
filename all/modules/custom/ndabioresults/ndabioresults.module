@@ -555,15 +555,25 @@ function _nba_multimedia_result_callback ($search = false) {
 	// Build query
 	$query = _buildQuery($service, $terms);	
 	
+	// Store query in case user wants to print it on screen
+	if (nbaDebugEncoded() == 1) {
+		$debug = $client->getQuerySpec(true);
+	} else {
+		$debug = _prettyJson($client->getQuerySpec());
+	}
+	
 	// Fetch data set
 	$data = json_decode($client->{$service}()->querySpec($query)->query());
+		
+	
+	
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
 		return _printOops();
 	}
 	
-	return _printMultimedia(_parseMultimedia($data, ['paginator']));
+	return _printDebug() . _printMultimedia(_parseMultimedia($data, ['paginator']));
 }
 
 
@@ -683,13 +693,13 @@ function _nbaAdvancedSearch () {
             // used for further navigation
             _setQueryTerms($service);
 				
-			// Store query if user wants to print it on screen
+        	// Store query in case user wants to print it on screen
 			if (nbaDebugEncoded() == 1) {
 				$debug[$service] = $client->getQuerySpec(true);
 			} else {
 				$debug[$service] = _prettyJson($client->getQuerySpec());
 			}
-         }
+        }
     }
 
 	// Order is multimedia > specimens > taxa
@@ -730,12 +740,8 @@ function _nbaAdvancedSearch () {
 	}
 */
 
-	//p($_SESSION['nbaQueryTerms']);
-
-    // Debug: print queries
-    _printDebug($debug);
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    return _printDebug($debug) . $pageHeader . 
+    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 // Assume data on genus, species, infraspecies can be deduced from data first specimen
