@@ -319,20 +319,16 @@ function _buildQuery ($service, $terms = array()) {
 			];
 		}
     }
-	
     // Store paths for term highlighting
     if (isset($paths)) {
     	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
     		substr($type, 0, -1)]['paths'] = $paths;
     }
-    
- //p($statements); die(); 
-    
     // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
-		$elements = array_unique(array_map('trim', explode(' ', trim($d['value']))));
+		$elements = _stringToElements($d['value']);
 		$condition = $subconditions = null;
 		foreach ($elements as $element) {			
 			$first = true;
@@ -378,11 +374,6 @@ function _buildQuery ($service, $terms = array()) {
 				];
 			}
 		}
-		
-		
-//p($subconditions);		
-		
-		
 		// First make some sense of conditions and subconditions, plus remove potential
 		// duplicate queries (in particular those from auto-generated simple search). 
 		// Use serialized version of condition as array key to accomplish this.
@@ -398,10 +389,6 @@ function _buildQuery ($service, $terms = array()) {
 			];
 		}
 	} 
-//die();	
-	
-//p($conditions); die();	
-	
 	// Logical operator is used to compile main condition (logical operator 
 	// for querySpec is always 'and', reserved for geo search!)
 	$andOr = 'setAnd';
@@ -416,31 +403,6 @@ function _buildQuery ($service, $terms = array()) {
     	}
     	$mainCondition = _appendCondition($condition, $andOr, $mainCondition);
     }
-    
-    
-//p($finalCondition); die();
-	
-	/*
-	
-    // Compile final condition
-    foreach (array_values($conditions) as $i => $condition) {
-    	$andOr = 'setAnd';
-        if (isset($terms['logicalOperator']) && !empty($terms['logicalOperator'])) {
-	        $andOr = 'set' . ucfirst(strtolower($terms['logicalOperator']));
-	    }
-    	if ($i == 0) {
-    		$finalCondition = $condition;
-    		continue;
-    	}
-    	$finalCondition->{$andOr}($condition);
-    }
-    
-    */
-    
-    
-    
-    
-    
     if (isset($mainCondition)) {
     	$query->addCondition($mainCondition);
     }
@@ -450,14 +412,7 @@ function _buildQuery ($service, $terms = array()) {
 	    	->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']))
     		->setLogicalOperator('and');
     }
-    
-
-    /*
-/header('Content-Type: application/json');
-die($query->getQuerySpec(false));
-*/
-    	
-     // Add search flags
+    // Add search flags
     if (isset($terms['from']) && !empty($terms['from'])) {
         $query->setFrom($terms['from']);
     }
@@ -471,8 +426,11 @@ die($query->getQuerySpec(false));
         }
         $query->sortBy($terms['sort'], $sortDirection);
     }
-    
     return $query;
+}
+
+function _stringToElements ($value) {
+	return array_map('trim', array_unique(array_filter(explode(' ', trim($value)))));	
 }
 
 

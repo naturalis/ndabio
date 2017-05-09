@@ -60,6 +60,7 @@ function _parseSpecimenMediaDetail ($data) {
 	if (!isset($data->id)) {
 		return false;
 	}
+//p($data);	
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value)) {
 			$output[$field] = $value;
@@ -470,6 +471,15 @@ function _getSpecimenNames ($identifications = []) {
 	}
 	return [];
 }
+
+
+
+
+
+
+
+
+
 
 
 
