@@ -7,6 +7,40 @@ use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
 
+function nbaMinLikeStringSize () {
+    $nbaMinLikeStringSize = &drupal_static(__FUNCTION__);
+    if (!$nbaMinLikeStringSize) {
+        $cacheId = 'nbaMinLikeStringSize';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaMinLikeStringSize = $cache->data;
+            return $nbaGeoAnbaMinLikeStringSize;
+        }
+        $client = _initBioPortalClient();
+        $nbaMinLikeStringSize = $client->getOperatorLikeMinTermLength();
+        cache_set($cacheId, $nbaMinLikeStringSize);
+    }
+    return $nbaMinLikeStringSize;
+}
+
+function nbaMaxLikeStringSize () {
+    $nbaMaxLikeStringSize = &drupal_static(__FUNCTION__);
+    if (!$nbaMaxLikeStringSize) {
+        $cacheId = 'nbaMaxLikeStringSize';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaMaxLikeStringSize = $cache->data;
+            return $nbaGeoAnbaMaxLikeStringSize;
+        }
+        $client = _initBioPortalClient();
+        $nbaMaxLikeStringSize = $client->getOperatorLikeMaxTermLength();
+        cache_set($cacheId, $nbaMaxLikeStringSize);
+    }
+    return $nbaMaxLikeStringSize;
+}
+
+
+
 
 function nbaGeoAreas () {
     $nbaGeoAreas = &drupal_static(__FUNCTION__);

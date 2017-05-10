@@ -1,14 +1,5 @@
 <?php
 
-// todo: get dynamically from NBA!
-function nbaMinLikeStringSize () {
-	return 3;
-}
-
-function nbaMaxLikeStringSize () {
-	return 15;
-}
-
 
 
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
