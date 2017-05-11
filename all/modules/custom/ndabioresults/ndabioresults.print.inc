@@ -7,7 +7,8 @@ function _printSpecimenMediaDetail ($data) {
         array('type' => 'inline', 'scope' => 'footer')
     );
 
-    $output  = _wrap(t("Media item"), "div", "category");
+	$output = _printDebug();
+    $output .= _wrap(t("Media item"), "div", "category");
     $output .= _wrap('', "h2");
     $output .= _printPreviousNext([
     	'total' => $data['totalSize'], 
@@ -117,9 +118,9 @@ function _printSpecimenMediaDetail ($data) {
 function _printTaxonMediaDetail ($data) {
 //p($data);
 
-    $output  = _wrap( t("Media item")   , "div", "category");
+	$output = _printDebug();
+    $output .= _wrap( t("Media item")   , "div", "category");
     $output .= _wrap( '', "h2"  );
-
     $output .= _printPreviousNext([
     	'total' => $data['totalSize'], 
     	'offset' => $data['offset'], 
@@ -144,12 +145,15 @@ function _printTaxonMediaDetail ($data) {
         $caption = implode('<br/>', array_filter($altParts));
         $img = "<a href='" . $data['imgSrc'] . "' rel=\"prettyPhoto\" title=\"$caption\">$img</a>\n";
     }
+    
+    $scientificName = !empty($data['acceptedNameUrl']) ?
+    	'<a href="' . $data['acceptedNameUrl'] . '">' . $data['acceptedName'] . '</a>' :
+    	$data['acceptedName'];
 
     $output .= $img;
-
     $output .= "<div class='property-list' style='margin-top: 1em;'>";
-    $output .= _printDL(t('Scientific name'), 
-    	'<a href="' . $data['acceptedNameUrl'] . '">' . $data['acceptedName'] . '</a>');
+    $output .= _printDL(t('Scientific name'), $scientificName);
+    
 	$fields = array(
 	    'source',
     	'creator',

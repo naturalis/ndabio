@@ -134,9 +134,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	_setMultimediaAssociatedObject($data);
 	
 	if (isset($data->associatedTaxon)) {
-		return _printDebug() . _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
+		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
 	}
-	return _printDebug() . _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
+	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
 
@@ -594,15 +594,14 @@ function _getTaxonFromNba ($taxon) {
 	$client = _initBioPortalClient();
 	$p = explode(' ', $taxon);
 	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
-	if (count($p) == 2) {
+	if (count($p) > 1) {
 		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
-		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS');
-	}
-	if (count($p) == 3) {
-		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
+		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS', 
+			(count($p) == 2 ? null : $p[2]));
 	}
 	$query = new NameGroupQuerySpec();
 	$query->addCondition($c);
+	_addDebugMessage($taxon . ' exists in NBA', $query);
     $data = json_decode($client->names()->querySpec($query)->query());
 	return isset($data->resultSet) ? $data->resultSet : false;
 }

@@ -458,7 +458,7 @@ function _getSpecimenNames ($identifications = []) {
     	if (!empty($name)) {
 			$output[] = [
 				'name' => $name,
-				//'url' => _getTaxonUrl($identification),
+				'url' => _getTaxonUrl($identification),
 			    'preferred' => $identification->preferred ? 1 : 0
 			];
     	}
