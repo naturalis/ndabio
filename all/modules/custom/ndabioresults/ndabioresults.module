@@ -596,7 +596,8 @@ function _getTaxonFromNba ($taxon) {
 	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
 	if (count($p) > 1) {
 		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
-		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS', 
+		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
+			(count($p) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($p) == 2 ? null : $p[2]));
 	}
 	$query = new NameGroupQuerySpec();
