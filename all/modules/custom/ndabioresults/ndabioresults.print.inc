@@ -57,8 +57,10 @@ function _printSpecimenMediaDetail ($data) {
 
     if (strpos($data['imgSrc'], 'medialib') !== false) {
     	$output .= 
-	    	'<div><a href="' . str_replace('large', 'master', $data['imgSrc']) . '">
-			<i class="icon-arrow-right"></i>Download master image</a></div>';
+	    	'<div class="property-list" style="margin-bottom: 1em;">' . 
+			 _printDL('<a href="' . str_replace('large', 'master', $data['imgSrc']) . '">
+				<i class="icon-arrow-right"></i>Download master image</a>') . 
+    		'</div>';
     }
     
 	$output .= "<div class='property-list'>";
@@ -145,7 +147,7 @@ function _printTaxonMediaDetail ($data) {
 
     $output .= $img;
 
-    $output .= "<div class='property-list'>";
+    $output .= "<div class='property-list' style='margin-top: 1em;'>";
     $output .= _printDL(t('Scientific name'), 
     	'<a href="' . $data['acceptedNameUrl'] . '">' . $data['acceptedName'] . '</a>');
 	$fields = array(

@@ -1171,6 +1171,9 @@ function ndabioresults_preprocess_html(&$vars){
  	    $pathComponents = explode('/', current_path());
 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
         	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
+		    if ($pathComponents[0] != 'result') {
+		    	$vars['classes_array'][] = 'page-nba-result';
+		    }
 	    }
 	}
 }
