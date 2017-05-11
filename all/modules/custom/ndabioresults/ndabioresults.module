@@ -364,7 +364,7 @@ function _buildQuery ($service, $terms = array()) {
 					$first = false;
 					continue;
 				}
-				$condition->{$nbaOperator}($path, $operator, $element);
+				$condition->setOr($path, $operator, $element);
 			}
 			if (!empty($condition)) {
 				$subconditions[] = [
