@@ -600,6 +600,7 @@ function nameHits ()
 				'identifications.scientificName.specificEpithet',
 				'identifications.defaultClassification.infraspecificEpithet',
 				'identifications.scientificName.infraspecificEpithet',
+				'identifications.scientificName.fullScientificName',
 			],			
 			'specimen' => [
 				'identifications.defaultClassification.genus',
@@ -608,6 +609,7 @@ function nameHits ()
 				'identifications.scientificName.specificEpithet',
 				'identifications.defaultClassification.infraspecificEpithet',
 				'identifications.scientificName.infraspecificEpithet',
+				'identifications.scientificName.fullScientificName',
 			],
 			'taxon' => [
 				'defaultClassification.genus',
@@ -616,6 +618,7 @@ function nameHits ()
 				'acceptedName.specificEpithet',
 				'defaultClassification.infraspecificEpithet',
 				'acceptedName.infraspecificEpithet',
+				'acceptedName.fullScientificName',
 			],
 			'names.specimens' => [
 				'specimens.matchingIdentifications.defaultClassification.genus',
@@ -624,6 +627,7 @@ function nameHits ()
 				'specimens.matchingIdentifications.scientificName.specificEpithet',
 				'specimens.matchingIdentifications.defaultClassification.infraspecificEpithet',
 				'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
+				'specimens.matchingIdentifications.scientificName.fullScientificName',
 			],
 			'names.taxa' => [
 				'taxa.defaultClassification.genus',
@@ -632,6 +636,7 @@ function nameHits ()
 				'taxa.acceptedName.specificEpithet',
 				'taxa.defaultClassification.infraspecificEpithet',
 				'taxa.acceptedName.infraspecificEpithet',
+				'taxa.acceptedName.fullScientificName',
 			], 
 		);
 	}

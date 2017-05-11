@@ -195,16 +195,16 @@ function _setMultimediaHits ($hits = []) {
 
 function _getMultimediaScientificNames ($row, $hits = []) {
 	$paths = _getQueryPaths('multimedia');
-	foreach ($row->item->identifications as $id) {
+	foreach ($row->item->identifications as $identification) {
 		$name = [];
 		foreach (scientificNameElements() as $i => $element) {
-			$name[$i] = isset($id->scientificName->{$element}) && 
-				!empty(trim($id->scientificName->{$element})) ? 
-				trim($id->scientificName->{$element}) : '';
+			$name[$i] = isset($identification->scientificName->{$element}) && 
+				!empty(trim($identification->scientificName->{$element})) ? 
+				trim($identification->scientificName->{$element}) : '';
 			// Highlight (assume always LIKE operator for name fields)
 			if (isset($hits['identifications.scientificName.' . $element])) {
-				$name[$i] = _highlightMatch($id->scientificName->{$element}, 
-					[$paths['identifications.scientificName.' . $element]['value']]);
+				$name[$i] = _highlightMatch($identification->scientificName->{$element}, 
+					$paths['identifications.scientificName.' . $element]['values']);
 			}
 			// Italics
 			if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
@@ -213,7 +213,7 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 		}
 		if (!empty($name)) {
 			if (empty($name[0])) {
-				$name[0] = $id->scientificName->fullScientificName;
+				$name[0] = $identification->scientificName->fullScientificName;
 				unset($name[1], $name[2], $name[3]);
 			}
 			$names[] = implode(' ', array_filter($name));
@@ -284,6 +284,8 @@ function _parseSpecimens ($data) {
 	return $output;
 }
 
+
+/* Old
 function _getHits ($service, $result) {
 	// Path used are stored in session
 	$queryPaths = _getQueryPaths($service);
@@ -305,7 +307,36 @@ function _getHits ($service, $result) {
 	}
 	return isset($output) ? $output : false;
 }
+*/
 
+function _getHits ($service, $result) {
+	// Path used are stored in session
+	$queryPaths = _getQueryPaths($service);
+	if (!$queryPaths) {
+		return false;
+	}
+	foreach ($queryPaths as $path => $item) {
+		$hits = [];
+		// Convert NBA path to object path
+		$pathElements = explode('.', $path);
+		// Chop off first part of path in case of names service
+		if (strpos($service, '.') !== false) {
+			unset($pathElements[0]);
+		}
+		foreach ($item['values'] as $value) {
+			$hit = _getHitInResult($pathElements, $result, $value, $item['operator']);
+			if (!empty($hit)) {
+				$hits[] = $hit;
+			}
+		}
+		// Store value only once; it will always be the same value found multiple times
+		if (!empty($hits)) {
+			$output[$path] = $hits[0][0];
+		}
+	}
+	return isset($output) ? $output : false;
+}
+ 
 function _getHitInResult ($pathElements, $result, $value, $operator) {
 	//print_r($object);
 	if (!$pathElements || !$result || !$value || !$operator) {
@@ -350,7 +381,7 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 function _highlightHits ($service, $hits) {
 	$paths = _getQueryPaths($service);
 	foreach ($hits as $path => $hit) {
-		$output[array_pop(explode('.', $path))] = _highlightMatch($hit, [$paths[$path]['value']]);
+		$output[array_pop(explode('.', $path))] = _highlightMatch($hit, $paths[$path]['values']);
 	}
 	return $output;
 }
@@ -396,6 +427,8 @@ function _highlightMatch ($haystack, $needles) {
 			}, $m[0]) . chr(7);
 		}, $haystack);
 	}
+	
+	
 	// Restore temporarily replaced tags
 	return str_replace($r, $f, $haystack);
 }

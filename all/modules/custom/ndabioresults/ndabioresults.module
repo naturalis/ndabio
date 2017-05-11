@@ -306,7 +306,7 @@ function _buildQuery ($service, $terms = array()) {
             	$statement[$path] = _getConditionOperator($service, $path, $value);
             	$paths[$path] = [
             		'operator' => $statement[$path],
-            		'value' => $value,
+            		'values' => _stringToElements($value),
             	]; 
             }
         }
@@ -319,12 +319,12 @@ function _buildQuery ($service, $terms = array()) {
 			];
 		}
     }
-    // Store paths for term highlighting
+     // Store paths for term highlighting
     if (isset($paths)) {
     	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
     		substr($type, 0, -1)]['paths'] = $paths;
     }
-    // Compile conditions
+     // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
@@ -337,7 +337,6 @@ function _buildQuery ($service, $terms = array()) {
 				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
 					$operator = 'MATCHES';
 				}	
-				
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
 					// geoShape arrives from simple search as area name
@@ -1171,9 +1170,7 @@ function ndabioresults_preprocess_html(&$vars){
  	    $pathComponents = explode('/', current_path());
 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
         	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
-		    if ($pathComponents[0] != 'result') {
-		    	$vars['classes_array'][] = 'page-nba-result';
-		    }
+		    $vars['classes_array'][] = 'page-nba-result';
 	    }
 	}
 }
