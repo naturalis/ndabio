@@ -364,7 +364,7 @@ function _buildQuery ($service, $terms = array()) {
 					$first = false;
 					continue;
 				}
-				$condition->{$nbaOperator}($path, $operator, $element);
+				$condition->setOr($path, $operator, $element);
 			}
 			if (!empty($condition)) {
 				$subconditions[] = [
@@ -582,7 +582,7 @@ function _nba_general_result_callback () {
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         //drupal_set_title(t("Search results"));
         $_SESSION['ndaSearch'] = $_GET;
-        logSearch();
+        _logSearch();
         return empty($_SESSION['ndaSearch']['term']) ? 
         	_nbaAdvancedSearch() : _nbaSimpleSearch($_SESSION['ndaSearch']['term']);
     }
@@ -625,9 +625,9 @@ function _nbaAdvancedSearch () {
     unset($_SESSION['nbaQuery']);
 
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
+    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
     
  //@todo: enable other services!!!!   
-//    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
 //    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     
     // Test if anything has been posted; if not return with error message
@@ -637,15 +637,13 @@ function _nbaAdvancedSearch () {
 
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $p) {
-        if (serviceUsed($p)) {
+        if (_serviceUsed($p)) {
             // Cap results
             $p['size'] = maxResultsInitial();
-
             // Init client, construct query, fetch results in $remoteData
             $client = _setClientService(_initBioPortalClient(), $service);
             $client->querySpec(_buildQuery($service, $p));
             $remoteData[$service] = $client->query();
-
             // Save service-specific query to session;
             // used for further navigation
             _setQueryTerms($service);
@@ -676,12 +674,13 @@ function _nbaAdvancedSearch () {
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
-		$data = _enrichSpecimenData(json_decode($remoteData['names.specimens'])); 
-		$pageBody .= _printSpecimens(_parseSpecimens($data));
+		
+		 //header('Content-Type: application/json');
+		 //die($remoteData['names.specimens']);
+		
+		//$data = _enrichSpecimenData(json_decode($remoteData['names.specimens'])); 
+		//$pageBody .= _printSpecimens(_parseSpecimens($data));
 	}
-	
-	
-	
 	
 	if (!empty($remoteData['names.taxa'])) {
 		// to do!
@@ -1358,7 +1357,7 @@ function ndabioresults_pass ($args = "") {
  *
  *  * @param boolean $saveToDb When provided, data is also saved to database
  */
-function logSearch ($saveToDb = false) {
+function _logSearch ($saveToDb = false) {
     foreach ($_SESSION['ndaSearch'] as $k => $v) {
         $skip = array(
             'op', 'form_build_id', 'form_token', 'form_id'
@@ -1587,8 +1586,8 @@ function setBasePath () {
  * @param string $service Service
  * @return boolean
  */
-function serviceUsed ($service) {
-    return countSearchParameters($service) > 0;
+function _serviceUsed ($service) {
+    return _countSearchParameters($service) > 0;
 }
 
 /**
@@ -1806,7 +1805,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
         in_array($typeId, ['m_', 's_'])) {
         $d['gid'] = _setNbaGid($terms['gid']);
     }
-    if (countSearchParameters($d) >= 1) {
+    if (_countSearchParameters($d) >= 1) {
     	// Rewrite andOr to logicalOperator
         $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';
         $d['from'] = isset($d['from']) ? $d['from'] : 0;
@@ -1824,7 +1823,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
  * @param array $d Search parameter
  * @return int Number of search items
  */
-function countSearchParameters ($d) {
+function _countSearchParameters ($d) {
     foreach ($d as $k => $v) {
         if (in_array($k, searchFlags())) {
             unset($d[$k]);

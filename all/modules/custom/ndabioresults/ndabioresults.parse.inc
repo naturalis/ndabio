@@ -403,13 +403,13 @@ function _highlightMatch ($haystack, $needles) {
 		'<span class="scientific">',
 		'</span>',
 		'&nbsp;',
-		'<span class="result-query">'
+		'<span class="result-query">',
 	];
 	$r = [
 		chr(4),
 		chr(7),
 		chr(13),
-		chr(14)
+		chr(14),
 	];
 	$haystack = str_replace($f, $r, $haystack);
 	
