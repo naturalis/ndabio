@@ -338,7 +338,6 @@ function _getHits ($service, $result) {
 }
  
 function _getHitInResult ($pathElements, $result, $value, $operator) {
-	//print_r($object);
 	if (!$pathElements || !$result || !$value || !$operator) {
 		return false;
 	}
@@ -362,7 +361,8 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 			}
 			// Tracker is empty, we must have reached the correct path
 			if (empty($pathTracker)) {
-				// Operator determines if we have a hit: LIKE...
+				// Operator determines if we have a hit: 
+				// LIKE...
 				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
 				// ... MATCHES or EQUALS_IC	
 					(($operator == 'MATCHES' || $operator == 'EQUALS_IC') && 
@@ -381,7 +381,8 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 function _highlightHits ($service, $hits) {
 	$paths = _getQueryPaths($service);
 	foreach ($hits as $path => $hit) {
-		$output[array_pop(explode('.', $path))] = _highlightMatch($hit, $paths[$path]['values']);
+		$output[array_pop(explode('.', $path))] = 
+			_highlightMatch($hit, $paths[$path]['values']);
 	}
 	return $output;
 }
