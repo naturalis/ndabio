@@ -14,7 +14,7 @@ function nbaMinLikeStringSize () {
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaMinLikeStringSize = $cache->data;
-            return $nbaGeoAnbaMinLikeStringSize;
+            return $nbaMinLikeStringSize;
         }
         $client = _initBioPortalClient();
         $nbaMinLikeStringSize = $client->getOperatorLikeMinTermLength();
@@ -30,7 +30,7 @@ function nbaMaxLikeStringSize () {
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaMaxLikeStringSize = $cache->data;
-            return $nbaGeoAnbaMaxLikeStringSize;
+            return $nbaMaxLikeStringSize;
         }
         $client = _initBioPortalClient();
         $nbaMaxLikeStringSize = $client->getOperatorLikeMaxTermLength();
@@ -112,7 +112,7 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 		$condition = new Condition($optionPath, 'EQUALS', $option);
 		$query = new QuerySpec();
 		$query->addCondition($condition)->setSize(1);
-		$data = json_decode($client->{$service}()->querySpec($query)->query());
+		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
 		// Convert NBA path to object path
 		$pathArray = explode('.', $valuePath);
 		$objPath = $data->resultSet[0]->item;

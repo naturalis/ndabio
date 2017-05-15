@@ -11,7 +11,7 @@ require_once 'Paginator.php';
 
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
-use nl\naturalis\bioportal\NameGroupQuerySpec as NameGroupQuerySpec;
+use nl\naturalis\bioportal\ScientificNameGroupQuerySpec as ScientificNameGroupQuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
 // Clear previously stored debug info
@@ -108,7 +108,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		_addDebugMessage('single item', $query);
 		
 		// Fetch data
-		$data = json_decode($client->{$service}()->querySpec($query)->query());
+		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
 		if (isset($data->exception)) {
 			return _printOops();
 		}
@@ -121,7 +121,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$query = _buildQuery($service, $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->{$service}()->querySpec($query)->query());
+		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -250,15 +250,15 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
         $query = new QuerySpec();
         $query->addCondition($c);
         die($query->getQuerySpec(false));
-        die($client->names()->querySpec($query)->query());
+        die($client->names()->setQuerySpec($query)->query());
     }
 
     $query = _buildQuery('taxon', $p);
-    $client->{$service}()->querySpec($query);
+    $client->{$service}()->setQuerySpec($query);
     $remoteData[$service] = $client->query();
 
 
-    $client->taxon()->querySpec($q);
+    $client->taxon()->setQuerySpec($q);
 
     return print_r($client->query());
 
@@ -280,7 +280,7 @@ function _buildQuery ($service, $terms = array()) {
 		list($service, $type) = explode('.', $service);
 		$lookupService = $type == 'taxa' ? 'taxon' : 'specimen';
 		$type .= '.';
-		$query = new NameGroupQuerySpec();
+		$query = new ScientificNameGroupQuerySpec();
 	} else {
 		$type = '';
 		$lookupService = $service;
@@ -524,7 +524,7 @@ function _nba_multimedia_result_callback ($search = false) {
 	_addDebugMessage($service, $query);
 	
 	// Fetch data set
-	$data = json_decode($client->{$service}()->querySpec($query)->query());
+	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
 		
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -602,7 +602,7 @@ function _getTaxonFromNba ($taxon) {
 	$query = new NameGroupQuerySpec();
 	$query->addCondition($c);
 	_addDebugMessage($taxon . ' exists in NBA', $query);
-    $data = json_decode($client->names()->querySpec($query)->query());
+    $data = json_decode($client->names()->setQuerySpec($query)->query());
 	return isset($data->resultSet) ? $data->resultSet : false;
 }
 
@@ -642,7 +642,7 @@ function _nbaAdvancedSearch () {
             $p['size'] = maxResultsInitial();
             // Init client, construct query, fetch results in $remoteData
             $client = _setClientService(_initBioPortalClient(), $service);
-            $client->querySpec(_buildQuery($service, $p));
+            $client->setQuerySpec(_buildQuery($service, $p));
             $remoteData[$service] = $client->query();
             // Save service-specific query to session;
             // used for further navigation
@@ -996,7 +996,7 @@ function _nbaSimpleSearch ($term) {
 
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
-        $client->querySpec(_buildQuery($service, $p));
+        $client->setQuerySpec(_buildQuery($service, $p));
 		$remoteData[$service] = $client->query();
 		
 		// Save service-specific query to session;
