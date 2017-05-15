@@ -14,7 +14,7 @@ function nbaMinLikeStringSize () {
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaMinLikeStringSize = $cache->data;
-            return $nbaGeoAnbaMinLikeStringSize;
+            return $nbaMinLikeStringSize;
         }
         $client = _initBioPortalClient();
         $nbaMinLikeStringSize = $client->getOperatorLikeMinTermLength();
@@ -30,7 +30,7 @@ function nbaMaxLikeStringSize () {
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaMaxLikeStringSize = $cache->data;
-            return $nbaGeoAnbaMaxLikeStringSize;
+            return $nbaMaxLikeStringSize;
         }
         $client = _initBioPortalClient();
         $nbaMaxLikeStringSize = $client->getOperatorLikeMaxTermLength();
