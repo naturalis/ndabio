@@ -645,13 +645,16 @@ function _nbaAdvancedSearch () {
         if (_serviceUsed($p)) {
             // Cap results
             $p['size'] = maxResultsInitial();
-            // Init client, construct query, fetch results in $remoteData
+            // Init client
             $client = _setClientService(_initBioPortalClient(), $service);
+            // Build QuerySpec
             $client->setQuerySpec(_buildQuery($service, $p));
-            $remoteData[$service] = $client->query();
-            // Save service-specific query to session;
-            // used for further navigation
+            // Must use querySpecial() for names services
+            $remoteData[$service] = strpos($service, 'names') === false ?
+            	$client->query() : $client->querySpecial();
+            // Save service-specific query terms to session; used for navigation
             _setQueryTerms($service);
+            // Add to debug, so query can be printed
 			_addDebugMessage($service, $client);
         }
     }
@@ -734,28 +737,35 @@ function _setSpecimenSources ($row) {
 }
 
 
-function _enrichSpecimenData (&$data) {
+function _getSpecimenDetails (&$data) {
+	if (!isset($data->resultSet) || empty($data->resultSet)) {
+		return false;
+	}
 	$client = _initBioPortalClient();
+	// Aggregate conditions for all specimens in result
 	foreach ($data->resultSet as $i => $row) {
-		$batch = [];
 		foreach ($row->item->specimens as $item) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
 			$query = new QuerySpec();
 			$batch[$item->unitID] = $query->addCondition($condition);
 		}
-		$specimens = $client->specimen()->batchQuery($batch);
-		foreach ($specimens as $unitId => $json) {
-			$specimen = json_decode($json);
-			foreach ($data->resultSet[$i]->item->specimens as $k => $summary) {
-				if ($summary->unitID == $unitId) {
-					$data->resultSet[$i]->item->specimens[$k]->specimenDetails = 
-						$specimen->resultSet[0]->item;
-					continue;
+	}
+	// Fetch all specimens at once
+	if (isset($batch)) {
+		$specimens = array_map('json_decode', $client->specimen()->batchQuery($batch));
+		// Loop again over result and append the fetched specimen details
+		foreach ($data->resultSet as $i => $row) {
+			foreach ($row->item->specimens as $j => $item) {
+				if (isset($specimens[$item->unitID])) {
+					$detail = $specimens[$item->unitID];
+					$data->resultSet[$i]->item->specimens[$j]->specimenDetails =
+						$detail->resultSet[0]->item;
 				}
 			}
 		}
+		return $data;
 	}
-	return $data;
+	return false;
 }
 
 

@@ -255,12 +255,13 @@ function _getMultimediaUnitId ($row, $hits = []) {
 
 
 function _parseSpecimens ($data) {
-p($data);
+//p($data);
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
 	
 	$output['total'] = _getTotalRows($data);
+	_getSpecimenDetails($data);
 	
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
@@ -274,7 +275,7 @@ p($data);
 		//$d['fullScientificName'] = $row->item->name;
 		$d['count'] = $row->item->specimenCount;
 		$d['sources'] = _setSpecimenSources($row);
-		$d['score'] = 0;
+		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $sp) {
 			$specimen = $sp->specimenDetails;
 			$s['unitID'] = _setUnitId($specimen->unitID);
@@ -297,7 +298,7 @@ p($data);
 	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
 		_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
 	$output['paginator'] = _getPaginator($data);
-//p($output);
+p($output); die();
 	return $output;
 }
 
