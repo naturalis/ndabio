@@ -193,10 +193,12 @@ function _setMultimediaHits ($hits = []) {
 	return _highlightHits('multimedia', $hits);
 }
 
+
 function _getMultimediaScientificNames ($row, $hits = []) {
 	$paths = _getQueryPaths('multimedia');
 	foreach ($row->item->identifications as $identification) {
 		$name = [];
+		// Elements in regular scientific name elements
 		foreach (scientificNameElements() as $i => $element) {
 			$name[$i] = isset($identification->scientificName->{$element}) && 
 				!empty(trim($identification->scientificName->{$element})) ? 
@@ -212,9 +214,25 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 			}
 		}
 		if (!empty($name)) {
+			// Could also be a hit in fullScientificName; try highlighting
+			if (isset($paths['identifications.scientificName.fullScientificName'])) {
+				foreach ($name as $i => $element) {
+					// Only add if not highlighted yet
+					if (strpos($element, 'class="result-query"') === false) {
+						$name[$i] = _highlightMatch($name[$i], 
+							$paths['identifications.scientificName.fullScientificName']['values']);
+					}
+				}
+			}
+			// Only fullScientificName is available; genus, etc are empty
 			if (empty($name[0])) {
 				$name[0] = $identification->scientificName->fullScientificName;
 				unset($name[1], $name[2], $name[3]);
+				// Try highlighting
+				if (isset($paths['identifications.scientificName.fullScientificName'])) {
+					$name[0] = _highlightMatch($name[0], 
+						$paths['identifications.scientificName.fullScientificName']['values']);
+				}
 			}
 			$names[] = implode(' ', array_filter($name));
 		}
