@@ -238,7 +238,7 @@ function _getMultimediaUnitId ($row, $hits = []) {
 
 
 function _parseSpecimens ($data) {
-//p($data);
+p($data);
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}

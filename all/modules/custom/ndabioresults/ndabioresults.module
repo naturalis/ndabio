@@ -268,12 +268,12 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 
 
 function _buildQuery ($service, $terms = array()) {
-	// Set global operator: 'and' for advanced, 'or' for simple.
-	// For simple search we need to translate 'term'.
-	$nbaOperator = 'setAnd';
+	// Set operator used to string subconditions together: setOr for simple search, 
+	// but setAnd for advanced search fields such as fullScientificName!
+	$andOr = 'setAnd';
     if (isset($terms) && isset($terms['term'])) {
 		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
-		$nbaOperator = 'setOr';
+		$andOr = 'setOr';
 	}
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
@@ -286,7 +286,14 @@ function _buildQuery ($service, $terms = array()) {
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
-
+	// Logical operator is always AND (form and map are exclusive)
+	$query->setLogicalOperator('AND');
+	// Logical operator is important to compile main QuerySpec: 
+	// - for OR we will create one big nested OR query
+	// - for AND we will create separate conditions ruled by main logical operator AND
+	$logicalOperator = isset($terms['logicalOperator']) && !empty($terms['logicalOperator']) ?
+		strtoupper($terms['logicalOperator']) : 'OR';
+	// Translate fields to NBA paths and get their operators
     foreach ($terms as $field => $value) {
     	$statement = [];
     	// Exclude search flags; these will be processed later
@@ -315,16 +322,16 @@ function _buildQuery ($service, $terms = array()) {
 			$statements[] = [
 				'statement' => $statement,
 				'value' => $value,
-				'operator' => $nbaOperator,
+				'operator' => $andOr,
 			];
 		}
     }
-     // Store paths for term highlighting
+    // Store paths for term highlighting
     if (isset($paths)) {
     	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
     		substr($type, 0, -1)]['paths'] = $paths;
     }
-     // Compile conditions
+    // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
@@ -358,7 +365,6 @@ function _buildQuery ($service, $terms = array()) {
 						continue;
 					}
 				}
-				
 				if ($first) {
 					$condition = new Condition($path, $operator, $element);
 					$first = false;
@@ -387,29 +393,26 @@ function _buildQuery ($service, $terms = array()) {
 				'operator' => $subconditions[0]['operator'],
 			];
 		}
-	} 
-	// Logical operator is used to compile main condition (logical operator 
-	// for querySpec is always 'and', reserved for geo search!)
-	$andOr = 'setAnd';
-	if (isset($terms['logicalOperator']) && !empty($terms['logicalOperator'])) {
-		$andOr = 'set' . ucfirst(strtolower($terms['logicalOperator']));
 	}
-	// Compile final condition
-	foreach (array_values($conditions) as $i => $condition) {
-    	if ($i == 0) {
-    		$mainCondition = _appendCondition($condition, $andOr);
-    		continue;
-    	}
-    	$mainCondition = _appendCondition($condition, $andOr, $mainCondition);
-    }
-    if (isset($mainCondition)) {
+	// OR search: string all conditions together with setOr()
+	if ($logicalOperator == 'OR') {
+		foreach (array_values($conditions) as $i => $condition) {
+	    	if ($i == 0) {
+	    		$mainCondition = _appendCondition($condition);
+	    		continue;
+	    	}
+	    	$mainCondition = _appendCondition($condition, $mainCondition);
+		}
     	$query->addCondition($mainCondition);
-    }
+	// AND search: all conditions are top level conditions controlled by logicalOperator
+	} else {
+		foreach (array_values($conditions) as $condition) {
+			$query->addCondition(_appendCondition($condition));
+		}
+	}
     // Add map condition if present
     if (isset($geoShape)) {
-	    $query
-	    	->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']))
-    		->setLogicalOperator('and');
+	    $query->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']));
     }
     // Add search flags
     if (isset($terms['from']) && !empty($terms['from'])) {
@@ -433,7 +436,9 @@ function _stringToElements ($value) {
 }
 
 
-function _appendCondition ($condition, $andOr, $appendTo = false) {
+function _appendCondition ($condition, $appendTo = false) {
+	$andOr = is_array($condition) && isset($condition['operator']) ? 
+		$condition['operator'] : 'setOr';
 	if (!$appendTo) {
 		if (is_object($condition)) {
 			return $condition;
@@ -455,7 +460,7 @@ function _appendCondition ($condition, $andOr, $appendTo = false) {
 			$output = $subcondition;
 			continue;
 		}
-		$output->{$condition['operator']}($subcondition);
+		$output->{$andOr}($subcondition);
 	}
 	return $appendTo->{$andOr}($output);
 }
@@ -599,7 +604,7 @@ function _getTaxonFromNba ($taxon) {
 			(count($p) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($p) == 2 ? null : $p[2]));
 	}
-	$query = new NameGroupQuerySpec();
+	$query = new ScientificNameGroupQuerySpec();
 	$query->addCondition($c);
 	_addDebugMessage($taxon . ' exists in NBA', $query);
     $data = json_decode($client->names()->setQuerySpec($query)->query());
@@ -675,11 +680,8 @@ function _nbaAdvancedSearch () {
 	
 	if (!empty($remoteData['names.specimens'])) {
 		
-		 //header('Content-Type: application/json');
-		 //die($remoteData['names.specimens']);
-		
-		//$data = _enrichSpecimenData(json_decode($remoteData['names.specimens'])); 
-		//$pageBody .= _printSpecimens(_parseSpecimens($data));
+		$data = json_decode($remoteData['names.specimens']); 
+		$pageBody .= _printSpecimens(_parseSpecimens($data));
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
