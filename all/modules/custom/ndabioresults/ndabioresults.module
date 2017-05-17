@@ -659,7 +659,7 @@ function _nbaAdvancedSearch () {
         }
     }
 
-    $pageHeader = _printDebug();    
+    $pageHeader = '';    
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $area = (!empty($_SESSION['ndaSearch']['location']) ?
             $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
@@ -677,14 +677,14 @@ function _nbaAdvancedSearch () {
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
-		$data = json_decode($remoteData['multimedia']);
-		$pageBody .= _printMultimedia(_parseMultimedia($data, ['showAll']));
+		$data = _parseMultimedia(json_decode($remoteData['multimedia']), ['showAll']);
+		$pageBody = _printDebug() . $pageBody . _printMultimedia($data);
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
 		
-		$data = json_decode($remoteData['names.specimens']); 
-		$pageBody .= _printSpecimens(_parseSpecimens($data));
+		$data = _parseSpecimens(json_decode($remoteData['names.specimens'])); 
+		$pageBody = _printDebug() . $pageBody. _printSpecimens($data);
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
@@ -748,6 +748,7 @@ function _getSpecimenDetails (&$data) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
 			$query = new QuerySpec();
 			$batch[$item->unitID] = $query->addCondition($condition);
+			_addDebugMessage('details for ' . $item->unitID, $query);
 		}
 	}
 	// Fetch all specimens at once

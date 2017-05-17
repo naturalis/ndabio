@@ -724,7 +724,7 @@ function printSpecimensByTaxon ($data) {
 
 
 function _printSpecimens ($data) {
-	//p($data);
+//p($data);
 	if (empty($data['results'])) {
 		return false;
 	}
@@ -738,45 +738,45 @@ function _printSpecimens ($data) {
 	$nameSortFlag = 'identifications.scientificName.fullScientificName';
 	setTitle($headTitle, $headTitle);
 	
-	$headers = array(
-			'identifications.scientificName.fullScientificName' => array(
-				'label' => t('Name'),
-				'sort' => 'ASC',
-				'icon' => array(
-					'ASC' => 'icon-sort_a_z',
-					'DESC' => 'icon-sort_z_a'
-				),
-				'url' => setSortUrl(
-					$nameSortFlag,
-					'ASC',
-					$data['self'],
-					false
-				)
+	$headers = [
+		'identifications.scientificName.fullScientificName' => array(
+			'label' => t('Name'),
+			'sort' => 'ASC',
+			'icon' => array(
+				'ASC' => 'icon-sort_a_z',
+				'DESC' => 'icon-sort_z_a'
 			),
-			'count' => array(
-					'label' => ''
-			),
-			'mapIcon' => array(
-					'label' => ''
-			),
-			'foundIn' => array(
-					'label' => t('Found in')
-			),
-			'_score' => array(
-				'label' => t('Match'),
-				'sort' => 'DESC',
-				'icon' => array(
-						'ASC' => 'icon-sort_little_much',
-						'DESC' => 'icon-sort_much_little'
-				),
-				'url' => setSortUrl(
-						'_score',
-						'DESC',
-						$data['self'],
-						false
-				 )
+			'url' => setSortUrl(
+				$nameSortFlag,
+				'ASC',
+				$data['self'],
+				false
 			)
-	);
+		),
+		'count' => array(
+			'label' => ''
+		),
+		'mapIcon' => array(
+			'label' => ''
+		),
+		'foundIn' => array(
+			'label' => t('Found in')
+		),
+		'_score' => array(
+			'label' => t('Match'),
+			'sort' => 'DESC',
+			'icon' => array(
+				'ASC' => 'icon-sort_little_much',
+				'DESC' => 'icon-sort_much_little'
+			),
+			'url' => setSortUrl(
+				'_score',
+				'DESC',
+				$data['self'],
+				false
+			 )
+		)
+	];
 	
 	$count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
 	
@@ -787,29 +787,27 @@ function _printSpecimens ($data) {
 		$count
 	);
 	$output .= sprintf(
-		'<table id="specimensByTaxon"><thead>%s</thead>',
-		printHeaders($headers, $data['self'])
+		'<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self'])
 	);
 	
 	foreach ($data['results'] as $i => $row) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";
 		// Name
-		$url = $row['url'];
 		
-		$output .= "<td>" . "<a href='" . (!empty($url) ? $url : '#') . "'>" . $row['name'] . "</a>" .
+		$output .= "<td>" . "<a href='#''>" . $row['fullScientificName'] . "</a>" .
 			(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') . "</td>";
 		// Number (and collection type)
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
 		// Map icon
 		$output .= "<td>" .
-				(isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
-				&& !isset($_GET['noMap']) ?
-				"<a href='" . printDrupalLink(
-					specimenNamesService() . '?_geoShape=[session]&' .
-					'&identifications.scientificName.fullScientificName.raw=' .
-					urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
-				"' class='icon-location'></a>" : '') .
-				"</td>";
+			(isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) && 
+				!isset($_GET['noMap']) ?
+			"<a href='" . printDrupalLink(
+				specimenNamesService() . '?_geoShape=[session]&' .
+				'&identifications.scientificName.fullScientificName.raw=' .
+				urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
+			"' class='icon-location'></a>" : '') .
+			"</td>";
 		// Source(s)
 		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
 		// Match
@@ -821,8 +819,8 @@ function _printSpecimens ($data) {
 	$output .= "</table>";
 	$output = _markUp($output);
 	
-	$output .= printShowAll($data);
-	$output .= printPaginator($data);
+	$output .= _printShowAll($data);
+	$output .= _printPaginator($data);
 	
 	return $output;
 }

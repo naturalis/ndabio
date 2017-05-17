@@ -31,7 +31,7 @@ function _parseMultimedia ($data, $options = []) {
 			$d['imgSrc'] = str_replace('format/large', 'format/medium', $d['imgSrc']);
 		}
 		$hits = _getHits($service, $row->item);
-		$d['hits'] = _setMultimediaHits($hits);
+		$d['hits'] = _setNonNameHits($service, $hits);
 		$d['taxon'] = _getMultimediaScientificNames($row, $hits);
 		$d['unitID'] = _getMultimediaUnitId($row, $hits);
 		$output['results'][] = $d;
@@ -184,13 +184,15 @@ function _setDetailSearchTerms ($service, $i) {
 	return $terms;
 }
 
-function _setMultimediaHits ($hits = []) {
+
+
+function _setNonNameHits ($service, $hits = []) {
 	foreach ($hits as $path => $hit) {
-		if (in_array($path, nameHits()['multimedia'])) {
+		if (in_array($path, nameHits()[$service])) {
 			unset($hits[$path]);
 		}
 	}
-	return _highlightHits('multimedia', $hits);
+	return _highlightHits($service, $hits);
 }
 
 function _getMultimediaScientificNames ($row, $hits = []) {
@@ -255,13 +257,14 @@ function _getMultimediaUnitId ($row, $hits = []) {
 
 
 function _parseSpecimens ($data) {
-//p($data);
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
 	
 	$output['total'] = _getTotalRows($data);
 	_getSpecimenDetails($data);
+
+//p($data);
 	
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
@@ -269,12 +272,12 @@ function _parseSpecimens ($data) {
 	foreach ($data->resultSet as $row) {
 		$d = array();
 		// to do: add highlighting, author, italics
-		$d['name'] = ucfirst($row->item->name);
-		$d['url'] = _setSpecimensAllLink($row);
-		// to do: add author, italics
-		//$d['fullScientificName'] = $row->item->name;
+		$d['scientificNameGroup'] = $row->item->name;
+		$d['acceptedNames'] = _getSpecimenAcceptedNames($row);
+		//$d['url'] = _setSpecimensAllLink($row);
 		$d['count'] = $row->item->specimenCount;
 		$d['sources'] = _setSpecimenSources($row);
+		$d['nameHits'] = $d['nonAcceptedNames'] = [];
 		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $sp) {
 			$specimen = $sp->specimenDetails;
@@ -284,22 +287,138 @@ function _parseSpecimens ($data) {
 			$s['preparationType'] = $specimen->preparationType;
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = 'specimen/' . urlencode($specimen->unitID);
-			$s['hits'] = _getHits('names.specimens', $sp);
-			$s['score'] = 0;
+			$hits = _getHits('names.specimens', $sp);
+			$s['hits'] = _setNonNameHits('names.specimens', $hits);
+			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
+			// Only bother with non-accepted names if no accepted names are available
+			if (empty($d['acceptedNames'])) {
+				$d['nonAcceptedNames'] = 
+					_appendNonAcceptedNames($d['nonAcceptedNames'], $sp, $row->item->name);
+			}
+			//$s['score'] = 0;
 			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
 				$d['sets'][$specimen->assemblageID][] = $s;
 		}
+		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
 			_setSpecimensAllLink($row) : '';
+		
+		// No use for nameHits anymore; discard
+		unset($d['nameHits']);
 		$output['results'][] = $d;
 	}
 	
-	//$output['self'] = getSelfLink($data);
+//	p($output);
+	
 	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
 		_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
 	$output['paginator'] = _getPaginator($data);
-p($output); die();
 	return $output;
+}
+
+
+function _setSpecimenScientificName ($data) {
+	$paths = _getQueryPaths('names.specimens');
+	$hits = $data['nameHits'];
+	$source = !empty($data['acceptedNames']) ? $data['acceptedNames'] : $data['nonAcceptedNames'];
+//p($paths); p($data['acceptedNames']); p($data['nameHits']);
+
+	// First extract and format available scientific names...
+	// If a taxon occurs in NSR/CoL, use those sources to format the name.
+	// If not, used the scientific names associated with the preferred identifications
+	// for each specimen.
+	foreach ($source as $j => $identification) {
+		$name = [];
+		// Elements in regular scientific name elements
+		foreach (scientificNameElements() as $i => $element) {
+			$name[$i] = isset($identification->{$element}) && 
+				!empty(trim($identification->{$element})) ? 
+				trim($identification->{$element}) : '';
+			// Hits can be in both defaultClassification and scientificName
+			foreach (['defaultClassification', 'scientificName'] as $category) {
+				$hitPath = 'specimens.matchingIdentifications.' . $category . '.' . $element;
+				// Highlight (assume always LIKE operator for name fields)
+				if (isset($hits[$hitPath])) {
+					$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
+				}
+			}
+			// Italics
+			if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+			}
+		}
+		if (!empty($name)) {
+			// Could also be a hit in fullScientificName; try highlighting
+			if (isset($paths['specimens.matchingIdentifications.scientificName.fullScientificName'])) {
+				foreach ($name as $i => $element) {
+					// Only add if not highlighted yet
+					if (strpos($element, 'class="result-query"') === false) {
+						$name[$i] = _highlightMatch($name[$i], 
+							$paths['specimens.matchingIdentifications.scientificName.fullScientificName']['values']);
+					}
+				}
+			}
+			// Only fullScientificName is available; genus, etc are empty
+			if (empty($name[0])) {
+				$name[0] = $identification->fullScientificName;
+				unset($name[1], $name[2], $name[3]);
+				// Try highlighting
+				if (isset($paths['specimens.matchingIdentifications.scientificName.fullScientificName'])) {
+					$name[0] = _highlightMatch($name[0], 
+						$paths['specimens.matchingIdentifications.scientificName.fullScientificName']['values']);
+				}
+			}
+			$names[isset($identification->source) ? $identification->source : $j] = 
+				implode(' ', array_filter($name));
+		}
+	}
+	// if we end up with one name it's simple
+	if (count($names) == 1) {
+		return array_values($names)[0];
+	}
+	// If acceptedNames has been used, return the NSR name
+	if (!empty($data['acceptedNames'])) {
+		return $names['NSR'];
+	}
+	// Return formatted version of scientificNameGroup
+	foreach ($names as $i => $name) {
+		if (strtolower(strip_tags($name)) == $data['scientificNameGroup']) {
+			return $name;
+		}
+	}
+	// If we have reached this, we might as well return the first non-accepted name
+	return array_values($names)[0];
+}
+
+
+function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup) {
+	foreach ($row->specimenDetails->identifications as $identification) {
+		if ($scientificNameGroup == $identification->scientificName->scientificNameGroup) {
+			$nonAcceptedNames[md5(serialize($identification->scientificName))] = 
+				$identification->scientificName;
+		}
+	}
+	return $nonAcceptedNames;
+}
+
+function _appendNameHits ($nameHits, $hits) {
+	foreach ($hits as $path => $value) {
+		if (in_array($path, nameHits()['names.specimens'])) {
+			$nameHits[$path] = $value;
+		}
+	}
+	return $nameHits;
+}
+
+function _getSpecimenAcceptedNames ($row) {
+//p($row);
+	if (isset($row->item->taxa)) {
+		foreach ($row->item->taxa as $taxon) {
+			$taxon->acceptedName->source = $taxon->sourceSystem->code;
+			$data[$taxon->acceptedName->fullScientificName] = $taxon->acceptedName;
+		}
+	}
+	return isset($data) ? array_values($data) : null;
 }
 
 

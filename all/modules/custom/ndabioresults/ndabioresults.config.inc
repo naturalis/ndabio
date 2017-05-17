@@ -650,6 +650,7 @@ function scientificNameElements ()
 	if (!isset($var)) {
 		$var = [
 			'genusOrMonomial', 
+			'genus',
 			'specificEpithet', 
 			'infraspecificMarker',
 			'infraspecificEpithet', 
