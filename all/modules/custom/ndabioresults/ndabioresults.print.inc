@@ -762,6 +762,7 @@ function _printSpecimens ($data) {
 		'foundIn' => array(
 			'label' => t('Found in')
 		),
+/*
 		'_score' => array(
 			'label' => t('Match'),
 			'sort' => 'DESC',
@@ -776,6 +777,8 @@ function _printSpecimens ($data) {
 				false
 			 )
 		)
+*/
+			
 	];
 	
 	$count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
@@ -811,7 +814,7 @@ function _printSpecimens ($data) {
 		// Source(s)
 		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
 		// Match
-		$output .= "<td>" . decorateScore($row['score']) . "</td>";
+		//$output .= "<td>" . decorateScore($row['score']) . "</td>";
 		$output .= "</tr>";
 		$output .= _printSpecimenCollection($row, $i);
 	}
