@@ -262,6 +262,7 @@ function _parseSpecimens ($data) {
 	}
 	
 	$output['total'] = _getTotalRows($data);
+	$output['totalSpecimens'] = $data->totalSpecimens;
 	_getSpecimenDetails($data);
 
 //p($data);
@@ -296,8 +297,9 @@ function _parseSpecimens ($data) {
 					_appendNonAcceptedNames($d['nonAcceptedNames'], $sp, $row->item->name);
 			}
 			//$s['score'] = 0;
+			
 			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
-				$d['sets'][$specimen->assemblageID][] = $s;
+				$d['sets'][_formatAssemblyId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
@@ -308,12 +310,17 @@ function _parseSpecimens ($data) {
 		$output['results'][] = $d;
 	}
 	
-//	p($output);
+//p($output);
 	
 	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
 		_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
 	$output['paginator'] = _getPaginator($data);
 	return $output;
+}
+
+function _formatAssemblyId ($id) {
+	$parts = explode('@', $id);
+	return $parts[1] . '-' . $parts[0];
 }
 
 
@@ -330,23 +337,37 @@ function _setSpecimenScientificName ($data) {
 	foreach ($source as $j => $identification) {
 		$name = [];
 		// Elements in regular scientific name elements
-		foreach (scientificNameElements() as $i => $element) {
-			$name[$i] = isset($identification->{$element}) && 
-				!empty(trim($identification->{$element})) ? 
-				trim($identification->{$element}) : '';
-			// Hits can be in both defaultClassification and scientificName
-			foreach (['defaultClassification', 'scientificName'] as $category) {
-				$hitPath = 'specimens.matchingIdentifications.' . $category . '.' . $element;
-				// Highlight (assume always LIKE operator for name fields)
-				if (isset($hits[$hitPath])) {
-					$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
+		// Use individual name parts for CRS records! CRS specimens can be identified by not
+		// being aggregated in a set:
+		if (!isset($data['sets'])) {
+			foreach (scientificNameElements() as $i => $element) {
+				$name[$i] = isset($identification->{$element}) && !empty(trim($identification->{$element})) ? 
+					trim($identification->{$element}) : '';
+				// Hits can be in both defaultClassification and scientificName
+				foreach (['defaultClassification', 'scientificName'] as $category) {
+					$hitPath = 'specimens.matchingIdentifications.' . $category . '.' . $element;
+					// Highlight (assume always LIKE operator for name fields)
+					if (isset($hits[$hitPath])) {
+						$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
+					}
+				}
+				// Italics
+				if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 				}
 			}
-			// Italics
-			if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
-				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+		// BRAHMS: generate from fullScientificName
+		} else {
+			// First highlight
+			$name[0] = _highlightMatch($identification->fullScientificName, array_unique(array_values($hits)));
+			foreach (scientificNameElementsInItalics() as $element) {
+				if (isset($identification->{$element}) && !empty(trim($identification->{$element}))) {
+					$name[0] = str_replace($identification->{$element}, 
+						'<span class="scientific">' . $identification->{$element} . '</span>', $name[0]);
+				}
 			}
 		}
+		
 		if (!empty($name)) {
 			// Could also be a hit in fullScientificName; try highlighting
 			if (isset($paths['specimens.matchingIdentifications.scientificName.fullScientificName'])) {

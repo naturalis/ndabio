@@ -267,7 +267,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 }
 
 
-function _buildQuery ($service, $terms = array()) {
+function _buildQuery ($service, $terms = [], $options = []) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	$andOr = 'setAnd';
@@ -285,6 +285,12 @@ function _buildQuery ($service, $terms = array()) {
 		$type = '';
 		$lookupService = $service;
 		$query = new QuerySpec();
+	}
+	// Set QuerySpec options; these must exactly match the methods in QuerySpec
+	foreach ($options as $method => $p) {
+		if (method_exists($query, $method)) {
+			$query->{$method}($p);
+		}
 	}
 	// Logical operator is always AND (form and map are exclusive)
 	$query->setLogicalOperator('AND');
@@ -682,8 +688,9 @@ function _nbaAdvancedSearch () {
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
-		
-		$data = _parseSpecimens(json_decode($remoteData['names.specimens'])); 
+		$data = json_decode($remoteData['names.specimens']); 
+		$data->totalSpecimens = _getTotalSpecimens($services['names.specimens']);
+		$data = _parseSpecimens($data); 
 		$pageBody = _printDebug() . $pageBody. _printSpecimens($data);
 	}
 	
@@ -713,6 +720,25 @@ function _nbaAdvancedSearch () {
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
+
+
+function _getTotalSpecimens ($p) {
+	$client = _initBioPortalClient();
+	$options = [
+		'setConstantScore' => true,
+		'setSize' => 1,
+	];
+	$client
+		->specimen()
+		->setQuerySpec(_buildQuery('specimen', $p, $options)); 
+	$data = json_decode($client->query());
+	_addDebugMessage('total specimens', $client);
+	if (isset($data->totalSize)) {
+		return $data->totalSize;
+	}
+	return null;
+}
+
 
 // Assume data on genus, species, infraspecies can be deduced from data first specimen
 function _setSpecimensAllLink ($row) {

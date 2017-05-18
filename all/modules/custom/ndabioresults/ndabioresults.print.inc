@@ -724,6 +724,7 @@ function printSpecimensByTaxon ($data) {
 
 
 function _printSpecimens ($data) {
+	global $language;
 //p($data);
 	if (empty($data['results'])) {
 		return false;
@@ -781,13 +782,16 @@ function _printSpecimens ($data) {
 			
 	];
 	
-	$count = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
+	$totalSpecies = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
+	$totalSpecimens = _wrap('(' . _formatNumber($data['totalSpecimens']) . ')', "span", "count");
 	
 	$output = '<div id="specimen"></div>';
 	$output .= sprintf(
-		'<h2>%s %s</h2>',
-		t('Species with specimens'),
-		$count
+		'<h2>%s %s %s %s</h2>',
+		($language->language == 'nl' ? 'Soorten' : 'Species'),
+		$totalSpecies,
+		t('with specimens'),
+		$totalSpecimens
 	);
 	$output .= sprintf(
 		'<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self'])
