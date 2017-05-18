@@ -256,7 +256,7 @@ function _getMultimediaUnitId ($row, $hits = []) {
 }
 
 
-function _parseSpecimens ($data) {
+function _parseSpecimens ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
@@ -269,6 +269,7 @@ function _parseSpecimens ($data) {
 	
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
+	$specimenNr = 0;
 	
 	foreach ($data->resultSet as $row) {
 		$d = array();
@@ -281,13 +282,15 @@ function _parseSpecimens ($data) {
 		$d['nameHits'] = $d['nonAcceptedNames'] = [];
 		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $sp) {
+			$specimenNr++;
 			$specimen = $sp->specimenDetails;
 			$s['unitID'] = _setUnitId($specimen->unitID);
 			$s['recordBasis'] = $specimen->recordBasis;
 			$s['kindOfUnit'] = $specimen->kindOfUnit;
 			$s['preparationType'] = $specimen->preparationType;
 			$s['collectionType'] = $specimen->collectionType;
-			$s['url'] = 'specimen/' . urlencode($specimen->unitID);
+			$s['url'] = _setBasePath() . 'specimen/' . urlencode($s['unitID']) . '/' . 
+				http_build_query(_setDetailSearchTerms('names.specimens', $specimenNr));
 			$hits = _getHits('names.specimens', $sp);
 			$s['hits'] = _setNonNameHits('names.specimens', $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
@@ -309,12 +312,15 @@ function _parseSpecimens ($data) {
 		unset($d['nameHits']);
 		$output['results'][] = $d;
 	}
-	
-//p($output);
-	
-	$output['showAll'] = _setBasePath() . 'result/specimen/?' .
-		_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
-	$output['paginator'] = _getPaginator($data);
+	// Show all link
+	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+		$output['showAll'] = _setBasePath() . 'result/specimen/' .
+			_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
+	}
+	// Paginator
+	if (in_array('paginator', $options)) {
+		$output['paginator'] = _getPaginator($service, $output['total']);
+	}
 	return $output;
 }
 
@@ -407,7 +413,7 @@ function _setSpecimenScientificName ($data) {
 			return $name;
 		}
 	}
-	// If we have reached this, we might as well return the first non-accepted name
+	// If we have reached this point, we might as well return the first non-accepted name
 	return array_values($names)[0];
 }
 

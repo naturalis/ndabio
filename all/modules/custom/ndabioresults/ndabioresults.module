@@ -65,10 +65,10 @@ function ndabioresults_menu() {
 	    'access callback' => true,
 	);
 	$items['result/specimen'] = array(
-	  	'page callback' => '_nba_specimen_result_callback',
-	  	'load arguments' => array('%map', '%index'),
-	  	'access callback' => true,
-	  );
+	    'page callback' => '_nba_specimen_result_callback',
+	    'load arguments' => array('%map', '%index'),
+	    'access callback' => true,
+	);
 	$items['taxon'] = array(
 	    'page callback' => '_nba_taxon_callback',
 	    'access callback' => true,
@@ -545,6 +545,51 @@ function _nba_multimedia_result_callback ($search = false) {
 	return _printDebug() . _printMultimedia(_parseMultimedia($data, ['paginator']));
 }
 
+function _nba_specimen_result_callback ($search = false) {
+    $service = 'names.specimens';
+	$client = _initBioPortalClient();
+	
+    $terms = _getQueryTerms($service, $search);
+    
+    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, $pageTitle);   
+    
+    
+    // No search terms; die with grace
+    if (!$terms) {
+    	_printOops();
+    }
+    
+	// Display full set on this page
+	$terms['size'] = maxResults();
+	// Save query
+	_setQueryTerms($service, $terms);
+	
+	// Build query
+	$query = _buildQuery($service, $terms);	
+	
+	// Store query in case user wants to print it on screen
+	_addDebugMessage($service, $query);
+	
+	// Fetch data set
+	$data = json_decode($client->names()->setQuerySpec($query)->query());
+	
+	// We got an error; go oops
+	if (isset($data->exception)) {
+		return _printOops();
+	}
+
+	$data->totalSpecimens = _getTotalSpecimens($terms);
+	$data = _parseSpecimens($data); 
+	
+	
+	
+	return _printDebug() . _printSpecimens($data, ['paginator']);
+}
+
+
 
 function _setLanguage () {
     $langs = language_list(); // Note: No argument
@@ -690,7 +735,7 @@ function _nbaAdvancedSearch () {
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->totalSpecimens = _getTotalSpecimens($services['names.specimens']);
-		$data = _parseSpecimens($data); 
+		$data = _parseSpecimens($data, ['showAll']); 
 		$pageBody = _printDebug() . $pageBody. _printSpecimens($data);
 	}
 	
@@ -773,13 +818,18 @@ function _getSpecimenDetails (&$data) {
 		foreach ($row->item->specimens as $item) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
 			$query = new QuerySpec();
-			$batch[$item->unitID] = $query->addCondition($condition);
+			$query
+				->addCondition($condition)
+				->setConstantScore()
+				->setSize(1);
+			$batch[$item->unitID] = $query;
 			_addDebugMessage('details for ' . $item->unitID, $query);
 		}
 	}
 	// Fetch all specimens at once
 	if (isset($batch)) {
-		$specimens = array_map('json_decode', $client->specimen()->batchQuery($batch));
+		$remoteData = $client->specimen()->batchQuery($batch);
+		$specimens = array_map('json_decode', $remoteData);
 		// Loop again over result and append the fetched specimen details
 		foreach ($data->resultSet as $i => $row) {
 			foreach ($row->item->specimens as $j => $item) {
@@ -790,6 +840,7 @@ function _getSpecimenDetails (&$data) {
 				}
 			}
 		}
+//echo 'errors: ' ; echo count($client->getCurlErrors()); p($client->getCurlErrors());	die();	
 		return $data;
 	}
 	return false;

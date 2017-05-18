@@ -19,7 +19,9 @@ use nl\naturalis\bioportal\Client as Client;
 
 function _initBioPortalClient () {
     $client = new Client();
-    $client->setNbaUrl(nbaBaseUrl());
+    $client
+    	->setNbaUrl(nbaBaseUrl())
+    	->setNbaTimeout(10);
     return $client;
 }
 

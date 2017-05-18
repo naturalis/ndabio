@@ -337,32 +337,41 @@ function _printSpecimenCollection ($row, $i) {
 	$output = '';
 	// Single specimen
 	if (isset($row['specimens'])) {
-		foreach ($row['specimens'] as $specimen) {
-			$info = implode('; ', array_filter(array(
-					ucfirst($specimen['kindOfUnit']),
-					$specimen['preparationType']
-			)));
-			$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td><a href='" .
-			$specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>" .
-			"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td></tr>";
+		foreach ($row['specimens'] as $j => $specimen) {
+			$info = implode('; ', array_filter([
+				ucfirst($specimen['kindOfUnit']),
+				$specimen['preparationType']
+			]));
+			$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
+				"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
+				"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
+				"</tr>\n";
+			if (!empty($specimen['hits'])) {
+				$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
+					"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
+			}
 		}
 		
 		// Specimen collection/set
 	} else if (isset($row['sets'])) {
 		foreach ($row['sets'] as $set => $specimens) {
 			$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
-			$set . "</td>" . padTds(4) . "</tr>";
+				$set . "</td>" . padTds(4) . "</tr>";
 			foreach ($specimens as $j => $specimen) {
-				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>"
-				. "<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-				"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>";
+				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" . 
+					"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+					"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+				if (!empty($specimen['hits'])) {
+					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>\n" .
+						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
+				}
 			}
 		}
 	}
 	if (!empty($row['allLink'])) {
 		$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
 		'<a href="' . $row['allLink'] . '">' . t('All') . ' ' .
-		$row['count'] . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>";
+		$row['count'] . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>\n";
 	}
 	return $output;
 }
@@ -378,6 +387,23 @@ function _printNoResults () {
 
 
 
+/**
+ * Prints hits (matched results) as field: hits
+ *
+ * Replaces default <span> with <span class="result-query">
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
+function _printHits ($row) {
+	$output = '';
+	if (isset($row['hits']) && !empty($row['hits'])) {
+		foreach ($row['hits'] as $field => $hit) {
+			$output .= ucfirst(translateNdaField($field)) . ': ' . $hit . '; ';
+		}
+	}
+	return !empty($output) ? substr($output, 0, -2) : null;
+}
 
 
 
