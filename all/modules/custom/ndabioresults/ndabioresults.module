@@ -582,11 +582,8 @@ function _nba_specimen_result_callback ($search = false) {
 	}
 
 	$data->totalSpecimens = _getTotalSpecimens($terms);
-	$data = _parseSpecimens($data); 
-	
-	
-	
-	return _printDebug() . _printSpecimens($data, ['paginator']);
+	$data = _parseSpecimens($data, ['paginator']); 
+	return _printDebug() . _printSpecimens($data);
 }
 
 

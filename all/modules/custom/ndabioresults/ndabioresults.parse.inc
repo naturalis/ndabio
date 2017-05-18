@@ -319,7 +319,7 @@ function _parseSpecimens ($data, $options = []) {
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
-		$output['paginator'] = _getPaginator($service, $output['total']);
+		$output['paginator'] = _getPaginator('names.specimens', $output['total']);
 	}
 	return $output;
 }
