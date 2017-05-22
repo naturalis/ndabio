@@ -376,6 +376,8 @@ function _printSpecimenCollection ($row, $i) {
 	return $output;
 }
 
+
+
 /** Prints no result message
  *
  * @return string Translated string with url back to form
@@ -858,6 +860,112 @@ function _printSpecimens ($data) {
 	return $output;
 }
 
+
+function _printSpecimensTaxon ($data) {
+//p($data);
+	if (empty($data['results'])) {
+		return false;
+	}
+	// Drupal title empty; page title custom
+	$headTitle = t('Search results');
+	$nameSortFlag = 'identifications.scientificName.fullScientificName';
+	setTitle($headTitle, $headTitle);
+	
+	$headers = [
+		'identifications.scientificName.fullScientificName' => array(
+			'label' => t('Name'),
+			'sort' => 'ASC',
+			'icon' => array(
+				'ASC' => 'icon-sort_a_z',
+				'DESC' => 'icon-sort_z_a'
+			),
+			'url' => setSortUrl(
+				$nameSortFlag,
+				'ASC',
+				$data['self'],
+				false
+			)
+		),
+		'count' => array(
+			'label' => ''
+		),
+		'mapIcon' => array(
+			'label' => ''
+		),
+		'foundIn' => array(
+			'label' => t('Found in')
+		),
+/*
+		'_score' => array(
+			'label' => t('Match'),
+			'sort' => 'DESC',
+			'icon' => array(
+				'ASC' => 'icon-sort_little_much',
+				'DESC' => 'icon-sort_much_little'
+			),
+			'url' => setSortUrl(
+				'_score',
+				'DESC',
+				$data['self'],
+				false
+			 )
+		)
+*/
+			
+	];
+	
+	$totalSpecimens = _wrap('(' . _formatNumber($data['results'][0]['count']) . ')', "span", "count");
+	
+	$output = '<div id="specimen"></div>';
+	$output .= sprintf(
+		'<h2>%s %s %s</h2>',
+		ucfirst(t('specimens of ')),
+		str_replace('class="result-query"', '', $data['results'][0]['fullScientificName']),
+		$totalSpecimens
+	);
+	$output .= sprintf(
+		'<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self'])
+	);
+	
+	foreach ($data['results'] as $i => $row) {
+		// Single specimen
+		if (isset($row['specimens'])) {
+			foreach ($row['specimens'] as $j => $specimen) {
+				$info = implode('; ', array_filter([
+					ucfirst($specimen['kindOfUnit']),
+					$specimen['preparationType']
+				]));
+				$output .= "<tr>\n" .
+					"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
+					"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
+					"</tr>\n";
+				if (!empty($specimen['hits'])) {
+					$output .= "<tr>\n" .
+						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
+				}
+			}
+		// Specimen collection/set
+		} else if (isset($row['sets'])) {
+			foreach ($row['sets'] as $set => $specimens) {
+				$output .= "<tr><td>" . $set . "</td>" . padTds(4) . "</tr>";
+				foreach ($specimens as $j => $specimen) {
+					$output .= "<tr class='indent-1'>" . 
+						"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+					if (!empty($specimen['hits'])) {
+						$output .= "<tr class='indent-1'>\n" ."<td colspan='4'>" . _printHits($specimen) . 
+							"</td>\n</tr>\n";
+					}
+				}
+			}
+		}
+	}
+	
+	$output .= "</table>";
+	$output .= _printPaginator($data);
+	
+	return $output;
+}
 
 
 

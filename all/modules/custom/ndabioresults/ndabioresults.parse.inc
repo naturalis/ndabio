@@ -306,7 +306,8 @@ function _parseSpecimens ($data, $options = []) {
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
-			_setSpecimensAllLink($row) : '';
+			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
+			http_build_query(_getStoredQueryTerms('names.specimens')) : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
