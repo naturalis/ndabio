@@ -810,19 +810,16 @@ function _printSpecimens ($data) {
 			
 	];
 	
-	$totalSpecies = _wrap('(' . _formatNumber($data['total']) . ')', "span", "count");
-	$totalSpecimens = _wrap('(' . _formatNumber($data['totalSpecimens']) . ')', "span", "count");
-	
 	$output = '<div id="specimen"></div>';
 	$output .= sprintf(
 		'<h2>%s %s %s %s</h2>',
 		($language->language == 'nl' ? 'Soorten' : 'Species'),
-		$totalSpecies,
+		_wrap('(' . _formatNumber($data['total']) . ')', "span", "count"),
 		t('with specimens'),
-		$totalSpecimens
+		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
 	);
 	$output .= sprintf(
-		'<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self'])
+		'<table id="specimensByTaxon"><thead>%s</thead>', _printHeaders($headers, $data['self'])
 	);
 	
 	foreach ($data['results'] as $i => $row) {
@@ -914,17 +911,15 @@ function _printSpecimensTaxon ($data) {
 			
 	];
 	
-	$totalSpecimens = _wrap('(' . _formatNumber($data['results'][0]['count']) . ')', "span", "count");
-	
 	$output = '<div id="specimen"></div>';
 	$output .= sprintf(
 		'<h2>%s %s %s</h2>',
 		ucfirst(t('specimens of ')),
 		str_replace('class="result-query"', '', $data['results'][0]['fullScientificName']),
-		$totalSpecimens
+		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
 	);
 	$output .= sprintf(
-		'<table id="specimensByTaxon"><thead>%s</thead>', printHeaders($headers, $data['self'])
+		'<table id="specimensBySingleTaxon"><thead>%s</thead>', _printHeaders($headers, $data['self'])
 	);
 	
 	foreach ($data['results'] as $i => $row) {
@@ -949,11 +944,11 @@ function _printSpecimensTaxon ($data) {
 			foreach ($row['sets'] as $set => $specimens) {
 				$output .= "<tr><td>" . $set . "</td>" . padTds(4) . "</tr>";
 				foreach ($specimens as $j => $specimen) {
-					$output .= "<tr class='indent-1'>" . 
-						"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+					$output .= "<tr class='indent'>" . 
+						"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
 						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
 					if (!empty($specimen['hits'])) {
-						$output .= "<tr class='indent-1'>\n" ."<td colspan='4'>" . _printHits($specimen) . 
+						$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . _printHits($specimen) . 
 							"</td>\n</tr>\n";
 					}
 				}
@@ -1697,7 +1692,7 @@ function printHits ($row) {
  * @param array $self Self link
  * @return string Formatted output
  */
-function printHeaders ($headers, $self) {
+function _printHeaders ($headers, $self) {
 	$output = "<tr>";
 
     $i = 0;

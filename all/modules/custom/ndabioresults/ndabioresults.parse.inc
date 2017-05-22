@@ -43,7 +43,8 @@ function _parseMultimedia ($data, $options = []) {
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
-		$output['paginator'] = _getPaginator($service, $output['total']);
+		$output['paginator'] = 
+			_getPaginator($service, _getTotalRows($data), _getOffset($service));
 	}
 	
 //p($output);	
@@ -261,8 +262,7 @@ function _parseSpecimens ($data, $options = []) {
 		return false;
 	}
 	
-	$output['total'] = _getTotalRows($data);
-	$output['totalSpecimens'] = $data->totalSpecimens;
+	$output['total'] = $data->totalSize;
 	_getSpecimenDetails($data);
 
 //p($data);
@@ -313,6 +313,14 @@ function _parseSpecimens ($data, $options = []) {
 		unset($d['nameHits']);
 		$output['results'][] = $d;
 	}
+	
+	$output['specimensTotal'] = isset($data->specimensTotal) ? 
+		$data->specimensTotal : $output['results'][0]['count'];
+	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
+		$data->totalSize : $output['results'][0]['count'];
+	$output['from'] = isset($data->specimensFrom) ? 
+		$data->specimensFrom : _getOffset('names.specimens');
+	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
@@ -320,7 +328,8 @@ function _parseSpecimens ($data, $options = []) {
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
-		$output['paginator'] = _getPaginator('names.specimens', $output['total']);
+		$output['paginator'] = 
+			_getPaginator('names.specimens', $output['paginatorTotal'], $output['from']);
 	}
 	return $output;
 }

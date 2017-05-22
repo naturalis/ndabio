@@ -586,7 +586,7 @@ function _nba_specimen_result_callback ($search = false) {
 		return _printOops();
 	}
 
-	$data->totalSpecimens = _getTotalSpecimens($terms);
+	$data->specimensTotal = _getSpecimensTotal($terms);
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimens($data);
 }
@@ -596,6 +596,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
+    $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     unset($terms['size'], $terms['from']);
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
@@ -617,7 +618,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$query = _buildQuery($service, $terms);	
 	$query
 		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
-		->setSpecimensFrom(0)
+		->setSpecimensFrom($specimensFrom)
 		->setSpecimensSize(maxResults())
 	;
 //die($query->getQuerySpec(true));
@@ -633,7 +634,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 		return _printOops();
 	}
 
-	$data->totalSpecimens = _getTotalSpecimens($terms);
+	$data->specimensFrom = $specimensFrom;
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimensTaxon($data);
 }
@@ -783,7 +784,7 @@ function _nbaAdvancedSearch () {
 	
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
-		$data->totalSpecimens = _getTotalSpecimens($services['names.specimens']);
+		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
 		$data = _parseSpecimens($data, ['showAll']); 
 		$pageBody = _printDebug() . $pageBody. _printSpecimens($data);
 	}
@@ -816,21 +817,26 @@ function _nbaAdvancedSearch () {
 }
 
 
-function _getTotalSpecimens ($p) {
+function _getSpecimensTotal ($terms) {
 	$client = _initBioPortalClient();
+	foreach (['size', 'from'] as $p) {
+		if (isset($terms[$p])) {
+			unset($terms[$p]);
+		}
+	}
 	$options = [
 		'setConstantScore' => true,
 		'setSize' => 1,
 	];
 	$client
 		->specimen()
-		->setQuerySpec(_buildQuery('specimen', $p, $options)); 
+		->setQuerySpec(_buildQuery('specimen', $terms, $options)); 
 	$data = json_decode($client->query());
 	_addDebugMessage('total specimens', $client);
 	if (isset($data->totalSize)) {
 		return $data->totalSize;
 	}
-	return null;
+	return -1;
 }
 
 
@@ -966,25 +972,10 @@ function _getQueryPaths ($service) {
 		$_SESSION['nbaQuery'][$service]['paths']: false;
 }
 
-function _getPaginator ($service, $total) {
-	$paginator = new Paginator(
-		$total,
-		maxResults(),
-		_setPaginatorCurrentPage($service),
-		_setPaginatorUrl($service)
-	);
+function _getPaginator ($service, $total, $from) {
+	$offset = $from / maxResults() + 1;
+	$paginator = new Paginator($total, maxResults(), $offset, _setPaginatorUrl());
 	return $paginator->toHtml();
-}
-
-
-/**
- * Sets current page number for paginator
- *
- * @param boolean $groupResult Regular or grouped service?
- * @return int Current page number dependent of grouped or not
- */
-function _setPaginatorCurrentPage ($service) {
-    return _getOffset($service) / maxResults() + 1;
 }
 
 /**
@@ -997,7 +988,7 @@ function _setPaginatorCurrentPage ($service) {
  * @param boolean $groupResult
  * @return string Url
  */
-function _setPaginatorUrl ($service) {
+function _setPaginatorUrl () {
 	// Strip off the from component of the url
     $search = basename(_setBasePath() . current_path());
     safe_parse_str($search, $p);
