@@ -7,7 +7,7 @@ function _parseMultimedia ($data, $options = []) {
 	
 	$service = 'multimedia';
 	$output['total'] = _getTotalRows($data);
-
+	
 //p($data);
 	
 	foreach ($data->resultSet as $i => $row) {
@@ -180,7 +180,10 @@ function _getTaxonUrl ($object, $checkNba = true) {
 
 function _setDetailSearchTerms ($service, $i) {
 	$from = (int) _getStoredQueryTerms($service)['from'];
-	$terms = _getServiceSearchTerms($service);
+	$terms = _getQueryTerms($service);
+	if (isset($terms['size'])) {
+		unset($terms['size']);
+	}
 	$terms['from'] = $from + $i == 0 ? 0 : $from + $i - 1;
 	return $terms;
 }
@@ -269,8 +272,6 @@ function _parseSpecimens ($data, $options = []) {
 	
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
-	$specimenNr = 0;
-	
 	foreach ($data->resultSet as $row) {
 		$d = array();
 		// to do: add highlighting, author, italics
@@ -282,7 +283,6 @@ function _parseSpecimens ($data, $options = []) {
 		$d['nameHits'] = $d['nonAcceptedNames'] = [];
 		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $sp) {
-			$specimenNr++;
 			$specimen = $sp->specimenDetails;
 			$s['unitID'] = _setUnitId($specimen->unitID);
 			$s['recordBasis'] = $specimen->recordBasis;
@@ -290,7 +290,8 @@ function _parseSpecimens ($data, $options = []) {
 			$s['preparationType'] = $specimen->preparationType;
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($s['unitID']) . '/' . 
-				http_build_query(_setDetailSearchTerms('names.specimens', $specimenNr));
+				urlencode($row->item->name) . '/' .
+				http_build_query(_setDetailSearchTerms('names.specimens', $i));
 			$hits = _getHits('names.specimens', $sp);
 			$s['hits'] = _setNonNameHits('names.specimens', $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
@@ -299,8 +300,6 @@ function _parseSpecimens ($data, $options = []) {
 				$d['nonAcceptedNames'] = 
 					_appendNonAcceptedNames($d['nonAcceptedNames'], $sp, $row->item->name);
 			}
-			//$s['score'] = 0;
-			
 			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
 				$d['sets'][_formatAssemblyId($specimen->assemblageID)][] = $s;
 		}

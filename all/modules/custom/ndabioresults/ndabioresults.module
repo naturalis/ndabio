@@ -78,6 +78,10 @@ function ndabioresults_menu() {
 	    'page callback' => '_nba_taxon_callback',
 	    'access callback' => true,
 	  );
+	$items['specimen'] = array(
+	    'page callback' => '_nba_specimen_callback',
+	    'access callback' => true,
+	  );
 	$items['multimedia'] = array(
 		'page callback' => '_nba_multimedia_callback',
 		'access callback' => true,
@@ -91,6 +95,67 @@ function ndabioresults_menu() {
 /*
  * Aanpassen: geen souceSystemID maar id!!
  */
+
+function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $search = false) {
+	// Test if anything has been posted; if not return with error message
+	if (!$id) {
+		return _printOops();
+	}
+	
+	$service = 'names.specimens';
+	$client = _initBioPortalClient();
+	
+	// Only id is set: fetch data
+	if (!$scientificNameGroup && !$search) {
+		$result = new stdClass();
+		// Build query
+		$condition = new Condition('specimens.unitID', 'EQUALS', $id);
+		$query = new ScientificNameGroupQuerySpec();
+		$query->addCondition($condition);
+
+		_addDebugMessage('single item', $query);
+		$data = json_decode($client->names()->setQuerySpec($query)->query());
+		if (isset($data->exception)) {
+			return _printOops();
+		}
+		$data = $data->resultSet[0]->item;
+		
+	// Search pattern included: fetch navigation
+	} else {
+		$terms = _getQueryTerms($service, $search);		
+		$terms['size'] = 3;		
+
+		$query = _buildQuery($service, $terms);
+		_addDebugMessage('previous, current and next item', $query);
+		
+		$set = json_decode($client->names()->setQuerySpec($query)->query());
+p($set);
+		
+		// We got an error; go oops
+		if (isset($set->exception)) {
+			return _printOops();
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _setDetailPageNavigation($service, $search, $set, $id, $terms['from']);
+	}
+	
+	_setMultimediaAssociatedObject($data);
+	
+	if (isset($data->associatedTaxon)) {
+		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
+	}
+	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
+}
+
+
+
+
+
+
+
+
+
+
 
 
 function _nba_multimedia_callback ($id = false, $search = false) {
@@ -953,6 +1018,8 @@ function _getSearchTerms (array $terms) {
 	return !empty($terms) ? $terms : false;
 }
 
+
+/*
 function _getServiceSearchTerms ($service) {
 	if (isset($_SESSION['nbaQuery'][$service]['terms'])) {
 		$terms = $_SESSION['nbaQuery'][$service]['terms'];
@@ -965,7 +1032,7 @@ function _getServiceSearchTerms ($service) {
     }
     return false;
 }
-
+*/
 
 function _getQueryPaths ($service) {
 	return isset($_SESSION['nbaQuery'][$service]['paths']) ?
