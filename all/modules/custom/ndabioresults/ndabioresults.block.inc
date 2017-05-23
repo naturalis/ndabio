@@ -104,7 +104,8 @@ function ndabioresults_block_view($delta = '') {
     	count($pathComponents) == 3) {
     	safe_parse_str($pathComponents[2], $p);
     	$from = isset($p['from']) ? $p['from'] : 0;
-		$href = _setDetailPageBackLink($pathComponents[0], $pathComponents[2], $from);  
+    	$function = '_set' . ucfirst($pathComponents[0]) . 'DetailPageBackLink';
+		$href = $function($pathComponents[2], $from);  
 		$output .= '<a href="' . $href . '">' . $icon . t('Back to search results') . '</a>';
     
     // Fallback

@@ -91,6 +91,52 @@ function _parseSpecimenMediaDetail ($data) {
 
 
 
+function _parseSpecimenDetail ($data) {
+	
+	if (!isset($data->id)) {
+		return false;
+	}
+	p($data);
+
+    $skipFields = array(
+        'objectPublic',
+	    'sourceSystemId',
+        'sourceID',
+	    'owner',
+	    'title',
+	    'multiMediaPublic',
+	    'licenseType',
+	    'license',
+	    'assemblyID',
+	    'collectionType'
+		// etc
+	);
+
+	foreach ((array) $data as $field => $value) {
+		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
+			$output[$field] = _setUnitId($value, $field);
+		}
+	}
+	
+p($output);	
+	
+	
+	//$output['assemblageID'] = $data->assemblageID;
+	//$output['collectionType'] = $data->collectionType;
+	$output['source'] = isset($data->sourceSystem) ? $data->sourceSystem->name : null;
+	$output['names'] = getSpecimenNames($data->searchResults[0], array('links' => $data->links));
+	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
+	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
+	$output['license'] = $data->searchResults[0]->result->license;
+	$output['otherSpecimens'] = getOtherSpecimens($data);
+	$output['navigation'] = getNavigation($data);
+
+	return $output;
+}
+
+
+
+
 /**
  * Parses taxon media detail json to PHP array
  *
