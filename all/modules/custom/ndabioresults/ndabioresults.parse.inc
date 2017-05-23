@@ -179,10 +179,14 @@ function _getTaxonUrl ($object, $checkNba = true) {
 
 function _setDetailSearchTerms ($service, $i) {
 	$from = (int) _getStoredQueryTerms($service)['from'];
-	$terms = _getServiceSearchTerms($service);
+	$terms = _getQueryTerms($service);
+	if (isset($terms['size'])) {
+		unset($terms['size']);
+	}
 	$terms['from'] = $from + $i == 0 ? 0 : $from + $i - 1;
 	return $terms;
 }
+
 
 function _setMultimediaHits ($hits = []) {
 	foreach ($hits as $path => $hit) {
