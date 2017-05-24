@@ -860,10 +860,12 @@ function _getTaxonFromNba ($taxon) {
 		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
 		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
 			(count($p) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
-			(count($p) == 2 ? null : $p[2]));
+			(count($p) == 2 ? null : implode(' ', array_slice($p, 2))));
 	}
 	$query = new ScientificNameGroupQuerySpec();
-	$query->addCondition($c);
+	$query
+		->addCondition($c)
+		->setConstantScore();
 	_addDebugMessage($taxon . ' exists in NBA', $query);
     $data = json_decode($client->names()->setQuerySpec($query)->query());
 	return isset($data->resultSet) ? $data->resultSet : false;
@@ -917,7 +919,7 @@ function _nbaAdvancedSearch () {
         }
     }
 
-    $pageHeader = '';    
+    $pageHeader = _printDebug();    
     if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
         $area = (!empty($_SESSION['ndaSearch']['location']) ?
             $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
@@ -936,14 +938,13 @@ function _nbaAdvancedSearch () {
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
 		$data = _parseMultimedia(json_decode($remoteData['multimedia']), ['showAll']);
-		$pageBody = _printDebug() . $pageBody . _printMultimedia($data);
+		$pageBody .= _printMultimedia($data);
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
-		$data = _parseSpecimens($data, ['showAll']); 
-		$pageBody = _printDebug() . $pageBody. _printSpecimens($data);
+		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
@@ -1275,7 +1276,7 @@ function _nbaSimpleSearch ($term) {
             );
     };
     
-    //$services['names.specimens'] = $p;
+    $services['names.specimens'] = $p;
     $services['multimedia'] = $p;
     
     // Get json response for each service that provides search parameters
@@ -1306,8 +1307,9 @@ function _nbaSimpleSearch ($term) {
 	}
 	
 	if (!empty($remoteData['names.specimens'])) {
-		$data = _enrichSpecimenData(json_decode($remoteData['names.specimens'])); 
-		$pageBody .= _printSpecimens(_parseSpecimens($data));
+		$data = json_decode($remoteData['names.specimens']); 
+		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {

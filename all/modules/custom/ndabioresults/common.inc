@@ -200,8 +200,8 @@ function _initDebug () {
 	$_SESSION['nbaDebug'] = null;
 }
 
-function _addDebugMessage ($service = false, $message = false) {
-	if ($service && $message) {
+function _addDebugMessage ($title = false, $message = false) {
+	if ($title && $message) {
 		// QuerySpec/Client is passed; use ->getQuerySpec()
 		if (is_object($message) && method_exists($message, 'getQuerySpec')) {
 			if (nbaDebugEncoded() == 1) {
@@ -211,7 +211,7 @@ function _addDebugMessage ($service = false, $message = false) {
 			}
 		}
 		// String is passed
-		$_SESSION['nbaDebug'][$service] = $message;
+		$_SESSION['nbaDebug'][$title] = $message;
 	}
 }
 
@@ -233,7 +233,7 @@ function _getDebug () {
 function _sortArrayByArray ($array, $orderArray) {
     $ordered = array();
     foreach ($orderArray as $key) {
-        if (array_key_exists($key,$array)) {
+        if (array_key_exists($key, $array)) {
             $ordered[$key] = $array[$key];
             unset($array[$key]);
         }

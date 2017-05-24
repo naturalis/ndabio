@@ -1072,7 +1072,7 @@ function _printSpecimens ($data) {
 	}
 	
 	$output .= "</table>";
-	$output = _markUp($output);
+	//$output = _markUp($output);
 	
 	$output .= _printShowAll($data);
 	$output .= _printPaginator($data);
@@ -2044,14 +2044,14 @@ function _printDebug () {
 					jQuery(this).text((jQuery(this).text() == 'hide') ? 'show' : 'hide');
 				}); 
 			});",
-	        array('type' => 'inline', 'scope' => 'footer')
+	        ['type' => 'inline', 'scope' => 'footer']
 	    );
     	$output = '<div id="nba-debug" style="padding: 20px; margin-top: 10px; border: 3px solid red;">
 			<span style="font-weight:bold;">NBA query</span>
 			[<span id="nba-debug-link" style="color: #009ee0; cursor: pointer;">show</span>] 
 			<div id="nba-debug-query" style="margin-top: 10px; font-size: 13px; display: none;">';
-        foreach  (_getDebug() as $service => $query) {
-        	$output .= "<div style='font-weight:bold; margin: 10px 0;'>" . ucfirst($service) . ":</div>
+        foreach  (_getDebug() as $title => $query) {
+        	$output .= "<div style='font-weight:bold; margin: 10px 0;'>" . ucfirst($title) . ":</div>
 				<pre style='overflow: hidden;'>$query</pre>";
         }
         return $output . '</div></div>';
