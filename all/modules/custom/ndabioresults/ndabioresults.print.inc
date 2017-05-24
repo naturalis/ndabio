@@ -94,7 +94,8 @@ function _printSpecimenDetail ($data) {
 	// Reorder input array
 	$data = _sortArrayByArray($data, $fieldOrder);
 
-	$output  = _wrap( t("Specimen")   , "div", "category");
+	$output = _printDebug();
+	$output .= _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
     $output .= _printPreviousNext([
     	'total' => $data['totalSize'], 
@@ -424,9 +425,13 @@ function _printTaxonMediaDetail ($data) {
 
 
 function _printPreviousNext ($p) {
-	$previousUrl = isset($p['previousUrl']) ? $p['previousUrl'] : null;
-	$nextUrl = isset($p['nextUrl']) ? $p['nextUrl'] : null;
-	$backUrl = isset($p['backUrl']) ? $p['backUrl'] : null;
+	$previousUrl = isset($p['previousUrl']) ? $p['previousUrl'] : false;
+	$nextUrl = isset($p['nextUrl']) ? $p['nextUrl'] : false;
+	$backUrl = isset($p['backUrl']) ? $p['backUrl'] : false;
+	
+	if (!$previousUrl && !$nextUrl && !$backUrl) {
+		return null;
+	}
 	
     $output = '<div class="fornext-bar"><ul>' .
 		'<li>' . sprintf(t('%s of %s'), _formatNumber($p['offset']), _formatNumber($p['total'])) . '</li>';

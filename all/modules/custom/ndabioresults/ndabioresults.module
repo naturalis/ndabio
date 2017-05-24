@@ -1450,13 +1450,18 @@ function nbaSimpleSearch () {
  * Add an extra class to the body to trigger CSS styles
  *
  */
-function ndabioresults_preprocess_html(&$vars){
+function ndabioresults_preprocess_html (&$vars) {
+	/*
     if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
         $vars['classes_array'][] = "nba-result-detail";
     }
+    */
+	$pathComponents = explode('/', current_path());
+    if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
+	    $vars['classes_array'][] = 'nba-result-detail';
+    }
     if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
- 	    $pathComponents = explode('/', current_path());
-	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
+ 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
         	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
 		    $vars['classes_array'][] = 'page-nba-result';
 	    }
@@ -1477,7 +1482,7 @@ function _getOtherSpecimens ($data) {
 		$query
 			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
 			->setConstantScore();
-		_addDebugMessage('other specimens in assembly', $query);
+		_addDebugMessage('other specimens in assemblage', $query);
 		$result = json_decode($client->specimen()->setQuerySpec($query)->query());
 		if ($result && $result->totalSize > 1) {
 			foreach ($result->resultSet as $specimen) {
