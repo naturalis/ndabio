@@ -80,6 +80,7 @@ function _getDistinctValues ($service, $nbaPath) {
     return $values;
 }
 
+
 /**
  * Converts timestamp in milliseconds to year-month-day
  *
@@ -181,7 +182,7 @@ function _wrap ($input, $tag = "div", $class = ""){
 	return "<$tag$class>$input</$tag>";
 }
 
-function array_column_recursive (array $haystack, $needle) {
+function _arrayColumnRecursive (array $haystack, $needle) {
     $found = [];
     array_walk_recursive($haystack, function($value, $key) use (&$found, $needle) {
         if ($key == $needle)
@@ -217,6 +218,29 @@ function _addDebugMessage ($service = false, $message = false) {
 function _getDebug () {
 	return $_SESSION['nbaDebug'];
 }
+
+
+
+/**
+ * Sorts associative array based on another associative array
+ *
+ * From http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
+ *
+ * @param array $array
+ * @param array $orderArray
+ * @return array
+ */
+function _sortArrayByArray ($array, $orderArray) {
+    $ordered = array();
+    foreach ($orderArray as $key) {
+        if (array_key_exists($key,$array)) {
+            $ordered[$key] = $array[$key];
+            unset($array[$key]);
+        }
+    }
+    return $ordered + $array;
+}
+
 
 /**
  * Validates json

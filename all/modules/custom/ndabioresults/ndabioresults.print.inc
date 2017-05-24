@@ -5,23 +5,23 @@ function _printSpecimenDetail ($data) {
 
 //p($data);
 
-    // Do we have a valid set of coordinates? If so, add Google Map
-    $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
-        $data['gatheringEvent']['siteCoordinates']['lat'] : false;
-    $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
-        $data['gatheringEvent']['siteCoordinates']['lon'] : false;
-
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         array('type' => 'inline', 'scope' => 'footer')
     );
+
+// Do we have a valid set of coordinates? If so, add Google Map
+    $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
+        $data['gatheringEvent']['siteCoordinates']['lat'] : false;
+    $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
+        $data['gatheringEvent']['siteCoordinates']['lon'] : false;
 
     if ($lat && $lon) {
         // Add Google Maps scripts from ndabio module (REQUIRED!)
         global $base_root, $base_path;
         $path = drupal_get_path('module', 'ndabio');
         drupal_add_css($path . "/css/ndabio_style.css");
-        drupal_add_js($path . "/js/map.js", array('weight' => 1));
+        drupal_add_js($path . "/js/map.js", ['weight' => 1]);
         drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
             variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
         drupal_add_js(
@@ -30,7 +30,7 @@ function _printSpecimenDetail ($data) {
         );
         drupal_add_js("var str_base_path = '$base_path' ", 'inline');
         drupal_add_js("var specimenMarker = " .
-            json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
+            json_encode(['lat' => $lat, 'lon' => $lon]), 'inline');
         if (isset($_SESSION['ndaSearch']['mapCenter'])) {
             drupal_add_js('var storedMapCenter = "' .
                 $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
@@ -41,19 +41,19 @@ function _printSpecimenDetail ($data) {
         }
         // Add mapcode scripts
         $path = drupal_get_path('module', 'ndabioresults');
-        drupal_add_js($path . "/js/mapcode/ctrynams.js", array('weight' => 1));
-        drupal_add_js($path . "/js/mapcode/mapcode.js", array('weight' => 1));
-        drupal_add_js($path . "/js/mapcode/ndata.js", array('weight' => 1));
-        drupal_add_js($path . "/js/library.js", array('weight' => 1));
+        drupal_add_js($path . "/js/mapcode/ctrynams.js", ['weight' => 1]);
+        drupal_add_js($path . "/js/mapcode/mapcode.js", ['weight' => 1]);
+        drupal_add_js($path . "/js/mapcode/ndata.js", ['weight' => 1]);
+        drupal_add_js($path . "/js/library.js", ['weight' => 1]);
         drupal_add_js(
             "jQuery(function() { setMapcode(); });",
-            array('type' => 'inline', 'scope' => 'footer')
+            ['type' => 'inline', 'scope' => 'footer']
         );
     }
 
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
-	$hideFields = array(
+	$hideFields = [
         'vernaculars',
     	'recordURI',
     	'unitGUID',
@@ -62,9 +62,17 @@ function _printSpecimenDetail ($data) {
     	'fromCaptivity',
     	'acquiredFrom',
     	'otherSpecimensInAssemblage',
-    	'associatedTaxa'
-	);
-	$fieldOrder = array(
+    	'associatedTaxa',
+		'id',
+		'totalSize',
+		'offset',
+		'previousUrl', 
+    	'nextUrl',
+		'backUrl',
+		'multimedia',
+		'scientificNameGroup'
+	];
+	$fieldOrder = [
         'names',
         'unitID',
         'source',
@@ -82,13 +90,20 @@ function _printSpecimenDetail ($data) {
         'gatheringEvent',
         'collectorsFieldNumber'
 		// etc
-	);
+	];
 	// Reorder input array
-	$data = array_merge(array_flip($fieldOrder), $data);
+	$data = _sortArrayByArray($data, $fieldOrder);
 
 	$output  = _wrap( t("Specimen")   , "div", "category");
 	$output .= _wrap( $data['unitID'] , "h2"  );
-
+    $output .= _printPreviousNext([
+    	'total' => $data['totalSize'], 
+    	'offset' => $data['offset'], 
+    	'previousUrl' => $data['previousUrl'], 
+    	'nextUrl' => $data['nextUrl'],
+    	'backUrl' => $data['backUrl'],
+    ]);
+	
 	if (!empty($data['unitGUID'])) {
     	$purl = '<input id="purl" type="text" value="' . $data['unitGUID'] . '"></input>';
     	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
@@ -110,20 +125,20 @@ function _printSpecimenDetail ($data) {
 		if (is_array($value)) {
 			// Taxon name
 			if ($field == 'names') {
-				$output .= printNamesWithLinks($value, 'Scientific name');
+				$output .= _printNamesWithLinks($value, 'Scientific name');
 			}
 			if ($field == 'vernaculars') {
-				$output .= printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
+				$output .= _printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
 			}
 
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= printDL(ucfirst(translateNdaField('dateTimeBegin')),
-                    printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : ''));
-			    $output .= printDL(ucfirst(translateNdaField('gatheringAgents')),
-			        printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
-			    $output .= printDL(ucfirst(translateNdaField('localityText')),
-                    printValue(isset($value['localityText']) ? $value['localityText'] : ''));
+                $output .= _printDL(ucfirst(_translateNdaField('dateTimeBegin')),
+                    _printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : ''));
+			    $output .= _printDL(ucfirst(_translateNdaField('gatheringAgents')),
+			        _printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
+			    $output .= _printDL(ucfirst(_translateNdaField('localityText')),
+                    _printValue(isset($value['localityText']) ? $value['localityText'] : ''));
 
 			    $coordinates = isset($value['siteCoordinates']) && !empty($value['siteCoordinates']) ?
                     decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
@@ -131,16 +146,16 @@ function _printSpecimenDetail ($data) {
                         $value['siteCoordinates']['lon'] . ')' :
                         '';
 
-                $output .= printDL(ucfirst(translateNdaField('siteCoordinates')), printValue($coordinates));
+                $output .= _printDL(ucfirst(_translateNdaField('siteCoordinates')), _printValue($coordinates));
                 if (!empty($coordinates)) {
                     $output .= '<dl><dt>Mapcode(s)</dt><dd id="mapcode"></dd></dl>';
                 }
 			}
 
 		} else {
-		    $output .= printDL(
-                ucfirst(translateNdaField($field)),
-		        is_array($value) ? implode(', ', $value) : printValue($value)
+		    $output .= _printDL(
+                ucfirst(_translateNdaField($field)),
+		        is_array($value) ? implode(', ', $value) : _printValue($value)
 		    );
 		}
 	}
@@ -148,12 +163,12 @@ function _printSpecimenDetail ($data) {
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
 		$output .= "</div>" .
 			"<div class='property-list'>";
-		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
+		$output .= _printNamesWithLinks($data['otherSpecimens'], 'other');
 	}
 	$output .= "</div>";
 
 	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
-
+/*
     $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
         '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
 
@@ -163,15 +178,64 @@ function _printSpecimenDetail ($data) {
         "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
         array('type' => 'inline', 'scope' => 'footer')
     );
-    $output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia"></p>';
+*/
+	if (!empty($data['multimedia'])) {
+    	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
+    		_printSpecimenMultimedia($data['multimedia']) . "</p>\n";
+	}
 
-    setTitle(t('Specimen') . ' | ' .
-        strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
+    _setTitle(t('Specimen') . ' | ' .
+        strip_tags($data['names'][0]['name']) . ' | ' . $data['unitID']);
 
 	return $output;
 }
 
+	
+	
 
+function _printSpecimenMultimedia ($data) {
+	global $base_path;
+	$output = "<div style='overflow: hidden;'>";
+	foreach ($data['items'] as $i => $media) {
+		$src = $media['src'];
+		if ($media['format'] == 'video/mp4') {
+			$base_path . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+		}
+		$output .= '<a class="polaroid" href="' . $media['url'] . '">' .
+			'<div class="polaroid-image" style="background-image: url(' . $src . ');" alt=""></div>';
+		$output .= '<div class="polaroid-caption"><div class="image-title">' .
+			$media['caption'] . '</div><div class="image-hits">' . $media['hits'] . "</div>\n</div>\n</a>\n";
+	};
+	$output .= "\n</div>\n";
+	if (!empty($data['showAllLink'])) {
+		$output .= '<div><a href="' . $data['showAllLink'] . '">' .
+			'<i class="icon-arrow-right"></i>' . t('Show all') . ' ' . $data['totalSize'] . ' ' .
+			t('multimedia') . '</a></div>';
+	}
+	return $output;
+}
+
+
+
+/**
+ * Prints taxon identifications for specimen (used only for non-name search)
+ *
+ * Replaces default <span> with <span class="result-query">
+ *
+ * @param array $row Parsed json data
+ * @return string|void Formatted output
+ */
+function _printNamesWithLinks ($details, $fieldLabel) {
+	$output = '';
+	foreach ($details as $i => $detail) {
+		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
+		$name = !empty($name) ? $name : '&mdash;';
+		$t = !empty($detail['url']) ?
+			'<a href="' . $detail['url'] . '">' . $name . '</a>' : $name;
+		$output .= _printDL(($i == 0 ? t($fieldLabel) : ''), $t);
+	}
+	return !empty($output) ? $output : null;
+}
 
 function _printSpecimenMediaDetail ($data) {
 //p($data);
@@ -357,25 +421,6 @@ function _printTaxonMediaDetail ($data) {
 }
 
 
-/**
- * Prints taxon identifications for specimen (used only for non-name search)
- *
- * Replaces default <span> with <span class="result-query">
- *
- * @param array $row Parsed json data
- * @return string|void Formatted output
- */
-function _printNamesWithLinks ($details, $fieldLabel) {
-	$output = '';
-	foreach ($details as $i => $detail) {
-		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
-		$name = !empty($name) ? $name : '&mdash;';
-		$t = !empty($detail['url']) ?
-			'<a href="' . $detail['url'] . '">' . $name . '</a>' : $name;
-		$output .= printDL(($i == 0 ? t($fieldLabel) : ''), $t);
-	}
-	return !empty($output) ? $output : null;
-}
 
 
 function _printPreviousNext ($p) {
@@ -1449,179 +1494,6 @@ function printSpecimenMediaDetail ($data) {
 	return $output . "</dd>\n</div>\n";
 }
 
-
-
-
-// Print specimen detail on screen
-function printSpecimenDetail ($data) {
-
-//p($data);
-
-    // Do we have a valid set of coordinates? If so, add Google Map
-    $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
-        $data['gatheringEvent']['siteCoordinates']['lat'] : false;
-    $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
-        $data['gatheringEvent']['siteCoordinates']['lon'] : false;
-
-    drupal_add_js(
-        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
-        array('type' => 'inline', 'scope' => 'footer')
-    );
-
-    if ($lat && $lon) {
-        // Add Google Maps scripts from ndabio module (REQUIRED!)
-        global $base_root, $base_path;
-        $path = drupal_get_path('module', 'ndabio');
-        drupal_add_css($path . "/css/ndabio_style.css");
-        drupal_add_js($path . "/js/map.js", array('weight' => 1));
-        drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
-            variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
-        drupal_add_js(
-            "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });",
-            array('type' => 'inline', 'scope' => 'footer')
-        );
-        drupal_add_js("var str_base_path = '$base_path' ", 'inline');
-        drupal_add_js("var specimenMarker = " .
-            json_encode(array('lat' => $lat, 'lon' => $lon)), 'inline');
-        if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-            drupal_add_js('var storedMapCenter = "' .
-                $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
-        }
-        if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
-            drupal_add_js("var storedZoomLevel = " .
-                $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
-        }
-        // Add mapcode scripts
-        $path = drupal_get_path('module', 'ndabioresults');
-        drupal_add_js($path . "/js/mapcode/ctrynams.js", array('weight' => 1));
-        drupal_add_js($path . "/js/mapcode/mapcode.js", array('weight' => 1));
-        drupal_add_js($path . "/js/mapcode/ndata.js", array('weight' => 1));
-        drupal_add_js($path . "/js/library.js", array('weight' => 1));
-        drupal_add_js(
-            "jQuery(function() { setMapcode(); });",
-            array('type' => 'inline', 'scope' => 'footer')
-        );
-    }
-
-	// Determines order to print field/value;
-	// fields not in array are printed at the bottom.
-	$hideFields = array(
-        'vernaculars',
-    	'recordURI',
-    	'unitGUID',
-    	'assemblageID',
-    	'notes',
-    	'fromCaptivity',
-    	'acquiredFrom',
-    	'otherSpecimensInAssemblage',
-    	'associatedTaxa'
-	);
-	$fieldOrder = array(
-        'names',
-        'unitID',
-        'source',
-        'assemblageID',
-        'license',
-        'sourceInstitutionID',
-	    'collectionType',
-        'recordBasis',
-        'typeStatus',
-        'phaseOrStage',
-        'sex',
-        'kindOfUnit',
-        'preparationType',
-        'numberOfSpecimen',
-        'gatheringEvent',
-        'collectorsFieldNumber'
-		// etc
-	);
-	// Reorder input array
-	$data = array_merge(array_flip($fieldOrder), $data);
-
-	$output  = _wrap( t("Specimen")   , "div", "category");
-	$output .= _wrap( $data['unitID'] , "h2"  );
-
-	if (!empty($data['unitGUID'])) {
-    	$purl = '<input id="purl" type="text" value="' . $data['unitGUID'] . '"></input>';
-    	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
-    	$output .= '<div class="property-list">
-    	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
-    	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
-    	   </div>';
-	}
-
-	$output .= _wrap( t("Details")    , "h3"  );
-	$output .= _wrap( $data['source'] , "h4", "source");
-
-	$output .= "<div class='property-list'>";
-
-	foreach ($data as $field => $value) {
-	    if (in_array($field, $hideFields)) {
-	        continue;
-	    }
-		if (is_array($value)) {
-			// Taxon name
-			if ($field == 'names') {
-				$output .= printNamesWithLinks($value, 'Scientific name');
-			}
-			if ($field == 'vernaculars') {
-				$output .= printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
-			}
-
-			// Gathering event
-			if ($field == 'gatheringEvent') {
-                $output .= printDL(ucfirst(translateNdaField('dateTimeBegin')),
-                    printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : ''));
-			    $output .= printDL(ucfirst(translateNdaField('gatheringAgents')),
-			        printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
-			    $output .= printDL(ucfirst(translateNdaField('localityText')),
-                    printValue(isset($value['localityText']) ? $value['localityText'] : ''));
-
-			    $coordinates = isset($value['siteCoordinates']) && !empty($value['siteCoordinates']) ?
-                    decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
-                        ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
-                        $value['siteCoordinates']['lon'] . ')' :
-                        '';
-
-                $output .= printDL(ucfirst(translateNdaField('siteCoordinates')), printValue($coordinates));
-                if (!empty($coordinates)) {
-                    $output .= '<dl><dt>Mapcode(s)</dt><dd id="mapcode"></dd></dl>';
-                }
-			}
-
-		} else {
-		    $output .= printDL(
-                ucfirst(translateNdaField($field)),
-		        is_array($value) ? implode(', ', $value) : printValue($value)
-		    );
-		}
-	}
-	// Other specimens in collection/set are printed in different table
-	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
-		$output .= "</div>" .
-			"<div class='property-list'>";
-		$output .= printNamesWithLinks($data['otherSpecimens'], 'other');
-	}
-	$output .= "</div>";
-
-	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
-
-    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
-        '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
-
-    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
-    drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js(
-        "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
-        array('type' => 'inline', 'scope' => 'footer')
-    );
-    $output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia"></p>';
-
-    setTitle(t('Specimen') . ' | ' .
-        strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
-
-	return $output;
-}
 
 
 

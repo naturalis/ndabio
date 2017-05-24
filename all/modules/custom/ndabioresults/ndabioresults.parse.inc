@@ -96,7 +96,7 @@ function _parseSpecimenDetail ($data) {
 	if (!isset($data->id)) {
 		return false;
 	}
-	p($data);
+//p($data);
 
     $skipFields = array(
         'objectPublic',
@@ -108,7 +108,7 @@ function _parseSpecimenDetail ($data) {
 	    'licenseType',
 	    'license',
 	    'assemblyID',
-	    'collectionType'
+	    'collectionType',
 		// etc
 	);
 
@@ -118,21 +118,42 @@ function _parseSpecimenDetail ($data) {
 		}
 	}
 	
-p($output);	
-	
-	
-	//$output['assemblageID'] = $data->assemblageID;
+	$output['assemblageID'] = isset($data->assemblageID) ?
+		_formatAssemblyId($data->assemblageID) : null;
 	//$output['collectionType'] = $data->collectionType;
 	$output['source'] = isset($data->sourceSystem) ? $data->sourceSystem->name : null;
-	$output['names'] = getSpecimenNames($data->searchResults[0], array('links' => $data->links));
-	$output['vernaculars'] = getSpecimenVernaculars($data->searchResults[0]);
-	$output['gatheringEvent'] = getGatheringEventSpecimens($data);
-	$output['license'] = $data->searchResults[0]->result->license;
-	$output['otherSpecimens'] = getOtherSpecimens($data);
-	$output['navigation'] = getNavigation($data);
-
+	$output['names'] = _getSpecimenNames($data->identifications);
+	$output['vernaculars'] = _getSpecimenVernaculars($data->identifications);
+	$output['gatheringEvent'] = _getGatheringEventSpecimens($data->gatheringEvent);
+	//$output['license'] = $data->searchResults[0]->result->license;
+	$output['otherSpecimens'] = isset($data->assemblageID) ?
+		_getOtherSpecimens($data) : null;
+	$output['multimedia'] = _getSpecimenMultimedia(
+		$data->id, 
+		$data->unitID, 
+		$output['names'][0]['name']
+	);
 	return $output;
 }
+
+
+
+
+/**
+ * Get url for Nth specimen in "collection"/set
+ *
+ * @param int $i Offset for specimen in searchResults->links
+ * @return string|void Url
+ */
+function _getSpecimenInCollectionUrl ($data, $scientificNameGroup) {
+	foreach ($data->identifications as $id) {
+		if ($id->scientificName->scientificNameGroup == $scientificNameGroup) {
+			return _setBasePath() . 'specimen/' . urlencode($data->unitID);
+		}
+	}
+	return null;
+}
+
 
 
 
@@ -927,24 +948,6 @@ function parseSpecimenDetail ($json) {
 
 
 
-/**
- * Gets other specimens in "specimen collection" (Brahms)
- *
- * @param array $row Other specimens in set section of NBA response
- * @return array|void Array with other specimens
- */
-function getOtherSpecimens ($row) {
-	if (!empty($row->searchResults[0]->result->otherSpecimensInSet)) {
-		foreach ($row->searchResults[0]->result->otherSpecimensInSet as $i => $specimen) {
-			$s = array();
-			$s['unitID'] = setUnitId($specimen->unitID);
-			$s['collectionType'] = $specimen->collectionType;
-			$s['url'] = getSpecimenInCollectionUrl($row, $i);
-			$c[] = $s;
-		}
-	}
-	return isset($c) ? $c : null;
-}
 
 
 
@@ -1080,11 +1083,11 @@ function getSpecimenNames ($row, $p) {
  * @param array $row Identification section of NBA response
  * @return array|void Array of names
  */
-function getSpecimenVernaculars ($row) {
-    if (!isset($row->result->identifications) || empty($row->result->identifications)) {
-        return array();
+function _getSpecimenVernaculars ($identifications = []) {
+    if (empty($identifications)) {
+        return [];
     }
-    foreach ($row->result->identifications as $id) {
+    foreach ($identifications as $id) {
 		if (!empty($id->vernacularNames)) {
 		    foreach ($id->vernacularNames as $name) {
 		        $output[] = $name->name;
@@ -1101,35 +1104,30 @@ function getSpecimenVernaculars ($row) {
  * @param array $row Gathering event section of NBA response
  * @return array|void
  */
-function getGatheringEventSpecimens ($row, $i = 0) {
-	if (!empty($row->searchResults[$i]->result->gatheringEvent)) {
-        $event = $row->searchResults[$i]->result->gatheringEvent;
-		foreach ($event as $k => $v) {
-		    if (!is_array($v) && !is_object($k) && $v != '') {
-		        // Translate datetime from Unix to proper date
-		        if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
-		            $v = timeStampToDate($v);
-		        }
-                $d[$k] = $v;
-		    }
+function _getGatheringEventSpecimens ($event = []) {
+	foreach ($event as $k => $v) {
+		if (!is_array($v) && !is_object($k) && $v != '') {
+			if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
+				$v = _dateTimeToDate($v);
+			}
+			$d[$k] = $v;
 		}
-		if (!empty($event->gatheringAgents)) {
-		    foreach ($event->gatheringAgents as $a) {
-                $agent[] = $a->fullName . (!empty($a->organization) ?
-                    ' (' . $a->organization . ')' : '');
-		    }
-		    $d['gatheringAgents'] = $agent;
+	}
+	if (isset($event->gatheringPersons)) {
+		foreach ($event->gatheringPersons as $a) {
+			$agent[] = $a->fullName . (isset($a->organization->name) ? 
+				' (' . $a->organization->name . ')' : '');
 		}
-		if (!empty($event->siteCoordinates)) {
-		    foreach ($event->siteCoordinates as $c) {
-                if ($c->longitudeDecimal != 0 && $c->latitudeDecimal != 0) {
-                    $coordinates['lat'] = $c->latitudeDecimal;
-                    $coordinates['lon'] = $c->longitudeDecimal;
-                }
-		    }
-		    $d['siteCoordinates'] = isset($coordinates) ?
-		        $coordinates : null;
+		$d['gatheringAgents'] = $agent;
+	}
+	if (isset($event->siteCoordinates)) {
+		foreach ($event->siteCoordinates as $c) {
+			if (isset($c->longitudeDecimal) && isset($c->latitudeDecimal)) {
+				$coordinates['lat'] = $c->latitudeDecimal;
+				$coordinates['lon'] = $c->longitudeDecimal;
+			}
 		}
+		$d['siteCoordinates'] = isset($coordinates) ? $coordinates : null;
 	}
 	return isset($d) ? $d : null;
 }
@@ -1524,23 +1522,6 @@ function getHits ($row, $stripTags = true) {
 
 
 
-
-/**
- * Get url for Nth specimen in "collection"/set
- *
- * @param int $i Offset for specimen in searchResults->links
- * @return string|void Url
- */
-function getSpecimenInCollectionUrl ($row, $i) {
-	if (!empty($row->searchResults[0]->links)) {
-		foreach ($row->searchResults[0]->links as $link) {
-			if ($link->rel == 'specimen-detail.otherSpecimensInSet.' . $i) {
-				return $link->href;
-			}
-		}
-	}
-	return null;
-}
 
 /**
  * Total size

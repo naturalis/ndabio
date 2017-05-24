@@ -183,6 +183,7 @@ function _addSpecimenDetailPageNavigation ($data, $search, $set, $id, $from,
 		$from, 
 		$scientificNameGroup
 	);
+	$data->scientificNameGroup = $scientificNameGroup;
 	$data->totalSize = $set->resultSet[0]->item->specimenCount;
 	return $data;
 }
@@ -1207,8 +1208,8 @@ function _localityInNba ($locality) {
 		'Wetlands 2005',
 	];
 	$areas = array_merge(
-		array_column_recursive($nbaAreas, 'en'),
-		array_column_recursive($nbaAreas, 'nl')
+		_arrayColumnRecursive($nbaAreas, 'en'),
+		_arrayColumnRecursive($nbaAreas, 'nl')
 	);
 	if (in_array($locality, $areas)) {
 		return $locality;
@@ -1462,7 +1463,70 @@ function ndabioresults_preprocess_html(&$vars){
 	}
 }
 
+/**
+ * Gets other specimens in "specimen collection" (Brahms)
+ *
+ * @param array $row Other specimens in set section of NBA response
+ * @return array|void Array with other specimens
+ */
+function _getOtherSpecimens ($data) {
+	if (isset($data->assemblageID) && !empty($data->assemblageID)) {
+		// This information is not present anymore in v2, we must query ourselves
+		$client = _initBioPortalClient();
+		$query = new QuerySpec();
+		$query
+			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
+			->setConstantScore();
+		_addDebugMessage('other specimens in assembly', $query);
+		$result = json_decode($client->specimen()->setQuerySpec($query)->query());
+		if ($result && $result->totalSize > 1) {
+			foreach ($result->resultSet as $specimen) {
+				if ($specimen->item->unitID != $data->unitID) {
+					$s = [];
+					$s['unitID'] = _setUnitId($specimen->item->unitID);
+					$s['collectionType'] = $specimen->item->collectionType;
+					$s['url'] = _getSpecimenInCollectionUrl(
+						$specimen->item, 
+						$data->scientificNameGroup
+					);
+					$c[] = $s;
+				}
+			}
+		}
+	}
+	return isset($c) ? $c : null;
+}
 
+
+function _getSpecimenMultimedia ($id, $unitId, $scientificName) {
+	$client = _initBioPortalClient();
+	$query = new QuerySpec();
+	$query
+		->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $id))
+		->setSize(5)
+		->setConstantScore();
+	_addDebugMessage('specimen multimedia', $query);
+	$result = json_decode($client->multimedia()->setQuerySpec($query)->query());
+	if ($result && $result->totalSize > 0) {
+		$output = [];
+		$output['totalSize'] = $result->totalSize;
+		$output['showAllLink'] = $result->totalSize > 5 ?
+			_setBasePath() . 'multimedia/unitID=' . url_encode($unitId) . 
+			'&logicalOperator=AND&size=100' : null;
+		foreach ($result->resultSet as $i => $media) {
+			$output['items'][$i]['id'] = $media->item->id;
+			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
+			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
+			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
+				$media->item->sourceSystem->name : null;
+			$output['items'][$i]['caption'] = $scientificName;
+			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
+				urlencode($media->item->unitID);
+		}
+		return $output;
+	}
+	return null;
+}
 
 
 
@@ -2707,27 +2771,6 @@ function decorateScore ($score) {
 
 
 
-
-
-/**
- * Sorts associative array based on another associative array
- *
- * From http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
- *
- * @param array $array
- * @param array $orderArray
- * @return array
- */
-function sortArrayByArray ($array, $orderArray) {
-    $ordered = array();
-    foreach ($orderArray as $key) {
-        if (array_key_exists($key,$array)) {
-            $ordered[$key] = $array[$key];
-            unset($array[$key]);
-        }
-    }
-    return $ordered + $array;
-}
 
 /**
  * Wrapper for logging
