@@ -119,7 +119,7 @@ function _parseSpecimenDetail ($data) {
 	}
 	
 	$output['assemblageID'] = isset($data->assemblageID) ?
-		_formatAssemblyId($data->assemblageID) : null;
+		_formatAssemblageId($data->assemblageID) : null;
 	//$output['collectionType'] = $data->collectionType;
 	$output['source'] = isset($data->sourceSystem) ? $data->sourceSystem->name : null;
 	$output['names'] = _getSpecimenNames($data->identifications);
@@ -326,6 +326,107 @@ function _getMultimediaUnitId ($row, $hits = []) {
 	return null;
 }
 
+/**
+ * Parses specimen data json searched by name and map to PHP array
+ *
+ * As the data arrives to this function through parseSpecimensByTaxon(),
+ * json parsing and validation can be skipped.
+ *
+ * @param array $data Parsed json from parseSpecimensByTaxon()
+ * @return array $output
+ */
+function _parseSpecimensMap ($data) {
+//p($data);
+		
+		// $output['searchTerms'] = getSearchTerms($data);
+		// $output['_showMap'] = true;
+		
+	// foreach ($data->resultSet as $row) {
+		
+	/*
+	 * $d = array();
+	 * $name = formatScientificName(
+	 * $row->sharedValue,
+	 * // @todo
+	 * //$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
+	 * $row->searchResults[0]->result->identifications[0]->scientificName,
+	 * getHits($row->searchResults[0])
+	 * );
+	 *
+	 * $sources = _setSpecimenSources($row);
+	 * foreach ($row->searchResults as $i => $sp) {
+	 * //$d['name'] = $name;
+	 * $d['taxonUrl'] = getTaxonUrl($row->searchResults[0]->links,
+	 * $row->searchResults[0]->result->identifications[0]->scientificName);
+	 * $d['url'] = $sp->links[0]->href;
+	 * $d['source'] = implode(', ', $sources);
+	 * $d['assemblageID'] = $sp->result->assemblageID;
+	 * $d['unitID'] = setUnitId($sp->result->unitID);
+	 * $gatheringEvent = getGatheringEventSpecimens($row, $i);
+	 * $d['localityText'] = $gatheringEvent['localityText'];
+	 * $d['date'] = $gatheringEvent['dateTimeBegin'];
+	 * $d['lat'] = $gatheringEvent['siteCoordinates']['lat'];
+	 * $d['lon'] = $gatheringEvent['siteCoordinates']['lon'];
+	 * $output['results'][] = $d;
+	 * }
+	 *
+	 */
+	
+	
+	$output['total'] = $data->resultSet[0]->item->specimenCount;
+	
+	
+	
+	// to do: add highlighting, author, italics
+	// $d['scientificNameGroup'] = $row->item->name;
+	// $d['acceptedNames'] = _getSpecimenAcceptedNames($row);
+	// $d['url'] = _setSpecimensAllLink($row);
+	// $d['total'] = $row->item->specimenCount;
+	//$d['sources'] = _setSpecimenSources($data->resultSet[0]);
+	// $d['nameHits'] = $d['nonAcceptedNames'] = [];
+	// $d['score'] = 0;
+	
+	
+	$d['acceptedNames'] = _getSpecimenAcceptedNames($data->resultSet[0]);
+	
+	
+	foreach ($data->resultSet[0]->item->specimens as $i => $specimen) {
+		$d['nonAcceptedNames'] = [];
+		$d['unitID'] = _setUnitId($specimen->unitID);
+		$d['source'] = _getSourceNameBySourceCode($specimen->sourceSystem->code);
+		$d['assemblageID'] = _formatAssemblageId($specimen->assemblageID);
+		$s['recordBasis'] = $specimen->recordBasis;
+		$d['kindOfUnit'] = $specimen->kindOfUnit;
+		$d['taxonUrl'] = _getTaxonUrl($specimen);
+		$d['url'] = _setBasePath() . 'specimen/' . urlencode($d['unitID']);
+		$d['localityText'] = isset($specimen->gatheringEvent->localityText) ?
+			$specimen->gatheringEvent->localityText : null;
+		$d['date'] = isset($specimen->gatheringEvent->dateTimeBegin) ?
+			_dateTimeToDate($specimen->gatheringEvent->dateTimeBegin) : null;
+		$d['lat'] = $specimen->gatheringEvent->siteCoordinates[0]->geoShape->coordinates[1];
+		$d['lon'] = $specimen->gatheringEvent->siteCoordinates[0]->geoShape->coordinates[0];
+		
+		if (empty($d['acceptedNames'])) {
+			$name = $specimen->matchingIdentifications[0]->scientificName;
+			$d['nonAcceptedNames'][md5(serialize($name))] = $name;
+		}
+		
+		$output['results'][] = $d;
+	}
+
+	$name = _setSpecimenScientificName($d);
+	for ($i = 0; $i < count($output['results']); $i++) {
+		unset($output['results'][$i]['nonAcceptedNames'], $output['results'][$i]['acceptedNames']);
+		$output['results'][$i]['name'] = $name;
+	}
+		
+		
+	//}
+
+	//$output['self'] = getSelfLink($data);
+	return isset($output) ? $output : false;
+}
+
 
 function _parseSpecimens ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
@@ -340,7 +441,7 @@ function _parseSpecimens ($data, $options = []) {
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
 	foreach ($data->resultSet as $row) {
-		$d = array();
+		$d = [];
 		// to do: add highlighting, author, italics
 		$d['scientificNameGroup'] = $row->item->name;
 		$d['acceptedNames'] = _getSpecimenAcceptedNames($row);
@@ -368,7 +469,7 @@ function _parseSpecimens ($data, $options = []) {
 					_appendNonAcceptedNames($d['nonAcceptedNames'], $sp, $row->item->name);
 			}
 			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
-				$d['sets'][_formatAssemblyId($specimen->assemblageID)][] = $s;
+				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
@@ -377,6 +478,12 @@ function _parseSpecimens ($data, $options = []) {
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
+		$d['mapUrl'] = null;
+		if ((isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) ||
+			(isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']))) {
+			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . urlencode($row->item->name) . '/' .
+				http_build_query(_getStoredQueryTerms('names.specimens'));
+		}
 		$output['results'][] = $d;
 	}
 	
@@ -400,17 +507,19 @@ function _parseSpecimens ($data, $options = []) {
 	return $output;
 }
 
-function _formatAssemblyId ($id) {
+function _formatAssemblageId ($id) {
 	$parts = explode('@', $id);
-	return $parts[1] . '-' . $parts[0];
+	if (count($parts) == 2) {
+		return $parts[1] . '-' . $parts[0];
+	}
+	return false;
 }
 
 
 function _setSpecimenScientificName ($data) {
 	$paths = _getQueryPaths('names.specimens');
-	$hits = $data['nameHits'];
+	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
 	$source = !empty($data['acceptedNames']) ? $data['acceptedNames'] : $data['nonAcceptedNames'];
-//p($paths); p($data['acceptedNames']); p($data['nameHits']);
 
 	// First extract and format available scientific names...
 	// If a taxon occurs in NSR/CoL, use those sources to format the name.
@@ -449,6 +558,8 @@ function _setSpecimenScientificName ($data) {
 				}
 			}
 		}
+		
+//p($data['nonAcceptedNames']); p($name); die();
 		
 		if (!empty($name)) {
 			// Could also be a hit in fullScientificName; try highlighting
@@ -1415,8 +1526,7 @@ function parseSpecimens ($json) {
 function parseSpecimensByMap ($data) {
 
 	$output['searchTerms'] = getSearchTerms($data);
-	$output['total'] = getTotalRows($data);
-	$output['_showMap'] = true;
+	$output['total'] = getTotalRows($data);	$output['_showMap'] = true;
 
 	foreach ($data->resultGroups as $row) {
 		$d = array();

@@ -274,6 +274,14 @@ function _printOops () {
 		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
 }
 
+
+function _getSourceNameBySourceCode ($code) {
+	if (isset(advancedSelects()['s_sourceSystem'][$code])) {
+		return advancedSelects()['s_sourceSystem'][$code];
+	}
+	return false;
+}
+
 /**
  * Beautifies source output
  *

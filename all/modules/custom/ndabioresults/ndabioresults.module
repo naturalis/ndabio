@@ -74,6 +74,11 @@ function ndabioresults_menu() {
 	    'load arguments' => array('%map', '%index'),
 	    'access callback' => true,
 	);
+	$items['result/specimen/map'] = array(
+	    'page callback' => '_nba_specimen_map_result_callback',
+	    'load arguments' => array('%map', '%index'),
+	    'access callback' => true,
+	);
 	$items['taxon'] = array(
 	    'page callback' => '_nba_taxon_callback',
 	    'access callback' => true,
@@ -736,7 +741,7 @@ function _nba_specimen_result_callback ($search = false) {
 	_addDebugMessage($service, $query);
 	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->query());
+	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -776,15 +781,14 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$query
 		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
 		->setSpecimensFrom($specimensFrom)
-		->setSpecimensSize(maxResults())
-	;
+		->setSpecimensSize(maxResults());
 //die($query->getQuerySpec(true));
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
 	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->query());
+	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -794,6 +798,49 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$data->specimensFrom = $specimensFrom;
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimensTaxon($data);
+}
+
+
+function _nba_specimen_map_result_callback ($scientificNameGroup = false, $search = false) {
+    $service = 'names.specimens';
+	$client = _initBioPortalClient();
+	
+    $terms = _getQueryTerms($service, $search);
+    $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
+    unset($terms['size'], $terms['from']);
+    
+    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, $pageTitle);   
+    
+    // No search terms; die with grace
+    if (!$scientificNameGroup || !$terms) {
+    	_printOops();
+    }
+    
+	// Build query
+	$query = _buildQuery($service, $terms);	
+	$query
+		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
+		->setSpecimensFrom($specimensFrom)
+		->setSpecimensSize(maxResults());
+//die($query->getQuerySpec(true));
+	
+	// Store query in case user wants to print it on screen
+	_addDebugMessage($service, $query);
+	
+	// Fetch data set
+	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	
+	// We got an error; go oops
+	if (isset($data->exception)) {
+		return _printOops();
+	}
+
+	$data->specimensFrom = $specimensFrom;
+	$data = _parseSpecimensMap($data, ['paginator']); 
+	return _printDebug() . _printSpecimensMap($data);
 }
 
 
@@ -950,28 +997,8 @@ function _nbaAdvancedSearch () {
 	if (!empty($remoteData['names.taxa'])) {
 		// to do!
 	}
-	
-	
 
-/*
-	// Map functions to each channel result: parses and prints data
-	$pageBody = '';
-	$serviceToFunctions = serviceToFunctions();
-	foreach ($remoteData as $service => $json) {
-		if (!isset($serviceToFunctions[$service]) || empty($json)) {
-			continue;
-		}
-		$parseFunction = isset($serviceToFunctions[$service]['parse']) ?
-		    $serviceToFunctions[$service]['parse'] : false;
-		$printFunction = isset($serviceToFunctions[$service]['print']) ?
-		    $serviceToFunctions[$service]['print'] : false;
-		if (!empty($parseFunction) && !empty($printFunction)) {
-		    $pageBody .= $printFunction($parseFunction($json));
-		}
-	}
-*/
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+	return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 

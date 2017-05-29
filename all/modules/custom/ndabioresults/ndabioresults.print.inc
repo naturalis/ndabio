@@ -631,6 +631,48 @@ function _printHits ($row) {
 }
 
 
+// Prints specimen result set on screen.
+function _printSpecimensMap ($data) {
+     // Add Google Maps scripts from ndabio module (REQUIRED!)
+    global $base_root, $base_path;
+
+p($data);
+    
+     // Drupal title empty; page title custom
+    $headTitle = t('Search results');
+    _setTitle($headTitle, $headTitle);
+
+    $path = drupal_get_path('module', 'ndabio');
+    drupal_add_css($path . "/css/ndabio_style.css");
+    drupal_add_js($path . "/js/map.js", array('weight' => 1));
+    drupal_add_js($path . "/js/oms.min.js", array('weight' => 1));
+    drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
+        variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+    drupal_add_js(
+        "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimens); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
+    drupal_add_js("var str_base_path = '$base_path';", 'inline');
+    drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
+    drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
+    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
+        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+    }
+    if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
+        drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+    }
+
+    $output = sprintf('<h2>%s %s %s %s</h2>',
+        t('Specimens of '),
+        $data['results'][0]['name'],
+        ' in ',
+        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+            t('area drawn on map'))
+    );
+    $output .= '<div id="map-canvas"></div>';
+
+    return $output;
+}
 
 
 
@@ -1050,10 +1092,14 @@ function _printSpecimens ($data) {
 		// Name
 		
 		$output .= "<td>" . "<a href='#''>" . $row['fullScientificName'] . "</a>" .
-			(!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '') . "</td>";
+			(!empty($row['commonNames']) ? '</br>' . 
+			implode(', ', array_keys($row['commonNames'])) : '') . "</td>\n";
 		// Number (and collection type)
-		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
+		$output .= "<td>" . $row['count'] . ' ' . 
+			($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>\n";
 		// Map icon
+		
+/*
 		$output .= "<td>" .
 			(isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) && 
 				!isset($_GET['noMap']) ?
@@ -1063,8 +1109,13 @@ function _printSpecimens ($data) {
 				urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
 			"' class='icon-location'></a>" : '') .
 			"</td>";
+*/			
+		// Set map url in parse	
+		$output .= "<td>" . (!empty($row['mapUrl']) ? "<a href='" . $row['mapUrl'] . 
+			"' class='icon-location'></a>" : '') . "</td>\n";
+		
 		// Source(s)
-		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
+		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>\n";
 		// Match
 		//$output .= "<td>" . decorateScore($row['score']) . "</td>";
 		$output .= "</tr>";
@@ -1274,6 +1325,11 @@ function printSpecimensBySingleGroup ($data) {
 
 
 
+
+
+
+
+
 // Prints specimen result set on screen.
 function printSpecimensByMap ($data) {
      // Add Google Maps scripts from ndabio module (REQUIRED!)
@@ -1302,8 +1358,6 @@ function printSpecimensByMap ($data) {
     if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
         drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
     }
-
-//p($data);
 
     $output = sprintf('<h2>%s %s %s %s</h2>',
         t('Specimens of '),
