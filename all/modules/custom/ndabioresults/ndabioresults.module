@@ -274,7 +274,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	$query = new QuerySpec();
 	$query->addCondition($condition);
 	
-	_addDebugMessage('single item', $query);
+	_addDebugMessage('specimen', $query);
 	
 	// Fetch data
 	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());

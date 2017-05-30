@@ -404,23 +404,18 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.infraspecificEpithet',
                     'identifications.scientificName.infraspecificEpithet'
                 ],
-/*  
- * @todo: restore when fields is reinstated!!          		
                 'typeStatus' => [
-                    'specimenTypeStatus'
+                    'identifications.typeStatus'
                 ],
- */
-            	'vernacularName' => [
+             	'vernacularName' => [
                     'identifications.vernacularNames.name'
                 ],
                 'commonName' => [
                     'identifications.vernacularNames.name'
                 ],
- /*           		
-            	'collectionType' => [
+             	'collectionType' => [
             		'collectionType'
             	]
- */
             ],
             'specimen' => [
                 'geoShape' => [
@@ -510,11 +505,9 @@ function nbaFieldMapping ()
             	'typeStatus' => [
             		'identifications.typeStatus'
             	],
- /*           		
-            	'collectionType' => [
+             	'collectionType' => [
             		'collectionType'
             	]
- */
             ],
             'taxon' => [
                 'className' => [

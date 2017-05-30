@@ -72,7 +72,7 @@ function advancedSelects () {
         $nbaAdvancedSelects['s_collectionType'] =
         	_setArrayKeyFromValue(_getDistinctValues('specimen', 'collectionType'));
         $nbaAdvancedSelects['s_typeStatus'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'typeStatus'));
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.typeStatus'));
         $nbaAdvancedSelects['s_sex'] =
         	_setArrayKeyFromValue(_getDistinctValues('specimen', 'sex'));
         $nbaAdvancedSelects['s_kingdom'] =
@@ -88,7 +88,7 @@ function advancedSelects () {
         $nbaAdvancedSelects['m_collectionType'] =
         	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'collectionType'));
         $nbaAdvancedSelects['m_typeStatus'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'specimenTypeStatus'));
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'identifications.typeStatus'));
         $nbaAdvancedSelects['m_phaseOrStage'] =
         	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'phasesOrStages'));
         $nbaAdvancedSelects['m_sex'] =

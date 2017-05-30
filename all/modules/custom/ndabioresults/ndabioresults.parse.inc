@@ -417,7 +417,7 @@ function _parseSpecimens ($data, $options = []) {
 			$s['kindOfUnit'] = $specimen->kindOfUnit;
 			$s['preparationType'] = $specimen->preparationType;
 			$s['collectionType'] = $specimen->collectionType;
-			$s['url'] = _setBasePath() . 'specimen/' . urlencode($s['unitID']) . '/' . 
+			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
 				http_build_query(_setDetailSearchTerms('names.specimens', $i));
 			$hits = _getHits('names.specimens', $sp);
