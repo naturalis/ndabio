@@ -18,7 +18,7 @@ function _printSpecimenDetail ($data) {
 
     if ($lat && $lon) {
         // Add Google Maps scripts from ndabio module (REQUIRED!)
-        global $base_root, $base_path;
+        //global $base_root, $base_path;
         $path = drupal_get_path('module', 'ndabio');
         drupal_add_css($path . "/css/ndabio_style.css");
         drupal_add_js($path . "/js/map.js", ['weight' => 1]);
@@ -26,18 +26,16 @@ function _printSpecimenDetail ($data) {
             variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
         drupal_add_js(
             "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });",
-            array('type' => 'inline', 'scope' => 'footer')
+            ['type' => 'inline', 'scope' => 'footer']
         );
-        drupal_add_js("var str_base_path = '$base_path' ", 'inline');
+        drupal_add_js("var str_base_path = '" . _setBasePath() . "' ", 'inline');
         drupal_add_js("var specimenMarker = " .
             json_encode(['lat' => $lat, 'lon' => $lon]), 'inline');
-        if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-            drupal_add_js('var storedMapCenter = "' .
-                $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+        if (!empty(_getStoredMapCenter())) {
+            drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
         }
-        if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
-            drupal_add_js("var storedZoomLevel = " .
-                $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+        if (!empty(_getStoredZoomLevel())) {
+            drupal_add_js("var storedZoomLevel = " . _getStoredZoomLevel() . ';', 'inline');
         }
         // Add mapcode scripts
         $path = drupal_get_path('module', 'ndabioresults');
@@ -634,44 +632,46 @@ function _printHits ($row) {
 // Prints specimen result set on screen.
 function _printSpecimensMap ($data) {
      // Add Google Maps scripts from ndabio module (REQUIRED!)
-    global $base_root, $base_path;
+    //global $base_root, $base_path;
 
-p($data);
-    
+//p($data);
+
      // Drupal title empty; page title custom
     $headTitle = t('Search results');
     _setTitle($headTitle, $headTitle);
 
     $path = drupal_get_path('module', 'ndabio');
     drupal_add_css($path . "/css/ndabio_style.css");
-    drupal_add_js($path . "/js/map.js", array('weight' => 1));
-    drupal_add_js($path . "/js/oms.min.js", array('weight' => 1));
+    drupal_add_js($path . "/js/map.js", ['weight' => 1]);
+    drupal_add_js($path . "/js/oms.min.js", ['weight' => 1]);
     drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
         variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
     drupal_add_js(
         "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimens); });",
-        array('type' => 'inline', 'scope' => 'footer')
+        ['type' => 'inline', 'scope' => 'footer']
     );
-    drupal_add_js("var str_base_path = '$base_path';", 'inline');
+    drupal_add_js("var str_base_path = '" . _setBasePath() . "';", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
-    drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
-    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+    drupal_add_js("var geoShape = " . _getStoredGeoShape() .';', 'inline');
+    if (!empty(_getStoredMapCenter())) {
+        drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
     }
-    if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
-        drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+    if (!empty(_getStoredZoomLevel())) {
+        drupal_add_js("var storedZoomLevel = " . _getStoredZoomLevel() . ';', 'inline');
     }
 
     $output = sprintf('<h2>%s %s %s %s</h2>',
         t('Specimens of '),
         $data['results'][0]['name'],
         ' in ',
-        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
-            t('area drawn on map'))
+        (!empty(_getStoredLocation()) ? _getStoredLocation() : t('area drawn on map'))
     );
+    if (!empty($data['message'])) {
+    	 $output .= '<p>' . $data['message'] . '</p>';
+    }
     $output .= '<div id="map-canvas"></div>';
 
-    return $output;
+    return _printDebug() . $output;
 }
 
 

@@ -337,56 +337,7 @@ function _getMultimediaUnitId ($row, $hits = []) {
  */
 function _parseSpecimensMap ($data) {
 //p($data);
-		
-		// $output['searchTerms'] = getSearchTerms($data);
-		// $output['_showMap'] = true;
-		
-	// foreach ($data->resultSet as $row) {
-		
-	/*
-	 * $d = array();
-	 * $name = formatScientificName(
-	 * $row->sharedValue,
-	 * // @todo
-	 * //$row->searchResults[0]->result->identifications[getResultOffset($row)]->scientificName,
-	 * $row->searchResults[0]->result->identifications[0]->scientificName,
-	 * getHits($row->searchResults[0])
-	 * );
-	 *
-	 * $sources = _setSpecimenSources($row);
-	 * foreach ($row->searchResults as $i => $sp) {
-	 * //$d['name'] = $name;
-	 * $d['taxonUrl'] = getTaxonUrl($row->searchResults[0]->links,
-	 * $row->searchResults[0]->result->identifications[0]->scientificName);
-	 * $d['url'] = $sp->links[0]->href;
-	 * $d['source'] = implode(', ', $sources);
-	 * $d['assemblageID'] = $sp->result->assemblageID;
-	 * $d['unitID'] = setUnitId($sp->result->unitID);
-	 * $gatheringEvent = getGatheringEventSpecimens($row, $i);
-	 * $d['localityText'] = $gatheringEvent['localityText'];
-	 * $d['date'] = $gatheringEvent['dateTimeBegin'];
-	 * $d['lat'] = $gatheringEvent['siteCoordinates']['lat'];
-	 * $d['lon'] = $gatheringEvent['siteCoordinates']['lon'];
-	 * $output['results'][] = $d;
-	 * }
-	 *
-	 */
-	
-	
 	$output['total'] = $data->resultSet[0]->item->specimenCount;
-	
-	
-	
-	// to do: add highlighting, author, italics
-	// $d['scientificNameGroup'] = $row->item->name;
-	// $d['acceptedNames'] = _getSpecimenAcceptedNames($row);
-	// $d['url'] = _setSpecimensAllLink($row);
-	// $d['total'] = $row->item->specimenCount;
-	//$d['sources'] = _setSpecimenSources($data->resultSet[0]);
-	// $d['nameHits'] = $d['nonAcceptedNames'] = [];
-	// $d['score'] = 0;
-	
-	
 	$d['acceptedNames'] = _getSpecimenAcceptedNames($data->resultSet[0]);
 	
 	
@@ -419,11 +370,20 @@ function _parseSpecimensMap ($data) {
 		unset($output['results'][$i]['nonAcceptedNames'], $output['results'][$i]['acceptedNames']);
 		$output['results'][$i]['name'] = $name;
 	}
-		
-		
-	//}
-
-	//$output['self'] = getSelfLink($data);
+	
+	if ($output['total'] > maxResults() && count($output['results']) <= maxResults()) {
+		$terms = _getStoredQueryTerms('names.specimens');
+		$terms['size'] = $output['total'];
+		$url = _setBasePath() . 'result/specimen/map/' . 
+			urlencode($data->resultSet[0]->item->name) . '/' . http_build_query($terms);
+		$output['message'] = sprintf(t('The first %s specimens are displayed'), maxResults()) . 
+			'. <a href="' . $url . '">' . sprintf(t('Display all %s specimens'), $output['total']) . ".</a>\n";
+	} else {
+		$output['message'] = sprintf(
+			t('%s specimens are displayed'), 
+			count($output['results'])
+		) . '.';
+	}
 	return isset($output) ? $output : false;
 }
 
@@ -796,6 +756,8 @@ function _setShowAllQuery ($total, $criteria) {
 	}
 	return null;
 }
+
+
 
 /**
  * Total size

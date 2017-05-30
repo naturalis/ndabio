@@ -620,7 +620,7 @@ function ndabio_search_page($results) {
   return $output;
 }
 
-function setExpandedFlag () {
+function _getExpandedFlag () {
     foreach ($_SESSION['ndaSearch'] as $k => $v) {
         // All true search parameters als formatted as x_etc
         if ($k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
@@ -630,14 +630,14 @@ function setExpandedFlag () {
     return 0;
 }
 
-function setStoredZoomLevel () {
+function _getStoredZoomLevel () {
     if (isset($_SESSION['ndaSearch']['zoomLevel']) && !empty($_SESSION['ndaSearch']['zoomLevel'])) {
         return $_SESSION['ndaSearch']['zoomLevel'];
     }
     return -1;
 }
 
-function setStoredCategory () {
+function _getStoredCategory () {
     if (isset($_SESSION['ndaSearch']['category']) && $_SESSION['ndaSearch']['category'] != '') {
         return $_SESSION['ndaSearch']['category'];
     }
@@ -645,23 +645,35 @@ function setStoredCategory () {
 }
 
 
-function setStoredGeoShape () {
-    if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
-    	$client = _initBioPortalClient();
-    	return json_encode($client->getGeoJsonForGid(_setNbaGid($_SESSION['ndaSearch']['gid'])));
-    }
+function _getStoredGeoShape ($jsonEncoded = false) {
 	if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        return json_encode($_SESSION['ndaSearch']['geoShape']);
+        return $jsonEncoded ? json_encode($_SESSION['ndaSearch']['geoShape']) : 
+        	$_SESSION['ndaSearch']['geoShape'];
+    }
+	if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
+    	$client = _initBioPortalClient();
+    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['ndaSearch']['gid']));
+    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['ndaSearch']['gid']), 
+    		'[getGeoJsonForGid method does not use QuerySpec]');
+    	return $jsonEncoded ? json_encode($shape) : $shape;
     }
     return -1;
 }
 
-function setStoredMapCenter () {
+function _getStoredMapCenter () {
     if (isset($_SESSION['ndaSearch']['mapCenter'])) {
          return $_SESSION['ndaSearch']['mapCenter'];
     }
     return null;
 }
+
+function _getStoredLocation () {
+    if (isset($_SESSION['ndaSearch']['location'])) {
+         return $_SESSION['ndaSearch']['location'];
+    }
+    return null;
+}
+
 
 /**
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
@@ -675,7 +687,7 @@ function ndabio_advanced_taxonomysearch() {
     $loadold = 0;
     if (!empty($_GET['searchagain'])) {
         if (intval($_GET['searchagain']) == 1) {
-            $expandedFlag = setExpandedFlag();
+            $expandedFlag = _getExpandedFlag();
             $storedGid = isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']) ?
                 $_SESSION['ndaSearch']['gid'] : -1;
 
@@ -696,10 +708,10 @@ function ndabio_advanced_taxonomysearch() {
 
         drupal_add_js('var language = "' . $language->language . '";', 'inline');
         drupal_add_js('var storedGid = "' . $storedGid . '";', 'inline');
-        drupal_add_js('var storedGeoShape = ' . setStoredGeoShape() . ';', 'inline');
-        drupal_add_js('var storedZoomLevel = ' . setStoredZoomLevel() . ';', 'inline');
-        drupal_add_js('var storedMapCenter = "' . setStoredMapCenter() . '";', 'inline');
-        drupal_add_js('var storedCategory = ' . setStoredCategory() . ';', 'inline');
+        drupal_add_js('var storedGeoShape = ' . _getStoredGeoShape(true) . ';', 'inline');
+        drupal_add_js('var storedZoomLevel = ' . _getStoredZoomLevel() . ';', 'inline');
+        drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
+        drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
 
         drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
         drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .

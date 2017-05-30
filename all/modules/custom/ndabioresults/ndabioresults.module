@@ -806,7 +806,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
-    $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
+    $size = isset($terms['size']) ? $terms['size'] : maxResults();
     unset($terms['size'], $terms['from']);
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
@@ -823,8 +823,8 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	$query = _buildQuery($service, $terms);	
 	$query
 		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
-		->setSpecimensFrom($specimensFrom)
-		->setSpecimensSize(maxResults());
+		->setSpecimensFrom(0)
+		->setSpecimensSize($size);
 //die($query->getQuerySpec(true));
 	
 	// Store query in case user wants to print it on screen
@@ -838,9 +838,8 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 		return _printOops();
 	}
 
-	$data->specimensFrom = $specimensFrom;
-	$data = _parseSpecimensMap($data, ['paginator']); 
-	return _printDebug() . _printSpecimensMap($data);
+	$data = _parseSpecimensMap($data); 
+	return _printSpecimensMap($data);
 }
 
 
