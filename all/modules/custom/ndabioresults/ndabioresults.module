@@ -934,12 +934,11 @@ function _nbaAdvancedSearch () {
 
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
-
+    $pageBody = $pageHeader = '';
+    
+    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
-    
- //@todo: enable other services!!!!   
-//    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -956,8 +955,12 @@ function _nbaAdvancedSearch () {
             // Build QuerySpec
             $client->setQuerySpec(_buildQuery($service, $p));
             // Must use querySpecial() for names services
-            $remoteData[$service] = strpos($service, 'names') === false ?
-            	$client->query() : $client->querySpecial();
+			$remoteData[$service] = $service == 'multimedia' ? 
+				$client->query() : $client->querySpecial();
+			
+//header('Content-Type: application/json');
+//die($client->getQuerySpec());		
+				
             // Save service-specific query terms to session; used for navigation
             _setQueryTerms($service);
             // Add to debug, so query can be printed
@@ -965,10 +968,8 @@ function _nbaAdvancedSearch () {
         }
     }
 
-    $pageHeader = _printDebug();    
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $area = (!empty($_SESSION['ndaSearch']['location']) ?
-            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+    if (_isGeoSearch()) {
+		$area = !empty(_getStoredLocation()) ? _getStoredLocation() : t('area drawn on map');
         $pageHeader .=
             _wrap(
                 _wrap(
@@ -994,10 +995,13 @@ function _nbaAdvancedSearch () {
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
-		// to do!
+		$data = json_decode($remoteData['names.taxa']); 
+		
+		p($data);
 	}
 
-	return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+	return $pageHeader . (!empty($pageBody) ?  _printDebug() . $pageBody : 
+		'<p>' . printNoResults() . '</p>');
 }
 
 
@@ -1264,6 +1268,7 @@ function _nbaSimpleSearch ($term) {
 	
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
+    $pageBody = $pageHeader = '';
 	
 /*	
     foreach ($services as $service => $querySpec) {
@@ -1277,21 +1282,21 @@ function _nbaSimpleSearch ($term) {
     
     
     // @todo: enable specimens and taxa!!
-    //$services['names.taxa'] = $p;
+    $services['names.taxa'] = $p;
     
-    // Taxon search does not include geoShape and should not be invoked when coming from geo form
+    // Taxon search does not include geoShape and should 
+    // not be invoked when coming from geo form
     // when a search are has been entered
-    if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']) || 
-    	isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
+    if (_isGeoSearch()) {
         unset($services['names.taxa']);
 
-        $p['geoShape'] = $_SESSION['ndaSearch']['geoShape'];
-        $p['gid'] = _setNbaGid($_SESSION['ndaSearch']['gid']);
+        $p['geoShape'] = _getStoredGeoShape();
+        $p['gid'] = _setNbaGid(_getStoredGid());
        
-        $area = (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
-            t('area drawn on map'));
+        $area = !empty(_getStoredLocation()) ? _getStoredLocation() :
+            t('area drawn on map');
 
-        $pageHeader =
+        $pageHeader .=
             _wrap(
                 _wrap(
                     t("Showing only results in")
@@ -1313,7 +1318,9 @@ function _nbaSimpleSearch ($term) {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
         $client->setQuerySpec(_buildQuery($service, $p));
-		$remoteData[$service] = $client->query();
+        
+		$remoteData[$service] = $service == 'multimedia' ? 
+			$client->query() : $client->querySpecial();
 		
 		// Save service-specific query to session;
 		// used for further navigation
@@ -1321,10 +1328,9 @@ function _nbaSimpleSearch ($term) {
 		_addDebugMessage($service, $client);
     }
     
-    $pageHeader = _printDebug(); 
+     
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "h1");
-    $pageBody = '';
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
@@ -1355,7 +1361,7 @@ function _nbaSimpleSearch ($term) {
  * @return string Url to last used form
  */
 function _setStartUrl () {
-    if (isset($_SESSION['ndaSearch']['geoShape'])) {
+    if (_isGeoSearch()) {
         return _setBasePath() . "geographic-search/";
     }
     return _setBasePath();
@@ -1757,7 +1763,7 @@ function _logSearch ($saveToDb = false) {
     $data['field_timestamp'] = date('Y-m-d H:i:s');
     $data['field_ip_address'] = $_SERVER['REMOTE_ADDR'];
     $data['field_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-    $data['field_search_type'] = !empty($_SESSION['ndaSearch']['geoShape']) ? 'geo ' :
+    $data['field_search_type'] = _isGeoSearch() ? 'geo ' :
         (empty($data['field_term']) ? 'advanced' : 'simple');
     $file = variable_get('ndabioresults_config_log', NBALOG); // "/tmp/bioportal.log.json";
     file_put_contents($file, json_encode($data) . "\r\n", FILE_APPEND);

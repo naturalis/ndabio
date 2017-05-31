@@ -1,5 +1,83 @@
 <?php
 
+
+
+function _parseTaxa ($data) {
+	$output['total'] = $data->totalSize;
+
+	if (!$output['searchTerms']) {
+		handleError('parseTaxon: invalid json response');
+	}
+	if ($output['total'] == 0 || empty($data->resultSet)) {
+	    $output['results'] = [];
+        return $output;
+	}
+	foreach ($data->resultSet as $row) {
+		$d = [];
+		// Accepted scientific name, synonym, or common name
+		$d['type'] = getResultType($row);
+		$d['rank'] = $row->searchResults[0]->result->taxonRank;
+		$d['name'] = formatScientificName(
+			strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
+			$row->searchResults[0]->result->acceptedName,
+			$output['searchTerms']
+		);
+		if ($d['type'] == 'accepted') {
+			$d['description'] = t(ucfirst($d['rank']));
+		} else if ($d['type'] == 'synonym') {
+            $offset = getTaxonSynonymOffset($row);
+			$d['description'] = t('Synonym') . ': ' .
+                formatScientificName(
+    				strip_tags($row->searchResults[0]->result->synonyms[$offset]->fullScientificName),
+    				$row->searchResults[0]->result->synonyms[$offset],
+    				$output['searchTerms']
+    			);
+		} else if ($d['type'] == 'common') {
+			$d['description'] = t('Common name(s)') . ': ';
+
+			foreach ($row->searchResults[0]->matchInfo as $i => $info) {
+                $vernaculars[] = highlightSearchTerms(
+    				strip_tags($info->valueHighlighted),
+    				$output['searchTerms']
+    		    );
+			}
+			$d['description'] .= implode(', ', $vernaculars);
+			/*
+            foreach ($row->searchResults[0]->matchInfo as $i => $info) {
+                $hits = explode('<span class="search_hit">', $info->valueHighlighted);
+                foreach ($hits as $hit) {
+                    $vernaculars[] = highlightSearchTerms(
+            			trim(strip_tags($hit)),
+            			$output['searchTerms']
+            	    );
+                }
+            }
+            $d['description'] .= implode(', ', array_filter($vernaculars));
+            */
+			unset($vernaculars);
+		}
+
+		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
+		$d['sources'] = getSources($row);
+		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row, true) : array());
+		$d['score'] = $row->searchResults[0]->percentage;
+		$output['results'][] = $d;
+	}
+
+	$output['self'] = getSelfLink($data);
+	$output['showAll'] = getShowAll($data);
+	$output['paginator'] = getPaginator($data);
+
+	// Only set filter when performing initial search
+	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
+	    $_SESSION['ndaFilters']['taxon'] = $output['showAll'];
+	}
+
+	return isset($output) ? $output : false;
+}
+
+
+
 function _parseMultimedia ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
@@ -378,7 +456,7 @@ function _parseSpecimensMap ($data) {
 			urlencode($data->resultSet[0]->item->name) . '/' . http_build_query($terms);
 		$output['message'] = sprintf(t('The first %s specimens are displayed'), maxResults()) . 
 			'. <a href="' . $url . '">' . sprintf(t('Display all %s specimens'), $output['total']) . ".</a>\n";
-	} else {
+	} else if ($output['total'] > 1) {
 		$output['message'] = sprintf(
 			t('%s specimens are displayed'), 
 			count($output['results'])
@@ -439,8 +517,7 @@ function _parseSpecimens ($data, $options = []) {
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
 		$d['mapUrl'] = null;
-		if ((isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) ||
-			(isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']))) {
+		if (_isGeoSearch()) {
 			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . urlencode($row->item->name) . '/' .
 				http_build_query(_getStoredQueryTerms('names.specimens'));
 		}
@@ -1761,9 +1838,12 @@ function getResultType ($row) {
 }
  */
 
-function getResultType ($row, $terms) {
-
+function getResultType ($row) {
+	$path = $row->searchResults[0]->matchInfo[0]->path;
+	return strpos($path, 'synonym') !== false ? 'synonym' :
+		(strpos($path, 'vernacularNames') !== false ? 'common' : 'accepted');
 }
+
 
 /** Gets offset of matched synonym in taxon response
  *
