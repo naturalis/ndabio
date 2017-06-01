@@ -1,5 +1,71 @@
 <?php
 
+/**
+ * Prints specimen search result
+ *
+ * @param array $data Parsed json data
+ * @return string Formatted output
+ */
+function _printSpecimens ($data) {
+
+    if (empty($data['results'])) {
+        return false;
+    }
+
+//p($data); 
+    
+    // Drupal title empty; page title custom
+    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, $pageTitle);
+
+    $headers = [
+		'unitID' => [
+			'label' => t('Specimen'),
+		],
+		'identifications.scientificName.fullScientificName' => [
+			'label' => t('Species'),
+		],
+		'foundIn' => [
+			'label' => t('Found in')
+		],
+	];
+
+    $output = '<div id="specimens"></div>';
+    $output .= sprintf(
+        '<h2>%s <span class="count">(%s)</span></h2>',
+        t('Specimens'),
+        _formatNumber($data['total'])
+    );
+    $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers));
+
+  foreach ($data['results'] as $i => $row) {
+		$output .= "<tr>";
+		// Registration number plus hits
+		$output .= "<td><a href='" . $row['url'] . "'>" . $row['unitID'] . "</a>" .
+			(!empty($row['hits']) ? '<br/>' . _printHits($row) : '') .
+			"</td>";
+		// Species
+		$output .= "<td>" . $row['names'] . "</td>";
+		// Source(s)
+		$output .= "<td>" . $row['source'] . "</td>";
+		// Match
+		$output .= "</tr>";
+	}
+
+	$output .= "</tbody></table>";
+
+    $output .= _printShowAll($data);
+    $output .= _printPaginator($data);
+
+    return $output;
+}
+
+
+
+
+
 // Print specimen detail on screen
 function _printSpecimenDetail ($data) {
 
@@ -1016,7 +1082,7 @@ function printSpecimensByTaxon ($data) {
 
 
 
-function _printSpecimens ($data) {
+function _printSpecimensSingleTaxon ($data) {
 	global $language;
 //p($data);
 	if (empty($data['results'])) {
@@ -1033,46 +1099,18 @@ function _printSpecimens ($data) {
 	setTitle($headTitle, $headTitle);
 	
 	$headers = [
-		'identifications.scientificName.fullScientificName' => array(
+		'identifications.scientificName.fullScientificName' => [
 			'label' => t('Name'),
-			'sort' => 'ASC',
-			'icon' => array(
-				'ASC' => 'icon-sort_a_z',
-				'DESC' => 'icon-sort_z_a'
-			),
-			'url' => setSortUrl(
-				$nameSortFlag,
-				'ASC',
-				$data['self'],
-				false
-			)
-		),
-		'count' => array(
+		],
+		'count' => [
 			'label' => ''
-		),
-		'mapIcon' => array(
+		],
+		'mapIcon' => [
 			'label' => ''
-		),
-		'foundIn' => array(
+		],
+		'foundIn' => [
 			'label' => t('Found in')
-		),
-/*
-		'_score' => array(
-			'label' => t('Match'),
-			'sort' => 'DESC',
-			'icon' => array(
-				'ASC' => 'icon-sort_little_much',
-				'DESC' => 'icon-sort_much_little'
-			),
-			'url' => setSortUrl(
-				'_score',
-				'DESC',
-				$data['self'],
-				false
-			 )
-		)
-*/
-			
+		],
 	];
 	
 	$output = '<div id="specimen"></div>';
@@ -1143,46 +1181,18 @@ function _printSpecimensTaxon ($data) {
 	setTitle($headTitle, $headTitle);
 	
 	$headers = [
-		'identifications.scientificName.fullScientificName' => array(
+		'identifications.scientificName.fullScientificName' => [
 			'label' => t('Name'),
-			'sort' => 'ASC',
-			'icon' => array(
-				'ASC' => 'icon-sort_a_z',
-				'DESC' => 'icon-sort_z_a'
-			),
-			'url' => setSortUrl(
-				$nameSortFlag,
-				'ASC',
-				$data['self'],
-				false
-			)
-		),
-		'count' => array(
+		],
+		'count' => [
 			'label' => ''
-		),
-		'mapIcon' => array(
+		],
+		'mapIcon' => [
 			'label' => ''
-		),
-		'foundIn' => array(
+		],
+		'foundIn' => [
 			'label' => t('Found in')
-		),
-/*
-		'_score' => array(
-			'label' => t('Match'),
-			'sort' => 'DESC',
-			'icon' => array(
-				'ASC' => 'icon-sort_little_much',
-				'DESC' => 'icon-sort_much_little'
-			),
-			'url' => setSortUrl(
-				'_score',
-				'DESC',
-				$data['self'],
-				false
-			 )
-		)
-*/
-			
+		],
 	];
 	
 	$output = '<div id="specimen"></div>';

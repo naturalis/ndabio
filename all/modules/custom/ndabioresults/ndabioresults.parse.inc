@@ -110,7 +110,7 @@ function _parseMultimedia ($data, $options = []) {
 		}
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['taxon'] = _getMultimediaScientificNames($row, $hits);
+		$d['taxon'] = _getScientificNames($service, $row, $hits);
 		$d['unitID'] = _getMultimediaUnitId($row, $hits);
 		$output['results'][] = $d;
 	}
@@ -122,7 +122,7 @@ function _parseMultimedia ($data, $options = []) {
 	// Paginator
 	if (in_array('paginator', $options)) {
 		$output['paginator'] = 
-			_getPaginator($service, _getTotalRows($data), _getOffset($service));
+			_getPaginator($service, _getTotalRows($data), _getPaginatorOffset($service));
 	}
 	
 //p($output);	
@@ -313,12 +313,11 @@ function _getTaxonUrl ($object, $checkNba = true) {
 		}
 		if (!empty(array_filter($name))) {
 			$url = _setBasePath() . 'taxon/' . implode('_', array_filter($name));
+			// Only fetch if we're sure taxon exists in NBA
+			if (!$checkNba || $checkNba && _getTaxonFromNba($name)) {
+				return $url;
+			}
 		}
-	}
-	// Only fetch if we're sure taxon exists in NBA
-	if (!$checkNba || $checkNba && !is_null(_getScientificName($object, false)) &&
-		_getTaxonFromNba(_getScientificName($object, false))) {
-		return $url;
 	}
 	return null;
 }
@@ -344,9 +343,9 @@ function _setNonNameHits ($service, $hits = []) {
 	return _highlightHits($service, $hits);
 }
 
-function _getMultimediaScientificNames ($row, $hits = []) {
-	$paths = _getQueryPaths('multimedia');
-	foreach ($row->item->identifications as $identification) {
+function _getScientificNames ($service, $row, $hits = [], $createLinks = false) {
+	$paths = _getQueryPaths($service);
+	foreach ($row->item->identifications as $j => $identification) {
 		$name = [];
 		// Elements in regular scientific name elements
 		foreach (scientificNameElements() as $i => $element) {
@@ -384,10 +383,16 @@ function _getMultimediaScientificNames ($row, $hits = []) {
 						$paths['identifications.scientificName.fullScientificName']['values']);
 				}
 			}
-			$names[] = implode(' ', array_filter($name));
+			$names[$j] = implode(' ', array_filter($name));
+		}
+		if ($createLinks) {
+			$url = _getTaxonUrl($identification, true);
+			if ($url) {
+				$names[$j] = '<a href="' . $url . '">' . $names[$j] . '</a>';
+			}
 		}
 	}
-	return isset($names) ? implode('; ', $names) : false;
+	return isset($names) ? implode('; ', array_unique($names)) : false;
 }
 
 function _getMultimediaUnitId ($row, $hits = []) {
@@ -465,17 +470,70 @@ function _parseSpecimensMap ($data) {
 	return isset($output) ? $output : false;
 }
 
-
 function _parseSpecimens ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
 	
+	$service = 'specimen';
 	$output['total'] = $data->totalSize;
-	_getSpecimenDetails($data);
 
 //p($data);
 	
+	//@todo: from
+	//$from = (int) _getStoredQueryTerms($service)['from'];
+	foreach ($data->resultSet as $i => $row) {
+		$d = [];
+		//$d['url'] = _setSpecimensAllLink($row);
+		$d['source'] = $row->item->sourceSystem->name;
+
+		$d['unitID'] = _setUnitId($row->item->unitID);
+		$d['recordBasis'] = $row->item->recordBasis;
+		$d['kindOfUnit'] = $row->item->kindOfUnit;
+		$d['preparationType'] = $row->item->preparationType;
+		$d['collectionType'] = $row->item->collectionType;
+		$d['url'] = _setBasePath() . 'specimen/' . urlencode($row->item->unitID) . '/' . 
+			http_build_query(_setDetailSearchTerms('specimen', $i));
+		
+		$hits = _getHits($service, $row->item);
+		$d['hits'] = _setNonNameHits($service, $hits);
+		$d['names'] = _getScientificNames($service, $row, $hits, true);			
+		
+		// No use for nameHits anymore; discard
+		$output['results'][] = $d;
+	}
+
+	/*
+	$output['specimensTotal'] = isset($data->specimensTotal) ? 
+		$data->specimensTotal : $output['results'][0]['count'];
+	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
+		$data->totalSize : $output['results'][0]['count'];
+	$output['from'] = isset($data->specimensFrom) ? 
+		$data->specimensFrom : _getOffset('names.specimens');
+*/
+	
+	// Show all link
+	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+		$output['showAll'] = _setBasePath() . 'result/specimen/' .
+			_setShowAllQuery($output['total'], _getStoredQueryTerms('specimen'));
+	}
+	// Paginator
+	if (in_array('paginator', $options)) {
+		$output['paginator'] = 
+			_getPaginator('specimen', $output['total'], _getPaginatorOffset($service));
+	}
+	return $output;
+}
+
+
+function _parseSpecimensTaxon ($data, $options = []) {
+	if (!isset($data->resultSet) || empty($data->resultSet)) {
+		return false;
+	}
+
+	$output['total'] = $data->totalSize;
+	_getSpecimenDetails($data);
+
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
 	foreach ($data->resultSet as $row) {
@@ -485,7 +543,7 @@ function _parseSpecimens ($data, $options = []) {
 		$d['acceptedNames'] = _getSpecimenAcceptedNames($row);
 		//$d['url'] = _setSpecimensAllLink($row);
 		$d['count'] = $row->item->specimenCount;
-		$d['sources'] = _setSpecimenSources($row);
+		$d['sources'] = _getSpecimenSources($row);
 		$d['nameHits'] = $d['nonAcceptedNames'] = [];
 		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $sp) {
@@ -529,7 +587,7 @@ function _parseSpecimens ($data, $options = []) {
 	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
 		$data->totalSize : $output['results'][0]['count'];
 	$output['from'] = isset($data->specimensFrom) ? 
-		$data->specimensFrom : _getOffset('names.specimens');
+		$data->specimensFrom : _getPaginatorOffset('names.specimens');
 	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {

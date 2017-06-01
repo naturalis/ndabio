@@ -107,15 +107,39 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		return _printOops();
 	}
 	
-	$service = 'names.specimens';
+	$service = 'specimen';
+	
 	$data = _getSpecimenByUnitId($id);
 	if (!$data) {
 		return _printOops();
 	}
 	
-	// Only id is set: fetch data
-	if ($scientificNameGroup && $search) {
-		$client = _initBioPortalClient();
+	$client = _initBioPortalClient();
+	
+	
+	// Added non-aggregated specimen browse option;
+	// parameter names now are incorrect...
+	if (!$search) {
+		$search = $scientificNameGroup;
+
+		$terms = _getQueryTerms($service, $search);		
+		$terms['size'] = 3;		
+
+		$query = _buildQuery($service, $terms);
+		_addDebugMessage('previous, current and next item', $query);
+		
+		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
+		
+		// We got an error; go oops
+		if (isset($set->exception)) {
+			return _printOops();
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+	}
+	
+	
+	else if ($scientificNameGroup && $search) {
 		$terms = _getQueryTerms($service, $search);
     	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     	
@@ -297,7 +321,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$data = _addMultimediaDetailPageNavigation($data, $search, $set, $id, $terms['from']);
+		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
 	}
 	
 	$data = _setMultimediaAssociatedObject($data);
@@ -325,7 +349,7 @@ function _setMultimediaAssociatedObject ($data) {
 }
 
 
-function _setMultimediaDetailPagePreviousLink ($search, $previousId) {
+function _setDetailPagePreviousLink ($service, $search, $previousId) {
 	if (isset($previousId)) {
 		safe_parse_str($search, $p);
 		// Strip size if it was provided; we don't need it
@@ -336,14 +360,14 @@ function _setMultimediaDetailPagePreviousLink ($search, $previousId) {
 		// We have already validated that $p['from'] is an integer
 		if (isset($p['from'])) {
 			$p['from'] = $p['from'] == 0 ? $p['from'] : $p['from'] - 1;
-			return _setBasePath() . 'multimedia/' . urlencode($previousId) . '/' . 
+			return _setBasePath() . $service . '/' . urlencode($previousId) . '/' . 
 				http_build_query($p);
 		}
 	}
 	return null;
 }
 
-function _setMultimediaDetailPageNextLink ($search, $nextId, $previousId) {
+function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
 	if (isset($nextId)) {
 		safe_parse_str($search, $p);
 		// Strip size if it was provided; we don't need it
@@ -354,21 +378,21 @@ function _setMultimediaDetailPageNextLink ($search, $nextId, $previousId) {
 		// We have already validated that $p['from'] is an integer
 		if (isset($p['from'])) {
 			$p['from'] = !isset($previousId) ? $p['from'] : $p['from'] + 1;
-			return _setBasePath() . 'multimedia/' . urlencode($nextId) . '/' . 
+			return _setBasePath() . $service . '/' . urlencode($nextId) . '/' . 
 				http_build_query($p);
 		}
 	}
 	return null;
 }
 
-function _setMultimediaDetailPageBackLink ($search, $from) {
+function _setDetailPageBackLink ($service, $search, $from) {
 	// Need to reset search to correct from value
 	safe_parse_str($search, $p);
 	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
-	return _setBasePath() . 'result/multimedia/' . http_build_query($p);
+	return _setBasePath() . 'result/' . $service . '/' . http_build_query($p);
 }
 
-function _addMultimediaDetailPageNavigation ($data, $search, $set, $id, $from) {
+function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 	$previousId = $nextId = null;
 	foreach ($set->resultSet as $i => $row) {
 		if (isset($row->item->unitID) && $row->item->unitID == $id) {
@@ -385,9 +409,9 @@ function _addMultimediaDetailPageNavigation ($data, $search, $set, $id, $from) {
 	if (isset($set->resultSet[($i + 1)]->item->unitID)) {
 		$nextId = $set->resultSet[($i + 1)]->item->unitID;
 	}
-	$data->previousUrl = _setMultimediaDetailPagePreviousLink($search, $previousId);
-	$data->nextUrl = _setMultimediaDetailPageNextLink($search, $nextId, $previousId);
-	$data->backUrl =  _setMultimediaDetailPageBackLink($search, $from);
+	$data->previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
+	$data->nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
+	$data->backUrl =  _setDetailPageBackLink($service, $search, $from);
 	$data->totalSize = $set->totalSize;
 	return $data;
 }
@@ -713,7 +737,8 @@ function _nba_multimedia_result_callback ($search = false) {
 }
 
 function _nba_specimen_result_callback ($search = false) {
-    $service = 'names.specimens';
+	
+    $service = 'specimen';
 	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
@@ -740,17 +765,34 @@ function _nba_specimen_result_callback ($search = false) {
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
 	
+	
+	if ($service == 'names.specimens') {
+		
+		// Fetch data set
+		$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+		
+		// We got an error; go oops
+		if (isset($data->exception)) {
+			return _printOops();
+		}
+	
+		$data->specimensTotal = _getSpecimensTotal($terms);
+		$data = _parseSpecimensTaxon($data, ['paginator']); 
+		return _printDebug() . _printSpecimensTaxon($data);
+	
+	}
+	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
 		return _printOops();
 	}
 
-	$data->specimensTotal = _getSpecimensTotal($terms);
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimens($data);
+	
 }
 
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
@@ -796,8 +838,8 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	}
 
 	$data->specimensFrom = $specimensFrom;
-	$data = _parseSpecimens($data, ['paginator']); 
-	return _printDebug() . _printSpecimensTaxon($data);
+	$data = _parseSpecimensTaxon($data, ['paginator']); 
+	return _printDebug() . _printSpecimensSingleTaxon($data);
 }
 
 
@@ -899,22 +941,28 @@ function _nba_general_result_callback () {
 }
 
 function _getTaxonFromNba ($taxon) {
-	$client = _initBioPortalClient();
-	$p = explode(' ', $taxon);
-	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
-	if (count($p) > 1) {
-		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
-		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
-			(count($p) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
-			(count($p) == 2 ? null : implode(' ', array_slice($p, 2))));
-	}
-	$query = new ScientificNameGroupQuerySpec();
-	$query
-		->addCondition($c)
-		->setConstantScore();
-	_addDebugMessage($taxon . ' exists in NBA', $query);
-    $data = json_decode($client->names()->setQuerySpec($query)->query());
-	return isset($data->resultSet) ? $data->resultSet : false;
+	if (is_string($taxon)) {
+		$taxon = explode(' ', $taxon);
+	} 
+	$taxon = array_filter($taxon);
+	if (!empty($taxon)) {
+		$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+		if (count($taxon) > 1) {
+			$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+			$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
+				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
+				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+		}
+		$client = _initBioPortalClient();
+		$query = new ScientificNameGroupQuerySpec();
+		$query
+			->addCondition($c)
+			->setConstantScore();
+		_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
+	    $data = json_decode($client->names()->setQuerySpec($query)->query());
+		return isset($data->resultSet) ? $data->resultSet : false;
+	} 
+	return false;
 }
 
 
@@ -934,11 +982,15 @@ function _nbaAdvancedSearch () {
 
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
+    
+    $specimenService = 'specimen';
+    
+    
     $pageBody = $pageHeader = '';
     
     $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services['names.specimens'] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[$specimenService] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
     
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -955,7 +1007,7 @@ function _nbaAdvancedSearch () {
             // Build QuerySpec
             $client->setQuerySpec(_buildQuery($service, $p));
             // Must use querySpecial() for names services
-			$remoteData[$service] = $service == 'multimedia' ? 
+			$remoteData[$service] = strpos($service, 'names') === false ? 
 				$client->query() : $client->querySpecial();
 			
 //header('Content-Type: application/json');
@@ -991,6 +1043,11 @@ function _nbaAdvancedSearch () {
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
+	}
+	
+	if (!empty($remoteData['specimen'])) {
+		$data = json_decode($remoteData['specimen']); 
 		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
 	}
 	
@@ -1043,7 +1100,7 @@ function _setSpecimensAllLink ($row) {
 	return isset($output) ? $output : '';
 }
 
-function _setSpecimenSources ($row) {
+function _getSpecimenSources ($row) {
 	foreach ($row->item->specimens as $i => $specimen) {
 		$output[$specimen->specimenDetails->sourceSystem->name] = $i;
 	}
@@ -1195,7 +1252,7 @@ function _setPaginatorUrl () {
  * @param array $data Json
  * @return int Offset
  */
-function _getOffset ($service) {
+function _getPaginatorOffset ($service) {
     if (isset(_getStoredQueryTerms($service)['from'])) {
         return _getStoredQueryTerms($service)['from'];
     }
@@ -1268,6 +1325,11 @@ function _nbaSimpleSearch ($term) {
 	
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
+    
+    $specimenService = 'names.specimens';
+    
+    
+    
     $pageBody = $pageHeader = '';
 	
 /*	
@@ -1282,7 +1344,7 @@ function _nbaSimpleSearch ($term) {
     
     
     // @todo: enable specimens and taxa!!
-    $services['names.taxa'] = $p;
+    $services[$specimenService] = $p;
     
     // Taxon search does not include geoShape and should 
     // not be invoked when coming from geo form
@@ -1319,7 +1381,7 @@ function _nbaSimpleSearch ($term) {
 		$client = _setClientService(_initBioPortalClient(), $service);
         $client->setQuerySpec(_buildQuery($service, $p));
         
-		$remoteData[$service] = $service == 'multimedia' ? 
+		$remoteData[$service] = strpos($service, 'names') === false ? 
 			$client->query() : $client->querySpecial();
 		
 		// Save service-specific query to session;
@@ -1341,6 +1403,11 @@ function _nbaSimpleSearch ($term) {
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
+	}
+	
+	if (!empty($remoteData['specimen'])) {
+		$data = json_decode($remoteData['specimen']); 
 		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
 	}
 	
