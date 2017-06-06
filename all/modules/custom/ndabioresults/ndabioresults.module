@@ -107,7 +107,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		return _printOops();
 	}
 	
-	$service = 'specimen';
+	$service = _getSpecimenService();
 	
 	$data = _getSpecimenByUnitId($id);
 	if (!$data) {
