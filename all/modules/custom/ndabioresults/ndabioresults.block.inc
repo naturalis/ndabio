@@ -99,9 +99,9 @@ function ndabioresults_block_view($delta = '') {
      	if (count($pathComponents) == 5) {
 	     	$output .= '<a href="' . _setStartUrl() . 'result/specimen/' . $pathComponents[4] .
 	    		'">' . $icon . t('Back to search results') . '</a>';
-    	} else {
+    	} else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
 	     	$output .= '<a href="' . _setStartUrl() . 'result?' . 
-	     		http_build_query(array_slice($pathComponents, -1)[0]) .
+	     		http_build_query($_SESSION['ndaSearch']) .
 	    		'">' . $icon . t('Back to general results') . '</a>';
     	}
     	//drupal_set_title(t("Search results"));
