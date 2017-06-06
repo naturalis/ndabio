@@ -574,7 +574,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
-		$d['allLink'] = $d['count'] > maxResultsInitial() ?
+		//$d['allLink'] = $d['count'] > maxResultsInitial() ?
+		$d['allLink'] = $d['count'] > 1 ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
 			http_build_query(_getStoredQueryTerms($service)) : null;
 		

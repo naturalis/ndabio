@@ -135,7 +135,14 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+		$data = _addDetailPageNavigation(
+			$service, 
+			$data, 
+			$search, 
+			$set, 
+			$id, 
+			$terms['from']
+		);
 	}
 	
 	
@@ -207,11 +214,7 @@ function _addSpecimenDetailPageNavigation ($data, $search, $set, $id, $from,
 		$previousId, 
 		$scientificNameGroup
 	);
-	$data->backUrl = _setSpecimenDetailPageBackLink(
-		$search, 
-		$from, 
-		$scientificNameGroup
-	);
+	$data->backUrl = _setSpecimenDetailPageBackLink(explode('/', current_path()));
 	$data->scientificNameGroup = $scientificNameGroup;
 	$data->totalSize = $set->resultSet[0]->item->specimenCount;
 	return $data;
@@ -253,13 +256,27 @@ function _setSpecimenDetailPageNextLink ($search, $nextId, $previousId, $scienti
 	return null;
 }
 
-function _setSpecimenDetailPageBackLink ($search, $from, $scientificNameGroup) {
+
+
+function _setSpecimenDetailPageBackLink ($pathComponents) {
+	// Need to reset search to correct from value
+	safe_parse_str(array_slice($pathComponents, -1)[0], $p);
+	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
+	// From taxon page, which has four path components
+	if (count($pathComponents) == 4) {
+		return _setBasePath() . 'result/specimen/taxon/' . urlencode($pathComponents[2]) . 
+		'/' . http_build_query($p);		
+	}
+	return  _setBasePath() . 'result/specimen/' . http_build_query($p);
+}
+
+function _setMultimediaDetailPageBackLink ($search, $from) {
 	// Need to reset search to correct from value
 	safe_parse_str($search, $p);
 	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
-	return _setBasePath() . 'result/specimen/taxon/' . urlencode($scientificNameGroup) . 
-		'/' .http_build_query($p);
+	return  _setBasePath() . 'result/multimedia/' . http_build_query($p);
 }
+
 
 
 

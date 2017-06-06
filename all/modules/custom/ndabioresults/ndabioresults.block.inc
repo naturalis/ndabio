@@ -95,17 +95,22 @@ function ndabioresults_block_view($delta = '') {
     	
     // List page for category
     } else if (count($pathComponents) > 1 && $pathComponents[0] == 'result') {
-    	$output .= '<a href="' . _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']) .
-    		'">' . $icon . t('Back to general results') . '</a>';
+    	// From specimen by taxon; return to overview
+     	if (count($pathComponents) == 5) {
+	     	$output .= '<a href="' . _setStartUrl() . 'result/specimen/' . $pathComponents[4] .
+	    		'">' . $icon . t('Back to search results') . '</a>';
+    	} else {
+	     	$output .= '<a href="' . _setStartUrl() . 'result?' . 
+	     		http_build_query(array_slice($pathComponents, -1)[0]) .
+	    		'">' . $icon . t('Back to general results') . '</a>';
+    	}
     	//drupal_set_title(t("Search results"));
     	
     // Detail page
     } else if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon']) && 
-    	count($pathComponents) == 3) {
-    	safe_parse_str($pathComponents[2], $p);
-    	$from = isset($p['from']) ? $p['from'] : 0;
-    	$function = '_set' . ucfirst($pathComponents[0]) . 'DetailPageBackLink';
-		$href = $function($pathComponents[2], $from);  
+    	count($pathComponents) >= 3) {
+     	$function = '_set' . ucfirst($pathComponents[0]) . 'DetailPageBackLink';
+		$href = $function($pathComponents);  
 		$output .= '<a href="' . $href . '">' . $icon . t('Back to search results') . '</a>';
     
     // Fallback
