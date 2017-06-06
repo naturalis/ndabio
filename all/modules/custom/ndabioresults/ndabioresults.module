@@ -738,10 +738,10 @@ function _nba_multimedia_result_callback ($search = false) {
 
 function _nba_specimen_result_callback ($search = false) {
 	
-    $service = 'specimen';
 	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
+    $service = _getSpecimenService();
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -983,14 +983,9 @@ function _nbaAdvancedSearch () {
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
     
-    $specimenService = 'specimen';
-    
-    
-    $pageBody = $pageHeader = '';
-    
     $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[$specimenService] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services[_getSpecimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
     
     // Test if anything has been posted; if not return with error message
     if (!dataPosted($services)) {
@@ -1168,6 +1163,11 @@ function _getQueryTerms ($service, $search) {
 	// Convert query string to parameters
 	if ($search) {
 		safe_parse_str($search, $terms);
+		// Specimen view option
+		if (isset($terms['service']) && !empty($terms['service'])) {
+			_setSpecimenService($terms['service']);
+			unset($terms['service']);
+		}
 	// Revert to stored terms to fetch terms (non-preferred!)
     } else if ($service) {
     	$terms = _getStoredQueryTerms($service);
@@ -1179,6 +1179,17 @@ function _getQueryTerms ($service, $search) {
 		$terms['from'] = 0;
 	}
 	return $terms;
+}
+
+function _setSpecimenService ($service) {
+	$_SESSION['nbaSpecimenService'] = $service;
+}
+
+function _getSpecimenService () {
+	if (isset($_SESSION['nbaSpecimenService']) && !empty($_SESSION['nbaSpecimenService'])) {
+		return $_SESSION['nbaSpecimenService'] == 'taxon' ? 'names.specimens' : 'specimen';
+	}
+	return 'specimen';
 }
 
 function _termsToQuerySpec ($service, $terms) {
@@ -1326,10 +1337,6 @@ function _nbaSimpleSearch ($term) {
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
     
-    $specimenService = 'names.specimens';
-    
-    
-    
     $pageBody = $pageHeader = '';
 	
 /*	
@@ -1344,7 +1351,7 @@ function _nbaSimpleSearch ($term) {
     
     
     // @todo: enable specimens and taxa!!
-    $services[$specimenService] = $p;
+    $services[_getSpecimenService()] = $p;
     
     // Taxon search does not include geoShape and should 
     // not be invoked when coming from geo form

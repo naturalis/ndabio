@@ -476,7 +476,10 @@ function _parseSpecimens ($data, $options = []) {
 	}
 	
 	$service = 'specimen';
+	
 	$output['total'] = $data->totalSize;
+	
+	
 
 //p($data);
 	
@@ -493,7 +496,7 @@ function _parseSpecimens ($data, $options = []) {
 		$d['preparationType'] = $row->item->preparationType;
 		$d['collectionType'] = $row->item->collectionType;
 		$d['url'] = _setBasePath() . 'specimen/' . urlencode($row->item->unitID) . '/' . 
-			http_build_query(_setDetailSearchTerms('specimen', $i));
+			http_build_query(_setDetailSearchTerms($service, $i));
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
@@ -501,6 +504,8 @@ function _parseSpecimens ($data, $options = []) {
 		
 		// No use for nameHits anymore; discard
 		$output['results'][] = $d;
+		$output['baseUrl'] = _setBasePath() . 'result/specimen/' . 
+			http_build_query(_getStoredQueryTerms($service));
 	}
 
 	/*
@@ -515,7 +520,7 @@ function _parseSpecimens ($data, $options = []) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms('specimen'));
+			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
@@ -531,9 +536,10 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		return false;
 	}
 
+	$service = 'names.specimens';
 	$output['total'] = $data->totalSize;
 	_getSpecimenDetails($data);
-
+//p($data);
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
 	foreach ($data->resultSet as $row) {
@@ -556,8 +562,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
 				http_build_query(_setDetailSearchTerms('names.specimens', $i));
-			$hits = _getHits('names.specimens', $sp);
-			$s['hits'] = _setNonNameHits('names.specimens', $hits);
+			$hits = _getHits($service, $sp);
+			$s['hits'] = _setNonNameHits($service, $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
 			// Only bother with non-accepted names if no accepted names are available
 			if (empty($d['acceptedNames'])) {
@@ -570,34 +576,37 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
-			http_build_query(_getStoredQueryTerms('names.specimens')) : null;
+			http_build_query(_getStoredQueryTerms($service)) : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
 		$d['mapUrl'] = null;
 		if (_isGeoSearch()) {
-			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . urlencode($row->item->name) . '/' .
-				http_build_query(_getStoredQueryTerms('names.specimens'));
+			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . 
+				urlencode($row->item->name) . '/' .
+				http_build_query(_getStoredQueryTerms($service));
 		}
 		$output['results'][] = $d;
 	}
 	
+	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . 
+		http_build_query(_getStoredQueryTerms($service));	
 	$output['specimensTotal'] = isset($data->specimensTotal) ? 
 		$data->specimensTotal : $output['results'][0]['count'];
 	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
 		$data->totalSize : $output['results'][0]['count'];
 	$output['from'] = isset($data->specimensFrom) ? 
-		$data->specimensFrom : _getPaginatorOffset('names.specimens');
+		$data->specimensFrom : _getPaginatorOffset($service);
 	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms('names.specimens'));
+			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
 		$output['paginator'] = 
-			_getPaginator('names.specimens', $output['paginatorTotal'], $output['from']);
+			_getPaginator($service, $output['paginatorTotal'], $output['from']);
 	}
 	return $output;
 }
