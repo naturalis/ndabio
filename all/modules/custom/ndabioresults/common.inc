@@ -276,8 +276,12 @@ function _printOops () {
 
 
 function _getSourceNameBySourceCode ($code) {
-	if (isset(advancedSelects()['s_sourceSystem'][$code])) {
-		return advancedSelects()['s_sourceSystem'][$code];
+	
+//p(advancedSelects()); die();
+	foreach (['t', 's', 'm'] as $prefix) {
+		if (isset(advancedSelects()[$prefix . '_sourceSystem'][$code])) {
+			return advancedSelects()[$prefix . '_sourceSystem'][$code];
+		}
 	}
 	return false;
 }

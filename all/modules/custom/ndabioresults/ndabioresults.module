@@ -64,6 +64,11 @@ function ndabioresults_menu() {
 	    'load arguments' => array('%map', '%index'),
 	    'access callback' => true,
 	);
+	$items['result/taxon'] = array(
+	    'page callback' => '_nba_taxon_result_callback',
+	    'load arguments' => array('%map', '%index'),
+	    'access callback' => true,
+	);
 	$items['result/specimen'] = array(
 	    'page callback' => '_nba_specimen_result_callback',
 	    'load arguments' => array('%map', '%index'),
@@ -295,7 +300,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	$query = new QuerySpec();
 	$query->addCondition($condition);
 	
-	_addDebugMessage('specimen', $query);
+	_addDebugMessage('multimedia', $query);
 	
 	// Fetch data
 	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
@@ -436,44 +441,149 @@ function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 }
 
 function _nba_taxon_callback ($taxon = false, $search = false) {
+	
+	/*	// Test if anything has been posted; if not return with error message
+	if (!$id) {
+		return _printOops();
+	}
+	
+	$service = _getSpecimenService();
+	
+	$data = _getSpecimenByUnitId($id);
+	if (!$data) {
+		return _printOops();
+	}
+	
+	$client = _initBioPortalClient();
+	
+	
+	// Added non-aggregated specimen browse option;
+	// parameter names now are incorrect...
+	if (!$search) {
+		$search = $scientificNameGroup;
+
+		$terms = _getQueryTerms($service, $search);		
+		$terms['size'] = 3;		
+
+		$query = _buildQuery($service, $terms);
+		_addDebugMessage('previous, current and next item', $query);
+		
+		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
+		
+		// We got an error; go oops
+		if (isset($set->exception)) {
+			return _printOops();
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _addDetailPageNavigation(
+			$service, 
+			$data, 
+			$search, 
+			$set, 
+			$id, 
+			$terms['from']
+		);
+	}
+	
+	
+	else if ($scientificNameGroup && $search) {
+		$terms = _getQueryTerms($service, $search);
+    	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
+    	
+    	unset($terms['size'], $terms['from']);
+    
+		$query = _buildQuery($service, $terms);
+		$query
+			->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
+			->setSpecimensFrom($specimensFrom)
+			->setSpecimensSize(3);
+		
+		_addDebugMessage('previous, current and next item', $query);
+		
+		$set = json_decode($client->names()->setQuerySpec($query)->query());
+		
+		// We got an error; go oops
+		if (isset($set->exception)) {
+			return _printOops();
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _addSpecimenDetailPageNavigation(
+			$data,
+			$search, 
+			$set, 
+			$id, 
+			$specimensFrom, 
+			$scientificNameGroup
+		);
+	}
+	
+	return _printSpecimenDetail(_parseSpecimenDetail($data));
+	*/
     // Test if anything has been posted; if not return with error message
     if (!$taxon) {
     	_printOops();
     }
     
-    p(nbaFieldTypes());
-
+    $service = 'names.taxa';
+    
+    $data = _getTaxonByName($taxon);
+	if (!$data) {
+		return _printOops();
+	}
+	
     $client = _initBioPortalClient();
 
-    // Only taxon is set: fetch data based on scientific name
-    if (!$search) {
+    if ($search) {
+		$terms = _getQueryTerms($service, $search);		
+		$terms['size'] = 3;		
     	
-        $p = explode('_', $taxon);
-        $c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $p[0]);
-        if (count($p) == 2) {
-            $c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $p[1]);
-            $c->setAnd('taxa.acceptedName.infraspecificEpithet', 'NOT_EQUALS');
-        }
-        if (count($p) == 3) {
-            $c->setAnd('taxa.acceptedName.infraspecificEpithet', 'EQUALS_IC', $p[2]);
-        }
-        $query = new QuerySpec();
-        $query->addCondition($c);
-        die($query->getQuerySpec(false));
-        die($client->names()->setQuerySpec($query)->query());
+		$query = _buildQuery($service, $terms);
+		$query->setSpecimensSize(0);
+		_addDebugMessage('previous, current and next item', $query);
+		
+		$set = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+		
+		die(p($set));
+		
+		// We got an error; go oops
+		if (isset($set->exception)) {
+			return _printOops();
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _addDetailPageNavigation(
+			$service, 
+			$data, 
+			$search, 
+			$set, 
+			$id, 
+			$terms['from']
+		);
+	    
+    	//return _printTaxonDetail(_parseTaxonDetail($data));
     }
+    
+	die(p($data));
+    
+}
 
-    $query = _buildQuery('taxon', $p);
-    $client->{$service}()->setQuerySpec($query);
-    $remoteData[$service] = $client->query();
-
-
-    $client->taxon()->setQuerySpec($q);
-
-    return print_r($client->query());
-
-    //return p($client->all()->getMapping());
-    //return 'henk' . $taxon . '<br>' . $searchRequest;
+function _getTaxonByName ($name) {
+    $taxon = explode('_', $name);
+  	$client = _initBioPortalClient();
+  	$c = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+	if (count($taxon) > 1) {
+		$c->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+		$c->setAnd('acceptedName.infraspecificEpithet', 
+			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
+			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+	}
+    $query = new QuerySpec();
+    $query->addCondition($c);
+    $data = json_decode($client->taxon()->setQuerySpec($query)->query());
+	if (isset($data->exception)) {
+		return false;
+	}
+	return $data->resultSet[0]->item;	
+    
 }
 
 
@@ -713,6 +823,48 @@ function _likeOperatorAllowed ($value = '') {
         strlen($value) <= nbaMaxLikeStringSize();
 }
 
+function _nba_taxon_result_callback ($search = false) {
+    $service = 'names.taxa';
+	
+	$client = _initBioPortalClient();
+	
+    $terms = _getQueryTerms($service, $search);
+    
+    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+        t('Search results') : t('Explore highlights');
+    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, $pageTitle);   
+    
+    
+    // No search terms; die with grace
+    if (!$terms) {
+    	_printOops();
+    }
+    
+	// Display full set on this page
+	$terms['size'] = maxResults();
+	// Save query
+	_setQueryTerms($service, $terms);
+	
+	// Build query
+	$query = _buildQuery($service, $terms);	
+	
+	// Store query in case user wants to print it on screen
+	_addDebugMessage($service, $query);
+	
+	// Fetch data set
+	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	
+	// We got an error; go oops
+	if (isset($data->exception)) {
+		return _printOops();
+	}
+
+	//$data->specimensTotal = _getSpecimensTotal($terms);
+	$data = _parseTaxa($data, ['paginator']); 
+	return _printDebug() . _printTaxa($data);
+}
+
 
 function _nba_multimedia_result_callback ($search = false) {
     global $base_path;
@@ -832,11 +984,6 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
     	_printOops();
     }
     
-	// Display full set on this page
-	//$terms['size'] = maxResults();
-	// Save query
-	//_setQueryTerms($service, $terms);
-	
 	// Build query
 	$query = _buildQuery($service, $terms);	
 	$query
@@ -1019,7 +1166,12 @@ function _nbaAdvancedSearch () {
             // Init client
             $client = _setClientService(_initBioPortalClient(), $service);
             // Build QuerySpec
-            $client->setQuerySpec(_buildQuery($service, $p));
+            $query = _buildQuery($service, $p);
+            // Trim specimens from taxon query
+            if ($service == 'names.taxa') {
+            	$query->setSpecimensSize(0);
+            }
+            $client->setQuerySpec($query);
             // Must use querySpecial() for names services
 			$remoteData[$service] = strpos($service, 'names') === false ? 
 				$client->query() : $client->querySpecial();
@@ -1067,8 +1219,7 @@ function _nbaAdvancedSearch () {
 	
 	if (!empty($remoteData['names.taxa'])) {
 		$data = json_decode($remoteData['names.taxa']); 
-		
-		p($data);
+		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
 	}
 
 	return $pageHeader . (!empty($pageBody) ?  _printDebug() . $pageBody : 
@@ -1159,6 +1310,47 @@ function _getSpecimenDetails (&$data) {
 	}
 	return false;
 }
+
+function _getTaxonDetails (&$data) {
+	if (!isset($data->resultSet) || empty($data->resultSet)) {
+		return false;
+	}
+	$client = _initBioPortalClient();
+	// Aggregate conditions for all specimens in result
+	foreach ($data->resultSet as $i => $row) {
+		foreach ($row->item->taxa as $item) {
+			// Cannot use id for batch query unfortunately...
+			$condition = new Condition('sourceSystem.code', 'EQUALS', $item->sourceSystem->code);
+			$condition->setAnd('acceptedName.fullScientificName', 'EQUALS', 
+				$item->acceptedName->fullScientificName);
+			$query = new QuerySpec();
+			$query
+				->addCondition($condition)
+				->setConstantScore()
+				->setSize(1);
+			$batch[$item->id] = $query;
+			_addDebugMessage('details for ' . $item->acceptedName->fullScientificName, $query);
+		}
+	}
+	// Fetch all specimens at once
+	if (isset($batch)) {
+		$remoteData = $client->taxon()->batchQuery($batch);
+		$taxa = array_map('json_decode', $remoteData);
+		// Loop again over result and append the fetched specimen details
+		foreach ($data->resultSet as $i => $row) {
+			foreach ($row->item->taxa as $j => $item) {
+				if (isset($taxa[$item->id])) {
+					$detail = $taxa[$item->id];
+					$data->resultSet[$i]->item->taxa[$j]->taxonDetails =
+						$detail->resultSet[0]->item;
+				}
+			}
+		}
+		return $data;
+	}
+	return false;
+}
+
 
 
 function _setQueryTerms ($service, $terms = false) {
@@ -1369,8 +1561,7 @@ function _nbaSimpleSearch ($term) {
     $p['term'] = $_SESSION['ndaSearch']['term'];
     
     
-    // @todo: enable specimens and taxa!!
-    $services[_getSpecimenService()] = $p;
+    $services['names.taxa'] = $p;
     
     // Taxon search does not include geoShape and should 
     // not be invoked when coming from geo form
@@ -1395,7 +1586,7 @@ function _nbaSimpleSearch ($term) {
             );
     };
     
-    $services['names.specimens'] = $p;
+    $services[_getSpecimenService()] = $p;
     $services['multimedia'] = $p;
     
     // Get json response for each service that provides search parameters
@@ -1405,8 +1596,15 @@ function _nbaSimpleSearch ($term) {
 
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
-        $client->setQuerySpec(_buildQuery($service, $p));
-        
+			
+		// Build QuerySpec
+		$query = _buildQuery($service, $p);
+		// Trim specimens from taxon query
+		if ($service == 'names.taxa') {
+			$query->setSpecimensSize(0);
+		}
+		$client->setQuerySpec($query);
+            
 		$remoteData[$service] = strpos($service, 'names') === false ? 
 			$client->query() : $client->querySpecial();
 		

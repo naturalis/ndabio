@@ -552,11 +552,13 @@ function nbaFieldMapping ()
                 ],
                 'infraspecificEpithet' => [
                     'defaultClassification.infraspecificEpithet',
-                    'acceptedName.infraspecificEpithet'
+                    'acceptedName.infraspecificEpithet',
+                    'synonyms.infraspecificEpithet'
                 ],
                 'subspecies' => [
                     'defaultClassification.infraspecificEpithet',
-                    'acceptedName.infraspecificEpithet'
+                    'acceptedName.infraspecificEpithet',
+                	'synonyms.infraspecificEpithet'	
                 ],
                 'taxonomicStatus' => [
                     'synonyms.taxonomicStatus',

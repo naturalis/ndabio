@@ -1,5 +1,67 @@
 <?php
 
+function _printTaxa ($data) {
+//p($data);
+    if (empty($data['results'])) {
+        return false;
+    }
+
+    // Drupal title empty; page title custom
+    $headTitle = t('Search results');
+    _setTitle($headTitle, $headTitle);
+
+    $headers = array(
+    	'acceptedName.fullScientificName' => [
+    		'label' => t('Name'),
+     	],
+    	'description' => [
+    		'label' => t('Description')
+    	],
+    	'foundIn' => [
+    		'label' => t('Found in')
+    	],
+    );
+
+    $explanation = _wrap(t("(matching scientific or common name)"),"span","explanation");
+
+    $output = '<div id="taxon"></div>';
+    $output .= sprintf(
+        '<h2>%s <span class="count">(%s)</span> %s</h2>',
+        t('Species names'),
+        _formatNumber($data['total']),
+        $explanation
+    );
+    $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers, $data['self']));
+
+    foreach ($data['results'] as $i => $row) {
+    	$output .= "<tr>";
+
+        // Name
+        $output .= "<td>";
+        $output .= "<a href='" . $row['url'] . "'>" . $row['name'] . "</a>";
+        $output .= (!empty($row['commonNames']) ? '</br>' . implode(', ', array_keys($row['commonNames'])) : '');
+        $output .=	"</td>";
+
+        // Description
+        $output .= "<td>" . $row['description'] . "</td>";
+
+        // Source(s)
+        $output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
+
+        $output .= "</tr>";
+    }
+
+    $output .= "</tbody></table>";
+    //$output = _markUp($output);
+
+    $output .= _printShowAll($data);
+    $output .= _printPaginator($data);
+
+    return $output;
+}
+
+
+
 /**
  * Prints specimen search result
  *

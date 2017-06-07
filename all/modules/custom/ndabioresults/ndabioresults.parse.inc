@@ -2,78 +2,111 @@
 
 
 
-function _parseTaxa ($data) {
+function _parseTaxa ($data, $options) {
+	
+	$service = 'names.taxa';
+	
 	$output['total'] = $data->totalSize;
+	_getTaxonDetails($data);
 
-	if (!$output['searchTerms']) {
-		handleError('parseTaxon: invalid json response');
-	}
+//p($data); die();
+
 	if ($output['total'] == 0 || empty($data->resultSet)) {
 	    $output['results'] = [];
         return $output;
 	}
-	foreach ($data->resultSet as $row) {
-		$d = [];
+	foreach ($data->resultSet as $i => $row) {
 		// Accepted scientific name, synonym, or common name
-		$d['type'] = getResultType($row);
-		$d['rank'] = $row->searchResults[0]->result->taxonRank;
-		$d['name'] = formatScientificName(
-			strip_tags($row->searchResults[0]->result->acceptedName->fullScientificName),
-			$row->searchResults[0]->result->acceptedName,
-			$output['searchTerms']
-		);
+		$d = $sources = $names = [];
+		foreach ($row->item->taxa as $taxon) {
+			
+//die($taxon->sourceSystem->code);
+			
+			$hits = _getHits($service, $taxon);
+			$type = _getResultType($hits);
+			$sources[] = _getSourceNameBySourceCode($taxon->sourceSystem->code);
+			if ($type == 'common') {
+				$names['common'][] = _getTaxonVernaculars($service, $taxon, $hits, true);
+			} else {
+				$names[$type][] = _getTaxonScientificName($service, $taxon, $type, $hits);
+			}
+			
+		}
+		
+		$d['type'] = _getResultType($hits);
+		$d['rank'] = $row->item->taxa[0]->taxonDetails->taxonRank;
+		$d['name'] = implode('; ', array_unique($names['accepted']));
 		if ($d['type'] == 'accepted') {
 			$d['description'] = t(ucfirst($d['rank']));
 		} else if ($d['type'] == 'synonym') {
-            $offset = getTaxonSynonymOffset($row);
 			$d['description'] = t('Synonym') . ': ' .
-                formatScientificName(
-    				strip_tags($row->searchResults[0]->result->synonyms[$offset]->fullScientificName),
-    				$row->searchResults[0]->result->synonyms[$offset],
-    				$output['searchTerms']
-    			);
+                implode('; ', array_unique($names['synonym']));
 		} else if ($d['type'] == 'common') {
-			$d['description'] = t('Common name(s)') . ': ';
-
-			foreach ($row->searchResults[0]->matchInfo as $i => $info) {
-                $vernaculars[] = highlightSearchTerms(
-    				strip_tags($info->valueHighlighted),
-    				$output['searchTerms']
-    		    );
-			}
-			$d['description'] .= implode(', ', $vernaculars);
-			/*
-            foreach ($row->searchResults[0]->matchInfo as $i => $info) {
-                $hits = explode('<span class="search_hit">', $info->valueHighlighted);
-                foreach ($hits as $hit) {
-                    $vernaculars[] = highlightSearchTerms(
-            			trim(strip_tags($hit)),
-            			$output['searchTerms']
-            	    );
-                }
-            }
-            $d['description'] .= implode(', ', array_filter($vernaculars));
-            */
-			unset($vernaculars);
+			$d['description'] = t('Common name(s)') . ': ' .
+				implode('; ', array_unique($names['common']));
 		}
 
-		$d['url'] = urldecode($row->searchResults[0]->links[0]->href);
-		$d['sources'] = getSources($row);
-		$d['commonNames'] = ($d['type'] != 'common' ? getCommonNames($row, true) : array());
-		$d['score'] = $row->searchResults[0]->percentage;
+		$d['url'] = _setBasePath() . 'taxon/' . 
+			urlencode(ucfirst(str_replace(' ', '_', $row->item->name))) . '/' . 
+			http_build_query(_setDetailSearchTerms($service, $i));
+		$d['sources'] = $sources;
+		$d['commonNames'] = ($d['type'] != 'common' ? _getCommonNames($row, true) : []);
 		$output['results'][] = $d;
 	}
 
-	$output['self'] = getSelfLink($data);
-	$output['showAll'] = getShowAll($data);
-	$output['paginator'] = getPaginator($data);
-
-	// Only set filter when performing initial search
-	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
-	    $_SESSION['ndaFilters']['taxon'] = $output['showAll'];
+	// Show all link
+	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+		$output['showAll'] = _setBasePath() . 'result/taxon/' .
+			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
 	}
-
+	// Paginator
+	if (in_array('paginator', $options)) {
+		$output['paginator'] = 
+			_getPaginator('specimen', $output['total'], _getPaginatorOffset($service));
+	}
+	
 	return isset($output) ? $output : false;
+}
+
+function _getCommonNames ($row, $languageCheck = false) {
+	global $language;
+	foreach ($row->item->taxa as $i => $taxon) {
+		if (isset($taxon->taxonDetails->vernacularNames)) {
+			foreach ($taxon->taxonDetails->vernacularNames as $name) {
+				// If language is set, only store when language of
+				// common name matches that of interface...
+				if ($languageCheck) {
+					if ($name->language == $language->name) {
+						$output[$name->name] = $name->language;
+					}
+				// ... else always return all names
+				} else {
+					$output[$name->name] = $name->language;
+				}
+			}
+		}
+	}
+	return isset($output) ? $output : false;
+}
+
+
+function _getResultType ($hits) {
+	$result = [];
+	foreach ($hits as $path => $hit) {
+		if (strpos($path, 'synonyms') !== false) {
+			$result[] = 'synonym';
+		} else if (strpos($path, 'vernacularNames') !== false) {
+			$result[] = 'common';
+		} else {
+			$result[] = 'accepted';
+		}
+	}
+	foreach (['accepted', 'synonym', 'common'] as $type) {
+		if (in_array($type, $result)) {
+			return $type;
+		}
+	}
+	return false;
 }
 
 
@@ -110,7 +143,7 @@ function _parseMultimedia ($data, $options = []) {
 		}
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['taxon'] = _getScientificNames($service, $row, $hits);
+		$d['taxon'] = _getSpecimenScientificNames($service, $row, $hits);
 		$d['unitID'] = _getMultimediaUnitId($row, $hits);
 		$output['results'][] = $d;
 	}
@@ -343,7 +376,74 @@ function _setNonNameHits ($service, $hits = []) {
 	return _highlightHits($service, $hits);
 }
 
-function _getScientificNames ($service, $row, $hits = [], $createLinks = false) {
+function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
+	if (isset($taxon->vernacularNames)) {
+		foreach (_getQueryPaths($service) as $path => $value) {
+			$paths[str_replace('taxa.', '', $path)] = $value;
+		}
+		// Same for hits
+		foreach ($hits as $path => $value) {
+			$temp[str_replace('taxa.', '', $path)] = $value;
+		}
+		$hits = isset($temp) ? $temp : $hits;
+
+//p($taxon); p($paths); p($hits); echo $type; die();
+	
+		foreach ($taxon->vernacularNames as $i => $name) {
+			$vernacular = new stdClass();
+			$vernacular->name = _highlightMatch($name->name, 
+				$paths['vernacularNames.name']['values']);
+			$vernacular->language = $name->language;
+			$vernaculars[$i] = $vernacular;
+		}
+		if ($hitsOnly) {
+			array_udiff($vernaculars, $taxon->vernacularNames,
+				function ($a, $b) {
+					return strcmp($a->name, $b->name);
+				}
+			);
+		}
+		return $vernaculars;
+	}
+	return false;
+}
+
+function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
+	// Trim taxa prefix from path to facilite highlighting
+	foreach (_getQueryPaths($service) as $path => $value) {
+		$paths[str_replace('taxa.', '', $path)] = $value;
+	}
+	// Same for hits
+	foreach ($hits as $path => $value) {
+		$temp[str_replace('taxa.', '', $path)] = $value;
+	}
+	$hits = isset($temp) ? $temp : $hits;
+	$type = $type == 'synonym' ? 'synonyms' : 'acceptedName';
+	
+// p($taxon); p($paths); p($hits); echo $type; die();
+	
+	
+	
+	$name = [];
+	// Elements in regular scientific name elements
+	foreach (scientificNameElements() as $i => $element) {
+		$name[$i] = isset($taxon->{$type}->{$element}) && 
+			!empty(trim($taxon->{$type}->{$element})) ? 
+			trim($taxon->{$type}->{$element}) : '';
+		// Highlight (assume always LIKE operator for name fields)
+		if (isset($hits[$type . '.' . $element])) {
+			$name[$i] = _highlightMatch($taxon->{$type}->{$element}, 
+				$paths[$type . '.' . $element]['values']);
+		}
+		// Italics
+		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+		}
+	}
+	return !empty($name) ? implode(' ', array_filter($name)) : false;
+}
+
+function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks = false) {
 	$paths = _getQueryPaths($service);
 	foreach ($row->item->identifications as $j => $identification) {
 		$name = [];
@@ -500,7 +600,7 @@ function _parseSpecimens ($data, $options = []) {
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['names'] = _getScientificNames($service, $row, $hits, true);			
+		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
 		
 		// No use for nameHits anymore; discard
 		$output['results'][] = $d;
@@ -525,7 +625,8 @@ function _parseSpecimens ($data, $options = []) {
 	// Paginator
 	if (in_array('paginator', $options)) {
 		$output['paginator'] = 
-			_getPaginator('specimen', $output['total'], _getPaginatorOffset($service));
+			_getPaginator($service
+					, $output['total'], _getPaginatorOffset($service));
 	}
 	return $output;
 }
@@ -561,7 +662,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
-				http_build_query(_setDetailSearchTerms('names.specimens', $i));
+				http_build_query(_setDetailSearchTerms($service, $i));
 			$hits = _getHits($service, $sp);
 			$s['hits'] = _setNonNameHits($service, $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
