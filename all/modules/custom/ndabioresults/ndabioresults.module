@@ -415,7 +415,6 @@ function _setSpecimenDetailPageBackLink ($pathComponents) {
 
 
 
-
 function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 	$previousId = $nextId = null;
 	foreach ($set->resultSet as $i => $row) {
@@ -439,6 +438,8 @@ function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 	$data->totalSize = $set->totalSize;
 	return $data;
 }
+
+
 
 function _nba_taxon_callback ($taxon = false, $search = false) {
 	
@@ -543,47 +544,75 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		
 		$set = json_decode($client->names()->setQuerySpec($query)->querySpecial());
 		
-		die(p($set));
+//die(p($set));
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
 			return _printOops();
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation(
-			$service, 
+		$data = _addTaxonDetailPageNavigation(
 			$data, 
 			$search, 
 			$set, 
-			$id, 
+			$data->name, 
 			$terms['from']
 		);
 	    
     	//return _printTaxonDetail(_parseTaxonDetail($data));
     }
     
-	die(p($data));
+die(p($data));
     
 }
+
+
+
+function _addTaxonDetailPageNavigation ($data, $search, $set, $name, $from) {
+	$previousId = $nextId = null;
+	foreach ($set->resultSet as $i => $row) {
+		if (isset($row->item->name) && strtolower($row->item->name) == strtolower($name)) {
+			break;
+		}
+	}
+	$data->offset = $from + 2;
+	if (isset($set->resultSet[($i - 1)]->item->name)) {
+		$previousId = $set->resultSet[($i - 1)]->item->name;
+	} else {
+		$data->offset = 1;
+	}
+	if (isset($set->resultSet[($i + 1)]->item->name)) {
+		$nextId = $set->resultSet[($i + 1)]->item->name;
+	}
+	$data->previousUrl = _setDetailPagePreviousLink('taxon', $search, $previousId);
+	$data->nextUrl = _setDetailPageNextLink('taxon', $search, $nextId, $previousId);
+	$data->backUrl =  _setDetailPageBackLink('taxon', $search);
+	$data->totalSize = $set->totalSize;
+	return $data;
+}
+
+
 
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
   	$client = _initBioPortalClient();
-  	$c = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+  	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 	if (count($taxon) > 1) {
-		$c->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-		$c->setAnd('acceptedName.infraspecificEpithet', 
+		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
 			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 	}
-    $query = new QuerySpec();
-    $query->addCondition($c);
-    $data = json_decode($client->taxon()->setQuerySpec($query)->query());
+    $query = new ScientificNameGroupQuerySpec();
+    $query
+    	->addCondition($c)
+    	->setSpecimensSize(0);
+    $data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
 	if (isset($data->exception)) {
 		return false;
 	}
+	$data = _getTaxonDetails($data);
 	return $data->resultSet[0]->item;	
-    
 }
 
 
