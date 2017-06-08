@@ -415,7 +415,10 @@ function nbaFieldMapping ()
                 ],
              	'collectionType' => [
             		'collectionType'
-            	]
+            	],
+            	'name' => [
+            		'identifications.scientificName.scientificNameGroup'
+            	],
             ],
             'specimen' => [
                 'geoShape' => [
@@ -507,7 +510,10 @@ function nbaFieldMapping ()
             	],
              	'collectionType' => [
             		'collectionType'
-            	]
+            	],
+            	'name' => [
+            		'identifications.scientificName.scientificNameGroup'
+            	],
             ],
             'taxon' => [
                 'className' => [
@@ -576,6 +582,9 @@ function nbaFieldMapping ()
                 'sourceSystem' => [
                     'sourceSystem.code'
                 ],
+            	'name' => [
+            		'acceptedName.scientificNameGroup'
+            	],
             ],
         );
     }

@@ -1,7 +1,70 @@
 <?php
 
-function _printTaxa ($data) {
+function _printTaxonDetail ($data) {
+    global $language;
+    
+p($data);
+
+    
+    $output = _printDebug();
+    $output .= "<div class='category'>".t('Taxon')."</div>";
+    $output .= "<h2><span class='scientific-name'>";
+    $output .= $data['acceptedName'];
+    $output .= "</span>";
+    if (isset($data['commonNames'][$language->language])){
+        $output .= "  <span class='vernacular-name'>";
+        $output .=      implode(', ', $data['commonNames'][$language->language]);
+        $output .= "  </span>";
+    }
+    $output .= "</h2>";
+    $output .= _printPreviousNext([
+    	'total' => $data['totalSize'], 
+    	'offset' => $data['offset'], 
+    	'previousUrl' => $data['previousUrl'], 
+    	'nextUrl' => $data['nextUrl'],
+    	'backUrl' => $data['backUrl'],
+    ]);
+
+    $output .=
+        _printCommonNames($data) .
+        _printSynonyms($data) .
+        _printDescriptions($data) .
+        _printClassifications($data);
+
 //p($data);
+
+    /*
+    $getSpecimenRequest = nbaBaseUrl() . specimenNamesService() .
+        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
+        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+
+    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
+    drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
+    drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
+    drupal_add_js(
+        "jQuery(function() { getNbaData(getSpecimenRequest, setSpecimenPreview, '&_maxResults=5'); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
+    drupal_add_js(
+        "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
+    */
+
+    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="nba_specimens"></p>';
+    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="nba_multimedia"></p>';
+
+
+    // Drupal title empty; page title custom
+    setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
+
+    return $output;
+}
+
+
+function _printTaxa ($data) {
+//p($data)
     if (empty($data['results'])) {
         return false;
     }
@@ -338,7 +401,7 @@ function _printSpecimenDetail ($data) {
 */
 	if (!empty($data['multimedia'])) {
     	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
-    		_printSpecimenMultimedia($data['multimedia']) . "</p>\n";
+    		_printMultimediaPreview($data['multimedia']) . "</p>\n";
 	}
 
     _setTitle(t('Specimen') . ' | ' .
@@ -350,7 +413,7 @@ function _printSpecimenDetail ($data) {
 	
 	
 
-function _printSpecimenMultimedia ($data) {
+function _printMultimediaPreview ($data) {
 	global $base_path;
 	$output = "<div style='overflow: hidden;'>";
 	foreach ($data['items'] as $i => $media) {
@@ -371,6 +434,52 @@ function _printSpecimenMultimedia ($data) {
 	}
 	return $output;
 }
+
+
+/*
+function _printSpecimenPreview (request, data) {
+	$output = '';
+	for (i = 0; i < data.resultGroups.length; i++) {
+		for (j = 0; j < data.resultGroups[i].searchResults.length; j++) {
+
+			var unitID = data.resultGroups[i].searchResults[j].result.unitID;
+			var collectionType = data.resultGroups[i].searchResults[j].result.collectionType;
+			var recordBasis = data.resultGroups[i].searchResults[j].result.recordBasis;
+			var caption = '';
+
+			if (collectionType !== null && recordBasis !== null) {
+				caption = collectionType + '; ' + recordBasis;
+			} else if (collectionType === null && recordBasis !== null) {
+				caption = recordBasis;
+			}
+
+			for (k = 0; k < data.resultGroups[i].searchResults[j].links.length; k++) {
+				if (data.resultGroups[i].searchResults[j].links[k].rel == '_specimen') {
+					var url = data.resultGroups[i].searchResults[j].links[k].href;
+				}
+			}
+			output += '<dl><dt><a href="?nba_request=' +
+				encodeURIComponent(url) + '&noMap">' + unitID + '</a></dt>';
+			output += '<dd>' + caption + '</dd></dl>';
+		}
+	};
+
+	if (parseInt(data.totalSize) > 5) {
+		output += '<div style="margin-top: 12px;"><a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
+			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all') + ' ' + data.totalSize + ' ' +
+			Drupal.t('specimens') + '</a></div>';
+	}
+	return output;
+}
+
+*/
+
+
+
+
+
+
+
 
 
 
@@ -1031,7 +1140,7 @@ function printTaxonDetail ($data) {
  * @return string Formatted output
  */
 
-function printSynonyms ($data) {
+function _printSynonyms ($data) {
 //p($data);
 	$output = "";
 
@@ -1960,7 +2069,7 @@ function _printSource($data, $source) {
  * @param array $data Parsed json data
  * @return string Formatted output
  */
-function printDescriptions ($data) {
+function _printDescriptions ($data) {
 	global $language;
 	$output = '';
 	$header = "<h3>" . t('Descriptions') . "</h3>";
@@ -1974,7 +2083,7 @@ function printDescriptions ($data) {
 		foreach ($descriptions as $source => $t) {
 			foreach ($t as $description => $lan) {
 				if ($lan == $language->name) {
-					$output .= "<h4 class='source'>" . printSource($data, $source) .
+					$output .= "<h4 class='source'>" . _printSource($data, $source) .
 					   "</h4>\n<p>$description</p>";
 				}
 			}
@@ -2000,7 +2109,7 @@ function printDescriptions ($data) {
  * @return string Formatted output
  */
 
-function printCommonNames ($data) {
+function _printCommonNames ($data) {
 //p($data);
 	$output = "";
 
@@ -2008,7 +2117,7 @@ function printCommonNames ($data) {
 
 	if (isset($data['commonNames']) && !empty($data['commonNames'])) {
 	    foreach ($data['commonNames'] as $source => $d) {
-			$output .= "<h4 class='source'>" . printSource($data, $source) . "</h4>\n
+			$output .= "<h4 class='source'>" . _printSource($data, $source) . "</h4>\n
 			     <div class='property-list'>\n";
 	        foreach ($d as $lan => $t) {
 			    $i = 0;
@@ -2038,7 +2147,7 @@ function printCommonNames ($data) {
  * @param array $data Parsed json data
  * @return string Formatted output
  */
-function printClassifications ($data) {
+function _printClassifications ($data) {
 	global $language;
 	$output = '';
 	$header = "<h3>" . t('Classifications') . "</h3>";
@@ -2046,7 +2155,7 @@ function printClassifications ($data) {
 	// First merge two separate classification arrays
 	foreach ($data['classifications']['default'] as $source => $classification) {
 		$classifications[] = array(
-			'source' =>  printSource($data, $source),
+			'source' =>  _printSource($data, $source),
 			'classification' => $classification
 		);
 	}

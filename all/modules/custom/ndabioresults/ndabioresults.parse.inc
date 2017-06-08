@@ -1,6 +1,86 @@
 <?php
 
 
+function _parseTaxonDetail ($data) {
+	
+//p($data);
+	
+	$service = 'names.taxa';
+
+	$skipFields = [];
+
+	foreach ((array) $data as $field => $value) {
+		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
+			$output[$field] = _setUnitId($value, $field);
+		}
+	}
+
+	foreach ($data->taxa as $row) {
+		$acceptedNames[] = _formatScientificName($row->acceptedName);
+		$row = $row->taxonDetails;
+		$source = $row->sourceSystem->name;
+
+		if (isset($row->defaultClassification)) {
+			$output['classifications']['default'][$source] =
+				_parseClassification($row->defaultClassification);
+		}
+		if (isset($row->synonyms)) {
+			foreach ($row->synonyms as $i => $synonym) {
+				$output['synonyms'][$source][] = _formatScientificName($synonym);
+			}
+		}
+		if (isset($row->descriptions)) {
+		    // @todo: hard coded for NSR and CoL
+		    foreach ($row->descriptions as $i => $description) {
+		        // NSR Dutch
+		        if (strtolower($description->category) == 'algemeen') {
+                    $output['descriptions']['Dutch'][$source] =
+					   $description->description;
+		        }
+		        // NSR English
+		        if (strtolower($description->category) == 'summary') {
+                    $output['descriptions']['English'][$source] =
+					   $description->description;
+		        }
+		        // CoL English
+		        if (empty($description->category) && !empty($description->description)) {
+                    $output['descriptions']['English'][$source] =
+					   $description->description;
+		        }
+		    }
+		}
+		if (isset($row->vernacularNames)) {
+			foreach ($row->vernacularNames as $i => $name) {
+				$output['commonNames'][$source][$name->language][] = $name->name;
+			}
+
+		}
+	}
+	$output['acceptedName'] = $acceptedNames[0];
+
+	// Get specimens
+	if (isset($data->specimens)) {
+		$spOutput = [];
+		$spOutput['totalSize'] = $data->specimenCount;
+		$spOutput['showAllLink'] = $data->specimenCount > 5 ?
+			_setBasePath() . 'result/specimen/taxon/' . urlencode($data->name) . '/' . $query : null;
+		foreach ($data->specimens as $i => $specimen) {
+			$spOutput['items'][$i]['unitID'] = $specimen->unitID;
+			$spOutput['items'][$i]['collectionType'] = isset($specimen->collectionType) ? 
+				$specimen->collectionType : null;
+			$spOutput['items'][$i]['url'] = _setBasePath() . 'specimen/' . 
+				urlencode($specimen->item->unitID) . '/' . $query;
+		}
+	}
+	
+	$output['specimens'] = $spOutput;
+ 	
+	return $output;
+}
+
+
+
+
 
 function _parseTaxa ($data, $options) {
 	
@@ -9,7 +89,7 @@ function _parseTaxa ($data, $options) {
 	$output['total'] = $data->totalSize;
 	_getTaxonDetails($data);
 
-//p($data); die();
+//p($data);
 
 	if ($output['total'] == 0 || empty($data->resultSet)) {
 	    $output['results'] = [];
@@ -35,7 +115,7 @@ function _parseTaxa ($data, $options) {
 		
 		$d['type'] = _getResultType($hits);
 		$d['rank'] = $row->item->taxa[0]->taxonDetails->taxonRank;
-		$d['name'] = implode('; ', array_unique($names['accepted']));
+		$d['name'] = implode('<br>', array_unique($names['accepted']));
 		if ($d['type'] == 'accepted') {
 			$d['description'] = t(ucfirst($d['rank']));
 		} else if ($d['type'] == 'synonym') {
@@ -410,8 +490,10 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 
 function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 	// Trim taxa prefix from path to facilite highlighting
-	foreach (_getQueryPaths($service) as $path => $value) {
-		$paths[str_replace('taxa.', '', $path)] = $value;
+	if ($service) {
+		foreach (_getQueryPaths($service) as $path => $value) {
+			$paths[str_replace('taxa.', '', $path)] = $value;
+		}
 	}
 	// Same for hits
 	foreach ($hits as $path => $value) {
@@ -419,11 +501,7 @@ function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 	}
 	$hits = isset($temp) ? $temp : $hits;
 	$type = $type == 'synonym' ? 'synonyms' : 'acceptedName';
-	
-// p($taxon); p($paths); p($hits); echo $type; die();
-	
-	
-	
+
 	$name = [];
 	// Elements in regular scientific name elements
 	foreach (scientificNameElements() as $i => $element) {
@@ -439,6 +517,26 @@ function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 		}
+	}
+	return !empty($name) ? implode(' ', array_filter($name)) : false;
+}
+
+function _formatScientificName ($object) {
+	$name = [];
+	// Elements in regular scientific name elements
+	foreach (scientificNameElements() as $i => $element) {
+		$name[$i] = isset($object->{$element}) && 
+			!empty(trim($object->{$element})) ? 
+			trim($object->{$element}) : '';
+		// Italics
+		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+		}
+	}
+	// Only fullScientificName is available; genus, etc are empty
+	if (empty($name[0])) {
+		$name[0] = $object->fullScientificName;
+		unset($name[1], $name[2], $name[3]);
 	}
 	return !empty($name) ? implode(' ', array_filter($name)) : false;
 }
@@ -583,8 +681,6 @@ function _parseSpecimens ($data, $options = []) {
 
 //p($data);
 	
-	//@todo: from
-	//$from = (int) _getStoredQueryTerms($service)['from'];
 	foreach ($data->resultSet as $i => $row) {
 		$d = [];
 		//$d['url'] = _setSpecimensAllLink($row);
@@ -1341,7 +1437,7 @@ function getSourceUrls ($data) {
  * @param object $classification Classification section of NBA response
  * @return array|void
  */
-function parseClassification ($classification) {
+function _parseClassification ($classification) {
     if (empty($classification) || empty($type)) {
         return $classification;
     }

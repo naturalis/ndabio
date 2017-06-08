@@ -124,16 +124,16 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	
 	// Added non-aggregated specimen browse option;
 	// parameter names now are incorrect...
-	if (!$search) {
+	if ($scientificNameGroup && !$search) {
 		$search = $scientificNameGroup;
 
-		$terms = _getQueryTerms($service, $search);		
+		$terms = _getQueryTerms('specimen', $search);		
 		$terms['size'] = 3;		
 
-		$query = _buildQuery($service, $terms);
+		$query = _buildQuery('specimen', $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
+		$set = json_decode($client->specimen()->setQuerySpec($query)->query());
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -150,14 +150,13 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		);
 	}
 	
-	
 	else if ($scientificNameGroup && $search) {
-		$terms = _getQueryTerms($service, $search);
+		$terms = _getQueryTerms('names.specimens', $search);
     	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     	
     	unset($terms['size'], $terms['from']);
     
-		$query = _buildQuery($service, $terms);
+		$query = _buildQuery('names.specimens', $terms);
 		$query
 			->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
 			->setSpecimensFrom($specimensFrom)
@@ -181,7 +180,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 			$scientificNameGroup
 		);
 	}
-	
+
 	return _printSpecimenDetail(_parseSpecimenDetail($data));
 }
 
@@ -401,6 +400,11 @@ function _setMultimediaDetailPageBackLink ($pathComponents) {
 }
 
 
+function _setTaxonDetailPageBackLink ($pathComponents) {
+	return _setDetailPageBackLink('taxon', array_slice($pathComponents, -1)[0]);
+}
+
+
 function _setSpecimenDetailPageBackLink ($pathComponents) {
 	// Need to reset search to correct from value
 	safe_parse_str(array_slice($pathComponents, -1)[0], $p);
@@ -559,10 +563,10 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 			$terms['from']
 		);
 	    
-    	//return _printTaxonDetail(_parseTaxonDetail($data));
-    }
-    
-die(p($data));
+     }
+   	 return _printTaxonDetail(_parseTaxonDetail($data));
+     
+//die(p($data));
     
 }
 
@@ -577,12 +581,12 @@ function _addTaxonDetailPageNavigation ($data, $search, $set, $name, $from) {
 	}
 	$data->offset = $from + 2;
 	if (isset($set->resultSet[($i - 1)]->item->name)) {
-		$previousId = $set->resultSet[($i - 1)]->item->name;
+		$previousId = _setTaxonUrlName($set->resultSet[($i - 1)]->item->name);
 	} else {
 		$data->offset = 1;
 	}
 	if (isset($set->resultSet[($i + 1)]->item->name)) {
-		$nextId = $set->resultSet[($i + 1)]->item->name;
+		$nextId = _setTaxonUrlName($set->resultSet[($i + 1)]->item->name);
 	}
 	$data->previousUrl = _setDetailPagePreviousLink('taxon', $search, $previousId);
 	$data->nextUrl = _setDetailPageNextLink('taxon', $search, $nextId, $previousId);
@@ -591,22 +595,23 @@ function _addTaxonDetailPageNavigation ($data, $search, $set, $name, $from) {
 	return $data;
 }
 
+function _setTaxonUrlName ($id) {
+	return ucfirst(str_replace(' ', '_', $id));
+}
 
 
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
   	$client = _initBioPortalClient();
-  	$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+  	$condition = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 	if (count($taxon) > 1) {
-		$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-		$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
+		$condition->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+		$condition->setAnd('taxa.acceptedName.infraspecificEpithet', 
 			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 	}
     $query = new ScientificNameGroupQuerySpec();
-    $query
-    	->addCondition($c)
-    	->setSpecimensSize(0);
+    $query->addCondition($condition)->setSpecimensSize(5);
     $data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
 	if (isset($data->exception)) {
 		return false;
@@ -698,7 +703,7 @@ function _buildQuery ($service, $terms = [], $options = []) {
 				// Test if LIKE is still allowed; if not change to MATCHES
 				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
 					$operator = 'MATCHES';
-				}	
+				}
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
 					// geoShape arrives from simple search as area name
@@ -989,7 +994,6 @@ function _nba_specimen_result_callback ($search = false) {
 	if (isset($data->exception)) {
 		return _printOops();
 	}
-
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimens($data);
 	
@@ -997,21 +1001,25 @@ function _nba_specimen_result_callback ($search = false) {
 
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
     $service = 'names.specimens';
-	$client = _initBioPortalClient();
-	
-    $terms = _getQueryTerms($service, $search);
-    $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
-    unset($terms['size'], $terms['from']);
+
+    // No search terms; die with grace
+    if (!$scientificNameGroup) {
+    	_printOops();
+    }
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, $pageTitle);   
     
-    // No search terms; die with grace
-    if (!$scientificNameGroup || !$terms) {
-    	_printOops();
-    }
+    
+    $client = _initBioPortalClient();
+	
+    $terms = _getQueryTerms($service, $search);
+    $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
+    unset($terms['size'], $terms['from']);
+    
+    
     
 	// Build query
 	$query = _buildQuery($service, $terms);	
@@ -1141,17 +1149,17 @@ function _getTaxonFromNba ($taxon) {
 	} 
 	$taxon = array_filter($taxon);
 	if (!empty($taxon)) {
-		$c = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+		$condition = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 		if (count($taxon) > 1) {
-			$c->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-			$c->setAnd('taxa.acceptedName.infraspecificEpithet', 
+			$condition->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+			$condition->setAnd('taxa.acceptedName.infraspecificEpithet', 
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
 		$client = _initBioPortalClient();
 		$query = new ScientificNameGroupQuerySpec();
 		$query
-			->addCondition($c)
+			->addCondition($condition)
 			->setConstantScore();
 		_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
 	    $data = json_decode($client->names()->setQuerySpec($query)->query());
@@ -1183,7 +1191,7 @@ function _nbaAdvancedSearch () {
     $services[_getSpecimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
     
     // Test if anything has been posted; if not return with error message
-    if (!dataPosted($services)) {
+    if (!_dataPosted($services)) {
         _printOops();
     }
 
@@ -1870,7 +1878,7 @@ function _getSpecimenMultimedia ($id, $unitId, $scientificName) {
 		$output = [];
 		$output['totalSize'] = $result->totalSize;
 		$output['showAllLink'] = $result->totalSize > 5 ?
-			_setBasePath() . 'multimedia/unitID=' . url_encode($unitId) . 
+			_setBasePath() . 'multimedia/unitID=' . urlencode($unitId) . 
 			'&logicalOperator=AND&size=100' : null;
 		foreach ($result->resultSet as $i => $media) {
 			$output['items'][$i]['id'] = $media->item->id;
@@ -2439,7 +2447,7 @@ function ndaAjaxRequest ($r, $maxResults = false) {
  * @param array $services
  * @return boolean
  */
-function dataPosted ($services) {
+function _dataPosted ($services) {
     foreach ($services as $data) {
         if (!empty($data)) {
             return true;
