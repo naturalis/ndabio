@@ -226,17 +226,17 @@ function _addSpecimenDetailPageNavigation ($data, $search, $set, $id, $from,
 
 function _setSpecimenDetailPagePreviousLink ($search, $previousId, $scientificNameGroup) {
 	if (isset($previousId)) {
-		safe_parse_str($search, $p);
+		safe_parse_str($search, $terms);
 		// Strip size if it was provided; we don't need it
-		if (isset($p['size'])) {
-			unset($p['size']);
+		if (isset($terms['size'])) {
+			unset($terms['size']);
 		}
 		// Only proceed if size has been set; otherwise url has been tampered with
 		// We have already validated that $p['from'] is an integer
-		if (isset($p['from'])) {
-			$p['from'] = $p['from'] == 0 ? $p['from'] : $p['from'] - 1;
+		if (isset($terms['from'])) {
+			$terms['from'] = $terms['from'] == 0 ? $terms['from'] : $terms['from'] - 1;
 			return _setBasePath() . 'specimen/' . urlencode($previousId) . '/' . 
-				urlencode($scientificNameGroup) . '/' . http_build_query($p);
+				urlencode($scientificNameGroup) . '/' . http_build_query($terms);
 		}
 	}
 	return null;
@@ -244,17 +244,17 @@ function _setSpecimenDetailPagePreviousLink ($search, $previousId, $scientificNa
 
 function _setSpecimenDetailPageNextLink ($search, $nextId, $previousId, $scientificNameGroup) {
 	if (isset($nextId)) {
-		safe_parse_str($search, $p);
+		safe_parse_str($search, $terms);
 		// Strip size if it was provided; we don't need it
-		if (isset($p['size'])) {
-			unset($p['size']);
+		if (isset($terms['size'])) {
+			unset($terms['size']);
 		}
 		// Only proceed if size has been set; otherwise url has been tampered with
 		// We have already validated that $p['from'] is an integer
-		if (isset($p['from'])) {
-			$p['from'] = !isset($previousId) ? $p['from'] : $p['from'] + 1;
+		if (isset($terms['from'])) {
+			$terms['from'] = !isset($previousId) ? $terms['from'] : $terms['from'] + 1;
 			return _setBasePath() . 'specimen/' . urlencode($nextId) . '/' . 
-				urlencode($scientificNameGroup) . '/' . http_build_query($p);
+				urlencode($scientificNameGroup) . '/' . http_build_query($terms);
 		}
 	}
 	return null;
@@ -352,17 +352,17 @@ function _setMultimediaAssociatedObject ($data) {
 
 function _setDetailPagePreviousLink ($service, $search, $previousId) {
 	if (isset($previousId)) {
-		safe_parse_str($search, $p);
+		safe_parse_str($search, $terms);
 		// Strip size if it was provided; we don't need it
-		if (isset($p['size'])) {
-			unset($p['size']);
+		if (isset($terms['size'])) {
+			unset($terms['size']);
 		}
 		// Only proceed if size has been set; otherwise url has been tampered with
 		// We have already validated that $p['from'] is an integer
-		if (isset($p['from'])) {
-			$p['from'] = $p['from'] == 0 ? $p['from'] : $p['from'] - 1;
+		if (isset($terms['from'])) {
+			$terms['from'] = $terms['from'] == 0 ? $terms['from'] : $terms['from'] - 1;
 			return _setBasePath() . $service . '/' . urlencode($previousId) . '/' . 
-				http_build_query($p);
+				http_build_query($terms);
 		}
 	}
 	return null;
@@ -370,17 +370,17 @@ function _setDetailPagePreviousLink ($service, $search, $previousId) {
 
 function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
 	if (isset($nextId)) {
-		safe_parse_str($search, $p);
+		safe_parse_str($search, $terms);
 		// Strip size if it was provided; we don't need it
-		if (isset($p['size'])) {
-			unset($p['size']);
+		if (isset($terms['size'])) {
+			unset($terms['size']);
 		}
 		// Only proceed if size has been set; otherwise url has been tampered with
 		// We have already validated that $p['from'] is an integer
-		if (isset($p['from'])) {
-			$p['from'] = !isset($previousId) ? $p['from'] : $p['from'] + 1;
+		if (isset($terms['from'])) {
+			$terms['from'] = !isset($previousId) ? $terms['from'] : $terms['from'] + 1;
 			return _setBasePath() . $service . '/' . urlencode($nextId) . '/' . 
-				http_build_query($p);
+				http_build_query($terms);
 		}
 	}
 	return null;
@@ -388,9 +388,9 @@ function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
 
 function _setDetailPageBackLink ($service, $search) {
 	// Need to reset search to correct from value
-	safe_parse_str($search, $p);
-	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
-	return _setBasePath() . 'result/' . $service . '/' . http_build_query($p);
+	safe_parse_str($search, $terms);
+	$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
+	return _setBasePath() . 'result/' . $service . '/' . http_build_query($terms);
 }
 
 
@@ -407,14 +407,14 @@ function _setTaxonDetailPageBackLink ($pathComponents) {
 
 function _setSpecimenDetailPageBackLink ($pathComponents) {
 	// Need to reset search to correct from value
-	safe_parse_str(array_slice($pathComponents, -1)[0], $p);
-	$p['from'] = floor(($p['from'] + 1) * 0.01) * 100;
+	safe_parse_str(array_slice($pathComponents, -1)[0], $terms);
+	$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
 	// From taxon page, which has four path components
 	if (count($pathComponents) == 4) {
 		return _setBasePath() . 'result/specimen/taxon/' . urlencode($pathComponents[2]) . 
-		'/' . http_build_query($p);		
+		'/' . http_build_query($terms);		
 	}
-	return  _setBasePath() . 'result/specimen/' . http_build_query($p);
+	return  _setBasePath() . 'result/specimen/' . http_build_query($terms);
 }
 
 
@@ -446,84 +446,7 @@ function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 
 
 function _nba_taxon_callback ($taxon = false, $search = false) {
-	
-	/*	// Test if anything has been posted; if not return with error message
-	if (!$id) {
-		return _printOops();
-	}
-	
-	$service = _getSpecimenService();
-	
-	$data = _getSpecimenByUnitId($id);
-	if (!$data) {
-		return _printOops();
-	}
-	
-	$client = _initBioPortalClient();
-	
-	
-	// Added non-aggregated specimen browse option;
-	// parameter names now are incorrect...
-	if (!$search) {
-		$search = $scientificNameGroup;
 
-		$terms = _getQueryTerms($service, $search);		
-		$terms['size'] = 3;		
-
-		$query = _buildQuery($service, $terms);
-		_addDebugMessage('previous, current and next item', $query);
-		
-		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
-		
-		// We got an error; go oops
-		if (isset($set->exception)) {
-			return _printOops();
-		}
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation(
-			$service, 
-			$data, 
-			$search, 
-			$set, 
-			$id, 
-			$terms['from']
-		);
-	}
-	
-	
-	else if ($scientificNameGroup && $search) {
-		$terms = _getQueryTerms($service, $search);
-    	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
-    	
-    	unset($terms['size'], $terms['from']);
-    
-		$query = _buildQuery($service, $terms);
-		$query
-			->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
-			->setSpecimensFrom($specimensFrom)
-			->setSpecimensSize(3);
-		
-		_addDebugMessage('previous, current and next item', $query);
-		
-		$set = json_decode($client->names()->setQuerySpec($query)->query());
-		
-		// We got an error; go oops
-		if (isset($set->exception)) {
-			return _printOops();
-		}
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addSpecimenDetailPageNavigation(
-			$data,
-			$search, 
-			$set, 
-			$id, 
-			$specimensFrom, 
-			$scientificNameGroup
-		);
-	}
-	
-	return _printSpecimenDetail(_parseSpecimenDetail($data));
-	*/
     // Test if anything has been posted; if not return with error message
     if (!$taxon) {
     	_printOops();
@@ -564,10 +487,41 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		);
 	    
      }
+     
+	// Get specimens
+	if (isset($data->specimens)) {
+		$specimens = new stdClass();
+		$specimens->totalSize = $data->specimenCount;
+		$specimens->showAllLink = $data->specimenCount > 5 ?
+			_createTaxonShowAllLink($data->taxa[0]->acceptedName, 'result/specimen/') : null;
+		foreach ($data->specimens as $i => $specimen) {
+			$items[$i]['unitID'] = $specimen->unitID;
+			$items[$i]['collectionType'] = isset($specimen->collectionType) ? 
+				$specimen->collectionType : null;
+			$items[$i]['url'] =  
+				_createTaxonShowAllLink($data->taxa[0]->acceptedName, 'specimen');
+		}
+		$specimens->items = $items;
+	}
+	$data->specimens = $specimens;
+	
+p($data); die();
+     
    	 return _printTaxonDetail(_parseTaxonDetail($data));
      
 //die(p($data));
     
+}
+
+function _createTaxonShowAllLink ($object, $resultPage) {
+	$output = _setBasePath() . $resultPage;
+	foreach (scientificNameElementsInItalics() as $field) {
+		if (isset($object->{$field}) && !empty($object->{$field})) {
+			$output .= $field . '=' . urlencode($object->{$field}) . '&' . 
+				$field . 'Operator=EQUALS_IC&';
+		}
+	}
+	return $output . 'logicalOperator=AND';
 }
 
 
@@ -620,8 +574,18 @@ function _getTaxonByName ($name) {
 	return $data->resultSet[0]->item;	
 }
 
+function _filterQueryOperators (&$terms) {
+	foreach ($terms as $field => $value) {
+		if (substr($field, -strlen('Operator')) === 'Operator') {
+			$operators[str_replace('Operator', '', $field)] = $value;
+			unset($terms[$field]);
+		}
+	}
+	return isset($operators) ? $operators : [];
+}
 
-function _buildQuery ($service, $terms = [], $options = []) {
+
+function _buildQuery ($service, $terms = []) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	$andOr = 'setAnd';
@@ -640,12 +604,6 @@ function _buildQuery ($service, $terms = [], $options = []) {
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
-	// Set QuerySpec options; these must exactly match the methods in QuerySpec
-	foreach ($options as $method => $p) {
-		if (method_exists($query, $method)) {
-			$query->{$method}($p);
-		}
-	}
 	// Logical operator is always AND (form and map are exclusive)
 	$query->setLogicalOperator('AND');
 	// Logical operator is important to compile main QuerySpec: 
@@ -653,6 +611,8 @@ function _buildQuery ($service, $terms = [], $options = []) {
 	// - for AND we will create separate conditions ruled by main logical operator AND
 	$logicalOperator = isset($terms['logicalOperator']) && !empty($terms['logicalOperator']) ?
 		strtoupper($terms['logicalOperator']) : 'OR';
+	// Filter any specific operators from terms; these are used later when constructing the query
+	$operators = _filterQueryOperators($terms);
 	// Translate fields to NBA paths and get their operators
     foreach ($terms as $field => $value) {
     	$statement = [];
@@ -670,7 +630,9 @@ function _buildQuery ($service, $terms = [], $options = []) {
             	if ($service == 'names' && strpos($path, '.identifications.') !== false) {
             		$path = str_replace('identifications', 'matchingIdentifications', $path);
             	}
-            	$statement[$path] = _getConditionOperator($service, $path, $value);
+            	// If operator has been set in url use this, otherwise use "best" version
+            	$statement[$path] = isset($operators[$field]) ?
+            		strtoupper($operators[$field]) : _getConditionOperator($service, $path, $value);
             	$paths[$path] = [
             		'operator' => $statement[$path],
             		'values' => _stringToElements($value),
@@ -953,7 +915,6 @@ function _nba_specimen_result_callback ($search = false) {
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, $pageTitle);   
     
-    
     // No search terms; die with grace
     if (!$terms) {
     	_printOops();
@@ -1001,25 +962,18 @@ function _nba_specimen_result_callback ($search = false) {
 
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
     $service = 'names.specimens';
-
-    // No search terms; die with grace
-    if (!$scientificNameGroup) {
-    	_printOops();
-    }
-    
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
-        t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    _setTitle($headTitle, $pageTitle);   
-    
-    
-    $client = _initBioPortalClient();
+	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
+    
     $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     unset($terms['size'], $terms['from']);
     
     
+    // No search terms; die with grace
+    if (!$scientificNameGroup || !$terms) {
+    	_printOops();
+    }
     
 	// Build query
 	$query = _buildQuery($service, $terms);	
@@ -1027,7 +981,6 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
 		->setSpecimensFrom($specimensFrom)
 		->setSpecimensSize(maxResults());
-//die($query->getQuerySpec(true));
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
@@ -1196,14 +1149,14 @@ function _nbaAdvancedSearch () {
     }
 
     // Get json response for each service that provides search parameters
-    foreach ($services as $service => $p) {
-        if (_serviceUsed($p)) {
+    foreach ($services as $service => $terms) {
+        if (_serviceUsed($terms)) {
             // Cap results
-            $p['size'] = maxResultsInitial();
+            $terms['size'] = maxResultsInitial();
             // Init client
             $client = _setClientService(_initBioPortalClient(), $service);
             // Build QuerySpec
-            $query = _buildQuery($service, $p);
+            $query = _buildQuery($service, $terms);
             // Trim specimens from taxon query
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
@@ -1271,14 +1224,9 @@ function _getSpecimensTotal ($terms) {
 			unset($terms[$p]);
 		}
 	}
-	$options = [
-		'setConstantScore' => true,
-		'setSize' => 1,
-	];
-	$client
-		->specimen()
-		->setQuerySpec(_buildQuery('specimen', $terms, $options)); 
-	$data = json_decode($client->query());
+	$query = _buildQuery('specimen', $terms);
+	$query->setConstantScore()->setSize(1);
+	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
 	_addDebugMessage('total specimens', $client);
 	if (isset($data->totalSize)) {
 		return $data->totalSize;
@@ -1497,12 +1445,12 @@ function _getPaginator ($service, $total, $from) {
 function _setPaginatorUrl () {
 	// Strip off the from component of the url
     $search = basename(_setBasePath() . current_path());
-    safe_parse_str($search, $p);
-    if (isset($p['from'])) {
-    	unset($p['from']);
+    safe_parse_str($search, $terms);
+    if (isset($terms['from'])) {
+    	unset($terms['from']);
     }
     return _setBasePath() . str_replace($search, '', current_path()) . 
-    	http_build_query($p) . '&from=(:num)';
+    	http_build_query($terms) . '&from=(:num)';
 }
 
 /**
@@ -1595,10 +1543,10 @@ function _nbaSimpleSearch ($term) {
     	}
     }
 */    
-    $p['term'] = $_SESSION['ndaSearch']['term'];
+    $terms['term'] = $_SESSION['ndaSearch']['term'];
     
     
-    $services['names.taxa'] = $p;
+    $services['names.taxa'] = $terms;
     
     // Taxon search does not include geoShape and should 
     // not be invoked when coming from geo form
@@ -1606,8 +1554,8 @@ function _nbaSimpleSearch ($term) {
     if (_isGeoSearch()) {
         unset($services['names.taxa']);
 
-        $p['geoShape'] = _getStoredGeoShape();
-        $p['gid'] = _setNbaGid(_getStoredGid());
+        $terms['geoShape'] = _getStoredGeoShape();
+        $terms['gid'] = _setNbaGid(_getStoredGid());
        
         $area = !empty(_getStoredLocation()) ? _getStoredLocation() :
             t('area drawn on map');
@@ -1623,19 +1571,19 @@ function _nbaSimpleSearch ($term) {
             );
     };
     
-    $services[_getSpecimenService()] = $p;
-    $services['multimedia'] = $p;
+    $services[_getSpecimenService()] = $terms;
+    $services['multimedia'] = $terms;
     
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Cap results
-		$p['size'] = maxResultsInitial();
+		$terms['size'] = maxResultsInitial();
 
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
 			
 		// Build QuerySpec
-		$query = _buildQuery($service, $p);
+		$query = _buildQuery($service, $terms);
 		// Trim specimens from taxon query
 		if ($service == 'names.taxa') {
 			$query->setSpecimensSize(0);

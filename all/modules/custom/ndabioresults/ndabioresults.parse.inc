@@ -58,23 +58,7 @@ function _parseTaxonDetail ($data) {
 	}
 	$output['acceptedName'] = $acceptedNames[0];
 
-	// Get specimens
-	if (isset($data->specimens)) {
-		$spOutput = [];
-		$spOutput['totalSize'] = $data->specimenCount;
-		$spOutput['showAllLink'] = $data->specimenCount > 5 ?
-			_setBasePath() . 'result/specimen/taxon/' . urlencode($data->name) . '/' . $query : null;
-		foreach ($data->specimens as $i => $specimen) {
-			$spOutput['items'][$i]['unitID'] = $specimen->unitID;
-			$spOutput['items'][$i]['collectionType'] = isset($specimen->collectionType) ? 
-				$specimen->collectionType : null;
-			$spOutput['items'][$i]['url'] = _setBasePath() . 'specimen/' . 
-				urlencode($specimen->item->unitID) . '/' . $query;
-		}
-	}
 	
-	$output['specimens'] = $spOutput;
- 	
 	return $output;
 }
 
@@ -697,13 +681,13 @@ function _parseSpecimens ($data, $options = []) {
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
 		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
-		
-		// No use for nameHits anymore; discard
 		$output['results'][] = $d;
-		$output['baseUrl'] = _setBasePath() . 'result/specimen/' . 
-			http_build_query(_getStoredQueryTerms($service));
 	}
-
+	
+	$terms = _getStoredQueryTerms($service);
+	$terms['from'] = 0;
+	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . http_build_query($terms);
+	
 	/*
 	$output['specimensTotal'] = isset($data->specimensTotal) ? 
 		$data->specimensTotal : $output['results'][0]['count'];
@@ -721,8 +705,7 @@ function _parseSpecimens ($data, $options = []) {
 	// Paginator
 	if (in_array('paginator', $options)) {
 		$output['paginator'] = 
-			_getPaginator($service
-					, $output['total'], _getPaginatorOffset($service));
+			_getPaginator($service, $output['total'], _getPaginatorOffset($service));
 	}
 	return $output;
 }
@@ -787,8 +770,11 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$output['results'][] = $d;
 	}
 	
-	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . 
-		http_build_query(_getStoredQueryTerms($service));	
+	
+	$terms = _getStoredQueryTerms($service);
+	$terms['from'] = 0;
+	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . http_build_query($terms);
+	
 	$output['specimensTotal'] = isset($data->specimensTotal) ? 
 		$data->specimensTotal : $output['results'][0]['count'];
 	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
