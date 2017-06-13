@@ -32,15 +32,13 @@ function _printTaxonDetail ($data) {
         _printClassifications($data);
 
 	if (!empty($data['specimens'])) {
-    	$output .= '<h3>' . t('Specimens') . '</h3>' .
-    		_printSpecimensPreview($data['specimens']);
+    	$output .= '<h3>' . t('Specimens') . '</h3><div class="property-list">' .
+    		_printSpecimensPreview($data['specimens']) . "</div>\n";
 	}
-
 	if (!empty($data['multimedia'])) {
-    	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
-    		_printMultimediaPreview($data['multimedia']) . "</p>\n";
+    	$output .= '<h3>' . t('Multimedia') . '</h3><div>' .
+    		_printMultimediaPreview($data['multimedia']) . "</div>\n";
 	}
-
     
     // Drupal title empty; page title custom
     setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
@@ -424,18 +422,16 @@ function _printMultimediaPreview ($data) {
 
 function _printSpecimensPreview ($data) {
 	if (isset($data->items) && !empty($data->items)) {
-		$output = '<p class="property-list">';
+		$output = '';
 		foreach ($data->items as $i => $specimen) {
 			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
 			$output .= '<dd>' . $specimen['collectionType'] . '</dd></dl>';
 		}
-	
 		if ($data->totalSize > 5) {
 			$output .= '<div style="margin-top: 12px;"><a href="' . $data->showAllLink . '">' .
 				'<i class="icon-arrow-right"></i>' . t('Show all') . ' ' . $data->totalSize . ' ' .
 				t('specimens') . '</a></div>';
 		}
-		$output .= "</p>\n";
 	}
 	return isset($output) ? $output : null;
 }
