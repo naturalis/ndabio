@@ -118,6 +118,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	if (!$data) {
 		return _printOops();
 	}
+	$data->multimedia = _getSpecimenMultimedia($data);
 	
 	$client = _initBioPortalClient();
 	
@@ -155,8 +156,8 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
     	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     	
     	unset($terms['size'], $terms['from']);
-    
-		$query = _buildQuery('names.specimens', $terms);
+ 
+    	$query = _buildQuery('names.specimens', $terms);
 		$query
 			->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
 			->setSpecimensFrom($specimensFrom)
@@ -489,39 +490,119 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
      }
      
 	// Get specimens
-	if (isset($data->specimens)) {
-		$specimens = new stdClass();
-		$specimens->totalSize = $data->specimenCount;
-		$specimens->showAllLink = $data->specimenCount > 5 ?
-			_createTaxonShowAllLink($data->taxa[0]->acceptedName, 'result/specimen/') : null;
-		foreach ($data->specimens as $i => $specimen) {
-			$items[$i]['unitID'] = $specimen->unitID;
-			$items[$i]['collectionType'] = isset($specimen->collectionType) ? 
-				$specimen->collectionType : null;
-			$items[$i]['url'] =  
-				_createTaxonShowAllLink($data->taxa[0]->acceptedName, 'specimen');
-		}
-		$specimens->items = $items;
-	}
-	$data->specimens = $specimens;
-	
-p($data); die();
-     
-   	 return _printTaxonDetail(_parseTaxonDetail($data));
+	$data->specimens = _getTaxonSpecimens($data);
+	$data->multimedia = _getTaxonMultimedia($data);
+  	return _printTaxonDetail(_parseTaxonDetail($data));
      
 //die(p($data));
     
 }
 
-function _createTaxonShowAllLink ($object, $resultPage) {
-	$output = _setBasePath() . $resultPage;
+function _createTaxonSubsectionLink ($object, $resultPath) {
+	$output = _setBasePath() . $resultPath;
 	foreach (scientificNameElementsInItalics() as $field) {
-		if (isset($object->{$field}) && !empty($object->{$field})) {
-			$output .= $field . '=' . urlencode($object->{$field}) . '&' . 
-				$field . 'Operator=EQUALS_IC&';
-		}
+		$value = isset($object->{$field}) ? urlencode($object->{$field}) : null;
+		$output .= $field . '=' . $value . '&' . $field . 'Operator=EQUALS&';
 	}
 	return $output . 'logicalOperator=AND';
+}
+
+function _getTaxonMultimedia ($object) {
+	$client = _initBioPortalClient();
+	$condition = new Condition('identifications.scientificName.genusOrMonomial', 'EQUALS', 
+		$object->taxa[0]->acceptedName->genusOrMonomial);
+	$condition->setAnd('identifications.scientificName.specificEpithet', 'EQUALS', 
+		$object->taxa[0]->acceptedName->specificEpithet);
+	$condition->setAnd('identifications.scientificName.infraspecificEpithet', 'EQUALS', 
+		isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
+			$object->taxa[0]->acceptedName->infraspecificEpithet : null);
+	$condition->setAnd('associatedSpecimenReference', 'EQUALS');
+	$query = new QuerySpec();
+	$query
+		->addCondition($condition)
+		->setSize(5);
+	_addDebugMessage('taxon multimedia', $query);
+	$data = json_decode($client->multimedia()->setQuerySpec($query)->query());
+	if ($data && $data->totalSize > 0) {
+		$output = [];
+		$output['totalSize'] = $data->totalSize;
+		$output['showAllLink'] = $data->totalSize > 5 ?
+			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
+			'result/multimedia/') . '&associatedSpecimenReference=&associatedSpecimenReferenceOperator=EQUALS&' .
+			'from=0&logicalOperator=AND&size=100' : null;
+		foreach ($data->resultSet as $i => $media) {
+			$output['items'][$i]['id'] = $media->item->id;
+			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
+			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
+			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
+				$media->item->sourceSystem->name : null;
+			$output['items'][$i]['caption'] = $scientificName;
+			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
+				'multimedia/' . urlencode($media->item->unitID) . '/') .
+				'&associatedSpecimenReference=&associatedSpecimenReferenceOperator=EQUALS&from=' . (max(0, $i - 1));
+		}
+		return $output;
+	}
+	return null;	
+}
+
+function _getTaxonSpecimens ($object) {
+	if (isset($object->specimens)) {
+		$data = new stdClass();
+		$data->totalSize = $object->specimenCount;
+		$data->showAllLink = $object->specimenCount > 5 ?
+			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
+				'result/specimen/taxon/' . urlencode($object->name) . '/') : 
+			null;
+		foreach ($object->specimens as $i => $specimen) {
+			$items[$i]['unitID'] = $specimen->unitID;
+			$items[$i]['collectionType'] = isset($specimen->collectionType) ? 
+				$specimen->collectionType : null;
+			$items[$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
+				'specimen/' . urlencode($specimen->unitID) . '/'. urlencode($object->name) . '/') .
+				'&from=' . (max(0, $i - 1));
+		}
+		$data->items = $items;
+		return $data;
+	}
+	return null;
+}
+	
+
+
+function _getSpecimenMultimedia ($object) {
+	$client = _initBioPortalClient();
+	$query = new QuerySpec();
+	$query
+		->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
+		->setSize(5)
+		->setConstantScore();
+	_addDebugMessage('specimen multimedia', $query);
+	
+	$names = _getSpecimenNames($object->identifications);
+	$scientificName = $names[0]['name'];
+	
+	$data = json_decode($client->multimedia()->setQuerySpec($query)->query());
+	if ($data && $data->totalSize > 0) {
+		$output = [];
+		$output['totalSize'] = $data->totalSize;
+		$output['showAllLink'] = $data->totalSize > 5 ?
+			_setBasePath() . 'multimedia/unitID=' . urlencode($object->unitID) . 
+			'&logicalOperator=AND&size=100' : null;
+		foreach ($data->resultSet as $i => $media) {
+			$output['items'][$i]['id'] = $media->item->id;
+			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
+			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
+			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
+				$media->item->sourceSystem->name : null;
+			$output['items'][$i]['caption'] = $scientificName;
+			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
+				urlencode($media->item->unitID) . '/unitID=' . urlencode($media->item->unitID) .
+				'&unitIDOperator=EQUALS';
+		}
+		return $output;
+	}
+	return null;
 }
 
 
@@ -751,10 +832,6 @@ function _buildQuery ($service, $terms = []) {
         $query->sortBy($terms['sort'], $sortDirection);
     }
     return $query;
-}
-
-function _stringToElements ($value) {
-	return array_map('trim', array_unique(array_filter(explode(' ', trim($value)))));	
 }
 
 
@@ -1658,6 +1735,70 @@ function _setBasePath () {
 
 
 
+/**
+ * Implements template_preprocess_html().
+ *
+ * Add an extra class to the body to trigger CSS styles
+ *
+ */
+function ndabioresults_preprocess_html (&$vars) {
+	/*
+    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
+        $vars['classes_array'][] = "nba-result-detail";
+    }
+    */
+	$pathComponents = explode('/', current_path());
+    if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
+	    $vars['classes_array'][] = 'nba-result-detail';
+    }
+    if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
+ 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
+        	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
+		    $vars['classes_array'][] = 'page-nba-result';
+	    }
+	}
+}
+
+/**
+ * Gets other specimens in "specimen collection" (Brahms)
+ *
+ * @param array $row Other specimens in set section of NBA response
+ * @return array|void Array with other specimens
+ */
+function _getOtherSpecimens ($data) {
+	if (isset($data->assemblageID) && !empty($data->assemblageID)) {
+		// This information is not present anymore in v2, we must query ourselves
+		$client = _initBioPortalClient();
+		$query = new QuerySpec();
+		$query
+			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
+			->setConstantScore();
+		_addDebugMessage('other specimens in assemblage', $query);
+		$result = json_decode($client->specimen()->setQuerySpec($query)->query());
+		if ($result && $result->totalSize > 1) {
+			foreach ($result->resultSet as $specimen) {
+				if ($specimen->item->unitID != $data->unitID) {
+					$s = [];
+					$s['unitID'] = _setUnitId($specimen->item->unitID);
+					$s['collectionType'] = $specimen->item->collectionType;
+					$s['url'] = _getSpecimenInCollectionUrl(
+						$specimen->item, 
+						$data->scientificNameGroup
+					);
+					$c[] = $s;
+				}
+			}
+		}
+	}
+	return isset($c) ? $c : null;
+}
+
+
+
+
+
+
+
 
 
 
@@ -1753,97 +1894,6 @@ function nbaSimpleSearch () {
 
     return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
-
-/**
- * Implements template_preprocess_html().
- *
- * Add an extra class to the body to trigger CSS styles
- *
- */
-function ndabioresults_preprocess_html (&$vars) {
-	/*
-    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
-        $vars['classes_array'][] = "nba-result-detail";
-    }
-    */
-	$pathComponents = explode('/', current_path());
-    if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
-	    $vars['classes_array'][] = 'nba-result-detail';
-    }
-    if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
- 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
-        	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
-		    $vars['classes_array'][] = 'page-nba-result';
-	    }
-	}
-}
-
-/**
- * Gets other specimens in "specimen collection" (Brahms)
- *
- * @param array $row Other specimens in set section of NBA response
- * @return array|void Array with other specimens
- */
-function _getOtherSpecimens ($data) {
-	if (isset($data->assemblageID) && !empty($data->assemblageID)) {
-		// This information is not present anymore in v2, we must query ourselves
-		$client = _initBioPortalClient();
-		$query = new QuerySpec();
-		$query
-			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
-			->setConstantScore();
-		_addDebugMessage('other specimens in assemblage', $query);
-		$result = json_decode($client->specimen()->setQuerySpec($query)->query());
-		if ($result && $result->totalSize > 1) {
-			foreach ($result->resultSet as $specimen) {
-				if ($specimen->item->unitID != $data->unitID) {
-					$s = [];
-					$s['unitID'] = _setUnitId($specimen->item->unitID);
-					$s['collectionType'] = $specimen->item->collectionType;
-					$s['url'] = _getSpecimenInCollectionUrl(
-						$specimen->item, 
-						$data->scientificNameGroup
-					);
-					$c[] = $s;
-				}
-			}
-		}
-	}
-	return isset($c) ? $c : null;
-}
-
-
-function _getSpecimenMultimedia ($id, $unitId, $scientificName) {
-	$client = _initBioPortalClient();
-	$query = new QuerySpec();
-	$query
-		->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $id))
-		->setSize(5)
-		->setConstantScore();
-	_addDebugMessage('specimen multimedia', $query);
-	$result = json_decode($client->multimedia()->setQuerySpec($query)->query());
-	if ($result && $result->totalSize > 0) {
-		$output = [];
-		$output['totalSize'] = $result->totalSize;
-		$output['showAllLink'] = $result->totalSize > 5 ?
-			_setBasePath() . 'multimedia/unitID=' . urlencode($unitId) . 
-			'&logicalOperator=AND&size=100' : null;
-		foreach ($result->resultSet as $i => $media) {
-			$output['items'][$i]['id'] = $media->item->id;
-			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
-			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
-			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
-				$media->item->sourceSystem->name : null;
-			$output['items'][$i]['caption'] = $scientificName;
-			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
-				urlencode($media->item->unitID);
-		}
-		return $output;
-	}
-	return null;
-}
-
-
 
 
 

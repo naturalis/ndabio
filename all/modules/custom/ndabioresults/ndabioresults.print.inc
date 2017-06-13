@@ -3,7 +3,7 @@
 function _printTaxonDetail ($data) {
     global $language;
     
-p($data);
+//p($data['specimens']);
 
     
     $output = _printDebug();
@@ -31,31 +31,17 @@ p($data);
         _printDescriptions($data) .
         _printClassifications($data);
 
-//p($data);
+	if (!empty($data['specimens'])) {
+    	$output .= '<h3>' . t('Specimens') . '</h3>' .
+    		_printSpecimensPreview($data['specimens']);
+	}
 
-    /*
-    $getSpecimenRequest = nbaBaseUrl() . specimenNamesService() .
-        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
-    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
-        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+	if (!empty($data['multimedia'])) {
+    	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
+    		_printMultimediaPreview($data['multimedia']) . "</p>\n";
+	}
 
-    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
-    drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
-    drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js(
-        "jQuery(function() { getNbaData(getSpecimenRequest, setSpecimenPreview, '&_maxResults=5'); });",
-        array('type' => 'inline', 'scope' => 'footer')
-    );
-    drupal_add_js(
-        "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
-        array('type' => 'inline', 'scope' => 'footer')
-    );
-    */
-
-    $output .= '<h3>' . t('Specimens'). '</h3><p class="property-list" id="nba_specimens"></p>';
-    $output .= '<h3>' . t('Multimedia'). '</h3><p class="property-list" id="nba_multimedia"></p>';
-
-
+    
     // Drupal title empty; page title custom
     setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
 
@@ -414,65 +400,47 @@ function _printSpecimenDetail ($data) {
 	
 
 function _printMultimediaPreview ($data) {
-	global $base_path;
-	$output = "<div style='overflow: hidden;'>";
-	foreach ($data['items'] as $i => $media) {
-		$src = $media['src'];
-		if ($media['format'] == 'video/mp4') {
-			$base_path . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
-		}
-		$output .= '<a class="polaroid" href="' . $media['url'] . '">' .
-			'<div class="polaroid-image" style="background-image: url(' . $src . ');" alt=""></div>';
-		$output .= '<div class="polaroid-caption"><div class="image-title">' .
-			$media['caption'] . '</div><div class="image-hits">' . $media['hits'] . "</div>\n</div>\n</a>\n";
-	};
-	$output .= "\n</div>\n";
+	if (isset($data['items']) && !empty($data['items'])) {
+		$output = "<div style='overflow: hidden;'>";
+		foreach ($data['items'] as $i => $media) {
+			$src = $media['src'];
+			if ($media['format'] == 'video/mp4') {
+				$base_path . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+			}
+			$output .= '<a class="polaroid" href="' . $media['url'] . '">' .
+				'<div class="polaroid-image" style="background-image: url(' . $src . ');" alt=""></div>';
+			$output .= '<div class="polaroid-caption"><div class="image-title">' .
+				$media['caption'] . '</div><div class="image-hits">' . $media['hits'] . "</div>\n</div>\n</a>\n";
+		};
+		$output .= "\n</div>\n";
+	}
 	if (!empty($data['showAllLink'])) {
 		$output .= '<div><a href="' . $data['showAllLink'] . '">' .
 			'<i class="icon-arrow-right"></i>' . t('Show all') . ' ' . $data['totalSize'] . ' ' .
 			t('multimedia') . '</a></div>';
 	}
-	return $output;
+	return isset($output) ? $output : null;
 }
 
-
-/*
-function _printSpecimenPreview (request, data) {
-	$output = '';
-	for (i = 0; i < data.resultGroups.length; i++) {
-		for (j = 0; j < data.resultGroups[i].searchResults.length; j++) {
-
-			var unitID = data.resultGroups[i].searchResults[j].result.unitID;
-			var collectionType = data.resultGroups[i].searchResults[j].result.collectionType;
-			var recordBasis = data.resultGroups[i].searchResults[j].result.recordBasis;
-			var caption = '';
-
-			if (collectionType !== null && recordBasis !== null) {
-				caption = collectionType + '; ' + recordBasis;
-			} else if (collectionType === null && recordBasis !== null) {
-				caption = recordBasis;
-			}
-
-			for (k = 0; k < data.resultGroups[i].searchResults[j].links.length; k++) {
-				if (data.resultGroups[i].searchResults[j].links[k].rel == '_specimen') {
-					var url = data.resultGroups[i].searchResults[j].links[k].href;
-				}
-			}
-			output += '<dl><dt><a href="?nba_request=' +
-				encodeURIComponent(url) + '&noMap">' + unitID + '</a></dt>';
-			output += '<dd>' + caption + '</dd></dl>';
+function _printSpecimensPreview ($data) {
+	if (isset($data->items) && !empty($data->items)) {
+		$output = '<p class="property-list">';
+		foreach ($data->items as $i => $specimen) {
+			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
+			$output .= '<dd>' . $specimen['collectionType'] . '</dd></dl>';
 		}
-	};
-
-	if (parseInt(data.totalSize) > 5) {
-		output += '<div style="margin-top: 12px;"><a href="?nba_request=' + encodeURIComponent(request) + '&noMap">' +
-			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all') + ' ' + data.totalSize + ' ' +
-			Drupal.t('specimens') + '</a></div>';
+	
+		if ($data->totalSize > 5) {
+			$output .= '<div style="margin-top: 12px;"><a href="' . $data->showAllLink . '">' .
+				'<i class="icon-arrow-right"></i>' . t('Show all') . ' ' . $data->totalSize . ' ' .
+				t('specimens') . '</a></div>';
+		}
+		$output .= "</p>\n";
 	}
-	return output;
+	return isset($output) ? $output : null;
 }
 
-*/
+
 
 
 

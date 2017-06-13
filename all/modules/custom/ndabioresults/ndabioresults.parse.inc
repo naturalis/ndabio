@@ -57,7 +57,9 @@ function _parseTaxonDetail ($data) {
 		}
 	}
 	$output['acceptedName'] = $acceptedNames[0];
-
+	$output['multimedia'] = $data->multimedia;
+	$output['specimens'] = $data->specimens;
+	
 	
 	return $output;
 }
@@ -303,11 +305,7 @@ function _parseSpecimenDetail ($data) {
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ?
 		_getOtherSpecimens($data) : null;
-	$output['multimedia'] = _getSpecimenMultimedia(
-		$data->id, 
-		$data->unitID, 
-		$output['names'][0]['name']
-	);
+	$output['multimedia'] = $data->multimedia;
 	return $output;
 }
 
@@ -425,7 +423,7 @@ function _setDetailSearchTerms ($service, $i) {
 	if (isset($terms['size'])) {
 		unset($terms['size']);
 	}
-	$terms['from'] = $from + $i == 0 ? 0 : $from + $i - 1;
+	$terms['from'] = max(0, $from + $i - 1);
 	return $terms;
 }
 
@@ -687,15 +685,6 @@ function _parseSpecimens ($data, $options = []) {
 	$terms = _getStoredQueryTerms($service);
 	$terms['from'] = 0;
 	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . http_build_query($terms);
-	
-	/*
-	$output['specimensTotal'] = isset($data->specimensTotal) ? 
-		$data->specimensTotal : $output['results'][0]['count'];
-	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
-		$data->totalSize : $output['results'][0]['count'];
-	$output['from'] = isset($data->specimensFrom) ? 
-		$data->specimensFrom : _getOffset('names.specimens');
-*/
 	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {

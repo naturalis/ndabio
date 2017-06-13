@@ -71,6 +71,13 @@ function _getOptimalOperators ($fields) {
 }
 
 
+function _stringToElements ($value) {
+	return $value != '' ?
+		array_map('trim', array_unique(array_filter(explode(' ', trim($value))))) : [null];	
+}
+
+
+
 function _getDistinctValues ($service, $nbaPath) {
     $client = _initBioPortalClient();
     $d = $client->{$service}()->getDistinctValues($nbaPath);
