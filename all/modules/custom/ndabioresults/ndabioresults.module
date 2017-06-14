@@ -20,6 +20,30 @@ _initDebug();
 _setLanguage();
 
 
+/**
+ * Implements template_preprocess_html().
+ *
+ * Add an extra class to the body to trigger CSS styles
+ *
+ */
+function ndabioresults_preprocess_html (&$vars) {
+	/*
+    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
+        $vars['classes_array'][] = "nba-result-detail";
+    }
+    */
+	$pathComponents = explode('/', current_path());
+    if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
+	    $vars['classes_array'][] = 'nba-result-detail';
+    }
+    if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
+ 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
+        	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
+		    $vars['classes_array'][] = 'page-nba-result';
+	    }
+	}
+}
+
 
 /**
  * Implements hook_menu().
@@ -118,17 +142,15 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	if (!$data) {
 		return _printOops();
 	}
-	$data->multimedia = _getSpecimenMultimedia($data);
 	
 	$client = _initBioPortalClient();
-	
 	
 	// Added non-aggregated specimen browse option;
 	// parameter names now are incorrect...
 	if ($scientificNameGroup && !$search) {
 		$search = $scientificNameGroup;
-
-		$terms = _getQueryTerms('specimen', $search);		
+		$terms = _getQueryTerms('specimen', $search);
+		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
 
 		$query = _buildQuery('specimen', $terms);
@@ -140,6 +162,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		if (isset($set->exception)) {
 			return _printOops();
 		}
+		_setBackLink('result/specimen/' . $search, 'Back to search results');
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addDetailPageNavigation(
 			$service, 
@@ -152,8 +175,10 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	}
 	
 	else if ($scientificNameGroup && $search) {
+		_setBackLink('result/specimen/' . $search, 'Back to search results');
 		$terms = _getQueryTerms('names.specimens', $search);
-    	$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
+		$data->referrer = _encodeReferrer($terms);		
+		$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     	
     	unset($terms['size'], $terms['from']);
  
@@ -171,6 +196,14 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		if (isset($set->exception)) {
 			return _printOops();
 		}
+		// Set back link -- from taxon detail
+		if (_getReferredSearch($search)) {
+			_setBackLink(
+				'taxon/' .  ucfirst(str_replace(' ', '_', $scientificNameGroup)) . 
+					'/' . _getReferredSearch($search),
+				'Back to taxon'
+			);
+		}
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addSpecimenDetailPageNavigation(
 			$data,
@@ -181,7 +214,9 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 			$scientificNameGroup
 		);
 	}
-
+	
+	
+	$data->multimedia = _getSpecimenMultimedia($data);
 	return _printSpecimenDetail(_parseSpecimenDetail($data));
 }
 
@@ -219,7 +254,7 @@ function _addSpecimenDetailPageNavigation ($data, $search, $set, $id, $from,
 		$previousId, 
 		$scientificNameGroup
 	);
-	$data->backUrl = _setSpecimenDetailPageBackLink(explode('/', current_path()));
+	$data->backUrl = _getBackLink();
 	$data->scientificNameGroup = $scientificNameGroup;
 	$data->totalSize = $set->resultSet[0]->item->specimenCount;
 	return $data;
@@ -311,6 +346,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 
 	if ($search) {
 		$terms = _getQueryTerms($service, $search);		
+		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
 
 		$query = _buildQuery($service, $terms);
@@ -324,16 +360,93 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		}
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+
+		// Generic back link (will be overridden for referred search)
+		_setGenericDetailPageBackLink($service, $search);
 	}
 	
 	$data = _setMultimediaAssociatedObject($data);
 	
+//p($data);
+
+	
+	
 	if (isset($data->associatedTaxon)) {
+		// Override generic back link if referred search
+		if (_getReferredSearch($search)) {
+			_setBackLink(
+				'taxon/' .  urlencode(_setTaxonId($data->associatedSpecimen->identifications[0]->scientificName)) . 
+				'/' . _getReferredSearch($search),
+				'Back to taxon'
+			);
+		}	
 		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
 	}
+	
+	// Override generic back link if referred search
+	if (_getReferredSearch($search)) {
+		_setBackLink(
+			'specimen/' .  urlencode($data->associatedSpecimen->unitID) . '/' .
+			urlencode($data->associatedSpecimen->identifications[0]->scientificName->scientificNameGroup) . 
+			'/' . _getReferredSearch($search),
+			'Back to specimen'
+		);
+	}
+	
 	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
+function _setBackLink ($href, $label, $class = null) {
+	$_SESSION['nbaBackLink'] = [
+		'href' => _setStartUrl() . $href,
+		'label' => t($label),
+		'class' => $class
+	];
+}
+
+function _setGenericDetailPageBackLink ($service, $search, $class = null) {
+	// Need to reset search to correct from value
+	safe_parse_str($search, $terms);
+	if ($service && $terms) {
+		$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
+		$_SESSION['nbaBackLink'] = [
+			'href' => _setStartUrl() . 'result/' . $service . '/' . http_build_query($terms),
+			'label' => t('Back to search results'),
+			'class' => $class
+		];
+	} else {
+		$_SESSION['nbaBackLink'] = null;
+	}
+}
+
+function _setGenericResultPageBackLink ($class = false) {
+	if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+		$_SESSION['nbaBackLink'] = [
+			'href' => _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']),
+			'label' => t('Back to general results'),
+			'class' => $class
+		];
+	} else {
+		$_SESSION['nbaBackLink'] = null;
+	}
+}
+
+function _getBackLink () {
+	if (isset($_SESSION['nbaBackLink'])) {
+		return $_SESSION['nbaBackLink']['href'];
+	}
+	return false;
+}
+
+function _getBackLinkFormatted () {
+	if (isset($_SESSION['nbaBackLink'])) {
+		return '<a href="' . $_SESSION['nbaBackLink']['href'] . '"' .
+			(!empty($_SESSION['nbaBackLink']['class'])  ? ' class="' . 
+				$_SESSION['nbaBackLink']['class'] . '"' : '') .
+			'><i class="icon-arrow-left"></i>' . $_SESSION['nbaBackLink']['label'] . '</a>';
+	}
+	return '&nbsp;';
+}
 
 function _setMultimediaAssociatedObject ($data) {
 	$client = _initBioPortalClient();
@@ -396,6 +509,8 @@ function _setDetailPageBackLink ($service, $search) {
 
 
 
+
+/*
 function _setMultimediaDetailPageBackLink ($pathComponents) {
 	return _setDetailPageBackLink('multimedia', array_slice($pathComponents, -1)[0]);
 }
@@ -417,7 +532,7 @@ function _setSpecimenDetailPageBackLink ($pathComponents) {
 	}
 	return  _setBasePath() . 'result/specimen/' . http_build_query($terms);
 }
-
+*/
 
 
 function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
@@ -439,7 +554,15 @@ function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
 	}
 	$data->previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
 	$data->nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
-	$data->backUrl =  _setDetailPageBackLink($service, $search);
+	// Special case for back link for multimedia
+	/*
+	if ($service == 'multimedia' && _getReferredSearch($search)) {
+		$backLink = _getBackLink();
+	} else {
+		$backLink = _setDetailPageBackLink($service, $search);
+	}
+	*/
+	$data->backUrl = _getBackLink();
 	$data->totalSize = $set->totalSize;
 	return $data;
 }
@@ -464,6 +587,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 
     if ($search) {
 		$terms = _getQueryTerms($service, $search);		
+		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
     	
 		$query = _buildQuery($service, $terms);
@@ -486,7 +610,9 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 			$data->name, 
 			$terms['from']
 		);
-	    
+
+		// Generic back link (will be overridden for referred search)
+		_setGenericDetailPageBackLink($service, $search);
      }
      
 	// Get specimens
@@ -529,7 +655,7 @@ function _getTaxonMultimedia ($object) {
 		$output['showAllLink'] = $data->totalSize > 5 ?
 			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 			'result/multimedia/') . '&associatedSpecimenReference=&associatedSpecimenReferenceOperator=EQUALS&' .
-			'from=0&logicalOperator=AND&size=100' : null;
+			'from=0&logicalOperator=AND&size=100&referrer=' . $object->referrer : null;
 		foreach ($data->resultSet as $i => $media) {
 			$output['items'][$i]['id'] = $media->item->id;
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
@@ -539,7 +665,8 @@ function _getTaxonMultimedia ($object) {
 			$output['items'][$i]['caption'] = $scientificName;
 			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'multimedia/' . urlencode($media->item->unitID) . '/') .
-				'&associatedSpecimenReference=&associatedSpecimenReferenceOperator=EQUALS&from=' . (max(0, $i - 1));
+				'&associatedSpecimenReference=&associatedSpecimenReferenceOperator=EQUALS&from=' . 
+				(max(0, $i - 1)) . '&referrer=' . $object->referrer;
 		}
 		return $output;
 	}
@@ -552,15 +679,15 @@ function _getTaxonSpecimens ($object) {
 		$data->totalSize = $object->specimenCount;
 		$data->showAllLink = $object->specimenCount > 5 ?
 			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
-				'result/specimen/taxon/' . urlencode($object->name) . '/') : 
-			null;
+				'result/specimen/taxon/' . urlencode($object->name) . '/')  . 
+				'&referrer=' . $object->referrer : null;
 		foreach ($object->specimens as $i => $specimen) {
 			$items[$i]['unitID'] = $specimen->unitID;
 			$items[$i]['collectionType'] = isset($specimen->collectionType) ? 
 				$specimen->collectionType : null;
 			$items[$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'specimen/' . urlencode($specimen->unitID) . '/'. urlencode($object->name) . '/') .
-				'&from=' . (max(0, $i - 1));
+				'&from=' . (max(0, $i - 1) . '&referrer=' . $object->referrer);
 		}
 		$data->items = $items;
 		return $data;
@@ -587,8 +714,9 @@ function _getSpecimenMultimedia ($object) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
 		$output['showAllLink'] = $data->totalSize > 5 ?
-			_setBasePath() . 'multimedia/unitID=' . urlencode($object->unitID) . 
-			'&logicalOperator=AND&size=100' : null;
+			_setBasePath() . 'multimedia/associatedSpecimenReference=' . 
+			urlencode($object->id) . '&associatedSpecimenReferenceOperator=EQUALS' . 
+			'&logicalOperator=AND&size=100&referrer=' . $object->referrer : null;
 		foreach ($data->resultSet as $i => $media) {
 			$output['items'][$i]['id'] = $media->item->id;
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
@@ -597,8 +725,9 @@ function _getSpecimenMultimedia ($object) {
 				$media->item->sourceSystem->name : null;
 			$output['items'][$i]['caption'] = $scientificName;
 			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
-				urlencode($media->item->unitID) . '/unitID=' . urlencode($media->item->unitID) .
-				'&unitIDOperator=EQUALS';
+				urlencode($media->item->unitID) . '/associatedSpecimenReference=' . 
+				urlencode($object->id) . '&associatedSpecimenReferenceOperator=EQUALS&from=' . 
+				(max(0, $i - 1)) . '&referrer=' . $object->referrer;
 		}
 		return $output;
 	}
@@ -924,6 +1053,7 @@ function _nba_taxon_result_callback ($search = false) {
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
+	_setBackLink('result/specimen/' . $search, 'Back to search results');	
 	
 	// Fetch data set
 	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
@@ -932,6 +1062,8 @@ function _nba_taxon_result_callback ($search = false) {
 	if (isset($data->exception)) {
 		return _printOops();
 	}
+	
+	_setGenericResultPageBackLink();
 
 	//$data->specimensTotal = _getSpecimensTotal($terms);
 	$data = _parseTaxa($data, ['paginator']); 
@@ -971,6 +1103,7 @@ function _nba_multimedia_result_callback ($search = false) {
 	
 	// Fetch data set
 	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+	_setGenericResultPageBackLink();
 		
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -983,7 +1116,7 @@ function _nba_multimedia_result_callback ($search = false) {
 function _nba_specimen_result_callback ($search = false) {
 	
 	$client = _initBioPortalClient();
-	
+    
     $terms = _getQueryTerms($service, $search);
     $service = _getSpecimenService();
     
@@ -1007,7 +1140,7 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
-	
+	_setGenericResultPageBackLink();
 	
 	if ($service == 'names.specimens') {
 		
@@ -1038,13 +1171,18 @@ function _nba_specimen_result_callback ($search = false) {
 }
 
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
+	
     $service = 'names.specimens';
 	$client = _initBioPortalClient();
 	
     $terms = _getQueryTerms($service, $search);
+	// Display full set on this page
+	$terms['size'] = maxResults();
+	// Save query
+	_setQueryTerms($service, $terms);
     
     $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
-    unset($terms['size'], $terms['from']);
+	unset($terms['size'], $terms['from']);
     
     
     // No search terms; die with grace
@@ -1061,6 +1199,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
+	_setBackLink('result/specimen/' . $search, 'Back to search results');
 	
 	// Fetch data set
 	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
@@ -1069,7 +1208,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	if (isset($data->exception)) {
 		return _printOops();
 	}
-
+	
 	$data->specimensFrom = $specimensFrom;
 	$data = _parseSpecimensTaxon($data, ['paginator']); 
 	return _printDebug() . _printSpecimensSingleTaxon($data);
@@ -1107,6 +1246,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	
 	// Fetch data set
 	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	_setGenericResultPageBackLink();
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1154,8 +1294,6 @@ function _setTitle ($head, $page = '') {
  * @return string The formatted output
 */
 function _nba_general_result_callback () {
-    global $base_path;
-    
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
@@ -1166,6 +1304,7 @@ function _nba_general_result_callback () {
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         //drupal_set_title(t("Search results"));
         $_SESSION['ndaSearch'] = $_GET;
+        _setBackLink('?searchagain=1', 'Modify search');
         _logSearch();
         return empty($_SESSION['ndaSearch']['term']) ? 
         	_nbaAdvancedSearch() : _nbaSimpleSearch($_SESSION['ndaSearch']['term']);
@@ -1412,8 +1551,6 @@ function _getTaxonDetails (&$data) {
 	}
 	return false;
 }
-
-
 
 function _setQueryTerms ($service, $terms = false) {
     // Search form
@@ -1735,29 +1872,7 @@ function _setBasePath () {
 
 
 
-/**
- * Implements template_preprocess_html().
- *
- * Add an extra class to the body to trigger CSS styles
- *
- */
-function ndabioresults_preprocess_html (&$vars) {
-	/*
-    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
-        $vars['classes_array'][] = "nba-result-detail";
-    }
-    */
-	$pathComponents = explode('/', current_path());
-    if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
-	    $vars['classes_array'][] = 'nba-result-detail';
-    }
-    if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
- 	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
-        	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
-		    $vars['classes_array'][] = 'page-nba-result';
-	    }
-	}
-}
+
 
 /**
  * Gets other specimens in "specimen collection" (Brahms)

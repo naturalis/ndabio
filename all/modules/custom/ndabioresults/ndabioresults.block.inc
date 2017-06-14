@@ -68,9 +68,8 @@ function ndabioresults_block_info() {
  * Implements hook_block_view().
  */
 function ndabioresults_block_view($delta = '') {
-  global $base_root, $base_path;
-  global $language;
-
+  global $base_root, $base_path, $language;
+  
   $icon = "<i class='icon-arrow-left'></i>";
 
   $block = array();
@@ -83,8 +82,9 @@ function ndabioresults_block_view($delta = '') {
   switch ($delta) {
 
     case 'ndabioresults_back':
-
-    $output = '<div id="navigation-block">';
+     $block['content'] = '<div id="navigation-block">' . _getBackLinkFormatted() . '</div>';
+    
+    /*
     
     $pathComponents = explode('/', current_path());
     
@@ -95,10 +95,18 @@ function ndabioresults_block_view($delta = '') {
     	
     // List page for category
     } else if (count($pathComponents) > 1 && $pathComponents[0] == 'result') {
-    	// From specimen by taxon; return to overview
+    	// From specimen by taxon
      	if (count($pathComponents) == 5) {
-	     	$output .= '<a href="' . _setStartUrl() . 'result/specimen/' . $pathComponents[4] .
-	    		'">' . $icon . t('Back to search results') . '</a>';
+     		// From search result
+     		if (strpos($pathComponents[4], 'EQUALS') === false) {
+		     	$output .= '<a href="' . _setStartUrl() . 'result/specimen/' . $pathComponents[4] .
+		    		'">' . $icon . t('Back to search results') . '</a>';
+     		// From taxon detail page
+     		} else if (_getReferredSearch($pathComponents[4])) {
+		     	$output .= '<a href="' . _setStartUrl() . 'taxon/' . 
+				    ucfirst(str_replace(' ', '_', $pathComponents[3])) . '/' .
+					_getReferredSearch($pathComponents[4]) . '">' . $icon . t('Back to taxon') . '</a>';
+     		}
     	} else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
 	     	$output .= '<a href="' . _setStartUrl() . 'result?' . 
 	     		http_build_query($_SESSION['ndaSearch']) .
@@ -109,17 +117,27 @@ function ndabioresults_block_view($delta = '') {
     // Detail page
     } else if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon']) && 
     	count($pathComponents) >= 3) {
-     	$function = '_set' . ucfirst($pathComponents[0]) . 'DetailPageBackLink';
-		$href = $function($pathComponents);  
-		$output .= '<a href="' . $href . '">' . $icon . t('Back to search results') . '</a>';
+    	// From taxon/specimen detail multimedia overview
+    	if ($pathComponents[0] == 'multimedia' && _getReferredSearch($pathComponents[2])) {	
+    		$output .= _getBackLinkFormatted();
+     	} else {
+	    	// From taxon detail specimen overview
+	    	if (_getReferredSearch($pathComponents[3])) {
+	    		$label = 'Back to specimens';
+	    	} else {
+	    		$label = 'Back to search results';
+	    	}
+	     	$function = '_set' . ucfirst($pathComponents[0]) . 'DetailPageBackLink';
+			$href = $function($pathComponents);  
+			$output .= '<a href="' . $href . '">' . $icon . t($label) . '</a>';
+	   }
     
     // Fallback
   	} else {
         $output .= '&nbsp;';
     }
     
-    //$output .= current_path();
-    
+    */
 /*
     if ($_SESSION['ndaRequestType'] == 'form') {
         if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
@@ -133,9 +151,10 @@ function ndabioresults_block_view($delta = '') {
     } else {
         $output .= '&nbsp;';
     }
-*/
-      $block['content'] = $output . '</div>';
-      break;
+
+      $block['content'] = $output;
+*/      
+    break;
 
 
     // Used now to create some space on detail pages

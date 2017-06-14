@@ -286,6 +286,7 @@ function _parseSpecimenDetail ($data) {
 	    'license',
 	    'assemblyID',
 	    'collectionType',
+    	'referrer'
 		// etc
 	);
 
@@ -659,8 +660,6 @@ function _parseSpecimens ($data, $options = []) {
 	
 	$output['total'] = $data->totalSize;
 	
-	
-
 //p($data);
 	
 	foreach ($data->resultSet as $i => $row) {
@@ -699,12 +698,24 @@ function _parseSpecimens ($data, $options = []) {
 	return $output;
 }
 
+function _getReferredSearch ($url) {
+	safe_parse_str($url, $terms);
+	return isset($terms['referrer']) ? _decodeReferrer($terms['referrer']) : false;
+}
+
+function _setTaxonId ($object) {
+	foreach (scientificNameElementsInItalics() as $element) {
+		$name[] = isset($object->{$element}) && !empty(isset($object->{$element})) ? 
+			$object->{$element} : null;
+	}
+	return ucfirst(implode('_', array_filter($name)));
+}
+
 
 function _parseSpecimensTaxon ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
-
 	$service = 'names.specimens';
 	$output['total'] = $data->totalSize;
 	_getSpecimenDetails($data);

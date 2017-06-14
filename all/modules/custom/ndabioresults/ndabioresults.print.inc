@@ -120,7 +120,6 @@ function _printSpecimens ($data) {
     if (empty($data['results'])) {
         return false;
     }
-		
     // Drupal title empty; page title custom
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -207,9 +206,6 @@ function _printSpecimenViewSwitch ($baseUrl) {
 
 // Print specimen detail on screen
 function _printSpecimenDetail ($data) {
-
-//p($data);
-
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         array('type' => 'inline', 'scope' => 'footer')
@@ -1112,7 +1108,7 @@ function _printSynonyms ($data) {
 
 	if (isset($data['synonyms']) && !empty($data['synonyms'])) {
 	    foreach ($data['synonyms'] as $source => $synonyms) {
-			$output .= "<h4 class='source'>" . printSource($data, $source) . "</h4>
+			$output .= "<h4 class='source'>" . _printSource($data, $source) . "</h4>
 			     <div class='property-list'>\n<p>\n" .
 			     implode('<br/>', $synonyms) .
 			     "</p>\n</div>\n";

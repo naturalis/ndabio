@@ -169,6 +169,7 @@ function searchFlags () {
             'from',
             'logicalOperator',
             'andOr',
+         	'referrer',
          );
     }
     return $var;

@@ -326,4 +326,13 @@ function _setArrayKeyFromValue ($array) {
 	return isset($output) ? $output : array();
 }
 
+function _encodeReferrer ($data) {
+	if (is_array($data)) {
+		$data = http_build_query($data);
+	}
+ 	return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
+} 
 
+function _decodeReferrer ($data) { 
+	return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT)); 
+} 
