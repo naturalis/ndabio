@@ -343,8 +343,12 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		return _printOops();
 	}
 	$data = $data->resultSet[0]->item;
-
+	$data = _setMultimediaAssociatedObject($data);
+	
 	if ($search) {
+		// Generic back link (will be overridden for referred search)
+		_setGenericDetailPageBackLink($service, $search);
+		
 		$terms = _getQueryTerms($service, $search);		
 		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
@@ -358,41 +362,28 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		if (isset($set->exception)) {
 			return _printOops();
 		}
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
-
-		// Generic back link (will be overridden for referred search)
-		_setGenericDetailPageBackLink($service, $search);
-	}
-	
-	$data = _setMultimediaAssociatedObject($data);
-	
-//p($data);
-
-	
-	
-	if (isset($data->associatedTaxon)) {
-		// Override generic back link if referred search
-		if (_getReferredSearch($search)) {
+		// Referred search; replace generic back link!
+		if (isset($data->associatedTaxon) && _getReferredSearch($search)) {
 			_setBackLink(
-				'taxon/' .  urlencode(_setTaxonId($data->associatedSpecimen->identifications[0]->scientificName)) . 
+				'taxon/' .  urlencode(_setTaxonId($data->associatedTaxon->acceptedName)) . 
 				'/' . _getReferredSearch($search),
 				'Back to taxon'
 			);
-		}	
+		} else if (isset($data->associatedSpecimen) && _getReferredSearch($search)) {
+			_setBackLink(
+				'specimen/' .  urlencode($data->associatedSpecimen->unitID) . '/' .
+				urlencode($data->associatedSpecimen->identifications[0]->scientificName->scientificNameGroup) . 
+				'/' . _getReferredSearch($search),
+				'Back to specimen'
+			);
+		}
+		// Extract data for current id, plus ids of previous and next result
+		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+
+	}
+	if (isset($data->associatedTaxon)) {
 		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
 	}
-	
-	// Override generic back link if referred search
-	if (_getReferredSearch($search)) {
-		_setBackLink(
-			'specimen/' .  urlencode($data->associatedSpecimen->unitID) . '/' .
-			urlencode($data->associatedSpecimen->identifications[0]->scientificName->scientificNameGroup) . 
-			'/' . _getReferredSearch($search),
-			'Back to specimen'
-		);
-	}
-	
 	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
@@ -602,6 +593,8 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		if (isset($set->exception)) {
 			return _printOops();
 		}
+		// Generic back link (will be overridden for referred search)
+		_setGenericDetailPageBackLink('taxon', $search);
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addTaxonDetailPageNavigation(
 			$data, 
@@ -610,9 +603,6 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 			$data->name, 
 			$terms['from']
 		);
-
-		// Generic back link (will be overridden for referred search)
-		_setGenericDetailPageBackLink($service, $search);
      }
      
 	// Get specimens
