@@ -336,3 +336,8 @@ function _encodeReferrer ($data) {
 function _decodeReferrer ($data) { 
 	return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT)); 
 } 
+
+function _getCurrentUrl () {
+	return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http") . 
+		"://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
+}

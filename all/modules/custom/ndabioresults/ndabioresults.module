@@ -162,7 +162,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		if (isset($set->exception)) {
 			return _printOops();
 		}
-		_setBackLink('result/specimen/' . $search, 'Back to search results');
+		_setGenericDetailPageBackLink('specimen', $search);
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addDetailPageNavigation(
 			$service, 
@@ -175,7 +175,6 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	}
 	
 	else if ($scientificNameGroup && $search) {
-		_setBackLink('result/specimen/' . $search, 'Back to search results');
 		$terms = _getQueryTerms('names.specimens', $search);
 		$data->referrer = _encodeReferrer($terms);		
 		$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
@@ -191,6 +190,8 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		_addDebugMessage('previous, current and next item', $query);
 		
 		$set = json_decode($client->names()->setQuerySpec($query)->query());
+//_setBackLink('result/specimen/' . $search, 'Back to search results');
+		_setGenericDetailPageBackLink('specimen', $search);
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -387,15 +388,14 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
 }
 
-function _setBackLink ($href, $label, $class = null) {
+function _setBackLink ($href, $label) {
 	$_SESSION['nbaBackLink'] = [
 		'href' => _setStartUrl() . $href,
 		'label' => t($label),
-		'class' => $class
 	];
 }
 
-function _setGenericDetailPageBackLink ($service, $search, $class = null) {
+function _setGenericDetailPageBackLink ($service, $search) {
 	// Need to reset search to correct from value
 	safe_parse_str($search, $terms);
 	if ($service && $terms) {
@@ -403,19 +403,17 @@ function _setGenericDetailPageBackLink ($service, $search, $class = null) {
 		$_SESSION['nbaBackLink'] = [
 			'href' => _setStartUrl() . 'result/' . $service . '/' . http_build_query($terms),
 			'label' => t('Back to search results'),
-			'class' => $class
 		];
 	} else {
 		$_SESSION['nbaBackLink'] = null;
 	}
 }
 
-function _setGenericResultPageBackLink ($class = false) {
+function _setGenericResultPageBackLink () {
 	if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
 		$_SESSION['nbaBackLink'] = [
 			'href' => _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']),
 			'label' => t('Back to general results'),
-			'class' => $class
 		];
 	} else {
 		$_SESSION['nbaBackLink'] = null;
@@ -432,8 +430,6 @@ function _getBackLink () {
 function _getBackLinkFormatted () {
 	if (isset($_SESSION['nbaBackLink'])) {
 		return '<a href="' . $_SESSION['nbaBackLink']['href'] . '"' .
-			(!empty($_SESSION['nbaBackLink']['class'])  ? ' class="' . 
-				$_SESSION['nbaBackLink']['class'] . '"' : '') .
 			'><i class="icon-arrow-left"></i>' . $_SESSION['nbaBackLink']['label'] . '</a>';
 	}
 	return '&nbsp;';
@@ -944,11 +940,12 @@ function _buildQuery ($service, $terms = []) {
         $query->setSize($terms['size']);
     }
     if (isset($terms['sort']) && !empty($terms['sort'])) {
-        $sortDirection = true;
-        if (isset($terms['sortDirection']) && strtolower($terms['sortDirection']) == 'desc') {
-            $sortDirection = false;
-        }
-        $query->sortBy($terms['sort'], $sortDirection);
+    	$sortPaths = array_map('trim', explode(',', $terms['sort']));
+   		$sortDirections = array_map('trim', explode(',', $terms['sortDirection']));
+   		foreach ($sortPaths as $i => $path) {
+   			$sort[] = [$path, isset($sortDirections[$i]) ? $sortDirections[$i] : null];
+   		}
+        $query->setSortFields($sort);
     }
     return $query;
 }
@@ -1307,7 +1304,7 @@ function _getTaxonFromNba ($taxon) {
 		$taxon = explode(' ', $taxon);
 	} 
 	$taxon = array_filter($taxon);
-	if (!empty($taxon)) {
+	if (isset($taxon[0]) && isset($taxon[1])) {
 		$condition = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 		if (count($taxon) > 1) {
 			$condition->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
@@ -1425,7 +1422,7 @@ function _nbaAdvancedSearch () {
 
 function _getSpecimensTotal ($terms) {
 	$client = _initBioPortalClient();
-	foreach (['size', 'from'] as $p) {
+	foreach (['size', 'from', 'sort', 'sortDirection'] as $p) {
 		if (isset($terms[$p])) {
 			unset($terms[$p]);
 		}

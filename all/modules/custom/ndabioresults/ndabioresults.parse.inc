@@ -683,7 +683,6 @@ function _parseSpecimens ($data, $options = []) {
 	
 	$terms = _getStoredQueryTerms($service);
 	$terms['from'] = 0;
-	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . http_build_query($terms);
 	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
@@ -701,6 +700,25 @@ function _parseSpecimens ($data, $options = []) {
 function _getReferredSearch ($url) {
 	safe_parse_str($url, $terms);
 	return isset($terms['referrer']) ? _decodeReferrer($terms['referrer']) : false;
+}
+
+function _setSortUrl ($path, $direction) {
+	return _resetUrl() . ($path == 'score' ? '' : '&sort=' . $path . 
+		'&sortDirection=' . $direction);
+}
+
+// Strips sort parameters and sets from to 0
+function _resetUrl () {
+	$pathComponents = explode('/', _getCurrentUrl());
+	$path = array_pop($pathComponents);
+	safe_parse_str($path, $terms);
+	foreach (['sort', 'sortDirection', 'service'] as $flag) {
+		if (isset($terms[$flag])) {
+			unset($terms[$flag]);
+		}
+	}
+	$terms['from'] = 0;
+	return implode('/', $pathComponents) . '/' . http_build_query($terms);
 }
 
 function _setTaxonId ($object) {
@@ -773,7 +791,6 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	
 	$terms = _getStoredQueryTerms($service);
 	$terms['from'] = 0;
-	$output['baseUrl'] = _setBasePath() . 'result/specimen/' . http_build_query($terms);
 	
 	$output['specimensTotal'] = isset($data->specimensTotal) ? 
 		$data->specimensTotal : $output['results'][0]['count'];

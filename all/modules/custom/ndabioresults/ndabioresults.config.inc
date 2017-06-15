@@ -669,3 +669,53 @@ function scientificNameElementsInItalics ()
 	return $var;
 }
 
+function sortOptions ()
+{
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = [
+			'specimen' => [
+				t('relevance') => [
+					'path' => 'score',
+					'direction' => ''
+				],
+				t('specimen') . ' [A-Z]' => [
+					'path' => 'unitID',
+					'direction' => 'asc'
+				],
+					t('specimen') . ' [Z-A]' => [
+					'path' => 'unitID',
+					'direction' => 'desc'
+				],
+				t('species') . ' [A-Z]' => [
+					'path' => 'identifications.scientificName.scientificNameGroup',
+					'direction' => 'asc'
+				],
+				t('species') . ' [Z-A]' => [
+					'path' => 'identifications.scientificName.scientificNameGroup',
+					'direction' => 'desc'
+				]
+			],
+			'names.specimens' => [
+				t('species') . ' [A-Z]' => [
+					'path' => 'name',
+					'direction' => 'asc'
+				],
+				t('species') . ' [Z-A]' => [
+					'path' => 'name',
+					'direction' => 'desc'
+				],
+				t('specimen count') . ' [9-0]' => [
+					'path' => 'specimenCount',
+					'direction' => 'desc'
+				],
+				t('specimen count') . ' [0-9]' => [
+					'path' => 'specimenCount',
+					'direction' => 'asc'
+				],
+			],
+		];
+	}
+	return $var;
+}
+

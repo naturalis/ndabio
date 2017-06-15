@@ -1,5 +1,34 @@
 <?php
 
+function _printSortOptions ($service) {
+	
+	$js = "
+	<script>
+	(function($) {
+      $('#sortOptions').on('change', function () {
+          var url = $(this).val();
+          if (url) { 
+              window.location = url; 
+          }
+          return false;
+      });
+	})(jQuery);
+
+	</script>";
+	
+	
+	
+	
+	$output = "<form><select class='form-select' id='sortOptions'>\n" .
+		"<option value='' selected>" . t('Sort options') . "...</option>\n";
+		"<option value='_score'>" . t('Relevance') . "</option>\n";
+	foreach (sortOptions()[$service] as $label => $d) {
+		$url = _setSortUrl($d['path'], $d['direction']);
+		$output .= "<option value='$url'>" . ucfirst($label) . "</option>\n";
+	}
+	return  $output . "</select>\n</form>\n" . $js;
+}
+
 function _printTaxonDetail ($data) {
     global $language;
     
@@ -78,6 +107,11 @@ function _printTaxa ($data) {
         _formatNumber($data['total']),
         $explanation
     );
+    if (!isset($_GET['form_id'])) {
+		$output .= "<div class='view-options'>\n" . 
+			"<div class='sort-options'>" . _printSortOptions('taxon') . "</div>\n</div>\n";
+    }
+    
     $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers, $data['self']));
 
     foreach ($data['results'] as $i => $row) {
@@ -145,10 +179,11 @@ function _printSpecimens ($data) {
         _formatNumber($data['total'])
     );
     
-    //$output .= _printSpecimenViewSwitch($data['baseUrl']);
-	$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-		'<a href="' . $data['baseUrl'] . '&service=taxon' . '">' .
-		t('display by taxon') . "</a></div>\n<div class='sort-options'></div>\n</div>\n";
+    if (!isset($_GET['form_id'])) {
+		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
+			'<a href="' . _resetUrl() . '&service=taxon' . '">' . t('Display by taxon') . "</a></div>\n" . 
+			"<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
+    }
     
     $output .= sprintf('<table style="margin-top: 20px;"><thead>%s</thead><tbody>', _printHeaders($headers));
 
@@ -172,35 +207,6 @@ function _printSpecimens ($data) {
     $output .= _printPaginator($data);
 
     return $output;
-}
-
-
-
-
-function _printSpecimenViewSwitch ($baseUrl) {
-	$output = "<form id='specimenService' method='get'>\n" .
-		"<select id='specimenViewSwitch' class='form-select'>\n" .
-		"<option selected data-id=''>View options...</option>\n";
-	foreach (['specimen' => 'specimen', 'names' => 'taxon'] as $service => $type) {
-		$output .= "<option data-id='$baseUrl&service=$service'>By $type</option>\n";
-	}
-	$output .= "</select>\n</form>\n";
-	
-	
-	$output .= "
-		<script>
-		(function($) {
-			$('#specimenViewSwitch').change(function(event) {
-				event.preventDefault();
-				var actionUrl = $(this).find('option:selected').data('id');
-				if (actionUrl != '') {
-		    		$('#specimenService').attr('action', actionUrl).submit();
-				}
-			});
-		})(jQuery);
-		</script>";
-	
-	return $output;
 }
 
 
@@ -1282,11 +1288,15 @@ function _printSpecimensTaxon ($data) {
 		t('with specimens'),
 		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
 	);
-	$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-		'<a href="' . $data['baseUrl'] . '&service=specimen' . '">' .
-		t('display by specimen') . "</a></div>\n<div class='sort-options'></div>\n</div>\n";
+	if (!isset($_GET['form_id'])) {
+		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
+			'<a href="' . _resetUrl() . '&service=specimen' . '">' . t('Display by specimen') . "</a></div>\n" . 
+			"<div class='sort-options'>" . _printSortOptions('names.specimens') . "</div>\n</div>\n";
+	}
+	
 	$output .= sprintf(
-		'<table style="margin-top: 20px;" id="specimensByTaxon"><thead>%s</thead>', _printHeaders($headers, $data['self'])
+		'<table style="margin-top: 20px;" id="specimensByTaxon"><thead>%s</thead>', 
+		_printHeaders($headers, $data['self'])
 	);
 	
 	foreach ($data['results'] as $i => $row) {
@@ -2286,31 +2296,3 @@ function _printDebug () {
     }
 }
 
-
-
-/*
-function _printSpecimenViewOptions () {
-	return 
-		"<form id='specimenViewOptionsForm' method='get' action=''>
-		
-
-	<script>
-    	var u=document.createElement('a');
-        u.href = window.location.href ;
-        console.dir(u);
-
-
-
-
-	(function($) {
-		$('#specimenViewOptions').change(function() {
-			var action = $('#specimenViewOptionsForm').prop('action');
-			alert(action);
-			alert($(this).val());
-        	//this.form.submit();
- 		});
-	})(jQuery);
-
-	</script>
-";
-}*/
