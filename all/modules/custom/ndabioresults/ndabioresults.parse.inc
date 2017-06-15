@@ -707,6 +707,15 @@ function _setSortUrl ($path, $direction) {
 		'&sortDirection=' . $direction);
 }
 
+function _getCurrentSort () {
+	$pathComponents = explode('/', _getCurrentUrl());
+	safe_parse_str(array_pop($pathComponents), $terms);
+	return [
+		'path' => isset($terms['sort']) ? $terms['sort'] : 'score',
+		'direction' => isset($terms['sortDirection']) ? $terms['sortDirection'] : null
+	];
+}
+
 // Strips sort parameters and sets from to 0
 function _resetUrl () {
 	$pathComponents = explode('/', _getCurrentUrl());

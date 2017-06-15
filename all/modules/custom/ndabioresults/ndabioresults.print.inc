@@ -5,7 +5,7 @@ function _printSortOptions ($service) {
 	$js = "
 	<script>
 	(function($) {
-      $('#sortOptions').on('change', function () {
+      $('#sort-options').on('change', function () {
           var url = $(this).val();
           if (url) { 
               window.location = url; 
@@ -19,12 +19,13 @@ function _printSortOptions ($service) {
 	
 	
 	
-	$output = "<form><select class='form-select' id='sortOptions'>\n" .
+	$output = "<form><select class='form-select' id='sort-options'>\n" .
 		"<option value='' selected>" . t('Sort options') . "...</option>\n";
 		"<option value='_score'>" . t('Relevance') . "</option>\n";
 	foreach (sortOptions()[$service] as $label => $d) {
 		$url = _setSortUrl($d['path'], $d['direction']);
-		$output .= "<option value='$url'>" . ucfirst($label) . "</option>\n";
+		$selected = $d == _getCurrentSort() ? ' class="sort-option-selected"' : '';
+		$output .= "<option value='$url'$selected>" . ucfirst($label) . "</option>\n";
 	}
 	return  $output . "</select>\n</form>\n" . $js;
 }
@@ -109,7 +110,7 @@ function _printTaxa ($data) {
     );
     if (!isset($_GET['form_id'])) {
 		$output .= "<div class='view-options'>\n" . 
-			"<div class='sort-options'>" . _printSortOptions('taxon') . "</div>\n</div>\n";
+			"<div class='sort-options'>" . _printSortOptions('names.taxa') . "</div>\n</div>\n";
     }
     
     $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers, $data['self']));

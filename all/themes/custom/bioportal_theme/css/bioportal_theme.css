@@ -809,3 +809,12 @@ th .icon-sort_sortable {
     color: #1a1a1a; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */
+
+#sort-options {
+	width: 250px;
+	float: right;
+}
+
+.sort-option-selected {
+	font-weight: bold;
+}

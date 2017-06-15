@@ -947,6 +947,7 @@ function _buildQuery ($service, $terms = []) {
    		}
         $query->setSortFields($sort);
     }
+//p($query->getQuerySpec(true)); die();
     return $query;
 }
 
@@ -1822,11 +1823,12 @@ function _nbaSimpleSearch ($term) {
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
-		// to do!
+		$data = json_decode($remoteData['names.taxa']); 
+		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
 	}
 
     return $pageHeader . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    	(!empty($pageBody) ?  _printDebug() . $pageBody : '<p>' . printNoResults() . '</p>');
 }
 
 /**

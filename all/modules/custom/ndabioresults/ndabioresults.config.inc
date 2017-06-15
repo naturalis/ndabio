@@ -677,7 +677,7 @@ function sortOptions ()
 			'specimen' => [
 				t('relevance') => [
 					'path' => 'score',
-					'direction' => ''
+					'direction' => null
 				],
 				t('specimen') . ' [A-Z]' => [
 					'path' => 'unitID',
@@ -688,22 +688,30 @@ function sortOptions ()
 					'direction' => 'desc'
 				],
 				t('species') . ' [A-Z]' => [
-					'path' => 'identifications.scientificName.scientificNameGroup',
-					'direction' => 'asc'
+					'path' => 'identifications.scientificName.genusOrMonomial,'  .
+						'identifications.scientificName.specificEpithet,' .
+						'identifications.scientificName.infraspecificEpithet',
+					'direction' => 'asc,asc,asc'
 				],
 				t('species') . ' [Z-A]' => [
-					'path' => 'identifications.scientificName.scientificNameGroup',
-					'direction' => 'desc'
+					'path' => 'identifications.scientificName.genusOrMonomial,'  .
+						'identifications.scientificName.specificEpithet,' .
+						'identifications.scientificName.infraspecificEpithet',
+					'direction' => 'desc,desc,desc'
 				]
 			],
 			'names.specimens' => [
 				t('species') . ' [A-Z]' => [
-					'path' => 'name',
-					'direction' => 'asc'
+					'path' => 'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
+						'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+						'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
+					'direction' => 'asc,asc,asc'
 				],
 				t('species') . ' [Z-A]' => [
-					'path' => 'name',
-					'direction' => 'desc'
+					'path' => 'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
+						'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+						'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
+					'direction' => 'desc,desc,desc'
 				],
 				t('specimen count') . ' [9-0]' => [
 					'path' => 'specimenCount',
@@ -712,6 +720,24 @@ function sortOptions ()
 				t('specimen count') . ' [0-9]' => [
 					'path' => 'specimenCount',
 					'direction' => 'asc'
+				],
+			],
+			'names.taxa' => [
+				t('relevance') => [
+					'path' => 'score',
+					'direction' => null
+				],
+				t('name') . ' [A-Z]' => [
+					'path' => 'taxa.acceptedName.genusOrMonomial,' . 
+						'taxa.acceptedName.specificEpithet,' . 
+						'taxa.acceptedName.infraspecificEpithet',
+					'direction' => 'asc,asc,asc'
+				],
+				t('name') . ' [Z-A]' => [
+					'path' => 'taxa.acceptedName.genusOrMonomial,' . 
+						'taxa.acceptedName.specificEpithet,' . 
+						'taxa.acceptedName.infraspecificEpithet',
+					'direction' => 'desc,desc,desc'
 				],
 			],
 		];
