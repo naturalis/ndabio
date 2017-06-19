@@ -181,7 +181,7 @@ function _printSpecimens ($data) {
 			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
 			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
 			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
-			'sortDirection=asc,asc,asc' . '">' . t('Display by taxon') . "</a></div>\n" . 
+			'sortDirection=asc,asc,asc">' . t('Display by taxon') . "</a></div>\n" . 
 			"<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
     }
     

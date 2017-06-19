@@ -819,7 +819,8 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
             if (isset(nbaFieldMapping()[$lookupService][$field])) {
                 $nbaPaths = nbaFieldMapping()[$lookupService][$field];
             }
-            if ($useNameResolution) {
+            if ($useNameResolution && 
+            	isset(nbaNameResolutionFieldMapping()[$lookupService][$field])) {
             	$nbaPaths = array_merge($nbaPaths, 
             		nbaNameResolutionFieldMapping()[$lookupService][$field]);
             }
@@ -879,7 +880,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 						} else {
 							continue;
 						}
-					// Valid geoShape (gid or geojson); isloate to process later;
+					// Valid geoShape (gid or geojson); isolate to process later;
 					// can only be a single value
 					} else {
 						$geoShape = [
@@ -1384,8 +1385,8 @@ function _nbaAdvancedSearch () {
 					'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
 				$terms['sortDirection'] = 'asc,asc,asc';
 			}
-            // Build QuerySpec
-            $query = _buildQuery($service, $terms);
+            // Build QuerySpec; do not use name resolution
+            $query = _buildQuery($service, $terms, false);
             // Trim specimens from taxon query
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
@@ -1815,8 +1816,8 @@ function _nbaSimpleSearch ($term) {
 				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
 			$terms['sortDirection'] = 'asc,asc,asc';
 		}
-		// Build QuerySpec
-		$query = _buildQuery($service, $terms);
+		// Build QuerySpec; use name resolution
+		$query = _buildQuery($service, $terms, true);
 		// Trim specimens from taxon query
 		if ($service == 'names.taxa') {
 			$query->setSpecimensSize(0);
@@ -1828,7 +1829,8 @@ function _nbaSimpleSearch ($term) {
 		
 		// Save service-specific query to session;
 		// used for further navigation
-		_setQueryTerms($service);
+		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
+		//_setQueryTerms($service);
 		_addDebugMessage($service, $client);
     }
     
