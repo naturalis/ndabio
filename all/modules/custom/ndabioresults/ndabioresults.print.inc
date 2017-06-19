@@ -1,24 +1,18 @@
 <?php
 
 function _printSortOptions ($service) {
-	
 	$js = "
 	<script>
-	(function($) {
-      $('#sort-options').on('change', function () {
-          var url = $(this).val();
-          if (url) { 
-              window.location = url; 
-          }
-          return false;
-      });
-	})(jQuery);
-
+		(function($) {
+	      $('#sort-options').on('change', function () {
+	          var url = $(this).val();
+	          if (url) { 
+	              window.location = url; 
+	          }
+	          return false;
+	      });
+		})(jQuery);
 	</script>";
-	
-	
-	
-	
 	$output = "<form><select class='form-select' id='sort-options'>\n" .
 		"<option value='' selected>" . t('Sort options') . "...</option>\n";
 		"<option value='_score'>" . t('Relevance') . "</option>\n";
@@ -27,6 +21,7 @@ function _printSortOptions ($service) {
 		$selected = $d == _getCurrentSort() ? ' class="sort-option-selected"' : '';
 		$output .= "<option value='$url'$selected>" . ucfirst($label) . "</option>\n";
 	}
+//p($d); p(_getCurrentSort());
 	return  $output . "</select>\n</form>\n" . $js;
 }
 
@@ -182,7 +177,11 @@ function _printSpecimens ($data) {
     
     if (!isset($_GET['form_id'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-			'<a href="' . _resetUrl() . '&service=taxon' . '">' . t('Display by taxon') . "</a></div>\n" . 
+			'<a href="' . _resetUrl() . '&service=taxon&sort=' .
+			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
+			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
+			'sortDirection=asc,asc,asc' . '">' . t('Display by taxon') . "</a></div>\n" . 
 			"<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
     }
     

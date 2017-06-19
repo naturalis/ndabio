@@ -744,6 +744,14 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		return false;
 	}
 	$service = 'names.specimens';
+	// Default sort is not score, must be set explicitly!
+	$sortExtension = '';
+	if (!array_key_exists('sort', _getStoredQueryTerms($service))) {
+		$sortExtension = '&sort=specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
+			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
+			'sortDirection=asc,asc,asc';
+	}
 	$output['total'] = $data->totalSize;
 	_getSpecimenDetails($data);
 //p($data);
@@ -768,7 +776,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
-				http_build_query(_setDetailSearchTerms($service, $i));
+				http_build_query(_setDetailSearchTerms($service, $i)) . $sortExtension;
 			$hits = _getHits($service, $sp);
 			$s['hits'] = _setNonNameHits($service, $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
@@ -781,10 +789,11 @@ function _parseSpecimensTaxon ($data, $options = []) {
 				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
-		//$d['allLink'] = $d['count'] > maxResultsInitial() ?
+//@todo: restore when NBA bug is fixed!		
+//$d['allLink'] = $d['count'] > maxResultsInitial() ?
 		$d['allLink'] = $d['count'] > 1 ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
-			http_build_query(_getStoredQueryTerms($service)) : null;
+			http_build_query(_getStoredQueryTerms($service)) . $sortExtension : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
@@ -811,7 +820,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
+			_setShowAllQuery($output['total'], _getStoredQueryTerms($service)) . 
+			$sortExtension;
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {

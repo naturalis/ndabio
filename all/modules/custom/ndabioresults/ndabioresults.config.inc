@@ -583,6 +583,75 @@ function nbaFieldMapping ()
     return $var;
 }
 
+function nbaNameResolutionFieldMapping ()
+{
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+        $var = array(
+            'multimedia' => [
+                'genusOrMonomial' => [
+                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
+                ],
+                'genus' => [
+                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
+                ],
+                'scientificName' => [
+                    'identifications.taxonomicEnrichments.synonyms.fullScientificName'
+                ],
+                'specificEpithet' => [
+                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
+                ],
+                'species' => [
+                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
+                ],
+                'infraspecificEpithet' => [
+                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
+                ],
+                'subspecies' => [
+                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
+                ],
+             	'vernacularName' => [
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+                ],
+                'commonName' => [
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+                ],
+            ],
+            'specimen' => [
+                'genusOrMonomial' => [
+                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
+                ],
+                'genus' => [
+                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
+                ],
+                'scientificName' => [
+                    'identifications.taxonomicEnrichments.synonyms.fullScientificName'
+                ],
+                'specificEpithet' => [
+                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
+                ],
+                'species' => [
+                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
+                ],
+                'infraspecificEpithet' => [
+                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
+                ],
+                'subspecies' => [
+                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
+                ],
+             	'vernacularName' => [
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+                ],
+                'commonName' => [
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+                ],
+            ],
+        );
+    }
+    return $var;
+}
+
+
 
 function nameHits ()
 {

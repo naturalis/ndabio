@@ -781,7 +781,7 @@ function _filterQueryOperators (&$terms) {
 }
 
 
-function _buildQuery ($service, $terms = []) {
+function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	$andOr = 'setAnd';
@@ -819,10 +819,16 @@ function _buildQuery ($service, $terms = []) {
             if (isset(nbaFieldMapping()[$lookupService][$field])) {
                 $nbaPaths = nbaFieldMapping()[$lookupService][$field];
             }
+            if ($useNameResolution) {
+            	$nbaPaths = array_merge($nbaPaths, 
+            		nbaNameResolutionFieldMapping()[$lookupService][$field]);
+            }
             // Get NBA field type
             foreach ($nbaPaths as $path) {
             	$path = $type . $path;
             	// Names identifications are buried even deeper...
+            	// and to compilate matters, taxonomicEnrichments should be excluded
+            	// from renaming.
             	if ($service == 'names' && strpos($path, '.identifications.') !== false) {
             		$path = str_replace('identifications', 'matchingIdentifications', $path);
             	}
@@ -1106,6 +1112,7 @@ function _nba_specimen_result_callback ($search = false) {
 	$client = _initBioPortalClient();
     
     $terms = _getQueryTerms($service, $search);
+
     $service = _getSpecimenService();
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
@@ -1131,6 +1138,15 @@ function _nba_specimen_result_callback ($search = false) {
 	_setGenericResultPageBackLink();
 	
 	if ($service == 'names.specimens') {
+		
+		// Default to names alphabetical in case no sort is set
+		if (!isset($terms['sort'])) {
+			$query->setSortFields([
+				['specimens.matchingIdentifications.scientificName.genusOrMonomial', 'asc'],
+				['specimens.matchingIdentifications.scientificName.specificEpithet', 'asc'],
+				['specimens.matchingIdentifications.scientificName.infraspecificEpithet', 'asc']
+			]);
+		}
 		
 		// Fetch data set
 		$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
@@ -1355,10 +1371,19 @@ function _nbaAdvancedSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
         if (_serviceUsed($terms)) {
-            // Cap results
-            $terms['size'] = maxResultsInitial();
             // Init client
             $client = _setClientService(_initBioPortalClient(), $service);
+        	// Cap results
+            $terms['size'] = maxResultsInitial();
+            // Set default score; only has to be set for names.specimens;
+            // defaults to score for others.
+         	if ($service == 'names.specimens' && !isset($terms['sort'])) {
+         		$terms['sort'] = 
+           			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
+					'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+					'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+				$terms['sortDirection'] = 'asc,asc,asc';
+			}
             // Build QuerySpec
             $query = _buildQuery($service, $terms);
             // Trim specimens from taxon query
@@ -1778,12 +1803,18 @@ function _nbaSimpleSearch ($term) {
     
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
-		// Cap results
-		$terms['size'] = maxResultsInitial();
-
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setClientService(_initBioPortalClient(), $service);
-			
+    	// Cap results
+		$terms['size'] = maxResultsInitial();
+		// Set default sort
+		if ($service == 'names.specimens' && !isset($terms['sort'])) {
+			$terms['sort'] = 
+				'specimens.matchingIdentifications.scientificName.genusOrMonomial,' . 
+				'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+			$terms['sortDirection'] = 'asc,asc,asc';
+		}
 		// Build QuerySpec
 		$query = _buildQuery($service, $terms);
 		// Trim specimens from taxon query
@@ -1797,7 +1828,7 @@ function _nbaSimpleSearch ($term) {
 		
 		// Save service-specific query to session;
 		// used for further navigation
-		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
+		_setQueryTerms($service);
 		_addDebugMessage($service, $client);
     }
     
