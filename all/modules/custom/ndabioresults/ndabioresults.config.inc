@@ -661,6 +661,8 @@ function nameHits ()
 			'multimedia' => [
 				'identifications.defaultClassification.genus',
 				'identifications.scientificName.genusOrMonomial',
+				'identifications.defaultClassification.subgenus',
+				'identifications.scientificName.subgenus',
 				'identifications.defaultClassification.specificEpithet',
 				'identifications.scientificName.specificEpithet',
 				'identifications.defaultClassification.infraspecificEpithet',
@@ -670,6 +672,8 @@ function nameHits ()
 			'specimen' => [
 				'identifications.defaultClassification.genus',
 				'identifications.scientificName.genusOrMonomial',
+				'identifications.defaultClassification.subgenus',
+				'identifications.scientificName.subgenus',
 				'identifications.defaultClassification.specificEpithet',
 				'identifications.scientificName.specificEpithet',
 				'identifications.defaultClassification.infraspecificEpithet',
@@ -679,6 +683,8 @@ function nameHits ()
 			'taxon' => [
 				'defaultClassification.genus',
 				'acceptedName.genusOrMonomial',
+				'defaultClassification.subgenus',
+				'acceptedName.subgenus',
 				'defaultClassification.specificEpithet',
 				'acceptedName.specificEpithet',
 				'defaultClassification.infraspecificEpithet',
@@ -688,6 +694,8 @@ function nameHits ()
 			'names.specimens' => [
 				'specimens.matchingIdentifications.defaultClassification.genus',
 				'specimens.matchingIdentifications.scientificName.genusOrMonomial',
+				'specimens.matchingIdentifications.defaultClassification.subgenus',
+				'specimens.matchingIdentifications.scientificName.subgenus',
 				'specimens.matchingIdentifications.defaultClassification.specificEpithet',
 				'specimens.matchingIdentifications.scientificName.specificEpithet',
 				'specimens.matchingIdentifications.defaultClassification.infraspecificEpithet',
@@ -697,6 +705,8 @@ function nameHits ()
 			'names.taxa' => [
 				'taxa.defaultClassification.genus',
 				'taxa.acceptedName.genusOrMonomial',
+				'taxa.defaultClassification.subgenus',
+				'taxa.acceptedName.subgenus',
 				'taxa.defaultClassification.specificEpithet',
 				'taxa.acceptedName.specificEpithet',
 				'taxa.defaultClassification.infraspecificEpithet',
