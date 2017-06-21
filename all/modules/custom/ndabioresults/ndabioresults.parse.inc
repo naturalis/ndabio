@@ -301,11 +301,11 @@ function _parseSpecimenDetail ($data) {
 	//$output['collectionType'] = $data->collectionType;
 	$output['source'] = isset($data->sourceSystem) ? $data->sourceSystem->name : null;
 	$output['names'] = _getSpecimenNames($data->identifications);
+	$output['typeStatuses'] = _getSpecimenTypeStatuses($data->identifications);
 	$output['vernaculars'] = _getSpecimenVernaculars($data->identifications);
 	$output['gatheringEvent'] = _getGatheringEventSpecimens($data->gatheringEvent);
 	//$output['license'] = $data->searchResults[0]->result->license;
-	$output['otherSpecimens'] = isset($data->assemblageID) ?
-		_getOtherSpecimens($data) : null;
+	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
 	return $output;
 }
@@ -1174,6 +1174,27 @@ function _getSpecimenNames ($identifications = []) {
 			$output[] = [
 				'name' => $name,
 				'url' => _getTaxonUrl($identification),
+			    'preferred' => $identification->preferred ? 1 : 0
+			];
+    	}
+	}
+	if (isset($output)) {
+    	usort($output, function($a, $b) {
+            return $b['preferred'] - $a['preferred'];
+        });
+	    return $output;
+	}
+	return [];
+}
+
+
+function _getSpecimenTypeStatuses ($identifications = []) {
+    foreach ($identifications as $identification) {
+    	$name = _getScientificName($identification);
+    	if (!empty($name)) {
+			$output[] = [
+				'name' => $name,
+				'typeStatus' => $identification->typeStatus,
 			    'preferred' => $identification->preferred ? 1 : 0
 			];
     	}

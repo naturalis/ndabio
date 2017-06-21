@@ -1,18 +1,18 @@
 <?php
 
 function _printSortOptions ($service) {
-	$js = "
-	<script>
-		(function($) {
-	      $('#sort-options').on('change', function () {
+    drupal_add_js(
+        "(function($) {
+	      $('#sort-options').on('change', function() {
 	          var url = $(this).val();
 	          if (url) { 
 	              window.location = url; 
 	          }
 	          return false;
 	      });
-		})(jQuery);
-	</script>";
+		})(jQuery);",
+        ['type' => 'inline', 'scope' => 'footer']
+    );
 	$output = "<form><select class='form-select' id='sort-options'>\n" .
 		"<option value='' selected>" . t('Sort options') . "...</option>\n";
 		"<option value='_score'>" . t('Relevance') . "</option>\n";
@@ -22,7 +22,7 @@ function _printSortOptions ($service) {
 		$output .= "<option value='$url'$selected>" . ucfirst($label) . "</option>\n";
 	}
 //p($d); p(_getCurrentSort());
-	return  $output . "</select>\n</form>\n" . $js;
+	return  $output . "</select>\n</form>\n";
 }
 
 function _printTaxonDetail ($data) {
@@ -286,7 +286,7 @@ function _printSpecimenDetail ($data) {
         'sourceInstitutionID',
 	    'collectionType',
         'recordBasis',
-        'typeStatus',
+        'typeStatuses',
         'phaseOrStage',
         'sex',
         'kindOfUnit',
@@ -298,6 +298,8 @@ function _printSpecimenDetail ($data) {
 	];
 	// Reorder input array
 	$data = _sortArrayByArray($data, $fieldOrder);
+	
+//p($data);
 
 	$output = _printDebug();
 	$output .= _wrap( t("Specimen")   , "div", "category");
@@ -336,7 +338,10 @@ function _printSpecimenDetail ($data) {
 			if ($field == 'vernaculars') {
 				$output .= _printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
 			}
-
+			if ($field == 'typeStatuses') {
+				$output .= _printTypeStatuses($value, 'Type status');
+			}
+			
 			// Gathering event
 			if ($field == 'gatheringEvent') {
                 $output .= _printDL(ucfirst(_translateNdaField('dateTimeBegin')),
@@ -469,11 +474,23 @@ function _printNamesWithLinks ($details, $fieldLabel) {
 	return !empty($output) ? $output : null;
 }
 
+function _printTypeStatuses ($details, $fieldLabel) {
+	if (count($details) <= 1) {
+		return _printDL(t($fieldLabel), 
+			_printValue(isset($details[0]['typeStatus']) ? $details[0]['typeStatus'] : null));
+	}
+	$value = '';
+	foreach ($details as $detail) {
+		$values[] = $detail['typeStatus'] . ' (' . $detail['name'] . ')';
+	}
+	return _printDL(t($fieldLabel), implode(', ', $values));
+}
+
 function _printSpecimenMediaDetail ($data) {
 //p($data);
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
-        array('type' => 'inline', 'scope' => 'footer')
+        ['type' => 'inline', 'scope' => 'footer']
     );
 
 	$output = _printDebug();
