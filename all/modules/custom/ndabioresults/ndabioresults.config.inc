@@ -7,8 +7,7 @@ define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
 define("NBAINITMAXGROUPRESULTS", 10);
 define("NBAMAXRESULTS", 100);
-define("NBADEFAULTSORT", '_score');
-define("NBADEFAULTSORTDIRECTION", 'DESC');
+define("NBATIMEOUT", 5);
 define("NBAMAXPAGESINPAGINATOR", 20);
 define("NBADEBUG", 0);
 define("NBADEBUGENCODED", 0);
@@ -43,11 +42,11 @@ function ndabioresults_config_form($form, &$form_state) {
   //LOG file location
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_log'] = array(
     '#type' => 'textfield',
-    '#title' => t('NBA JSON Log file'),
+    '#title' => t('NBA json log file'),
     '#default_value' => variable_get('ndabioresults_config_log', NBALOG),
     '#size' => 140,
     '#maxlength' => 200,
-    '#description' => t('NBA JSON Log file.') . '<br />' . t('Default') . ': ' . NBALOG,
+    '#description' => t('Location of Log file.') . '<br />' . t('Default') . ': ' . NBALOG,
     '#required' => TRUE
   );
 
@@ -84,29 +83,18 @@ function ndabioresults_config_form($form, &$form_state) {
   		'#required' => TRUE
   );
   
-  // Constant: default sort field
-  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsort'] = array(
+  // Constant: timeout
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_timeout'] = array(
     '#type' => 'textfield',
-    '#title' => t('NBA Default sort field'),
-    '#default_value' => variable_get('ndabioresults_config_defaultsort', NBADEFAULTSORT),
+    '#title' => t('NBA Timeout'),
+    '#default_value' => variable_get('ndabioresults_config_timeout', NBATIMEOUT),
     '#size' => 30,
     '#maxlength' => 30,
-    '#description' => t('Default sort field.') . '<br />' . t('Default') . ': ' . NBADEFAULTSORT,
+    '#description' => t('NBA timeout (in seconds).') . '<br />' . t('Default') . ': ' . NBATIMEOUT,
     '#required' => TRUE
   );
 
-  // Constant: default sort direction
-  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_defaultsortdirection'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Default sort field direction'),
-    '#default_value' => variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION),
-    '#size' => 20,
-    '#maxlength' => 20,
-    '#description' => t('Default sort field direction.') . '<br />' . t('Default') . ': ' . NBADEFAULTSORTDIRECTION,
-    '#required' => TRUE
-  );
-
-  // Constant: maximum results for subsequent queries
+   // Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxpagesinpaginator'] = array(
     '#type' => 'textfield',
     '#title' => t('NBA Maximum number of pages in the paginator'),
@@ -209,37 +197,8 @@ function maxGroupResultsInitial () {
  *
  * @return string
  */
-function defaultSort () {
-  return variable_get('ndabioresults_config_defaultsort', NBADEFAULTSORT);
-}
-
-/**
- * Constant: default sort direction
- *
- * @return string
- */
-function defaultSortDirection () {
-  return variable_get('ndabioresults_config_defaultsortdirection', NBADEFAULTSORTDIRECTION);
-}
-
-/**
- * Constant: default group sort
- * This parameter currently cannot be set by the user in the module
- *
- * @return string
- */
-function defaultGroupSort () {
-    return NBADEFAULTGROUPSORT;
-}
-
-/**
- * Constant: default group sort direction
- * This parameter currently cannot be set by the user in the module
- *
- * @return string
- */
-function defaultGroupSortDirection () {
-    return NBADEFAULTSORTGROUPDIRECTION;
+function nbaTimeout () {
+  return variable_get('ndabioresults_config_timeout', NBATIMEOUT);
 }
 
 /**

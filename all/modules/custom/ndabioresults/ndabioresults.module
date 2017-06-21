@@ -1255,7 +1255,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	
 	// Fetch data set
 	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
-	_setGenericResultPageBackLink();
+	_setGenericDetailPageBackLink('specimen', $search);
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {

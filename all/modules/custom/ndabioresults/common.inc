@@ -21,7 +21,7 @@ function _initBioPortalClient () {
     $client = new Client();
     $client
     	->setNbaUrl(nbaBaseUrl())
-    	->setNbaTimeout(10);
+    	->setNbaTimeout(nbaTimeout());
     return $client;
 }
 
