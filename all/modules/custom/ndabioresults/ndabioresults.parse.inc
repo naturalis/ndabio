@@ -342,6 +342,8 @@ function _parseTaxonMediaDetail ($data) {
 	if (!isset($data->id)) {
 		return false;
 	}
+	
+//p($data);	
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value)) {
 			$output[$field] = $value;
@@ -1190,10 +1192,9 @@ function _getSpecimenNames ($identifications = []) {
 
 function _getSpecimenTypeStatuses ($identifications = []) {
     foreach ($identifications as $identification) {
-    	$name = _getScientificName($identification);
-    	if (!empty($name)) {
+    	if (isset($identification->typeStatus)) {
 			$output[] = [
-				'name' => $name,
+				'name' => _getScientificName($identification),
 				'typeStatus' => $identification->typeStatus,
 			    'preferred' => $identification->preferred ? 1 : 0
 			];

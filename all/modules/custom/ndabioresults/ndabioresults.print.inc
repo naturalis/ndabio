@@ -676,8 +676,8 @@ function _printPreviousNext ($p) {
 	$previousUrl = isset($p['previousUrl']) ? $p['previousUrl'] : false;
 	$nextUrl = isset($p['nextUrl']) ? $p['nextUrl'] : false;
 	$backUrl = isset($p['backUrl']) ? $p['backUrl'] : false;
-	
-	if (!$previousUrl && !$nextUrl && !$backUrl) {
+
+	if (!$backUrl) {
 		return null;
 	}
 	

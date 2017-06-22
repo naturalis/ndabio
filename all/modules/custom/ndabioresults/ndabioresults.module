@@ -149,9 +149,14 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	
 	$client = _initBioPortalClient();
 	
+	if (!$scientificNameGroup && !$search) {
+		_setDetailPageNoSearchBackLink();
+		$data = _addDetailPageNavigation($service, $data);
+	}	
+	
 	// Added non-aggregated specimen browse option;
 	// parameter names now are incorrect...
-	if ($scientificNameGroup && !$search) {
+	else if ($scientificNameGroup && !$search) {
 		$search = $scientificNameGroup;
 		$terms = _getQueryTerms('specimen', $search);
 		$data->referrer = _encodeReferrer($terms);		
@@ -194,8 +199,6 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		_addDebugMessage('previous, current and next item', $query);
 		
 		$set = json_decode($client->names()->setQuerySpec($query)->querySpecial());
-		
-//_setBackLink('result/specimen/' . $search, 'Back to search results');
 		_setGenericDetailPageBackLink('specimen', $search);
 		
 		// We got an error; go oops
@@ -220,48 +223,52 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 			$scientificNameGroup
 		);
 	}
-	
+
 	$data->multimedia = _getSpecimenMultimedia($data);
 	return _printSpecimenDetail(_parseSpecimenDetail($data));
 }
 
 
 
-function _addSpecimenDetailPageNavigation ($data, $search, $set, $id, $from, 
-	$scientificNameGroup) {
+function _addSpecimenDetailPageNavigation ($data, $search = false, $set = false, 
+	$id = false, $from = false, $scientificNameGroup = false) {
 	
 //p($set);
-	
-	$previousId = $nextId = null;
-	foreach ($set->resultSet[0]->item->specimens as $i => $row) {
-		if (isset($row->unitID) && $row->unitID == $id) {
-			//$output = $row;
-			break;
+	if ($set && $search && $scientificNameGroup) {
+		$previousId = $nextId = null;
+		foreach ($set->resultSet[0]->item->specimens as $i => $row) {
+			if (isset($row->unitID) && $row->unitID == $id) {
+				//$output = $row;
+				break;
+			}
 		}
-	}
-	$data->offset = $from + 2;
-	if (isset($set->resultSet[0]->item->specimens[($i - 1)]->unitID)) {
-		$previousId = $set->resultSet[0]->item->specimens[($i - 1)]->unitID;
-	} else {
-		$data->offset = 1;
-	}
-	if (isset($set->resultSet[0]->item->specimens[($i + 1)]->unitID)) {
-		$nextId = $set->resultSet[0]->item->specimens[($i + 1)]->unitID;
-	}
-	$data->previousUrl = _setSpecimenDetailPagePreviousLink(
-		$search, 
-		$previousId, 
-		$scientificNameGroup
-	);
-	$data->nextUrl = _setSpecimenDetailPageNextLink(
-		$search,
-		$nextId, 
-		$previousId, 
-		$scientificNameGroup
-	);
+		$offset = $from + 2;
+		if (isset($set->resultSet[0]->item->specimens[($i - 1)]->unitID)) {
+			$previousId = $set->resultSet[0]->item->specimens[($i - 1)]->unitID;
+		} else {
+			$offset = 1;
+		}
+		if (isset($set->resultSet[0]->item->specimens[($i + 1)]->unitID)) {
+			$nextId = $set->resultSet[0]->item->specimens[($i + 1)]->unitID;
+		}
+		$previousUrl = _setSpecimenDetailPagePreviousLink(
+			$search, 
+			$previousId, 
+			$scientificNameGroup
+		);
+		$nextUrl = _setSpecimenDetailPageNextLink(
+			$search,
+			$nextId, 
+			$previousId, 
+			$scientificNameGroup
+		);
+	} 
+	$data->offset = isset($offset) ? $offset : 1;
+	$data->previousUrl = isset($previousUrl) ? $previousUrl : null;
+	$data->nextUrl = isset($nextUrl) ? $nextUrl : null;
 	$data->backUrl = _getBackLink();
 	$data->scientificNameGroup = $scientificNameGroup;
-	$data->totalSize = $set->resultSet[0]->item->specimenCount;
+	$data->totalSize = $set ? $set->resultSet[0]->item->specimenCount : 1;
 	return $data;
 }
 
@@ -384,12 +391,27 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		}
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
-
+	}	
+	
+	else {
+		_setDetailPageNoSearchBackLink();
+		$data = _addDetailPageNavigation($service, $data);
 	}
+	
 	if (isset($data->associatedTaxon)) {
 		return _printTaxonMediaDetail(_parseTaxonMediaDetail($data));
 	}
 	return _printSpecimenMediaDetail(_parseSpecimenMediaDetail($data));
+}
+
+function _setDetailPageNoSearchBackLink () {
+	if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
+		return $_SESSION['nbaBackLink'] = [
+			'href' => $_SERVER["HTTP_REFERER"],
+			'label' => t('Back'),
+		];		
+	}
+	return _setBackLink('', 'Home');	
 }
 
 function _setBackLink ($href, $label) {
@@ -404,23 +426,23 @@ function _setGenericDetailPageBackLink ($service, $search) {
 	safe_parse_str($search, $terms);
 	if ($service && $terms) {
 		$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
-		$_SESSION['nbaBackLink'] = [
-			'href' => _setBasePath() . 'result/' . $service . '/' . http_build_query($terms),
-			'label' => t('Back to search results'),
-		];
+		_setBackLink(
+			'result/' . $service . '/' . http_build_query($terms),
+			'Back to search results'
+		);
 	} else {
-		$_SESSION['nbaBackLink'] = null;
+		_setBackLink('', 'Home');
 	}
 }
 
 function _setGenericResultPageBackLink () {
 	if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
-		$_SESSION['nbaBackLink'] = [
-			'href' => _setStartUrl() . 'result?' . http_build_query($_SESSION['ndaSearch']),
-			'label' => t('Back to general results'),
-		];
+		_setBackLink(
+			'result?' . http_build_query($_SESSION['ndaSearch']),
+			'Back to general results'
+		);
 	} else {
-		$_SESSION['nbaBackLink'] = null;
+		_setBackLink('', 'Home');	
 	}
 }
 
@@ -526,35 +548,33 @@ function _setSpecimenDetailPageBackLink ($pathComponents) {
 */
 
 
-function _addDetailPageNavigation ($service, $data, $search, $set, $id, $from) {
-	$previousId = $nextId = null;
-	foreach ($set->resultSet as $i => $row) {
-		if (isset($row->item->unitID) && $row->item->unitID == $id) {
-			//$output = $row->item;
-			break;
+function _addDetailPageNavigation ($service, $data, $search = false, $set = false, 
+		$id = false, $from = false) {
+	if ($set) {
+		$previousId = $nextId = null;
+		foreach ($set->resultSet as $i => $row) {
+			if (isset($row->item->unitID) && $row->item->unitID == $id) {
+				//$output = $row->item;
+				break;
+			}
 		}
+		$offset = $from + 2;
+		if (isset($set->resultSet[($i - 1)]->item->unitID)) {
+			$previousId = $set->resultSet[($i - 1)]->item->unitID;
+		} else {
+			$offset = 1;
+		}
+		if (isset($set->resultSet[($i + 1)]->item->unitID)) {
+			$nextId = $set->resultSet[($i + 1)]->item->unitID;
+		}
+		$previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
+		$nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
 	}
-	$data->offset = $from + 2;
-	if (isset($set->resultSet[($i - 1)]->item->unitID)) {
-		$previousId = $set->resultSet[($i - 1)]->item->unitID;
-	} else {
-		$data->offset = 1;
-	}
-	if (isset($set->resultSet[($i + 1)]->item->unitID)) {
-		$nextId = $set->resultSet[($i + 1)]->item->unitID;
-	}
-	$data->previousUrl = _setDetailPagePreviousLink($service, $search, $previousId);
-	$data->nextUrl = _setDetailPageNextLink($service, $search, $nextId, $previousId);
-	// Special case for back link for multimedia
-	/*
-	if ($service == 'multimedia' && _getReferredSearch($search)) {
-		$backLink = _getBackLink();
-	} else {
-		$backLink = _setDetailPageBackLink($service, $search);
-	}
-	*/
+	$data->offset = isset($offset) ? $offset : 1;
+	$data->previousUrl = isset($previousUrl) ? $previousUrl : null;
+	$data->nextUrl = isset($nextUrl) ? $nextUrl : null;
 	$data->backUrl = _getBackLink();
-	$data->totalSize = $set->totalSize;
+	$data->totalSize = isset($set->totalSize) ? $set->totalSize : 1;
 	return $data;
 }
 
@@ -603,7 +623,13 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 			$data->name, 
 			$terms['from']
 		);
-     }
+    }
+    
+	else {
+		_setDetailPageNoSearchBackLink();
+		$data = _addDetailPageNavigation($service, $data);
+	}
+    
      
 	// Get specimens
 	$data->specimens = _getTaxonSpecimens($data);
@@ -869,6 +895,11 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 		foreach ($elements as $element) {			
 			$first = true;
 			foreach ($statement as $path => $operator) {
+				// Option "all" from select
+				if ($element == 'NOT_NULL') {
+					$operator = 'NOT_EQUALS';
+					$element = null;
+				}
 				// Test if LIKE is still allowed; if not change to MATCHES
 				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
 					$operator = 'MATCHES';
