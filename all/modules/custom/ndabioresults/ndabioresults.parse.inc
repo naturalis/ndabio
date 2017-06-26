@@ -123,7 +123,7 @@ function _parseTaxa ($data, $options) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/taxon/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
+			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
@@ -216,7 +216,7 @@ function _parseMultimedia ($data, $options = []) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/' . $service . '/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
+			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
@@ -639,7 +639,7 @@ function _parseSpecimensMap ($data) {
 	}
 	
 	if ($output['total'] > maxResults() && count($output['results']) <= maxResults()) {
-		$terms = _getStoredQueryTerms('names.specimens');
+		$terms = _getQueryTerms('names.specimens');
 		$terms['size'] = $output['total'];
 		$url = _setBasePath() . 'result/specimen/map/' . 
 			urlencode($data->resultSet[0]->item->name) . '/' . http_build_query($terms);
@@ -683,14 +683,14 @@ function _parseSpecimens ($data, $options = []) {
 		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
 		$output['results'][] = $d;
 	}
-	
+/*	
 	$terms = _getStoredQueryTerms($service);
 	$terms['from'] = 0;
-	
+*/	
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms($service));
+			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
 	// Paginator
 	if (in_array('paginator', $options)) {
@@ -749,7 +749,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	$service = 'names.specimens';
 	// Default sort is not score, must be set explicitly!
 	$sortExtension = '';
-	if (!array_key_exists('sort', _getStoredQueryTerms($service))) {
+	if (!array_key_exists('sort', _getQueryTerms($service))) {
 		$sortExtension = '&sort=specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
 			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
 			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
@@ -796,7 +796,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 //$d['allLink'] = $d['count'] > maxResultsInitial() ?
 		$d['allLink'] = $d['count'] > 1 ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
-			http_build_query(_getStoredQueryTerms($service)) . $sortExtension : null;
+			http_build_query(_getQueryTerms($service)) . $sortExtension : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
@@ -808,10 +808,10 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$output['results'][] = $d;
 	}
 	
-	
-	$terms = _getStoredQueryTerms($service);
+/*	
+	$terms = _getQueryTerms($service);
 	$terms['from'] = 0;
-	
+*/	
 	$output['specimensTotal'] = isset($data->specimensTotal) ? 
 		$data->specimensTotal : $output['results'][0]['count'];
 	$output['paginatorTotal'] = isset($data->specimensTotal) ? 
@@ -822,7 +822,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	// Show all link
 	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
-			_setShowAllQuery($output['total'], _getStoredQueryTerms($service)) . 
+			_setShowAllQuery($output['total'], _getQueryTerms($service)) . 
 			$sortExtension;
 	}
 	// Paginator

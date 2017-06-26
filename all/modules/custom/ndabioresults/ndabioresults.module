@@ -815,8 +815,11 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	$andOr = 'setAnd';
+	// Simple search
     if (isset($terms) && isset($terms['term'])) {
-		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
+ 		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
+		// Always use name resolution for simple search
+		$useNameResolution = true;
 		$andOr = 'setOr';
 	}
 	// Names service must include prefix, so use names.taxa or names.specimens
@@ -1796,8 +1799,8 @@ function _setPaginatorUrl () {
  * @return int Offset
  */
 function _getPaginatorOffset ($service) {
-    if (isset(_getStoredQueryTerms($service)['from'])) {
-        return _getStoredQueryTerms($service)['from'];
+    if (isset(_getQueryTerms($service)['from'])) {
+        return _getQueryTerms($service)['from'];
     }
     return 0;
 }
