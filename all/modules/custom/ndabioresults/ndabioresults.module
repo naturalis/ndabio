@@ -120,10 +120,6 @@ function ndabioresults_menu() {
 		'page callback' => '_nba_multimedia_callback',
 		'access callback' => true,
 	);
-	$items['theme'] = array(
-		'page callback' => '_nba_theme_callback',
-		'access callback' => true,
-	);
 	
 	return $items;
 }
@@ -1306,74 +1302,6 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 
 
 
-function _nba_theme_callback ($theme = false, $search = false) {
-	// Delete previous search terms when performing new query
-    unset($_SESSION['nbaQuery']);
-	
-    $headTitle = t('Explore highlights');
-    $pageTitle = '';
-    ctools_class_add(['thematic-search']);
-    
-    _setTitle($headTitle, $pageTitle);   
-    _setBackLink('', 'Home');
-    
-    $terms['theme'] = $theme;
-    $services[_getSpecimenService()] = $terms;
-    $services['multimedia'] = $terms;
-    // Get json response for each service that provides search parameters
-    foreach ($services as $service => $terms) {
-		// Init client, construct query, fetch results in $remoteData
-		$client = _setClientService(_initBioPortalClient(), $service);
-    	// Cap results
-		$terms['size'] = maxResultsInitial();
-		// Set default sort
-		if ($service == 'names.specimens' && !isset($terms['sort'])) {
-			$terms['sort'] = 
-				'specimens.matchingIdentifications.scientificName.genusOrMonomial,' . 
-				'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
-			$terms['sortDirection'] = 'asc,asc,asc';
-		}
-		// Build QuerySpec; use name resolution
-		$query = _buildQuery($service, $terms);
-		// Trim specimens from taxon query
-		if ($service == 'names.taxa') {
-			$query->setSpecimensSize(0);
-		}
-		$client->setQuerySpec($query);
-            
-		$remoteData[$service] = strpos($service, 'names') === false ? 
-			$client->query() : $client->querySpecial();
-		
-		// Save service-specific query to session;
-		// used for further navigation
-		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
-		//_setQueryTerms($service);
-		_addDebugMessage($service, $client);
-    }
-    
-	// Order is multimedia > specimens > taxa
-	if (!empty($remoteData['multimedia'])) {
-		$data = json_decode($remoteData['multimedia']);
-		$pageBody .= _printMultimedia(_parseMultimedia($data, ['showAll']));
-	}
-	
-	if (!empty($remoteData['names.specimens'])) {
-		$data = json_decode($remoteData['names.specimens']); 
-		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
-		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
-	}
-	
-	if (!empty($remoteData['specimen'])) {
-		$data = json_decode($remoteData['specimen']); 
-		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
-	}
-    return $pageHeader .  _printDebug()  . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
-
-    
-}
-
 function _setLanguage () {
     $langs = language_list(); // Note: No argument
     $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
@@ -1413,16 +1341,22 @@ function _nba_general_result_callback () {
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, $pageTitle);   
+    $_SESSION['ndaSearch'] = $_GET;
     
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         //drupal_set_title(t("Search results"));
-        $_SESSION['ndaSearch'] = $_GET;
         _setBackLink('?searchagain=1', 'Modify search');
         _logSearch();
-        return empty($_SESSION['ndaSearch']['term']) ? 
-        	_nbaAdvancedSearch() : _nbaSimpleSearch($_SESSION['ndaSearch']['term']);
+        if (isset($_SESSION['ndaSearch']['term']) && !empty($_SESSION['ndaSearch']['term'])) {
+        	return _nbaSimpleSearch();
+        }
+        return _nbaAdvancedSearch();
+    }
+    if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
+    	_setBackLink('/', 'Home');
+        return _nbaThemeSearch();
     }
 
 }
@@ -1870,7 +1804,7 @@ function _localityInNba ($locality) {
  *
  * @return string Formatted output
  */
-function _nbaSimpleSearch ($term) {
+function _nbaSimpleSearch () {
 
 	
 	// Delete previous search terms when performing new query
@@ -1978,6 +1912,88 @@ function _nbaSimpleSearch ($term) {
     return $pageHeader .  _printDebug() . 
     	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
+
+
+
+
+
+
+
+
+function _nbaThemeSearch () {
+
+	
+	// Delete previous search terms when performing new query
+    unset($_SESSION['nbaQuery']);
+    
+    $pageBody = $pageHeader = '';
+    ctools_class_add(array('thematic-search'));
+    
+    $terms['theme'] = $_SESSION['ndaSearch']['theme'];
+    
+    $services[_getSpecimenService()] = $terms;
+    $services['multimedia'] = $terms;
+    
+    p($services);
+    
+    // Get json response for each service that provides search parameters
+    foreach ($services as $service => $terms) {
+		// Init client, construct query, fetch results in $remoteData
+		$client = _setClientService(_initBioPortalClient(), $service);
+    	// Cap results
+		$terms['size'] = maxResultsInitial();
+		
+		// Set default sort
+		if ($service == 'names.specimens') {
+			$terms['sort'] = 
+				'specimens.matchingIdentifications.scientificName.genusOrMonomial,' . 
+				'specimens.matchingIdentifications.scientificName.specificEpithet,' .
+				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+			$terms['sortDirection'] = 'asc,asc,asc';
+		} else if ($service == 'specimen') {
+			$terms['sort'] = 'unitID';
+			$terms['sortDirection'] = 'asc';
+		}
+		
+		// Build QuerySpec; use name resolution
+		$query = _buildQuery($service, $terms, true);
+		$client->setQuerySpec($query);
+            
+		$remoteData[$service] = strpos($service, 'names') === false ? 
+			$client->query() : $client->querySpecial();
+		
+		// Save service-specific query to session;
+		// used for further navigation
+		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
+		//_setQueryTerms($service);
+		_addDebugMessage($service, $client);
+    }
+    
+     
+	// Order is multimedia > specimens > taxa
+	if (!empty($remoteData['multimedia'])) {
+		$data = json_decode($remoteData['multimedia']);
+		$pageBody .= _printMultimedia(_parseMultimedia($data, ['showAll']));
+	}
+	
+	if (!empty($remoteData['names.specimens'])) {
+		$data = json_decode($remoteData['names.specimens']); 
+		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
+	}
+	
+	if (!empty($remoteData['specimen'])) {
+		$data = json_decode($remoteData['specimen']); 
+		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
+	}
+    return $pageHeader .  _printDebug() . 
+    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+}
+
+
+
+
+
 
 /**
  * Sets url to search form

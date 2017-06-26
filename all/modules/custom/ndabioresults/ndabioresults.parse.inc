@@ -392,7 +392,6 @@ function _getScientificName ($object, $full = true) {
 			$name[0] = $object->{$path}->fullScientificName;
 			unset($name[1], $name[2], $name[3]);
 		}
-		
 		if (!empty(array_filter($name))) {
 			return implode(' ', array_filter($name));
 		}
@@ -423,12 +422,12 @@ function _getTaxonUrl ($object, $checkNba = true) {
 
 function _setDetailSearchTerms ($service, $i) {
 	// Differentiate between from details and general!!
-	// $from = (int) _getStoredQueryTerms($service)['from'];
+	$from = (int) _getQueryTerms($service)['from'];
 	$terms = _getQueryTerms($service);
 	if (isset($terms['size'])) {
 		unset($terms['size']);
 	}
-	$terms['from'] = max(0, 0 + $i - 1);
+	$terms['from'] = max(0, $from + $i - 1);
 	return $terms;
 }
 

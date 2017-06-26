@@ -375,6 +375,9 @@ function nbaFieldMapping ()
                 ],
              	'collectionType' => [
             		'collectionType'
+            	],
+             	'theme' => [
+            		'theme'
             	]
             ],
             'specimen' => [
@@ -467,6 +470,9 @@ function nbaFieldMapping ()
             	],
              	'collectionType' => [
             		'collectionType'
+            	],
+             	'theme' => [
+            		'theme'
             	]
             ],
             'taxon' => [
