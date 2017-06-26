@@ -386,13 +386,14 @@ function _getScientificName ($object, $full = true) {
 				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 			}
 		}
+		// Some specimens don't have a properly formatted name;
+		// revert to fullScientificName
+		if ($path == 'scientificName' && empty($name[0])) {
+			$name[0] = $object->{$path}->fullScientificName;
+			unset($name[1], $name[2], $name[3]);
+		}
+		
 		if (!empty(array_filter($name))) {
-			// Some specimens don't have a properly formatted name;
-			// revert to fullScientificName + authorshipVerbatim
-			if ($path == 'scientificName' && empty($name[0])) {
-				$name[0] = $object->{$path}->fullScientificName;
-				unset($name[1], $name[2], $name[3]);
-			}
 			return implode(' ', array_filter($name));
 		}
 	}

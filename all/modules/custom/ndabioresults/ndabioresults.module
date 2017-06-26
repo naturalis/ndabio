@@ -147,6 +147,8 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		return _printOops();
 	}
 	
+//p($data);
+	
 	$client = _initBioPortalClient();
 	
 	if (!$scientificNameGroup && !$search) {
@@ -427,10 +429,12 @@ function _setGenericDetailPageBackLink ($service, $search) {
 	safe_parse_str($search, $terms);
 	if ($service && $terms) {
 		$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
-		_setBackLink(
-			'result/' . $service . '/' . http_build_query($terms),
-			'Back to search results'
-		);
+		// Cannot use _setBackLink here!
+		$_SESSION['nbaBackLink'] = [
+			'href' => _setBasePath() . 'result/' . $service . '/' . 
+				http_build_query($terms),
+			'label' => t('Back to search results'),
+		];
 	} else {
 		_setBackLink('', 'Home');
 	}
