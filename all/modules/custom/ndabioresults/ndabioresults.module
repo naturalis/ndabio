@@ -405,7 +405,8 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 }
 
 function _setDetailPageNoSearchBackLink () {
-	if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
+	if (isset($_SERVER["HTTP_REFERER"]) && 
+		strpos($_SERVER["HTTP_REFERER"], _setStartUrl()) !== false) {
 		return $_SESSION['nbaBackLink'] = [
 			'href' => $_SERVER["HTTP_REFERER"],
 			'label' => t('Back'),
@@ -582,7 +583,6 @@ function _addDetailPageNavigation ($service, $data, $search = false, $set = fals
 
 function _nba_taxon_callback ($taxon = false, $search = false) {
 
-    // Test if anything has been posted; if not return with error message
     if (!$taxon) {
     	_printOops();
     }
@@ -1686,7 +1686,7 @@ function _getStoredQueryTerms ($service) {
 		$_SESSION['nbaQuery'][$service]['terms'] : false;
 }
 
-function _getQueryTerms ($service, $search) {
+function _getQueryTerms ($service, $search = false) {
 	// Convert query string to parameters
 	if ($search) {
 		safe_parse_str($search, $terms);
@@ -1701,6 +1701,11 @@ function _getQueryTerms ($service, $search) {
     }
 	if (!$terms) {
 		return false;
+	}
+	// Both geoShape and gid set; unset first
+	if (isset($terms['gid']) && !empty($terms['gid']) &&
+		isset($terms['geoShape']) && !empty($terms['geoShape'])) {
+		unset($terms['geoShape']);
 	}
 	if (!isset($terms['from']) || !ctype_digit(strval($terms['from']))) {
 		$terms['from'] = 0;

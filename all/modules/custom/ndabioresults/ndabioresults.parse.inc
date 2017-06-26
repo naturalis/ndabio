@@ -803,8 +803,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$d['mapUrl'] = null;
 		if (_isGeoSearch()) {
 			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . 
-				urlencode($row->item->name) . '/' .
-				http_build_query(_getStoredQueryTerms($service));
+				urlencode($row->item->name) . '/' . http_build_query(_getQueryTerms($service));
 		}
 		$output['results'][] = $d;
 	}
