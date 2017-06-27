@@ -108,7 +108,7 @@ function _printTaxa ($data) {
 			"<div class='sort-options'>" . _printSortOptions('names.taxa') . "</div>\n</div>\n";
     }
     
-    $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers, $data['self']));
+    $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers));
 
     foreach ($data['results'] as $i => $row) {
     	$output .= "<tr>";
@@ -153,8 +153,8 @@ function _printSpecimens ($data) {
     // Drupal title empty; page title custom
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    _setTitle($headTitle, $pageTitle);
+    //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, '');
 
     $headers = [
 		'unitID' => [
@@ -344,8 +344,13 @@ function _printSpecimenDetail ($data) {
 			
 			// Gathering event
 			if ($field == 'gatheringEvent') {
-                $output .= _printDL(ucfirst(_translateNdaField('dateTimeBegin')),
-                    _printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : ''));
+				$dateTime = _printValue(isset($value['dateTimeBegin']) ? $value['dateTimeBegin'] : '');
+				if (isset($value['dateTimeBegin']) && isset($value['dateTimeEnd']) && 
+					$value['dateTimeBegin'] != $value['dateTimeEnd']) {
+					$dateTime .= ' ' . t('to') . ' ' . $value['dateTimeEnd'];
+				}
+                $output .= _printDL(ucfirst(_translateNdaField('dateTime')), $dateTime);
+                
 			    $output .= _printDL(ucfirst(_translateNdaField('gatheringAgents')),
 			        _printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
 			    $output .= _printDL(ucfirst(_translateNdaField('localityText')),
@@ -1313,7 +1318,7 @@ function _printSpecimensTaxon ($data) {
 	
 	$output .= sprintf(
 		'<table style="margin-top: 20px;" id="specimensByTaxon"><thead>%s</thead>', 
-		_printHeaders($headers, $data['self'])
+		_printHeaders($headers)
 	);
 	
 	foreach ($data['results'] as $i => $row) {
@@ -1394,7 +1399,7 @@ function _printSpecimensSingleTaxon ($data) {
 		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
 	);
 	$output .= sprintf(
-		'<table id="specimensBySingleTaxon"><thead>%s</thead>', _printHeaders($headers, $data['self'])
+		'<table id="specimensBySingleTaxon"><thead>%s</thead>', _printHeaders($headers)
 	);
 	
 	foreach ($data['results'] as $i => $row) {
@@ -1997,7 +2002,7 @@ function printHits ($row) {
  * @param array $self Self link
  * @return string Formatted output
  */
-function _printHeaders ($headers, $self) {
+function _printHeaders ($headers) {
 	$output = "<tr>";
 
     $i = 0;
@@ -2008,25 +2013,7 @@ function _printHeaders ($headers, $self) {
         if ( $header['label'] == "Match"){ $class="column-match"; }
 
         $i++;
-        $output .= "<th class='$class'>";
-
-        if (isset($header['sort']) && $_SESSION['ndaRequestType'] != 'form') {
-			// Selected header
-			if ($field == getSort($self)) {
-			    $sortDir = getSortDirection($self) == 'DESC' ? 'ASC' : 'DESC';
-			     $sortDir = getSortDirection($self);
-			    $output .= '<a href="' . printDrupalLink($header['url']) . '">' . $header['label'] . "</a>\n" .
-			       '<a href="' . printDrupalLink($header['url']) . '"><span class="' . $header['icon'][$sortDir] .
-			       '"></span></a>';
-			    // Other headers
-			} else {
-			    $output .= '<a href="' . printDrupalLink($header['url']) . '">' . $header['label'] . "</a>\n" .
-			        '<a href="' . printDrupalLink($header['url']) . '"><span class="icon-sort_sortable"></span></a>';
-		    }
-		} else {
-			$output .= $header['label'];
-		}
-		$output .= "</th>";
+        $output .= "<th class='$class'>" . $header['label'] . "</th>";
 	}
 	return $output . "</tr>";
 }

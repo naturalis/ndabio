@@ -25,7 +25,8 @@ function _initBioPortalClient () {
     return $client;
 }
 
-function _setClientService (&$client, $service) {
+function _setClientService ($service) {
+	$client = _initBioPortalClient();
 	if (strpos($service, '.') !== false) {
 		$service = substr($service, 0, strpos($service, '.'));
 	}

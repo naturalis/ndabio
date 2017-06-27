@@ -537,7 +537,7 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 				!empty(trim($identification->scientificName->{$element})) ? 
 				trim($identification->scientificName->{$element}) : '';
 			// Highlight (assume always LIKE operator for name fields)
-			if (isset($hits['identifications.scientificName.' . $element])) {
+			if (!empty($name[$i]) && isset($hits['identifications.scientificName.' . $element])) {
 				$name[$i] = _highlightMatch($identification->scientificName->{$element}, 
 					$paths['identifications.scientificName.' . $element]['values']);
 			}
@@ -864,7 +864,7 @@ function _setSpecimenScientificName ($data) {
 				foreach (['defaultClassification', 'scientificName'] as $category) {
 					$hitPath = 'specimens.matchingIdentifications.' . $category . '.' . $element;
 					// Highlight (assume always LIKE operator for name fields)
-					if (isset($hits[$hitPath])) {
+					if (!empty($name[$i]) && isset($hits[$hitPath])) {
 						$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
 					}
 				}
@@ -1064,7 +1064,7 @@ function _highlightHits ($service, $hits) {
 		$output[array_pop(explode('.', $path))] = 
 			_highlightMatch($hit, $paths[$path]['values']);
 	}
-	return $output;
+	return isset($output) ? $output : false;
 }
 
 

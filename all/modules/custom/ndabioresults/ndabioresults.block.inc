@@ -159,12 +159,14 @@ function ndabioresults_block_view($delta = '') {
 
     // Used now to create some space on detail pages
     case 'ndabioresults_navigation':
+    	/*
       if ( !$SHOWS_RESULTS ){
         $block['content'] =  '&nbsp;';
       }
 
 
       break;
+      */
 
 
     case 'ndabioresults_thematicsearch':
