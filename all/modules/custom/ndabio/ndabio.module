@@ -624,7 +624,7 @@ function ndabio_search_page($results) {
 function _getExpandedFlag () {
     foreach ($_SESSION['ndaSearch'] as $k => $v) {
         // All true search parameters als formatted as x_etc
-        if ($k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
+        if (isset($k[1]) && $k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
             return 1;
         }
     }
@@ -974,7 +974,7 @@ function ndabio_advanced_taxonomysearch() {
             $form[$sysname][$childsysname]['#type'] = array(
               '#type'          => 'textfield',
               '#title'         => t($childlabel),
-              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#default_value' => (!empty($_SESSION['ndaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
               '#required'      => FALSE,
               '#inline'        => TRUE,
               '#attributes'    => array('data-clear' => "", 'name' => $childsysname)

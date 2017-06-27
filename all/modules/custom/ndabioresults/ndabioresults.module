@@ -714,6 +714,9 @@ function _getTaxonSpecimens ($object) {
 
 
 function _getSpecimenMultimedia ($object) {
+	
+//p($object);
+	
 	$client = _initBioPortalClient();
 	$query = new QuerySpec();
 	$query
@@ -1114,8 +1117,8 @@ function _nba_multimedia_result_callback ($search = false) {
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    _setTitle($headTitle, $pageTitle);   
+    //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
+    _setTitle($headTitle, '');   
     
     
     // No search terms; die with grace

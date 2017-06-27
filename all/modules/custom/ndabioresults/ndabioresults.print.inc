@@ -175,7 +175,7 @@ function _printSpecimens ($data) {
         _formatNumber($data['total'])
     );
     
-    if (!isset($_GET['form_id'])) {
+    if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
 			'<a href="' . _resetUrl() . '&service=taxon&sort=' .
 			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
@@ -593,7 +593,7 @@ function _printSpecimenMediaDetail ($data) {
 	}
 
     // Drupal title empty; page title custom
-    _setTitle(t('Multimedia') . ' | ' . strip_tags($data[names][0]['name']) . ' | '  . $data['unitID']);
+    _setTitle(t('Multimedia') . ' | ' . strip_tags($data['names'][0]['name']) . ' | '  . $data['unitID']);
 	
     return $output . "</dd>\n</div>\n";
 }
@@ -2257,7 +2257,7 @@ function printValue ($value) {
  * @param string $value
  * @return string
  */
-function _printDL ($field, $value) {
+function _printDL ($field, $value = '') {
 	return "<dl><dt>$field</dt><dd>$value</dd></dl>";
 }
 

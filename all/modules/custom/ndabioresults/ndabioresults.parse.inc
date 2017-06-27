@@ -434,12 +434,14 @@ function _setDetailSearchTerms ($service, $i) {
 
 
 function _setNonNameHits ($service, $hits = []) {
-	foreach ($hits as $path => $hit) {
-		if (in_array($path, nameHits()[$service])) {
-			unset($hits[$path]);
+	if (!empty($hits)) {
+		foreach ($hits as $path => $hit) {
+			if (in_array($path, nameHits()[$service])) {
+				unset($hits[$path]);
+			}
 		}
+		return _highlightHits($service, $hits);
 	}
-	return _highlightHits($service, $hits);
 }
 
 function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
@@ -941,10 +943,12 @@ function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup)
 	return $nonAcceptedNames;
 }
 
-function _appendNameHits ($nameHits, $hits) {
-	foreach ($hits as $path => $value) {
-		if (in_array($path, nameHits()['names.specimens'])) {
-			$nameHits[$path] = $value;
+function _appendNameHits ($nameHits, $hits = []) {
+	if (!empty($hits)) {
+		foreach ($hits as $path => $value) {
+			if (in_array($path, nameHits()['names.specimens'])) {
+				$nameHits[$path] = $value;
+			}
 		}
 	}
 	return $nameHits;
@@ -1058,11 +1062,14 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 }
 
 /* Highlight and reduces path to last word to facilitate translation */
-function _highlightHits ($service, $hits) {
+function _highlightHits ($service, $hits = []) {
 	$paths = _getQueryPaths($service);
-	foreach ($hits as $path => $hit) {
-		$output[array_pop(explode('.', $path))] = 
-			_highlightMatch($hit, $paths[$path]['values']);
+	if (!empty($hits)) {
+		foreach ($hits as $path => $hit) {
+			$tmp = explode('.', $path);
+			$output[array_pop($tmp)] = 
+				_highlightMatch($hit, $paths[$path]['values']);
+		}
 	}
 	return isset($output) ? $output : false;
 }
