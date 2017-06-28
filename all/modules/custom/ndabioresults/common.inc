@@ -193,8 +193,9 @@ function _wrap ($input, $tag = "div", $class = ""){
 function _arrayColumnRecursive (array $haystack, $needle) {
     $found = [];
     array_walk_recursive($haystack, function($value, $key) use (&$found, $needle) {
-        if ($key == $needle)
+        if ($key == $needle) {
             $found[] = $value;
+        }
     });
     return $found;
 }

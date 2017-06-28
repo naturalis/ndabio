@@ -1151,10 +1151,10 @@ function _nba_multimedia_result_callback ($search = false) {
 
 function _nba_specimen_result_callback ($search = false) {
 	
-    $terms = _getQueryTerms($service, $search);
+	$service = _getSpecimenService($search);
+	
+	$terms = _getQueryTerms($service, $search);
 
-	$service = _getSpecimenService();
-    
 	$client = _initBioPortalClient();
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
@@ -1639,7 +1639,6 @@ function _getQueryTerms ($service, $search = false) {
 		safe_parse_str($search, $terms);
 		// Specimen view option
 		if (isset($terms['service']) && !empty($terms['service'])) {
-			_setSpecimenService($terms['service']);
 			unset($terms['service']);
 		}
 	// Revert to stored terms to fetch terms (non-preferred!)
@@ -1660,15 +1659,20 @@ function _getQueryTerms ($service, $search = false) {
 	return $terms;
 }
 
-function _setSpecimenService ($service) {
-	$_SESSION['nbaSpecimenService'] = $service;
-}
 
-function _getSpecimenService () {
-	if (isset($_SESSION['nbaSpecimenService']) && !empty($_SESSION['nbaSpecimenService'])) {
-		return $_SESSION['nbaSpecimenService'] == 'taxon' ? 'names.specimens' : 'specimen';
+function _getSpecimenService ($search = false) {
+	if ($search) {
+		safe_parse_str($search, $terms);
+		if (isset($terms['service'])) {
+			$service = $terms['service'];
+		}
+	} else if (isset($_SESSION['nbaSpecimenService']) && 
+		!empty($_SESSION['nbaSpecimenService'])) {
+		$service = $_SESSION['nbaSpecimenService'];
 	}
-	return 'specimen';
+	$_SESSION['nbaSpecimenService'] = $service == 'taxon' ? 
+		'names.specimens' : 'specimen';
+	return $_SESSION['nbaSpecimenService'];
 }
 
 function _termsToQuerySpec ($service, $terms) {
