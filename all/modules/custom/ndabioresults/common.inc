@@ -205,7 +205,7 @@ function _prettyJson ($json) {
 }
 
 function _initDebug () {
-	$_SESSION['nbaDebug'] = null;
+	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
 }
 
 function _addDebugMessage ($title = false, $message = false) {
