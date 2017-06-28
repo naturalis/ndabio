@@ -379,7 +379,7 @@ function _printSpecimenDetail ($data) {
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
 		$output .= "</div>" .
 			"<div class='property-list'>";
-		$output .= _printNamesWithLinks($data['otherSpecimens'], 'other');
+		$output .= _printNamesWithLinks($data['otherSpecimens'], 'otherSpecimens');
 	}
 	$output .= "</div>";
 
@@ -467,13 +467,14 @@ function _printSpecimensPreview ($data) {
  * @param array $row Parsed json data
  * @return string|void Formatted output
  */
-function _printNamesWithLinks ($details, $fieldLabel) {
+function _printNamesWithLinks ($details, $fieldLabel, $referrer = false) {
 	$output = '';
 	foreach ($details as $i => $detail) {
 		$name = isset($detail['unitID']) ? $detail['unitID'] : $detail['name'];
 		$name = !empty($name) ? $name : '&mdash;';
 		$t = !empty($detail['url']) ?
-			'<a href="' . $detail['url'] . '">' . $name . '</a>' : $name;
+			'<a href="' . $detail['url'] . ($referrer ? "?referrer=$referrer" : '') . 
+			'">' . $name . '</a>' : $name;
 		$output .= _printDL(($i == 0 ? t($fieldLabel) : ''), $t);
 	}
 	return !empty($output) ? $output : null;
@@ -492,7 +493,7 @@ function _printTypeStatuses ($details, $fieldLabel) {
 }
 
 function _printSpecimenMediaDetail ($data) {
-//p($data);
+p($data);
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         ['type' => 'inline', 'scope' => 'footer']
@@ -523,8 +524,7 @@ function _printSpecimenMediaDetail ($data) {
 
     $altParts = array(
         isset($data['unitID']) ? strip_tags($data['unitID']) : '',
-        isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : '',
-        isset($data['caption']) ? strip_tags($data['caption']) : ''
+        isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : ''
     );
     $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
     
@@ -534,9 +534,7 @@ function _printSpecimenMediaDetail ($data) {
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
             $copyright = '© ' . $data['copyrightText'] : '';
-        $institution = $data['sourceInstitutionID'] .
-            (!empty($data['sourceID']) ? ' (' . $data['sourceID'] . ')' : '');
-        array_unshift($altParts, $institution, $copyright);
+        array_unshift($altParts, $copyright);
         $caption = implode('<br/>', array_filter($altParts));
         $img = "<a href='" . $data['imgSrc'] . "' rel=\"prettyPhoto\" title=\"$caption\">$img</a>\n";
     }

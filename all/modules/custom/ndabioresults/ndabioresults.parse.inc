@@ -775,9 +775,12 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		foreach ($row->item->specimens as $i => $sp) {
 			$specimen = $sp->specimenDetails;
 			$s['unitID'] = _setUnitId($specimen->unitID);
-			$s['recordBasis'] = $specimen->recordBasis;
-			$s['kindOfUnit'] = $specimen->kindOfUnit;
-			$s['preparationType'] = $specimen->preparationType;
+			$s['recordBasis'] = isset($specimen->recordBasis) ? 
+				$specimen->recordBasis : null;
+			$s['kindOfUnit'] = isset($specimen->kindOfUnit) ? 
+				$specimen->kindOfUnit : null;
+			$s['preparationType'] = isset($specimen->preparationType) ? 
+				$specimen->preparationType : null;
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
@@ -1045,6 +1048,10 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 			}
 			// Tracker is empty, we must have reached the correct path
 			if (empty($pathTracker)) {
+				// Convert array to string if necessary
+				if (is_array($result)) {
+					$result = array_values($result)[0];
+				}
 				// Operator determines if we have a hit: 
 				// LIKE...
 				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
