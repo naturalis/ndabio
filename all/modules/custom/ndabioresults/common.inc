@@ -206,6 +206,7 @@ function _prettyJson ($json) {
 }
 
 function _initDebug () {
+	unset($_SESSION['nbaDebug']);
 	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
 }
 
