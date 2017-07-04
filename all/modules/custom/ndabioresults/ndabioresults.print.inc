@@ -493,7 +493,7 @@ function _printTypeStatuses ($details, $fieldLabel) {
 }
 
 function _printSpecimenMediaDetail ($data) {
-p($data);
+//p($data);
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
         ['type' => 'inline', 'scope' => 'footer']
