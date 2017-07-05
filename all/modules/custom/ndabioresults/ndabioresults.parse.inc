@@ -286,7 +286,7 @@ function _parseSpecimenDetail ($data) {
 	    'license',
 	    'assemblyID',
 	    'collectionType',
-    	'referrer'
+    	//'referrer'
 		// etc
 	);
 
@@ -752,9 +752,9 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	// Default sort is not score, must be set explicitly!
 	$sortExtension = '';
 	if (!array_key_exists('sort', _getQueryTerms($service))) {
-		$sortExtension = '&sort=specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
-			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
+		$sortExtension = '&sort=identifications.scientificName.genusOrMonomial,' .
+			'identifications.scientificName.specificEpithet,' .
+			'identifications.scientificName.infraspecificEpithet&' .
 			'sortDirection=asc,asc,asc';
 	}
 	$output['total'] = $data->totalSize;
@@ -867,7 +867,7 @@ function _setSpecimenScientificName ($data) {
 					trim($identification->{$element}) : '';
 				// Hits can be in both defaultClassification and scientificName
 				foreach (['defaultClassification', 'scientificName'] as $category) {
-					$hitPath = 'specimens.matchingIdentifications.' . $category . '.' . $element;
+					$hitPath = 'identifications.' . $category . '.' . $element;
 					// Highlight (assume always LIKE operator for name fields)
 					if (!empty($name[$i]) && isset($hits[$hitPath])) {
 						$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
@@ -894,12 +894,12 @@ function _setSpecimenScientificName ($data) {
 		
 		if (!empty($name)) {
 			// Could also be a hit in fullScientificName; try highlighting
-			if (isset($paths['specimens.matchingIdentifications.scientificName.fullScientificName'])) {
+			if (isset($paths['identifications.scientificName.fullScientificName'])) {
 				foreach ($name as $i => $element) {
 					// Only add if not highlighted yet
 					if (strpos($element, 'class="result-query"') === false) {
 						$name[$i] = _highlightMatch($name[$i], 
-							$paths['specimens.matchingIdentifications.scientificName.fullScientificName']['values']);
+							$paths['identifications.scientificName.fullScientificName']['values']);
 					}
 				}
 			}
@@ -908,9 +908,9 @@ function _setSpecimenScientificName ($data) {
 				$name[0] = $identification->fullScientificName;
 				unset($name[1], $name[2], $name[3]);
 				// Try highlighting
-				if (isset($paths['specimens.matchingIdentifications.scientificName.fullScientificName'])) {
+				if (isset($paths['identifications.scientificName.fullScientificName'])) {
 					$name[0] = _highlightMatch($name[0], 
-						$paths['specimens.matchingIdentifications.scientificName.fullScientificName']['values']);
+						$paths['identifications.scientificName.fullScientificName']['values']);
 				}
 			}
 			$names[isset($identification->source) ? $identification->source : $j] = 

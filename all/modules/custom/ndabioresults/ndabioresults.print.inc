@@ -178,9 +178,9 @@ function _printSpecimens ($data) {
     if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
 			'<a href="' . _resetUrl() . '&service=taxon&sort=' .
-			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
-			'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-			'specimens.matchingIdentifications.scientificName.infraspecificEpithet&' .
+			'identifications.scientificName.genusOrMonomial,' .
+			'identifications.scientificName.specificEpithet,' .
+			'identifications.scientificName.infraspecificEpithet&' .
 			'sortDirection=asc,asc,asc">' . t('Display by taxon') . "</a></div>\n" . 
 			"<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
     }
@@ -558,12 +558,13 @@ p($data);
 	if (!empty($data['unitID'])) {
 		$output .= _printDL(
             ucfirst(_translateNdaField('unitID')),
-            '<a href="' . _setBasePath() . 'specimen/' . urlencode($data['unitID']) . '">' . 
+            '<a href="' . _setBasePath() . 'specimen/' . urlencode($data['unitID']) . 
+				(isset($data['referrer']) ? '?referrer=' . $data['referrer'] : '') . '">' . 
 				$data['unitID'] . '</a>'
 		);
 	}
 	if (!empty($data['names'])) {
-		$output .= _printNamesWithLinks($data['names'], t('Scientific name'));
+		$output .= _printNamesWithLinks($data['names'], t('Scientific name'), $data['referrer']);
 	}
 
 	$fields = array(

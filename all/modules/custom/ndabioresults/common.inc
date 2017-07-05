@@ -25,10 +25,11 @@ function _initBioPortalClient () {
     return $client;
 }
 
-function _setClientService ($service) {
+function _setClient ($service) {
 	$client = _initBioPortalClient();
 	if (strpos($service, '.') !== false) {
-		$service = substr($service, 0, strpos($service, '.'));
+		$service = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
+			'taxon' : 'specimen';
 	}
 	return $client->{$service}();
 }

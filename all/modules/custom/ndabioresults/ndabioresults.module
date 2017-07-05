@@ -20,6 +20,10 @@ _initDebug();
 _setLanguage();
 
 
+function ndabioresults_init () {
+}
+
+
 /**
  * Implements template_preprocess_html().
  *
@@ -50,7 +54,6 @@ function ndabioresults_preprocess_html (&$vars) {
  */
 function ndabioresults_menu() {
   global $language;
-
   $items['admin/config/naturalis/ndaresult'] = array(
     'title' => 'NDA result config',
     'description' => 'Configuration for Naturalis module',
@@ -145,11 +148,14 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	
 //p($data);
 	
-	$client = _initBioPortalClient();
+	$client = _setClient($service);
 	
 	if (!$scientificNameGroup && !$search) {
 		_setDetailPageNoSearchBackLink();
 		$data = _addDetailPageNavigation($service, $data);
+		if (isset($_GET['referrer'])) {
+			$data->referrer = $_GET['referrer'];
+		}
 	}	
 	
 	// Added non-aggregated specimen browse option;
@@ -163,7 +169,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		$query = _buildQuery('specimen', $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->specimen()->setQuerySpec($query)->query());
+		$set = json_decode($client->setQuerySpec($query)->query());
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -196,7 +202,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		_setGenericDetailPageBackLink('specimen', $search);
 		
 		// We got an error; go oops
@@ -594,7 +600,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		return _printOops();
 	}
 	
-    $client = _initBioPortalClient();
+    $client = _setClient($service);
 
     if ($search) {
 		$terms = _getQueryTerms($service, $search);		
@@ -605,7 +611,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		$query->setSpecimensSize(0);
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		
 //die(p($set));
 		
@@ -785,17 +791,17 @@ function _setTaxonUrlName ($id) {
 
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
-  	$client = _initBioPortalClient();
-  	$condition = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+  	$client = _setClient('taxon');
+  	$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 	if (count($taxon) > 1) {
-		$condition->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-		$condition->setAnd('taxa.acceptedName.infraspecificEpithet', 
+		$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+		$condition->setAnd('acceptedName.infraspecificEpithet', 
 			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 	}
     $query = new ScientificNameGroupQuerySpec();
     $query->addCondition($condition)->setSpecimensSize(5);
-    $data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	if (isset($data->exception)) {
 		return false;
 	}
@@ -827,12 +833,20 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	}
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
+/* @sng-fix 
 		list($service, $type) = explode('.', $service);
 		$lookupService = $type == 'taxa' ? 'taxon' : 'specimen';
+*/
+		$lookupService = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
+			'taxon' : 'specimen';
+/* @sng-fix
 		$type .= '.';
+*/
 		$query = new ScientificNameGroupQuerySpec();
 	} else {
+/* @sng-fix 
 		$type = '';
+*/
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
@@ -862,13 +876,17 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
             }
             // Get NBA field type
             foreach ($nbaPaths as $path) {
-            	$path = $type . $path;
+ /* @sng-fix      	
+             	$path = $type . $path;
+*/
             	// Names identifications are buried even deeper...
             	// and to compilate matters, taxonomicEnrichments should be excluded
             	// from renaming.
+ /* @sng-fix      	
             	if ($service == 'names' && strpos($path, '.identifications.') !== false) {
             		$path = str_replace('identifications', 'matchingIdentifications', $path);
             	}
+*/            	
             	// If operator has been set in url use this, otherwise use "best" version
             	$statement[$path] = isset($operators[$field]) ?
             		strtoupper($operators[$field]) : _getConditionOperator($service, $path, $value);
@@ -889,8 +907,10 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
     }
     // Store paths for term highlighting
     if (isset($paths)) {
-    	$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
-    		substr($type, 0, -1)]['paths'] = $paths;
+    	//$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
+    	//	substr($type, 0, -1)]['paths'] = $paths;
+    	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
+    		
     }
     // Compile conditions
 	$conditions = [];
@@ -996,6 +1016,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
         $query->setSortFields($sort);
     }
 //p($query->getQuerySpec(true)); die();
+    
     return $query;
 }
 
@@ -1037,7 +1058,11 @@ function _appendCondition ($condition, $appendTo = false) {
  * Will become more compilated once we allow searches on date or int fields.
  */
 function _getConditionOperator ($service, $nbaPath, $value = '') {
-    if (isset(nbaFieldTypes()[$service][$nbaPath])) {
+	if (strpos($service, '.') !== false) {
+		$service = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
+			'taxon' : 'specimen';
+	}
+	if (isset(nbaFieldTypes()[$service][$nbaPath])) {
         return _getOperatorFromMapping(nbaFieldTypes()[$service][$nbaPath], $value);
     }
     return 'EQUALS';
@@ -1064,7 +1089,7 @@ function _likeOperatorAllowed ($value = '') {
 function _nba_taxon_result_callback ($search = false) {
     $service = 'names.taxa';
 	
-	$client = _initBioPortalClient();
+	$client = _setClient($service);
 	
     $terms = _getQueryTerms($service, $search);
     
@@ -1092,7 +1117,7 @@ function _nba_taxon_result_callback ($search = false) {
 	_setBackLink('result/specimen/' . $search, 'Back to search results');	
 	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1111,9 +1136,9 @@ function _nba_multimedia_result_callback ($search = false) {
     global $base_path;
 	
     $service = 'multimedia';
-	$client = _initBioPortalClient();
-	
     $terms = _getQueryTerms($service, $search);
+    $client = _setClient($service);
+	
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1138,7 +1163,7 @@ function _nba_multimedia_result_callback ($search = false) {
 	_addDebugMessage($service, $query);
 	
 	// Fetch data set
-	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+	$data = json_decode($client->setQuerySpec($query)->query());
 	_setGenericResultPageBackLink();
 		
 	// We got an error; go oops
@@ -1154,8 +1179,8 @@ function _nba_specimen_result_callback ($search = false) {
 	$service = _getSpecimenService($search);
 	
 	$terms = _getQueryTerms($service, $search);
-
-	$client = _initBioPortalClient();
+	
+	$client = _setClient($service);
     
     $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1184,14 +1209,14 @@ function _nba_specimen_result_callback ($search = false) {
 		// Default to names alphabetical in case no sort is set
 		if (!isset($terms['sort'])) {
 			$query->setSortFields([
-				['specimens.matchingIdentifications.scientificName.genusOrMonomial', 'asc'],
-				['specimens.matchingIdentifications.scientificName.specificEpithet', 'asc'],
-				['specimens.matchingIdentifications.scientificName.infraspecificEpithet', 'asc']
+				['identifications.scientificName.genusOrMonomial', 'asc'],
+				['identifications.scientificName.specificEpithet', 'asc'],
+				['identifications.scientificName.infraspecificEpithet', 'asc']
 			]);
 		}
 		
 		// Fetch data set
-		$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+		$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
@@ -1205,7 +1230,7 @@ function _nba_specimen_result_callback ($search = false) {
 	}
 	
 	// Fetch data set
-	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
+	$data = json_decode($client->setQuerySpec($query)->query());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1219,7 +1244,7 @@ function _nba_specimen_result_callback ($search = false) {
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
 	
     $service = 'names.specimens';
-	$client = _initBioPortalClient();
+	$client = _setClient($service);
 	
     $terms = _getQueryTerms($service, $search);
 	// Display full set on this page
@@ -1248,7 +1273,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	_setBackLink('result/specimen/' . $search, 'Back to search results');
 	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1263,7 +1288,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 
 function _nba_specimen_map_result_callback ($scientificNameGroup = false, $search = false) {
     $service = 'names.specimens';
-	$client = _initBioPortalClient();
+	$client = _setClient($service);
 	
     $terms = _getQueryTerms($service, $search);
     $size = isset($terms['size']) ? $terms['size'] : maxResults();
@@ -1291,7 +1316,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	_addDebugMessage($service, $query);
 	
 	// Fetch data set
-	$data = json_decode($client->names()->setQuerySpec($query)->querySpecial());
+	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	_setGenericDetailPageBackLink('specimen', $search);
 	
 	// We got an error; go oops
@@ -1370,20 +1395,20 @@ function _getTaxonFromNba ($taxon) {
 	} 
 	$taxon = array_filter($taxon);
 	if (isset($taxon[0]) && isset($taxon[1])) {
-		$condition = new Condition('taxa.acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+		$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 		if (count($taxon) > 1) {
-			$condition->setAnd('taxa.acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-			$condition->setAnd('taxa.acceptedName.infraspecificEpithet', 
+			$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+			$condition->setAnd('acceptedName.infraspecificEpithet', 
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
-		$client = _initBioPortalClient();
+		$client = _setClient('taxon');
 		$query = new ScientificNameGroupQuerySpec();
 		$query
 			->addCondition($condition)
 			->setConstantScore();
 		_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
-	    $data = json_decode($client->names()->setQuerySpec($query)->query());
+	    $data = json_decode($client->setQuerySpec($query)->query());
 		return isset($data->resultSet) ? $data->resultSet : false;
 	} 
 	return false;
@@ -1410,7 +1435,7 @@ function _nbaAdvancedSearch () {
     $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
     $services[_getSpecimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
-    
+     
     // Test if anything has been posted; if not return with error message
     if (!_dataPosted($services)) {
         _printOops();
@@ -1420,16 +1445,16 @@ function _nbaAdvancedSearch () {
     foreach ($services as $service => $terms) {
         if (_serviceUsed($terms)) {
             // Init client
-            $client = _setClientService($service);
+            $client = _setClient($service);
         	// Cap results
             $terms['size'] = maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
             // defaults to score for others.
          	if ($service == 'names.specimens' && !isset($terms['sort'])) {
          		$terms['sort'] = 
-           			'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
-					'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-					'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+           			'identifications.scientificName.genusOrMonomial,' .
+					'identifications.scientificName.specificEpithet,' .
+					'identifications.scientificName.infraspecificEpithet';
 				$terms['sortDirection'] = 'asc,asc,asc';
 			}
             // Build QuerySpec; do not use name resolution
@@ -1439,9 +1464,9 @@ function _nbaAdvancedSearch () {
             	$query->setSpecimensSize(0);
             }
             $client->setQuerySpec($query);
-            // Must use querySpecial() for names services
+            // Must use groupByScientificName() for names services
 			$remoteData[$service] = strpos($service, 'names') === false ? 
-				$client->query() : $client->querySpecial();
+				$client->query() : $client->groupByScientificName();
 			
 //header('Content-Type: application/json');
 //die($client->getQuerySpec());		
@@ -1866,15 +1891,15 @@ function _nbaSimpleSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
-		$client = _setClientService($service);
+		$client = _setClient($service);
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		// Set default sort
 		if ($service == 'names.specimens' && !isset($terms['sort'])) {
 			$terms['sort'] = 
-				'specimens.matchingIdentifications.scientificName.genusOrMonomial,' . 
-				'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+				'identifications.scientificName.genusOrMonomial,' . 
+				'identifications.scientificName.specificEpithet,' .
+				'identifications.scientificName.infraspecificEpithet';
 			$terms['sortDirection'] = 'asc,asc,asc';
 		}
 		// Build QuerySpec; use name resolution
@@ -1886,7 +1911,7 @@ function _nbaSimpleSearch () {
 		$client->setQuerySpec($query);
             
 		$remoteData[$service] = strpos($service, 'names') === false ? 
-			$client->query() : $client->querySpecial();
+			$client->query() : $client->groupByScientificName();
 		
 		// Save service-specific query to session;
 		// used for further navigation
@@ -1949,16 +1974,16 @@ function _nbaThemeSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
-		$client = _setClientService($service);
+		$client = _setClient($service);
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		
 		// Set default sort
 		if ($service == 'names.specimens') {
 			$terms['sort'] = 
-				'specimens.matchingIdentifications.scientificName.genusOrMonomial,' . 
-				'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-				'specimens.matchingIdentifications.scientificName.infraspecificEpithet';
+				'identifications.scientificName.genusOrMonomial,' . 
+				'identifications.scientificName.specificEpithet,' .
+				'identifications.scientificName.infraspecificEpithet';
 			$terms['sortDirection'] = 'asc,asc,asc';
 		} else if ($service == 'specimen') {
 			$terms['sort'] = 'unitID';
@@ -1970,7 +1995,7 @@ function _nbaThemeSearch () {
 		$client->setQuerySpec($query);
             
 		$remoteData[$service] = strpos($service, 'names') === false ? 
-			$client->query() : $client->querySpecial();
+			$client->query() : $client->groupByScientificName();
 		
 		// Save service-specific query to session;
 		// used for further navigation
