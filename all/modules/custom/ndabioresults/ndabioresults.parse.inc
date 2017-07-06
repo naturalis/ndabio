@@ -73,7 +73,7 @@ function _parseTaxa ($data, $options) {
 	$service = 'names.taxa';
 	
 	$output['total'] = $data->totalSize;
-	_getTaxonDetails($data);
+//	_getTaxonDetails($data);
 
 //p($data);
 
@@ -97,7 +97,7 @@ function _parseTaxa ($data, $options) {
 		}
 		
 		$d['type'] = _getResultType($hits);
-		$d['rank'] = $row->taxonRank;
+		$d['rank'] = $row->item->taxa[0]->taxonRank;
 		$d['name'] = implode('<br>', array_unique($names['accepted']));
 		if ($d['type'] == 'accepted') {
 			$d['description'] = t(ucfirst($d['rank']));
@@ -134,8 +134,8 @@ function _parseTaxa ($data, $options) {
 function _getCommonNames ($row, $languageCheck = false) {
 	global $language;
 	foreach ($row->item->taxa as $i => $taxon) {
-		if (isset($taxon->taxonDetails->vernacularNames)) {
-			foreach ($taxon->taxonDetails->vernacularNames as $name) {
+		if (isset($taxon->vernacularNames)) {
+			foreach ($taxon->vernacularNames as $name) {
 				// If language is set, only store when language of
 				// common name matches that of interface...
 				if ($languageCheck) {
@@ -443,6 +443,8 @@ function _setNonNameHits ($service, $hits = []) {
 
 function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 	if (isset($taxon->vernacularNames)) {
+		
+/* @sng-fix
 		foreach (_getQueryPaths($service) as $path => $value) {
 			$paths[str_replace('taxa.', '', $path)] = $value;
 		}
@@ -451,6 +453,8 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 			$temp[str_replace('taxa.', '', $path)] = $value;
 		}
 		$hits = isset($temp) ? $temp : $hits;
+*/		
+		$paths = _getQueryPaths($service);
 
 //p($taxon); p($paths); p($hits); echo $type; die();
 	
@@ -474,6 +478,7 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 }
 
 function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
+/* @sng-fix
 	// Trim taxa prefix from path to facilite highlighting
 	if ($service) {
 		foreach (_getQueryPaths($service) as $path => $value) {
@@ -485,6 +490,8 @@ function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 		$temp[str_replace('taxa.', '', $path)] = $value;
 	}
 	$hits = isset($temp) ? $temp : $hits;
+*/
+	$paths = _getQueryPaths($service);
 	$type = $type == 'synonym' ? 'synonyms' : 'acceptedName';
 
 	$name = [];
@@ -999,7 +1006,7 @@ function _getHits ($service, $result) {
 		$hits = [];
 		// Convert NBA path to object path
 		$pathElements = explode('.', $path);
-/* @sng-2.6	
+/* @sng-fix
 		// Chop off first part of path in case of names service
 		if (strpos($service, '.') !== false) {
 			unset($pathElements[0]);

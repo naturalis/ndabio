@@ -1110,6 +1110,7 @@ function _nba_taxon_result_callback ($search = false) {
 	
 	// Build query
 	$query = _buildQuery($service, $terms);	
+	$query->setSpecimensSize(0);
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
