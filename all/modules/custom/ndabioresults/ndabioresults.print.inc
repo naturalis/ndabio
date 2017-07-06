@@ -2293,8 +2293,13 @@ function _printDebug () {
 			[<span id="nba-debug-link" style="color: #009ee0; cursor: pointer;">show</span>] 
 			<div id="nba-debug-query" style="margin-top: 10px; font-size: 13px; display: none;">';
         foreach  (_getDebug() as $title => $query) {
-        	$output .= "<div style='font-weight:bold; margin: 10px 0;'>" . ucfirst($title) . ":</div>
-				<pre style='overflow: hidden;'>$query</pre>";
+        	if (strpos($query, '{') !== false) {
+	        	$output .= "<div style='font-weight:bold; margin: 10px 0;'>" . ucfirst($title) . ":</div>
+					<pre style='overflow: hidden;'>$query</pre>";
+        	} else {
+        		$output .= "<div style='margin: 10px 0;'><span style='font-weight:bold;'>" . ucfirst($title) . "</span>: 
+					<span style='unicode-bidi: embed; font-family: monospace; white-space: pre;'>$query</span></div>";
+        	}
         }
         return $output . '</div></div>';
     }
