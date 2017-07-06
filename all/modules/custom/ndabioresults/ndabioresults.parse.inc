@@ -85,9 +85,6 @@ function _parseTaxa ($data, $options) {
 		// Accepted scientific name, synonym, or common name
 		$d = $sources = $names = [];
 		foreach ($row->item->taxa as $taxon) {
-			
-//die($taxon->sourceSystem->code);
-			
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
 			$sources[] = _getSourceNameBySourceCode($taxon->sourceSystem->code);
@@ -100,7 +97,7 @@ function _parseTaxa ($data, $options) {
 		}
 		
 		$d['type'] = _getResultType($hits);
-		$d['rank'] = $row->item->taxa[0]->taxonDetails->taxonRank;
+		$d['rank'] = $row->taxonRank;
 		$d['name'] = implode('<br>', array_unique($names['accepted']));
 		if ($d['type'] == 'accepted') {
 			$d['description'] = t(ucfirst($d['rank']));
@@ -436,7 +433,7 @@ function _setDetailSearchTerms ($service, $i) {
 function _setNonNameHits ($service, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $hit) {
-			if (in_array($path, nameHits()[$service])) {
+			if (in_array($path, nameHits()[_normaliseServiceName($service)])) {
 				unset($hits[$path]);
 			}
 		}
@@ -758,7 +755,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			'sortDirection=asc,asc,asc';
 	}
 	$output['total'] = $data->totalSize;
-	_getSpecimenDetails($data);
+//_getSpecimenDetails($data);
 //p($data);
 	//@todo: from
 	//$from = (int) _getStoredQueryTerms($service)['from'];
@@ -772,8 +769,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$d['sources'] = _getSpecimenSources($row);
 		$d['nameHits'] = $d['nonAcceptedNames'] = [];
 		//$d['score'] = 0;
-		foreach ($row->item->specimens as $i => $sp) {
-			$specimen = $sp->specimenDetails;
+		foreach ($row->item->specimens as $i => $specimen) {
+			//$specimen = $sp->specimenDetails;
 			$s['unitID'] = _setUnitId($specimen->unitID);
 			$s['recordBasis'] = isset($specimen->recordBasis) ? 
 				$specimen->recordBasis : null;
@@ -785,21 +782,19 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
 				http_build_query(_setDetailSearchTerms($service, $i)) . $sortExtension;
-			$hits = _getHits($service, $sp);
+			$hits = _getHits($service, $specimen);
 			$s['hits'] = _setNonNameHits($service, $hits);
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
 			// Only bother with non-accepted names if no accepted names are available
 			if (empty($d['acceptedNames'])) {
 				$d['nonAcceptedNames'] = 
-					_appendNonAcceptedNames($d['nonAcceptedNames'], $sp, $row->item->name);
+					_appendNonAcceptedNames($d['nonAcceptedNames'], $specimen, $row->item->name);
 			}
 			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
 				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
-//@todo: restore when NBA bug is fixed!		
-//$d['allLink'] = $d['count'] > maxResultsInitial() ?
-		$d['allLink'] = $d['count'] > 1 ?
+		$d['allLink'] = $d['count'] > maxResultsInitial() ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
 			http_build_query(_getQueryTerms($service)) . $sortExtension : null;
 		
@@ -937,7 +932,7 @@ function _setSpecimenScientificName ($data) {
 
 
 function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup) {
-	foreach ($row->specimenDetails->identifications as $identification) {
+	foreach ($row->identifications as $identification) {
 		if ($scientificNameGroup == $identification->scientificName->scientificNameGroup) {
 			$nonAcceptedNames[md5(serialize($identification->scientificName))] = 
 				$identification->scientificName;
@@ -949,7 +944,7 @@ function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup)
 function _appendNameHits ($nameHits, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $value) {
-			if (in_array($path, nameHits()['names.specimens'])) {
+			if (in_array($path, nameHits()['specimen'])) {
 				$nameHits[$path] = $value;
 			}
 		}
@@ -1004,10 +999,12 @@ function _getHits ($service, $result) {
 		$hits = [];
 		// Convert NBA path to object path
 		$pathElements = explode('.', $path);
+/* @sng-2.6	
 		// Chop off first part of path in case of names service
 		if (strpos($service, '.') !== false) {
 			unset($pathElements[0]);
 		}
+*/		
 		foreach ($item['values'] as $value) {
 			$hit = _getHitInResult($pathElements, $result, $value, $item['operator']);
 			if (!empty($hit)) {

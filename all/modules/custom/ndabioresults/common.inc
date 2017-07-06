@@ -27,11 +27,16 @@ function _initBioPortalClient () {
 
 function _setClient ($service) {
 	$client = _initBioPortalClient();
+	$service = _normaliseServiceName($service);
+	return $client->{$service}();
+}
+
+function _normaliseServiceName ($service) {
 	if (strpos($service, '.') !== false) {
-		$service = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
+		return array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
 			'taxon' : 'specimen';
 	}
-	return $client->{$service}();
+	return $service;
 }
 
 function nbaFieldTypes () {

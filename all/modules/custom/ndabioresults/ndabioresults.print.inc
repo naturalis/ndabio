@@ -275,7 +275,8 @@ function _printSpecimenDetail ($data) {
     	'nextUrl',
 		'backUrl',
 		'multimedia',
-		'scientificNameGroup'
+		'scientificNameGroup',
+		'referrer'
 	];
 	$fieldOrder = [
         'names',
@@ -1328,7 +1329,7 @@ function _printSpecimensTaxon ($data) {
 			(!empty($row['commonNames']) ? '</br>' . 
 			implode(', ', array_keys($row['commonNames'])) : '') . "</td>\n";
 		// Number (and collection type)
-		$output .= "<td>" . $row['count'] . ' ' . 
+		$output .= "<td>" . _formatNumber($row['count']) . ' ' . 
 			($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>\n";
 		// Map icon
 		

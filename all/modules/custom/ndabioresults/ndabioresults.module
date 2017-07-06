@@ -837,8 +837,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 		list($service, $type) = explode('.', $service);
 		$lookupService = $type == 'taxa' ? 'taxon' : 'specimen';
 */
-		$lookupService = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
-			'taxon' : 'specimen';
+		$lookupService = _normaliseServiceName($service);
 /* @sng-fix
 		$type .= '.';
 */
@@ -1200,11 +1199,21 @@ function _nba_specimen_result_callback ($search = false) {
 	// Build query
 	$query = _buildQuery($service, $terms);	
 	
-	// Store query in case user wants to print it on screen
-	_addDebugMessage($service, $query);
 	_setGenericResultPageBackLink();
 	
 	if ($service == 'names.specimens') {
+		
+		$query->setFields(
+			array_merge(_getSearchPaths($service),
+			[
+	    		'sourceSystemId',
+	    		'recordBasis',
+	    		'kindOfUnit',
+	    		'preparationType',
+	    		'assemblageID',
+				'identifications.scientificName.scientificNameGroup'
+			]	
+		));
 		
 		// Default to names alphabetical in case no sort is set
 		if (!isset($terms['sort'])) {
@@ -1214,6 +1223,8 @@ function _nba_specimen_result_callback ($search = false) {
 				['identifications.scientificName.infraspecificEpithet', 'asc']
 			]);
 		}
+		
+		_addDebugMessage($service, $query);
 		
 		// Fetch data set
 		$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
@@ -1229,6 +1240,7 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	}
 	
+	_addDebugMessage($service, $query);
 	// Fetch data set
 	$data = json_decode($client->setQuerySpec($query)->query());
 	
@@ -1240,6 +1252,20 @@ function _nba_specimen_result_callback ($search = false) {
 	return _printDebug() . _printSpecimens($data);
 	
 }
+
+
+
+function _getSearchPaths ($service) {
+	$data = nbaFieldMapping()[_normaliseServiceName($service)];
+	foreach ($data as $term => $paths) {
+		foreach ($paths as $i => $path) {
+			$result[$path] = $term . $i;
+		}
+	}
+	//return $data;
+	return isset($result) ? array_values(array_flip($result)) : false;
+}
+
 
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
 	
@@ -1274,6 +1300,8 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
 	// Fetch data set
 	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+	
+	p($data);
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1324,8 +1352,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 		return _printOops();
 	}
 
-	$data = _parseSpecimensMap($data); 
-	return _printSpecimensMap($data);
+	return _printSpecimensMap(_parseSpecimensMap($data));
 }
 
 
@@ -1557,7 +1584,7 @@ function _setSpecimensAllLink ($row) {
 
 function _getSpecimenSources ($row) {
 	foreach ($row->item->specimens as $i => $specimen) {
-		$output[$specimen->specimenDetails->sourceSystem->name] = $i;
+		$output[$specimen->sourceSystem->name] = $i;
 	}
 	return isset($output) ? array_flip($output) : false;
 }
@@ -1783,10 +1810,7 @@ function _getPaginatorOffset ($service) {
 
 
 function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
-	if (strpos($service, '.') !== false) {
-		$parts = explode('.', $service);
-		$service = $parts[1] == 'taxa' ? 'taxon' : 'specimen';
-	}
+	$service = _normaliseServiceName($service);
 	if (isset(nbaFieldMapping()[$service])) {
 		// Remove gid and search from mapping
 		$mapping = array_diff_key(nbaFieldMapping()[$service], 
