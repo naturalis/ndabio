@@ -753,6 +753,9 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		return false;
 	}
 	$service = 'names.specimens';
+	
+	$timer = _setTimer();
+	
 	// Default sort is not score, must be set explicitly!
 	$sortExtension = '';
 	if (!array_key_exists('sort', _getQueryTerms($service))) {
@@ -837,6 +840,9 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$output['paginator'] = 
 			_getPaginator($service, $output['paginatorTotal'], $output['from']);
 	}
+	
+	_addDebugMessage('time parsing', _getTimer($timer));
+	
 	return $output;
 }
 

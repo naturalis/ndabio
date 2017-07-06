@@ -847,7 +847,7 @@ function _printSpecimenCollection ($row, $i) {
 	if (!empty($row['allLink'])) {
 		$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
 		'<a href="' . $row['allLink'] . '">' . t('All') . ' ' .
-		$row['count'] . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>\n";
+		_formatNumber($row['count']) . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>\n";
 	}
 	return $output;
 }
@@ -1272,7 +1272,7 @@ function printSpecimensByTaxon ($data) {
 
 
 function _printSpecimensTaxon ($data) {
-	global $language;
+	
 //p($data);
 	if (empty($data['results'])) {
 		return false;

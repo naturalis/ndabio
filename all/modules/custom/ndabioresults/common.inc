@@ -39,6 +39,14 @@ function _normaliseServiceName ($service) {
 	return $service;
 }
 
+function _getTimer ($start, $round = 2) {
+	return round((microtime(true) - $start), $round) . 's';
+}
+
+function _setTimer () {
+	return microtime(true);
+}
+
 function nbaFieldTypes () {
     $nbaFieldTypes = &drupal_static(__FUNCTION__);
     if (!$nbaFieldTypes) {
