@@ -841,7 +841,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			_getPaginator($service, $output['paginatorTotal'], $output['from']);
 	}
 	
-	_addDebugMessage('time parsing', _getTimer($timer));
+	_addDebugMessage('Parsing data', _getTimer($timer));
 	
 	return $output;
 }

@@ -1232,7 +1232,7 @@ function _nba_specimen_result_callback ($search = false) {
 		// Fetch data set
 		$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		
-		_addDebugMessage('time querying', _getTimer($timer));
+		_addDebugMessage('NBA query', _getTimer($timer));
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
