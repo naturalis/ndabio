@@ -40,7 +40,9 @@ function _normaliseServiceName ($service) {
 }
 
 function _getTimer ($start, $round = 2) {
-	return round((microtime(true) - $start), $round) . 's';
+	$time = round((microtime(true) - $start), $round);
+	$time = $time == 0 ? '<0.01' : $time;
+	return $time . 's';
 }
 
 function _setTimer () {

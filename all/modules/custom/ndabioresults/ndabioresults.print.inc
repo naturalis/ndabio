@@ -494,11 +494,7 @@ function _printTypeStatuses ($details, $fieldLabel) {
 }
 
 function _printSpecimenMediaDetail ($data) {
-p($data);
-    drupal_add_js(
-        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
-        ['type' => 'inline', 'scope' => 'footer']
-    );
+//p($data);
 
 	$output = _printDebug();
     $output .= _wrap(t("Media item"), "div", "category");
@@ -514,6 +510,11 @@ p($data);
     
     /* For the time being disable PURL for media
      *
+    drupal_add_js(
+        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
+        ['type' => 'inline', 'scope' => 'footer']
+    );
+
 	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
 	   $data['mediaUnitID'] . '"></input>';
 	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');

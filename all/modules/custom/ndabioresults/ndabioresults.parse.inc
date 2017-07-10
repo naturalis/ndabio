@@ -710,9 +710,12 @@ function _parseSpecimens ($data, $options = []) {
 		$d['source'] = $row->item->sourceSystem->name;
 
 		$d['unitID'] = _setUnitId($row->item->unitID);
-		$d['recordBasis'] = $row->item->recordBasis;
-		$d['kindOfUnit'] = $row->item->kindOfUnit;
-		$d['preparationType'] = $row->item->preparationType;
+		$d['recordBasis'] = isset($row->item->recordBasis) ?
+			$row->item->recordBasis : null;
+		$d['kindOfUnit'] = isset($row->item->kindOfUnit) ?
+			$row->item->kindOfUnit : null;
+		$d['preparationType'] = isset($row->item->preparationType) ?
+			$row->item->preparationType : null;
 		$d['collectionType'] = $row->item->collectionType;
 		$d['url'] = _setBasePath() . 'specimen/' . urlencode($row->item->unitID) . '/' . 
 			http_build_query(_setDetailSearchTerms($service, $i));

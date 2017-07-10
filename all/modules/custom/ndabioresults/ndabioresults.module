@@ -366,7 +366,6 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	
 	_addDebugMessage('multimedia query', _getTimer($timer));
 	
-	
 	if (isset($data->exception)) {
 		return _printOops();
 	}
@@ -1115,8 +1114,7 @@ function _nba_taxon_result_callback ($search = false) {
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    _setTitle($headTitle, $pageTitle);   
+    _setTitle($headTitle, '');   
     
     
     // No search terms; die with grace
@@ -1159,7 +1157,6 @@ function _nba_multimedia_result_callback ($search = false) {
     $service = 'multimedia';
     $terms = _getQueryTerms($service, $search);
     $client = _setClient($service);
-	
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1183,8 +1180,12 @@ function _nba_multimedia_result_callback ($search = false) {
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
 	
+    $timer = _setTimer();
 	// Fetch data set
 	$data = json_decode($client->setQuerySpec($query)->query());
+	_addDebugMessage($service . ' query', _getTimer($timer));
+	
+	
 	_setGenericResultPageBackLink();
 		
 	// We got an error; go oops
