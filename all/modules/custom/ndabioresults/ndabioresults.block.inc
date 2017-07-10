@@ -107,9 +107,9 @@ function ndabioresults_block_view($delta = '') {
 				    ucfirst(str_replace(' ', '_', $pathComponents[3])) . '/' .
 					_getReferredSearch($pathComponents[4]) . '">' . $icon . t('Back to taxon') . '</a>';
      		}
-    	} else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+    	} else if (isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
 	     	$output .= '<a href="' . _setStartUrl() . 'result?' . 
-	     		http_build_query($_SESSION['ndaSearch']) .
+	     		http_build_query($_SESSION['nbaSearch']) .
 	    		'">' . $icon . t('Back to general results') . '</a>';
     	}
     	//drupal_set_title(t("Search results"));
@@ -139,13 +139,13 @@ function ndabioresults_block_view($delta = '') {
     
     */
 /*
-    if ($_SESSION['ndaRequestType'] == 'form') {
-        if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
+    if ($_SESSION['nbaRequestType'] == 'form') {
+        if (isset($_SESSION['nbaSearch']['theme']) && !empty($_SESSION['nbaSearch']['theme'])) {
             $output .= "<a href='" . setStartUrl() . "'>$icon" . t('Home') . "</a>";
         } else {
            $output .= "<a href='" . setStartUrl() . "?searchagain=1'>$icon" . t('Modify search') . "</a>";
         }
-    } else if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+    } else if (isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
         $output .= "<a href='?back'>$icon" . t('Back to search results') . "</a>";
         drupal_set_title(t("Search results"));
     } else {

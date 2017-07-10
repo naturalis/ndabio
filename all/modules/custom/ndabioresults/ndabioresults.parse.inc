@@ -8,6 +8,8 @@ function _parseTaxonDetail ($data) {
 	$service = 'names.taxa';
 
 	$skipFields = [];
+	
+	$timer = _setTimer();
 
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
@@ -60,6 +62,7 @@ function _parseTaxonDetail ($data) {
 	$output['multimedia'] = $data->multimedia;
 	$output['specimens'] = $data->specimens;
 	
+	_addDebugMessage('Parsing taxon', _getTimer($timer));
 	
 	return $output;
 }
@@ -72,15 +75,18 @@ function _parseTaxa ($data, $options) {
 	
 	$service = 'names.taxa';
 	
+	$timer = _setTimer();
+	
+	if (empty($data->resultSet) || $data->totalSize == 0) {
+		$output['results'] = [];
+        return $output;
+	}
+		
 	$output['total'] = $data->totalSize;
 //	_getTaxonDetails($data);
 
 //p($data);
 
-	if ($output['total'] == 0 || empty($data->resultSet)) {
-	    $output['results'] = [];
-        return $output;
-	}
 	foreach ($data->resultSet as $i => $row) {
 		// Accepted scientific name, synonym, or common name
 		$d = $sources = $names = [];
@@ -127,6 +133,8 @@ function _parseTaxa ($data, $options) {
 		$output['paginator'] = 
 			_getPaginator('specimen', $output['total'], _getPaginatorOffset($service));
 	}
+	
+	_addDebugMessage('Parsing taxa', _getTimer($timer));
 	
 	return isset($output) ? $output : false;
 }
@@ -179,6 +187,8 @@ function _parseMultimedia ($data, $options = []) {
 		return false;
 	}
 	
+	$timer = _setTimer();
+	
 	$service = 'multimedia';
 	$output['total'] = _getTotalRows($data);
 	
@@ -222,6 +232,8 @@ function _parseMultimedia ($data, $options = []) {
 	}
 	
 //p($output);	
+	_addDebugMessage('Parsing multimedia', _getTimer($timer));
+	
 	return isset($output) ? $output : false;
 }
 
@@ -235,6 +247,8 @@ function _parseSpecimenMediaDetail ($data) {
 	if (!isset($data->id)) {
 		return false;
 	}
+	
+	$timer = _setTimer();
 //p($data);	
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value)) {
@@ -260,6 +274,9 @@ function _parseSpecimenMediaDetail ($data) {
 		isset($data->associatedSpecimen->gatheringEvent->dateTimeBegin) ?
 	   		_dateTimeToDate($data->associatedSpecimen->gatheringEvent->dateTimeBegin) : null;
 //p($output);
+
+	_addDebugMessage('Parsing multimedia', _getTimer($timer));
+	   		
 	return $output;
 }
 
@@ -271,6 +288,8 @@ function _parseSpecimenDetail ($data) {
 		return false;
 	}
 //p($data);
+
+	$timer = _setTimer();
 
     $skipFields = array(
         'objectPublic',
@@ -304,6 +323,9 @@ function _parseSpecimenDetail ($data) {
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
+	
+	_addDebugMessage('Parsing specimen', _getTimer($timer));
+	
 	return $output;
 }
 
@@ -340,6 +362,7 @@ function _parseTaxonMediaDetail ($data) {
 		return false;
 	}
 	
+	$timer = _setTimer();
 //p($data);	
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value)) {
@@ -361,6 +384,8 @@ function _parseTaxonMediaDetail ($data) {
 	$output['sourceUrls'][$output['source']] = $data->associatedTaxon->recordURI;
 	
 //p($output);
+	
+	_addDebugMessage('Parsing multimedia', _getTimer($timer));
 	
 	return $output;
 }
@@ -406,16 +431,23 @@ function _getTaxonUrl ($object, $checkNba = true) {
 				!empty(trim($object->{$path}->{$element})) ?
 				trim($object->{$path}->{$element}) : null;
 		}
-		if (!empty(array_filter($name))) {
-			$url = _setBasePath() . 'taxon/' . implode('_', array_filter($name));
-			// Only fetch if we're sure taxon exists in NBA
-			if (!$checkNba || $checkNba && _getTaxonFromNba($name)) {
-				return $url;
+		$name = array_filter($name);
+		if (!empty($name)) {
+			$key = serialize($name);
+			if (array_key_exists($key, $_SESSION['nbaTaxa'])) {
+				return $_SESSION['nbaTaxa'][$key];
 			}
+			$url = null;
+			if ($checkNba && _getTaxonFromNba($name)) {
+				$url = _setBasePath() . 'taxon/' . implode('_', $name);
+			}
+			$_SESSION['nbaTaxa'][$key] = $url;
+			return $url;
 		}
 	}
 	return null;
 }
+
 
 function _setDetailSearchTerms ($service, $i) {
 	// Differentiate between from details and general!!
@@ -664,6 +696,7 @@ function _parseSpecimens ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
+	$timer = _setTimer();
 	
 	$service = 'specimen';
 	
@@ -703,6 +736,9 @@ function _parseSpecimens ($data, $options = []) {
 		$output['paginator'] = 
 			_getPaginator($service, $output['total'], _getPaginatorOffset($service));
 	}
+	
+	_addDebugMessage('Parsing specimens', _getTimer($timer));
+	
 	return $output;
 }
 
@@ -841,7 +877,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			_getPaginator($service, $output['paginatorTotal'], $output['from']);
 	}
 	
-	_addDebugMessage('Parsing data', _getTimer($timer));
+	_addDebugMessage('Parsing specimens by taxon', _getTimer($timer));
 	
 	return $output;
 }
@@ -1628,7 +1664,7 @@ function parseMultimedia ($json) {
 	$data = json_decode($json);
 
     // @TODO: disabled navigation for the time being
-// unset($_SESSION['ndaNavigation']);
+// unset($_SESSION['nbaNavigation']);
 // setNavigation($data);
 
 	$output['searchTerms'] = getSearchTerms($data);
@@ -1668,7 +1704,7 @@ function parseMultimedia ($json) {
 
 	// Only set filter when performing initial search
 	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
-	    $_SESSION['ndaFilters']['multimedia'] = $output['showAll'];
+	    $_SESSION['nbaFilters']['multimedia'] = $output['showAll'];
 	}
 
 	return isset($output) ? $output : false;
@@ -1812,7 +1848,7 @@ function parseSpecimensByTaxon ($json) {
 
 	// Only set filter when performing initial search
 	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
-	    $_SESSION['ndaFilters']['specimenName'] = $output['showAll'];
+	    $_SESSION['nbaFilters']['specimenName'] = $output['showAll'];
 	}
 
 	return isset($output) ? $output : false;
@@ -1879,7 +1915,7 @@ function parseSpecimens ($json) {
 
 	// Only set filter when performing initial search
 	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
-	    $_SESSION['ndaFilters']['specimen'] = $output['showAll'];
+	    $_SESSION['nbaFilters']['specimen'] = $output['showAll'];
 	}
 
 	return isset($output) ? $output : false;
@@ -2129,7 +2165,7 @@ function parseTaxa ($json) {
 
 	// Only set filter when performing initial search
 	if ($output['searchTerms']['_maxResults'][0] == maxResultsInitial()) {
-	    $_SESSION['ndaFilters']['taxon'] = $output['showAll'];
+	    $_SESSION['nbaFilters']['taxon'] = $output['showAll'];
 	}
 
 	return isset($output) ? $output : false;
@@ -2298,7 +2334,7 @@ function decorateDescription ($row) {
  * @return string|void Url
  */
 function getShowAll ($data, $groupResult = false) {
-	if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] == 'form' &&
+	if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] == 'form' &&
 	    getTotalRows($data) > maxResultsInitial()) {
 	    $self = getSelfLink($data);
 	    if (!empty($self)) {

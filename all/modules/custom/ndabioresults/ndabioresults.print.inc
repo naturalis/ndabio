@@ -151,7 +151,7 @@ function _printSpecimens ($data) {
         return false;
     }
     // Drupal title empty; page title custom
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');
@@ -1244,7 +1244,7 @@ function printSpecimensByTaxon ($data) {
 		$output .= "<td>" . $row['count'] . ' ' . ($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>";
 		// Map icon
 		$output .= "<td>" .
-		  (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])
+		  (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])
 		      && !isset($_GET['noMap']) ?
 		      "<a href='" . printDrupalLink(
                 specimenNamesService() . '?_geoShape=[session]&' .
@@ -1335,7 +1335,7 @@ function _printSpecimensTaxon ($data) {
 		
 /*
 		$output .= "<td>" .
-			(isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape']) && 
+			(isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape']) && 
 				!isset($_GET['noMap']) ?
 			"<a href='" . printDrupalLink(
 				specimenNamesService() . '?_geoShape=[session]&' .
@@ -1557,19 +1557,19 @@ function printSpecimensByMap ($data) {
     );
     drupal_add_js("var str_base_path = '$base_path';", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
-    drupal_add_js("var geoShape = " . $_SESSION['ndaSearch']['geoShape'] .';', 'inline');
-    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-        drupal_add_js('var storedMapCenter = "' . $_SESSION['ndaSearch']['mapCenter'] . '";', 'inline');
+    drupal_add_js("var geoShape = " . $_SESSION['nbaSearch']['geoShape'] .';', 'inline');
+    if (isset($_SESSION['nbaSearch']['mapCenter'])) {
+        drupal_add_js('var storedMapCenter = "' . $_SESSION['nbaSearch']['mapCenter'] . '";', 'inline');
     }
-    if (isset($_SESSION['ndaSearch']['zoomLevel'])) {
-        drupal_add_js("var storedZoomLevel = " . $_SESSION['ndaSearch']['zoomLevel'] . ';', 'inline');
+    if (isset($_SESSION['nbaSearch']['zoomLevel'])) {
+        drupal_add_js("var storedZoomLevel = " . $_SESSION['nbaSearch']['zoomLevel'] . ';', 'inline');
     }
 
     $output = sprintf('<h2>%s %s %s %s</h2>',
         t('Specimens of '),
         $data['results'][0]['name'],
         ' in ',
-        (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+        (!empty($_SESSION['nbaSearch']['location']) ? $_SESSION['nbaSearch']['location'] :
             t('area drawn on map'))
     );
     $output .= '<div id="map-canvas"></div>';
@@ -1592,7 +1592,7 @@ function printSpecimens ($data) {
     }
 
     // Drupal title empty; page title custom
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     setTitle($headTitle, $pageTitle);
@@ -1788,24 +1788,24 @@ function printPreviousNext () {
     }
     $searchId = getSearchId($_GET['nba_request']);
     // Skip navigation if searchId is missing or SESSION does not exist
-    if (!$searchId || !isset($_SESSION['ndaNavigation'][$searchId])) {
+    if (!$searchId || !isset($_SESSION['nbaNavigation'][$searchId])) {
         return false;
     }
 
     $request = stripNBABASEURL($_GET['nba_request']);
-    $set = $_SESSION['ndaNavigation'][$searchId]['currentSet'];
-    $offset = $_SESSION['ndaNavigation'][$searchId]['offset'];
+    $set = $_SESSION['nbaNavigation'][$searchId]['currentSet'];
+    $offset = $_SESSION['nbaNavigation'][$searchId]['offset'];
     $key = array_search(stripNBABASEURL($_GET['nba_request']),
-        $_SESSION['ndaNavigation'][$searchId]['currentSet']);
+        $_SESSION['nbaNavigation'][$searchId]['currentSet']);
 
     $previousUrl = false;
     // Scroll through set
     if (isset($set[$key - 1])) {
         $previousUrl = urldecode($set[$key - 1]);
     // First item of set reached; check if there's a previousSet.
-    } else if (!empty($_SESSION['ndaNavigation'][$searchId]['previousSet'])) {
-        $previousSearchId = updatePreviousNext($_SESSION['ndaNavigation'][$searchId]['previousSet']);
-        $previousUrl = end($_SESSION['ndaNavigation'][$previousSearchId]['currentSet']);
+    } else if (!empty($_SESSION['nbaNavigation'][$searchId]['previousSet'])) {
+        $previousSearchId = updatePreviousNext($_SESSION['nbaNavigation'][$searchId]['previousSet']);
+        $previousUrl = end($_SESSION['nbaNavigation'][$previousSearchId]['currentSet']);
     }
 
     $nextUrl = false;
@@ -1813,9 +1813,9 @@ function printPreviousNext () {
     if (isset($set[$key + 1])) {
         $nextUrl = urldecode($set[$key + 1]);
     // Last item of set reached; check if there's a nextSet.
-    } else if (!empty($_SESSION['ndaNavigation'][$searchId]['nextSet'])) {
-        $nextSearchId = updatePreviousNext($_SESSION['ndaNavigation'][$searchId]['nextSet']);
-        $nextUrl = reset($_SESSION['ndaNavigation'][$nextSearchId]['currentSet']);
+    } else if (!empty($_SESSION['nbaNavigation'][$searchId]['nextSet'])) {
+        $nextSearchId = updatePreviousNext($_SESSION['nbaNavigation'][$searchId]['nextSet']);
+        $nextUrl = reset($_SESSION['nbaNavigation'][$nextSearchId]['currentSet']);
     }
 
     $output = '<div class="fornext-bar"><ul>';
@@ -1824,7 +1824,7 @@ function printPreviousNext () {
     $output .= '<li>' . sprintf(
         t('%d of %d'),
         $offset + $key + 1,
-        $_SESSION['ndaNavigation'][$searchId]['total']
+        $_SESSION['nbaNavigation'][$searchId]['total']
     ) . '</li>';
 
     // Previous

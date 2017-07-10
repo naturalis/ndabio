@@ -115,13 +115,15 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
 		// Convert NBA path to object path
 		$pathArray = explode('.', $valuePath);
-		$objPath = $data->resultSet[0]->item;
-		foreach ($pathArray as $deeper) {
-			$objPath = $objPath->{$deeper};
+		if (isset($data->resultSet[0]->item)) {
+			$objPath = $data->resultSet[0]->item;
+			foreach ($pathArray as $deeper) {
+				$objPath = $objPath->{$deeper};
+			}
+			$output[$option] = $objPath;
 		}
-		$output[$option] = $objPath;
 	}
-	return isset($output)? $output : array();
+	return isset($output)? $output : [];
 }
 
 /* Must be used to correctly format NBA gid */
@@ -463,12 +465,12 @@ function ndabio_searchthematic($var1, $stitle = "") {
 }
 
 function ndabio_clear_map_data_callback() {
-    $_SESSION['ndaSearch']['geoShape'] = false;
-    $_SESSION['ndaSearch']['location'] = false;
-    $_SESSION['ndaSearch']['gid'] = false;
-    $_SESSION['ndaSearch']['zoomLevel'] = false;
-    $_SESSION['ndaSearch']['category'] = false;
-    $_SESSION['ndaSearch']['mapCenter'] = false;
+    $_SESSION['nbaSearch']['geoShape'] = false;
+    $_SESSION['nbaSearch']['location'] = false;
+    $_SESSION['nbaSearch']['gid'] = false;
+    $_SESSION['nbaSearch']['zoomLevel'] = false;
+    $_SESSION['nbaSearch']['category'] = false;
+    $_SESSION['nbaSearch']['mapCenter'] = false;
     die('Session data cleared');
 }
 
@@ -622,7 +624,7 @@ function ndabio_search_page($results) {
 }
 
 function _getExpandedFlag () {
-    foreach ($_SESSION['ndaSearch'] as $k => $v) {
+    foreach ($_SESSION['nbaSearch'] as $k => $v) {
         // All true search parameters als formatted as x_etc
         if (isset($k[1]) && $k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
             return 1;
@@ -632,32 +634,32 @@ function _getExpandedFlag () {
 }
 
 function _getStoredZoomLevel () {
-    if (isset($_SESSION['ndaSearch']['zoomLevel']) && 
-    	!empty($_SESSION['ndaSearch']['zoomLevel'])) {
-        return $_SESSION['ndaSearch']['zoomLevel'];
+    if (isset($_SESSION['nbaSearch']['zoomLevel']) && 
+    	!empty($_SESSION['nbaSearch']['zoomLevel'])) {
+        return $_SESSION['nbaSearch']['zoomLevel'];
     }
     return -1;
 }
 
 function _getStoredCategory () {
-    if (isset($_SESSION['ndaSearch']['category']) && 
-    	$_SESSION['ndaSearch']['category'] != '') {
-        return $_SESSION['ndaSearch']['category'];
+    if (isset($_SESSION['nbaSearch']['category']) && 
+    	$_SESSION['nbaSearch']['category'] != '') {
+        return $_SESSION['nbaSearch']['category'];
     }
     return -1;
 }
 
 
 function _getStoredGeoShape ($jsonEncoded = false) {
-	if (isset($_SESSION['ndaSearch']['geoShape']) && 
-		!empty($_SESSION['ndaSearch']['geoShape'])) {
-        return $jsonEncoded ? json_encode($_SESSION['ndaSearch']['geoShape']) : 
-        	$_SESSION['ndaSearch']['geoShape'];
+	if (isset($_SESSION['nbaSearch']['geoShape']) && 
+		!empty($_SESSION['nbaSearch']['geoShape'])) {
+        return $jsonEncoded ? json_encode($_SESSION['nbaSearch']['geoShape']) : 
+        	$_SESSION['nbaSearch']['geoShape'];
     }
-	if (isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])) {
+	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid'])) {
     	$client = _initBioPortalClient();
-    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['ndaSearch']['gid']));
-    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['ndaSearch']['gid']), 
+    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
+    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
     		'[getGeoJsonForGid method does not use QuerySpec]');
     	return $jsonEncoded ? json_encode($shape) : $shape;
     }
@@ -665,28 +667,28 @@ function _getStoredGeoShape ($jsonEncoded = false) {
 }
 
 function _isGeoSearch () {
-	return (isset($_SESSION['ndaSearch']['geoShape']) && 
-		!empty($_SESSION['ndaSearch']['geoShape'])) || 
-		(isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid'])); 
+	return (isset($_SESSION['nbaSearch']['geoShape']) && 
+		!empty($_SESSION['nbaSearch']['geoShape'])) || 
+		(isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid'])); 
 }
 
 function _getStoredMapCenter () {
-    if (isset($_SESSION['ndaSearch']['mapCenter'])) {
-         return $_SESSION['ndaSearch']['mapCenter'];
+    if (isset($_SESSION['nbaSearch']['mapCenter'])) {
+         return $_SESSION['nbaSearch']['mapCenter'];
     }
     return null;
 }
 
 function _getStoredLocation () {
-    if (isset($_SESSION['ndaSearch']['location'])) {
-         return $_SESSION['ndaSearch']['location'];
+    if (isset($_SESSION['nbaSearch']['location'])) {
+         return $_SESSION['nbaSearch']['location'];
     }
     return null;
 }
 
 function _getStoredGid () {
-    if (isset($_SESSION['ndaSearch']['gid'])) {
-         return $_SESSION['ndaSearch']['gid'];
+    if (isset($_SESSION['nbaSearch']['gid'])) {
+         return $_SESSION['nbaSearch']['gid'];
     }
     return null;
 }
@@ -706,8 +708,8 @@ function ndabio_advanced_taxonomysearch() {
     if (!empty($_GET['searchagain'])) {
         if (intval($_GET['searchagain']) == 1) {
             $expandedFlag = _getExpandedFlag();
-            $storedGid = isset($_SESSION['ndaSearch']['gid']) && !empty($_SESSION['ndaSearch']['gid']) ?
-                $_SESSION['ndaSearch']['gid'] : -1;
+            $storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ?
+                $_SESSION['nbaSearch']['gid'] : -1;
 
             $loadold = 1;
         }
@@ -796,8 +798,8 @@ function ndabio_advanced_taxonomysearch() {
         $subchildren = taxonomy_get_children($child->tid, $child->vid);
         if ($subchildren && ((!$geosearch) || ($geosearch && $childgeorelevance))) {
 	  $defaultvalue = 0;
-	  if (isset($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
-            $defaultvalue = intval($_SESSION['ndaSearch'][$fieldsetPrefix . '_andOr']);
+	  if (isset($_SESSION['nbaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
+            $defaultvalue = intval($_SESSION['nbaSearch'][$fieldsetPrefix . '_andOr']);
 	  }
           $form[$sysname][$childsysname] = array(
             '#type' => 'fieldset',
@@ -849,7 +851,7 @@ function ndabio_advanced_taxonomysearch() {
                         '#type'      => 'select',
                         '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
                         '#options'   => $optionarray,
-                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                        '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
                         '#inline'    => TRUE,
                     );
@@ -864,7 +866,7 @@ function ndabio_advanced_taxonomysearch() {
                         '#type'      => 'select',
                         '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
                         '#options'   => $options,
-                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                        '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
                         '#inline'    => TRUE,
                     );
@@ -874,7 +876,7 @@ function ndabio_advanced_taxonomysearch() {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
                       '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
-                      '#default_value' => (!empty($_SESSION['ndaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['ndaSearch']["{$catitem->name}"] : "",
+                      '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
                     );
@@ -897,7 +899,7 @@ function ndabio_advanced_taxonomysearch() {
                   '#type'       => 'select',
                   '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                   '#options'    => $optionarray,
-                  '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                  '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#inline'     => TRUE,
                   '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                 );
@@ -911,7 +913,7 @@ function ndabio_advanced_taxonomysearch() {
                         '#type'       => 'select',
                         '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                         '#options'    => $options,
-                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                        '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
                         '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                     );
@@ -922,7 +924,7 @@ function ndabio_advanced_taxonomysearch() {
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
                   '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
-                  '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                  '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
                   '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname )
@@ -948,7 +950,7 @@ function ndabio_advanced_taxonomysearch() {
               '#type'       => 'select',
               '#title'      => t($childlabel),
               '#options'    => $optionarray,
-              '#default_value' => (!empty($_SESSION['ndaSearch']) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#default_value' => (!empty($_SESSION['nbaSearch']) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
               '#inline'     => TRUE,
               '#attributes' => array('data-clear' => "", 'name' => $childsysname)
             );
@@ -963,7 +965,7 @@ function ndabio_advanced_taxonomysearch() {
                         '#type'       => 'select',
                         '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
                         '#options'    => $options,
-                        '#default_value' => (!empty($_SESSION['ndaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$subchildsysname}"] : "",
+                        '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
                         '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
                     );
@@ -974,7 +976,7 @@ function ndabio_advanced_taxonomysearch() {
             $form[$sysname][$childsysname]['#type'] = array(
               '#type'          => 'textfield',
               '#title'         => t($childlabel),
-              '#default_value' => (!empty($_SESSION['ndaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['ndaSearch']["{$childsysname}"] : "",
+              '#default_value' => (!empty($_SESSION['nbaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
               '#required'      => FALSE,
               '#inline'        => TRUE,
               '#attributes'    => array('data-clear' => "", 'name' => $childsysname)
@@ -995,7 +997,7 @@ function ndabio_advanced_taxonomysearch() {
       $form[$sysname]['omnisearch']['term'] = array(
         '#type' => 'textfield',
         '#title' => t('Keywords'),
-        '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+        '#default_value' => (isset($_SESSION['nbaSearch']['term']) && $loadold) ? $_SESSION['nbaSearch']['term'] : "",
         '#required' => FALSE,
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
@@ -1074,7 +1076,7 @@ function ndabio_omnisearch_form() {
   $form['omnisearch']['term'] = array(
     '#type' => 'textfield',
     '#title' => t('Keywords'),
-    '#default_value' => (isset($_SESSION['ndaSearch']['term']) && $loadold) ? $_SESSION['ndaSearch']['term'] : "",
+    '#default_value' => (isset($_SESSION['nbaSearch']['term']) && $loadold) ? $_SESSION['nbaSearch']['term'] : "",
     '#required' => FALSE,
     '#title_display' => 'invisible',
     '#nowrapper' => TRUE,

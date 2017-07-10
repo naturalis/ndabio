@@ -32,7 +32,7 @@ function ndabioresults_init () {
  */
 function ndabioresults_preprocess_html (&$vars) {
 	/*
-    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] !== 'form'){
+    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] !== 'form'){
         $vars['classes_array'][] = "nba-result-detail";
     }
     */
@@ -40,9 +40,9 @@ function ndabioresults_preprocess_html (&$vars) {
     if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
 	    $vars['classes_array'][] = 'nba-result-detail';
     }
-    if (isset($_SESSION['ndaPageTitle']) && current_path() != '') {
+    if (isset($_SESSION['nbaPageTitle']) && current_path() != '') {
  	    if (in_array($pathComponents[0], ['result', 'multimedia', 'specimen', 'taxon'])) {
-        	$vars['head_title'] = $_SESSION['ndaPageTitle'] . ' | BioPortal';
+        	$vars['head_title'] = $_SESSION['nbaPageTitle'] . ' | BioPortal';
 		    $vars['classes_array'][] = 'page-nba-result';
 	    }
 	}
@@ -169,7 +169,9 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		$query = _buildQuery('specimen', $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
+		$timer = _setTimer();
 		$set = json_decode($client->setQuerySpec($query)->query());
+		_addDebugMessage('navigation query', _getTimer($timer));
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -202,7 +204,11 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		
 		_addDebugMessage('previous, current and next item', $query);
 		
+		$timer = _setTimer();
 		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
+		_addDebugMessage('navigation query', _getTimer($timer));
+		
+		
 		_setGenericDetailPageBackLink('specimen', $search);
 		
 		// We got an error; go oops
@@ -344,21 +350,28 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	}
 	
 	$service = 'multimedia';
-	$client = _initBioPortalClient();
+	$client = _setClient($service);
 	
 	// Build query
 	$condition = new Condition('unitID', 'EQUALS', $id);
 	$query = new QuerySpec();
 	$query->addCondition($condition);
 	
-	_addDebugMessage('multimedia', $query);
+	_addDebugMessage($service, $query);
+	
+	$timer = _setTimer();
 	
 	// Fetch data
-	$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+	$data = json_decode($client->setQuerySpec($query)->query());
+	
+	_addDebugMessage('multimedia query', _getTimer($timer));
+	
+	
 	if (isset($data->exception)) {
 		return _printOops();
 	}
 	$data = $data->resultSet[0]->item;
+	
 	$data = _setMultimediaAssociatedObject($data);
 	
 	if ($search) {
@@ -372,7 +385,10 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$query = _buildQuery($service, $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
-		$set = json_decode($client->{$service}()->setQuerySpec($query)->query());
+		$timer = _setTimer();
+		$set = json_decode($client->setQuerySpec($query)->query());
+		_addDebugMessage('navigation query', _getTimer($timer));
+		
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
@@ -443,9 +459,9 @@ function _setGenericDetailPageBackLink ($service, $search) {
 }
 
 function _setGenericResultPageBackLink () {
-	if (isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+	if (isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
 		_setBackLink(
-			'result?' . http_build_query($_SESSION['ndaSearch']),
+			'result?' . http_build_query($_SESSION['nbaSearch']),
 			'Back to general results'
 		);
 	} else {
@@ -469,14 +485,17 @@ function _getBackLinkFormatted () {
 }
 
 function _setMultimediaAssociatedObject ($data) {
+	
 	$client = _initBioPortalClient();
 	foreach (['taxon', 'specimen'] as $service) {
 		$field = 'associated' . ucfirst($service) . 'Reference';
 		if (isset($data->{$field}) && !empty($data->{$field})) {
 			$appendedField = 'associated' . ucfirst($service);
+			$timer = _setTimer();
 			$data->{$appendedField} = 
 				json_decode($client->{$service}()->find($data->{$field}));
 			_addDebugMessage('Associated ' . $service, $client->getNbaQueryUrl());
+			_addDebugMessage('Associated ' . $service . ' query', _getTimer($timer));
 			unset($client, $query, $condition);
 			return $data;
 		}
@@ -611,8 +630,10 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		$query->setSpecimensSize(0);
 		_addDebugMessage('previous, current and next item', $query);
 		
+		$timer = _setTimer();
 		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
-		
+		_addDebugMessage('navigation query', _getTimer($timer));
+				
 //die(p($set));
 		
 		// We got an error; go oops
@@ -1092,7 +1113,7 @@ function _nba_taxon_result_callback ($search = false) {
 	
     $terms = _getQueryTerms($service, $search);
     
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, $pageTitle);   
@@ -1140,7 +1161,7 @@ function _nba_multimedia_result_callback ($search = false) {
     $client = _setClient($service);
 	
     
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');   
@@ -1182,7 +1203,7 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	$client = _setClient($service);
     
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');   
@@ -1225,14 +1246,14 @@ function _nba_specimen_result_callback ($search = false) {
 			]);
 		}
 		
-		_addDebugMessage($service, $query);
+		_addDebugMessage('Specimen by taxon', $query);
 		
 		$timer = _setTimer();
 		
 		// Fetch data set
 		$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		
-		_addDebugMessage('NBA query', _getTimer($timer));
+		_addDebugMessage('Specimen by taxon query', _getTimer($timer));
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
@@ -1240,14 +1261,20 @@ function _nba_specimen_result_callback ($search = false) {
 		}
 	
 		$data->specimensTotal = _getSpecimensTotal($terms);
+		
 		$data = _parseSpecimensTaxon($data, ['paginator']); 
 		return _printDebug() . _printSpecimensTaxon($data);
 	
 	}
 	
-	_addDebugMessage($service, $query);
+	_addDebugMessage("Specimen", $query);
 	// Fetch data set
+	
+	$timer = _setTimer();
+	
 	$data = json_decode($client->setQuerySpec($query)->query());
+	
+	_addDebugMessage('Specimen query', _getTimer($timer));
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1327,7 +1354,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     $size = isset($terms['size']) ? $terms['size'] : maxResults();
     unset($terms['size'], $terms['from']);
     
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, $pageTitle);   
@@ -1378,7 +1405,7 @@ function _setLanguage () {
  * @param string $page Page title
  */
 function _setTitle ($head, $page = '') {
-    $_SESSION['ndaPageTitle'] = $head;
+    $_SESSION['nbaPageTitle'] = $head;
     drupal_set_title($page);
 }
 
@@ -1397,11 +1424,11 @@ function _setTitle ($head, $page = '') {
  * @return string The formatted output
 */
 function _nba_general_result_callback () {
-    $headTitle = !isset($_SESSION['ndaSearch']['theme']) || empty($_SESSION['ndaSearch']['theme']) ?
+    $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');   
-    $_SESSION['ndaSearch'] = $_GET;
+    $_SESSION['nbaSearch'] = $_GET;
     
     // GET data from the search form?
     // If so, add to SESSION or replace existing SESSION data
@@ -1409,12 +1436,12 @@ function _nba_general_result_callback () {
         //drupal_set_title(t("Search results"));
         _setBackLink('?searchagain=1', 'Modify search');
         _logSearch();
-        if (isset($_SESSION['ndaSearch']['term']) && !empty($_SESSION['ndaSearch']['term'])) {
+        if (isset($_SESSION['nbaSearch']['term']) && !empty($_SESSION['nbaSearch']['term'])) {
         	return _nbaSimpleSearch();
         }
         return _nbaAdvancedSearch();
     }
-    if (isset($_SESSION['ndaSearch']['theme']) && !empty($_SESSION['ndaSearch']['theme'])) {
+    if (isset($_SESSION['nbaSearch']['theme']) && !empty($_SESSION['nbaSearch']['theme'])) {
     	_setBackLink('/', 'Home');
         return _nbaThemeSearch();
     }
@@ -1438,10 +1465,13 @@ function _getTaxonFromNba ($taxon) {
 		$query = new ScientificNameGroupQuerySpec();
 		$query
 			->addCondition($condition)
-			->setConstantScore();
+			->setConstantScore()
+			->setSpecimensSize(0);
 		_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
-	    $data = json_decode($client->setQuerySpec($query)->query());
-		return isset($data->resultSet) ? $data->resultSet : false;
+		$timer = _setTimer();
+	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+		_addDebugMessage(implode(' ', $taxon) . ' query', _getTimer($timer));
+	    return isset($data->resultSet) ? $data->resultSet : false;
 	} 
 	return false;
 }
@@ -1464,9 +1494,9 @@ function _nbaAdvancedSearch () {
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
     
-    $services['names.taxa'] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
-    $services['multimedia'] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[_getSpecimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
+    $services['names.taxa'] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
+    $services['multimedia'] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
+    $services[_getSpecimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
      
     // Test if anything has been posted; if not return with error message
     if (!_dataPosted($services)) {
@@ -1550,21 +1580,25 @@ function _nbaAdvancedSearch () {
 	}
 
 	return $pageHeader . _printDebug() . 
-		(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+		(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
 }
 
 
 function _getSpecimensTotal ($terms) {
-	$client = _initBioPortalClient();
+	$client = _setClient('names.specimens');
 	foreach (['size', 'from', 'sort', 'sortDirection'] as $p) {
 		if (isset($terms[$p])) {
 			unset($terms[$p]);
 		}
 	}
 	$query = _buildQuery('specimen', $terms);
-	$query->setConstantScore()->setSize(1);
-	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
-	_addDebugMessage('total specimens', $client);
+	$query
+		->setConstantScore()
+		->setSize(1);
+	_addDebugMessage('total specimens', $query);
+	$timer = _setTimer();
+	$data = json_decode($client->setQuerySpec($query)->query());
+	_addDebugMessage('total specimens query', _getTimer($timer));
 	if (isset($data->totalSize)) {
 		return $data->totalSize;
 	}
@@ -1886,7 +1920,7 @@ function _nbaSimpleSearch () {
     	}
     }
 */    
-    $terms['term'] = $_SESSION['ndaSearch']['term'];
+    $terms['term'] = $_SESSION['nbaSearch']['term'];
     
     
     $services['names.taxa'] = $terms;
@@ -1938,20 +1972,26 @@ function _nbaSimpleSearch () {
 			$query->setSpecimensSize(0);
 		}
 		$client->setQuerySpec($query);
+		
+		_addDebugMessage('service ' . $service, $client);
+		
+		$timer = _setTimer();
             
 		$remoteData[$service] = strpos($service, 'names') === false ? 
 			$client->query() : $client->groupByScientificName();
+		
+		_addDebugMessage($service . ' query', _getTimer($timer));
+			
 		
 		// Save service-specific query to session;
 		// used for further navigation
 		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
 		//_setQueryTerms($service);
-		_addDebugMessage($service, $client);
     }
     
      
     $pageHeader .= _wrap(t('Search results for') . ' ' .
-        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "h1");
+        _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "h1");
 
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
@@ -1976,7 +2016,7 @@ function _nbaSimpleSearch () {
 	}
 
     return $pageHeader .  _printDebug() . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
 }
 
 
@@ -1995,7 +2035,7 @@ function _nbaThemeSearch () {
     $pageBody = $pageHeader = '';
     ctools_class_add(array('thematic-search'));
     
-    $terms['theme'] = $_SESSION['ndaSearch']['theme'];
+    $terms['theme'] = $_SESSION['nbaSearch']['theme'];
     
     $services[_getSpecimenService()] = $terms;
     $services['multimedia'] = $terms;
@@ -2182,20 +2222,20 @@ function nbaSimpleSearch () {
     return 'Not so fast...';
 
     $pageHeader = '';
-    $p['_search'] = $_SESSION['ndaSearch']['term'];
+    $p['_search'] = $_SESSION['nbaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
     // when a search are has been entered
-    if (!isset($_SESSION['ndaSearch']['gid']) || empty($_SESSION['ndaSearch']['gid']) &&
-        empty($_SESSION['ndaSearch']['geoShape'])) {
+    if (!isset($_SESSION['nbaSearch']['gid']) || empty($_SESSION['nbaSearch']['gid']) &&
+        empty($_SESSION['nbaSearch']['geoShape'])) {
         $services[taxonService()] = $p;
     }
 
     // Other searches do include geoShape if entered
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
+        $p['_geoShape'] = $_SESSION['nbaSearch']['geoShape'];
 
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+        $area =  (!empty($_SESSION['nbaSearch']['location']) ? $_SESSION['nbaSearch']['location'] :
             t('area drawn on map'));
 
         $pageHeader =
@@ -2210,7 +2250,7 @@ function nbaSimpleSearch () {
     };
 
     $pageHeader .= _wrap(t('Search results for') . ' ' .
-        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "H1");
+        _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "H1");
 
     $services[specimenNamesService()] = $p;
     $services[multimediaService()] = $p;
@@ -2218,9 +2258,9 @@ function nbaSimpleSearch () {
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
-    unset($_SESSION['ndaFilters']);
-    $_SESSION['ndaRequestType'] = 'form';
-    $_SESSION['ndaPageDetail'] = 'result from simple form';
+    unset($_SESSION['nbaFilters']);
+    $_SESSION['nbaRequestType'] = 'form';
+    $_SESSION['nbaPageDetail'] = 'result from simple form';
 
     $pageBody = performNdaRequest(setChannels($services));
 
@@ -2318,23 +2358,23 @@ function ndabioresults_pass ($args = "") {
     }
 
     // SESSION variables that have to be reset for each request
-    unset($_SESSION['ndaPageTitle']);
+    unset($_SESSION['nbaPageTitle']);
 
     // Keep track of NBA search history
     if (isset($_GET['nba_request']) || isset($_GET['form_id']) || isset($_GET['back'])
         || isset($_GET['theme'])) {
         // Add direct requests to history if they are search service requests...
         if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
-             $_SESSION['ndaHistory'][] = $_GET['nba_request'];
+             $_SESSION['nbaHistory'][] = $_GET['nba_request'];
         // ... or from the search form of course
         } else if (isset($_GET['form_id'])) {
-            $_SESSION['ndaHistory'][] = 'form';
+            $_SESSION['nbaHistory'][] = 'form';
         // ... or from a menu link to a theme
         } else if (isset($_GET['theme'])) {
-            $_SESSION['ndaHistory'][] = 'theme';
+            $_SESSION['nbaHistory'][] = 'theme';
             // If coming from a back link itself, remove the link from history
-        } else if (isset($_GET['back']) && isSearchService($_SESSION['ndaCurrentService'])) {
-            array_pop($_SESSION['ndaHistory']);
+        } else if (isset($_GET['back']) && isSearchService($_SESSION['nbaCurrentService'])) {
+            array_pop($_SESSION['nbaHistory']);
         }
     }
 
@@ -2346,24 +2386,24 @@ function ndabioresults_pass ($args = "") {
 
     // Thematic search
     if (isset($_GET['theme']) && !empty($_GET['theme'])) {
-        unset($_SESSION['ndaSearch']);
-        $_SESSION['ndaSearch']['theme'] = $_GET['theme'];
+        unset($_SESSION['nbaSearch']);
+        $_SESSION['nbaSearch']['theme'] = $_GET['theme'];
         return ndaThematicSearch();
     }
 
     // Back link clicked. Check search history to see if user comes from search form
     // or from paginated result set. If the latter, use history to navigate; else
     // proceed as if POST data was received but retrieve this from SESSION
-    if (isset($_GET['back']) && isset($_SESSION['ndaSearch']) && !empty($_SESSION['ndaSearch'])) {
+    if (isset($_GET['back']) && isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
        drupal_set_title(t("Search results"));
 
-       $lastSearch = isset($_SESSION['ndaHistory']) && !empty($_SESSION['ndaHistory']) ?
-            end($_SESSION['ndaHistory']) : false;
+       $lastSearch = isset($_SESSION['nbaHistory']) && !empty($_SESSION['nbaHistory']) ?
+            end($_SESSION['nbaHistory']) : false;
        if ($lastSearch && $lastSearch != 'form' && $lastSearch != 'theme') {
-            return ndaDirectRequest(end($_SESSION['ndaHistory']));
-        } else if (!empty($_SESSION['ndaSearch']['term'])) {
+            return ndaDirectRequest(end($_SESSION['nbaHistory']));
+        } else if (!empty($_SESSION['nbaSearch']['term'])) {
             return ndaSimpleSearch();
-        } else if (!empty($_SESSION['ndaSearch']['theme'])) {
+        } else if (!empty($_SESSION['nbaSearch']['theme'])) {
             return ndaThematicSearch();
         } else {
             return ndaAdvancedSearch();
@@ -2375,9 +2415,9 @@ function ndabioresults_pass ($args = "") {
     if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
         drupal_set_title(t("Search results"));
 
-        $_SESSION['ndaSearch'] = $_GET;
+        $_SESSION['nbaSearch'] = $_GET;
         logSearch();
-        return empty($_SESSION['ndaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
+        return empty($_SESSION['nbaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
     }
 
     // GET data from within NDA response?
@@ -2407,13 +2447,13 @@ function ndabioresults_pass ($args = "") {
  *  * @param boolean $saveToDb When provided, data is also saved to database
  */
 function _logSearch ($saveToDb = false) {
-    foreach ($_SESSION['ndaSearch'] as $k => $v) {
+    foreach ($_SESSION['nbaSearch'] as $k => $v) {
         $skip = array(
             'op', 'form_build_id', 'form_token', 'form_id'
 
         );
         if (in_array(strtolower($k), $skip) ||
-            $k == 'geoShape' && !empty($_SESSION['ndaSearch']['gid'])) {
+            $k == 'geoShape' && !empty($_SESSION['nbaSearch']['gid'])) {
             continue;
         }
         $data['field_' . strtolower($k)] = $v;
@@ -2483,20 +2523,20 @@ function ndabioresults_ajax_callback () {
 function ndaSimpleSearch () {
 
     $pageHeader = '';
-    $p['_search'] = $_SESSION['ndaSearch']['term'];
+    $p['_search'] = $_SESSION['nbaSearch']['term'];
 
     // Taxon search does not include geoShape and should not be invoked when coming from geo form
     // when a search are has been entered
-    if (!isset($_SESSION['ndaSearch']['gid']) || empty($_SESSION['ndaSearch']['gid']) &&
-        empty($_SESSION['ndaSearch']['geoShape'])) {
+    if (!isset($_SESSION['nbaSearch']['gid']) || empty($_SESSION['nbaSearch']['gid']) &&
+        empty($_SESSION['nbaSearch']['geoShape'])) {
         $services[taxonService()] = $p;
     }
 
     // Other searches do include geoShape if entered
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $p['_geoShape'] = $_SESSION['ndaSearch']['geoShape'];
+    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
+        $p['_geoShape'] = $_SESSION['nbaSearch']['geoShape'];
 
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ? $_SESSION['ndaSearch']['location'] :
+        $area =  (!empty($_SESSION['nbaSearch']['location']) ? $_SESSION['nbaSearch']['location'] :
             t('area drawn on map'));
 
         $pageHeader =
@@ -2511,7 +2551,7 @@ function ndaSimpleSearch () {
     };
 
     $pageHeader .= _wrap(t('Search results for') . ' ' .
-        _wrap($_SESSION['ndaSearch']['term'], "span", "term"), "H1");
+        _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "H1");
 
     $services[specimenNamesService()] = $p;
     $services[multimediaService()] = $p;
@@ -2519,9 +2559,9 @@ function ndaSimpleSearch () {
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
-    unset($_SESSION['ndaFilters']);
-    $_SESSION['ndaRequestType'] = 'form';
-    $_SESSION['ndaPageDetail'] = 'result from simple form';
+    unset($_SESSION['nbaFilters']);
+    $_SESSION['nbaRequestType'] = 'form';
+    $_SESSION['nbaPageDetail'] = 'result from simple form';
 
     $pageBody = performNdaRequest(setChannels($services));
 
@@ -2542,11 +2582,11 @@ function ndaAdvancedSearch () {
 
     $pageHeader = '';
 
-    unset($_SESSION['ndaFilters']);
-    $services[multimediaService()] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[taxonService()] = _setSectionParameters($_SESSION['ndaSearch'], 't_');
-    $services[specimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
-    $services[specimenNamesService()] = _setSectionParameters($_SESSION['ndaSearch'], 'n_');
+    unset($_SESSION['nbaFilters']);
+    $services[multimediaService()] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
+    $services[taxonService()] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
+    $services[specimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
+    $services[specimenNamesService()] = _setSectionParameters($_SESSION['nbaSearch'], 'n_');
 
     // Special case for specimen/search: unset this service if only geoShape is present;
     // results of specimen/name-search and specimen/search will then be identical
@@ -2567,9 +2607,9 @@ function ndaAdvancedSearch () {
         unset($services[multimediaService()]);
     }
 
-    if (isset($_SESSION['ndaSearch']['geoShape']) && !empty($_SESSION['ndaSearch']['geoShape'])) {
-        $area =  (!empty($_SESSION['ndaSearch']['location']) ?
-            $_SESSION['ndaSearch']['location'] : t('area drawn on map'));
+    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
+        $area =  (!empty($_SESSION['nbaSearch']['location']) ?
+            $_SESSION['nbaSearch']['location'] : t('area drawn on map'));
 
         $pageHeader =
             _wrap(
@@ -2592,8 +2632,8 @@ function ndaAdvancedSearch () {
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
-    $_SESSION['ndaRequestType'] = 'form';
-    $_SESSION['ndaPageDetail'] = 'result from advanced form';
+    $_SESSION['nbaRequestType'] = 'form';
+    $_SESSION['nbaPageDetail'] = 'result from advanced form';
 
     $pageBody = performNdaRequest(setChannels($services));
 
@@ -2610,7 +2650,7 @@ function ndaAdvancedSearch () {
  * @return string Url to last used form
  */
 function setStartUrl () {
-    if (isset($_SESSION['ndaSearch']['geoShape'])) {
+    if (isset($_SESSION['nbaSearch']['geoShape'])) {
         return setBasePath() . "geographic-search/";
     }
     return setBasePath();
@@ -2650,16 +2690,16 @@ function _serviceUsed ($service) {
  */
 function ndaThematicSearch () {
 
-    unset($_SESSION['ndaFilters']);
-    $services[multimediaService()] = _setSectionParameters($_SESSION['ndaSearch'], 'm_');
-    $services[specimenService()] = _setSectionParameters($_SESSION['ndaSearch'], 's_');
+    unset($_SESSION['nbaFilters']);
+    $services[multimediaService()] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
+    $services[specimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
 
-    $services[multimediaService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    $services[multimediaService()]['theme'] = $_SESSION['nbaSearch']['theme'];
     // Sort multimedia by specimen name
     $services[multimediaService()]['_sort'] = 'identifications.scientificName.fullScientificName';
     $services[multimediaService()]['_sortDirection'] = 'ASC';
 
-    $services[specimenService()]['theme'] = $_SESSION['ndaSearch']['theme'];
+    $services[specimenService()]['theme'] = $_SESSION['nbaSearch']['theme'];
     // Sort specimens by registration number
     $services[specimenService()]['_sort'] = 'unitID';
     $services[specimenService()]['_sortDirection'] = 'ASC';
@@ -2675,8 +2715,8 @@ function ndaThematicSearch () {
 
     // Set session with NBA query type;
     // used to determine if show all should be printed
-    $_SESSION['ndaRequestType'] = 'form';
-    $_SESSION['ndaPageDetail'] = 'result from thematic search';
+    $_SESSION['nbaRequestType'] = 'form';
+    $_SESSION['nbaPageDetail'] = 'result from thematic search';
 
     // We have to override the default sort and sort direction for thematic search
     // Add true flag to setChannels()
@@ -2713,8 +2753,8 @@ function ndaDirectRequest ($r) {
 
             // Set geoShape from SESSION if geoShape is part of the request
             if (isset($q['_geoShape']) && $q['_geoShape'] == '[session]' &&
-                isset($_SESSION['ndaStoredGeoShape'])) {
-                $q['_geoShape'] = $_SESSION['ndaStoredGeoShape'];
+                isset($_SESSION['nbaStoredGeoShape'])) {
+                $q['_geoShape'] = $_SESSION['nbaStoredGeoShape'];
             }
 
             $channels[0]['request'] = $service;
@@ -2725,13 +2765,13 @@ function ndaDirectRequest ($r) {
     		$channels[0]['postfields'] = http_build_query($q);
     		// Set session variable with last used service;
             // used to determine current detail page
-            $_SESSION['ndaCurrentService'] = $service;
+            $_SESSION['nbaCurrentService'] = $service;
             // Set session with NBA query type;
             // used to determine if show all should be printed
-            $_SESSION['ndaRequestType'] = 'url';
+            $_SESSION['nbaRequestType'] = 'url';
             // Set session with info about current page;
             // used to set appropriate blocks
-            $_SESSION['ndaPageDetail'] = $d['info'];
+            $_SESSION['nbaPageDetail'] = $d['info'];
 
             return performNdaRequest($channels);
         }
@@ -3095,7 +3135,7 @@ function setSortUrl ($column, $dir, $self, $groupResult = false) {
  * @return Html-formatted paginator | void
  */
 function getPaginator ($data) {
-    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
+    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRows($data),
             setPaginatorItemsPerPage($groupResult),
@@ -3121,7 +3161,7 @@ function getPaginator ($data) {
  * @return Formatted html|void
  */
 function getPaginatorWithinGroup ($data) {
-    if (isset($_SESSION['ndaRequestType']) && $_SESSION['ndaRequestType'] != 'form') {
+    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] != 'form') {
         $paginator = new Paginator(
             getTotalRowsWithinGroup($data),
             setPaginatorItemsPerPage(),
@@ -3208,7 +3248,7 @@ function geoShapeToSession ($url, $decodeEncode = false) {
     $parts = parse_url($url);
     safe_parse_str($parts['query'], $q);
     if (isset($q['_geoShape'])) {
-        $_SESSION['ndaStoredGeoShape'] = $q['_geoShape'];
+        $_SESSION['nbaStoredGeoShape'] = $q['_geoShape'];
         $q['_geoShape'] = '[session]';
 
         $parts['query'] = http_build_query($q);
@@ -3566,7 +3606,7 @@ function decimalToDMS ($lat, $lon) {
  * @param string $page Page title
  */
 function setTitle ($head, $page = '') {
-    $_SESSION['ndaPageTitle'] = $head;
+    $_SESSION['nbaPageTitle'] = $head;
     drupal_set_title($page);
 }
 
@@ -3641,21 +3681,21 @@ function setNavigation ($data) {
     $searchId = setSearchId($terms);
 
     // Search has already been stored previously
-    if (isset($_SESSION['ndaNavigation'][$searchId])) {
+    if (isset($_SESSION['nbaNavigation'][$searchId])) {
         return $searchId;
     }
 
-    $_SESSION['ndaNavigation'][$searchId]['offset'] =
+    $_SESSION['nbaNavigation'][$searchId]['offset'] =
         array_key_exists('_offset', $terms) ? $terms['_offset'][0] : 0;
-    $_SESSION['ndaNavigation'][$searchId]['total'] = $data->totalSize;
+    $_SESSION['nbaNavigation'][$searchId]['total'] = $data->totalSize;
     // Previous/next set links
     $navigation = getNavigationPreviousNextSets($data, multimediaService());
-    $_SESSION['ndaNavigation'][$searchId]['nextSet'] = $navigation['next'];
-    $_SESSION['ndaNavigation'][$searchId]['previousSet'] = $navigation['previous'];
+    $_SESSION['nbaNavigation'][$searchId]['nextSet'] = $navigation['next'];
+    $_SESSION['nbaNavigation'][$searchId]['previousSet'] = $navigation['previous'];
     // Links within results
-    $_SESSION['ndaNavigation'][$searchId]['currentSet'] = array();
+    $_SESSION['nbaNavigation'][$searchId]['currentSet'] = array();
     foreach ($data->searchResults as $row) {
-        $_SESSION['ndaNavigation'][$searchId]['currentSet'][] =
+        $_SESSION['nbaNavigation'][$searchId]['currentSet'][] =
             stripNBABASEURL(getMultimediaDetailLink($row)) . '&searchID=' . $searchId;
     }
 
