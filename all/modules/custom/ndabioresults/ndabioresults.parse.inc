@@ -750,18 +750,22 @@ function _getReferredSearch ($url) {
 	return isset($terms['referrer']) ? _decodeReferrer($terms['referrer']) : false;
 }
 
-function _setSortUrl ($path, $direction) {
-	return _resetUrl() . ($path == 'score' ? '' : '&sort=' . $path . 
-		'&sortDirection=' . $direction);
+function _setSortUrl ($path) {
+	return _resetUrl() . ($path == 'sort=score' ? '' : '&' . $path);
 }
 
 function _getCurrentSort () {
 	$pathComponents = explode('/', _getCurrentUrl());
-	safe_parse_str(array_pop($pathComponents), $terms);
-	return [
-		'path' => isset($terms['sort']) ? $terms['sort'] : 'score',
-		'direction' => isset($terms['sortDirection']) ? $terms['sortDirection'] : null
-	];
+	safe_parse_str(array_pop($pathComponents), $terms);	
+	if (isset($terms['sort'])) {
+		$path = 'sort=' . $terms['sort'] . (isset($terms['sortDirection']) ?
+			'&sortDirection=' . $terms['sortDirection'] : '');
+	} else if (isset($terms['groupSort'])) {
+		$path = 'groupSort=' . $terms['groupSort'];
+	} else {
+		$path = 'sort=score';
+	}
+	return isset($path) ? ['path' => $path] : false;
 }
 
 // Strips sort parameters and sets from to 0

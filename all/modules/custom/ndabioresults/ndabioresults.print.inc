@@ -17,7 +17,7 @@ function _printSortOptions ($service) {
 		"<option value='' selected>" . t('Sort options') . "...</option>\n";
 		"<option value='_score'>" . t('Relevance') . "</option>\n";
 	foreach (sortOptions()[$service] as $label => $d) {
-		$url = _setSortUrl($d['path'], $d['direction']);
+		$url = _setSortUrl($d['path']);
 		$selected = $d == _getCurrentSort() ? ' class="sort-option-selected"' : '';
 		$output .= "<option value='$url'$selected>" . ucfirst($label) . "</option>\n";
 	}

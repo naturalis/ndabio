@@ -721,50 +721,39 @@ function sortOptions ()
 		$var = [
 			'specimen' => [
 				t('relevance') => [
-					'path' => 'score',
-					'direction' => null
+					'path' => 'sort=score',
 				],
 				t('specimen') . ' [A-Z]' => [
-					'path' => 'unitID',
-					'direction' => 'asc'
+					'path' => 'sort=unitID&sortDirection=asc'
 				],
-					t('specimen') . ' [Z-A]' => [
-					'path' => 'unitID',
-					'direction' => 'desc'
+				t('specimen') . ' [Z-A]' => [
+					'path' => 'sort=unitID&sortDirection=desc'
 				],
 				t('species') . ' [A-Z]' => [
-					'path' => 'identifications.scientificName.genusOrMonomial,'  .
+					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
-						'identifications.scientificName.infraspecificEpithet',
-					'direction' => 'asc,asc,asc'
+						'identifications.scientificName.infraspecificEpithet&' .
+						'sortDirection=asc,asc,asc'
 				],
 				t('species') . ' [Z-A]' => [
-					'path' => 'identifications.scientificName.genusOrMonomial,'  .
+					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
-						'identifications.scientificName.infraspecificEpithet',
-					'direction' => 'desc,desc,desc'
+						'identifications.scientificName.infraspecificEpithet&' .
+						'sortDirection=desc,desc,desc'
 				]
 			],
 			'names.specimens' => [
 				t('species') . ' [A-Z]' => [
-					'path' => 'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
-						'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-						'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
-					'direction' => 'asc,asc,asc'
+					'path' => 'groupSort=name_asc'
 				],
 				t('species') . ' [Z-A]' => [
-					'path' => 'specimens.matchingIdentifications.scientificName.genusOrMonomial,' .
-						'specimens.matchingIdentifications.scientificName.specificEpithet,' .
-						'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
-					'direction' => 'desc,desc,desc'
+					'path' => 'groupSort=name_desc'
 				],
 				t('specimen count') . ' [9-0]' => [
-					'path' => 'specimenCount',
-					'direction' => 'desc'
+					'path' => 'groupSort=count_desc'
 				],
 				t('specimen count') . ' [0-9]' => [
-					'path' => 'specimenCount',
-					'direction' => 'asc'
+					'path' => 'groupSort=count_asc'
 				],
 			],
 			'names.taxa' => [
