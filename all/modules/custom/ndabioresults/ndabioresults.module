@@ -1330,7 +1330,11 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 		
 	// Store query in case user wants to print it on screen
 	_addDebugMessage('specimens of ' . ucfirst($scientificNameGroup), $query);
-	_setBackLink('result/specimen/' . $search, 'Back to search results');
+	
+	// Trim from from $search
+	safe_parse_str($search, $parts);
+	unset($parts['from']);
+	_setBackLink('result/specimen/' . http_build_query($parts), 'Back to search results');
 	
 	// Fetch data set
 	$timer = _setTimer();
