@@ -177,12 +177,9 @@ function _printSpecimens ($data) {
     
     if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-			'<a href="' . _resetUrl() . '&service=taxon&sort=' .
-			'identifications.scientificName.genusOrMonomial,' .
-			'identifications.scientificName.specificEpithet,' .
-			'identifications.scientificName.infraspecificEpithet&' .
-			'sortDirection=asc,asc,asc">' . t('Display by taxon') . "</a></div>\n" . 
-			"<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
+			'<a href="' . _resetUrl() . '&service=taxon&groupSort=name_asc">' . 
+			t('Display by taxon') . "</a></div>\n<div class='sort-options'>" . 
+			_printSortOptions('specimen') . "</div>\n</div>\n";
     }
     
     $output .= sprintf('<table style="margin-top: 20px;"><thead>%s</thead><tbody>', _printHeaders($headers));
