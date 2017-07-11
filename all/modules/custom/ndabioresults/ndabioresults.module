@@ -198,9 +198,9 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
  
     	$query = _buildQuery('names.specimens', $terms);
 		$query
-			->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
 			->setSpecimensFrom($specimensFrom)
-			->setSpecimensSize(3);
+			->setSpecimensSize(3)
+			->setGroupFilter($scientificNameGroup);
 		
 		_addDebugMessage('previous, current and next item', $query);
 		
@@ -1034,6 +1034,11 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
    		}
         $query->setSortFields($sort);
     }
+    // Only apply groupSort to specimen by taxon
+    if ($lookupService == 'specimen' && isset($terms['groupSort']) && !empty($terms['groupSort']) && 
+    	$query->getQuerySpecType() == 'ScientificNameGroupQuerySpec') {
+    	$query->setGroupSort($terms['groupSort']);
+    }
 //p($query->getQuerySpec(true)); die();
     
     return $query;
@@ -1239,12 +1244,8 @@ function _nba_specimen_result_callback ($search = false) {
 		));
 		
 		// Default to names alphabetical in case no sort is set
-		if (!isset($terms['sort'])) {
-			$query->setSortFields([
-				['identifications.scientificName.genusOrMonomial', 'asc'],
-				['identifications.scientificName.specificEpithet', 'asc'],
-				['identifications.scientificName.infraspecificEpithet', 'asc']
-			]);
+		if (!isset($terms['groupSort'])) {
+			$query->setGroupSort('name_asc');
 		}
 		
 		_addDebugMessage('Specimen by taxon', $query);
@@ -1323,18 +1324,20 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	// Build query
 	$query = _buildQuery($service, $terms);	
 	$query
-		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
+		->setGroupFilter($scientificNameGroup)
 		->setSpecimensFrom($specimensFrom)
 		->setSpecimensSize(maxResults());
-	
+		
 	// Store query in case user wants to print it on screen
-	_addDebugMessage($service, $query);
+	_addDebugMessage('specimens of ' . ucfirst($scientificNameGroup), $query);
 	_setBackLink('result/specimen/' . $search, 'Back to search results');
 	
 	// Fetch data set
+	$timer = _setTimer();
 	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+	_addDebugMessage('specimens of ' . ucfirst($scientificNameGroup) . ' query', _getTimer($timer));
 	
-	p($data);
+//p($data);
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
@@ -1527,9 +1530,14 @@ function _nbaAdvancedSearch () {
             	$query->setSpecimensSize(0);
             }
             $client->setQuerySpec($query);
+			_addDebugMessage($service, $client);
+            
+            $timer = _setTimer();
             // Must use groupByScientificName() for names services
 			$remoteData[$service] = strpos($service, 'names') === false ? 
 				$client->query() : $client->groupByScientificName();
+			_addDebugMessage($service . ' query', _getTimer($timer));
+				
 			
 //header('Content-Type: application/json');
 //die($client->getQuerySpec());		
@@ -1537,7 +1545,6 @@ function _nbaAdvancedSearch () {
             // Save service-specific query terms to session; used for navigation
             _setQueryTerms($service);
             // Add to debug, so query can be printed
-			_addDebugMessage($service, $client);
         }
     }
     

@@ -158,6 +158,7 @@ function searchFlags () {
             'logicalOperator',
             'andOr',
          	'referrer',
+         	'groupSort'
          );
     }
     return $var;

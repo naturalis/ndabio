@@ -769,7 +769,7 @@ function _resetUrl () {
 	$pathComponents = explode('/', _getCurrentUrl());
 	$path = array_pop($pathComponents);
 	safe_parse_str($path, $terms);
-	foreach (['sort', 'sortDirection', 'service'] as $flag) {
+	foreach (['sort', 'sortDirection', 'service', 'groupSort', 'from'] as $flag) {
 		if (isset($terms[$flag])) {
 			unset($terms[$flag]);
 		}
@@ -796,13 +796,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	$timer = _setTimer();
 	
 	// Default sort is not score, must be set explicitly!
-	$sortExtension = '';
-	if (!array_key_exists('sort', _getQueryTerms($service))) {
-		$sortExtension = '&sort=identifications.scientificName.genusOrMonomial,' .
-			'identifications.scientificName.specificEpithet,' .
-			'identifications.scientificName.infraspecificEpithet&' .
-			'sortDirection=asc,asc,asc';
-	}
+	$sortExtension = !array_key_exists('sortGroup', _getQueryTerms($service)) ? 
+		'&groupSort=name_asc' : null;
 	$output['total'] = $data->totalSize;
 //_getSpecimenDetails($data);
 //p($data);
@@ -843,9 +838,13 @@ function _parseSpecimensTaxon ($data, $options = []) {
 				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
+		
+		$terms = _getQueryTerms($service);
+		unset($terms['from'], $terms['size']);
+		
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
-			http_build_query(_getQueryTerms($service)) . $sortExtension : null;
+			http_build_query($terms) . $sortExtension : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
