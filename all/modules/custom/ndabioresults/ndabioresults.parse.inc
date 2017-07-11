@@ -796,7 +796,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	$timer = _setTimer();
 	
 	// Default sort is not score, must be set explicitly!
-	$sortExtension = !array_key_exists('sortGroup', _getQueryTerms($service)) ? 
+	$sortExtension = !array_key_exists('groupSort', _getQueryTerms($service)) ? 
 		'&groupSort=name_asc' : null;
 	$output['total'] = $data->totalSize;
 //_getSpecimenDetails($data);

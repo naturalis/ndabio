@@ -1516,12 +1516,8 @@ function _nbaAdvancedSearch () {
             $terms['size'] = maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
             // defaults to score for others.
-         	if ($service == 'names.specimens' && !isset($terms['sort'])) {
-         		$terms['sort'] = 
-           			'identifications.scientificName.genusOrMonomial,' .
-					'identifications.scientificName.specificEpithet,' .
-					'identifications.scientificName.infraspecificEpithet';
-				$terms['sortDirection'] = 'asc,asc,asc';
+        	if ($service == 'names.specimens' && !isset($terms['groupSort'])) {
+				$terms['groupSort'] = 'name_asc';
 			}
             // Build QuerySpec; do not use name resolution
             $query = _buildQuery($service, $terms, false);
@@ -1544,7 +1540,6 @@ function _nbaAdvancedSearch () {
 				
             // Save service-specific query terms to session; used for navigation
             _setQueryTerms($service);
-            // Add to debug, so query can be printed
         }
     }
     
@@ -1966,12 +1961,8 @@ function _nbaSimpleSearch () {
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		// Set default sort
-		if ($service == 'names.specimens' && !isset($terms['sort'])) {
-			$terms['sort'] = 
-				'identifications.scientificName.genusOrMonomial,' . 
-				'identifications.scientificName.specificEpithet,' .
-				'identifications.scientificName.infraspecificEpithet';
-			$terms['sortDirection'] = 'asc,asc,asc';
+		if ($service == 'names.specimens' && !isset($terms['groupSort'])) {
+			$terms['groupSort'] = 'name_asc';
 		}
 		// Build QuerySpec; use name resolution
 		$query = _buildQuery($service, $terms, true);
