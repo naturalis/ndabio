@@ -94,25 +94,36 @@ function _parseTaxa ($data, $options) {
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
 			$sources[] = _getSourceNameBySourceCode($taxon->sourceSystem->code);
-			if ($type == 'common') {
-				$names['common'][] = _getTaxonVernaculars($service, $taxon, $hits, true);
-			} else {
-				$names[$type][] = _getTaxonScientificName($service, $taxon, $type, $hits);
-			}
-			
+			$names['common'][] = _getTaxonVernaculars($service, $taxon, $hits, true);
+			$names['accepted'][] = _getTaxonAcceptedName($service, $taxon, $hits);
+			$names['synonyms'][] = _getTaxonSynonyms($service, $taxon, $hits, true);
 		}
 		
+		// Some reformtting before we process: kick out empty common names
+		$tmp = array_filter($names['common']);
+		$names['common'] = !empty($tmp) ? $tmp : null;
+		// Reshuffle synonyms to drastically improve the quality of our lives
+		foreach ($names['synonyms'] as $i => $v) {
+			foreach ($v as $j => $synonym) {
+				$tmp[$synonym] = $i . $j;
+			}
+		}
+		$tmp = array_values(array_flip($tmp));
+		$names['synonyms'] = !empty($tmp) ? $tmp : null;
+
+		// Well, finally...
 		$d['type'] = _getResultType($hits);
 		$d['rank'] = $row->item->taxa[0]->taxonRank;
 		$d['name'] = implode('<br>', array_unique($names['accepted']));
 		if ($d['type'] == 'accepted') {
 			$d['description'] = t(ucfirst($d['rank']));
 		} else if ($d['type'] == 'synonym') {
-			$d['description'] = t('Synonym') . ': ' .
-                implode('; ', array_unique($names['synonym']));
+			$d['description'] = (count($names['synonyms']) == 1 ? t('Synonym') : t('Synonyms')) . 
+				': ' . implode('; ', $names['synonyms']);
 		} else if ($d['type'] == 'common') {
-			$d['description'] = t('Common name(s)') . ': ' .
-				implode('; ', array_unique($names['common']));
+			$vernaculars = array_unique(array_column($names['common'], 'name'));
+			$d['description'] = (count($vernaculars) == 1 ? t('Common name') : t('Common name')) . 
+				': ' . implode('; ', $vernaculars);
 		}
 
 		$d['url'] = _setBasePath() . 'taxon/' . 
@@ -157,7 +168,7 @@ function _getCommonNames ($row, $languageCheck = false) {
 			}
 		}
 	}
-	return isset($output) ? $output : false;
+	return isset($output) ? array_unique($output) : false;
 }
 
 
@@ -488,28 +499,25 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 */		
 		$paths = _getQueryPaths($service);
 
-//p($taxon); p($paths); p($hits); echo $type; die();
-	
 		foreach ($taxon->vernacularNames as $i => $name) {
-			$vernacular = new stdClass();
-			$vernacular->name = _highlightMatch($name->name, 
+			$hit = false;
+			$vernacular['name'] = _highlightMatch($name->name, 
 				$paths['vernacularNames.name']['values']);
-			$vernacular->language = $name->language;
-			$vernaculars[$i] = $vernacular;
+			$vernacular['language'] = $name->language;
+			if ($vernacular['name'] != $name->name) {
+				$hit = true;
+			}
+			if (!$hitsOnly || $hitsOnly && $hit) {
+				$vernaculars[$i] = $vernacular;
+			}
 		}
-		if ($hitsOnly) {
-			array_udiff($vernaculars, $taxon->vernacularNames,
-				function ($a, $b) {
-					return strcmp($a->name, $b->name);
-				}
-			);
-		}
+//p($vernaculars);		
 		return $vernaculars;
 	}
 	return false;
 }
 
-function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
+function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 /* @sng-fix
 	// Trim taxa prefix from path to facilite highlighting
 	if ($service) {
@@ -524,18 +532,16 @@ function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 	$hits = isset($temp) ? $temp : $hits;
 */
 	$paths = _getQueryPaths($service);
-	$type = $type == 'synonym' ? 'synonyms' : 'acceptedName';
-
 	$name = [];
 	// Elements in regular scientific name elements
 	foreach (scientificNameElements() as $i => $element) {
-		$name[$i] = isset($taxon->{$type}->{$element}) && 
-			!empty(trim($taxon->{$type}->{$element})) ? 
-			trim($taxon->{$type}->{$element}) : '';
+		$name[$i] = isset($taxon->acceptedName->{$element}) && 
+			!empty(trim($taxon->acceptedName->{$element})) ? 
+			trim($taxon->acceptedName->{$element}) : '';
 		// Highlight (assume always LIKE operator for name fields)
-		if (isset($hits[$type . '.' . $element])) {
-			$name[$i] = _highlightMatch($taxon->{$type}->{$element}, 
-				$paths[$type . '.' . $element]['values']);
+		if (isset($hits['acceptedName.' . $element])) {
+			$name[$i] = _highlightMatch($taxon->acceptedName->{$element}, 
+				$paths['acceptedName.' . $element]['values']);
 		}
 		// Italics
 		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
@@ -544,6 +550,42 @@ function _getTaxonScientificName ($service, $taxon, $type, $hits = []) {
 	}
 	return !empty($name) ? implode(' ', array_filter($name)) : false;
 }
+
+function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
+	if (isset($taxon->synonyms)) {
+		$paths = _getQueryPaths($service);
+		$names = [];
+		// Elements in regular scientific name elements
+		foreach ($taxon->synonyms as $synonym) {
+			$name = [];
+			$hit = false;
+			foreach (scientificNameElements() as $i => $element) {
+				$name[$i] = isset($synonym->{$element}) && 
+					!empty(trim($synonym->{$element})) ? 
+					trim($synonym->{$element}) : '';
+				// Highlight (assume always LIKE operator for name fields)
+				if (isset($hits['synonyms.' . $element])) {
+					$name[$i] = _highlightMatch($synonym->{$element}, 
+						$paths['synonyms.' . $element]['values']);
+					if ($name[$i] != trim($synonym->{$element})) {
+						$hit = true;
+					}
+				}
+				// Italics
+				if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+				}
+			}
+			if (!empty(array_filter($name)) && (!$hitsOnly || $hitsOnly && $hit)) {
+				$names[] = implode(' ', array_filter($name));
+			}
+			
+		}
+	return !empty($names) ? array_filter($names) : false;
+	}
+	return false;
+}
+
 
 function _formatScientificName ($object) {
 	$name = [];

@@ -73,7 +73,7 @@ function _printTaxonDetail ($data) {
 
 
 function _printTaxa ($data) {
-//p($data)
+//p($data);
     if (empty($data['results'])) {
         return false;
     }
@@ -1324,7 +1324,7 @@ function _printSpecimensTaxon ($data) {
 		$output .= "<tr class='indent-0' id='taxon-$i'>";
 		// Name
 		
-		$output .= "<td>" . "<a href='#''>" . $row['fullScientificName'] . "</a>" .
+		$output .= "<td>" . "<a href='#''>" . $row['fullScientificName'] . "</a> " .
 			(!empty($row['commonNames']) ? '</br>' . 
 			implode(', ', array_keys($row['commonNames'])) : '') . "</td>\n";
 		// Number (and collection type)
