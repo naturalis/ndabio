@@ -1270,6 +1270,7 @@ function printSpecimensByTaxon ($data) {
 
 
 function _printSpecimensTaxon ($data) {
+	global $language;
 	
 //p($data);
 	if (empty($data['results'])) {
