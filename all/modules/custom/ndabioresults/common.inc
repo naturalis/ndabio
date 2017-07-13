@@ -221,9 +221,10 @@ function _prettyJson ($json) {
 	return json_encode(json_decode($json), JSON_PRETTY_PRINT);
 }
 
-function _initDebug () {
+function _init () {
 	unset($_SESSION['nbaDebug']);
 	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
+	$_SESSION['nbaNameResolutionTaxa'] = null;
 }
 
 function _addDebugMessage ($title = false, $message = false) {

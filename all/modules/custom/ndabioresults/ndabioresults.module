@@ -14,13 +14,12 @@ use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\ScientificNameGroupQuerySpec as ScientificNameGroupQuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
-// Clear previously stored debug info
-_initDebug();
-// Set language (copied from v1, dunno if necessary)
-_setLanguage();
-
 
 function ndabioresults_init () {
+	// Clear previously stored debug info
+	_init();
+	// Set language (copied from v1, dunno if necessary)
+	_setLanguage();
 }
 
 
@@ -808,6 +807,18 @@ function _setTaxonUrlName ($id) {
 	return ucfirst(str_replace(' ', '_', $id));
 }
 
+function _getTaxonScientificNameById ($id) {
+	if (!isset($_SESSION['nbaNameResolutionTaxa'][$id])) {
+	  	$client = _setClient('taxon');
+	  	$timer = _setTimer();
+	  	$data = json_decode($client->find($id));
+		_addDebugMessage('scientific name for ' . $id, _getTimer($timer));
+		$_SESSION['nbaNameResolutionTaxa'][$id] = 
+			_formatScientificName($data->acceptedName);
+	}
+	return $_SESSION['nbaNameResolutionTaxa'][$id];
+}
+
 
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
@@ -1502,6 +1513,9 @@ function _nbaAdvancedSearch () {
     // Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);
     
+    $useNameResolution = false;
+    $useNameResolution = true; // @todo: nog verwijderen!
+    
     $services['names.taxa'] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
     $services[_getSpecimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
@@ -1524,7 +1538,7 @@ function _nbaAdvancedSearch () {
 				$terms['groupSort'] = 'name_asc';
 			}
             // Build QuerySpec; do not use name resolution
-            $query = _buildQuery($service, $terms, false);
+			$query = _buildQuery($service, $terms, $useNameResolution);
             // Trim specimens from taxon query
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
@@ -1572,7 +1586,8 @@ function _nbaAdvancedSearch () {
 	
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
-		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$data->specimensTotal = _getSpecimensTotal($services['names.specimens'],
+			$useNameResolution);
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
 	
@@ -1591,14 +1606,14 @@ function _nbaAdvancedSearch () {
 }
 
 
-function _getSpecimensTotal ($terms) {
+function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	$client = _setClient('names.specimens');
 	foreach (['size', 'from', 'sort', 'sortDirection'] as $p) {
 		if (isset($terms[$p])) {
 			unset($terms[$p]);
 		}
 	}
-	$query = _buildQuery('specimen', $terms);
+	$query = _buildQuery('specimen', $terms, $useNameResolution);
 	$query
 		->setConstantScore()
 		->setSize(1);
@@ -1918,6 +1933,7 @@ function _nbaSimpleSearch () {
     unset($_SESSION['nbaQuery']);
     
     $pageBody = $pageHeader = '';
+    $useNameResolution = true;
 	
 /*	
     foreach ($services as $service => $querySpec) {
@@ -1969,7 +1985,7 @@ function _nbaSimpleSearch () {
 			$terms['groupSort'] = 'name_asc';
 		}
 		// Build QuerySpec; use name resolution
-		$query = _buildQuery($service, $terms, true);
+		$query = _buildQuery($service, $terms, $useNameResolution);
 		// Trim specimens from taxon query
 		if ($service == 'names.taxa') {
 			$query->setSpecimensSize(0);
@@ -2004,7 +2020,8 @@ function _nbaSimpleSearch () {
 	
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
-		$data->specimensTotal = _getSpecimensTotal($services['names.specimens']);
+		$data->specimensTotal = _getSpecimensTotal($services['names.specimens'], 
+			$useNameResolution);
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
 	

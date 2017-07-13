@@ -425,9 +425,8 @@ function _getScientificName ($object, $full = true) {
 			$name[0] = $object->{$path}->fullScientificName;
 			unset($name[1], $name[2], $name[3]);
 		}
-		if (!empty(array_filter($name))) {
-			return implode(' ', array_filter($name));
-		}
+		$name = array_filter($name);
+		return !empty($name) ? implode(' ', $name) : null;
 	}
 	return null;
 }
@@ -476,11 +475,83 @@ function _setDetailSearchTerms ($service, $i) {
 function _setNonNameHits ($service, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $hit) {
-			if (in_array($path, nameHits()[_normaliseServiceName($service)])) {
+			if (in_array($path, nameHits()[_normaliseServiceName($service)]) ||
+				// Name resolution hits 
+				strpos($path, 'taxonomicEnrichments') !== false) {
 				unset($hits[$path]);
 			}
 		}
 		return _highlightHits($service, $hits);
+	}
+}
+
+
+function _setNameResolutionHits ($service, $hits = [], $object) {
+	if (!empty($hits)) {
+		$paths = _getQueryPaths($service);
+		$types = [];
+		foreach ($hits as $path => $hit) {
+			if (strpos($path, 'taxonomicEnrichments') !== false) {
+				// Get taxon id
+				$tmp = explode('.', $path);
+				$type = $tmp[2];
+				$field = $tmp[3];
+				$types[] = $type;
+				foreach ($object->identifications as $i => $identification) {
+					foreach ($identification->taxonomicEnrichments as $enrichment) {
+						foreach ($enrichment->{$type} as $enrichmentType) {
+							if (isset($enrichmentType->{$field}) &&
+								$enrichmentType->{$field} == $hit) {
+								if ($type == 'vernacularNames') {
+									$hit = _highlightMatch($hit, $paths[$path]['values']);
+								} else {
+									// Elements in regular scientific name elements
+									foreach (scientificNameElements() as $i => $element) {
+										$name[$i] = isset($enrichmentType->{$element}) && 
+											!empty(trim($enrichmentType->{$element})) ? 
+											trim($enrichmentType->{$element}) : '';
+										// Highlight (assume always LIKE operator for name fields)
+										if (!empty($name[$i]) && $element == $field) {
+											$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+										}
+										// Italics
+										if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+											$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+										}
+									}
+									if (!empty($name)) {
+										// Could also be a hit in fullScientificName; try highlighting
+										if ($field == 'fullScientificName') {
+											foreach ($name as $i => $element) {
+												// Only add if not highlighted yet
+												if (strpos($element, 'class="result-query"') === false) {
+													$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+												}
+											}
+										}
+										// Only fullScientificName is available; genus, etc are empty
+										if (empty($name[0])) {
+											$name[0] = $enrichmentType->fullScientificName;
+											unset($name[1], $name[2], $name[3]);
+											// Try highlighting
+											if ($field == 'fullScientificName') {
+												$name[0] = _highlightMatch($name[0], $paths[$path]['values']);
+											}
+										}
+										$hit = implode(' ', array_filter($name));
+									}
+								}
+								$d[] = [
+									'taxon' => _getTaxonScientificNameById($enrichment->taxonId),
+									$type == 'synonyms' ? 'synonym' : 'vernacular' => $hit
+								]; 
+							}
+						}
+					}
+				}
+			}
+		}
+		return isset($d) ? array_unique($d) : false;
 	}
 }
 
@@ -843,7 +914,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	
 	// Default sort is not score, must be set explicitly!
 	$sortExtension = !array_key_exists('groupSort', _getQueryTerms($service)) ? 
-		'&groupSort=name_asc' : null;
+		'&groupSort=name_asc' : '';
 	$output['total'] = $data->totalSize;
 //_getSpecimenDetails($data);
 //p($data);
@@ -874,6 +945,11 @@ function _parseSpecimensTaxon ($data, $options = []) {
 				http_build_query(_setDetailSearchTerms($service, $i)) . $sortExtension;
 			$hits = _getHits($service, $specimen);
 			$s['hits'] = _setNonNameHits($service, $hits);
+			
+			$s['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $specimen);
+			
+p($s['nameResolutionHits'] );			
+			
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
 			// Only bother with non-accepted names if no accepted names are available
 			if (empty($d['acceptedNames'])) {
@@ -930,6 +1006,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	return $output;
 }
 
+
 function _formatAssemblageId ($id) {
 	$parts = explode('@', $id);
 	if (count($parts) == 2) {
@@ -942,7 +1019,8 @@ function _formatAssemblageId ($id) {
 function _setSpecimenScientificName ($data) {
 	$paths = _getQueryPaths('names.specimens');
 	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
-	$source = !empty($data['acceptedNames']) ? $data['acceptedNames'] : $data['nonAcceptedNames'];
+	$source = !empty($data['acceptedNames']) ? 
+		$data['acceptedNames'] : $data['nonAcceptedNames'];
 
 	// First extract and format available scientific names...
 	// If a taxon occurs in NSR/CoL, use those sources to format the name.
@@ -955,29 +1033,35 @@ function _setSpecimenScientificName ($data) {
 		// being aggregated in a set:
 		if (!isset($data['sets'])) {
 			foreach (scientificNameElements() as $i => $element) {
-				$name[$i] = isset($identification->{$element}) && !empty(trim($identification->{$element})) ? 
+				$name[$i] = isset($identification->{$element}) && 
+					!empty(trim($identification->{$element})) ? 
 					trim($identification->{$element}) : '';
 				// Hits can be in both defaultClassification and scientificName
 				foreach (['defaultClassification', 'scientificName'] as $category) {
 					$hitPath = 'identifications.' . $category . '.' . $element;
 					// Highlight (assume always LIKE operator for name fields)
 					if (!empty($name[$i]) && isset($hits[$hitPath])) {
-						$name[$i] = _highlightMatch($identification->{$element}, $paths[$hitPath]['values']);
+						$name[$i] = _highlightMatch($identification->{$element}, 
+							$paths[$hitPath]['values']);
 					}
 				}
 				// Italics
-				if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+				if (!empty($name[$i]) && in_array($element, 
+					scientificNameElementsInItalics())) {
 					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 				}
 			}
 		// BRAHMS: generate from fullScientificName
 		} else {
 			// First highlight
-			$name[0] = _highlightMatch($identification->fullScientificName, array_unique(array_values($hits)));
+			$name[0] = _highlightMatch($identification->fullScientificName, 
+				array_unique(array_values($hits)));
 			foreach (scientificNameElementsInItalics() as $element) {
-				if (isset($identification->{$element}) && !empty(trim($identification->{$element}))) {
+				if (isset($identification->{$element}) && 
+					!empty(trim($identification->{$element}))) {
 					$name[0] = str_replace($identification->{$element}, 
-						'<span class="scientific">' . $identification->{$element} . '</span>', $name[0]);
+						'<span class="scientific">' . $identification->{$element} . 
+						'</span>', $name[0]);
 				}
 			}
 		}
@@ -986,12 +1070,13 @@ function _setSpecimenScientificName ($data) {
 		
 		if (!empty($name)) {
 			// Could also be a hit in fullScientificName; try highlighting
-			if (isset($paths['identifications.scientificName.fullScientificName'])) {
+			$scientificNamePath = 'identifications.scientificName.fullScientificName';
+			if (isset($paths[$scientificNamePath])) {
 				foreach ($name as $i => $element) {
 					// Only add if not highlighted yet
 					if (strpos($element, 'class="result-query"') === false) {
 						$name[$i] = _highlightMatch($name[$i], 
-							$paths['identifications.scientificName.fullScientificName']['values']);
+							$paths[$scientificNamePath]['values']);
 					}
 				}
 			}
@@ -1000,9 +1085,9 @@ function _setSpecimenScientificName ($data) {
 				$name[0] = $identification->fullScientificName;
 				unset($name[1], $name[2], $name[3]);
 				// Try highlighting
-				if (isset($paths['identifications.scientificName.fullScientificName'])) {
+				if (isset($paths[$scientificNamePath])) {
 					$name[0] = _highlightMatch($name[0], 
-						$paths['identifications.scientificName.fullScientificName']['values']);
+						$paths[$scientificNamePath]['values']);
 				}
 			}
 			$names[isset($identification->source) ? $identification->source : $j] = 
