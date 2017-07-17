@@ -94,15 +94,11 @@ function _parseTaxa ($data, $options) {
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
 			$sources[] = _getSourceNameBySourceCode($taxon->sourceSystem->code);
-			$names['common'][] = _getTaxonVernaculars($service, $taxon, $hits, true);
+			$names['common'] = _getTaxonVernaculars($service, $taxon, $hits, true);
 			$names['accepted'][] = _getTaxonAcceptedName($service, $taxon, $hits);
 			$names['synonyms'][] = _getTaxonSynonyms($service, $taxon, $hits, true);
 		}
 		
-		// Some reformtting before we process: kick out empty common names
-		$tmp = array_filter($names['common']);
-		$names['common'] = !empty($tmp) ? $tmp : null;
-		// Reshuffle synonyms to drastically improve the quality of our lives
 		foreach ($names['synonyms'] as $i => $v) {
 			foreach ($v as $j => $synonym) {
 				$tmp[$synonym] = $i . $j;
@@ -110,7 +106,7 @@ function _parseTaxa ($data, $options) {
 		}
 		$tmp = array_values(array_flip($tmp));
 		$names['synonyms'] = !empty($tmp) ? $tmp : null;
-
+		
 		// Well, finally...
 		$d['type'] = _getResultType($hits);
 		$d['rank'] = $row->item->taxa[0]->taxonRank;
@@ -121,8 +117,11 @@ function _parseTaxa ($data, $options) {
 			$d['description'] = (count($names['synonyms']) == 1 ? t('Synonym') : t('Synonyms')) . 
 				': ' . implode('; ', $names['synonyms']);
 		} else if ($d['type'] == 'common') {
-			$vernaculars = array_unique(array_column($names['common'], 'name'));
-			$d['description'] = (count($vernaculars) == 1 ? t('Common name') : t('Common name')) . 
+			$vernaculars = [];
+			foreach (array_unique($names['common']) as $vernacular) {
+				$vernaculars[] = $vernacular['name'] . ' (' . t($vernacular['language']) . ')';
+			}
+			$d['description'] = (count($vernaculars) == 1 ? t('Common name') : t('Common names')) . 
 				': ' . implode('; ', $vernaculars);
 		}
 
