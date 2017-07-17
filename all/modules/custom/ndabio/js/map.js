@@ -113,7 +113,7 @@ function initialize() {
 
  	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
 
- 	if (storedGeoShape != -1) {
+ 	if (typeof storedGeoShape != 'undefined' && storedGeoShape != -1) {
 		feature = {
 			type: "Feature",
 			geometry: JSON.parse(storedGeoShape)
