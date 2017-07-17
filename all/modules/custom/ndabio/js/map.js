@@ -121,7 +121,7 @@ function initialize() {
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
 		zoom(map, false);
- 	} else if (storedGid != -1) {
+ 	} else if (typeof storedGid != 'undefined' && storedGid != -1) {
  		plotMapArea(storedGid, language, false);
  	}
 }
