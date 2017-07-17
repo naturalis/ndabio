@@ -75,6 +75,8 @@ function advancedSelects () {
         	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.typeStatus'));
         $nbaAdvancedSelects['s_sex'] =
         	_setArrayKeyFromValue(_getDistinctValues('specimen', 'sex'));
+        $nbaAdvancedSelects['s_phaseOrStage'] =
+        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'phaseOrStage'));
         $nbaAdvancedSelects['s_kingdom'] =
         	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['t_sourceSystem'] =
