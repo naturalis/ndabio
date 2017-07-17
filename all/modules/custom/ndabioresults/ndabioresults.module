@@ -1375,8 +1375,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
-    $pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
-    _setTitle($headTitle, $pageTitle);   
+    _setTitle($headTitle, '');   
     
     // No search terms; die with grace
     if (!$scientificNameGroup || !$terms) {
@@ -1386,7 +1385,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	// Build query
 	$query = _buildQuery($service, $terms);	
 	$query
-		->addCondition(new Condition('name', 'EQUALS', $scientificNameGroup))
+		->setGroupFilter($scientificNameGroup)
 		->setSpecimensFrom(0)
 		->setSpecimensSize($size);
 //die($query->getQuerySpec(true));
