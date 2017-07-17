@@ -336,6 +336,8 @@ function _parseSpecimenDetail ($data) {
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
 	
+//p($output);
+	
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
 	
 	return $output;
@@ -427,9 +429,8 @@ function _getScientificName ($object, $full = true) {
 			unset($name[1], $name[2], $name[3]);
 		}
 		$name = array_filter($name);
-		return !empty($name) ? implode(' ', $name) : null;
 	}
-	return null;
+	return !empty($name) ? implode(' ', $name) : null;
 }
 
 
