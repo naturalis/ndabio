@@ -227,6 +227,7 @@ function _parseMultimedia ($data, $options = []) {
 		}
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
+		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row);
 		$d['taxon'] = _getSpecimenScientificNames($service, $row, $hits);
 		$d['unitID'] = _getMultimediaUnitId($row, $hits);
 		$output['results'][] = $d;
@@ -835,6 +836,7 @@ function _parseSpecimens ($data, $options = []) {
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
+		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row);
 		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
 		$output['results'][] = $d;
 	}
@@ -948,7 +950,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			
 			$s['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $specimen);
 			
-p($s['nameResolutionHits'] );			
+//p($s['nameResolutionHits'] );			
 			
 			$d['nameHits'] = _appendNameHits($d['nameHits'], $hits);
 			// Only bother with non-accepted names if no accepted names are available

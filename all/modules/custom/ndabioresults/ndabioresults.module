@@ -1514,7 +1514,7 @@ function _nbaAdvancedSearch () {
     unset($_SESSION['nbaQuery']);
     
     $useNameResolution = false;
-    $useNameResolution = true; // @todo: nog verwijderen!
+ //   $useNameResolution = true; // @todo: nog verwijderen!
     
     $services['names.taxa'] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
