@@ -461,10 +461,12 @@ function nbaFieldMapping ()
                     'identifications.scientificName.infraspecificEpithet'
                 ],
                 'vernacularName' => [
-                    'identifications.vernacularNames.name'
-                ],
+                    'identifications.vernacularNames.name',
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+                 ],
                 'commonName' => [
-                    'identifications.vernacularNames.name'
+                    'identifications.vernacularNames.name',
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
                 ],
             	'typeStatus' => [
             		'identifications.typeStatus'
@@ -605,13 +607,7 @@ function nbaNameResolutionFieldMapping ()
                 'subspecies' => [
                     'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
                 ],
-             	'vernacularName' => [
-                    'identifications.taxonomicEnrichments.vernacularNames.name'
-                ],
-                'commonName' => [
-                    'identifications.taxonomicEnrichments.vernacularNames.name'
-                ],
-            ],
+             ],
         );
     }
     return $var;
