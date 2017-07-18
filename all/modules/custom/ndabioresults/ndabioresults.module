@@ -1250,7 +1250,8 @@ function _nba_specimen_result_callback ($search = false) {
 	    		'kindOfUnit',
 	    		'preparationType',
 	    		'assemblageID',
-				'identifications.scientificName.scientificNameGroup'
+				'identifications.scientificName.scientificNameGroup',
+				'identifications.taxonomicEnrichments.taxonId'
 			]	
 		));
 		
