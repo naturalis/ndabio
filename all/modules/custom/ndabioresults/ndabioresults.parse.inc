@@ -488,6 +488,7 @@ function _setNonNameHits ($service, $hits = []) {
 
 
 function _setNameResolutionHits ($service, $hits = [], $object) {
+//p($object);
 	if (!empty($hits)) {
 		$paths = _getQueryPaths($service);
 		$types = [];

@@ -11,8 +11,9 @@ require_once 'Paginator.php';
 
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
-use nl\naturalis\bioportal\ScientificNameGroupQuerySpec as ScientificNameGroupQuerySpec;
+use nl\naturalis\bioportal\GroupByScientificNameQuerySpec as GroupByScientificNameQuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
+use nl\naturalis\bioportal\Filter as Filter;
 
 
 function ndabioresults_init () {
@@ -194,12 +195,15 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		$specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
     	
     	unset($terms['size'], $terms['from']);
+    	
+    	$filter = new Filter();
+    	$filter->acceptValues([$scientificNameGroup]);
  
     	$query = _buildQuery('names.specimens', $terms);
 		$query
 			->setSpecimensFrom($specimensFrom)
 			->setSpecimensSize(3)
-			->setGroupFilter($scientificNameGroup);
+			->setGroupFilter($filter);
 		
 		_addDebugMessage('previous, current and next item', $query);
 		
@@ -807,16 +811,19 @@ function _setTaxonUrlName ($id) {
 	return ucfirst(str_replace(' ', '_', $id));
 }
 
-function _getTaxonScientificNameById ($id) {
-	if (!isset($_SESSION['nbaNameResolutionTaxa'][$id])) {
-	  	$client = _setClient('taxon');
-	  	$timer = _setTimer();
-	  	$data = json_decode($client->find($id));
-		_addDebugMessage('scientific name for ' . $id, _getTimer($timer));
-		$_SESSION['nbaNameResolutionTaxa'][$id] = 
-			_formatScientificName($data->acceptedName);
+function _getTaxonScientificNameById ($id = false) {
+	if ($id) {
+		if (!isset($_SESSION['nbaNameResolutionTaxa'][$id])) {
+		  	$client = _setClient('taxon');
+		  	$timer = _setTimer();
+		  	$data = json_decode($client->find($id));
+			_addDebugMessage('scientific name for ' . $id, _getTimer($timer));
+			$_SESSION['nbaNameResolutionTaxa'][$id] = 
+				_formatScientificName($data->acceptedName);
+		}
+		return $_SESSION['nbaNameResolutionTaxa'][$id];
 	}
-	return $_SESSION['nbaNameResolutionTaxa'][$id];
+	return false;
 }
 
 
@@ -830,7 +837,7 @@ function _getTaxonByName ($name) {
 			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 	}
-    $query = new ScientificNameGroupQuerySpec();
+    $query = new GroupByScientificNameQuerySpec();
     $query->addCondition($condition)->setSpecimensSize(5);
     $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	if (isset($data->exception)) {
@@ -872,7 +879,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 /* @sng-fix
 		$type .= '.';
 */
-		$query = new ScientificNameGroupQuerySpec();
+		$query = new GroupByScientificNameQuerySpec();
 	} else {
 /* @sng-fix 
 		$type = '';
@@ -1047,7 +1054,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
     }
     // Only apply groupSort to specimen by taxon
     if ($lookupService == 'specimen' && isset($terms['groupSort']) && !empty($terms['groupSort']) && 
-    	$query->getQuerySpecType() == 'ScientificNameGroupQuerySpec') {
+    	$query->getQuerySpecType() == 'GroupByScientificNameQuerySpec') {
     	$query->setGroupSort($terms['groupSort']);
     }
 //p($query->getQuerySpec(true)); die();
@@ -1250,7 +1257,8 @@ function _nba_specimen_result_callback ($search = false) {
 	    		'kindOfUnit',
 	    		'preparationType',
 	    		'assemblageID',
-				'identifications.scientificName.scientificNameGroup'
+				'identifications.scientificName.scientificNameGroup',
+				'identifications.taxonomicEnrichments.taxonId'
 			]	
 		));
 		
@@ -1334,8 +1342,14 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
     
 	// Build query
 	$query = _buildQuery($service, $terms);	
+	
+    $filter = new Filter();
+    $filter->acceptValues([$scientificNameGroup]);
+	
+	
+	
 	$query
-		->setGroupFilter($scientificNameGroup)
+		->setGroupFilter($filter)
 		->setSpecimensFrom($specimensFrom)
 		->setSpecimensSize(maxResults());
 		
@@ -1384,8 +1398,12 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     
 	// Build query
 	$query = _buildQuery($service, $terms);	
+	
+    $filter = new Filter();
+    $filter->acceptValues([$scientificNameGroup]);
+	
 	$query
-		->setGroupFilter($scientificNameGroup)
+		->setGroupFilter($filter)
 		->setSpecimensFrom(0)
 		->setSpecimensSize($size);
 //die($query->getQuerySpec(true));
@@ -1480,7 +1498,7 @@ function _getTaxonFromNba ($taxon) {
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
 		$client = _setClient('taxon');
-		$query = new ScientificNameGroupQuerySpec();
+		$query = new GroupByScientificNameQuerySpec();
 		$query
 			->addCondition($condition)
 			->setConstantScore()
