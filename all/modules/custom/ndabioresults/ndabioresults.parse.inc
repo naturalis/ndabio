@@ -500,53 +500,55 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 				$field = $tmp[3];
 				$types[] = $type;
 				foreach ($object->identifications as $i => $identification) {
-					foreach ($identification->taxonomicEnrichments as $enrichment) {
-						foreach ($enrichment->{$type} as $enrichmentType) {
-							if (isset($enrichmentType->{$field}) &&
-								$enrichmentType->{$field} == $hit) {
-								if ($type == 'vernacularNames') {
-									$hit = _highlightMatch($hit, $paths[$path]['values']);
-								} else {
-									// Elements in regular scientific name elements
-									foreach (scientificNameElements() as $i => $element) {
-										$name[$i] = isset($enrichmentType->{$element}) && 
-											!empty(trim($enrichmentType->{$element})) ? 
-											trim($enrichmentType->{$element}) : '';
-										// Highlight (assume always LIKE operator for name fields)
-										if (!empty($name[$i]) && $element == $field) {
-											$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+					if (isset($identification->taxonomicEnrichments)) {
+						foreach ($identification->taxonomicEnrichments as $enrichment) {
+							foreach ($enrichment->{$type} as $enrichmentType) {
+								if (isset($enrichmentType->{$field}) &&
+									$enrichmentType->{$field} == $hit) {
+									if ($type == 'vernacularNames') {
+										$hit = _highlightMatch($hit, $paths[$path]['values']);
+									} else {
+										// Elements in regular scientific name elements
+										foreach (scientificNameElements() as $i => $element) {
+											$name[$i] = isset($enrichmentType->{$element}) && 
+												!empty(trim($enrichmentType->{$element})) ? 
+												trim($enrichmentType->{$element}) : '';
+											// Highlight (assume always LIKE operator for name fields)
+											if (!empty($name[$i]) && $element == $field) {
+												$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+											}
+											// Italics
+											if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+												$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
+											}
 										}
-										// Italics
-										if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
-											$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
-										}
-									}
-									if (!empty($name)) {
-										// Could also be a hit in fullScientificName; try highlighting
-										if ($field == 'fullScientificName') {
-											foreach ($name as $i => $element) {
-												// Only add if not highlighted yet
-												if (strpos($element, 'class="result-query"') === false) {
-													$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+										if (!empty($name)) {
+											// Could also be a hit in fullScientificName; try highlighting
+											if ($field == 'fullScientificName') {
+												foreach ($name as $i => $element) {
+													// Only add if not highlighted yet
+													if (strpos($element, 'class="result-query"') === false) {
+														$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
+													}
 												}
 											}
-										}
-										// Only fullScientificName is available; genus, etc are empty
-										if (empty($name[0])) {
-											$name[0] = $enrichmentType->fullScientificName;
-											unset($name[1], $name[2], $name[3]);
-											// Try highlighting
-											if ($field == 'fullScientificName') {
-												$name[0] = _highlightMatch($name[0], $paths[$path]['values']);
+											// Only fullScientificName is available; genus, etc are empty
+											if (empty($name[0])) {
+												$name[0] = $enrichmentType->fullScientificName;
+												unset($name[1], $name[2], $name[3]);
+												// Try highlighting
+												if ($field == 'fullScientificName') {
+													$name[0] = _highlightMatch($name[0], $paths[$path]['values']);
+												}
 											}
+											$hit = implode(' ', array_filter($name));
 										}
-										$hit = implode(' ', array_filter($name));
 									}
+									$d[] = [
+										'taxon' => _getTaxonScientificNameById($enrichment->taxonId),
+										$type == 'synonyms' ? 'synonym' : 'vernacular' => $hit
+									]; 
 								}
-								$d[] = [
-									'taxon' => _getTaxonScientificNameById($enrichment->taxonId),
-									$type == 'synonyms' ? 'synonym' : 'vernacular' => $hit
-								]; 
 							}
 						}
 					}

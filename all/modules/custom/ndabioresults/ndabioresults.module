@@ -2020,7 +2020,11 @@ function _nbaSimpleSearch () {
 		if ($service == 'names.taxa') {
 			$query->setSpecimensSize(0);
 		}
-		$client->setQuerySpec($query);
+        // Trim ? scientific names from specimen
+        if ($service == 'names.specimens') {
+            	$query->setGroupFilter(_setFilterRejectEmptyGenus());
+        } 
+ 		$client->setQuerySpec($query);
 		
 		_addDebugMessage('service ' . $service, $client);
 		
