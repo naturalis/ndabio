@@ -150,11 +150,11 @@ function _dateTimeToDate ($v) {
  * @param string $source Input
  * @return array
  */
-function safe_parse_str ($source, &$target) {
+function safe_parse_str ($source, &$target, $keep = false) {
 	if (!$source) {
 		return;
 	}
-	$keys = $target = array();
+	$keys = $target = [];
 	$source = preg_replace_callback(
 		'/
         # Match at start of string or &
