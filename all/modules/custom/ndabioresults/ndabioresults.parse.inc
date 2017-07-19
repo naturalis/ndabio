@@ -89,7 +89,7 @@ function _parseTaxa ($data, $options) {
 
 	foreach ($data->resultSet as $i => $row) {
 		// Accepted scientific name, synonym, or common name
-		$d = $sources = $names = [];
+		$d = $sources = $names = $tmp =[];
 		foreach ($row->item->taxa as $taxon) {
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
