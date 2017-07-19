@@ -1267,6 +1267,8 @@ function _nba_specimen_result_callback ($search = false) {
 			$query->setGroupSort('name_asc');
 		}
 		
+		$query->setGroupFilter(_setFilterRejectEmptyGenus());
+		
 		_addDebugMessage('Specimen by taxon', $query);
 		
 		$timer = _setTimer();
@@ -1559,7 +1561,12 @@ function _nbaAdvancedSearch () {
             // Trim specimens from taxon query
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
-            }
+            } 
+            // Trim ? scientific names from specimen
+            if ($service == 'names.specimens') {
+            	$query->setGroupFilter(_setFilterRejectEmptyGenus());
+            } 
+            
             $client->setQuerySpec($query);
 			_addDebugMessage($service, $client);
             
@@ -1642,6 +1649,12 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 		return $data->totalSize;
 	}
 	return -1;
+}
+
+function _setFilterRejectEmptyGenus () {
+	$filter = new Filter();
+	$filter->rejectRegexp("\?.*");
+	return $filter;	
 }
 
 
