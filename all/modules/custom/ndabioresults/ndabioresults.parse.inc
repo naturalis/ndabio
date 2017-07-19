@@ -89,7 +89,7 @@ function _parseTaxa ($data, $options) {
 
 	foreach ($data->resultSet as $i => $row) {
 		// Accepted scientific name, synonym, or common name
-		$d = $sources = $names = [];
+		$d = $sources = $names = $tmp = [];
 		foreach ($row->item->taxa as $taxon) {
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
@@ -99,13 +99,18 @@ function _parseTaxa ($data, $options) {
 			$names['synonyms'][] = _getTaxonSynonyms($service, $taxon, $hits, true);
 		}
 		
-		foreach ($names['synonyms'] as $i => $v) {
-			foreach ($v as $j => $synonym) {
-				$tmp[$synonym] = $i . $j;
+		// Reformat synonyms
+		if (!empty(array_filter($names['synonyms']))) {
+			foreach ($names['synonyms'] as $i => $v) {
+				if (!empty($v)) {
+					foreach ($v as $j => $synonym) {
+						$tmp[$synonym] = $i . $j;
+					}
+				}
 			}
+			$tmp = array_values(array_flip($tmp));
+			$names['synonyms'] = !empty($tmp) ? $tmp : null;
 		}
-		$tmp = array_values(array_flip($tmp));
-		$names['synonyms'] = !empty($tmp) ? $tmp : null;
 		
 		// Well, finally...
 		$d['type'] = _getResultType($hits);
@@ -118,8 +123,9 @@ function _parseTaxa ($data, $options) {
 				': ' . implode('; ', $names['synonyms']);
 		} else if ($d['type'] == 'common') {
 			$vernaculars = [];
-			foreach (array_unique($names['common']) as $vernacular) {
-				$vernaculars[] = $vernacular['name'] . ' (' . t($vernacular['language']) . ')';
+			foreach ($names['common'] as $vernacular) {
+				$vernaculars[] = $vernacular['name'] . 
+					(!empty($vernacular['language']) ? ' (' . t($vernacular['language']) . ')' : '');
 			}
 			$d['description'] = (count($vernaculars) == 1 ? t('Common name') : t('Common names')) . 
 				': ' . implode('; ', $vernaculars);
@@ -156,12 +162,12 @@ function _getCommonNames ($row, $languageCheck = false) {
 			foreach ($taxon->vernacularNames as $name) {
 				// If language is set, only store when language of
 				// common name matches that of interface...
-				if ($languageCheck) {
+				if ($languageCheck && isset($name->language)) {
 					if ($name->language == $language->name) {
 						$output[$name->name] = $name->language;
 					}
 				// ... else always return all names
-				} else {
+				} else if (isset($name->language)) {
 					$output[$name->name] = $name->language;
 				}
 			}
@@ -578,7 +584,7 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 			$hit = false;
 			$vernacular['name'] = _highlightMatch($name->name, 
 				$paths['vernacularNames.name']['values']);
-			$vernacular['language'] = $name->language;
+			$vernacular['language'] = isset($name->language) ? $name->language : null;
 			if ($vernacular['name'] != $name->name) {
 				$hit = true;
 			}
@@ -587,7 +593,7 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 			}
 		}
 //p($vernaculars);		
-		return $vernaculars;
+		return isset($vernaculars) ? $vernaculars : false;
 	}
 	return false;
 }
@@ -639,7 +645,7 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 					!empty(trim($synonym->{$element})) ? 
 					trim($synonym->{$element}) : '';
 				// Highlight (assume always LIKE operator for name fields)
-				if (isset($hits['synonyms.' . $element])) {
+				if (isset($hits['synonyms.' . $element]) && isset($synonym->{$element})) {
 					$name[$i] = _highlightMatch($synonym->{$element}, 
 						$paths['synonyms.' . $element]['values']);
 					if ($name[$i] != trim($synonym->{$element})) {
@@ -654,9 +660,8 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 			if (!empty(array_filter($name)) && (!$hitsOnly || $hitsOnly && $hit)) {
 				$names[] = implode(' ', array_filter($name));
 			}
-			
 		}
-	return !empty($names) ? array_filter($names) : false;
+		return !empty($names) ? array_filter($names) : false;
 	}
 	return false;
 }

@@ -2022,7 +2022,7 @@ function _nbaSimpleSearch () {
 		}
         // Trim ? scientific names from specimen
         if ($service == 'names.specimens') {
-            	$query->setGroupFilter(_setFilterRejectEmptyGenus());
+            $query->setGroupFilter(_setFilterRejectEmptyGenus());
         } 
  		$client->setQuerySpec($query);
 		
