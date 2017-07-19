@@ -1198,7 +1198,7 @@ function _getHits ($service, $result) {
 		}
 		// Store value only once; it will always be the same value found multiple times
 		if (!empty($hits)) {
-			$output[$path] = $hits[0][0];
+			$output[$path] = trim($hits[0][0]);
 		}
 	}
 	return isset($output) ? $output : false;
