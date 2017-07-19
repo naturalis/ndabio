@@ -725,14 +725,15 @@ function _getTaxonSpecimens ($object) {
 		$data->showAllLink = $object->specimenCount > 5 ?
 			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'result/specimen/taxon/' . urlencode($object->name) . '/')  . 
-				'&referrer=' . $object->referrer : null;
+				(isset($object->referrer) ? '&referrer=' . $object->referrer : '') : null; 
 		foreach ($object->specimens as $i => $specimen) {
 			$items[$i]['unitID'] = $specimen->unitID;
 			$items[$i]['collectionType'] = isset($specimen->collectionType) ? 
 				$specimen->collectionType : null;
 			$items[$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'specimen/' . urlencode($specimen->unitID) . '/'. urlencode($object->name) . '/') .
-				'&from=' . (max(0, $i - 1) . '&referrer=' . $object->referrer);
+				'&from=' . (max(0, $i - 1) . 
+				(isset($object->referrer) ? '&referrer=' . $object->referrer : ''));
 		}
 		$data->items = $items;
 		return $data;
@@ -775,7 +776,8 @@ function _getSpecimenMultimedia ($object) {
 			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
 				urlencode($media->item->unitID) . '/associatedSpecimenReference=' . 
 				urlencode($object->id) . '&associatedSpecimenReferenceOperator=EQUALS&from=' . 
-				(max(0, $i - 1)) . '&referrer=' . $object->referrer;
+				(max(0, $i - 1)) . 
+				(isset($object->referrer) ? '&referrer=' . $object->referrer : '');
 		}
 		return $output;
 	}
@@ -2207,10 +2209,11 @@ function _getOtherSpecimens ($data) {
 					$s = [];
 					$s['unitID'] = _setUnitId($specimen->item->unitID);
 					$s['collectionType'] = $specimen->item->collectionType;
-					$s['url'] = _getSpecimenInCollectionUrl(
-						$specimen->item, 
-						$data->scientificNameGroup
-					);
+// 					$s['url'] = _getSpecimenInCollectionUrl(
+// 						$specimen->item, 
+// 						$data->scientificNameGroup
+// 					);
+					$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->item->unitID);
 					$c[] = $s;
 				}
 			}
