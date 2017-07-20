@@ -10,6 +10,75 @@
 function thematic_menu_menu_default_menu_links() {
   $menu_links = array();
 
+  // Exported menu link: main-menu_about:node/3792.
+  $menu_links['main-menu_about:node/3792'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3792',
+    'router_path' => 'node/%',
+    'link_title' => 'About',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_about:node/3792',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: main-menu_api:node/3791.
+  $menu_links['main-menu_api:node/3791'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3791',
+    'router_path' => 'node/%',
+    'link_title' => 'API',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_api:node/3791',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: main-menu_api:node/3794.
+  $menu_links['main-menu_api:node/3794'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3794',
+    'router_path' => 'node/%',
+    'link_title' => 'API',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_api:node/3794',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+  );
   // Exported menu link: main-menu_arts-collection:result.
   $menu_links['main-menu_arts-collection:result'] = array(
     'menu_name' => 'main-menu',
@@ -114,6 +183,75 @@ function thematic_menu_menu_default_menu_links() {
     'language' => 'nl',
     'menu_links_customized' => 1,
   );
+  // Exported menu link: main-menu_dashboard:dashboard.
+  $menu_links['main-menu_dashboard:dashboard'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'dashboard',
+    'router_path' => 'dashboard',
+    'link_title' => 'Dashboard',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_dashboard:dashboard',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -47,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: main-menu_data-sets:node/3790.
+  $menu_links['main-menu_data-sets:node/3790'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3790',
+    'router_path' => 'node/%',
+    'link_title' => 'Data sets',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_data-sets:node/3790',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -46,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: main-menu_datasets:node/3795.
+  $menu_links['main-menu_datasets:node/3795'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3795',
+    'router_path' => 'node/%',
+    'link_title' => 'Datasets',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_datasets:node/3795',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+  );
   // Exported menu link: main-menu_explore-highlights:<front>.
   $menu_links['main-menu_explore-highlights:<front>'] = array(
     'menu_name' => 'main-menu',
@@ -163,6 +301,29 @@ function thematic_menu_menu_default_menu_links() {
     'language' => 'en',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
+  );
+  // Exported menu link: main-menu_over:node/3793.
+  $menu_links['main-menu_over:node/3793'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3793',
+    'router_path' => 'node/%',
+    'link_title' => 'Over',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_over:node/3793',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
   );
   // Exported menu link: main-menu_prentencollectie:result.
   $menu_links['main-menu_prentencollectie:result'] = array(
@@ -275,12 +436,18 @@ function thematic_menu_menu_default_menu_links() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('API');
+  t('About');
   t('Arts collection');
   t('Beekbergerwoud collectie');
   t('Beekbergerwoud collection');
   t('Bijzondere collecties');
+  t('Dashboard');
+  t('Data sets');
+  t('Datasets');
   t('Explore highlights');
   t('Extinct birds');
+  t('Over');
   t('Prentencollectie');
   t('Siebold collectie');
   t('Siebold collection');
