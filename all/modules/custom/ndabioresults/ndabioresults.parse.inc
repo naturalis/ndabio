@@ -773,8 +773,8 @@ function _parseSpecimensMap ($data) {
 		$d['unitID'] = _setUnitId($specimen->unitID);
 		$d['source'] = _getSourceNameBySourceCode($specimen->sourceSystem->code);
 		$d['assemblageID'] = _formatAssemblageId($specimen->assemblageID);
-		$s['recordBasis'] = $specimen->recordBasis;
-		$d['kindOfUnit'] = $specimen->kindOfUnit;
+		$s['recordBasis'] = isset($specimen->recordBasis) ? $specimen->recordBasis : null;
+		$d['kindOfUnit'] = isset($specimen->kindOfUnit) ? $specimen->kindOfUnit : null;
 		$d['taxonUrl'] = _getTaxonUrl($specimen);
 		$d['url'] = _setBasePath() . 'specimen/' . urlencode($d['unitID']);
 		$d['localityText'] = isset($specimen->gatheringEvent->localityText) ?

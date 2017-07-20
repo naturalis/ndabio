@@ -61,7 +61,7 @@
       } else {
 
         alert(
-          Drupal.t("Please, make sure that you complete at least one field and that it contains more then three characters.")
+          Drupal.t("Please, make sure that you complete at least one field containing at least three characters.")
         );
 
       }
