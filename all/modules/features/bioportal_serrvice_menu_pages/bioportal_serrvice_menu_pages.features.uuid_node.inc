@@ -20,8 +20,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
   'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
-  'created' => 1417189687,
-  'tnid' => 4,
+  'created' => 1493645348,
+  'tnid' => 3796,
   'translate' => 0,
   'uuid' => '046583ea-ed92-4f82-9641-f2821bea952a',
   'body' => array(
@@ -56,7 +56,8 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'date' => '2014-11-28 15:48:07 +0000',
+  'field_file' => array(),
+  'date' => '2017-05-01 13:29:08 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -90,10 +91,6 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
   'date' => '2014-12-12 12:23:44 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -128,11 +125,44 @@ function bioportal_serrvice_menu_pages_uuid_features_default_content() {
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-21 12:58:21 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Datasets',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'nl',
+  'created' => 1500543934,
+  'tnid' => 3790,
+  'translate' => 0,
+  'uuid' => '35464bbb-597f-4d33-97f5-be398cc7dec5',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>De volgende data sets zijn beschikbaar:</p>
+
+<ul>
+	<li><a href="sites/default/files/test.tar.gz">set 1</a></li>
+	<li><a href="sites/default/files/test.tar">set 2</a></li>
+	<li><a href="sites/default/files/test.zip">set 3</a></li>
+</ul>
+
+<p>&nbsp;</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'field_file' => array(),
+  'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -400,7 +430,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
-  'created' => 1417081488,
+  'created' => 1493645561,
   'tnid' => 411615,
   'translate' => 0,
   'uuid' => '400c73b8-5ad3-44eb-a513-c019e8ef8fce',
@@ -443,11 +473,45 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
+  'field_file' => array(),
+  'date' => '2017-05-01 13:32:41 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Data sets',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'en',
+  'created' => 1500543934,
+  'tnid' => 3790,
+  'translate' => 0,
+  'uuid' => '40aaf623-f183-4bc3-a362-5dedaf994571',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>Available data sets are:</p>
+
+<ul>
+	<li><a href="sites/default/files/test.tar.gz">set 1</a></li>
+	<li><a href="sites/default/files/test.tar">set 2</a></li>
+	<li><a href="sites/default/files/test.zip">set 3</a></li>
+</ul>
+
+<p>&nbsp;</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
   ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2014-11-27 09:44:48 +0000',
+  'field_file' => array(),
+  'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -482,62 +546,6 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
     ),
   ),
   'date' => '2014-12-12 12:23:33 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Over',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_page',
-  'language' => 'nl',
-  'created' => 1418379974,
-  'tnid' => 5,
-  'translate' => 0,
-  'uuid' => '5096646a-2b8b-421e-b079-cd59a510e839',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuur(historische) informatie: van basisgegevens van collectieobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis, de taxonomische data van <a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a> en de soortinformatie van het <a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlandse Soortenregister</a>, met behulp van de <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. Op deze manier wordt er een directe link gelegd tussen historische en actuele informatie.</p>
-
-<p>Momenteel is een omvangrijk deel van de Naturalis collecties via het Bioportal te vinden. Het gaat om miljoenen objecten, zowel specimens als multimedia. &nbsp;</p>
-
-<p>De informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van&nbsp;wetenschappelijk gegarandeerde kwaliteit samen zijn te raadplegen.</p>
-
-<p>Het BioPortal bevraagt via de NBA de databronnen van diverse organisaties:</p>
-
-<h2>Bronnen van het&nbsp;<a href="http://www.naturalis.nl" style="text-decoration: none;" target="_blank">Naturalis Biodiversity Center</a></h2>
-
-<ul>
-	<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
-	<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
-	<li><a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlandse Soortenregister</a>: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
-</ul>
-
-<h2>Bronnen van&nbsp;<a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a></h2>
-
-<ul>
-	<li><a href="http://www.catalogueoflife.org" target="_blank">Catalogue of Life</a>: taxonomische namenlijst van wereldwijd voorkomende soorten.</li>
-</ul>
-
-<p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
-
-<p>Vier hoogtepunten uit de Naturalis collecties worden speciaal uitgelicht in het portaal, waaronder de wereldberoemde&nbsp;<a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=nl&amp;back" style="text-decoration: none;" target="_blank">Siebold collectie</a>. Via het menu Bijzondere collecties zijn ze direct te bekijken.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2014-12-12 10:26:14 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -598,8 +606,8 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'en',
-  'created' => 1413895260,
-  'tnid' => 3,
+  'created' => 1493645561,
+  'tnid' => 3791,
   'translate' => 0,
   'uuid' => '794d5b17-da10-492e-839d-bbfce2ad70b4',
   'body' => array(
@@ -635,11 +643,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2014-10-21 12:41:00 +0000',
+  'date' => '2017-05-01 13:32:41 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -652,8 +656,8 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
-  'created' => 1418379970,
-  'tnid' => 4,
+  'created' => 1493645348,
+  'tnid' => 3796,
   'translate' => 0,
   'uuid' => '7b5e25e8-c9cb-49c0-b450-5d403222a1cc',
   'body' => array(
@@ -680,7 +684,8 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
-  'date' => '2014-12-12 10:26:10 +0000',
+  'field_file' => array(),
+  'date' => '2017-05-01 13:29:08 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -693,8 +698,8 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'nl',
-  'created' => 1418384571,
-  'tnid' => 3,
+  'created' => 1493645561,
+  'tnid' => 3791,
   'translate' => 0,
   'uuid' => '7c8af603-88eb-418e-a735-6822dd7fe7f0',
   'body' => array(
@@ -714,7 +719,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
 
 <ul>
 	<li><a href="http://www.naturalis.nl" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanische en zoölogische specimens, soortinformatie</li>
-	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2015</li>
+	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2016</li>
 	<li><a href="http://www.natura2000.nl" style="text-decoration:none;" target="_blank">Natura 2000</a>: ESRI-bestanden van natuurgebieden (Annemiek Adams)</li>
 	<li><a href="http://www.staatsbosbeheer.nl" style="text-decoration:none;" target="_blank">Staatsbosbeheer</a>: ESRI-bestanden van natuurgebieden (Jac Hakkens)</li>
 	<li><a href="https://www.natuurmonumenten.nl" style="text-decoration:none;" target="_blank">Vereniging Natuurmonumenten</a>: ESRI-bestanden van natuurgebieden (Rombout de Wijs)</li>
@@ -730,11 +735,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2014-12-12 11:42:51 +0000',
+  'date' => '2017-05-01 13:32:41 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -779,62 +780,6 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
     ),
   ),
   'date' => '2014-12-12 11:39:21 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'About',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_page',
-  'language' => 'en',
-  'created' => 1413985040,
-  'tnid' => 5,
-  'translate' => 0,
-  'uuid' => '9c021310-9a55-495b-b798-dbbc56a1c5bb',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to species and natural history, from basic data about collection objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitised details about the Naturalis collections, <a href="http://www.species2000.org/" style="text-decoration: none;" target="_blank">Species 2000</a> classification and species information from <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a>, using the <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Netherlands Biodiversity API (NBA)</a>. BioPortal directly links historical with present information.</p>
-
-<p>Currently, millions of Naturalis objects can be accessed through the BioPortal. This information will continue to be further extended with all the data linked together in the NBA, so that in the Netherlands we will be able to use a single website that enables us to consult a full range of digital sources, with a guaranteed level of scientific quality.</p>
-
-<p>Via the NBA, the BioPortal can access the data sources from multiple organisations:</p>
-
-<h2>Data sources from <a href="http://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a></h2>
-
-<ul>
-	<li>Zoology and Geology catalogues: zoological, paleontological, mineralogical and petrological specimen and multimedia objects</li>
-	<li>Botany catalogues: botanic specimen and multimedia objects</li>
-	<li><a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a>: taxonomic name lists with additional descriptions and multimedia of Dutch species</li>
-</ul>
-
-<h2>Data sources from <a href="http://www.species2000.org/" style="text-decoration:none;" target="_blank">Species 2000</a></h2>
-
-<ul>
-	<li><a href="http://www.catalogueoflife.org" target="_blank">Catalogue of Life</a>: taxonomic name lists of species occurring worldwide</li>
-</ul>
-
-<p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
-
-<p>Within the portal, special Naturalis collections will be spotlighted. Thanks to their own menu — Explore highlights — they are easily scrollable. For example, take a look at the world famous <a href="http://bioportal.naturalis.nl/nba/result?theme=siebold&amp;language=en" style="text-decoration:none;" target="_blank">Siebold collection</a>.</p>
-
-<div>&nbsp;</div>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2014-10-22 13:37:20 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -902,10 +847,6 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-22 13:22:53 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -919,7 +860,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
-  'created' => 1418379527,
+  'created' => 1493645348,
   'tnid' => 411615,
   'translate' => 0,
   'uuid' => 'e96f0452-3460-4202-964f-9451ae5a7aa9',
@@ -962,11 +903,12 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
       ),
     ),
   ),
+  'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
-  'date' => '2014-12-12 10:18:47 +0000',
+  'date' => '2017-05-01 13:29:08 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(

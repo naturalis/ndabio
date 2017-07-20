@@ -1,8 +1,8 @@
-name = searchtax
+name = Bioportal searchtax
 description = Taxonomy used to create the search forms
 core = 7.x
 package = Bioportal
-version = 7.x-1.6
+version = 7.x-1.7
 project = searchtax
 dependencies[] = ctools
 dependencies[] = features
