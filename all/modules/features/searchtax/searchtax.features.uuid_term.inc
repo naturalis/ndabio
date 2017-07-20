@@ -275,7 +275,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_scientificName',
     'description' => 'Scientific name',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 0,
     'uuid' => '19515d9c-2012-4f31-adab-0249626f3e23',
     'language' => 'und',
@@ -369,7 +369,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 'm_collectorsFieldNumber',
     'description' => 'Collectors field number',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 2,
     'uuid' => '1fb5261e-7b24-4bfe-b03f-35bb6e121354',
     'language' => 'und',
@@ -385,9 +385,6 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'path' => array(
-      'pathauto' => 1,
-    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectionfieldnumber',
@@ -405,7 +402,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 'm_sourceSystem',
     'description' => 'Source',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 1,
     'uuid' => '252b758f-e225-426d-96ac-b3b9f68f7637',
     'language' => 'und',
@@ -434,9 +431,6 @@ function searchtax_uuid_features_default_terms() {
           'format' => NULL,
         ),
       ),
-    ),
-    'path' => array(
-      'pathauto' => 1,
     ),
     'url_alias' => array(
       0 => array(
@@ -682,7 +676,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_collectionType',
     'description' => 'Collection name',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 7,
     'uuid' => '3a89190c-0b9a-4593-9557-3154b8a8042e',
     'language' => 'und',
@@ -1157,7 +1151,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 'm_scientificName',
     'description' => 'Scientific name',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 4,
     'uuid' => '60f93dbc-38d9-499f-a617-28539e8df31a',
     'language' => 'und',
@@ -1173,9 +1167,6 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'path' => array(
-      'pathauto' => 1,
-    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mscientificname',
@@ -1218,7 +1209,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 'm_genusOrMonomial',
     'description' => 'Genus',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 5,
     'uuid' => '618d5d30-d174-43d1-9345-d57654a4b03c',
     'language' => 'und',
@@ -1234,9 +1225,6 @@ function searchtax_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'path' => array(
-      'pathauto' => 1,
-    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgenusormonomial',
@@ -1499,7 +1487,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_sourceSystem',
     'description' => 'Source',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 6,
     'uuid' => '7d4df160-0941-49ae-9c74-30ba7d7372e2',
     'language' => 'und',
@@ -1529,9 +1517,6 @@ function searchtax_uuid_features_default_terms() {
         ),
       ),
     ),
-    'path' => array(
-      'pathauto' => 1,
-    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssourcesystem',
@@ -1553,7 +1538,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 'm_collectionType',
     'description' => 'Collection name',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 2,
     'uuid' => '7f03c683-b1d3-4cc5-aaca-4b7a24af3be9',
     'language' => 'und',
@@ -1582,9 +1567,6 @@ function searchtax_uuid_features_default_terms() {
           'format' => NULL,
         ),
       ),
-    ),
-    'path' => array(
-      'pathauto' => 1,
     ),
     'url_alias' => array(
       0 => array(
@@ -2131,7 +2113,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'n_infraspecificEpithet',
+          'value' => 's_infraspecificEpithet',
           'format' => NULL,
         ),
       ),
@@ -2264,7 +2246,7 @@ function searchtax_uuid_features_default_terms() {
     'field_ndasystem' => array(
       'und' => array(
         0 => array(
-          'value' => 'n_kingdom',
+          'value' => 's_kingdom',
           'format' => NULL,
         ),
       ),
@@ -2569,7 +2551,7 @@ function searchtax_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 't_sourceSystem',
     'description' => 'Source',
-    'format' => 'plain_text',
+    'format' => 'markdown',
     'weight' => 1,
     'uuid' => 'eff23bd4-46a4-4f1b-93cd-b8e506d20c11',
     'language' => 'und',
@@ -2591,9 +2573,6 @@ function searchtax_uuid_features_default_terms() {
           'format' => NULL,
         ),
       ),
-    ),
-    'path' => array(
-      'pathauto' => 1,
     ),
     'url_alias' => array(
       0 => array(
