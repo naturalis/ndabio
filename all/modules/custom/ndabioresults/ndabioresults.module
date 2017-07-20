@@ -1703,7 +1703,7 @@ function _getSpecimenDetails (&$data) {
 	}
 	// Fetch all specimens at once
 	if (isset($batch)) {
-		$remoteData = $client->specimen()->batchQuery($batch);
+		$remoteData = $client->specimen()->singleClientBatchQuery($batch);
 		$specimens = array_map('json_decode', $remoteData);
 		// Loop again over result and append the fetched specimen details
 		foreach ($data->resultSet as $i => $row) {
@@ -1744,7 +1744,7 @@ function _getTaxonDetails (&$data) {
 	}
 	// Fetch all specimens at once
 	if (isset($batch)) {
-		$remoteData = $client->taxon()->batchQuery($batch);
+		$remoteData = $client->taxon()->singleClientBatchQuery($batch);
 		$taxa = array_map('json_decode', $remoteData);
 		// Loop again over result and append the fetched specimen details
 		foreach ($data->resultSet as $i => $row) {

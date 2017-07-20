@@ -658,7 +658,8 @@ function _getStoredGeoShape ($jsonEncoded = false) {
         return $jsonEncoded ? json_encode($_SESSION['nbaSearch']['geoShape']) : 
         	$_SESSION['nbaSearch']['geoShape'];
     }
-	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid'])) {
+	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
+			$_SESSION['nbaSearch']['gid'] != -1) {
     	$client = _initBioPortalClient();
     	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
     	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
@@ -691,7 +692,7 @@ function _getStoredLocation () {
 }
 
 function _getStoredGid () {
-    if (isset($_SESSION['nbaSearch']['gid'])) {
+    if (isset($_SESSION['nbaSearch']['gid']) && $_SESSION['nbaSearch']['gid'] != -1) {
          return $_SESSION['nbaSearch']['gid'];
     }
     return null;
