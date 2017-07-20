@@ -7,18 +7,19 @@ function nba_dashboard_init()
 {
   $module_path = drupal_get_path('module', 'nba_dashboard');
 
-  drupal_add_js($module_path . '/nba_dashboard.js');
+  if('dashboard' === arg(0)) {
+    drupal_add_js($module_path . '/nba_dashboard.js');
   
-  drupal_add_js($module_path . '/js/nba-dashboard.js');
-  drupal_add_js($module_path . '/js/inline_templates.js');
-  drupal_add_js($module_path . '/js/d3.v3.min.js');
-  drupal_add_js($module_path . '/js/Donut3D.js');
-  drupal_add_js($module_path . '/js/topojson.v1.min.js');
+    drupal_add_js($module_path . '/js/nba-dashboard.js');
+    drupal_add_js($module_path . '/js/inline_templates.js');
+    drupal_add_js($module_path . '/js/d3.v3.min.js');
+    drupal_add_js($module_path . '/js/Donut3D.js');
+    drupal_add_js($module_path . '/js/topojson.v1.min.js');
 
-  drupal_add_css($module_path . '/nba_dashboard.css');
-  drupal_add_css($module_path . '/css/style.css');
-  drupal_add_css($module_path . '/css/inline_templates.css');
-  
+    drupal_add_css($module_path . '/nba_dashboard.css');
+    drupal_add_css($module_path . '/css/style.css');
+    drupal_add_css($module_path . '/css/inline_templates.css');
+  }
 }
 
 /* 
