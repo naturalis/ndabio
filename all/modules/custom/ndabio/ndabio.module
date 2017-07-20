@@ -670,8 +670,10 @@ function _getStoredGeoShape ($jsonEncoded = false) {
 
 function _isGeoSearch () {
 	return (isset($_SESSION['nbaSearch']['geoShape']) && 
-		!empty($_SESSION['nbaSearch']['geoShape'])) || 
-		(isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid'])); 
+			!empty($_SESSION['nbaSearch']['geoShape'])) || 
+		(isset($_SESSION['nbaSearch']['gid']) && 
+			!empty($_SESSION['nbaSearch']['gid']) && 
+			$_SESSION['nbaSearch']['gid'] != -1); 
 }
 
 function _getStoredMapCenter () {

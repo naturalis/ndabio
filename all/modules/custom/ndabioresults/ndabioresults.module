@@ -1966,6 +1966,8 @@ function _nbaSimpleSearch () {
     
     $pageBody = $pageHeader = '';
     $useNameResolution = true;
+    
+//p($_SESSION['nbaSearch']); die();
 	
 /*	
     foreach ($services as $service => $querySpec) {
