@@ -76,7 +76,7 @@ function nba_dataset_block_view($delta = '') {
  */
 function getNbaData() {
   $data = "<ul>";
-  foreach(glob(NBADATAFOLDER . '*.*') as $file) {
+  foreach(glob(NBADATAFOLDER . '*.zip') as $file) {
     $data .= "<li id='file'>" . 
                "<a href='" . NBADOWNLOADFOLDER . basename($file) . "'>"  . 
 	         basename($file) . 
