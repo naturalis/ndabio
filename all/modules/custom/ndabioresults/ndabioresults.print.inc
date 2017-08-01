@@ -542,14 +542,14 @@ function _printSpecimenMediaDetail ($data) {
         $output .= '<video src="' . $data['imgSrc'] . '" type="video/mp4" autoplay controls></video>';
     } else {
 	   $output .= $img;
-    }
 
-    if (strpos($data['imgSrc'], 'medialib') !== false) {
-    	$output .= 
+        if (strpos($data['imgSrc'], 'medialib') !== false) {
+       	   $output .= 
 	    	'<div class="property-list" style="margin-bottom: 1em;">' . 
 			 _printDL('<a href="' . str_replace('large', 'master', $data['imgSrc']) . '">
-				<i class="icon-arrow-right"></i>Download master image</a>') . 
+				<i class="icon-arrow-right"></i>' . t('Download master image') . '</a>') . 
     		'</div>';
+        }
     }
     
 	$output .= "<div class='property-list'>";
