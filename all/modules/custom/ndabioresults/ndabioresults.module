@@ -460,7 +460,7 @@ function _setGenericResultPageBackLink () {
 	if (isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
 		_setBackLink(
 			'result?' . http_build_query($_SESSION['nbaSearch']),
-			'Back to general results'
+			t('Back to general results')
 		);
 	} else {
 		_setBackLink('', 'Home');	

@@ -126,7 +126,24 @@ function ndabioresults_config_form($form, &$form_state) {
     '#description' => t('DEBUG: Url-encoded QuerySpec which can be used directly to query the NBA') . '<br />' . t('Default') . ': ' . NBADEBUGENCODED,
     '#required' => TRUE
   );
-  
+
+  $form['#submit'][] = 'ndabioresults_admin_settings_submit'; 
+  return system_settings_form($form);
+}
+
+
+/**
+ * Used to write nba base url (ndabioresults_config_baseurl) to text file
+ */
+function ndabioresults_admin_settings_submit($form, &$form_state) {
+  $baseurl = $form_state['values']['ndabioresults_config_baseurl'];
+
+  $nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
+  $handle = fopen($nbabasefile, "w");
+  fwrite($handle, $baseurl . "\n");
+  fclose($handle);
+
+  drupal_set_message(t('NBA base URL saved to text file:') . ' ' . $nbabasefile, 'status');
   return system_settings_form($form);
 }
 
