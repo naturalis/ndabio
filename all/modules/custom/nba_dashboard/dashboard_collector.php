@@ -41,11 +41,6 @@
 
 */
 
-	$tpl=new StdClass;
-	$tpl->singleNumberTable='<table class="single-number-table"><tr><th>%LABEL%</th></tr><tr><td class="number">%DATA%</td></tr></table>';
-	$tpl->noColorTextTable='<table class="no-color"><tr><th>%LABEL%</th></tr><tr><td>%DATA%</td></tr></table>';
-	$tpl->column='<div class="left-float">%ROW%</div>';
-	$tpl->row='<div id="r%ID%">%COLS%</div>';
 
 	/*
 	$iso3166 = [
@@ -158,7 +153,11 @@
 
 	function renderData( $data )
 	{
-		global  $tpl;
+		$tpl=new StdClass;
+		$tpl->singleNumberTable='<table class="single-number-table"><tr><th>%LABEL%</th></tr><tr><td class="number">%DATA%</td></tr></table>';
+		$tpl->noColorTextTable='<table class="no-color"><tr><th>%LABEL%</th></tr><tr><td>%DATA%</td></tr></table>';
+		$tpl->column='<div class="left-float">%ROW%</div>';
+		$tpl->row='<div id="r%ID%">%COLS%</div>';
 	
 		$rows=[];
 		$cols=[];
