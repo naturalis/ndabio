@@ -156,8 +156,9 @@
 	
 	*/
 
-	function renderData( $data )
+	function renderData( $data ) use ( $tpl )
 	{
+	
 		$rows=[];
 		$cols=[];
 		$cells=[];
