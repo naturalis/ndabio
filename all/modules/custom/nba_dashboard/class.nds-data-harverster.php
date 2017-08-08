@@ -28,7 +28,7 @@
 
 		public function setServer( $server )
 		{			
-			$this->cfg->server=trim(stri_replace('http://','',$server)," /");
+			$this->cfg->server=trim(str_ireplace('http://','',$server)," /");
 		}
 
 		public function setNdsInterface( $nds )
