@@ -33,7 +33,7 @@ function nba_dashboard_menu()
 
   $items['dashboard'] = array(
     'title' => 'Dashboard Page',
-    'description' => 'Some crazy stats ...',
+    'description' => 'NDS dashboard',
     'page callback' => 'basic_dashboard',
     'access arguments' => array('access content'),
     );
@@ -41,31 +41,18 @@ function nba_dashboard_menu()
   return $items;
 }
 
-
 function basic_dashboard()
 {
-	$content = array();
-
-	$content['raw_markup'][] = array(
+	$page = [
 		'#type' => 'markup',
-		'#markup' => 'demo',
-		'#prefix' => '<div id="dashboardContent">',
+		'#prefix' => '<div id="">',
 		'#suffix' => '</div>',
-	);
-	
-	return $content;
+		'#markup' => getCollectorData( '145.136.242.167:9200' )
+		//'#markup' => t('Available data sets are:') . '<br /><br />' . getNbaData() . '<br />' ,
+	];
 
-	return getCollectorData( '145.136.242.167:9200' );
-	/*
-	$content = array();
+	return $page;
 
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => 'demo',
-		'#prefix' => '<div id="dashboardContent">',
-		'#suffix' => '</div>',
-	);
-	*/
 }
 
 

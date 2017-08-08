@@ -5,8 +5,10 @@
 	
 	function getCollectorData( $esServer )
 	{
+		return $esServer;
+
 		$n=new ndsDataHarvester;
-		$n->setServer( '145.136.242.167:9200' );
+		$n->setServer( $esServer  );
 		$n->setNdsInterface( new ndsInterface );
 		$n->initialize();
 		$n->prepareQueries();
