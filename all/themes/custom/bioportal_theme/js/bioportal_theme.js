@@ -255,7 +255,7 @@
 
       // submit form on enter
       if (e.keyCode == 13) {
-        $("#ndabio-advanced-taxonomysearch").submit();
+	document.getElementById("ndabio-advanced-taxonomysearch").submit();
       }
 
     });

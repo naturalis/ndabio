@@ -718,7 +718,7 @@ th .icon-sort_sortable {
   -webkit-transition: all 1s linear; }
 
 .top-bar {
-  transition: max-height 500ms ease-in-out; }
+  transition: max-height 700ms ease-in-out; }
   .top-bar .text-help {
     display: none; }
 
