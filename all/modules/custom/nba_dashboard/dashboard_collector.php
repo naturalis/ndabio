@@ -154,10 +154,15 @@
 	function renderData( $data )
 	{
 		$tpl=new StdClass;
+
+		$tpl->tableTable='<table class="normal-table"><tr><th colspan="2">%LABEL%</th></tr>%DATA%</table>';
+		$tpl->tableTableRow='<tr><td class="%CLASS_LABEL%">%LABEL%</td><td class="%CLASS_DATA%">%DATA%</td></tr>';
+		$tpl->tableTableRowSpan='<tr><td colspan="2" class="%CLASS%">%DATA%</td></tr>';
 		$tpl->singleNumberTable='<table class="single-number-table"><tr><th>%LABEL%</th></tr><tr><td class="number">%DATA%</td></tr></table>';
 		$tpl->noColorTextTable='<table class="no-color"><tr><th>%LABEL%</th></tr><tr><td>%DATA%</td></tr></table>';
 		$tpl->column='<div class="left-float">%ROW%</div>';
 		$tpl->row='<div id="r%ID%">%COLS%</div>';
+		$tpl->scriptTags="<script>\n%DATA%\n</script>";
 	
 		$rows=[];
 		$cols=[];
@@ -167,6 +172,7 @@
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal taxa'),$data->totTaxon],$tpl->singleNumberTable);
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal multimedia'),$data->totMultiMedia],$tpl->singleNumberTable);
 
+		//
 		$d='<ul>
 				<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
 				<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
@@ -174,13 +180,29 @@
 			</ul>';
 
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Bronnen van het Naturalis Biodiversity Center'),$d],$tpl->noColorTextTable);
-		$cols[]=str_replace('%ROW%',implode("\n",$cells),$tpl->column);
 
+		//
+		$d=[];
+		$d[]=str_replace(['%CLASS%','%DATA%'],['pie','<canvas id="aggCollectionTypes" width="300" height="300"></canvas>'],$tpl->tableTableRowSpan);
+		foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $bucket)
+		{
+			$d[]=str_replace(['%CLASS_LABEL%','%LABEL%','%CLASS_DATA%','%DATA%'],['',$bucket['key'],'number',$bucket['doc_count']],$tpl->tableTableRow);
+		}
+				
+		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Collecties (top 10)'),implode("\n",$d)],$tpl->tableTable);
+
+		$d=[];
+		foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $key=>$bucket)
+		{
+			$d[]="aggCollectionTypesData.push({label:'" . $bucket['key'] . "',value:" . $bucket['doc_count'] . ", color: defaultColors[".$key."] });";
+		}
+		$cells[]=str_replace(['%DATA%'],[implode("\n",$d)],$tpl->scriptTags);
+			
+		$cols[]=str_replace('%ROW%',implode("\n",$cells),$tpl->column);
 		$cells=[];
 
 		$rows[]=str_replace(['%ID%','%COLS%'],[count($rows),implode("\n",$cols)],$tpl->row);
 		$cols=[];
-		$cells=[];
 
 		return implode("\n",$rows);
 		
@@ -189,31 +211,6 @@
     
 /*       
     <div id="r1">
-	    
-        <div class="left-float">
-	
-			-> hier
-    
-            <table class="normal-table">
-                <tr><th colspan="2">aggCollectionTypes (top 10)</th></tr>
-                <tr><td class="pie" colspan="2"><canvas id="aggCollectionTypes" width="300" height="300"></canvas></td></tr>
-                <?php
-                
-                    foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $bucket)
-                    {
-                        echo '<tr><td>' . $bucket['key'] . '</td><td class="number">' . $bucket['doc_count'] . '</td></tr>';
-                    }
-                ?>
-            </table>
-			<script>
-            <?php
-            foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $key=>$bucket)
-            {
-                echo "aggCollectionTypesData.push({label:'" . $bucket['key'] . "',value:" . $bucket['doc_count'] . ", color: defaultColors[".$key."] });\n";
-            }
-            ?>
-            </script>    
-        </div>
 
         <div class="left-float">
             <table class="normal-table no-color">
