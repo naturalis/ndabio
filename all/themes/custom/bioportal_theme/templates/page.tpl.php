@@ -272,7 +272,7 @@
             <div class="medium-3 columns external-links">
               <ul class="links">
                 <li>
-                  <a target="_blank" href="http://www.naturalis.nl">Naturalis.nl</a>
+		<a target="_blank" href="https://www.naturalis.nl/<?php global $language; print $language->language; ?>/">Naturalis.nl</a>
                 </li>
               </ul>
             </div>
