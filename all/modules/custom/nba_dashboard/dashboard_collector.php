@@ -3,22 +3,51 @@
 	include_once("class.nds-interface.php");
 	include_once("class.nds-data-harverster.php");
 	
-	function getCollectorData( $esServer )
-	{
-		return $esServer;
-
-		$n=new ndsDataHarvester;
-		$n->setServer( $esServer  );
-		$n->setNdsInterface( new ndsInterface );
-		$n->initialize();
-		$n->prepareQueries();
-		$n->runQueries();
-
-		return  $n->getData();
-	}
-
 /*
+<script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="js/Chart.js"></script>
+<script src="js/jqvmap/jquery.vmap.js"></script>
+<script src="js/jqvmap/maps/jquery.vmap.world.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 
+	to do:
+	<ul>
+		<li>change block titles and add explanaroty texts</li>
+		<li>dutch map that actually works</li>
+		<li>use same map-class for world & nl (and introduce tooltips etc.)</li>
+		<li>separate sections for siebld & dubois</li>
+		<li>specimen tree (based on CoL taxonomy, greyed out when no specimen, tooltip for speciment lists)</li>
+		<li>complete taxonrank list for "what constitutes a (sub)species?"</li>
+		<li>re-examine collectors (odd behaviour when only one or two collections)</li>
+		<li>storage units!</li>
+		<li>add legends to graphs</li>
+		<li>post-processing:
+			<ul>
+				<li>harmonize countries</li>
+				<li>logical collection-groupings</li>
+				<li>harmonize collectors' names (but how?)</li>
+			</ul>
+		</li>
+		<li>extra charts:
+			<ul>
+				<li>subdivision for botany?</li>
+				<li>subdivision for collections as double-banded donut</li>
+				<li>specimen over time, stacked per colletion</li>
+				<li>something useful that can be expressed in a bar chart</li>
+				<li>something useful that can be expressed in a radar plot (because they are cool)</li>
+			</ul>
+		</li>
+	</ul>
+
+*/
+
+	$tpl=new StdClass;
+	$tpl->singleNumberTable='<table class="single-number-table"><tr><th>%LABEL%</th></tr><tr><td class="number">%DATA%</td></tr></table>';
+	$tpl->noColorTextTable='<table class="no-color"><tr><th>%LABEL%</th></tr><tr><td>%DATA%</td></tr></table>';
+	$tpl->column='<div class="left-float">%ROW%</div>';
+	$tpl->row='<div id="r%ID%">%COLS%</div>';
+
+	/*
 	$iso3166 = [
 		"Netherlands" => "NL",
 		"NETHERLANDS" => "NL",
@@ -124,110 +153,45 @@
 		"Malaysia/Sarawak" => "MY",
 		"Malaysia/Malaya" => "MY"
 	];
+	
+	*/
 
+	function renderData( $data )
+	{
+		$rows=[];
+		$cols=[];
+		$cells=[];
 
-?>
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>NDS dashboard</title>
+		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal specimen'),$data->totSpecimen],$tpl->singleNumberTable);
+		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal taxa'),$data->totTaxon],$tpl->singleNumberTable);
+		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal multimedia'),$data->totMultiMedia],$tpl->singleNumberTable);
 
-	<script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="js/Chart.js"></script>
+		$d='<ul>
+				<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
+				<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
+				<li>Nederlandse Soortenregister: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
+			</ul>';
 
-<script src="js/jqvmap/jquery.vmap.js"></script>
-<script src="js/jqvmap/maps/jquery.vmap.world.js"></script>
+		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Bronnen van het Naturalis Biodiversity Center'),$d],$tpl->noColorTextTable);
+		$cols[]=str_replace('%ROW%',implode("\n",$cells),$tpl->column);
 
-</head>
-<body>
+		$cells=[];
 
-<script>
+		$rows[]=str_replace(['%ID%','%COLS%'],[count($rows),implode("\n",$cols)],$tpl->row);
+		$cols=[];
+		$cells=[];
 
-var defaultColors=['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'];
-var aggCollectionTypesData=[];
-var aggSpecimenCountPerProvinceNLData=[];
-var countryData={};
-var colors=[];
-
-</script>
-
-	<div class="full-width main-title">
-    	<img src="img/Naturalis_logo_footer_png.png" class="logo" />
-    	<h1>Naturalis BioPortal Dashboard</h1>
-	</div>
-    
-	<div class="full-width text-block">
-Het BioPortal is de nationale toegangspoort voor natuur(historische) informatie: van basisgegevens van collectieobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis, de taxonomische data van Species 2000 en de soortinformatie van het Nederlandse Soortenregister, met behulp van de Netherlands Biodiversity API (NBA). Op deze manier wordt er een directe link gelegd tussen historische en actuele informatie.
-	</div>
-
-	<br />
-    
-	<div class="full-width text-block">
-    	<div style="text-align:left">
-        	to do:
-	        <ul>
-        		<li>change block titles and add explanaroty texts</li>
-                <li>dutch map that actually works</li>
-                <li>use same map-class for world & nl (and introduce tooltips etc.)</li>
-                <li>separate sections for siebld & dubois</li>
-                <li>specimen tree (based on CoL taxonomy, greyed out when no specimen, tooltip for speciment lists)</li>
-                <li>complete taxonrank list for "what constitutes a (sub)species?"</li>
-                <li>re-examine collectors (odd behaviour when only one or two collections)</li>
-                <li>storage units!</li>
-                <li>add legends to graphs</li>
-                <li>post-processing:
-                	<ul>
-                    	<li>harmonize countries</li>
-                        <li>logical collection-groupings</li>
-                        <li>harmonize collectors' names (but how?)</li>
-                    </ul>
-                </li>
-                <li>extra charts:
-                	<ul>
-                        <li>subdivision for botany?</li>
-                        <li>subdivision for collections as double-banded donut</li>
-                    	<li>specimen over time, stacked per colletion</li>
-                        <li>something useful that can be expressed in a bar chart</li>
-                        <li>something useful that can be expressed in a radar plot (because they are cool)</li>
-                    </ul>
-				</li>
-		</div>
-	</div>
+		return implode("\n",$rows);
+		
+	}
 
     
-    <br />
-    
+/*       
     <div id="r1">
 	    
         <div class="left-float">
-            <table class="single-number-table">
-                <tr><th>totSpecimen</th></tr>
-                <tr><td class="number"><?php echo $data->totSpecimen; ?></td></tr>
-            </table>
-        
-            <table class="single-number-table">
-                <tr><th>totTaxa</th></tr>
-                <tr><td class="number"><?php echo $data->totTaxon; ?></td></tr>
-            </table>
-        
-            <table class="single-number-table">
-                <tr><th>totMultiMedia</th></tr>
-                <tr><td class="number"><?php echo $data->totMultiMedia; ?></td></tr>
-            </table>
-
-            <table class="no-color">
-                <tr><th>Bronnen van het Naturalis Biodiversity Center</th></tr>
-                <tr><td>
-                    <ul>
-                    	<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
-                    	<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
-                    	<li>Nederlandse Soortenregister: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
-					</ul>
-                </td></tr>
-            </table>
-
+	
+			-> hier
     
             <table class="normal-table">
                 <tr><th colspan="2">aggCollectionTypes (top 10)</th></tr>
@@ -511,3 +475,21 @@ $(document).ready(function(e)
 </html>
 
 */
+	function getCollectorData( $esServer )
+	{
+		$n=new ndsDataHarvester;
+		$n->setServer( $esServer  );
+		$n->setNdsInterface( new ndsInterface );
+		$n->initialize();
+		$n->prepareQueries();
+		$n->runQueries();
+
+		return  renderData( $n->getData() );
+	}
+
+
+	
+	
+
+
+	

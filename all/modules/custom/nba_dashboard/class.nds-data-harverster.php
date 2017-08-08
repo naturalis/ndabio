@@ -28,8 +28,6 @@
 
 		public function setServer( $server )
 		{			
-			//$this->cfg->server='145.136.242.167:9200';
-			//$this->cfg->server='localhost:44444';
 			$this->cfg->server=trim(stri_replace('http://','',$server)," /");
 		}
 
