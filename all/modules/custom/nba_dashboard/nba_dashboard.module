@@ -44,6 +44,17 @@ function nba_dashboard_menu()
 
 function basic_dashboard()
 {
+	$content = array();
+
+	$content['raw_markup'][] = array(
+		'#type' => 'markup',
+		'#markup' => 'demo',
+		'#prefix' => '<div id="dashboardContent">',
+		'#suffix' => '</div>',
+	);
+	
+	return $content;
+
 	return getCollectorData( '145.136.242.167:9200' );
 	/*
 	$content = array();
