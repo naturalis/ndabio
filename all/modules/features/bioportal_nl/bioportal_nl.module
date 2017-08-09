@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Bioportal NL feature.
- */
-
-include_once 'bioportal_nl.features.inc';

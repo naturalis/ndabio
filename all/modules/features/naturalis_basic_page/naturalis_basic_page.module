@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Naturalis Basic Page feature.
- */
-
-include_once 'naturalis_basic_page.features.inc';
