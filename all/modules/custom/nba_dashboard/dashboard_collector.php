@@ -153,6 +153,22 @@
 
 	function renderData( $data )
 	{
+
+return $twig->render('test.twig', array(
+    'pageTitle' => 'Welcome to Penguins R Us!',
+    'products' => array(
+        'Tuxedo',
+        'Bow tie',
+        'Polar bears',
+    ),
+));
+
+
+	
+	
+	
+		return;
+	
 		$tpl=new StdClass;
 
 		$tpl->tableTable='<table class="normal-table"><tr><th colspan="2">%LABEL%</th></tr>%DATA%</table>';
@@ -168,20 +184,25 @@
 		$cols=[];
 		$cells=[];
 
+		// 1st row, 1st column
+		// cell 1
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal specimen'),$data->totSpecimen],$tpl->singleNumberTable);
+
+		// cell 2
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal taxa'),$data->totTaxon],$tpl->singleNumberTable);
+
+		// cell 3
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Totaal aantal multimedia'),$data->totMultiMedia],$tpl->singleNumberTable);
 
-		//
+		// cell 4
 		$d='<ul>
 				<li>Zoology and Geology catalogues: zoölogische, palaeontologische, mineralogische en petrologische specimen- en multimedia objecten</li>
 				<li>Botany catalogues: botanische specimen- en multimedia objecten</li>
 				<li>Nederlandse Soortenregister: taxonomische namenlijst en bijbehorende beschrijvingen en multimedia van in Nederland voorkomende soorten.</li>
 			</ul>';
-
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Bronnen van het Naturalis Biodiversity Center'),$d],$tpl->noColorTextTable);
 
-		//
+		// cell 5
 		$d=[];
 		$d[]=str_replace(['%CLASS%','%DATA%'],['pie','<canvas id="aggCollectionTypes" width="300" height="300"></canvas>'],$tpl->tableTableRowSpan);
 		foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $bucket)
@@ -190,7 +211,6 @@
 		}
 				
 		$cells[]=str_replace(['%LABEL%','%DATA%'],[t('Collecties (top 10)'),implode("\n",$d)],$tpl->tableTable);
-
 		$d=[];
 		foreach((array)$data->aggCollectionTypes['collectionType']['buckets'] as $key=>$bucket)
 		{
@@ -201,6 +221,15 @@
 		$cols[]=str_replace('%ROW%',implode("\n",$cells),$tpl->column);
 		$cells=[];
 
+		// 1st row, 2nd column
+		// cell 1
+		
+		
+		
+		
+		
+		
+		
 		$rows[]=str_replace(['%ID%','%COLS%'],[count($rows),implode("\n",$cols)],$tpl->row);
 		$cols=[];
 
