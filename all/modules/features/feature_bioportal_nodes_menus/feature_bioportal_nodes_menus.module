@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Feature - Bioportal nodes & menus feature.
+ */
+
+include_once 'feature_bioportal_nodes_menus.features.inc';
