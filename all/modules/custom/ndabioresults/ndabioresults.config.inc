@@ -565,7 +565,10 @@ function nbaFieldMapping ()
                 ],
                 'sourceSystem' => [
                     'sourceSystem.code'
-                ]
+                ],
+            	'scientificName' => [
+            		'acceptedName.fullScientificName'
+            	]
             ],
         );
     }
