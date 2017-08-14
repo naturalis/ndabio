@@ -1,5 +1,7 @@
 <?php
 
+include_once( "dashboard_collector.php" );
+
 /**
  * Implements hook_init().
  */
@@ -31,7 +33,7 @@ function nba_dashboard_menu()
 
   $items['dashboard'] = array(
     'title' => 'Dashboard Page',
-    'description' => 'Some crazy stats ...',
+    'description' => 'NDS dashboard',
     'page callback' => 'basic_dashboard',
     'access arguments' => array('access content'),
     );
@@ -39,66 +41,30 @@ function nba_dashboard_menu()
   return $items;
 }
 
-
 function basic_dashboard()
 {
-	$content = array();
+	$page = [
+		'#type' => 'markup',
+		'#prefix' => '<div id="">',
+		'#suffix' => '</div>',
+		'#markup' => getCollectorData( '145.136.242.167:9200' )
+		//'#markup' => t('Available data sets are:') . '<br /><br />' . getNbaData() . '<br />' ,
+	];
 
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => 'demo',
-		'#prefix' => '<div id="dashboardContent">',
-		'#suffix' => '</div>',
-	);
+	return $page;
 
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <div class="serviceRow"> %CONTAINERS% </div>  -->',
-		'#prefix' => '<div class="inline-templates" id="serviceContainerRowTpl">',
-		'#suffix' => '</div>',
-	);
-	
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <div class="service%CLASS%" id="%ID%"><div class="outer"><div class="inner"></div></div></div> -->',
-		'#prefix' => '<div class="inline-templates" id="serviceContainerTpl">',
-		'#suffix' => '</div>',
-	);
-
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <h3>%TITLE%</h3><ol>%LIST%</ol> -->',
-		'#prefix' => '<div class="inline-templates" id="listTpl">',
-		'#suffix' => '</div>',
-	);
-
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <li>%ITEM%: %COUNT%</li> -->',
-		'#prefix' => '<div class="inline-templates" id="listItemsTpl">',
-		'#suffix' => '</div>',
-	);
-
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <h2>%COUNT%</h2><h3>%ITEM%</h3> -->',
-		'#prefix' => '<div class="inline-templates" id="singleItemTpl">',
-		'#suffix' => '</div>',
-	);
-
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <h3>%TITLE%</h3> <svg></svg><ul>%LIST%</ul> -->',
-		'#prefix' => '<div class="inline-templates" id="canvasListTpl">',
-		'#suffix' => '</div>',
-	);
-
-	$content['raw_markup'][] = array(
-		'#type' => 'markup',
-		'#markup' => '<!-- <h3>%TITLE%</h3><svg class="%SVG_CLASS%"></svg> -->',
-		'#prefix' => '<div class="inline-templates" id="canvasTpl">',
-		'#suffix' => '</div>',
-	);
-	
-  return $content;
 }
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+	
+
