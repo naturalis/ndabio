@@ -154,21 +154,7 @@
 	function renderData( $data )
 	{
 
-return $twig->render('test.twig', array(
-    'pageTitle' => 'Welcome to Penguins R Us!',
-    'products' => array(
-        'Tuxedo',
-        'Bow tie',
-        'Polar bears',
-    ),
-));
 
-
-	
-	
-	
-		return;
-	
 		$tpl=new StdClass;
 
 		$tpl->tableTable='<table class="normal-table"><tr><th colspan="2">%LABEL%</th></tr>%DATA%</table>';
