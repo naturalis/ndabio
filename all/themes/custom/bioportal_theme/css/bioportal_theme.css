@@ -280,16 +280,16 @@ html.js fieldset.collapsible .fieldset-legend {
 #edit-extended fieldset fieldset.collapsible .fieldset-legend {
   margin: 0;
   padding: 0; }
-#edit-extended fieldset fieldset.collapsible a {
+#edit-extended fieldset fieldset.collapsible a.fieldset-title {
   color: #ef6d14;
   text-transform: lowercase;
   font-weight: 400; }
-  #edit-extended fieldset fieldset.collapsible a:after {
+  #edit-extended fieldset fieldset.collapsible a.fieldset-title:after {
     font-family: 'App2';
     position: relative;
     top: 3px;
     content: ""; }
-#edit-extended fieldset fieldset.collapsible.collapsed a:after {
+#edit-extended fieldset fieldset.collapsible.collapsed a.fieldset-title:after {
   content: ""; }
 
 #edit-submit-bottom {
@@ -313,13 +313,28 @@ html.js fieldset.collapsible .fieldset-legend {
     color: #ef6d14;
     border-color: #ef6d14; }
 
-.to-help, .search-explanation {
+
+
+.to-help, .search-explanation, .search-explanation a {
   color: #ffffff;
   border-bottom: 1px dotted #b2b1a8;
   cursor: help !important;
   transition: color 300ms; }
   .to-help:hover, .search-explanation:hover {
     color: #009ee0; }
+
+.to-help {
+  cursor: pointer !important;
+}
+.form-type-textfield label {
+  cursor: default !important;
+}
+.form-type-radios label {
+  cursor: default !important;
+}
+.form-type-radios input {
+  cursor: pointer !important;
+}
 
 .row.collapse .geo-search-label {
   height: 50px;

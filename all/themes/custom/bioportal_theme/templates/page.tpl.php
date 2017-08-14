@@ -77,7 +77,8 @@
 
         <div id="intro">
 
-            <?php print t($intro, array(), array('langcode' => $language->language)); ?>
+            <?php $intro = "At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions."; ?>
+	    <p><?php print t($intro); ?></p>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
               <?php print t('Back'); ?>
