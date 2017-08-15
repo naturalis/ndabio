@@ -326,9 +326,6 @@ function nbaFieldMapping ()
                 'className' => [
                     'identifications.defaultClassification.className'
                 ],
-                'class' => [
-                    'identifications.defaultClassification.className'
-                ],
                 'family' => [
                     'identifications.defaultClassification.family'
                 ],
@@ -336,17 +333,10 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.genus',
                     'identifications.scientificName.genusOrMonomial'
                 ],
-                'genus' => [
-                    'identifications.defaultClassification.genus',
-                    'identifications.scientificName.genusOrMonomial'
-                ],
                 'kingdom' => [
                     'identifications.defaultClassification.kingdom'
                 ],
                 'localityText' => [
-                    'gatheringEvents.localityText'
-                ],
-                'locality' => [
                     'gatheringEvents.localityText'
                 ],
                 'order' => [
@@ -357,9 +347,6 @@ function nbaFieldMapping ()
                 ],
                 'phylum' => [
                     'identifications.defaultClassification.phylum'
-                ],
-                'registrationNumber' => [
-                    'unitID'
                 ],
                 'sex' => [
                     'sexes'
@@ -374,15 +361,7 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.specificEpithet',
                     'identifications.scientificName.specificEpithet'
                 ],
-                'species' => [
-                    'identifications.defaultClassification.specificEpithet',
-                    'identifications.scientificName.specificEpithet'
-                ],
                 'infraspecificEpithet' => [
-                    'identifications.defaultClassification.infraspecificEpithet',
-                    'identifications.scientificName.infraspecificEpithet'
-                ],
-                'subspecies' => [
                     'identifications.defaultClassification.infraspecificEpithet',
                     'identifications.scientificName.infraspecificEpithet'
                 ],
@@ -390,9 +369,6 @@ function nbaFieldMapping ()
                     'identifications.typeStatus'
                 ],
              	'vernacularName' => [
-                    'identifications.vernacularNames.name'
-                ],
-                'commonName' => [
                     'identifications.vernacularNames.name'
                 ],
              	'collectionType' => [
@@ -412,17 +388,10 @@ function nbaFieldMapping ()
                 'className' => [
                     'identifications.defaultClassification.className'
                 ],
-                'class' => [
-                    'identifications.defaultClassification.className'
-                ],
                 'collectorsFieldNumber' => [
                     'collectorsFieldNumber'
                 ],
                 'gatheringAgent' => [
-                    'gatheringEvent.gatheringPersons.fullName',
-                    'gatheringEvent.gatheringOrganizations.name'
-                ],
-                'collector' => [
                     'gatheringEvent.gatheringPersons.fullName',
                     'gatheringEvent.gatheringOrganizations.name'
                 ],
@@ -433,17 +402,10 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.genus',
                     'identifications.scientificName.genusOrMonomial'
                 ],
-                'genus' => [
-                    'identifications.defaultClassification.genus',
-                    'identifications.scientificName.genusOrMonomial'
-                ],
                 'kingdom' => [
                     'identifications.defaultClassification.kingdom'
                 ],
                 'localityText' => [
-                    'gatheringEvent.localityText'
-                ],
-                'locality' => [
                     'gatheringEvent.localityText'
                 ],
                 'order' => [
@@ -451,9 +413,6 @@ function nbaFieldMapping ()
                 ],
                 'phylum' => [
                     'identifications.defaultClassification.phylum'
-                ],
-                'registrationNumber' => [
-                    'unitID'
                 ],
                 'sourceSystem' => [
                     'sourceSystem.code'
@@ -465,10 +424,6 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.specificEpithet',
                     'identifications.scientificName.specificEpithet'
                 ],
-                'species' => [
-                    'identifications.defaultClassification.specificEpithet',
-                    'identifications.scientificName.specificEpithet'
-                ],
                 'infraspecificEpithet' => [
                     'identifications.defaultClassification.infraspecificEpithet',
                     'identifications.scientificName.infraspecificEpithet'
@@ -477,15 +432,7 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.subgenus',
                     'identifications.scientificName.subgenus'
                 ],
-                'subspecies' => [
-                    'identifications.defaultClassification.infraspecificEpithet',
-                    'identifications.scientificName.infraspecificEpithet'
-                ],
                 'vernacularName' => [
-                    'identifications.vernacularNames.name',
-                    'identifications.taxonomicEnrichments.vernacularNames.name'
-                 ],
-                'commonName' => [
                     'identifications.vernacularNames.name',
                     'identifications.taxonomicEnrichments.vernacularNames.name'
                 ],
@@ -503,9 +450,6 @@ function nbaFieldMapping ()
                 'className' => [
                     'defaultClassification.className'
                 ],
-                'class' => [
-                    'defaultClassification.className'
-                ],
                 'family' => [
                     'defaultClassification.family'
                 ],
@@ -513,11 +457,6 @@ function nbaFieldMapping ()
                     'defaultClassification.subgenus',
                     'acceptedName.subgenus',
                     'synonyms.subgenus'
-                ],
-                'genus' => [
-                    'defaultClassification.genus',
-                    'acceptedName.genusOrMonomial',
-                    'synonyms.genusOrMonomial',
                 ],
                 'genusOrMonomial' => [
                     'defaultClassification.genus',
@@ -535,29 +474,16 @@ function nbaFieldMapping ()
                     'acceptedName.specificEpithet',
                     'synonyms.specificEpithet'
                 ],
-                'species' => [
-                    'defaultClassification.specificEpithet',
-                    'acceptedName.specificEpithet',
-                    'synonyms.specificEpithet'
-                ],
                 'infraspecificEpithet' => [
                     'defaultClassification.infraspecificEpithet',
                     'acceptedName.infraspecificEpithet',
                     'synonyms.infraspecificEpithet'
-                ],
-                'subspecies' => [
-                    'defaultClassification.infraspecificEpithet',
-                    'acceptedName.infraspecificEpithet',
-                	'synonyms.infraspecificEpithet'	
                 ],
                 'taxonomicStatus' => [
                     'synonyms.taxonomicStatus',
                     'acceptedName.taxonomicStatus'
                 ],
                 'vernacularName' => [
-                    'vernacularNames.name'
-                ],
-                'commonName' => [
                     'vernacularNames.name'
                 ],
                 'kingdom' => [
@@ -575,6 +501,58 @@ function nbaFieldMapping ()
     return $var;
 }
 
+
+
+function nbaAdvancedSearchExceptions ()
+{
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+        $var = array(
+            'multimedia' => [
+                'localityText' => [
+                    'split' => true,
+                	'operator' => 'LIKE'
+                ],
+              	'vernacularName' => [
+                    'split' => false,
+                	'operator' => 'LIKE'
+                ],
+            ],
+            'specimen' => [
+                'collectorsFieldNumber' => [
+                    'split' => true,
+                	'operator' => 'MATCHES'
+                ],
+                'gatheringAgent' => [
+                    'split' => true,
+                	'operator' => 'MATCHES'
+                ],
+                'localityText' => [
+                    'split' => true,
+                	'operator' => 'MATCHES'
+                ],
+                'vernacularName' => [
+                    'split' => false,
+                 	'operator' => 'LIKE'
+                ],
+                'unitID' => [
+                    'split' => false,
+                 	'operator' => 'EQUALS_IC'
+                ],
+            ],
+            'taxon' => [
+                'vernacularName' => [
+                    'split' => false,
+                 	'operator' => 'LIKE'
+                ],
+            ],
+        );
+    }
+    return $var;
+}
+
+
+
 function nbaNameResolutionFieldMapping ()
 {
     $var = &drupal_static(__FUNCTION__);
@@ -584,28 +562,16 @@ function nbaNameResolutionFieldMapping ()
                 'genusOrMonomial' => [
                     'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
                 ],
-                'genus' => [
-                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
-                ],
                 'scientificName' => [
                     'identifications.taxonomicEnrichments.synonyms.fullScientificName'
                 ],
                 'specificEpithet' => [
                     'identifications.taxonomicEnrichments.synonyms.specificEpithet'
                 ],
-                'species' => [
-                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
-                ],
                 'infraspecificEpithet' => [
                     'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
                 ],
-                'subspecies' => [
-                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
-                ],
              	'vernacularName' => [
-                    'identifications.taxonomicEnrichments.vernacularNames.name'
-                ],
-                'commonName' => [
                     'identifications.taxonomicEnrichments.vernacularNames.name'
                 ],
             ],
@@ -613,22 +579,13 @@ function nbaNameResolutionFieldMapping ()
                 'genusOrMonomial' => [
                     'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
                 ],
-                'genus' => [
-                    'identifications.taxonomicEnrichments.synonyms.genusOrMonomial'
-                ],
                 'scientificName' => [
                     'identifications.taxonomicEnrichments.synonyms.fullScientificName'
                 ],
                 'specificEpithet' => [
                     'identifications.taxonomicEnrichments.synonyms.specificEpithet'
                 ],
-                'species' => [
-                    'identifications.taxonomicEnrichments.synonyms.specificEpithet'
-                ],
                 'infraspecificEpithet' => [
-                    'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
-                ],
-                'subspecies' => [
                     'identifications.taxonomicEnrichments.synonyms.infraspecificEpithet'
                 ],
              ],

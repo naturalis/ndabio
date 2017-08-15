@@ -863,13 +863,17 @@ function _filterQueryOperators (&$terms) {
 function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
-	$andOr = 'setAnd';
 	// Simple search
     if (isset($terms) && isset($terms['term'])) {
  		$terms = _setSimpleQueryTerms($service, $terms['term'], $terms);
 		// Always use name resolution for simple search
 		$useNameResolution = true;
 		$andOr = 'setOr';
+		$simpleSearch = true;
+	// Advanced search
+    } else {
+		$andOr = 'setAnd';
+		$simpleSearch = false;
 	}
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
@@ -926,24 +930,51 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
             		$path = str_replace('identifications', 'matchingIdentifications', $path);
             	}
 */            	
-            	// If operator has been set in url use this, otherwise use "best" version
-            	$statement[$path] = isset($operators[$field]) ?
-            		strtoupper($operators[$field]) : _getConditionOperator($service, $path, $value);
-            	$paths[$path] = [
-            		'operator' => $statement[$path],
-            		'values' => _stringToElements($value),
-            	]; 
-            }
+            	
+            	// Operator: difference between simple and advanced search
+            	// If operator has been set in url use this; overrules all other settings
+            	if (isset($operators[$field])) {
+            		$statement[$path] = strtoupper($operators[$field]);
+            	// Advanced search
+            	} else if (!$simpleSearch) {
+            		// Default
+            		$statement[$path] = 'STARTS_WITH_IC';
+            		// Select
+            		if (_isAdvancedSelect($field)) {
+            			$statement[$path] = 'EQUALS_IC';
+            		// Exception 
+            		} else if (isset(nbaAdvancedSearchExceptions()[$lookupService][$field])) {
+            			$statement[$path] = nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
+            		}
+            	// Simple search
+            	} else {
+            		$statement[$path] = _getConditionOperator($service, $path, $value);
+				}
+				
+				$paths[$path] = [
+					'operator' => $statement[$path],
+					'values' => _stringToElements($value), // Ua
+				];
+			}
+		}
+		
+		// Value: to split or not to split?
+		// Split simple search and specific advanced search fields
+		if ($simpleSearch || (isset(nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
+			nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
+			$value = _stringToElements($value);
         }
+        
         // Group associated statements
 		if (!empty($statement)) {
 			$statements[] = [
 				'statement' => $statement,
-				'value' => $value,
+				'value' => is_array($value) ? $value : [$value],
 				'operator' => $andOr,
 			];
 		}
     }
+    
     // Store paths for term highlighting
     if (isset($paths)) {
     	//$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
@@ -951,11 +982,12 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
     	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
     		
     }
+    
     // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
-		$elements = _stringToElements($d['value']);
+		$elements = $d['value'];
 		$condition = $subconditions = null;
 		foreach ($elements as $element) {			
 			$first = true;
@@ -1464,6 +1496,10 @@ function _setTitle ($head, $page = '') {
  * @return string The formatted output
 */
 function _nba_general_result_callback () {
+	
+	// BIOPORVTWO-262: always revert to specimen search when searching
+	_resetSpecimenService();
+	
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
@@ -1820,6 +1856,11 @@ function _getSpecimenService ($search = false) {
 	}
 	$_SESSION['nbaSpecimenService'] = 'specimen';
 	return $_SESSION['nbaSpecimenService'];
+}
+
+function _resetSpecimenService () {
+	$_SESSION['nbaSpecimenService'] = 'specimen';
+	return $_SESSION['nbaSpecimenService'];	
 }
 
 function _termsToQuerySpec ($service, $terms) {

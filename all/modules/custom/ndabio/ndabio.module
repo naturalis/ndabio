@@ -102,6 +102,19 @@ function advancedSelects () {
 }
 
 
+// Used to determine operator for advanced search
+function _isAdvancedSelect ($field) {
+	return in_array($field, [
+        'sourceSystem', 
+		'collectionType',
+		'typeStatus',
+		'sex',
+		'phaseOrStage',
+		'kingdom'			
+	]);
+}
+
+
 /*
  * Cannot use _getDistinctValues for select with different option-value pairs
  * (specifically sourceSystem, where option should be different from value)
