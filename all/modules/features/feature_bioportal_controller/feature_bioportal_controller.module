@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Feature - Bioportal controller feature.
- */
-
-include_once 'feature_bioportal_controller.features.inc';
