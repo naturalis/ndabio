@@ -1055,16 +1055,16 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	if ($logicalOperator == 'OR') {
 		foreach (array_values($conditions) as $i => $condition) {
 	    	if ($i == 0) {
-	    		$mainCondition = _appendCondition($condition);
+	    		$mainCondition = _setCondition($condition);
 	    		continue;
 	    	}
-	    	$mainCondition = _appendCondition($condition, $mainCondition);
+	    	$mainCondition = _setCondition($condition, $mainCondition);
 		}
     	$query->addCondition($mainCondition);
 	// AND search: all conditions are top level conditions controlled by logicalOperator
 	} else {
 		foreach (array_values($conditions) as $condition) {
-			$query->addCondition(_appendCondition($condition));
+			$query->addCondition(_setCondition($condition));
 		}
 	}
     // Add map condition if present
@@ -1097,7 +1097,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 }
 
 
-function _appendCondition ($condition, $appendTo = false) {
+function _setCondition ($condition, $appendTo = false) {
 	$andOr = is_array($condition) && isset($condition['operator']) ? 
 		$condition['operator'] : 'setOr';
 	if (!$appendTo) {
