@@ -183,6 +183,9 @@
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
         }
+        
+        // Hide help text
+        $("#search-help").hide();
 
       })
   }

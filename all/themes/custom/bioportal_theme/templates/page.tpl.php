@@ -181,6 +181,9 @@
       <?php print render($page['content']); ?>
 
       <?php if ($is_front): ?>
+	    <div class="small-10 large-6 large-offset-2 columns" id="search-help">
+			<?php print t('Click arrow for advanced search'); ?>
+		</div>
         <div id="banner-geographical-search">
           <a href="<?php global $base_path; print $base_path; ?>geographic-search?language=<?php global $language; print $language->language; ?>">
             <h3><?php print t("Geographic search"); ?><i class="icon-arrow-right"></i></h3>
