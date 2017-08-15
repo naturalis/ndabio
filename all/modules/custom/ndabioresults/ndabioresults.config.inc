@@ -406,7 +406,8 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.kingdom'
                 ],
                 'localityText' => [
-                    'gatheringEvent.localityText'
+                    'gatheringEvent.localityText',
+                    //'gatheringEvent.locality'
                 ],
                 'order' => [
                     'identifications.defaultClassification.order'
@@ -444,6 +445,10 @@ function nbaFieldMapping ()
             	],
              	'theme' => [
             		'theme'
+            	],
+            	'kindOfUnit' => [
+            		'recordBasis',
+            		'kindOfUnit'
             	]
             ],
             'taxon' => [

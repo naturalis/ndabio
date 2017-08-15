@@ -351,6 +351,13 @@ function _printSpecimenDetail ($data) {
                 
 			    $output .= _printDL(ucfirst(_translateNdaField('gatheringAgents')),
 			        _printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
+			    
+			    // BIOPORVTWO-33
+			    if ((!isset($value['localityText']) || empty($value['localityText'])) && 
+			    	(isset($value['locality']) && !empty($value['locality']))) {
+			    	$value['localityText'] = $value['locality'];
+			    }
+			    
 			    $output .= _printDL(ucfirst(_translateNdaField('localityText')),
                     _printValue(isset($value['localityText']) ? $value['localityText'] : ''));
 
