@@ -410,7 +410,7 @@ function nbaFieldMapping ()
                 ],
                 'localityText' => [
                     'gatheringEvent.localityText',
-                    //'gatheringEvent.locality'
+                    'gatheringEvent.locality'
                 ],
                 'order' => [
                     'identifications.defaultClassification.order'
