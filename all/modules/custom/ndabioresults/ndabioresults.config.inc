@@ -376,6 +376,9 @@ function nbaFieldMapping ()
             	],
              	'theme' => [
             		'theme'
+            	],
+            	'license' => [
+            		'license'
             	]
             ],
             'specimen' => [

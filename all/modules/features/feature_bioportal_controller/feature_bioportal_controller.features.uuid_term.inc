@@ -1619,7 +1619,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => '--hide--',
     'description' => '--hide--',
     'format' => NULL,
-    'weight' => 11,
+    'weight' => 12,
     'uuid' => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1959,7 +1959,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'omnisearch',
     'description' => 'term',
     'format' => NULL,
-    'weight' => 83,
+    'weight' => 84,
     'uuid' => '7a6d1b8b-574f-4dfb-b74b-e4ea17e9d3e5',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2416,7 +2416,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'extended',
     'description' => 'extended',
     'format' => NULL,
-    'weight' => 84,
+    'weight' => 85,
     'uuid' => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2826,6 +2826,38 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         'alias' => 'nba2text/recordbasis',
         'language' => 'und',
       ),
+    ),
+  );
+  $terms[] = array(
+    'name' => 'm_license',
+    'description' => 'License',
+    'format' => 'markdown',
+    'weight' => 10,
+    'uuid' => 'c272d971-f1bc-4728-8b79-ad8b62d232c8',
+    'language' => 'und',
+    'i18n_tsid' => 0,
+    'vocabulary_machine_name' => 'search',
+    'field_ndadatatype' => array(),
+    'field_ndageorelevance' => array(
+      'und' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+    ),
+    'field_ndasystem' => array(),
+    'field_ndavalues' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mlicense',
+        'language' => 'und',
+      ),
+    ),
+    'parent' => array(
+      0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),
   );
   $terms[] = array(
@@ -3550,7 +3582,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => '--more--',
     'description' => '--more--',
     'format' => NULL,
-    'weight' => 10,
+    'weight' => 11,
     'uuid' => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
     'language' => 'und',
     'i18n_tsid' => 0,

@@ -99,6 +99,8 @@ function advancedSelects () {
         	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'sexes'));
         $nbaAdvancedSelects['m_kingdom'] =
         	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
+        $nbaAdvancedSelects['m_license'] =
+        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'license'));
     }
     return $nbaAdvancedSelects;
 }
@@ -120,7 +122,8 @@ function _isAdvancedSelect ($field) {
 		'sex',
 		'phaseOrStage',
 		'kingdom',
-		'kindOfUnit'
+		'kindOfUnit',
+		'license'
 	]);
 }
 
