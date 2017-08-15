@@ -149,6 +149,10 @@ function _parseTaxa ($data, $options) {
 		$output['paginator'] = 
 			_getPaginator('specimen', $output['total'], _getPaginatorOffset($service));
 	}
+	// Media link
+	if (in_array('mediaLink', $options)) {
+		$output['mediaLink'] = $data->mediaLink;
+	}
 	
 	_addDebugMessage('Parsing taxa', _getTimer($timer));
 	
@@ -862,6 +866,11 @@ function _parseSpecimens ($data, $options = []) {
 		$output['paginator'] = 
 			_getPaginator($service, $output['total'], _getPaginatorOffset($service));
 	}
+	// Media link
+	if (in_array('mediaLink', $options)) {
+		$output['mediaLink'] = $data->mediaLink;
+	}
+	
 	
 	_addDebugMessage('Parsing specimens', _getTimer($timer));
 	

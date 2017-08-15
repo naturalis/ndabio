@@ -337,7 +337,8 @@ function nbaFieldMapping ()
                     'identifications.defaultClassification.kingdom'
                 ],
                 'localityText' => [
-                    'gatheringEvents.localityText'
+                    'gatheringEvents.localityText',
+                	'gatheringEvents.locality'	
                 ],
                 'order' => [
                     'identifications.defaultClassification.order'
@@ -369,8 +370,9 @@ function nbaFieldMapping ()
                     'identifications.typeStatus'
                 ],
              	'vernacularName' => [
-                    'identifications.vernacularNames.name'
-                ],
+                    'identifications.vernacularNames.name',
+                    'identifications.taxonomicEnrichments.vernacularNames.name'
+             	],
              	'collectionType' => [
             		'collectionType'
             	],
@@ -379,7 +381,30 @@ function nbaFieldMapping ()
             	],
             	'license' => [
             		'license'
-            	]
+            	], 
+            		
+            	// BIOPORVTWO-257
+                'gatheringAgent' => [
+                    'gatheringEvents.gatheringPersons.fullName',
+                    'gatheringEvents.gatheringOrganizations.name'
+                ],
+                'subgenus' => [
+                    'identifications.scientificName.subgenus',
+                    'identifications.defaultClassification.subgenus',
+                    'identifications.taxonomicEnrichments.synonyms.subgenus'
+                ],
+            		
+ /*           	// Nog toevoegen aan NBA...
+            		
+            	'kindOfUnit' => [
+            		'recordBasis',
+            		'kindOfUnit'
+            	],
+            	'collectorsFieldNumber' => [
+                    'collectorsFieldNumber'
+                ],
+
+ */           		
             ],
             'specimen' => [
                 'geoShape' => [
@@ -601,7 +626,6 @@ function nbaNameResolutionFieldMapping ()
     }
     return $var;
 }
-
 
 
 function nameHits ()

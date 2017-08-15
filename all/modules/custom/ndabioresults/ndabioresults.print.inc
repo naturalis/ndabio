@@ -132,6 +132,7 @@ function _printTaxa ($data) {
     //$output = _markUp($output);
 
     $output .= _printShowAll($data);
+    $output .= _printMediaLink($data);
     $output .= _printPaginator($data);
 
     return $output;
@@ -201,6 +202,7 @@ function _printSpecimens ($data) {
 	$output .= "</tbody></table>";
 
     $output .= _printShowAll($data);
+    $output .= _printMediaLink($data);
     $output .= _printPaginator($data);
 
     return $output;
@@ -1783,14 +1785,26 @@ function printSpecimenMediaDetail ($data) {
  * @return string Formatted output
  */
 function _printShowAll ($data) {
-    $output = '';
     if (!isset($data['showAll']) || empty($data['showAll'])) {
-        return $output;
+        return null;
     }
     $output = '<div class="show-all"><a href="' . $data['showAll'] . '">' .
         '<i class="icon-arrow-right"></i>'.
-        t('Show all') . ' ' . _formatNumber($data['total']) . ' '. t('results') . '</a></div>';
+        t('Show all') . ' ' . _formatNumber($data['total']) . ' '. 
+    	t('results') . '</a></div>';
     return $output;
+}
+
+function _printMediaLink ($data) {
+    if (!isset($data['mediaLink']) || empty($data['mediaLink'])) {
+        return null;
+    }
+    $output = '<div class="show-all"><a href="' . $data['mediaLink']['url'] . '">' .
+        '<i class="icon-arrow-right"></i>'.
+        t('Show all') . ' ' . _formatNumber($data['mediaLink']['total']) . ' '. 
+    	t('media items for this query') . '</a></div>';
+    return $output;
+	
 }
 
 

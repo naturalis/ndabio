@@ -1600,6 +1600,7 @@ function _nbaAdvancedSearch () {
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
             } 
+            
             // Trim ? scientific names from specimen
             if ($service == 'names.specimens') {
             	$query->setGroupFilter(_setFilterRejectEmptyGenus());
@@ -1620,11 +1621,38 @@ function _nbaAdvancedSearch () {
 				
             // Save service-specific query terms to session; used for navigation
             _setQueryTerms($service);
+            
+            // Check if multimedia exists for this query
+            if ($service != 'multimedia' && _allTermsExistInMultimediaService($terms)) {
+            	$query = _buildQuery('multimedia', $terms, $useNameResolution);
+            	$associatedReference = 'associated' . ucfirst(_normaliseServiceName($service)) . 
+            		'Reference';
+            	$condition = 
+            		new Condition($associatedReference, 'NOT_EQUALS');
+            	$query
+            		->addCondition($condition)
+            		->setSize(0);
+				
+            	$timer = _setTimer();
+
+            	$data = json_decode($client->multimedia()->setQuerySpec($query)->query());
+            	
+            	_addDebugMessage($service . ' media query', _getTimer($timer));
+            	
+            	if (isset($data->totalSize) && $data->totalSize > 0) {
+            		$mediaLinks[$service] = [
+            			'total' => $data->totalSize,
+            			'url' => _setBasePath() . 'result/multimedia/' .
+							http_build_query(_getQueryTerms($service)) . '&' . 
+            				$associatedReference . '=null&' .
+            				$associatedReference . 'Operator=NOT_EQUALS'
+            		];
+            	}
+            }
         }
     }
     
     $pageBody = $pageHeader = '';
-    
 
     if (_isGeoSearch()) {
 		$area = !empty(_getStoredLocation()) ? _getStoredLocation() : t('area drawn on map');
@@ -1654,19 +1682,34 @@ function _nbaAdvancedSearch () {
 	}
 	
 	if (!empty($remoteData['specimen'])) {
-		$data = json_decode($remoteData['specimen']); 
-		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
+		$data = json_decode($remoteData['specimen']);
+		$data->mediaLink = isset($mediaLinks['specimen']) ?
+			$mediaLinks['specimen'] : null;
+		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll', 'mediaLink']));
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
 		$data = json_decode($remoteData['names.taxa']); 
-		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
+		$data->mediaLink = isset($mediaLinks['names.taxa']) ?
+			$mediaLinks['names.taxa'] : null;
+		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll', 'mediaLink']));
 	}
 
 	return $pageHeader . _printDebug() . 
 		(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
 }
 
+
+function _allTermsExistInMultimediaService ($terms) {
+	foreach ($terms as $field => $value) {
+		if (!in_array($field, searchFlags())) {
+			if (!isset(nbaFieldMapping()['multimedia'][$field])) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
 
 function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	$client = _setClient('names.specimens');
@@ -1828,6 +1871,12 @@ function _getQueryTerms ($service, $search = false) {
     }
 	if (!$terms) {
 		return false;
+	}
+	// Reset "null" to null to allow searching for missing values
+	foreach ($terms as $field => $value) {
+		if ($value == "null") {
+			$terms[$field] = null;
+		}
 	}
 	// Both geoShape and gid set; unset first
 	if (isset($terms['gid']) && !empty($terms['gid']) &&
