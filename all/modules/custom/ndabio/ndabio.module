@@ -1113,7 +1113,7 @@ function ndabio_omnisearch_form() {
     '#title_display' => 'invisible',
     '#nowrapper' => TRUE,
     '#id' => "edit-term",
-    '#attributes' => array( 'name' => 'term')
+    '#attributes' => array('name' => 'term', 'placeholder' => t('e.g. species name or locality')),
    );
 
   $form['omnisearch']['submit'] = array(
