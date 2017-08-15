@@ -1286,7 +1286,8 @@ function _nba_specimen_result_callback ($search = false) {
 		$query->setFields(
 			array_merge(_getSearchPaths($service),
 			[
-	    		'sourceSystemId',
+	    		'unitID',
+				'sourceSystemId',
 	    		'recordBasis',
 	    		'kindOfUnit',
 	    		'preparationType',
