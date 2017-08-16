@@ -1078,6 +1078,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
     if (isset($terms['size']) && !empty($terms['size'])) {
         $query->setSize($terms['size']);
     }
+    // Regular sort
     if (isset($terms['sort']) && !empty($terms['sort'])) {
     	$sortPaths = array_map('trim', explode(',', $terms['sort']));
    		$sortDirections = array_map('trim', explode(',', $terms['sortDirection']));
@@ -1086,8 +1087,8 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
    		}
         $query->setSortFields($sort);
     }
-    // Only apply groupSort to specimen by taxon
-    if ($lookupService == 'specimen' && isset($terms['groupSort']) && !empty($terms['groupSort']) && 
+    // groupSort
+    if (isset($terms['groupSort']) && !empty($terms['groupSort']) && 
     	$query->getQuerySpecType() == 'GroupByScientificNameQuerySpec') {
     	$query->setGroupSort($terms['groupSort']);
     }
@@ -1645,8 +1646,7 @@ function _nbaAdvancedSearch () {
             			'total' => $data->totalSize,
             			'url' => _setBasePath() . 'result/multimedia/' .
 							http_build_query(_getQueryTerms($service)) . '&' . 
-            				$associatedReference . '=&' .
-            				$associatedReference . 'Operator=NOT_EQUALS'
+            				$associatedReference . '=&' . $associatedReference . 'Operator=NOT_EQUALS'
             		];
             	}
             }

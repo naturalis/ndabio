@@ -666,6 +666,7 @@ function nameHits ()
 				'acceptedName.infraspecificEpithet',
 				'acceptedName.fullScientificName',
 			],
+/*
 			'names.specimens' => [
 				'specimens.matchingIdentifications.defaultClassification.genus',
 				'specimens.matchingIdentifications.scientificName.genusOrMonomial',
@@ -688,6 +689,7 @@ function nameHits ()
 				'taxa.acceptedName.infraspecificEpithet',
 				'taxa.acceptedName.fullScientificName',
 			], 
+*/
 		);
 	}
 	return $var;
@@ -765,22 +767,32 @@ function sortOptions ()
 					'path' => 'groupSort=count_asc'
 				],
 			],
-			'names.taxa' => [
+			'taxon' => [
 				t('relevance') => [
-					'path' => 'score',
-					'direction' => null
+					'path' => 'sort=score'
 				],
 				t('name') . ' [A-Z]' => [
-					'path' => 'taxa.acceptedName.genusOrMonomial,' . 
-						'taxa.acceptedName.specificEpithet,' . 
-						'taxa.acceptedName.infraspecificEpithet',
-					'direction' => 'asc,asc,asc'
+					'path' => 'sort=acceptedName.genusOrMonomial,' . 
+						'acceptedName.specificEpithet,' . 
+						'acceptedName.infraspecificEpithet&' .
+						'sortDirection=asc,asc,asc'
 				],
 				t('name') . ' [Z-A]' => [
-					'path' => 'taxa.acceptedName.genusOrMonomial,' . 
-						'taxa.acceptedName.specificEpithet,' . 
-						'taxa.acceptedName.infraspecificEpithet',
-					'direction' => 'desc,desc,desc'
+					'path' => 'sort=acceptedName.genusOrMonomial,' . 
+						'acceptedName.specificEpithet,' . 
+						'acceptedName.infraspecificEpithet&' .
+						'sortDirection=desc,desc,desc'
+				],
+			],
+			'names.taxa' => [
+				t('relevance') => [
+					'path' => 'sort=score'
+				],
+				t('name') . ' [A-Z]' => [
+					'path' => 'groupSort=name_asc'
+				],
+				t('name') . ' [Z-A]' => [
+					'path' => 'groupSort=name_desc'
 				],
 			],
 		];
