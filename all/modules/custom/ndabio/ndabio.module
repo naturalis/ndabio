@@ -1023,7 +1023,10 @@ function ndabio_advanced_taxonomysearch() {
         '#type' => 'fieldset',
         '#theme' => 'ndabio_omnisearch',
         '#nowrapper' => TRUE,
-        '#attributes' => array( 'class' => array('fieldset-omnisearch'))
+        '#attributes' => array( 'class' => array('fieldset-omnisearch')),
+      );
+      $form[$sysname]['description'] = array(
+        '#markup' => '<div class="click-arrow">' . t('Click arrow for advanced search') . '</div>'
       );
 
       $form[$sysname]['omnisearch']['term'] = array(

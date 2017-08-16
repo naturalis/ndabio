@@ -77,6 +77,14 @@ button, .button {
 .background-gray-9 {
   background-color: #333333; }
 
+form#ndabio-advanced-taxonomysearch div.click-arrow {display:none;}
+body.front form#ndabio-advanced-taxonomysearch div.click-arrow {
+  color: #4D4D4D;
+  display: inherit;
+  font-size: 13px;
+  margin-left: 200px;
+  margin-top: -15px;}
+
 #naturalis-header #title-and-slogan {
   position: relative;
   top: 0px;
