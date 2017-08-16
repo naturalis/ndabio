@@ -738,13 +738,13 @@ function sortOptions ()
 				t('specimen') . ' [Z-A]' => [
 					'path' => 'sort=unitID&sortDirection=desc'
 				],
-				t('species') . ' [A-Z]' => [
+				t('scientific name') . ' [A-Z]' => [
 					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
 						'identifications.scientificName.infraspecificEpithet&' .
 						'sortDirection=asc,asc,asc'
 				],
-				t('species') . ' [Z-A]' => [
+				t('scientific name') . ' [Z-A]' => [
 					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
 						'identifications.scientificName.infraspecificEpithet&' .
@@ -752,10 +752,10 @@ function sortOptions ()
 				]
 			],
 			'names.specimens' => [
-				t('species') . ' [A-Z]' => [
+				t('scientific name') . ' [A-Z]' => [
 					'path' => 'groupSort=name_asc'
 				],
-				t('species') . ' [Z-A]' => [
+				t('scientific name') . ' [Z-A]' => [
 					'path' => 'groupSort=name_desc'
 				],
 				t('specimen count') . ' [9-0]' => [

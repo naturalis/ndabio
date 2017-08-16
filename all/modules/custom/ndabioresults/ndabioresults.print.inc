@@ -179,7 +179,7 @@ function _printSpecimens ($data) {
     if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
 			'<a href="' . _resetUrl() . '&service=taxon&groupSort=name_asc">' . 
-			t('Display by taxon') . "</a></div>\n<div class='sort-options'>" . 
+			t('Display by scientific name') . "</a></div>\n<div class='sort-options'>" . 
 			_printSortOptions('specimen') . "</div>\n</div>\n";
     }
     
