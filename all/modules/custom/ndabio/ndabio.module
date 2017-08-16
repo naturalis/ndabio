@@ -1023,10 +1023,7 @@ function ndabio_advanced_taxonomysearch() {
         '#type' => 'fieldset',
         '#theme' => 'ndabio_omnisearch',
         '#nowrapper' => TRUE,
-        '#attributes' => array( 'class' => array('fieldset-omnisearch')),
-      );
-      $form[$sysname]['description'] = array(
-        '#markup' => '<div class="click-arrow">' . t('Click arrow for advanced search') . '</div>'
+	'#attributes' => array( 'class' => array('fieldset-omnisearch') ),
       );
 
       $form[$sysname]['omnisearch']['term'] = array(
@@ -1037,7 +1034,9 @@ function ndabio_advanced_taxonomysearch() {
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
         '#id' => "edit-term",
-        '#attributes' => array( 'name' => 'term')
+	'#attributes' => array( 'name' => 'term', 
+                                'placeholder' => t('e.g. species name or locality')),
+        '#description' =>  t('Click arrow for advanced search'), 
        );
 
       $form[$sysname]['omnisearch']['submit'] = array(
