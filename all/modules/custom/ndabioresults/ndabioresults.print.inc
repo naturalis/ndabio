@@ -422,7 +422,7 @@ function _printMultimediaPreview ($data) {
 		foreach ($data['items'] as $i => $media) {
 			$src = $media['src'];
 			if ($media['format'] == 'video/mp4') {
-				$base_path . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+				$src = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
 			}
 			$output .= '<a class="polaroid" href="' . $media['url'] . '">' .
 				'<div class="polaroid-image" style="background-image: url(' . $src . ');" alt=""></div>';
