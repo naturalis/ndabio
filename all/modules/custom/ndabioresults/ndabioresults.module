@@ -1645,7 +1645,7 @@ function _nbaAdvancedSearch () {
             			'total' => $data->totalSize,
             			'url' => _setBasePath() . 'result/multimedia/' .
 							http_build_query(_getQueryTerms($service)) . '&' . 
-            				$associatedReference . '=null&' .
+            				$associatedReference . '=&' .
             				$associatedReference . 'Operator=NOT_EQUALS'
             		];
             	}
@@ -1873,9 +1873,9 @@ function _getQueryTerms ($service, $search = false) {
 	if (!$terms) {
 		return false;
 	}
-	// Reset "null" to null to allow searching for missing values
+	// Reset empty strings to null to allow searching for missing values
 	foreach ($terms as $field => $value) {
-		if ($value == "null") {
+		if ($value === '') {
 			$terms[$field] = null;
 		}
 	}
