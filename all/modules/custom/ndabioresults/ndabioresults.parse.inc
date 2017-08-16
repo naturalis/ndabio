@@ -693,7 +693,14 @@ function _formatScientificName ($object) {
 
 function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks = false) {
 	$paths = _getQueryPaths($service);
-	foreach ($row->item->identifications as $j => $identification) {
+	
+	// Sort data by scientific name group first
+	$identifications = $row->item->identifications;
+	usort ($identifications, function($a, $b) {
+	    return strcmp($a->scientificName->genusOrMonomial, $b->scientificName->genusOrMonomial);
+	});
+	
+	foreach ($identifications as $j => $identification) {
 		$name = [];
 		// Elements in regular scientific name elements
 		foreach (scientificNameElements() as $i => $element) {
