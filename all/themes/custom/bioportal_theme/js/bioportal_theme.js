@@ -185,7 +185,7 @@
         }
         
         // Hide help text
-        $("#search-help").hide();
+        $(".fieldset-omnisearch .description").hide();
 
       })
   }
