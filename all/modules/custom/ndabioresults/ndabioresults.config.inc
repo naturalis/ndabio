@@ -760,6 +760,9 @@ function sortOptions ()
 				]
 			],
 			'names.specimens' => [
+				t('relevance') => [
+					'path' => 'sort=score'
+				],
 				t('scientific name') . ' [A-Z]' => [
 					'path' => 'groupSort=name_asc'
 				],

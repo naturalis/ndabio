@@ -1303,12 +1303,13 @@ function _nba_specimen_result_callback ($search = false) {
 			]	
 		));
 		
-		*/
-		
 		// Default to names alphabetical in case no sort is set
 		if (!isset($terms['groupSort'])) {
 			$query->setGroupSort('name_asc');
 		}
+		
+		*/
+		
 		
 		$query->setGroupFilter(_setFilterRejectEmptyGenus());
 		
