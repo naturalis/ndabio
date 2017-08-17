@@ -477,6 +477,9 @@ function nbaFieldMapping ()
             	'phaseOrStage' => [
             		'phaseOrStage'	
             	],
+            	'unitID' => [
+            		'unitID'	
+            	],
             	'sex' => [
             		'sex'
             	],

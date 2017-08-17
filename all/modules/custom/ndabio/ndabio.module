@@ -164,6 +164,40 @@ function _setNbaGid ($gid = false) {
 }
 
 
+function _getAdvancedFieldOperator ($fieldName) {
+	if (isset(advancedSelects()[$fieldName])) {
+		return 'EQUALS_IC';
+	}
+	$tmp = explode('_', $fieldName);
+	$field = $tmp[1];
+	$service = 'specimen';
+	if ($tmp[0] == 'm') {
+		$service = 'specimen';
+	} else if ($tmp[0] == 't') {
+		$service = 'taxon';
+	}
+	if (isset(nbaAdvancedSearchExceptions()[$service][$field])) {
+		return nbaAdvancedSearchExceptions()[$service][$field]['operator'];
+	}
+	return 'STARTS_WITH_IC';
+}
+
+function _getAdvancedFieldSplitInfo ($fieldName) {
+	$tmp = explode('_', $fieldName);
+	$field = $tmp[1];
+	$service = 'specimen';
+	if ($tmp[0] == 'm') {
+		$service = 'specimen';
+	} else if ($tmp[0] == 't') {
+		$service = 'taxon';
+	}
+	if (isset(nbaAdvancedSearchExceptions()[$service][$field])) {
+		return var_export(nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
+	}
+	return 'false';
+}
+
+
 /*
  * $field = name of form field
  * $taxonomy = Drupal values for taxonomy (old situation): indicates if --all-- option should be printed
@@ -902,7 +936,11 @@ function ndabio_advanced_taxonomysearch() {
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
                         '#inline'    => TRUE,
-                    );
+			      		  '#attributes' => array(
+			      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
+			      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      		  )
+                        );
                 }
 
                   else {
@@ -912,7 +950,12 @@ function ndabio_advanced_taxonomysearch() {
                       '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
-		      '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+		      		  '#attributes' => array(
+		      		  	 'data-clear' => "", 
+		      		  	 'name' => $subchildsysname,
+		      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
+		      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+		      		  )
                     );
                   }
                 }
@@ -949,7 +992,12 @@ function ndabio_advanced_taxonomysearch() {
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
-                        '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+                        '#attributes' => array(
+                        	'data-clear' => "", 
+                        	'name' => $subchildsysname,
+			      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
+			      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+                        )
                     );
                 }
               else {
@@ -961,7 +1009,12 @@ function ndabio_advanced_taxonomysearch() {
                   '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
-                  '#attributes'    => array('data-clear' => "", 'name' => $subchildsysname )
+                  '#attributes'    => array(
+                  	  'data-clear' => "", 
+                  	  'name' => $subchildsysname,
+			      	  'data-operator' => _getAdvancedFieldOperator($subchildsysname),
+			      	  'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+                  )
                 );
               }
             }
@@ -1001,7 +1054,12 @@ function ndabio_advanced_taxonomysearch() {
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
-                        '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
+                        '#attributes' => array(
+                        	'data-clear' => "", 
+                        	'name' => $subchildsysname,
+			      	        'data-operator' => _getAdvancedFieldOperator($subchildsysname),
+			      	        'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+                        )
                     );
                 }
 
@@ -1013,7 +1071,12 @@ function ndabio_advanced_taxonomysearch() {
               '#default_value' => (!empty($_SESSION['nbaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
               '#required'      => FALSE,
               '#inline'        => TRUE,
-              '#attributes'    => array('data-clear' => "", 'name' => $childsysname)
+              '#attributes'    => array(
+              	 'data-clear' => "", 
+              	 'name' => $childsysname,
+			     'data-operator' => _getAdvancedFieldOperator($childsysname),
+			     'data-split' => _getAdvancedFieldSplitInfo($childsysname)
+              )
             );
           }
         }
