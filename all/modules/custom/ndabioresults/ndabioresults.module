@@ -2122,6 +2122,10 @@ function _nbaSimpleSearch () {
         if ($service == 'names.specimens') {
             $query->setGroupFilter(_setFilterRejectEmptyGenus());
         } 
+ 
+		_addDebugMessage('service ' . $service, $query);
+        
+ 		/*
  		$client->setQuerySpec($query);
 		
 		_addDebugMessage('service ' . $service, $client);
@@ -2134,13 +2138,29 @@ function _nbaSimpleSearch () {
 		_addDebugMessage($service . ' query', _getTimer($timer));
 			
 		
+		*/
+ 		
+ 		$multiQuery[_normaliseServiceName($service)] = [
+ 			'queryType' => strpos($service, 'names') === false ? 
+ 				'query' : 'groupByScientificName',
+ 			'querySpec' => $query
+ 		];
+ 		
 		// Save service-specific query to session;
 		// used for further navigation
 		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
 		//_setQueryTerms($service);
     }
     
-     
+    
+    
+ 	// Batch query
+ 	$timer = _setTimer();
+ 
+    $remoteData = $client->multiClientBatchQuery($multiQuery);
+		
+ 	_addDebugMessage('batch query', _getTimer($timer));
+      
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "h1");
 
