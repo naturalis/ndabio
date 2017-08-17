@@ -175,11 +175,12 @@
             $_bottom_submit.css("opacity","1")
           });
 
-        // Exchange value with placeholder value
+    	// Exchange value with placeholder value
         if ($_omnibox.val() !== ""){
           $_omnibox.attr("placeholder", $_omnibox.val()  );
           $_omnibox.val("");
-        } else {
+        } else if ($_omnibox.attr("placeholder").val() != placeholder) {
+        	
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
         }

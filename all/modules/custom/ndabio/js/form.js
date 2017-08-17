@@ -161,31 +161,33 @@
 			var location = '';
 			var geoShape = '';
 			var category = '';
-
-			// From form, drawn area
-			if (selectedShape) {
-				geoShape = getShapeGeometry();
-			// From selected area or previous search
-			} else if (feature) {
-				// From previous search, drawn area
-				if (feature.geometry.type == 'Polygon') {
-					geoShape = JSON.stringify(feature.geometry);
-				} else {
-					var target = $("#search-areas-target a.active").first();
-					// From form, selected area
-					if (target.length > 0) {
-						gid = target.attr("id");
-						location = target.text();
-						$("#search-areas-types ul li").each(function(i){
-							if ($(this).hasClass('active')) {
-								category = i;
-							}
-						});
-					// From previous search, selected area
+			
+			if ($("body").hasClass("page-geographic-search")) {
+				// From form, drawn area
+				if (selectedShape) {
+					geoShape = getShapeGeometry();
+				// From selected area or previous search
+				} else if (feature) {
+					// From previous search, drawn area
+					if (feature.geometry.type == 'Polygon') {
+						geoShape = JSON.stringify(feature.geometry);
 					} else {
-						gid = storedGid;
+						var target = $("#search-areas-target a.active").first();
+						// From form, selected area
+						if (target.length > 0) {
+							gid = target.attr("id");
+							location = target.text();
+							$("#search-areas-types ul li").each(function(i){
+								if ($(this).hasClass('active')) {
+									category = i;
+								}
+							});
+						// From previous search, selected area
+						} else {
+							gid = storedGid;
+						}
+						geoShape = '';
 					}
-					geoShape = '';
 				}
 			}
 

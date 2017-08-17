@@ -734,7 +734,8 @@ function ndabio_advanced_taxonomysearch() {
 
     // Set default values for searchagain
     $expandedFlag = $storedGid = -1;
-
+    $placeholder = t('e.g. species name or locality');
+    
     $loadold = 0;
     if (!empty($_GET['searchagain'])) {
         if (intval($_GET['searchagain']) == 1) {
@@ -763,7 +764,7 @@ function ndabio_advanced_taxonomysearch() {
         drupal_add_js('var storedZoomLevel = ' . _getStoredZoomLevel() . ';', 'inline');
         drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
         drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
-
+        
         drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
         drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
             variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
@@ -775,6 +776,7 @@ function ndabio_advanced_taxonomysearch() {
     }
     $searchtype = array(0 => t('And'), 1 => t('Or'));
 
+    drupal_add_js('var placeholder = "' . $placeholder . '";', 'inline');
     drupal_add_js("var expandAdvanced = $expandedFlag;", 'inline');
     drupal_add_js(
         "jQuery(function() { jQuery('#edit-term').focus(); });",
@@ -1034,8 +1036,10 @@ function ndabio_advanced_taxonomysearch() {
         '#title_display' => 'invisible',
         '#nowrapper' => TRUE,
         '#id' => "edit-term",
-	'#attributes' => array( 'name' => 'term', 
-                                'placeholder' => t('e.g. species name or locality')),
+		'#attributes' => array(
+			'name' => 'term', 
+        	'placeholder' => $placeholder
+		),
         '#description' =>  t('Click arrow for advanced search'), 
        );
 
@@ -1115,7 +1119,9 @@ function ndabio_omnisearch_form() {
     '#title_display' => 'invisible',
     '#nowrapper' => TRUE,
     '#id' => "edit-term",
-    '#attributes' => array('name' => 'term', 'placeholder' => t('e.g. species name or locality')),
+    '#attributes' => array(
+    	'name' => 'term', 
+    	'placeholder' => t('e.g. species name or locality')),
    );
 
   $form['omnisearch']['submit'] = array(
