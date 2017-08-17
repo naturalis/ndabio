@@ -474,10 +474,16 @@ function nbaFieldMapping ()
              	'theme' => [
             		'theme'
             	],
+            	'phaseOrStage' => [
+            		'phaseOrStage'	
+            	],
+            	'sex' => [
+            		'sex'
+            	],
             	'kindOfUnit' => [
             		'recordBasis',
             		'kindOfUnit'
-            	]
+            	],
             ],
             'taxon' => [
                 'className' => [

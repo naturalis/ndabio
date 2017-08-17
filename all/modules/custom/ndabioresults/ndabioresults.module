@@ -2113,10 +2113,6 @@ function _nbaSimpleSearch () {
 		$client = _setClient($service);
     	// Cap results
 		$terms['size'] = maxResultsInitial();
-		// Set default sort
-		if ($service == 'names.specimens' && !isset($terms['groupSort'])) {
-			$terms['groupSort'] = 'name_asc';
-		}
 		// Build QuerySpec; use name resolution
 		$query = _buildQuery($service, $terms, $useNameResolution);
 		// Trim specimens from taxon query
