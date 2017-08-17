@@ -2311,7 +2311,7 @@ function _printValue ($value) {
 
 
 function _printDebug () {
-    if (nbaDebug() == 1 && !empty(_getDebug())) {
+    if ((user_access('administer site configuration') || nbaDebug() == 1) && !empty(_getDebug())) {
 	    drupal_add_js(
 	        "jQuery(function() { 
 				jQuery('#nba-debug-link').click(function(){ 
