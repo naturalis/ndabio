@@ -76,7 +76,7 @@ function _getOptimalOperators ($fields) {
 			$r[$path] = $field->type . ' | IN';
 		}
 		if ($field->type == 'keyword') {
-			foreach (['LIKE', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
+			foreach (['LIKE', 'STARTS_WITH_IC', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
 				if (in_array($operator, $field->allowedOperators)) {
 					$r[$path] = $field->type . ' | ' . $operator;
 					break;

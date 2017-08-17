@@ -1260,6 +1260,8 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 				// Operator determines if we have a hit: 
 				// LIKE...
 				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
+				// STARTS_WITH_IC
+					($operator == 'STARTS_WITH_IC' && stripos($result, $value) === 0) ||						
 				// ... MATCHES or EQUALS_IC	
 					(($operator == 'MATCHES' || $operator == 'EQUALS_IC') && 
 						preg_match("/\b$value\b/i", $result)) ||

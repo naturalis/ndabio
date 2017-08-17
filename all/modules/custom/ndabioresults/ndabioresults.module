@@ -992,14 +992,18 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 		foreach ($elements as $element) {			
 			$first = true;
 			foreach ($statement as $path => $operator) {
+				// Search for empty value
+				if ($element == '') {
+					$operator = 'EQUALS';
+					$element = null;
 				// Option "all" from select
-				if ($element == 'NOT_NULL') {
+				} else if ($element == 'NOT_NULL') {
 					$operator = 'NOT_EQUALS';
 					$element = null;
 				}
-				// Test if LIKE is still allowed; if not change to MATCHES
+				// Test if LIKE is still allowed; if not change to STARTS_WITH_IC
 				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
-					$operator = 'MATCHES';
+					$operator = 'STARTS_WITH_IC';
 				}
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
@@ -1284,6 +1288,8 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	if ($service == 'names.specimens') {
 		
+		/*
+		
 		$query->setFields(
 			array_merge(_getSearchPaths($service),
 			[
@@ -1297,6 +1303,8 @@ function _nba_specimen_result_callback ($search = false) {
 				'identifications.taxonomicEnrichments.taxonId'
 			]	
 		));
+		
+		*/
 		
 		// Default to names alphabetical in case no sort is set
 		if (!isset($terms['groupSort'])) {
@@ -1578,7 +1586,7 @@ function _nbaAdvancedSearch () {
     $services['names.taxa'] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
     $services['multimedia'] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
     $services[_getSpecimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
-     
+    
     // Test if anything has been posted; if not return with error message
     if (!_dataPosted($services)) {
         _printOops();

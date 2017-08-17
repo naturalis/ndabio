@@ -3,6 +3,8 @@
   // ---------------------------------------------------------
   // SEARCH FORM: form validation
   // ---------------------------------------------------------
+	
+	/*
 
   $("#ndabio-advanced-taxonomysearch").submit(function(){
 
@@ -64,6 +66,80 @@
           Drupal.t("Please, make sure that you complete at least one field containing at least three characters.")
         );
 
+      }
+
+      return false;
+
+    } else {
+
+      preloader();
+
+    }
+
+  });
+} }; })(jQuery, Drupal);
+
+*/
+	
+	// Rewritten
+	
+	 $("#ndabio-advanced-taxonomysearch").submit(function(){
+
+    var $_omnibox              = $("#edit-term");
+
+    var isValid = true;
+    var dataEntered = false;
+    var minStringLength = 3;
+
+
+      // If there's a textfield containing less than three characters:
+      $(this).find('input[type=text], select').each(function(){
+        str_val = $(this).val().trim();
+        if (str_val != "" && str_val.length < minStringLength) {
+        	isValid = false;
+        } else if (str_val != "") {
+        	dataEntered = true;
+        }
+      });
+
+      // If the simple search is entered, but too short:
+      str_val = $($_omnibox).val().trim();
+      if(str_val != "" && str_val.length < minStringLength){
+    	  isValid = false;
+      }
+
+      // If we're on the geo-search page
+      if ( $("body").hasClass("page-geographic-search") ){
+    	  
+    	  if (selectedShape || feature) {
+     		  dataEntered = true;
+    		  isValid = true;
+    	  }
+      }
+
+
+
+    // Done validating, let's face the consequences:
+
+    if (!isValid || !dataEntered){
+
+      if ( $("body").hasClass("page-geographic-search") ){
+
+        alert(
+          Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
+        );
+
+      } else if (!dataEntered) {
+
+        alert(
+          Drupal.t("Please make sure that you enter at least one search field.")
+        );
+
+      } else {
+          
+    	  alert(
+              Drupal.t("Search fields should contain at least " + minStringLength + " characters.")
+          );
       }
 
       return false;

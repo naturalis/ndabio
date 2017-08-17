@@ -544,7 +544,7 @@ function nbaAdvancedSearchExceptions ()
             'multimedia' => [
                 'localityText' => [
                     'split' => true,
-                	'operator' => 'LIKE'
+                	'operator' => 'MATCHES'
                 ],
               	'vernacularName' => [
                     'split' => false,
