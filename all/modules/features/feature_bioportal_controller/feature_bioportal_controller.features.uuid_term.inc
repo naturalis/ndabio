@@ -29,6 +29,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/torder',
@@ -58,6 +59,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/syoungestchronstratigraphicname',
@@ -72,7 +74,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_gatheringAgent',
     'description' => 'Collector',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 6,
     'uuid' => '0c93b002-cd16-400c-a6ec-1ba08a2c929e',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -87,6 +89,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgatheringagent',
@@ -106,6 +109,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/license',
@@ -132,6 +136,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/more',
@@ -161,6 +166,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tclassname',
@@ -180,6 +186,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/family-0',
@@ -206,6 +213,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/syoungestbiostratigraphicname',
@@ -220,7 +228,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_expertOrganisation',
     'description' => 'Expert organisation',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 9,
     'uuid' => '12f0c8ad-39a8-47f3-a80e-1c7c01de88e3',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -235,6 +243,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mexpertorganisation',
@@ -249,7 +258,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_collectingStartDate',
     'description' => 'Collecting start date',
     'format' => NULL,
-    'weight' => 4,
+    'weight' => 7,
     'uuid' => '15626ca4-34f4-4636-be98-8c2aebea662a',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -264,6 +273,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectingstartdate',
@@ -283,6 +293,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourceinstitutionid',
@@ -299,6 +310,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/localitytext',
@@ -311,7 +323,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'description' => '<p>Locality</p>
 ',
     'format' => 'plain_text',
-    'weight' => 1,
+    'weight' => 4,
     'uuid' => '1874f59c-0c59-487f-b2ab-7f308a89771a',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -326,6 +338,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mlocalitytext',
@@ -338,7 +351,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_scientificName',
-    'description' => 'Scientific name',
+    'description' => 'Scientific name ',
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '19515d9c-2012-4f31-adab-0249626f3e23',
@@ -355,6 +368,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Scientific name',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -391,6 +412,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/hide',
@@ -410,6 +432,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/specific-name',
@@ -421,7 +444,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_taxonomicStatus',
     'description' => 'Taxonomic status',
     'format' => NULL,
-    'weight' => 7,
+    'weight' => 10,
     'uuid' => '1f7aa388-bcd7-4703-8422-04831ca75f2a',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -436,6 +459,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mtaxonomicstatus',
@@ -450,7 +474,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_collectorsFieldNumber',
     'description' => 'Collectors field number',
     'format' => 'markdown',
-    'weight' => 2,
+    'weight' => 5,
     'uuid' => '1fb5261e-7b24-4bfe-b03f-35bb6e121354',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -465,6 +489,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectionfieldnumber',
@@ -488,6 +513,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/specificepithet',
@@ -504,6 +530,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/family',
@@ -544,6 +571,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msourcesystem',
@@ -558,7 +586,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_phylum',
     'description' => 'Phylum',
     'format' => NULL,
-    'weight' => 4,
+    'weight' => 1,
     'uuid' => '28029cae-53b0-45c5-9a5f-aafac926a6e8',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -573,6 +601,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mphylum',
@@ -592,6 +621,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/basis-record',
@@ -608,6 +638,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/phylum',
@@ -648,6 +679,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msex',
@@ -655,7 +687,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
+      0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
   );
   $terms[] = array(
@@ -668,6 +700,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourceid',
@@ -684,6 +717,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collecting-start-date',
@@ -724,6 +758,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tkingdom',
@@ -753,6 +788,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tgenusormonomial',
@@ -782,6 +818,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sunitid',
@@ -811,6 +848,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/taxa',
@@ -840,6 +878,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mfamily',
@@ -883,6 +922,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -905,6 +945,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -916,6 +957,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/classname',
@@ -932,6 +974,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/institution',
@@ -958,6 +1001,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/soldestchronstratigraphicname',
@@ -977,6 +1021,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/kindofunit',
@@ -1003,6 +1048,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssubgenus',
@@ -1032,6 +1078,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -1053,7 +1100,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_phaseOrStage',
     'description' => 'Phase or stage',
     'format' => 'plain_text',
-    'weight' => 0,
+    'weight' => 2,
     'uuid' => '44d14c91-3410-470f-988d-7fb0634772c5',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1082,6 +1129,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mphaseorstage',
@@ -1089,7 +1137,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'parent' => array(
-      0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
+      0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
   );
   $terms[] = array(
@@ -1111,6 +1159,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tvernacularname',
@@ -1140,6 +1189,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tsubgenus',
@@ -1169,6 +1219,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/texpert',
@@ -1188,6 +1239,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/genusormonomial',
@@ -1204,6 +1256,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/institution-0',
@@ -1220,6 +1273,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/otherspecimens-0',
@@ -1236,6 +1290,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/preparation-method',
@@ -1252,6 +1307,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/infraspecificepithet',
@@ -1264,7 +1320,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'description' => 'Younest biostratigraphic name
 ',
     'format' => 'plain_text',
-    'weight' => 14,
+    'weight' => 17,
     'uuid' => '548c7327-9d2e-40b9-bb85-44548a4bd103',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1279,6 +1335,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mbiostratigraphicattributiontypeyoung',
@@ -1309,6 +1366,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Common name',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -1331,7 +1396,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'description' => 'Multimedia title
 ',
     'format' => 'full_html',
-    'weight' => 0,
+    'weight' => 3,
     'uuid' => '55be0171-11c8-43e8-8b31-d69a1e0e0dbc',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1346,6 +1411,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/munitid',
@@ -1375,6 +1441,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -1421,6 +1488,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sphaseorstage',
@@ -1450,6 +1518,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/more-0',
@@ -1469,6 +1538,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/unitid',
@@ -1480,7 +1550,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_infraspecificEpithet',
     'description' => 'Infraspecific name',
     'format' => 'plain_text',
-    'weight' => 7,
+    'weight' => 4,
     'uuid' => '5d26d474-beeb-49a7-9405-7707474c4bf4',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1502,6 +1572,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/minfraspecificepithet',
@@ -1521,6 +1592,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sourcesystemid',
@@ -1547,6 +1619,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mscientificname',
@@ -1561,7 +1634,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_subgenus',
     'description' => 'subgenus',
     'format' => NULL,
-    'weight' => 8,
+    'weight' => 11,
     'uuid' => '61104e9f-e32a-4e22-bbaa-18a563f2abfc',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1576,6 +1649,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msubgenus',
@@ -1605,6 +1679,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgenusormonomial',
@@ -1634,6 +1709,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/hide-0',
@@ -1653,6 +1729,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/specimentypestatus',
@@ -1686,6 +1763,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/multimedia',
@@ -1700,7 +1778,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_order',
     'description' => 'Order',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 3,
     'uuid' => '69161391-770f-4bff-87f4-316c302d0aec',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1715,6 +1793,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/morder',
@@ -1729,7 +1808,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_biostratigraphicAttributionTypeOld',
     'description' => 'Oldest biostratigraphic name',
     'format' => NULL,
-    'weight' => 13,
+    'weight' => 16,
     'uuid' => '6c7cd901-140e-4ea6-bd8b-64ae7535d3de',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1744,6 +1823,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mbiostratigraphicattributiontypeold',
@@ -1763,6 +1843,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/genus',
@@ -1779,6 +1860,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/title',
@@ -1795,6 +1877,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sexes',
@@ -1811,6 +1894,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/class',
@@ -1827,6 +1911,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/creator',
@@ -1843,6 +1928,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sitecoordinates',
@@ -1869,6 +1955,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -1886,7 +1973,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_kingdom',
     'description' => 'Kingdom',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 0,
     'uuid' => '7908bd90-4e9e-4ff3-ae81-250317acf131',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1915,6 +2002,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mkingdom',
@@ -1945,6 +2033,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mvernacularname',
@@ -1974,6 +2063,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -2009,6 +2099,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssourcesystem',
@@ -2060,6 +2151,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectiontype',
@@ -2079,6 +2171,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/phaseorstage',
@@ -2095,6 +2188,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/description',
@@ -2111,6 +2205,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/preparationtype',
@@ -2127,6 +2222,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/otherspecimens',
@@ -2143,6 +2239,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'collector',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/gatheringagents',
@@ -2159,6 +2266,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/source',
@@ -2175,6 +2283,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collectiontype',
@@ -2191,6 +2300,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/kingdom',
@@ -2207,6 +2317,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/caption',
@@ -2223,6 +2334,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/typestatus',
@@ -2257,6 +2369,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tspecificepithet',
@@ -2300,6 +2413,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssex',
@@ -2330,6 +2444,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/slocalitytext',
@@ -2373,6 +2488,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ttaxonomicstatus',
@@ -2387,7 +2503,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_chronostratigraphicAttributiontTypeOld',
     'description' => 'Oldest chronostratigraphic name',
     'format' => NULL,
-    'weight' => 10,
+    'weight' => 13,
     'uuid' => '9b5a983a-a8ee-4a78-87e6-f9350471133b',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2402,6 +2518,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mchronostratigraphicattributionttypeold',
@@ -2431,6 +2548,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
   );
   $terms[] = array(
@@ -2452,6 +2570,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectionfieldnumber',
@@ -2485,6 +2604,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2506,7 +2626,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_lithostratigraphicAttributionType',
     'description' => 'First lithostratigraphic name',
     'format' => NULL,
-    'weight' => 11,
+    'weight' => 14,
     'uuid' => 'a18a6420-c42a-436e-be9f-87de477a69e1',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2521,6 +2641,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -2535,6 +2656,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/copyrighttext',
@@ -2551,6 +2673,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/species',
@@ -2567,6 +2690,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collectors-field-number',
@@ -2583,6 +2707,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/part',
@@ -2609,6 +2734,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/hide-1',
@@ -2628,6 +2754,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/sex',
@@ -2639,7 +2766,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_className',
     'description' => 'Class',
     'format' => NULL,
-    'weight' => 5,
+    'weight' => 2,
     'uuid' => 'b35315b4-e928-4ed0-a1bc-ec384bc5cc6e',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2654,6 +2781,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mclassname',
@@ -2668,7 +2796,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_expert',
     'description' => 'Expert name',
     'format' => NULL,
-    'weight' => 5,
+    'weight' => 8,
     'uuid' => 'b3d916fd-6811-498c-8905-27f38d3c755b',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2683,6 +2811,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -2721,6 +2850,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/stypestatus',
@@ -2740,6 +2870,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/gatheringevent',
@@ -2766,6 +2897,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sgatheringagent',
@@ -2795,6 +2927,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2821,6 +2954,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/recordbasis',
@@ -2847,6 +2981,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2879,6 +3014,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssecondlithostratigraphicname',
@@ -2915,6 +3051,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2959,6 +3096,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tinfraspecificepithet',
@@ -2973,7 +3111,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_lithostratigraphicAttributionType2',
     'description' => 'Second lithostratigraphic name',
     'format' => NULL,
-    'weight' => 12,
+    'weight' => 15,
     'uuid' => 'cb52e179-647f-4292-9363-21ee9ed12587',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2988,6 +3126,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -3002,6 +3141,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/numberofspecimen',
@@ -3018,6 +3158,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/other-specimens',
@@ -3044,6 +3185,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tphylum',
@@ -3087,6 +3229,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -3109,7 +3252,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'description' => 'Youngest chronostratigraphic name
 ',
     'format' => 'plain_text',
-    'weight' => 9,
+    'weight' => 12,
     'uuid' => 'd237198d-14ca-459b-a41a-4938e7e8ebd9',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -3124,6 +3267,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
@@ -3148,6 +3292,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectingstartdate',
@@ -3177,6 +3322,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/soldestbiostratigraphicname',
@@ -3206,6 +3352,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sfirstlithostratigraphicname',
@@ -3225,6 +3372,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collectorsfieldnumber-0',
@@ -3258,6 +3406,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -3282,6 +3431,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/texpertorganisation',
@@ -3301,6 +3451,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/order',
@@ -3317,6 +3468,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/number-specimens',
@@ -3333,6 +3485,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collection-name',
@@ -3367,6 +3520,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -3403,6 +3557,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/species-n',
@@ -3432,6 +3587,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 0,
     ),
@@ -3449,6 +3605,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/phase-or-stage',
@@ -3465,6 +3622,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/collectionname',
@@ -3498,6 +3656,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tsourcesystem',
@@ -3517,6 +3676,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/multimediapublic',
@@ -3533,6 +3693,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/assemblageid',
@@ -3544,7 +3705,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'm_typeStatus',
     'description' => 'Type status',
     'format' => 'plain_text',
-    'weight' => 2,
+    'weight' => 0,
     'uuid' => 'f25d70fd-e86b-4719-86a1-d8916b17f840',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -3573,9 +3734,10 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
-      0 => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
+      0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
   );
   $terms[] = array(
@@ -3597,6 +3759,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -3611,6 +3774,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/fullname',
@@ -3637,6 +3801,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tfamily',
@@ -3656,6 +3821,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'language' => 'und',
     'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
+    'field_label' => array(),
     'url_alias' => array(
       0 => array(
         'alias' => 'nba2text/owner',
@@ -3682,6 +3848,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 0,
     ),
@@ -3709,6 +3876,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
+    'field_ndalabel' => array(),
     'path' => array(
       'pathauto' => 1,
     ),

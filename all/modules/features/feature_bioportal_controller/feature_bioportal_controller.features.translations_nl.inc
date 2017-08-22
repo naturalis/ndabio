@@ -3571,6 +3571,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('sort by @s', array(), array('context' => ''));
+  $translations['nl:default']['15f6d4d946f69fa4558486a3f4d26d61'] = array(
+    'source' => 'e.g. species name or locality',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'bijvoorbeeld soortnaam of vindplaats',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('e.g. species name or locality', array(), array('context' => ''));
   $translations['nl:default']['1602f28d061a94160a5ebd0e128ea280'] = array(
     'source' => 'Administration theme',
     'context' => '',
@@ -6693,6 +6702,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('!title !required', array(), array('context' => ''));
+  $translations['nl:default']['286a4366931013b428a8463ed962ff73'] = array(
+    'source' => 'Display by scientific name',
+    'context' => '',
+    'location' => '/result/specimen/collectionType=Aves&logicalOperator=AND&size=100&from=275700',
+    'translation' => 'Toon op wetenschappelijke naam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Display by scientific name', array(), array('context' => ''));
   $translations['nl:default']['28765464efe1b6583610335965b4d75a'] = array(
     'source' => 'Burundi',
     'context' => '',
@@ -20761,6 +20779,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('The unique ID of the uploaded file.', array(), array('context' => ''));
+  $translations['nl:default']['794df3791a8c800841516007427a2aa3'] = array(
+    'source' => 'License',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Licentie',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('License', array(), array('context' => ''));
   $translations['nl:default']['7957003f4a499fd4af45be4fccd5abad'] = array(
     'source' => 'Cron run exceeded the time limit and was aborted.',
     'context' => '',
@@ -28467,6 +28494,15 @@ This link expires in one day and nothing will happen if it is not used.
     'plural' => 0,
   );
   $translatables[] = t('Roles', array(), array('context' => ''));
+  $translations['nl:default']['a5d0060be07658ecd32983c836cd119f'] = array(
+    'source' => 'media items for this query',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_kindOfUnit=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&--more--=&--more--=&--more--=&--more--=&t_andOr=0&t_scientificName=&t_vernacularName=roos&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&--more--=&--more--=&--more--=&--more--=&--more--=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_license=&m_phaseOrStage=&m_sex=&m_typeStatus=&m_kingdom=&--more--=&--more--=&--more--=&--more--=&op=Zoeken&form_build_id=form-EqFJ8imeYOnOk2YyDqdT5hmvGoukXE1lNjJrdzxLd0Y&form_id=ndabio_advanced_taxonomysearch',
+    'translation' => 'media objecten bij deze zoekopdracht',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('media items for this query', array(), array('context' => ''));
   $translations['nl:default']['a5e38a08838937990086b54559cedf5a'] = array(
     'source' => 'The file %file is not protected from modifications and poses a security risk. You must change the file\'s permissions to be non-writable.',
     'context' => '',
@@ -29097,6 +29133,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Other blocks', array(), array('context' => ''));
+  $translations['nl:default']['a9ec75e4b865a1352b82dc7bf644a68f'] = array(
+    'source' => 'Click arrow for advanced search',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Klik op het pijltje om uitgebreid te zoeken',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Click arrow for advanced search', array(), array('context' => ''));
   $translations['nl:default']['a9f0e2d1e83fda4d263d543a7cda24d2'] = array(
     'source' => 'specimen count',
     'context' => '',
@@ -35754,6 +35799,15 @@ This link can only be used once to log in and will lead you to a page where you 
     'plural' => 0,
   );
   $translatables[] = t('Fields on user accounts are defined on a site-wide basis on the <a href="@fields">Manage fields tab</a> of the <a href="@accounts">Account settings</a> page. When you define a field for user accounts, each user account will have that field added to it. For example, you could add a long text field to allow users to include a biography.', array(), array('context' => ''));
+  $translations['nl:default']['cdf8f3835a314d19f5fab47fb15f9eed'] = array(
+    'source' => 'Kind of unit',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Soort unit',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Kind of unit', array(), array('context' => ''));
   $translations['nl:default']['ce248a0622efb877834fd2cef789b6f1'] = array(
     'source' => 'immature',
     'context' => '',
@@ -38326,6 +38380,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('There are <a href="@taxcontrib">many contributed modules</a> that extend the behavior of the Taxonomy module for both display and organization of terms.', array(), array('context' => ''));
+  $translations['nl:default']['dcf569ee792f42313127137ca01badc2'] = array(
+    'source' => 'dateTime',
+    'context' => '',
+    'location' => '/specimen/RMNH.AVES.107865/theme=extinct-birds&sort=unitID&sortDirection=asc&from=0',
+    'translation' => 'Datum / Tijd',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('dateTime', array(), array('context' => ''));
   $translations['nl:default']['dd0b2cfd5754e48307b0d743d2edc4c0'] = array(
     'source' => 'The machine-readable name cannot be "add" or "list".',
     'context' => '',
