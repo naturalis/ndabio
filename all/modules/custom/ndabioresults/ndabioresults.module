@@ -901,6 +901,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 		strtoupper($terms['logicalOperator']) : 'OR';
 	// Filter any specific operators from terms; these are used later when constructing the query
 	$operators = _filterQueryOperators($terms);
+	
 	// Translate fields to NBA paths and get their operators
     foreach ($terms as $field => $value) {
     	$statement = [];
@@ -993,7 +994,10 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 			foreach ($statement as $path => $operator) {
 				// Search for empty value
 				if ($element == '') {
-					$operator = 'EQUALS';
+					// Reset operator to EQUALS if it's not either EQUALS/NOT_EQUALS
+					if (!in_array($operator, ['EQUALS', 'NOT_EQUALS'])) {
+						$operator = 'EQUALS';
+					}
 					$element = null;
 				// Option "all" from select
 				} else if ($element == 'NOT_NULL') {
