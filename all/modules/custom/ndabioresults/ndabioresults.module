@@ -2159,6 +2159,8 @@ function _nbaSimpleSearch () {
  	$timer = _setTimer();
  
     $remoteData = $client->multiClientBatchQuery($multiQuery);
+    
+//    p($remoteData);
 		
  	_addDebugMessage('batch query', _getTimer($timer));
       
@@ -2187,6 +2189,12 @@ function _nbaSimpleSearch () {
 		$data = json_decode($remoteData['names.taxa']); 
 		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
 	}
+	
+	if (!empty($remoteData['taxon'])) {
+		$data = json_decode($remoteData['taxon']); 
+		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
+	}
+	
 
     return $pageHeader .  _printDebug() . 
     	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
