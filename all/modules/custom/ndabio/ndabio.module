@@ -824,7 +824,10 @@ function ndabio_advanced_taxonomysearch() {
   $form = array();
   foreach ($terms as $item) {
     $name = $item->name;
-    $label = $item->description;
+    
+	$label = $item->field_ndalabel['und'][0]['safe_value'];
+	if (empty($label)) $label = $item->description;
+	
     $sysname = $item->name;
     if (!empty($item->field_ndasystem)) $sysname = $item->field_ndasystem['und'][0]['safe_value'];
 
@@ -851,7 +854,12 @@ function ndabio_advanced_taxonomysearch() {
 
       foreach ($children as $child) {
         $childlabel = $child->description;
-        $childsysname = $child->name;
+		
+		$childdescription = $child->description;
+		$childlabel = $child->field_ndalabel['und'][0]['safe_value'];
+		if (empty($childlabel)) $childlabel = $child->description;
+        
+		$childsysname = $child->name;
         if (strpos($childsysname, " ") !== FALSE) {
           $temp = explode(" ", $childsysname);
           $fieldsetPrefix = drupal_strtolower(drupal_substr(end($temp), 0, 1));
@@ -882,7 +890,12 @@ function ndabio_advanced_taxonomysearch() {
 
           foreach ($subchildren as $subchild) {
             $subchildlabel = $subchild->description;
-            $subchildsysname = $subchild->name;
+		
+            $subchilddescription = $subchild->description;
+			$subchildlabel = $subchild->field_ndalabel['und'][0]['safe_value'];
+			if (empty($subchildlabel)) $subchildlabel = $subchild->description;
+
+			$subchildsysname = $subchild->name;
             $subchildvalues = "";
             if (!empty($subchild->field_ndasystem)) $subchildsysname = $subchild->field_ndasystem['und'][0]['safe_value'];
             if (!empty($subchild->field_ndavalues)) $subchildvalues = $subchild->field_ndavalues['und'][0]['safe_value'];
@@ -988,7 +1001,7 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($subchildsysname, $subchildvalues);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                        '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
@@ -1005,7 +1018,7 @@ function ndabio_advanced_taxonomysearch() {
 
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
-                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                  '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
                   '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
@@ -1050,7 +1063,7 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
+                        '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
