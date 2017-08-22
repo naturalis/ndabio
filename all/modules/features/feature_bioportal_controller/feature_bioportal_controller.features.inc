@@ -41,7 +41,7 @@ function feature_bioportal_controller_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'naturalis_page' => array(
@@ -57,7 +57,7 @@ function feature_bioportal_controller_node_info() {
       'base' => 'node_content',
       'description' => t('Adds a page that will referenced to from the Service Menu in the Naturlis Bottom Bar. Typically: colofon, disclaimer, '),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'ndabio_header_image' => array(
