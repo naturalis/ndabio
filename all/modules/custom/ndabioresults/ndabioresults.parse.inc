@@ -1049,9 +1049,6 @@ function _formatAssemblageId ($id) {
 
 
 function _setSpecimenScientificName ($data) {
-	
-	p($data);
-	
 	$paths = _getQueryPaths('names.specimens');
 	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
 	$source = !empty($data['acceptedNames']) ? 
