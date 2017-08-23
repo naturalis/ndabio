@@ -32,24 +32,22 @@ function _parseTaxonDetail ($data) {
 			}
 		}
 		if (isset($row->descriptions)) {
-		    // @todo: hard coded for NSR and CoL
-		    foreach ($row->descriptions as $i => $description) {
-		        // NSR Dutch
-		        if (strtolower($description->category) == 'algemeen') {
-                    $output['descriptions']['Dutch'][$source] =
-					   $description->description;
-		        }
-		        // NSR English
-		        if (strtolower($description->category) == 'summary') {
-                    $output['descriptions']['English'][$source] =
-					   $description->description;
-		        }
-		        // CoL English
-		        if (empty($description->category) && !empty($description->description)) {
-                    $output['descriptions']['English'][$source] =
-					   $description->description;
-		        }
-		    }
+			// @todo: hard coded for NSR and CoL
+			foreach ($row->descriptions as $i => $description) {
+				// NSR Dutch
+				if (strtolower($description->category) == 'algemeen' ||
+					strtolower($description->category) == 'samenvatting') {
+					$output['descriptions']['Dutch'][$source] = $description->description;
+				}
+				// NSR English
+				if (strtolower($description->category) == 'summary') {
+					$output['descriptions']['English'][$source] = $description->description;
+				}
+				// CoL English
+				if (empty($description->category) && !empty($description->description)) {
+					$output['descriptions']['English'][$source] = $description->description;
+				}
+			}
 		}
 		if (isset($row->vernacularNames)) {
 			foreach ($row->vernacularNames as $i => $name) {
