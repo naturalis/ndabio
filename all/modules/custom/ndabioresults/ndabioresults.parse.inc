@@ -392,7 +392,7 @@ function _parseTaxonMediaDetail ($data) {
 	}
 	$output['source'] = $data->sourceSystem->name;
 	$output['acceptedName'] = _getScientificName($data->associatedTaxon);
-	$output['acceptedNameUrl'] = _getTaxonUrl($data->associatedTaxon);
+	$output['acceptedNameUrl'] = _getTaxonUrl($data->associatedTaxon, false);
 	$output['phaseOrStage'] = isset($data->phasesOrStages) ?
 		$data->phasesOrStages : null;
 	$output['imgSrc'] = isset($data->serviceAccessPoints[0]->accessUri) ?
@@ -404,18 +404,19 @@ function _parseTaxonMediaDetail ($data) {
 	$output['license'] = $data->license;
 	$output['sourceUrls'][$output['source']] = $data->associatedTaxon->recordURI;
 	
-//p($output);
-	
 	_addDebugMessage('Parsing multimedia', _getTimer($timer));
+	
+	//p($output);
 	
 	return $output;
 }
 
-function _getScientificName ($object, $full = true) {
+function _getScientificName ($object, $fullScientificName = true) {
 //p($object);	
 	// Can be used to generate a full italicized name (default) or 
 	// a simple non-formatted name without authorship
-	$elements = $full ? scientificNameElements() : scientificNameElementsInItalics();
+	$elements = $fullScientificName ? 
+		scientificNameElements() : scientificNameElementsInItalics();
 	// Name can be stored in either acceptedName (taxon) or 
 	// scientificName (specimen); try both
 	foreach (['acceptedName', 'scientificName'] as $path) {
@@ -424,20 +425,23 @@ function _getScientificName ($object, $full = true) {
 				!empty(trim($object->{$path}->{$element})) ?
 				trim($object->{$path}->{$element}) : null;
 			// Italics only for full option
-			if (!empty($name[$i]) && $full &&
+			if (!empty($name[$i]) && $fullScientificName &&
 				in_array($element, scientificNameElementsInItalics())) {
 				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 			}
 		}
 		// Some specimens don't have a properly formatted name;
 		// revert to fullScientificName
-		if ($path == 'scientificName' && empty($name[0])) {
+		if (isset($object->{$path}) && empty($name[0])) {
 			$name[0] = $object->{$path}->fullScientificName;
 			unset($name[1], $name[2], $name[3]);
 		}
-		$name = array_filter($name);
+		if (!empty(array_filter($name))) {
+			return implode(' ', $name);
+		}
+		
 	}
-	return !empty($name) ? implode(' ', $name) : null;
+	return null;
 }
 
 
@@ -457,7 +461,7 @@ function _getTaxonUrl ($object, $checkNba = true) {
 				return $_SESSION['nbaTaxa'][$key];
 			}
 			$url = null;
-			if ($checkNba && _getTaxonFromNba($name)) {
+			if ($checkNba && _getTaxonFromNba($name) || !$checkNba) {
 				$url = _setBasePath() . 'taxon/' . implode('_', $name);
 			}
 			$_SESSION['nbaTaxa'][$key] = $url;

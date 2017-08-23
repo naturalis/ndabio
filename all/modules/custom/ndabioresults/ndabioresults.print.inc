@@ -652,26 +652,24 @@ function _printTaxonMediaDetail ($data) {
     $output .= "<div class='property-list' style='margin-top: 1em;'>";
     $output .= _printDL(t('Scientific name'), $scientificName);
     
-	$fields = array(
+	$fields = [
 	    'source',
     	'creator',
 	    'license',
-        'sourceInstitutionID',
+        'copyrightText',
+		'sourceInstitutionID',
         'collectionType',
 	    'description',
-        'copyrightText',
     	'locality',
     	'date',
 	    'phaseOrStage',
         'sexes'
-	);
-	foreach ($fields as $field) {
-		if (isset($data[$field])) {
-			if ($field == 'source' && !empty($data['sourceUrls'])) {
-	            $data['source'] = _printSource($data, $data['source']);
-		    }
-		    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
-		}
+	];
+	foreach ($fields as $field) {		//if (isset($data[$field])) {
+		if ($field == 'source' && !empty($data['sourceUrls'])) {
+            $data['source'] = _printSource($data, $data['source']);
+	    }
+	    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
 	}
 	
     // Drupal title empty; page title custom
