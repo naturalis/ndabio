@@ -1698,7 +1698,11 @@ function _nbaAdvancedSearch () {
 		$data = json_decode($remoteData['specimen']);
 		$data->mediaLink = isset($mediaLinks['specimen']) ?
 			$mediaLinks['specimen'] : null;
-		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll', 'mediaLink']));
+		$options = ['showAll'];
+		if (empty($remoteData['multimedia'])) {
+			$options[] = 'mediaLink';
+		}
+		$pageBody .= _printSpecimens(_parseSpecimens($data, $options));
 	}
 	
 	if (!empty($remoteData['names.taxa'])) {
@@ -1754,8 +1758,8 @@ function _setFilterRejectEmptyGenus () {
 
 // Assume data on genus, species, infraspecies can be deduced from data first specimen
 function _setSpecimensAllLink ($row) {
-	if (isset($row->item->specimens[0]->matchingIdentifications[0]->scientificName->genusOrMonomial)) {
-		$id = $row->item->specimens[0]->matchingIdentifications[0]->scientificName;
+	if (isset($row->item->specimens[0]->identifications[0]->scientificName->genusOrMonomial)) {
+		$id = $row->item->specimens[0]->identifications[0]->scientificName;
 		$output = 'result/specimen/?genusOrMonomial=' . urlencode($id->genusOrMonomial);
 		if (isset($id->specificEpithet) && !empty($id->specificEpithet)) {
 			$output .= '&amp;specificEpithet=' . urlencode($id->specificEpithet);

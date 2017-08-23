@@ -675,30 +675,6 @@ function nameHits ()
 				'acceptedName.infraspecificEpithet',
 				'acceptedName.fullScientificName',
 			],
-/*
-			'names.specimens' => [
-				'specimens.matchingIdentifications.defaultClassification.genus',
-				'specimens.matchingIdentifications.scientificName.genusOrMonomial',
-				'specimens.matchingIdentifications.defaultClassification.subgenus',
-				'specimens.matchingIdentifications.scientificName.subgenus',
-				'specimens.matchingIdentifications.defaultClassification.specificEpithet',
-				'specimens.matchingIdentifications.scientificName.specificEpithet',
-				'specimens.matchingIdentifications.defaultClassification.infraspecificEpithet',
-				'specimens.matchingIdentifications.scientificName.infraspecificEpithet',
-				'specimens.matchingIdentifications.scientificName.fullScientificName',
-			],
-			'names.taxa' => [
-				'taxa.defaultClassification.genus',
-				'taxa.acceptedName.genusOrMonomial',
-				'taxa.defaultClassification.subgenus',
-				'taxa.acceptedName.subgenus',
-				'taxa.defaultClassification.specificEpithet',
-				'taxa.acceptedName.specificEpithet',
-				'taxa.defaultClassification.infraspecificEpithet',
-				'taxa.acceptedName.infraspecificEpithet',
-				'taxa.acceptedName.fullScientificName',
-			], 
-*/
 		);
 	}
 	return $var;

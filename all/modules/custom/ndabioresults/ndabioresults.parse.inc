@@ -779,8 +779,7 @@ function _parseSpecimensMap ($data) {
 //p($data);
 	$output['total'] = $data->resultSet[0]->item->specimenCount;
 	$d['acceptedNames'] = _getSpecimenAcceptedNames($data->resultSet[0]);
-	
-	
+
 	foreach ($data->resultSet[0]->item->specimens as $i => $specimen) {
 		$d['nonAcceptedNames'] = [];
 		$d['unitID'] = _setUnitId($specimen->unitID);
@@ -798,12 +797,14 @@ function _parseSpecimensMap ($data) {
 		$d['lon'] = $specimen->gatheringEvent->siteCoordinates[0]->geoShape->coordinates[0];
 		
 		if (empty($d['acceptedNames'])) {
-			$name = $specimen->matchingIdentifications[0]->scientificName;
+			$name = $specimen->identifications[0]->scientificName;
 			$d['nonAcceptedNames'][md5(serialize($name))] = $name;
 		}
 		
 		$output['results'][] = $d;
 	}
+	
+//p($output);
 
 	$name = _setSpecimenScientificName($d);
 	for ($i = 0; $i < count($output['results']); $i++) {
@@ -824,6 +825,9 @@ function _parseSpecimensMap ($data) {
 			count($output['results'])
 		) . '.';
 	}
+	
+//p($output);
+	
 	return isset($output) ? $output : false;
 }
 
@@ -1045,6 +1049,9 @@ function _formatAssemblageId ($id) {
 
 
 function _setSpecimenScientificName ($data) {
+	
+	p($data);
+	
 	$paths = _getQueryPaths('names.specimens');
 	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
 	$source = !empty($data['acceptedNames']) ? 
