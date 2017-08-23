@@ -91,55 +91,51 @@
     var dataEntered = false;
     var minStringLength = 3;
 
-
-      // If there's a textfield containing less than three characters:
+    // BIOPORVTWO-299: skip test for advanced search
       $(this).find('input[type=text], select').each(function(){
-        str_val = $(this).val().trim();
-        if (str_val != "" && str_val.length < minStringLength) {
-        	isValid = false;
-        } else if (str_val != "") {
+        if (str_val != "") {
         	dataEntered = true;
         }
       });
 
       // If the simple search is entered, but too short:
-      str_val = $($_omnibox).val().trim();
-      if(str_val != "" && str_val.length < minStringLength){
-    	  isValid = false;
+      var searchTerm = $($_omnibox).val().trim();
+      if (searchTerm != "") {
+    	  dataEntered = true;
+    	  if (searchTerm.length < minStringLength) {
+    		  isValid = false;
+    	  }
       }
 
       // If we're on the geo-search page
       if ( $("body").hasClass("page-geographic-search") ){
-    	  
     	  if (selectedShape || feature) {
      		  dataEntered = true;
     		  isValid = true;
     	  }
       }
 
-
-
     // Done validating, let's face the consequences:
-
-    if (!isValid || !dataEntered){
+    if (!isValid || !dataEntered) {
 
       if ( $("body").hasClass("page-geographic-search") ){
 
         alert(
-          Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
+        	Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
         );
 
       } else if (!dataEntered) {
 
         alert(
-          Drupal.t("Please make sure that you enter at least one search field.")
+        	Drupal.t("Please make sure that you enter at least one search field.")
         );
 
       } else {
-          
+    	  
     	  alert(
-              Drupal.t("Search fields should contain at least " + minStringLength + " characters.")
+              Drupal.t("Search field should contain at least " + minStringLength + " characters.")
           );
+        	  
       }
 
       return false;
