@@ -918,33 +918,15 @@ function ndabio_advanced_taxonomysearch() {
                 //put all children in group
                 foreach ($category as $catitem) {
 
-                    /*
-                  $lvalues = "";
-                  if (!empty($catitem->field_ndavalues)) $lvalues = $catitem->field_ndavalues['und'][0]['safe_value'];
-                  if ($lvalues != "") {
-                    unset($optionarray);
-                    $optionarray[""] = ""; //First entry is an empty string
-                    foreach (explode("|", $lvalues) as $optionitem) {
-		              $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
-                      $optionarray[$optioncode] = $optionitem;
-                    $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
-                        '#type'      => 'select',
-                        '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
-                        '#options'   => $optionarray,
-                        '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
-                        '#required'  => FALSE,
-                        '#inline'    => TRUE,
-                    );
-                    }
-                    */
-
                 // New way to create select: it should be present in advancedSelects().
                 // Taxonomy value will still be needed to indicate if --all-- option should be printed!
+				$morelabel = $catitem->field_ndalabel['und'][0]['safe_value'];
+
                 if (isset(advancedSelects()[$catitem->name])) {
                     $options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                         '#type'      => 'select',
-                        '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                        '#title'     => _wrap_label( t($catitem->description), t($morelabel) ),
                         '#options'   => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
@@ -959,7 +941,7 @@ function ndabio_advanced_taxonomysearch() {
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
-                      '#title'     => _wrap_label( t($catitem->description), t($catitem->description) ),
+                      '#title'     => _wrap_label( t($catitem->description), t($morelabel) ),
                       '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
@@ -976,26 +958,6 @@ function ndabio_advanced_taxonomysearch() {
             }
             else {
               //Default search fields
-
-                /*
-              if ($subchildvalues != "") {
-                unset($optionarray);
-                $optionarray[""] = ""; //First entry is an empty string
-                foreach (explode("|", $subchildvalues) as $optionitem ) {
-		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
-                  $optionarray[$optioncode] = t($optionitem);
-
-                $form[$sysname][$childsysname][$subchildsysname] = array(
-                  '#type'       => 'select',
-                  '#title'         => _wrap_label(  t($subchildlabel),t($subchildlabel)  ),
-                  '#options'    => $optionarray,
-                  '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
-                  '#inline'     => TRUE,
-                  '#attributes' => array('data-clear' => "", 'name' => $subchildsysname)
-                );
-                $subchildvalues = "";
-                }
-                */
 
                 if (isset(advancedSelects()[$subchildsysname])) {
                     $options = _setAdvancedSelect($subchildsysname, $subchildvalues);
@@ -1035,29 +997,6 @@ function ndabio_advanced_taxonomysearch() {
         }
         else {
           //Default search fields
-
-/*
-          $childvalues = "";
-          if (!empty($child->field_ndavalues)) $childvalues = $child->field_ndavalues['und'][0]['safe_value'];
-          if ($childvalues != "") {
-            unset($optionarray);
-            $optionarray[""] = ""; //First entry is an empty string
-            foreach (explode("|", $childvalues) as $optionitem ) {
-		          $optioncode = $optionitem == '-- all --' ? 'NOT_NULL' : $optionitem;
-                  $optionarray[$optioncode] = t($optionitem);
-            }
-            $form[$sysname][$childsysname] = array(
-              '#type'       => 'select',
-              '#title'      => t($childlabel),
-              '#options'    => $optionarray,
-              '#default_value' => (!empty($_SESSION['nbaSearch']) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
-              '#inline'     => TRUE,
-              '#attributes' => array('data-clear' => "", 'name' => $childsysname)
-            );
-            $subchildvalues = "";
-          }
-*/
-
 
                 if (isset(advancedSelects()[$childsysname])) {
                     $options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
