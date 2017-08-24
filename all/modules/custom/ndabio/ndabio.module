@@ -954,7 +954,7 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                         '#type'      => 'select',
-                        '#title'     => _setHelpText($subchildsysname, $moredescription, $morelabel),
+                        '#title'     => $morelabel,
                         '#options'   => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
@@ -968,7 +968,7 @@ function ndabio_advanced_taxonomysearch() {
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
-                      '#title'     => _setHelpText($subchildsysname, $moredescription, $morelabel),
+                      '#title'     => $morelabel,
                       '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
@@ -989,7 +989,7 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($subchildsysname, $subchildvalues);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
+                        '#title'         => $subchildlabel,
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
@@ -1005,7 +1005,7 @@ function ndabio_advanced_taxonomysearch() {
 
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
-                  '#title'         => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
+                  '#title'         => $subchildlabel,
                   '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
@@ -1026,7 +1026,7 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         =>_setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
+                        '#title'         => $subchildlabel,
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
@@ -1042,7 +1042,7 @@ function ndabio_advanced_taxonomysearch() {
          else {
             $form[$sysname][$childsysname]['#type'] = array(
               '#type'          => 'textfield',
-              '#title'         => _setHelpText($childsysname, $childdescription, $childlabel),
+              '#title'         => $childlabel,
               '#default_value' => (!empty($_SESSION['nbaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
               '#required'      => FALSE,
               '#inline'        => TRUE,
