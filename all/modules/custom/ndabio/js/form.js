@@ -90,16 +90,18 @@
     var isValid = true;
     var dataEntered = false;
     var minStringLength = 3;
+    var searchTerm = '';
 
     // BIOPORVTWO-299: skip test for advanced search
-      $(this).find('input[type=text], select').each(function(){
-        if (str_val != "") {
-        	dataEntered = true;
-        }
+      $(this).find('input[type=text], select').each(function() {
+    	  searchTerm = $(this).val();
+    	  if (searchTerm != "") {
+    		  dataEntered = true;
+    	  }
       });
 
       // If the simple search is entered, but too short:
-      var searchTerm = $($_omnibox).val().trim();
+      searchTerm = $($_omnibox).val().trim();
       if (searchTerm != "") {
     	  dataEntered = true;
     	  if (searchTerm.length < minStringLength) {
