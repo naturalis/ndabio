@@ -12,8 +12,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
 
   $terms[] = array(
     'name' => 't_order',
-    'description' => 'Order',
-    'format' => NULL,
+    'description' => 'Search taxa by scientific order name.',
+    'format' => 'markdown',
     'weight' => 3,
     'uuid' => '095ca378-8c58-45c3-969a-1a7c5978da9f',
     'language' => 'und',
@@ -29,7 +29,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Order',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/torder',
@@ -44,7 +54,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_youngestChronstratigraphicName',
     'description' => 'Youngest chronstratigraphic name',
     'format' => NULL,
-    'weight' => 1,
+    'weight' => 2,
     'uuid' => '0c4563de-1d29-42b9-ba60-22729600cf53',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -148,8 +158,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_className',
-    'description' => 'Class',
-    'format' => NULL,
+    'description' => 'Search taxa by scientific class name.',
+    'format' => 'markdown',
     'weight' => 2,
     'uuid' => '0ebf93a1-6408-4c52-9bd4-48537da8d6bc',
     'language' => 'und',
@@ -165,7 +175,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Class',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tclassname',
@@ -196,7 +216,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_youngestBiostratigraphicName',
     'description' => 'Youngest biostratigraphic name',
     'format' => NULL,
-    'weight' => 6,
+    'weight' => 7,
     'uuid' => '12aae422-736a-4753-8865-2ac1d4f9e17b',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -565,6 +585,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/msourcesystem',
@@ -577,8 +600,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_phylum',
-    'description' => 'Phylum',
-    'format' => NULL,
+    'description' => 'Search multimedia by scientific phylum name.',
+    'format' => 'markdown',
     'weight' => 1,
     'uuid' => '28029cae-53b0-45c5-9a5f-aafac926a6e8',
     'language' => 'und',
@@ -594,7 +617,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Phylum',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mphylum',
@@ -716,7 +749,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_kingdom',
-    'description' => 'Kingdom',
+    'description' => 'Search taxa by scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '32fc861e-68f3-4816-afba-4a4c6329fe4b',
@@ -747,7 +780,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Kingdom',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tkingdom',
@@ -778,6 +821,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tgenusormonomial',
@@ -808,6 +854,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sunitid',
@@ -822,7 +871,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'Taxa',
     'description' => 'Taxa',
     'format' => 'plain_text',
-    'weight' => 2,
+    'weight' => 1,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -868,6 +917,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mfamily',
@@ -972,7 +1024,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_oldestChronstratigraphicName',
     'description' => 'Oldest chronstratigraphic name',
     'format' => NULL,
-    'weight' => 2,
+    'weight' => 3,
     'uuid' => '3d589c02-40ad-482e-9308-325c8ea8335d',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1018,7 +1070,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_subgenus',
     'description' => 'Subgenus',
     'format' => NULL,
-    'weight' => 0,
+    'weight' => 1,
     'uuid' => '3fbce186-b017-403e-99b7-150a7db67619',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1145,6 +1197,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tvernacularname',
@@ -1157,8 +1212,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_subgenus',
-    'description' => 'Subgenus',
-    'format' => NULL,
+    'description' => 'Search taxa by scientific subgenus name.',
+    'format' => 'markdown',
     'weight' => 4,
     'uuid' => '461be0f8-a9b5-413f-8ee7-dc8afdcc1909',
     'language' => 'und',
@@ -1174,7 +1229,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Subgenus',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tsubgenus',
@@ -1469,6 +1534,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sphaseorstage',
@@ -1527,7 +1595,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_infraspecificEpithet',
-    'description' => 'Infraspecific name',
+    'description' => 'Search multimedia by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '5d26d474-beeb-49a7-9405-7707474c4bf4',
@@ -1551,7 +1619,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Infraspecific name',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/minfraspecificepithet',
@@ -1598,6 +1676,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mscientificname',
@@ -1658,6 +1739,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mgenusormonomial',
@@ -1718,7 +1802,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'Multimedia',
     'description' => 'Multimedia',
     'format' => 'plain_text',
-    'weight' => 3,
+    'weight' => 2,
     'uuid' => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1753,8 +1837,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_order',
-    'description' => 'Order',
-    'format' => NULL,
+    'description' => 'Search multimedia by scientific order name.',
+    'format' => 'markdown',
     'weight' => 3,
     'uuid' => '69161391-770f-4bff-87f4-316c302d0aec',
     'language' => 'und',
@@ -1770,7 +1854,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Order',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/morder',
@@ -1911,7 +2005,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 'Collection specimens',
     'description' => 'Collection specimens',
     'format' => 'plain_text',
-    'weight' => 1,
+    'weight' => 0,
     'uuid' => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -1942,7 +2036,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_kingdom',
-    'description' => 'Kingdom',
+    'description' => 'Search multimedia by scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '7908bd90-4e9e-4ff3-ae81-250317acf131',
@@ -1973,7 +2067,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Kingdom',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mkingdom',
@@ -2005,6 +2109,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mvernacularname',
@@ -2071,6 +2178,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssourcesystem',
@@ -2123,6 +2233,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mcollectiontype',
@@ -2324,6 +2437,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tspecificepithet',
@@ -2368,6 +2484,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/ssex',
@@ -2399,6 +2518,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/slocalitytext',
@@ -2525,6 +2647,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/scollectionfieldnumber',
@@ -2541,7 +2666,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_phylum',
-    'description' => 'Phylum',
+    'description' => 'Search taxa by scientific phylum name.',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '9f2c4682-88b6-460d-8e9b-587f8b471737',
@@ -2558,7 +2683,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Phylum',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2713,8 +2845,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_className',
-    'description' => 'Class',
-    'format' => NULL,
+    'description' => 'Search multimedia by scientific class name.',
+    'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'b35315b4-e928-4ed0-a1bc-ec384bc5cc6e',
     'language' => 'und',
@@ -2730,7 +2862,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Class',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/mclassname',
@@ -2800,6 +2942,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/stypestatus',
@@ -2846,6 +2991,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/sgatheringagent',
@@ -2946,7 +3094,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_secondLithostratigraphicName',
     'description' => 'Second lithostratigraphic name',
     'format' => NULL,
-    'weight' => 4,
+    'weight' => 5,
     'uuid' => 'c4323256-7ac6-4929-9b01-5e0ac217ddf5',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -2974,7 +3122,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_infraspecificEpithet',
-    'description' => 'Infraspecific name',
+    'description' => 'Search specimens by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'c4a8bf82-0a73-4630-bb8a-126700cd9452',
@@ -2998,7 +3146,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Infraspecific name',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -3018,8 +3173,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_infraspecificEpithet',
-    'description' => 'Infraspecific name
-',
+    'description' => 'Search taxa by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
     'format' => 'plain_text',
     'weight' => 5,
     'uuid' => 'c7eaee57-8365-48b1-9bc5-eddbeba8210d',
@@ -3043,7 +3197,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Infraspecific name',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tinfraspecificepithet',
@@ -3113,8 +3277,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_phylum',
-    'description' => 'Phylum',
-    'format' => NULL,
+    'description' => 'Search taxa by scientific phylum name.',
+    'format' => 'markdown',
     'weight' => 1,
     'uuid' => 'd0a78838-d6a0-440b-a950-f7bcfb9efd84',
     'language' => 'und',
@@ -3130,7 +3294,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Phylum',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tphylum',
@@ -3143,7 +3317,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_kingdom',
-    'description' => 'Kingdom',
+    'description' => 'Search specimens by scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'd1179982-7bc2-44de-82c6-a70eeccefe9c',
@@ -3174,7 +3348,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
         ),
       ),
     ),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Kingdom',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -3222,7 +3403,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_collectingStartDate',
     'description' => 'Collecting start date',
     'format' => NULL,
-    'weight' => 7,
+    'weight' => 8,
     'uuid' => 'd2997fb3-bfb6-46a2-9074-a6db473d4ba3',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -3252,7 +3433,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_oldestBiostratigraphicName',
     'description' => 'Oldest biostratigraphic name',
     'format' => NULL,
-    'weight' => 5,
+    'weight' => 6,
     'uuid' => 'd3f6f460-cd4d-446a-b5a2-9fbab31cec7c',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -3282,7 +3463,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'name' => 's_firstLithostratigraphicName',
     'description' => 'First lithostratigraphic name',
     'format' => NULL,
-    'weight' => 3,
+    'weight' => 4,
     'uuid' => 'dce82d80-9fba-41ca-bcce-e23628f22566',
     'language' => 'und',
     'i18n_tsid' => 0,
@@ -3351,6 +3532,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 0,
+    ),
     'url_alias' => array(),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -3480,38 +3664,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
   );
   $terms[] = array(
-    'name' => 'Species n',
-    'description' => 'Species with specimens',
-    'format' => 'plain_text',
-    'weight' => 0,
-    'uuid' => 'e408d24d-bdac-4fe5-b68d-edd9e224f8ca',
-    'language' => 'und',
-    'i18n_tsid' => 0,
-    'vocabulary_machine_name' => 'search',
-    'field_ndadatatype' => array(),
-    'field_ndageorelevance' => array(
-      'und' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-    ),
-    'field_ndasystem' => array(),
-    'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
-    'url_alias' => array(
-      0 => array(
-        'alias' => 'search/species-n',
-        'language' => 'und',
-      ),
-    ),
-    'parent' => array(
-      0 => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
-    ),
-  );
-  $terms[] = array(
     'name' => 's_className',
-    'description' => 'Class',
+    'description' => 'Search specimens by scientific class name.',
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => 'e7ec7114-3f31-4988-a955-0205dd43a697',
@@ -3528,7 +3682,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Class',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 0,
     ),
@@ -3596,6 +3757,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tsourcesystem',
@@ -3738,6 +3902,9 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/tfamily',
@@ -3766,7 +3933,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_order',
-    'description' => 'Order',
+    'description' => 'Search specimens by scientific order name.',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'fe616d3d-a1f9-4ef3-af77-6ace87e54b5f',
@@ -3783,7 +3950,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Order',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 0,
     ),

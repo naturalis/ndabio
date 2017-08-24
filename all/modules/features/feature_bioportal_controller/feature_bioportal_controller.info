@@ -1,7 +1,7 @@
 name = Feature - Bioportal controller
 core = 7.x
 package = Bioportal
-version = 7.x-1.5
+version = 7.x-1.6
 dependencies[] = boxes
 dependencies[] = features_translations
 dependencies[] = filter
@@ -301,7 +301,6 @@ features[uuid_term][] = dfb76785-1107-4c0d-acd7-4e2fa4df4e6a
 features[uuid_term][] = e2169f6f-b664-492d-a59b-a4c2088f08c1
 features[uuid_term][] = e2a060ef-4ff1-428d-ab1f-55a718800f46
 features[uuid_term][] = e3956f71-9c9e-41dd-a5f3-f656df13ad90
-features[uuid_term][] = e408d24d-bdac-4fe5-b68d-edd9e224f8ca
 features[uuid_term][] = e7ec7114-3f31-4988-a955-0205dd43a697
 features[uuid_term][] = e7f78485-64dc-4488-9183-209c19b2283e
 features[uuid_term][] = e9529ceb-48de-4837-bf83-27a7300d53b4

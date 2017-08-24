@@ -44389,15 +44389,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collector', array(), array('context' => 'term:3:description'));
-  $translations['nl:taxonomy']['076d219185589cfd2aa19ee79f0cc5ef'] = array(
-    'source' => 'Species with specimens',
-    'context' => 'term:70:description',
-    'location' => 'taxonomy:term:70:description',
-    'translation' => 'Soorten met specimens',
+  $translations['nl:taxonomy']['28fc82b8fd45a5857477ca28c2c5cbc0'] = array(
+    'source' => 'Search taxa by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'context' => 'term:59:description',
+    'location' => 'taxonomy:term:59:description',
+    'translation' => 'Ondersoort',
     'plid' => 0,
     'plural' => 0,
   );
-  $translatables[] = t('Species with specimens', array(), array('context' => 'term:70:description'));
+  $translatables[] = t('Search taxa by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.', array(), array('context' => 'term:59:description'));
   $translations['nl:taxonomy']['2bbd3ba38020b674e2df396d861e8bdf'] = array(
     'source' => 'm_collectorsFieldNumber',
     'context' => 'term:12:name',
@@ -44407,15 +44407,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('m_collectorsFieldNumber', array(), array('context' => 'term:12:name'));
-  $translations['nl:taxonomy']['3c2021cc147e3356eef93d38395c7e4d'] = array(
-    'source' => 'Species n',
-    'context' => 'term:70:name',
-    'location' => 'taxonomy:term:70:name',
-    'translation' => 'Soorten met specimens',
+  $translations['nl:taxonomy']['3e0022949c309afa9d504bd840379346'] = array(
+    'source' => 'Search taxa by scientific phylum name.',
+    'context' => 'term:49:description',
+    'location' => 'taxonomy:term:49:description',
+    'translation' => 'Afdeling of stam',
     'plid' => 0,
     'plural' => 0,
   );
-  $translatables[] = t('Species n', array(), array('context' => 'term:70:name'));
+  $translatables[] = t('Search taxa by scientific phylum name.', array(), array('context' => 'term:49:description'));
   $translations['nl:taxonomy']['4a52dbd2174923dc270a8d5dd5d4b41e'] = array(
     'source' => 'Infraspecific name
 ',
@@ -44445,15 +44445,6 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Infraspecific name', array(), array('context' => 'term:32:description'));
-  $translations['nl:taxonomy']['5c96e949b8a6a4798d9f51e766fe3930'] = array(
-    'source' => 'Phylum',
-    'context' => 'term:61:description',
-    'location' => 'taxonomy:term:61:description',
-    'translation' => 'Afdeling of stam',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Phylum', array(), array('context' => 'term:61:description'));
   $translations['nl:taxonomy']['736ff2c3b7f214d6b275c845272bda17'] = array(
     'source' => 's_collectorsFieldNumber',
     'context' => 'term:48:name',
@@ -44481,6 +44472,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collection specimens', array(), array('context' => 'term:105:description'));
+  $translations['nl:taxonomy']['987bdf21e0fa96b4e41c40ab0e8b0afd'] = array(
+    'source' => 'Search specimens by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'context' => 'term:58:description',
+    'location' => 'taxonomy:term:58:description',
+    'translation' => 'Ondersoort',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.', array(), array('context' => 'term:58:description'));
   $translations['nl:taxonomy']['9d2edb09c1f6d072f6053de8de13cfc8'] = array(
     'source' => 'Specific name
 ',
@@ -44586,6 +44586,15 @@ Your account on [site:name] has been blocked.
   );
   $translatables[] = t('<p>Locality</p>
 ', array(), array('context' => 'term:9:description'));
+  $translations['nl:taxonomy']['dfb7a19d49bc620e1d3f2ac9e82073f4'] = array(
+    'source' => 'Search multimedia by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'context' => 'term:32:description',
+    'location' => 'taxonomy:term:32:description',
+    'translation' => 'Ondersoort',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search multimedia by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.', array(), array('context' => 'term:32:description'));
   $translations['nl:taxonomy']['f4c7eec3dfab309ad85de70ddc8dd761'] = array(
     'source' => 'Collecting start date',
     'context' => 'term:64:description',
