@@ -263,6 +263,8 @@ function _sortArrayByArray ($array, $orderArray) {
         if (array_key_exists($key, $array)) {
             $ordered[$key] = $array[$key];
             unset($array[$key]);
+        } else {
+        	$ordered[$key] = null;
         }
     }
     return $ordered + $array;

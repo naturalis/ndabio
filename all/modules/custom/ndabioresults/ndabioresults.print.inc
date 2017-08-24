@@ -258,7 +258,7 @@ function _printSpecimenDetail ($data) {
 	// Determines order to print field/value;
 	// fields not in array are printed at the bottom.
 	$hideFields = [
-        'vernaculars',
+        //'vernaculars',
     	'recordURI',
     	'unitGUID',
     	'assemblageID',
@@ -279,7 +279,9 @@ function _printSpecimenDetail ($data) {
 	];
 	$fieldOrder = [
         'names',
-        'unitID',
+        'vernaculars',
+		'enrichedVernaculars',
+		'unitID',
         'source',
         'assemblageID',
         'license',
@@ -338,6 +340,14 @@ function _printSpecimenDetail ($data) {
 			if ($field == 'vernaculars') {
 				$output .= _printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
 			}
+			if ($field == 'enrichedVernaculars' && !empty($data['enrichedVernaculars'])) {
+				$vernaculars = '';
+				foreach ($data['enrichedVernaculars'] as $name => $lan) {
+					$vernaculars .= $name . (!empty($lan) ? ' ('. t($lan) . ')' : '') . ', ';
+				}
+				$output .= _printDL(t('Common name(s) from associated taxon'), substr($vernaculars, 0, -2));
+			}
+			
 			if ($field == 'typeStatuses') {
 				$output .= _printTypeStatuses($value, 'Type status');
 			}

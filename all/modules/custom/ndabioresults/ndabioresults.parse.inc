@@ -338,6 +338,7 @@ function _parseSpecimenDetail ($data) {
 	$output['names'] = _getSpecimenNames($data->identifications);
 	$output['typeStatuses'] = _getSpecimenTypeStatuses($data->identifications);
 	$output['vernaculars'] = _getSpecimenVernaculars($data->identifications);
+	$output['enrichedVernaculars'] = _getSpecimenEnrichedVernaculars($data->identifications);
 	$output['gatheringEvent'] = _getGatheringEventSpecimens($data->gatheringEvent);
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
@@ -351,6 +352,20 @@ function _parseSpecimenDetail ($data) {
 }
 
 
+function _getSpecimenEnrichedVernaculars ($identifications = []) {
+	foreach ($identifications as $row) {
+		if (isset($row->taxonomicEnrichments)) {
+			foreach ($row->taxonomicEnrichments as $enrichment) {
+				if (isset($enrichment->vernacularNames)) {
+					foreach ($enrichment->vernacularNames as $name) {
+						$output[$name->name] = $name->language;
+					}
+				}
+			}
+		}
+	}
+	return isset($output) ? $output : null;
+}
 
 
 /**
