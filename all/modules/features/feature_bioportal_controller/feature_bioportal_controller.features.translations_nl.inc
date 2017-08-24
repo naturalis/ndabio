@@ -44360,6 +44360,24 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Attached file(s)', array(), array('context' => 'field_file:naturalis_page:label'));
+  $translations['nl:taxonomy']['02155ae08277f55abf23f8cf4eb90fc5'] = array(
+    'source' => 'Search specimens by locality (municipality, province, country, etc.). Use geographic search to search by coordinates.',
+    'context' => 'term:44:description',
+    'location' => 'taxonomy:term:44:description',
+    'translation' => 'Lokaliteit',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by locality (municipality, province, country, etc.). Use geographic search to search by coordinates.', array(), array('context' => 'term:44:description'));
+  $translations['nl:taxonomy']['0266b1b4cc100c3dfe29aab89c47dc94'] = array(
+    'source' => 'Search specimens by registration number.',
+    'context' => 'term:17:description',
+    'location' => 'taxonomy:term:17:description',
+    'translation' => 'Registratienummer',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by registration number.', array(), array('context' => 'term:17:description'));
   $translations['nl:taxonomy']['0317dd2ceeebd1702b0425b35aa02663'] = array(
     'source' => 'Specific name',
     'context' => 'term:67:description',
@@ -44389,6 +44407,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collector', array(), array('context' => 'term:3:description'));
+  $translations['nl:taxonomy']['27025f5e56401dcdf15a853e5349e945'] = array(
+    'source' => 'Search multimedia by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
+    'context' => 'term:67:description',
+    'location' => 'taxonomy:term:67:description',
+    'translation' => 'Soortnaam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search multimedia by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.', array(), array('context' => 'term:67:description'));
   $translations['nl:taxonomy']['28fc82b8fd45a5857477ca28c2c5cbc0'] = array(
     'source' => 'Search taxa by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
     'context' => 'term:59:description',
@@ -44416,6 +44443,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Search taxa by scientific phylum name.', array(), array('context' => 'term:49:description'));
+  $translations['nl:taxonomy']['476e46b5c08db535c4e1ad7ae5da4494'] = array(
+    'source' => 'Search specimens by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
+    'context' => 'term:69:description',
+    'location' => 'taxonomy:term:69:description',
+    'translation' => 'Soortnaam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.', array(), array('context' => 'term:69:description'));
   $translations['nl:taxonomy']['4a52dbd2174923dc270a8d5dd5d4b41e'] = array(
     'source' => 'Infraspecific name
 ',
@@ -44436,6 +44472,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Phase or stage', array(), array('context' => 'term:23:description'));
+  $translations['nl:taxonomy']['547acca3c293241ea89bab87e4876994'] = array(
+    'source' => 'Search specimens by phase or stage,',
+    'context' => 'term:30:description',
+    'location' => 'taxonomy:term:30:description',
+    'translation' => 'Levensfase',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by phase or stage,', array(), array('context' => 'term:30:description'));
   $translations['nl:taxonomy']['59449f3e83fbfece0b6a40f7a1d2ccdc'] = array(
     'source' => 'Infraspecific name',
     'context' => 'term:32:description',
@@ -44454,6 +44499,26 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('s_collectorsFieldNumber', array(), array('context' => 'term:48:name'));
+  $translations['nl:taxonomy']['77829e365f55fcfc5b810ddbc78afeea'] = array(
+    'source' => 'Search specimens by collectors field number',
+    'context' => 'term:48:description',
+    'location' => 'taxonomy:term:48:description',
+    'translation' => 'Veldnummer verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by collectors field number', array(), array('context' => 'term:48:description'));
+  $translations['nl:taxonomy']['7798299c9fdb43cb276238ff1d31766d'] = array(
+    'source' => 'Search taxa by specific epithet (the second part of the species name), e.g. "Larus" in Larus fuscus.
+',
+    'context' => 'term:42:description',
+    'location' => 'taxonomy:term:42:description',
+    'translation' => 'Soortnaam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search taxa by specific epithet (the second part of the species name), e.g. "Larus" in Larus fuscus.
+', array(), array('context' => 'term:42:description'));
   $translations['nl:taxonomy']['814ce5f33b79c15d921c9d7c2c4826df'] = array(
     'source' => 'Collection specimens',
     'context' => 'term:105:name',
@@ -44595,6 +44660,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Search multimedia by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.', array(), array('context' => 'term:32:description'));
+  $translations['nl:taxonomy']['eff683a46c2abc240b398688b4d63b8a'] = array(
+    'source' => 'Search specimens by the person who collected the specimen.',
+    'context' => 'term:55:description',
+    'location' => 'taxonomy:term:55:description',
+    'translation' => 'verzamelaar',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by the person who collected the specimen.', array(), array('context' => 'term:55:description'));
   $translations['nl:taxonomy']['f4c7eec3dfab309ad85de70ddc8dd761'] = array(
     'source' => 'Collecting start date',
     'context' => 'term:64:description',
