@@ -198,7 +198,7 @@ function _getAdvancedFieldSplitInfo ($field) {
 }
 
 function _setHelpText ($field, $description, $label) {
-	$output = t('The term') . ' ';
+	$output = $description . "\n\n" . t('The term') . ' ';
 	switch (_getAdvancedFieldSplitInfo($field)) {
 		case 'true':
 			$output .= t('is split into words first');
