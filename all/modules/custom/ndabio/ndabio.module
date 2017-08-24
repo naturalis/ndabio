@@ -151,7 +151,7 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 			$output[$option] = $objPath;
 		}
 	}
-	return isset($output)? $output : [];
+	return isset($output) ? $output : [];
 }
 
 /* Must be used to correctly format NBA gid */
@@ -164,11 +164,11 @@ function _setNbaGid ($gid = false) {
 }
 
 
-function _getAdvancedFieldOperator ($fieldName) {
-	if (isset(advancedSelects()[$fieldName])) {
+function _getAdvancedFieldOperator ($field) {
+	if (isset(advancedSelects()[$field])) {
 		return 'EQUALS_IC';
 	}
-	$tmp = explode('_', $fieldName);
+	$tmp = explode('_', $field);
 	$field = $tmp[1];
 	$service = 'specimen';
 	if ($tmp[0] == 'm') {
@@ -182,12 +182,12 @@ function _getAdvancedFieldOperator ($fieldName) {
 	return 'STARTS_WITH_IC';
 }
 
-function _getAdvancedFieldSplitInfo ($fieldName) {
-	$tmp = explode('_', $fieldName);
+function _getAdvancedFieldSplitInfo ($field) {
+	$tmp = explode('_', $field);
 	$field = $tmp[1];
 	$service = 'specimen';
 	if ($tmp[0] == 'm') {
-		$service = 'specimen';
+		$service = 'multimedia';
 	} else if ($tmp[0] == 't') {
 		$service = 'taxon';
 	}
@@ -195,6 +195,37 @@ function _getAdvancedFieldSplitInfo ($fieldName) {
 		return var_export(nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
 	}
 	return 'false';
+}
+
+function _setHelpText ($field, $description, $label) {
+	$output = t('The term') . ' ';
+	switch (_getAdvancedFieldSplitInfo($field)) {
+		case 'true':
+			$output .= t('is split up by word first');
+			break;
+		case 'false':
+			$output .= t('is used as is (not split up by word)');
+			break;
+	}
+	$output .= ' '. t('and the field') . ' "' . strtolower($label) . '" ';
+	switch (_getAdvancedFieldOperator($field)) {
+		case 'EQUALS':
+		case 'EQUALS_IC':
+			$output .= t('matches the term extactly');
+			break;
+		case 'STARTS_WITH':
+		case 'STARTS_WITH_IC':
+			$output .= t('starts with the term');
+			break;
+		case 'MATCHES':
+			$output .= t('matches the term');
+			break;
+		case 'LIKE':
+		case 'CONTAINS':
+			$output .= t('contains the term');
+			break;
+	}
+	return $output .= '.';
 }
 
 
@@ -853,10 +884,8 @@ function ndabio_advanced_taxonomysearch() {
 
 
       foreach ($children as $child) {
-        $childlabel = $child->description;
-		
-		$childdescription = $child->description;
-		$childlabel = $child->field_ndalabel['und'][0]['safe_value'];
+		$childdescription = t($child->description);
+		$childlabel = t($child->field_ndalabel['und'][0]['safe_value']);
 		if (empty($childlabel)) $childlabel = $child->description;
         
 		$childsysname = $child->name;
@@ -889,10 +918,8 @@ function ndabio_advanced_taxonomysearch() {
           );
 
           foreach ($subchildren as $subchild) {
-            $subchildlabel = $subchild->description;
-		
-            $subchilddescription = $subchild->description;
-			$subchildlabel = $subchild->field_ndalabel['und'][0]['safe_value'];
+            $subchilddescription = t($subchild->description);
+			$subchildlabel = t($subchild->field_ndalabel['und'][0]['safe_value']);
 			if (empty($subchildlabel)) $subchildlabel = $subchild->description;
 
 			$subchildsysname = $subchild->name;
@@ -920,20 +947,20 @@ function ndabio_advanced_taxonomysearch() {
 
                 // New way to create select: it should be present in advancedSelects().
                 // Taxonomy value will still be needed to indicate if --all-- option should be printed!
-				$morelabel = $catitem->field_ndalabel['und'][0]['safe_value'];
+				$morelabel = t($catitem->field_ndalabel['und'][0]['safe_value']);
+				$moredescription = t($catitem->description);
 
                 if (isset(advancedSelects()[$catitem->name])) {
                     $options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                         '#type'      => 'select',
-                        '#title'     => _wrap_label( t($catitem->description), t($morelabel) ),
+                        '#title'     => _setHelpText($subchildsysname, $moredescription, $morelabel),
                         '#options'   => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                         '#required'  => FALSE,
                         '#inline'    => TRUE,
 			      		  '#attributes' => array(
-			      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
-			      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      		  	 'data-help-text' => _setHelpText($subchildsysname, $moredescription, $morelabel)
 			      		  )
                         );
                 }
@@ -941,15 +968,14 @@ function ndabio_advanced_taxonomysearch() {
                   else {
                     $form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
                       '#type'          => 'textfield',
-                      '#title'     => _wrap_label( t($catitem->description), t($morelabel) ),
+                      '#title'     => _setHelpText($subchildsysname, $moredescription, $morelabel),
                       '#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? $_SESSION['nbaSearch']["{$catitem->name}"] : "",
                       '#required'      => FALSE,
                       '#inline'        => TRUE,
 		      		  '#attributes' => array(
 		      		  	 'data-clear' => "", 
 		      		  	 'name' => $subchildsysname,
-		      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
-		      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      		 'data-help-text' => _setHelpText($subchildsysname, $moredescription, $morelabel)
 		      		  )
                     );
                   }
@@ -963,15 +989,14 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($subchildsysname, $subchildvalues);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
+                        '#title'         => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
                         '#attributes' => array(
                         	'data-clear' => "", 
                         	'name' => $subchildsysname,
-			      		  	 'data-operator' => _getAdvancedFieldOperator($subchildsysname),
-			      		  	 'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      		  	'data-help-text' => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel)
                         )
                     );
                 }
@@ -980,15 +1005,14 @@ function ndabio_advanced_taxonomysearch() {
 
                 $form[$sysname][$childsysname][$subchildsysname] = array(
                   '#type'          => 'textfield',
-                  '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
+                  '#title'         => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
                   '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                   '#required'      => FALSE,
                   '#inline'        => TRUE,
                   '#attributes'    => array(
                   	  'data-clear' => "", 
                   	  'name' => $subchildsysname,
-			      	  'data-operator' => _getAdvancedFieldOperator($subchildsysname),
-			      	  'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      	  'data-help-text' => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel)
                   )
                 );
               }
@@ -1002,15 +1026,14 @@ function ndabio_advanced_taxonomysearch() {
                     $options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
                     $form[$sysname][$childsysname][$subchildsysname] = array(
                         '#type'       => 'select',
-                        '#title'         => _wrap_label(  t($subchilddescription),t($subchildlabel)  ),
+                        '#title'         =>_setHelpText($subchildsysname, $subchilddescription, $subchildlabel),
                         '#options'    => $options,
                         '#default_value' => (!empty($_SESSION['nbaSearch']["{$subchildsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$subchildsysname}"] : "",
                         '#inline'     => TRUE,
                         '#attributes' => array(
                         	'data-clear' => "", 
                         	'name' => $subchildsysname,
-			      	        'data-operator' => _getAdvancedFieldOperator($subchildsysname),
-			      	        'data-split' => _getAdvancedFieldSplitInfo($subchildsysname)
+			      		  	'data-help-text' => _setHelpText($subchildsysname, $subchilddescription, $subchildlabel)
                         )
                     );
                 }
@@ -1019,15 +1042,14 @@ function ndabio_advanced_taxonomysearch() {
          else {
             $form[$sysname][$childsysname]['#type'] = array(
               '#type'          => 'textfield',
-              '#title'         => t($childlabel),
+              '#title'         => _setHelpText($childsysname, $childdescription, $childlabel),
               '#default_value' => (!empty($_SESSION['nbaSearch']["{$childsysname}"]) && $loadold) ? $_SESSION['nbaSearch']["{$childsysname}"] : "",
               '#required'      => FALSE,
               '#inline'        => TRUE,
               '#attributes'    => array(
               	 'data-clear' => "", 
               	 'name' => $childsysname,
-			     'data-operator' => _getAdvancedFieldOperator($childsysname),
-			     'data-split' => _getAdvancedFieldSplitInfo($childsysname)
+			     'data-help-text' => _setHelpText($childsysname, $childdescription, $childlabel)
               )
             );
           }
