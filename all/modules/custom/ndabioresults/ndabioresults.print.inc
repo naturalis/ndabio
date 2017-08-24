@@ -189,7 +189,7 @@ function _printSpecimens ($data) {
 		$output .= "<tr>";
 		// Registration number plus hits
 		$output .= "<td><a href='" . $row['url'] . "'>" . $row['unitID'] . "</a>" .
-			(!empty($row['hits']) ? '<br/>' . _printHits($row) : '') .
+			(!empty($row['hits']) || !empty($row['nameResolutionHits']) ? '<br/>' . _printHits($row) : '') .
 			"</td>";
 		// Species
 		$output .= "<td>" . $row['names'] . "</td>";

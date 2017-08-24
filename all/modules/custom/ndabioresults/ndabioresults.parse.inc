@@ -516,6 +516,7 @@ function _setNonNameHits ($service, $hits = []) {
 
 function _setNameResolutionHits ($service, $hits = [], $object) {
 //p($object);
+//p($hits);
 	if (!empty($hits)) {
 		$paths = _getQueryPaths($service);
 		$types = [];
@@ -876,7 +877,7 @@ function _parseSpecimens ($data, $options = []) {
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row);
+		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row->item);
 		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
 		$output['results'][] = $d;
 	}
