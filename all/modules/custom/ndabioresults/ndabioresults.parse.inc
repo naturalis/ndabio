@@ -16,11 +16,12 @@ function _parseTaxonDetail ($data) {
 			$output[$field] = _setUnitId($value, $field);
 		}
 	}
-
+	
 	foreach ($data->taxa as $row) {
 		$acceptedNames[] = _formatScientificName($row->acceptedName);
 		$row = $row->taxonDetails;
 		$source = $row->sourceSystem->name;
+		$output['sourceUrls'][$source] = $row->recordURI;
 
 		if (isset($row->defaultClassification)) {
 			$output['classifications']['default'][$source] =
@@ -2480,7 +2481,7 @@ function getCommonNames ($row, $languageCheck = false) {
 					if ($name->language == $language->name) {
 						$output[$name->name] = $name->language;
 					}
-				// ... else always return all names
+					// ... else always return all names
 				} else {
 					$output[$name->name] = $name->language;
 				}
