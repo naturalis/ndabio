@@ -254,7 +254,8 @@ function _checkNbaVersion () {
 	}
 	// Use checks here that are incompatible in older versions of the NBA
 	$client = _initBioPortalClient();
-	if (method_exists($client, 'getOperatorContainsMaxTermLength')) {
+	$settings = json_decode($client->getSettings());
+	if (isset($settings->{'operator.CONTAINS.min_term_length'})) {
 		$_SESSION['nbaVersionCheck'] = 'OK';
 		return true;
 	}
