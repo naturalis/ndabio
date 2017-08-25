@@ -2225,7 +2225,7 @@ function _nbaSimpleSearch () {
 	}
 	
     return $pageHeader .  _printDebug() . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults($timeOuts) . '</p>');
+    	(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
 }
 
 
