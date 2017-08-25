@@ -298,9 +298,10 @@ function _formatNumber ($n) {
 }
 
 
-function _printOops () {
-	return '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
+function _printOops ($message) {
+	$output = '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
 		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+	return $output;
 }
 
 

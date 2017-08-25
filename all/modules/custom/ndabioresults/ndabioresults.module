@@ -1585,6 +1585,7 @@ function _nbaAdvancedSearch () {
     unset($_SESSION['nbaQuery']);
     
     $useNameResolution = false;
+    $timeOuts = [];
  //   $useNameResolution = true; // @todo: nog verwijderen!
     
     $services['names.taxa'] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
@@ -1627,7 +1628,14 @@ function _nbaAdvancedSearch () {
             // Must use groupByScientificName() for names services
 			$remoteData[$service] = strpos($service, 'names') === false ? 
 				$client->query() : $client->groupByScientificName();
-			_addDebugMessage($service . ' query', _getTimer($timer));
+			
+			$timerEnd = _getTimer($timer);
+			
+            if ($timerEnd > nbaTimeout()) {
+            	$timeOuts[$service] = $timerEnd;
+            }
+
+            _addDebugMessage($service . ' query', $timerEnd);
 				
 			
 //header('Content-Type: application/json');
@@ -1686,13 +1694,15 @@ function _nbaAdvancedSearch () {
 		$data = _parseMultimedia(json_decode($remoteData['multimedia']), ['showAll']);
 		$pageBody .= _printMultimedia($data);
 	}
-	
+
+/*/ Disabled by request
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->specimensTotal = _getSpecimensTotal($services['names.specimens'],
 			$useNameResolution);
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
+*/	
 	
 	if (!empty($remoteData['specimen'])) {
 		$data = json_decode($remoteData['specimen']);
@@ -1711,9 +1721,9 @@ function _nbaAdvancedSearch () {
 			$mediaLinks['names.taxa'] : null;
 		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll', 'mediaLink']));
 	}
-
+	
 	return $pageHeader . _printDebug() . 
-		(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
+		(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
 }
 
 
@@ -1748,13 +1758,11 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	}
 	return -1;
 }
-
 function _setFilterRejectEmptyGenus () {
 	$filter = new Filter();
 	$filter->rejectRegexp("\?.*");
-	return $filter;	
+	return $filter;
 }
-
 
 // Assume data on genus, species, infraspecies can be deduced from data first specimen
 function _setSpecimensAllLink ($row) {
@@ -2073,6 +2081,7 @@ function _nbaSimpleSearch () {
     
     $pageBody = $pageHeader = '';
     $useNameResolution = true;
+    $timeOuts = [];
     
 //p($_SESSION['nbaSearch']); die();
 	
@@ -2170,7 +2179,17 @@ function _nbaSimpleSearch () {
     
 //    p($remoteData);
 		
- 	_addDebugMessage('batch query', _getTimer($timer));
+	$timerEnd = _getTimer($timer);
+	
+	if ($timerEnd > nbaTimeout()) {
+		$timeOuts[] = $timerEnd;
+	}
+	
+ 	_addDebugMessage('batch query', $timerEnd);
+	
+ 	
+ 	
+ 	
       
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "h1");
@@ -2181,12 +2200,14 @@ function _nbaSimpleSearch () {
 		$pageBody .= _printMultimedia(_parseMultimedia($data, ['showAll']));
 	}
 	
+	/* Disabled by request
 	if (!empty($remoteData['names.specimens'])) {
 		$data = json_decode($remoteData['names.specimens']); 
 		$data->specimensTotal = _getSpecimensTotal($services['names.specimens'], 
 			$useNameResolution);
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
+	*/
 	
 	if (!empty($remoteData['specimen'])) {
 		$data = json_decode($remoteData['specimen']); 
@@ -2203,9 +2224,8 @@ function _nbaSimpleSearch () {
 		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll']));
 	}
 	
-
     return $pageHeader .  _printDebug() . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
+    	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults($timeOuts) . '</p>');
 }
 
 
