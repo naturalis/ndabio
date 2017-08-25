@@ -542,7 +542,7 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 											$name[$i] = isset($enrichmentType->{$element}) && 
 												!empty(trim($enrichmentType->{$element})) ? 
 												trim($enrichmentType->{$element}) : '';
-											// Highlight (assume always LIKE operator for name fields)
+											// Highlight (assume always CONTAINS operator for name fields)
 											if (!empty($name[$i]) && $element == $field) {
 												$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
 											}
@@ -642,7 +642,7 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 		$name[$i] = isset($taxon->acceptedName->{$element}) && 
 			!empty(trim($taxon->acceptedName->{$element})) ? 
 			trim($taxon->acceptedName->{$element}) : '';
-		// Highlight (assume always LIKE operator for name fields)
+		// Highlight (assume always CONTAINS operator for name fields)
 		if (isset($hits['acceptedName.' . $element])) {
 			$name[$i] = _highlightMatch($taxon->acceptedName->{$element}, 
 				$paths['acceptedName.' . $element]['values']);
@@ -667,7 +667,7 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 				$name[$i] = isset($synonym->{$element}) && 
 					!empty(trim($synonym->{$element})) ? 
 					trim($synonym->{$element}) : '';
-				// Highlight (assume always LIKE operator for name fields)
+				// Highlight (assume always CONTAINS operator for name fields)
 				if (isset($hits['synonyms.' . $element]) && isset($synonym->{$element})) {
 					$name[$i] = _highlightMatch($synonym->{$element}, 
 						$paths['synonyms.' . $element]['values']);
@@ -726,7 +726,7 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 			$name[$i] = isset($identification->scientificName->{$element}) && 
 				!empty(trim($identification->scientificName->{$element})) ? 
 				trim($identification->scientificName->{$element}) : '';
-			// Highlight (assume always LIKE operator for name fields)
+			// Highlight (assume always CONTAINS operator for name fields)
 			if (!empty($name[$i]) && isset($hits['identifications.scientificName.' . $element])) {
 				$name[$i] = _highlightMatch($identification->scientificName->{$element}, 
 					$paths['identifications.scientificName.' . $element]['values']);
@@ -1088,7 +1088,7 @@ function _setSpecimenScientificName ($data) {
 				// Hits can be in both defaultClassification and scientificName
 				foreach (['defaultClassification', 'scientificName'] as $category) {
 					$hitPath = 'identifications.' . $category . '.' . $element;
-					// Highlight (assume always LIKE operator for name fields)
+					// Highlight (assume always CONTAINS operator for name fields)
 					if (!empty($name[$i]) && isset($hits[$hitPath])) {
 						$name[$i] = _highlightMatch($identification->{$element}, 
 							$paths[$hitPath]['values']);
@@ -1281,8 +1281,8 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 					$result = array_values($result)[0];
 				}
 				// Operator determines if we have a hit: 
-				// LIKE...
-				if (($operator == 'LIKE' && stripos($result, $value) !== false) ||
+				// CONTAINS...
+				if (($operator == 'CONTAINS' && stripos($result, $value) !== false) ||
 				// STARTS_WITH_IC
 					($operator == 'STARTS_WITH_IC' && stripos($result, $value) === 0) ||						
 				// ... MATCHES or EQUALS_IC	

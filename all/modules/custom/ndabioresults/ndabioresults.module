@@ -19,8 +19,6 @@ use nl\naturalis\bioportal\Filter as Filter;
 function ndabioresults_init () {
 	// Clear previously stored debug info
 	_init();
-	// Set language (copied from v1, dunno if necessary)
-	_setLanguage();
 }
 
 
@@ -1005,7 +1003,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 					$element = null;
 				}
 				// Test if LIKE is still allowed; if not change to STARTS_WITH_IC
-				if ($operator == 'LIKE' && !_likeOperatorAllowed($element)) {
+				if ($operator == 'CONTAINS' && !_containsOperatorAllowed($element)) {
 					$operator = 'STARTS_WITH_IC';
 				}
 				// geoShape is a special case
@@ -1164,7 +1162,7 @@ function _getOperatorFromMapping ($type, $value) {
     return 'EQUALS';
 }
 
-function _likeOperatorAllowed ($value = '') {
+function _containsOperatorAllowed ($value = '') {
     return
         strlen($value) >= nbaMinLikeStringSize() &&
         strlen($value) <= nbaMaxLikeStringSize();

@@ -6,6 +6,13 @@ require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
+function ndabio_init () {
+	// Check if proper NBA is used
+	_checkNbaVersion();
+	// Set language (copied from v1, dunno if necessary)
+	_setLanguage();
+}
+
 
 function nbaMinLikeStringSize () {
     $nbaMinLikeStringSize = &drupal_static(__FUNCTION__);
@@ -17,7 +24,7 @@ function nbaMinLikeStringSize () {
             return $nbaMinLikeStringSize;
         }
         $client = _initBioPortalClient();
-        $nbaMinLikeStringSize = $client->getOperatorLikeMinTermLength();
+        $nbaMinLikeStringSize = $client->getOperatorContainsMinTermLength();
         cache_set($cacheId, $nbaMinLikeStringSize);
     }
     return $nbaMinLikeStringSize;
@@ -33,7 +40,7 @@ function nbaMaxLikeStringSize () {
             return $nbaMaxLikeStringSize;
         }
         $client = _initBioPortalClient();
-        $nbaMaxLikeStringSize = $client->getOperatorLikeMaxTermLength();
+        $nbaMaxLikeStringSize = $client->getOperatorContainsMaxTermLength();
         cache_set($cacheId, $nbaMaxLikeStringSize);
     }
     return $nbaMaxLikeStringSize;
@@ -220,7 +227,6 @@ function _setHelpText ($field, $description, $label) {
 		case 'MATCHES':
 			$output .= t('matches the term');
 			break;
-		case 'LIKE':
 		case 'CONTAINS':
 			$output .= t('contains the term');
 			break;

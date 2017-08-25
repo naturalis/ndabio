@@ -76,7 +76,7 @@ function _getOptimalOperators ($fields) {
 			$r[$path] = $field->type . ' | IN';
 		}
 		if ($field->type == 'keyword') {
-			foreach (['LIKE', 'STARTS_WITH_IC', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
+			foreach (['CONTAINS', 'STARTS_WITH_IC', 'MATCHES', 'EQUALS_IC', 'EQUALS'] as $operator) {
 				if (in_array($operator, $field->allowedOperators)) {
 					$r[$path] = $field->type . ' | ' . $operator;
 					break;
@@ -244,6 +244,22 @@ function _addDebugMessage ($title = false, $message = false) {
 
 function _getDebug () {
 	return $_SESSION['nbaDebug'];
+}
+
+
+
+function _checkNbaVersion () {
+	if (isset($_SESSION['nbaVersionCheck']) && $_SESSION['nbaVersionCheck'] == 'OK') {
+		return true;
+	}
+	// Use checks here that are incompatible in older versions of the NBA
+	$client = _initBioPortalClient();
+	if (method_exists($client, 'getOperatorContainsMaxTermLength')) {
+		$_SESSION['nbaVersionCheck'] = 'OK';
+		return true;
+	}
+	echo '<p style="color: red; font-weight: bold;">Invalid version of NBA used! Use NBA v2.9 or higher. 
+		<a href="##overlay=admin/config/naturalis/ndaresult">Modify the NBA base URL setting</a>.</p>';
 }
 
 

@@ -557,7 +557,7 @@ function nbaAdvancedSearchExceptions ()
                 ],
               	'vernacularName' => [
                     'split' => false,
-                	'operator' => 'LIKE'
+                	'operator' => 'CONTAINS'
                 ],
             ],
             'specimen' => [
@@ -575,7 +575,7 @@ function nbaAdvancedSearchExceptions ()
                 ],
                 'vernacularName' => [
                     'split' => false,
-                 	'operator' => 'LIKE'
+                 	'operator' => 'CONTAINS'
                 ],
                 'unitID' => [
                     'split' => false,
@@ -585,7 +585,7 @@ function nbaAdvancedSearchExceptions ()
             'taxon' => [
                 'vernacularName' => [
                     'split' => false,
-                 	'operator' => 'LIKE'
+                 	'operator' => 'CONTAINS'
                 ],
             ],
         );
