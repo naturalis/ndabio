@@ -214,3 +214,5 @@ function clearForm () {
 	jQuery('#edit-t-andor-0').prop("checked", true);
 }
 
+
+

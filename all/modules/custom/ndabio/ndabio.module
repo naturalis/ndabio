@@ -863,21 +863,18 @@ function ndabio_advanced_taxonomysearch () {
 		}
 	}
 	$geosearch = 0;
+	$path = drupal_get_path('module', 'ndabio');
 	
 	if (variable_get('geosearch') == '1') {
 		
 		drupal_set_title(t("Geographic search"));
 		$geosearch = 1;
-		$path = drupal_get_path('module', 'ndabio');
 		drupal_add_css($path . "/css/ndabio_style.css");
-		drupal_add_js($path . "/js/map.js", array(
-			'weight' => 1 
-		));
-		drupal_add_js($path . "/js/mapform.js", array(
-			'weight' => 1 
-		));
-		drupal_add_js("var str_base_path = '$base_path';", 'inline');
 		
+		drupal_add_js($path . "/js/map.js", array('weight' => 1));
+		drupal_add_js($path . "/js/mapform.js", array('weight' => 1));
+		drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
+		drupal_add_js("var str_base_path = '$base_path';", 'inline');
 		drupal_add_js('var language = "' . $language->language . '";', 'inline');
 		drupal_add_js('var storedGid = "' . $storedGid . '";', 'inline');
 		drupal_add_js('var storedGeoShape = ' . _getStoredGeoShape(true) . ';', 'inline');
@@ -885,26 +882,31 @@ function ndabio_advanced_taxonomysearch () {
 		drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
 		drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
 		
-		drupal_add_js($path . "/js/jquery.scrollTo.min.js", array(
-			'weight' => 1 
-		));
 		drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
-		drupal_add_js("jQuery(function() { google.maps.event.addDomListener(window, 'load', initialize); });", array(
-			'type' => 'inline',
-			'scope' => 'footer' 
-		));
 	}
 	$searchtype = array(
 		0 => t('And'),
 		1 => t('Or') 
 	);
 	
+	drupal_add_css($path . "/css/tooltipster.bundle.min.css");
+	drupal_add_css($path . "/css/tooltipster-sideTip-light.min.css");
+	
+	drupal_add_js($path . "/js/tooltipster.bundle.min.js", array('weight' => 1));
 	drupal_add_js('var placeholder = "' . $placeholder . '";', 'inline');
 	drupal_add_js("var expandAdvanced = $expandedFlag;", 'inline');
 	drupal_add_js("jQuery(function() { jQuery('#edit-term').focus(); });", array(
 		'type' => 'inline',
 		'scope' => 'footer' 
 	));
+	drupal_add_js("jQuery(document).ready(function($) { 
+			$('.search-explanation').tooltipster({
+	    		theme: 'tooltipster-light',
+				maxWidth: 350
+			});
+		});",
+	    array('type' => 'inline', 'scope' => 'header', 'weight' => 5)
+	);
 	
 	$machine_name = "search";
 	$v = taxonomy_vocabulary_machine_name_load($machine_name);
@@ -1035,9 +1037,6 @@ function ndabio_advanced_taxonomysearch () {
 												$_SESSION['nbaSearch']["{$catitem->name}"] : "",
 											'#required' => FALSE,
 											'#inline' => TRUE,
-											'#attributes' => array(
-												'data-help-text' => $help 
-											),
 											'#multiple' => _isMultiAdvancedSelect($catitem->name)
 										];
 									} 
@@ -1052,7 +1051,6 @@ function ndabio_advanced_taxonomysearch () {
 											'#attributes' => array(
 												'data-clear' => "",
 												'name' => $subchildsysname,
-												'data-help-text' => $help 
 											) 
 										);
 									}
@@ -1074,7 +1072,6 @@ function ndabio_advanced_taxonomysearch () {
 									'#attributes' => array(
 										'data-clear' => "",
 										'name' => $subchildsysname,
-										'data-help-text' => $help 
 									),
 									'#multiple' => _isMultiAdvancedSelect($subchildsysname)
 								);
@@ -1089,7 +1086,6 @@ function ndabio_advanced_taxonomysearch () {
 									'#attributes' => array(
 										'data-clear' => "",
 										'name' => $subchildsysname,
-										'data-help-text' => $help 
 									) 
 								);
 							}
@@ -1110,7 +1106,6 @@ function ndabio_advanced_taxonomysearch () {
 							'#attributes' => array(
 								'data-clear' => "",
 								'name' => $subchildsysname,
-								'data-help-text' => $help 
 							),
 							'#multiple' => _isMultiAdvancedSelect($childsysname)
 						);
@@ -1125,7 +1120,6 @@ function ndabio_advanced_taxonomysearch () {
 							'#attributes' => array(
 								'data-clear' => "",
 								'name' => $childsysname,
-								'data-help-text' => $help 
 							) 
 						);
 					}
