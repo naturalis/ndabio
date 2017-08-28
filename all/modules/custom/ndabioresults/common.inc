@@ -359,13 +359,6 @@ function _markUp ($string){
 }
 
 
-function _setArrayKeyFromValue ($array) {
-	foreach ($array as $k => $v) {
-		$output[$v] = $v;
-	}
-	return isset($output) ? $output : array();
-}
-
 function _encodeReferrer ($data) {
 	if (is_array($data)) {
 		$data = http_build_query($data);

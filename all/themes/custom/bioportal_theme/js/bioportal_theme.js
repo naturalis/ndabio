@@ -179,8 +179,7 @@
         if ($_omnibox.val() !== ""){
           $_omnibox.attr("placeholder", $_omnibox.val()  );
           $_omnibox.val("");
-        } else if ($_omnibox.attr("placeholder").val() != placeholder) {
-        	
+        } else if ($_omnibox.attr("placeholder") != placeholder) {
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
         }
@@ -295,6 +294,8 @@
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
+  	
+  	
 
    // ---------------------------------------------------------
   // PRELOADER

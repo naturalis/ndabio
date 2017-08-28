@@ -901,76 +901,83 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 	$operators = _filterQueryOperators($terms);
 	
 	// Translate fields to NBA paths and get their operators
-    foreach ($terms as $field => $value) {
-    	$statement = [];
-    	// Exclude search flags; these will be processed later
-        if (!in_array($field, searchFlags())) {
-            // Get NBA path(s) for field
-            $nbaPaths = [$field];
-            if (isset(nbaFieldMapping()[$lookupService][$field])) {
-                $nbaPaths = nbaFieldMapping()[$lookupService][$field];
-            }
-            if ($useNameResolution && 
-            	isset(nbaNameResolutionFieldMapping()[$lookupService][$field])) {
-            	$nbaPaths = array_merge($nbaPaths, 
-            		nbaNameResolutionFieldMapping()[$lookupService][$field]);
-            }
-            // Get NBA field type
-            foreach ($nbaPaths as $path) {
- /* @sng-fix      	
-             	$path = $type . $path;
-*/
-            	// Names identifications are buried even deeper...
-            	// and to compilate matters, taxonomicEnrichments should be excluded
-            	// from renaming.
- /* @sng-fix      	
-            	if ($service == 'names' && strpos($path, '.identifications.') !== false) {
-            		$path = str_replace('identifications', 'matchingIdentifications', $path);
-            	}
-*/            	
-            	
-            	// Operator: difference between simple and advanced search
-            	// If operator has been set in url use this; overrules all other settings
-            	if (isset($operators[$field])) {
-            		$statement[$path] = strtoupper($operators[$field]);
-            	// Advanced search
-            	} else if (!$simpleSearch) {
-            		// Default
-            		$statement[$path] = 'STARTS_WITH_IC';
-            		// Select
-            		if (_isAdvancedSelect($field)) {
-            			$statement[$path] = 'EQUALS_IC';
-            		// Exception 
-            		} else if (isset(nbaAdvancedSearchExceptions()[$lookupService][$field])) {
-            			$statement[$path] = nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
-            		}
-            	// Simple search
-            	} else {
-            		$statement[$path] = _getConditionOperator($service, $path, $value);
+	// Assumes term is an array, taking into account multi-selects
+    foreach ($terms as $field => $values) {
+    	if (!is_array($values)) {
+    		$values = [$values];
+		}
+		foreach ($values as $value) {
+			$statement = [];
+			// Exclude search flags; these will be processed later
+			if (!in_array($field, searchFlags())) {
+				// Get NBA path(s) for field
+				$nbaPaths = [$field 
+				];
+				if (isset(nbaFieldMapping()[$lookupService][$field])) {
+					$nbaPaths = nbaFieldMapping()[$lookupService][$field];
 				}
-				
-				$paths[$path] = [
-					'operator' => $statement[$path],
-					'values' => _stringToElements($value), // Ua
+				if ($useNameResolution && isset(nbaNameResolutionFieldMapping()[$lookupService][$field])) {
+					$nbaPaths = array_merge($nbaPaths, nbaNameResolutionFieldMapping()[$lookupService][$field]);
+				}
+				// Get NBA field type
+				foreach ($nbaPaths as $path) {
+					/*
+					 * @sng-fix
+					 * $path = $type . $path;
+					 */
+					// Names identifications are buried even deeper...
+					// and to compilate matters, taxonomicEnrichments should be excluded
+					// from renaming.
+					/*
+					 * @sng-fix
+					 * if ($service == 'names' && strpos($path, '.identifications.') !== false) {
+					 * $path = str_replace('identifications', 'matchingIdentifications', $path);
+					 * }
+					 */
+					
+					// Operator: difference between simple and advanced search
+					// If operator has been set in url use this; overrules all other settings
+					if (isset($operators[$field])) {
+						$statement[$path] = strtoupper($operators[$field]);
+						// Advanced search
+					} else if (!$simpleSearch) {
+						// Default
+						$statement[$path] = 'STARTS_WITH_IC';
+						// Select
+						if (_isAdvancedSelect($field)) {
+							$statement[$path] = 'EQUALS_IC';
+							// Exception
+						} else if (isset(nbaAdvancedSearchExceptions()[$lookupService][$field])) {
+							$statement[$path] = nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
+						}
+						// Simple search
+					} else {
+						$statement[$path] = _getConditionOperator($service, $path, $value);
+					}
+					
+					$paths[$path] = [
+						'operator' => $statement[$path],
+						'values' => _stringToElements($value)  // Used to determine hits
+					];
+				}
+			}
+			
+			// Value: to split or not to split?
+			// Split simple search and specific advanced search fields
+			if ($simpleSearch || (isset(nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
+				nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
+				$value = _stringToElements($value);
+			}
+			
+			// Group associated statements
+			if (!empty($statement)) {
+				$statements[] = [
+					'statement' => $statement,'value' => is_array($value) ? $value : [$value],
+					'operator' => $andOr 
 				];
 			}
 		}
-		
-		// Value: to split or not to split?
-		// Split simple search and specific advanced search fields
-		if ($simpleSearch || (isset(nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
-			nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
-			$value = _stringToElements($value);
-        }
-        
-        // Group associated statements
-		if (!empty($statement)) {
-			$statements[] = [
-				'statement' => $statement,
-				'value' => is_array($value) ? $value : [$value],
-				'operator' => $andOr,
-			];
-		}
+    	
     }
     
     // Store paths for term highlighting
@@ -978,7 +985,6 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
     	//$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
     	//	substr($type, 0, -1)]['paths'] = $paths;
     	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
-    		
     }
     
     // Compile conditions
@@ -1028,11 +1034,11 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 					}
 				}
 				if ($first) {
-					$condition = new Condition($path, $operator, $element);
+					$condition = new Condition($path, $operator, html_entity_decode($element));
 					$first = false;
 					continue;
 				}
-				$condition->setOr($path, $operator, $element);
+				$condition->setOr($path, $operator, html_entity_decode($element));
 			}
 			if (!empty($condition)) {
 				$subconditions[] = [
@@ -1056,6 +1062,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 			];
 		}
 	}
+	
 	// OR search: string all conditions together with setOr()
 	if ($logicalOperator == 'OR') {
 		foreach (array_values($conditions) as $i => $condition) {
@@ -1072,6 +1079,7 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 			$query->addCondition(_setCondition($condition));
 		}
 	}
+	
     // Add map condition if present
     if (isset($geoShape)) {
 	    $query->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']));
@@ -3088,7 +3096,9 @@ function _setSectionParameters (array $terms, $typeId = '') {
     }
     $d = [];
     foreach ($terms as $k => $v) {
-        if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
+    	if (strpos($k, $typeId) === 0 && is_array($v)) {
+    		$d[str_replace($typeId, '', $k)] = array_map('trim', $v);
+    	} else if (strpos($k, $typeId) === 0 && (!empty($v) || is_numeric($v))) {
             $d[str_replace($typeId, '', $k)] = trim($v);
         }
     }

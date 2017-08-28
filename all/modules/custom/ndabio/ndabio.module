@@ -75,48 +75,79 @@ function advancedSelects () {
             return $nbaAdvancedSelects;
         }
         $nbaAdvancedSelects['s_sourceSystem'] =
-        	_createAdvancedSelect('specimen', 'sourceSystem.code', 'sourceSystem.name');
+        	_createAdvancedSelectDifferentOptionValue('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'collectionType'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType'));
         $nbaAdvancedSelects['s_typeStatus'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus'));
         $nbaAdvancedSelects['s_kindOfUnit'] =
-        	_setArrayKeyFromValue(_kindOfUnitSelectValues());
+        	_createAdvancedSelect(_kindOfUnitSelectValues());
         $nbaAdvancedSelects['s_sex'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'sex'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'sex'));
         $nbaAdvancedSelects['s_phaseOrStage'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'phaseOrStage'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage'));
         $nbaAdvancedSelects['s_kingdom'] =
-        	_setArrayKeyFromValue(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['t_sourceSystem'] =
-        	//_setArrayKeyFromValue(_getDistinctValues('taxon', 'sourceSystem.name'));
-        	_createAdvancedSelect('taxon', 'sourceSystem.code', 'sourceSystem.name');
+        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['t_kingdom'] =
-        	_setArrayKeyFromValue(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
+        	_createAdvancedSelect(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_sourceSystem'] =
-        	//_setArrayKeyFromValue(_getDistinctValues('multimedia', 'sourceSystem.name'));
-        	_createAdvancedSelect('multimedia', 'sourceSystem.code', 'sourceSystem.name');
+        	_createAdvancedSelectDifferentOptionValue('multimedia', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['m_collectionType'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'collectionType'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType'));
         $nbaAdvancedSelects['m_typeStatus'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus'));
         $nbaAdvancedSelects['m_phaseOrStage'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'phasesOrStages'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages'));
         $nbaAdvancedSelects['m_sex'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'sexes'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'sexes'));
         $nbaAdvancedSelects['m_kingdom'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_license'] =
-        	_setArrayKeyFromValue(_getDistinctValues('multimedia', 'license'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'license'));
     }
     return $nbaAdvancedSelects;
 }
 
 function _kindOfUnitSelectValues () {
-	return array_merge(
+	$discard = [
+		'fossilspecimen',
+		'indet.',
+		'multimediaobject',
+		'not a',
+		'not applicable',
+		'not',
+		'other',
+		'otherspecimen',
+		'preservedspecimen',
+		'unknown',
+		'unspecified',
+		'virtual specimen',
+	];
+	$output = array_merge(
 		_getDistinctValues('specimen', 'kindOfUnit'),
 		_getDistinctValues('specimen', 'recordBasis')	
 	);
+	// Remove unwanted values and duplicates (case insenstive)
+	Foreach ($output as $v) {
+		$k = strtolower($v);
+		if (!in_array($k, $discard)) {
+			$filteredOutput[$k] = $v;
+		}
+	}
+	$output = array_values($filteredOutput);
+	sort($output, SORT_NATURAL | SORT_FLAG_CASE);
+	return $output;
+}
+
+
+
+function _createAdvancedSelect ($array, $labelUcFirst = true) {
+	foreach ($array as $k => $v) {
+		$output[htmlspecialchars($v, ENT_QUOTES)] = $labelUcFirst ? ucfirst($v) : $v;
+	}
+	return isset($output) ? $output : array();
 }
 
 
@@ -134,13 +165,21 @@ function _isAdvancedSelect ($field) {
 	]);
 }
 
+// Select will be multi-selcet
+function _isMultiAdvancedSelect ($field) {
+	return in_array($field, [
+		's_kindOfUnit',
+		'm_license'
+	]);
+}
+
 
 /*
  * Cannot use _getDistinctValues for select with different option-value pairs
  * (specifically sourceSystem, where option should be different from value)
  * Both fields should be linked of course!
   */
-function _createAdvancedSelect ($service, $optionPath, $valuePath) {
+function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
 	$options = _getDistinctValues($service, $optionPath);
 	$client = _initBioPortalClient();
 	foreach ($options as $option) {
@@ -155,7 +194,7 @@ function _createAdvancedSelect ($service, $optionPath, $valuePath) {
 			foreach ($pathArray as $deeper) {
 				$objPath = $objPath->{$deeper};
 			}
-			$output[$option] = $objPath;
+			$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
 		}
 	}
 	return isset($output) ? $output : [];
@@ -205,7 +244,12 @@ function _getAdvancedFieldSplitInfo ($field) {
 }
 
 function _setHelpText ($field, $description, $label) {
-	$output = $description . "\n\n" . t('The term') . ' ';
+	$output = $description . "\n\n";
+	if (_isMultiAdvancedSelect($field)) {
+		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
+			".\n\n";
+	}
+	$output .= t('The term') . ' ';
 	switch (_getAdvancedFieldSplitInfo($field)) {
 		case 'true':
 			$output .= t('is split into words first');
@@ -244,9 +288,11 @@ function _setAdvancedSelect ($field, $taxonomy = '') {
     if (!isset(advancedSelects()[$field])) {
         return false;
     }
-    // First entry is an empty string
-    $select[""] = "";
-    // Add --all-- option if this is set in taxonomy value
+    // First entry is an empty string for regular select
+    if (!_isMultiAdvancedSelect($field)) {
+    	$select[''] = '';
+    };
+    	// Add --all-- option if this is set in taxonomy value
     if (strpos($taxonomy, '-- all --') !== false) {
         $select['NOT_NULL'] = '-- ' . t('all') . ' --';
     }
@@ -981,7 +1027,7 @@ function ndabio_advanced_taxonomysearch () {
 									
 									if (isset(advancedSelects()[$catitem->name])) {
 										$options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
-										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
+										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = [
 											'#type' => 'select',
 											'#title' => _wrap_label($help, $morelabel),
 											'#options' => $options,
@@ -991,8 +1037,9 @@ function ndabio_advanced_taxonomysearch () {
 											'#inline' => TRUE,
 											'#attributes' => array(
 												'data-help-text' => $help 
-											) 
-										);
+											),
+											'#multiple' => _isMultiAdvancedSelect($catitem->name)
+										];
 									} 
 									else {
 										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
@@ -1028,10 +1075,10 @@ function ndabio_advanced_taxonomysearch () {
 										'data-clear' => "",
 										'name' => $subchildsysname,
 										'data-help-text' => $help 
-									) 
+									),
+									'#multiple' => _isMultiAdvancedSelect($subchildsysname)
 								);
 							} else {
-								
 								$form[$sysname][$childsysname][$subchildsysname] = array(
 									'#type' => 'textfield',
 									'#title' => _wrap_label($help, $subchildlabel),
@@ -1051,7 +1098,6 @@ function ndabio_advanced_taxonomysearch () {
 				} else {
 					// Default search fields
 					$help = _setHelpText($subchildsysname, $subchilddescription, $subchildlabel);
-					
 					if (isset(advancedSelects()[$childsysname])) {
 						$options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
 						$form[$sysname][$childsysname][$subchildsysname] = array(
@@ -1065,7 +1111,8 @@ function ndabio_advanced_taxonomysearch () {
 								'data-clear' => "",
 								'name' => $subchildsysname,
 								'data-help-text' => $help 
-							) 
+							),
+							'#multiple' => _isMultiAdvancedSelect($childsysname)
 						);
 					} else {
 						$form[$sysname][$childsysname]['#type'] = array(
@@ -1206,12 +1253,12 @@ function ndabio_omnisearch_form() {
     '#id' => 'edit-submit-top'
   );
   $form['#action'] = url('nba/result');
-
-  return ($form);
+	
+	return ($form);
 }
-
-function _wrap_label( $help, $caption ){
-  global $language;
-  return "<span class='search-explanation' title='$help'><a href='/" . $language->language . "/help?language=" . $language->language . "#advanced-search' target='_blank'>$caption</a></span>";
+function _wrap_label ($help, $caption) {
+	global $language;
+	return "<span class='search-explanation' title='$help'><a href='/" . $language->language . 
+		"/help?language=" . $language->language . "#advanced-search' target='_blank'>$caption</a></span>";
 }
 

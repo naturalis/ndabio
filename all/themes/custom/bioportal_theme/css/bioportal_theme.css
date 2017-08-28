@@ -844,3 +844,15 @@ th .icon-sort_sortable {
 	margin: 0px;
 	font-size: 0.8em;
 }
+
+#edit-extended select[multiple] {
+    margin: 0;
+    padding: 3px;
+    height: 96px; 
+    font-weight: bolder;
+    box-shadow: none;
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    background-image: none;
+}
+ 
