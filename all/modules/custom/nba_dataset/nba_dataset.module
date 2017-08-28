@@ -15,7 +15,6 @@
  * pointing to the dwca downloads (/var/opt/dwca-downloads/downloads/)
  */
 
-/* define("NBADATAFOLDER", '/var/opt/dwca-downloads/downloads/'); */
 define("NBADATAFOLDER", '/var/www/drupal/sites/default/files/dwca-downloads/');
 define("NBADOWNLOADFOLDER", "/sites/default/files/dwca-downloads/");
 
@@ -76,7 +75,7 @@ function nba_dataset_block_view($delta = '') {
  */
 function getNbaData() {
   $data = "<ul>";
-  foreach(glob(NBADATAFOLDER . '*.*') as $file) {
+  foreach(glob(NBADATAFOLDER . '*.zip') as $file) {
     $data .= "<li id='file'>" . 
                "<a href='" . NBADOWNLOADFOLDER . basename($file) . "'>"  . 
 	         basename($file) . 
