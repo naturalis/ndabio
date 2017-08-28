@@ -1,10 +1,8 @@
 name = Feature - Bioportal nodes & menus
 core = 7.x
 package = Bioportal
-version = 7.x-1.0
+version = 7.x-1.0a
 dependencies[] = feature_bioportal_controller
-dependencies[] = node
-dependencies[] = text
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
 features[menu_custom][] = main-menu

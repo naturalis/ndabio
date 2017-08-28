@@ -15,7 +15,10 @@
  * pointing to the dwca downloads (/var/opt/dwca-downloads/downloads/)
  */
 
+/* System folder containing the downloadable files (zip format) */
 define("NBADATAFOLDER", '/var/www/drupal/sites/default/files/dwca-downloads/');
+
+/* Path used in the URL (relative to site root) to the downloadable files */
 define("NBADOWNLOADFOLDER", "/sites/default/files/dwca-downloads/");
 
 /**
