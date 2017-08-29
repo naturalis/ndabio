@@ -1172,8 +1172,8 @@ function _getOperatorFromMapping ($type, $value) {
 
 function _containsOperatorAllowed ($value = '') {
     return
-        strlen($value) >= nbaMinLikeStringSize() &&
-        strlen($value) <= nbaMaxLikeStringSize();
+        strlen($value) >= nbaMinContainsStringSize() &&
+        strlen($value) <= nbaMaxContainsStringSize();
 }
 
 function _nba_taxon_result_callback ($search = false) {

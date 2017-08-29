@@ -14,36 +14,36 @@ function ndabio_init () {
 }
 
 
-function nbaMinLikeStringSize () {
-    $nbaMinLikeStringSize = &drupal_static(__FUNCTION__);
-    if (!$nbaMinLikeStringSize) {
-        $cacheId = 'nbaMinLikeStringSize';
+function nbaMinContainsStringSize () {
+    $nbaMinContainsStringSize = &drupal_static(__FUNCTION__);
+    if (!$nbaMinContainsStringSize) {
+        $cacheId = 'nbaMinContainsStringSize';
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
-            $nbaMinLikeStringSize = $cache->data;
-            return $nbaMinLikeStringSize;
+            $nbaMinContainsStringSize = $cache->data;
+            return $nbaMinContainsStringSize;
         }
         $client = _initBioPortalClient();
-        $nbaMinLikeStringSize = $client->getOperatorContainsMinTermLength();
-        cache_set($cacheId, $nbaMinLikeStringSize);
+        $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
+        cache_set($cacheId, $nbaMinContainsStringSize);
     }
-    return $nbaMinLikeStringSize;
+    return $nbaMinContainsStringSize;
 }
 
-function nbaMaxLikeStringSize () {
-    $nbaMaxLikeStringSize = &drupal_static(__FUNCTION__);
-    if (!$nbaMaxLikeStringSize) {
-        $cacheId = 'nbaMaxLikeStringSize';
+function nbaMaxContainsStringSize () {
+    $nbaMaxContainsStringSize = &drupal_static(__FUNCTION__);
+    if (!$nbaMaxContainsStringSize) {
+        $cacheId = 'nbaMaxContainsStringSize';
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
-            $nbaMaxLikeStringSize = $cache->data;
-            return $nbaMaxLikeStringSize;
+            $nbaMaxContainsStringSize = $cache->data;
+            return $nbaMaxContainsStringSize;
         }
         $client = _initBioPortalClient();
-        $nbaMaxLikeStringSize = $client->getOperatorContainsMaxTermLength();
-        cache_set($cacheId, $nbaMaxLikeStringSize);
+        $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
+        cache_set($cacheId, $nbaMaxContainsStringSize);
     }
-    return $nbaMaxLikeStringSize;
+    return $nbaMaxContainsStringSize;
 }
 
 
@@ -244,7 +244,7 @@ function _getAdvancedFieldSplitInfo ($field) {
 }
 
 function _setHelpText ($field, $description, $label) {
-	$output = $description . "\n\n";
+	$output = $description . " ";
 	if (_isMultiAdvancedSelect($field)) {
 		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
 			".\n\n";
@@ -255,14 +255,14 @@ function _setHelpText ($field, $description, $label) {
 			$output .= t('is split into words first');
 			break;
 		case 'false':
-			$output .= t('is used as is (not split up)');
+			$output .= t('is used as is (not split into words first)');
 			break;
 	}
-	$output .= ' '. t('and the field') . ' "' . strtolower($label) . '" ';
+	$output .= '. '. t('The field') . ' "' . $label . '" ';
 	switch (_getAdvancedFieldOperator($field)) {
 		case 'EQUALS':
 		case 'EQUALS_IC':
-			$output .= t('matches the term extactly');
+			$output .= t('matches the term exactly');
 			break;
 		case 'STARTS_WITH':
 		case 'STARTS_WITH_IC':
@@ -272,10 +272,12 @@ function _setHelpText ($field, $description, $label) {
 			$output .= t('matches the term');
 			break;
 		case 'CONTAINS':
-			$output .= t('contains the term');
+			
+			$output .= t('partially matches the term, if the term is between %d and %d characters long (wildcard search)');
 			break;
 	}
-	return $output .= '.';
+	$output .= '.';
+	return sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize());
 }
 
 
