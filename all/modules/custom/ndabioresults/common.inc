@@ -260,7 +260,7 @@ function _checkNbaVersion () {
 		return true;
 	}
 	echo '<p style="color: red; font-weight: bold;">Invalid version of NBA used! Use NBA v2.9 or higher. 
-		<a href="##overlay=admin/config/naturalis/ndaresult">Modify the NBA base URL setting</a>.</p>';
+		<a href="#overlay=admin/config/naturalis/ndaresult">Modify the NBA base URL setting</a>.</p>';
 }
 
 
