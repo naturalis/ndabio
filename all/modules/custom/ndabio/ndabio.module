@@ -870,7 +870,6 @@ function ndabio_advanced_taxonomysearch () {
 		drupal_set_title(t("Geographic search"));
 		$geosearch = 1;
 		drupal_add_css($path . "/css/ndabio_style.css");
-		
 		drupal_add_js($path . "/js/map.js", array('weight' => 1));
 		drupal_add_js($path . "/js/mapform.js", array('weight' => 1));
 		drupal_add_js($path . "/js/jquery.scrollTo.min.js", array('weight' => 1));
@@ -881,9 +880,15 @@ function ndabio_advanced_taxonomysearch () {
 		drupal_add_js('var storedZoomLevel = ' . _getStoredZoomLevel() . ';', 'inline');
 		drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
 		drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
+		drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . 
+			variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        drupal_add_js(
+            "jQuery(function() { google.maps.event.addDomListener(window, 'load', initialize); });",
+            array('type' => 'inline', 'scope' => 'footer')
+        );
 		
-		drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
 	}
+	
 	$searchtype = array(
 		0 => t('And'),
 		1 => t('Or') 
@@ -892,13 +897,14 @@ function ndabio_advanced_taxonomysearch () {
 	drupal_add_css($path . "/css/tooltipster.bundle.min.css");
 	drupal_add_css($path . "/css/tooltipster-sideTip-light.min.css");
 	
-	drupal_add_js($path . "/js/tooltipster.bundle.min.js", array('weight' => 1));
 	drupal_add_js('var placeholder = "' . $placeholder . '";', 'inline');
 	drupal_add_js("var expandAdvanced = $expandedFlag;", 'inline');
 	drupal_add_js("jQuery(function() { jQuery('#edit-term').focus(); });", array(
 		'type' => 'inline',
 		'scope' => 'footer' 
 	));
+	
+	drupal_add_js($path . "/js/tooltipster.bundle.min.js", array('weight' => 1));
 	drupal_add_js("jQuery(document).ready(function($) { 
 			$('.search-explanation').tooltipster({
 	    		theme: 'tooltipster-light',
