@@ -976,9 +976,10 @@ function ndabio_advanced_taxonomysearch () {
 					if (isset($_SESSION['nbaSearch'][$fieldsetPrefix . '_andOr']) && $loadold) {
 						$defaultvalue = intval($_SESSION['nbaSearch'][$fieldsetPrefix . '_andOr']);
 					}
+
 					$form[$sysname][$childsysname] = array(
 						'#type' => 'fieldset',
-						'#title' => t($childlabel),
+						'#title' => _wrap_label($childdescription, $childlabel),
 						$fieldsetPrefix . '_andOr' => array(
 							'#type' => 'radios',
 							'#title' => t('Combine search terms'),
