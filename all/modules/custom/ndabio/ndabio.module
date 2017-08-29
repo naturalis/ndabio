@@ -1256,9 +1256,11 @@ function ndabio_omnisearch_form() {
 	
 	return ($form);
 }
+
 function _wrap_label ($help, $caption) {
 	global $language;
-	return "<span class='search-explanation' title='$help'><a href='/" . $language->language . 
-		"/help?language=" . $language->language . "#advanced-search' target='_blank'>$caption</a></span>";
+	return "<span class='search-explanation' title='$help'>" . 
+	//<a href='/" . $language->language . "/help?language=" . $language->language . "#advanced-search' target='_blank'> . "$caption</a></span>";
+	"$caption</span>";
 }
 
