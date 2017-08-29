@@ -17449,6 +17449,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('This text is displayed at the picture upload form in addition to the default guidelines. It\'s useful for helping or instructing your users.', array(), array('context' => ''));
+  $translations['nl:default']['64ff27abba07c636b777f41b067ad2a1'] = array(
+    'source' => '%s specimens are displayed',
+    'context' => '',
+    'location' => '/result/specimen/map/cassia+absus/gid=1003951%40GEO&logicalOperator=AND&size=100&from=0',
+    'translation' => '%s specimens worden getoond',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('%s specimens are displayed', array(), array('context' => ''));
   $translations['nl:default']['650219872f632c487d9a32ae6acf7e10'] = array(
     'source' => 'basis of record',
     'context' => '',
@@ -25002,6 +25011,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('The Shortcut module creates an add/remove link for each page on your site; the link lets you add or remove the current page from the currently-enabled set of shortcuts (if your theme displays it and you have permission to edit your shortcut set). The core Seven administration theme displays this link next to the page title, as a small + or - sign. If you click on the + sign, you will add that page to your preferred set of shortcuts. If the page is already part of your shortcut set, the link will be a - sign, and will allow you to remove the current page from your shortcut set.', array(), array('context' => ''));
+  $translations['nl:default']['90a0e26f9cf15208c8c28f5823cbdee3'] = array(
+    'source' => 'Searches the complete scientific name, including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Doorzoekt de complete wetenschappelijke naam. inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758".',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Searches the complete scientific name, including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => ''));
   $translations['nl:default']['90b0bbcea9c13d5dcdbaf877b4230283'] = array(
     'source' => 'Back to specimen',
     'context' => '',
@@ -43836,6 +43854,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Set !title as default', array(), array('context' => ''));
+  $translations['nl:default']['ff6ddcd6ad81374dcdd3c8c53fe2422d'] = array(
+    'source' => 'Complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Complete wetenschappelijke naam (inclusief auteur), b.v. "Larus fuscus fuscus Linnaeus, 1758".',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => ''));
   $translations['nl:default']['ff85d53902feccdd816f3bc483948f52'] = array(
     'source' => 'Disable the account and unpublish its content.',
     'context' => '',
@@ -44407,11 +44434,29 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collector', array(), array('context' => 'term:3:description'));
+  $translations['nl:taxonomy']['070bb5dcde17807121e0502ead98569a'] = array(
+    'source' => 'Scientific names of taxa plus associated multimedia',
+    'context' => 'term:18:description',
+    'location' => 'taxonomy:term:18:description',
+    'translation' => 'Wetenschappelijke namen van taxa plus gerelateerde multimedia',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Scientific names of taxa plus associated multimedia', array(), array('context' => 'term:18:description'));
+  $translations['nl:taxonomy']['0d3a60d6a77f8e39c23010a5eb8f3111'] = array(
+    'source' => 'Specimen label data plus associated multimedia',
+    'context' => 'term:105:description',
+    'location' => 'taxonomy:term:105:description',
+    'translation' => 'Specimen labelgegevens plus gerelateerde multimedia',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Specimen label data plus associated multimedia', array(), array('context' => 'term:105:description'));
   $translations['nl:taxonomy']['27025f5e56401dcdf15a853e5349e945'] = array(
     'source' => 'Search multimedia by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
     'context' => 'term:67:description',
     'location' => 'taxonomy:term:67:description',
-    'translation' => 'Soortnaam',
+    'translation' => 'Epitheton',
     'plid' => 0,
     'plural' => 0,
   );
@@ -44434,6 +44479,24 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('m_collectorsFieldNumber', array(), array('context' => 'term:12:name'));
+  $translations['nl:taxonomy']['33c30896fd641dc1aa84cf253e80c9a1'] = array(
+    'source' => 'Complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'context' => 'term:140:description',
+    'location' => 'taxonomy:term:140:description',
+    'translation' => 'Complete wetenschappelijke naam (inclusief auteur), b.v. "Larus fuscus fuscus Linnaeus, 1758".',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => 'term:140:description'));
+  $translations['nl:taxonomy']['349b2c2540ecfcf71072b52aeebfdcb2'] = array(
+    'source' => 'Multimedia of specimens and taxa',
+    'context' => 'term:36:description',
+    'location' => 'taxonomy:term:36:description',
+    'translation' => 'Multimedia van specimens en taxa',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Multimedia of specimens and taxa', array(), array('context' => 'term:36:description'));
   $translations['nl:taxonomy']['3e0022949c309afa9d504bd840379346'] = array(
     'source' => 'Search taxa by scientific phylum name.',
     'context' => 'term:49:description',
@@ -44447,7 +44510,7 @@ Your account on [site:name] has been blocked.
     'source' => 'Search specimens by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
     'context' => 'term:69:description',
     'location' => 'taxonomy:term:69:description',
-    'translation' => 'Soortnaam',
+    'translation' => 'Epitheton',
     'plid' => 0,
     'plural' => 0,
   );
@@ -44463,6 +44526,15 @@ Your account on [site:name] has been blocked.
   );
   $translatables[] = t('Infraspecific name
 ', array(), array('context' => 'term:59:description'));
+  $translations['nl:taxonomy']['507babd60e934ffe1bc0253d6e07a094'] = array(
+    'source' => 't_specificEpithet',
+    'context' => 'term:42:name',
+    'location' => 'taxonomy:term:42:name',
+    'translation' => 't_specificEpithet',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('t_specificEpithet', array(), array('context' => 'term:42:name'));
   $translations['nl:taxonomy']['50ecf82edaaa0ebe562bd255bb2fa406'] = array(
     'source' => 'Phase or stage',
     'context' => 'term:23:description',
@@ -44490,6 +44562,24 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Infraspecific name', array(), array('context' => 'term:32:description'));
+  $translations['nl:taxonomy']['5a159802568583f68ee534f2f02af104'] = array(
+    'source' => 's_specificEpithet',
+    'context' => 'term:69:name',
+    'location' => 'taxonomy:term:69:name',
+    'translation' => 's_specificEpithet',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('s_specificEpithet', array(), array('context' => 'term:69:name'));
+  $translations['nl:taxonomy']['71e6bfd0c19792c70f7bc806a667d34e'] = array(
+    'source' => 'Multimedia',
+    'context' => 'term:36:name',
+    'location' => 'taxonomy:term:36:name',
+    'translation' => 'Multimedia',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Multimedia', array(), array('context' => 'term:36:name'));
   $translations['nl:taxonomy']['736ff2c3b7f214d6b275c845272bda17'] = array(
     'source' => 's_collectorsFieldNumber',
     'context' => 'term:48:name',
@@ -44513,7 +44603,7 @@ Your account on [site:name] has been blocked.
 ',
     'context' => 'term:42:description',
     'location' => 'taxonomy:term:42:description',
-    'translation' => 'Soortnaam',
+    'translation' => 'Epitheton',
     'plid' => 0,
     'plural' => 0,
   );
@@ -44528,15 +44618,24 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Collection specimens', array(), array('context' => 'term:105:name'));
-  $translations['nl:taxonomy']['8dff997433cd6dac37345e39e59f025a'] = array(
-    'source' => 'Collection specimens',
-    'context' => 'term:105:description',
-    'location' => 'taxonomy:term:105:description',
-    'translation' => 'Collectie specimens op overige termen',
+  $translations['nl:taxonomy']['872b29a5c1231b1d08a5588341e31b9e'] = array(
+    'source' => 'Taxa',
+    'context' => 'term:18:name',
+    'location' => 'taxonomy:term:18:name',
+    'translation' => 'Taxa',
     'plid' => 0,
     'plural' => 0,
   );
-  $translatables[] = t('Collection specimens', array(), array('context' => 'term:105:description'));
+  $translatables[] = t('Taxa', array(), array('context' => 'term:18:name'));
+  $translations['nl:taxonomy']['88445b59cf15e7fcda525b50473d9a8e'] = array(
+    'source' => 's_scientificName',
+    'context' => 'term:140:name',
+    'location' => 'taxonomy:term:140:name',
+    'translation' => 's_scientificName',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('s_scientificName', array(), array('context' => 'term:140:name'));
   $translations['nl:taxonomy']['987bdf21e0fa96b4e41c40ab0e8b0afd'] = array(
     'source' => 'Search specimens by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
     'context' => 'term:58:description',
@@ -44595,6 +44694,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Phase or stage', array(), array('context' => 'term:30:description'));
+  $translations['nl:taxonomy']['a2fc93efc2c4439069280e0bfbe9f76d'] = array(
+    'source' => 'm_specificEpithet',
+    'context' => 'term:67:name',
+    'location' => 'taxonomy:term:67:name',
+    'translation' => 'm_specificEpithet',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('m_specificEpithet', array(), array('context' => 'term:67:name'));
   $translations['nl:taxonomy']['aec1cfb430caa39c141af2f62bc08cf6'] = array(
     'source' => 'Registration number',
     'context' => 'term:17:description',

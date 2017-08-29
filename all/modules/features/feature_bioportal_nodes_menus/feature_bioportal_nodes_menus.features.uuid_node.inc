@@ -91,86 +91,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'The Mammoth Collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500988713,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '228ef9ec-33dd-48e0-9f8c-6ef82789daa5',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Naturalis has one of the largest collection of woolly mammoth worldwide. de collection consists of ca. 9000 specimens. The majority is trawled up from the bottom of the North Sea. The collection is of course largely made up of large and heavy objects, but also the small details such as the first milk molar of a baby mammoth and the fragile hyoid are represented. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/">More information</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'mammoth',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:18:33 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'The Siebold Collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500543934,
-  'tnid' => 3409,
-  'translate' => 0,
-  'uuid' => '27488ec8-d9fc-499b-98eb-c216a74c6ff1',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>The Siebold Collection of natural history objects includes a total of 200 mammals, 900 birds, 750 fishes, 170 reptiles, over 5,000 invertebrates, 2,000 different species of plants and 12,000 herbarium specimens. Many of these are stored in Naturalis\' collection depots, part of which has been digitized and made available in the BioPortal. The material was collected by Von Siebold, between 1823 and 1829, during his stay in Japan. The Siebold Collection was the first major collection of Japanese specimen in Europe and contained many species of plants and animals that were unknown in Europe at the time. <a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="text-decoration:none;" target="_blank"><u>Read more</u></a> [Dutch]</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'siebold',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
   'title' => 'skelet',
   'log' => '',
   'status' => 1,
@@ -189,29 +109,38 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'Arts Collection',
+  'title' => 'Datasets',
   'log' => '',
   'status' => 1,
   'comment' => 0,
-  'promote' => 1,
+  'promote' => 0,
   'sticky' => 0,
   'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500543934,
-  'tnid' => 3406,
+  'type' => 'naturalis_page',
+  'language' => 'nl',
+  'created' => 1493645348,
+  'tnid' => 3790,
   'translate' => 0,
-  'uuid' => '38a198b7-d5bf-49e1-9f95-d68a2d8615f6',
-  'body' => array(),
-  'field_nba_search_term' => array(
+  'uuid' => '35464bbb-597f-4d33-97f5-be398cc7dec5',
+  'body' => array(
     'und' => array(
       0 => array(
-        'value' => 'arts',
-        'format' => NULL,
+        'value' => '<p>De volgende data sets zijn beschikbaar:</p>
+
+<?php 
+echo getNbaData();
+?>',
+        'summary' => '',
+        'format' => 'php_code',
       ),
     ),
   ),
-  'date' => '2017-07-20 09:45:34 +0000',
+  'field_file' => array(),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
+  'date' => '2017-05-01 13:29:08 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -283,6 +212,10 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2014-12-14 20:17:49 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -604,46 +537,6 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'Meteorieten collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1501151692,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '47fe504a-edce-43b5-8c96-2452112d3517',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Wij beheren bij Naturalis de grootste meteorieten collectie in Nederland, waaronder enkele unieke exemplaren. Deze diverse collectie omvat meteorieten die verzameld zijn over de hele wereld. In Nederland zijn 5 meteorieten teruggevonden na een inslag. In de collectie zitten 3 van deze meteorieten, de Uden meteoriet, de Glanerbrug meteoriet en de Diepenveen meteoriet. Naturalis is formeel erkend door de Meteoritical Society als meteoriet houdend instituut en er wordt veel onderzoek gedaan aan deze collectie. Analyses van meteorieten geven aanwijzingen over het ontstaan van het Zonnestelsel en het leven op Aarde. De gehele collectie is digitaal beschikbaar en aangevuld met foto’s van de meteorieten.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'meteorites',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-27 10:34:52 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
   'title' => 'Datasets',
   'log' => '',
   'status' => 1,
@@ -695,86 +588,6 @@ echo getNbaData();
   'uuid' => '626ffc19-1650-4885-8ccc-3f4ff9ea37a8',
   'field_ndabio_header_image' => array(),
   'date' => '2014-11-20 08:08:54 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'The Jongmans Collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500989226,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '701941e3-ca4e-4a88-8cc7-58b6ffec0ee5',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>The Jongmans collection is the largest Dutch collection of Carboniferous fossils from the province of Limburg. The majority of the collection consists of beautifully preserved plant fossils. But faunal material is present as well. These mostly represent aquatic animals, although some terrestrial animals - mainly insects - are also part of the collection.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'jongmans',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:27:06 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'De Mammoet-collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500988632,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '75fd8b66-6116-4b3b-9c2c-3be96caa3061',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Naturalis heeft een van de grootste collecties mammoetbotten ter wereld. De collectie omvat ca. 9000 specimens. Het merendeel hiervan is afkomstig uit de Noordzee. Bij het woord mammoet wordt meteen aan groot gedacht en natuurlijk bestaat de collectie grotendeels uit grote en zware objecten, maar ook kleine details zoals het eerste melkkiesje van een babymammoet en het fragiele tongbeen zijn in de collectie vertegenwoordigd. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/">Meer informatie</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'mammoth',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:17:12 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -954,148 +767,6 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'The Jongmans-collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500989081,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '8a0dbf70-5be2-4e08-9b87-527298592088',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De Jongmans collectie is de grootste Nederlandse collectie van Carboonmateriaal uit Limburg. Het overgrote deel bestaat uit prachtig bewaarde plantenfossielen. Maar ook faunamateriaal is bewaard gebleven. Het gaat dan met name om fossielen van dieren die in zoet- en zoutwateromstandigheden leefden, hoewel er ook een aantal landdieren - en dan voornamelijk insecten - aanwezig zijn.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'jongmans',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:24:41 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Prentencollectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500543934,
-  'tnid' => 3406,
-  'translate' => 0,
-  'uuid' => '8e9b0428-45a4-46ce-8bd7-e2201c73d0bc',
-  'body' => array(),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'arts',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Martin Collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1501152048,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => '93440688-f303-447a-83dc-e6f0898df8a8',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Naturalis houses the probably largest collection in the world of cainozoic molluscs from Indonesia. The most important part of it is the so-called Martin Collection of fossil shells from Java. The materials were collected between 1845 and 1910 by a.o. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin and his wife Hillegonda Martin-Icke. Thanks to the extensive taxonomical studies of Martin and his wife the Martin Collection has become a frequently consulted key collection for South-East Asian molluscs, fossil and recent. It contains nearly 2000 type lots of hundreds of species. Data on all samples and photographs of all types can be consulted via the Bioportal. Also available online are two versions of the type catalogue: (<a href="http://www.repository.naturalis.nl/document/45042">version 2002</a>) and (<a href="http://www.repository.naturalis.nl/document/143887">version 2009</a>).</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'martin',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-27 10:40:48 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Beekbergerwoud Collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500543934,
-  'tnid' => 3408,
-  'translate' => 0,
-  'uuid' => '944d927e-dca4-4567-8d40-0f2e13b2a0c9',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Het Beekbergerwoud behoort met 160 vermelde en/of verzamelde plantensoorten uit de periode 1827-1875 tot de best doorvorste Nederlanse natuurgebieden uit de 19de eeuw. Wat nog niet volledig geïnventariseerd is zijn de zoölogische collecties uit het Beekbergerwoud gemaakt in dezelfde periode. Dat is een gemis omdat herintroductie van lokaal uitgestorven soorten zich tegenwoordig allang niet meer beperkt tot alleen plantensoorten. Het bijeenbrengen van deze gegevens zal toekomstige herintroducties van de vroegere fauna uit het Beekbergerwoud helpen faciliteren zodat herstel van de dierenwereld van dit bos geen eeuwen hoeft te duren.&nbsp;<a href="https://science.naturalis.nl/en/education/bachelor-students/projects/#Beekbergerwoud" style="line-height: 20.7999992370605px;" target="_blank">Lees meer</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'beekbergerwoud',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
   'title' => 'Contact',
   'log' => '',
   'status' => 1,
@@ -1160,125 +831,11 @@ echo getNbaData();
       ),
     ),
   ),
-  'date' => '2014-10-22 13:22:53 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'De Dubois-collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500988459,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'a8aa2a2f-a8f9-4041-8f86-13ec6d43c45b',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De Dubois-collectie bestaat uit zo’n 40.000 objecten die tussen 1887 en 1900 door Eugène Dubois verzameld zijn in Indonesië. Het is een unieke verzameling fossielen die een beeld geeft van de prehistorische fauna op Java en Sumatra, maar ook van de persoon Dubois en zijn toewijding aan het paleontologisch onderzoek. Naast fossielen bevat de collectie persoonlijke eigendommen, zoals een archief, meetinstrumenten, het koffertje van Dubois en zelfs enkele van zijn tanden die getrokken moesten worden en die hij gebruikte om ze te vergelijken met fossielen tanden van mensen en apen. De collectie is meer dan een verzameling oude fossielen in een opslagruimte, ze vertelt het verhaal van een bijzondere man die grote dromen had en er alles voor over had om zijn doelen te bereiken. De vondsten van Dubois spelen een belangrijke rol in de kennis die we hebben over de evolutie van de mens. Het was Dubois’ levensdoel om de evolutietheorie van Darwin te bewijzen, door op zoek te gaan naar de ‘Missing Link’, de ontbrekende schakel tussen aap en mens. Dubois slaagde in zijn missie maar kreeg niet de erkenning waar hij op hoopte. In de laatste decennia is dit veranderd en de Dubois-collectie wordt heden ten dage door onderzoeker van over de gehele wereld onderzocht. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/">Meer informatie</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'dubois',
-        'format' => NULL,
-      ),
-    ),
-  ),
   'path' => array(
-    'pathauto' => 1,
+    'pathauto' => 0,
   ),
   'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:14:19 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Beekbergerwoud Collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500543934,
-  'tnid' => 3408,
-  'translate' => 0,
-  'uuid' => 'aa7323fe-cb8d-469b-99e3-99fb10de4a0a',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>With 160 registered and/or collected plant species from the period 1827-1875, the Beekbergerwoud is one of the most closely scrutinised 19th century Dutch nature conservation areas. The zoological collections from the Beekbergerwoud assembled during the same period have not yet been fully inventorised. This is a clear lacuna, as the reintroduction of locally-extinct species has for some time no longer been restricted to plant species alone.&nbsp;<br />
-Bringing all this information together will help distinguish facts from fables in the myths that have arisen around the Beekbergerwoud, thereby assisting future reintroductions of its former biodiversity.&nbsp;<a href="https://science.naturalis.nl/en/education/bachelor-students/projects/#Beekbergerwoud" style="line-height: 20.7999992370605px;" target="_blank">Read more</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'beekbergerwoud',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Extinct Birds',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500543934,
-  'tnid' => 3410,
-  'translate' => 0,
-  'uuid' => 'ae3e44ac-969a-46ab-839e-a09f9cb81792',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>The more than 200 extinct birds in the Naturalis collection are a collection-highlight which raises much interest among ornithologists. 135 extinct birds specimen are accessible through the BioPortal. Some specimens are unique. Naturalis is the only museum in the world to hold a Tahiti-Sandpiper <em>Prosobonia leucoptera</em> (Gmelin, 1789) and a specimen of Sharpe\'s Rail <em>Gallirallus sharpei</em> (Büttikofer, 1893). You can view the digitized extinct birds in the collection from all angles by rotating the 3d-images.</p>
-
-<p>The nomenclature is based on The Howard &amp; Moore Complete Checklist of the Birds of the World Dickinson, E.C. (Editor) 3rd Edition, Princeton University Press, 2003.</p>
-
-<div>&nbsp;</div>
-
-<div>&nbsp;</div>',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'extinct-birds',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'date' => '2017-07-20 09:45:34 +0000',
+  'date' => '2014-10-22 13:22:53 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -1297,249 +854,6 @@ Bringing all this information together will help distinguish facts from fables i
   'uuid' => 'b517cdec-8a56-49ee-92eb-cb56e536dd4d',
   'field_ndabio_header_image' => array(),
   'date' => '2014-11-20 08:09:14 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Meteorite collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1501151651,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'b686fa34-360a-4f3d-80b7-2aa8f58e0155',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>At Naturalis we manage the largest meteorite collection in the Netherlands, including some unique specimens. This diverse collection includes meteorites gathered around the world. In the Netherlands 5 meteorites have been recovered after an impact. Our collection includes 3 of these meteorites, the Uden meteorite, the Glanerbrug meteorite and the Diepenveen meteorite. Naturalis has been formally recognized by the Meteoritical Society as a meteorite institute and much research is being done on this collection. Analyzes of meteorites provide evidence of the origin of the Solar System and life on Earth. The entire collection is digitally available and supplemented with photographs of the meteorites.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'meteorites',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-27 10:34:11 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'De Siebold Collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500543934,
-  'tnid' => 3409,
-  'translate' => 0,
-  'uuid' => 'c1b250fb-f79b-403b-93a9-61bf7d7d7b34',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De Siebold Collectie van natuurhistorische objecten omvat in totaal 200 zoogdieren, 900 vogels, 750 vissen, 170 reptielen, meer dan 5000 ongewervelde dieren, 2000 verschillende soorten planten en 12.000 herbariumexemplaren. Een groot deel hiervan bevindt zich in de opslagtoren van Naturalis, een deel hiervan is ook gedigitaliseerd en beschikbaar in het BioPortal. Von Siebold verzamelde het materiaal tussen 1823 en 1829 tijdens zijn verblijf in Japan. De collectie was de eerste grote verzameling van Japanse specimen in Europa en bevatte veel tot dan toe onbekende dier- en plantensoorten.&nbsp;<a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="line-height: 20.7999992370605px; text-decoration: none;" target="_blank">Lees meer</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'siebold',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'De Timor collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500988915,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'd5a22f32-ab66-47c1-b9a4-57bc468d9400',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>In het Perm en Trias lag er in het gebied dat nu het Indonesische eiland Timor heet een ondiepe zee met daarin een heel soortenrijk rif. De fossielen die dat rif vertegenwoordigen zijn uitzonderlijk goed bewaard gebleven en vormen een unieke bron van informatie voor het reconstrueren van de mariene wereld in het Perm en Trias.</p>
-
-<p>Tussen 1910 en 1916 werden verschillende expedities vanuit de Technische Hoogeschool Delft (nu TU Delft) naar het Indonesische eiland Timor ondernomen. In 1937 werd er nogmaals een expeditie ondernomen - dit keer vanuit het Geologisch Instituut van de Universiteit van Amsterdam. In Naturalis zijn de twee collecties samengevoegd, volledig geregistreerd en toegankelijk gemaakt voor onderzoek.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'timor',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:21:55 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Uitgestorven Vogels',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1500543934,
-  'tnid' => 3410,
-  'translate' => 0,
-  'uuid' => 'dc75ec2d-53f8-4e64-809d-feb302cf1193',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De meer dan 200 uitgestorven vogelsoorten in de Naturalis collectie zijn een collectie-hoogtepunt waar veel interesse voor is vanuit ornithologen. 135 van deze soorten zijn beschikbaar in het BioPortal. Sommige exemplaren zijn uniek. Zo is Naturalis het enige museum in de wereld dat een Tahitistrandloper <em>Prosobonia leucoptera</em> (Gmelin, 1789) en een exemplaar van de Büttikofer-ral <em>Gallirallus sharpei</em> (Büttikofer, 1893) in de collectie heeft. Je kan hier de gedigitaliseerde uitgestorven vogels van alle kanten bekijken middels draaiende 3d-beelden.</p>
-
-<p>De nomenclatuur is gebaseerd op The Howard &amp; Moore Complete Checklist of the Birds of the World Dickinson, E.C. (Editor) 3rd Edition, Princeton University Press, 2003.</p>
-
-<div>&nbsp;</div>',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'extinct-birds',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'date' => '2017-07-20 09:45:34 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'The Dubois collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500988549,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'e3b52db4-a18d-4073-9a9c-8c05614d283e',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>The Dubois collection consists of circa 40,000 objects, all collected between 1887 and 1900 in Indonesia by Eugène Dubois. It is a unique collection of fossils, providing an overview of the prehistoric fauna on Java and Sumatra, as well as Dubois as a person and his dedication to palaeontological research. The collection does not only contain fossils, but also a vast archive, some of Dubois’ personal belongings, such as measuring instruments, his suitcase and some of his own teeth which he used to compare with fossil teeth of primates. The collection is much more than just a collection of fossils in a storage space, it tells the story of a remarkable man, his dreams and his determination to reach his goals. Dubois’ findings play a very important role in the knowledge we have today on human evolution. It was Dubois’ life goal to prove Darwin’s theory of evolution by searching for the Missing Link between apes and humans. Dubois succeeded but unfortunately did not get the recognition he hoped for. In recent decades this has changed and the Dubois collection is subject to research by scholars worldwide. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/">More information</a></p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'dubois',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:15:49 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'The Timor collection',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'en',
-  'created' => 1500988964,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'e7c4056c-863f-49dc-bf70-1480e1f2b3b5',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>During the Permian and Triassic the area which is now the Indonesian island of Timor was covered with a shallow sea containing a very species diverse reef. The fossils representing that reef are remarkably well preserved en form a unique source of information for the reconstruction of the Permian and Triassic marine world.</p>
-
-<p>Between 1910 and 1916 a number of expeditions were undertaken by the Technische Hoogschool Delft (now Delft University of Technology) to the Indonesian island of Timor. In 1937 the Geological Institute of the University of Amsterdam continued the fieldwork. In Naturalis both collections have been amalgamated, digitized and made available for research.</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'timor',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-25 13:22:44 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -1601,46 +915,6 @@ Bringing all this information together will help distinguish facts from fables i
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
-  'title' => 'Martin Collectie',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_featured_content',
-  'language' => 'nl',
-  'created' => 1501151975,
-  'tnid' => 0,
-  'translate' => 0,
-  'uuid' => 'f0783412-967d-4c0f-96e9-b0e05567cab6',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>Naturalis beheert de waarschijnlijk grootste collectie ter wereld van cainozoïsche mollusken uit Indonesië. Het belangrijkste onderdeel hiervan is de zogenaamde Martin Collectie met fossiele schelpen van Java. Dit materiaal werd tussen 1845 en 1910 verzameld door o.a. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin en zijn vrouw Hillegonda Martin-Icke. Dankzij de uitgebreide taxonomische studies door Martin en zijn vrouw is de Martin Collectie een veel geraadpleegde sleutelcollectie geworden voor Zuidoost-Aziatische mollusken, fossiel en recent. Zij bevat bijna 2000 typenmonsters van vele honderden soorten. Gegevens van de monsters en foto’s van alle typen zijn via het Bioportal te raadplegen. Ook zijn twee versies van de typencatalogus online beschikbaar: (<a href="http://www.repository.naturalis.nl/document/45042">versie 2002</a>) en (<a href="http://www.repository.naturalis.nl/document/143887">versie 2009</a>).</p>
-',
-        'summary' => '',
-        'format' => 'full_html',
-        'safe_summary' => '',
-      ),
-    ),
-  ),
-  'field_nba_search_term' => array(
-    'und' => array(
-      0 => array(
-        'value' => 'martin',
-        'format' => NULL,
-      ),
-    ),
-  ),
-  'path' => array(
-    'pathauto' => 1,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-07-27 10:39:35 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(

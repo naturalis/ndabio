@@ -368,7 +368,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   $terms[] = array(
     'name' => 's_scientificName',
     'description' => 'Search specimens by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
-    'format' => 'markdown',
+    'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '19515d9c-2012-4f31-adab-0249626f3e23',
     'language' => 'und',
@@ -897,7 +897,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Taxa',
-    'description' => 'Taxa',
+    'description' => 'Scientific names of taxa plus associated multimedia',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
@@ -914,7 +914,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Taxa',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/taxa',
@@ -1883,7 +1893,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Multimedia',
-    'description' => 'Multimedia',
+    'description' => 'Multimedia of specimens and taxa',
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
@@ -1907,7 +1917,17 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Multimedia',
+          'format' => NULL,
+        ),
+      ),
+    ),
+    'path' => array(
+      'pathauto' => 1,
+    ),
     'url_alias' => array(
       0 => array(
         'alias' => 'search/multimedia',
@@ -2086,7 +2106,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'Collection specimens',
-    'description' => 'Collection specimens',
+    'description' => 'Specimen label data plus associated multimedia',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
@@ -2103,7 +2123,14 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     ),
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
-    'field_ndalabel' => array(),
+    'field_ndalabel' => array(
+      'und' => array(
+        0 => array(
+          'value' => 'Collection specimens',
+          'format' => NULL,
+        ),
+      ),
+    ),
     'path' => array(
       'pathauto' => 1,
     ),
@@ -2542,7 +2569,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Specific name',
+          'value' => 'Epithet',
           'format' => NULL,
         ),
       ),
@@ -2858,7 +2885,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mlithostratigraphicattributiontype',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -3033,7 +3065,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mexpert',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -3396,7 +3433,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mlithostratigraphicattributiontype2',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -3552,7 +3594,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mchronostratigraphicattributionttypeyoung',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -3692,7 +3739,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Specific name',
+          'value' => 'Epithet',
           'format' => NULL,
         ),
       ),
@@ -3812,7 +3859,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Specific name',
+          'value' => 'Epithet',
           'format' => NULL,
         ),
       ),
@@ -4014,7 +4061,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
       ),
     ),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/mtypestatus',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
     ),
@@ -4039,7 +4091,12 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndasystem' => array(),
     'field_ndavalues' => array(),
     'field_ndalabel' => array(),
-    'url_alias' => array(),
+    'url_alias' => array(
+      0 => array(
+        'alias' => 'search/more-1',
+        'language' => 'und',
+      ),
+    ),
     'parent' => array(
       0 => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
     ),

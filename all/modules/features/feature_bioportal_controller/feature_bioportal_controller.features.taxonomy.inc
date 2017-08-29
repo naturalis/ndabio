@@ -27,7 +27,7 @@ function feature_bioportal_controller_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => 0,
       'language' => 'und',
-      'i18n_mode' => 1,
+      'i18n_mode' => 0,
     ),
   );
 }

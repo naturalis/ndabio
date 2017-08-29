@@ -59,6 +59,160 @@ function feature_bioportal_controller_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_baseurl';
+  $strongarm->value = 'http://145.136.242.167:8080/v2';
+  $export['ndabioresults_config_baseurl'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_debug';
+  $strongarm->value = '1';
+  $export['ndabioresults_config_debug'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_debug_encoded';
+  $strongarm->value = '0';
+  $export['ndabioresults_config_debug_encoded'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_defaultsort';
+  $strongarm->value = '_score';
+  $export['ndabioresults_config_defaultsort'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_defaultsortdirection';
+  $strongarm->value = 'DESC';
+  $export['ndabioresults_config_defaultsortdirection'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_initialmaxgroupresults';
+  $strongarm->value = '10';
+  $export['ndabioresults_config_initialmaxgroupresults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_initialmaxresults';
+  $strongarm->value = '10';
+  $export['ndabioresults_config_initialmaxresults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_log';
+  $strongarm->value = '/var/log/logstash/bioportal.log';
+  $export['ndabioresults_config_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_maxgroupresults';
+  $strongarm->value = '10';
+  $export['ndabioresults_config_maxgroupresults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_maxpagesinpaginator';
+  $strongarm->value = '20';
+  $export['ndabioresults_config_maxpagesinpaginator'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_maxresults';
+  $strongarm->value = '100';
+  $export['ndabioresults_config_maxresults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_multimediaservice';
+  $strongarm->value = 'multimedia/search';
+  $export['ndabioresults_config_multimediaservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_namespecimenservice';
+  $strongarm->value = 'specimen/search';
+  $export['ndabioresults_config_namespecimenservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_specimendetailservice';
+  $strongarm->value = 'specimen/get-specimen';
+  $export['ndabioresults_config_specimendetailservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_specimenmultimediaservice';
+  $strongarm->value = 'multimedia/get-multimedia-object-for-specimen-within-result-set';
+  $export['ndabioresults_config_specimenmultimediaservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_specimennameservice';
+  $strongarm->value = 'specimen/name-search';
+  $export['ndabioresults_config_specimennameservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_taxondetailservice';
+  $strongarm->value = 'taxon/get-taxon';
+  $export['ndabioresults_config_taxondetailservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_taxonmultimediaservice';
+  $strongarm->value = 'multimedia/get-multimedia-object-for-taxon-within-result-set';
+  $export['ndabioresults_config_taxonmultimediaservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_taxonservice';
+  $strongarm->value = 'taxon/search';
+  $export['ndabioresults_config_taxonservice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabioresults_config_timeout';
+  $strongarm->value = '30';
+  $export['ndabioresults_config_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabio_config_jsonp';
+  $strongarm->value = 'http://naturalis_installation_profile.local:8083/?q=naturalis/json';
+  $export['ndabio_config_jsonp'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ndabio_config_nda';
+  $strongarm->value = 'http://nda.naturalis.nl';
+  $export['ndabio_config_nda'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_search_log';
   $strongarm->value = array(
     0 => 'status',
@@ -79,6 +233,160 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->name = 'node_submitted_search_log';
   $strongarm->value = 1;
   $export['node_submitted_search_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_frontpage';
+  $strongarm->value = 'search/advancednda';
+  $export['site_frontpage'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_mail';
+  $strongarm->value = 'bioportal@naturalis.nl';
+  $export['site_mail'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_name';
+  $strongarm->value = 'BioPortal';
+  $export['site_name'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_slogan';
+  $strongarm->value = 'Browse through Dutch natural history collections';
+  $export['site_slogan'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'theme_bioportal_theme_settings';
+  $strongarm->value = array(
+    'toggle_logo' => 1,
+    'toggle_name' => 1,
+    'toggle_slogan' => 1,
+    'toggle_node_user_picture' => 1,
+    'toggle_comment_user_picture' => 1,
+    'toggle_comment_user_verification' => 1,
+    'toggle_favicon' => 1,
+    'toggle_main_menu' => 1,
+    'toggle_secondary_menu' => 0,
+    'default_logo' => 1,
+    'logo_path' => '',
+    'logo_upload' => '',
+    'default_favicon' => 1,
+    'favicon_path' => '',
+    'favicon_upload' => '',
+    'zurb_foundation_top_bar_enable' => '1',
+    'zurb_foundation_top_bar_grid' => 1,
+    'zurb_foundation_top_bar_sticky' => 0,
+    'zurb_foundation_top_bar_scrolltop' => 1,
+    'zurb_foundation_top_bar_is_hover' => 1,
+    'zurb_foundation_top_bar_menu_text' => 'Menu',
+    'zurb_foundation_top_bar_custom_back_text' => 1,
+    'zurb_foundation_top_bar_back_text' => 'Back',
+    'zurb_foundation_tooltip_enable' => 1,
+    'zurb_foundation_tooltip_position' => 'tip-top',
+    'zurb_foundation_tooltip_mode' => 'text',
+    'zurb_foundation_tooltip_text' => 'More information?',
+    'zurb_foundation_tooltip_touch' => 0,
+    'zurb_foundation_disable_core_css' => 0,
+    'zurb_foundation_html_tags' => 1,
+    'zurb_foundation_messages_modal' => 0,
+    'zurb_foundation_pager_center' => 1,
+    'naturalis_theme_bottom_bar_crumble' => 1,
+    'naturalis_theme_bottom_bar_links' => 1,
+    'naturalis_theme_bottom_bar_copyright' => 0,
+    'naturalis_theme_bottom_bar_service_menu' => 1,
+    'naturalis_theme_background_color' => 'purple',
+    'naturalis_theme_logo_background_color' => 'purple',
+    'naturalis_theme_logo_color' => 'white',
+    'zurb_foundation__active_tab' => 'edit-naturalis-header',
+  );
+  $export['theme_bioportal_theme_settings'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'theme_default';
+  $strongarm->value = 'bioportal_theme';
+  $export['theme_default'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'theme_naturalis_theme_settings';
+  $strongarm->value = array(
+    'toggle_logo' => 1,
+    'toggle_name' => 1,
+    'toggle_slogan' => 1,
+    'toggle_node_user_picture' => 1,
+    'toggle_comment_user_picture' => 1,
+    'toggle_comment_user_verification' => 1,
+    'toggle_favicon' => 1,
+    'toggle_main_menu' => 1,
+    'toggle_secondary_menu' => 0,
+    'default_logo' => 1,
+    'logo_path' => '',
+    'logo_upload' => '',
+    'default_favicon' => 1,
+    'favicon_path' => '',
+    'favicon_upload' => '',
+    'zurb_foundation_top_bar_enable' => '1',
+    'zurb_foundation_top_bar_grid' => 1,
+    'zurb_foundation_top_bar_sticky' => 0,
+    'zurb_foundation_top_bar_scrolltop' => 1,
+    'zurb_foundation_top_bar_is_hover' => 1,
+    'zurb_foundation_top_bar_menu_text' => 'Menu',
+    'zurb_foundation_top_bar_custom_back_text' => 1,
+    'zurb_foundation_top_bar_back_text' => 'Back',
+    'zurb_foundation_tooltip_enable' => 1,
+    'zurb_foundation_tooltip_position' => 'tip-top',
+    'zurb_foundation_tooltip_mode' => 'text',
+    'zurb_foundation_tooltip_text' => 'More information?',
+    'zurb_foundation_tooltip_touch' => 0,
+    'zurb_foundation_disable_core_css' => 0,
+    'zurb_foundation_html_tags' => 1,
+    'zurb_foundation_messages_modal' => 0,
+    'zurb_foundation_pager_center' => 1,
+    'naturalis_theme_bottom_bar_crumble' => 1,
+    'naturalis_theme_bottom_bar_links' => 1,
+    'naturalis_theme_bottom_bar_copyright' => 0,
+    'naturalis_theme_bottom_bar_service_menu' => 1,
+    'naturalis_theme_background_color' => 'blue',
+    'naturalis_theme_logo_background_color' => 'blue',
+    'naturalis_theme_logo_color' => 'white',
+    'zurb_foundation__active_tab' => 'edit-naturalis-header',
+  );
+  $export['theme_naturalis_theme_settings'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'theme_settings';
+  $strongarm->value = array(
+    'toggle_logo' => 1,
+    'toggle_name' => 1,
+    'toggle_slogan' => 1,
+    'toggle_node_user_picture' => 1,
+    'toggle_comment_user_picture' => 1,
+    'toggle_comment_user_verification' => 1,
+    'toggle_favicon' => 1,
+    'toggle_main_menu' => 1,
+    'toggle_secondary_menu' => 0,
+    'default_logo' => 1,
+    'logo_path' => '',
+    'logo_upload' => '',
+    'default_favicon' => 1,
+    'favicon_path' => '',
+    'favicon_upload' => '',
+  );
+  $export['theme_settings'] = $strongarm;
 
   return $export;
 }
