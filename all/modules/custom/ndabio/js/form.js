@@ -83,13 +83,14 @@
 	
 	// Rewritten
 	
-	 $("#ndabio-advanced-taxonomysearch").submit(function(){
+	 $("#ndabio-advanced-taxonomysearch").submit(function(event){
 
     var $_omnibox              = $("#edit-term");
 
     var isValid = false;
     var dataEntered = false;
     var minStringLength = 3;
+    var maxMultiSelectValues = 5;
     var searchTerm = '';
 
     // BIOPORVTWO-299: skip test for advanced search
@@ -105,10 +106,20 @@
       // Multiselects
       $(this).find('select[multiple]').each(function() {
     	  searchTerm = $(this).val();
-    	  if (searchTerm != null) {
+    	  if (searchTerm != null && searchTerm.length > maxMultiSelectValues) {
+    		  
+    		  var message = Drupal.t("You have selected [nr] values, the maximum is [max] per field.");
+    		  alert(message.replace("[nr]", searchTerm.length).replace("[max]", maxMultiSelectValues));
+    		  event.preventDefault();
+    		  exit;
+    		  
+    	  } else if (searchTerm != null) {
+    		  
     		  dataEntered = true;
     		  isValid = true;
-    	  }
+    		  
+    	  } 
+
       });
 
       // If the simple search is entered, but too short:
@@ -147,17 +158,16 @@
 
       } else {
     	  
-    	  alert(
-              Drupal.t("Search field should contain at least " + minStringLength + " characters.")
-          );
+		  var message = Drupal.t("Search field should contain at least [nr] characters.");
+		  alert(message.replace("[nr]", minStringLength));
         	  
       }
 
-      return false;
+      event.preventDefault();
 
     } else {
 
-      preloader();
+      //preloader();
 
     }
 

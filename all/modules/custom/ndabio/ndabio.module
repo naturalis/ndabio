@@ -250,34 +250,37 @@ function _setHelpText ($field, $description, $label) {
 			".\n\n";
 	}
 	$output .= t('The term') . ' ';
+	$term = 'term';
 	switch (_getAdvancedFieldSplitInfo($field)) {
 		case 'true':
 			$output .= t('is split into words first');
+			$term = t('term(s)');
 			break;
 		case 'false':
 			$output .= t('is used as is (not split into words first)');
+			$term = t('term');
 			break;
 	}
 	$output .= '. '. t('The field') . ' "' . $label . '" ';
 	switch (_getAdvancedFieldOperator($field)) {
 		case 'EQUALS':
 		case 'EQUALS_IC':
-			$output .= t('matches the term exactly');
+			$output .= t('matches the %s exactly');
 			break;
 		case 'STARTS_WITH':
 		case 'STARTS_WITH_IC':
-			$output .= t('starts with the term');
+			$output .= t('starts with the %s');
 			break;
 		case 'MATCHES':
-			$output .= t('matches the term');
+			$output .= t('matches the %s');
 			break;
 		case 'CONTAINS':
-			
 			$output .= t('is used as a wildcard if it is between %d and %d characters long');
+			$output = sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize());
 			break;
 	}
 	$output .= '.';
-	return sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize());
+	return sprintf($output, $term);
 }
 
 
