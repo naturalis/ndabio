@@ -164,7 +164,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
 
-		$query = _buildQuery('specimen', $terms);
+		$query = _buildNbaQuery('specimen', $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
 		$timer = _setTimer();
@@ -197,7 +197,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
     	$filter = new Filter();
     	$filter->acceptValues([$scientificNameGroup]);
  
-    	$query = _buildQuery('names.specimens', $terms);
+    	$query = _buildNbaQuery('names.specimens', $terms);
 		$query
 			->setSpecimensFrom($specimensFrom)
 			->setSpecimensSize(3)
@@ -382,7 +382,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
 
-		$query = _buildQuery($service, $terms);
+		$query = _buildNbaQuery($service, $terms);
 		_addDebugMessage('previous, current and next item', $query);
 		
 		$timer = _setTimer();
@@ -626,7 +626,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
     	
-		$query = _buildQuery($service, $terms);
+		$query = _buildNbaQuery($service, $terms);
 		$query->setSpecimensSize(0);
 		_addDebugMessage('previous, current and next item', $query);
 		
@@ -857,7 +857,7 @@ function _filterQueryOperators (&$terms) {
 }
 
 
-function _buildQuery ($service, $terms = [], $useNameResolution = false) {
+function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	// Simple search
@@ -1033,12 +1033,16 @@ function _buildQuery ($service, $terms = [], $useNameResolution = false) {
 						continue;
 					}
 				}
+				// Encode search term
+				if (!is_null($element)) {
+					$element = html_entity_decode($element);
+				}
 				if ($first) {
-					$condition = new Condition($path, $operator, html_entity_decode($element));
+					$condition = new Condition($path, $operator, $element);
 					$first = false;
 					continue;
 				}
-				$condition->setOr($path, $operator, html_entity_decode($element));
+				$condition->setOr($path, $operator, $element);
 			}
 			if (!empty($condition)) {
 				$subconditions[] = [
@@ -1199,7 +1203,7 @@ function _nba_taxon_result_callback ($search = false) {
 	_setQueryTerms($service, $terms);
 	
 	// Build query
-	$query = _buildQuery($service, $terms);	
+	$query = _buildNbaQuery($service, $terms);	
 	$query->setSpecimensSize(0);
 	
 	// Store query in case user wants to print it on screen
@@ -1246,7 +1250,7 @@ function _nba_multimedia_result_callback ($search = false) {
 	_setQueryTerms($service, $terms);
 	
 	// Build query
-	$query = _buildQuery($service, $terms);	
+	$query = _buildNbaQuery($service, $terms);	
 	
 	// Store query in case user wants to print it on screen
 	_addDebugMessage($service, $query);
@@ -1291,7 +1295,7 @@ function _nba_specimen_result_callback ($search = false) {
 	_setQueryTerms($service, $terms);
 	
 	// Build query
-	$query = _buildQuery($service, $terms);	
+	$query = _buildNbaQuery($service, $terms);	
 	
 	_setGenericResultPageBackLink();
 	
@@ -1397,7 +1401,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
     }
     
 	// Build query
-	$query = _buildQuery($service, $terms);	
+	$query = _buildNbaQuery($service, $terms);	
 	
     $filter = new Filter();
     $filter->acceptValues([$scientificNameGroup]);
@@ -1453,7 +1457,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     }
     
 	// Build query
-	$query = _buildQuery($service, $terms);	
+	$query = _buildNbaQuery($service, $terms);	
 	
     $filter = new Filter();
     $filter->acceptValues([$scientificNameGroup]);
@@ -1616,7 +1620,7 @@ function _nbaAdvancedSearch () {
 				$terms['groupSort'] = 'name_asc';
 			}
             // Build QuerySpec; do not use name resolution
-			$query = _buildQuery($service, $terms, $useNameResolution);
+			$query = _buildNbaQuery($service, $terms, $useNameResolution);
             // Trim specimens from taxon query
             if ($service == 'names.taxa') {
             	$query->setSpecimensSize(0);
@@ -1652,7 +1656,7 @@ function _nbaAdvancedSearch () {
             
             // Check if multimedia exists for this query
             if ($service != 'multimedia' && _allTermsExistInMultimediaService($terms)) {
-            	$query = _buildQuery('multimedia', $terms, $useNameResolution);
+            	$query = _buildNbaQuery('multimedia', $terms, $useNameResolution);
             	$associatedReference = 'associated' . ucfirst(_normaliseServiceName($service)) . 
             		'Reference';
             	$condition = 
@@ -1751,7 +1755,7 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 			unset($terms[$p]);
 		}
 	}
-	$query = _buildQuery('specimen', $terms, $useNameResolution);
+	$query = _buildNbaQuery('specimen', $terms, $useNameResolution);
 	$query
 		->setConstantScore()
 		->setSize(1);
@@ -2137,7 +2141,7 @@ function _nbaSimpleSearch () {
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		// Build QuerySpec; use name resolution
-		$query = _buildQuery($service, $terms, $useNameResolution);
+		$query = _buildNbaQuery($service, $terms, $useNameResolution);
 		// Trim specimens from taxon query
 		if ($service == 'names.taxa') {
 			$query->setSpecimensSize(0);
@@ -2275,7 +2279,7 @@ function _nbaThemeSearch () {
 		}
 		
 		// Build QuerySpec; use name resolution
-		$query = _buildQuery($service, $terms, true);
+		$query = _buildNbaQuery($service, $terms, true);
 		$client->setQuerySpec($query);
             
 		$remoteData[$service] = strpos($service, 'names') === false ? 
