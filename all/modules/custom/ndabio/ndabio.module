@@ -273,7 +273,7 @@ function _setHelpText ($field, $description, $label) {
 			break;
 		case 'CONTAINS':
 			
-			$output .= t('partially matches the term, if the term is between %d and %d characters long (wildcard search)');
+			$output .= t('is used as a wildcard if it is between %d and %d characters long');
 			break;
 	}
 	$output .= '.';
