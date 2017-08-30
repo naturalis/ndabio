@@ -106,7 +106,7 @@
       // Multiselects
       $(this).find('select[multiple]').each(function() {
     	  searchTerm = $(this).val();
-    	  if (searchTerm != null && searchTerm.length > maxMultiSelectValues) {
+    	  if ($($_omnibox).val().trim() == '' && searchTerm != null && searchTerm.length > maxMultiSelectValues) {
     		  
     		  var message = Drupal.t("You have selected [nr] values, the maximum is [max] per field.");
     		  alert(message.replace("[nr]", searchTerm.length).replace("[max]", maxMultiSelectValues));
