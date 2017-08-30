@@ -87,16 +87,27 @@
 
     var $_omnibox              = $("#edit-term");
 
-    var isValid = true;
+    var isValid = false;
     var dataEntered = false;
     var minStringLength = 3;
     var searchTerm = '';
 
     // BIOPORVTWO-299: skip test for advanced search
-      $(this).find('input[type=text], select').each(function() {
-    	  searchTerm = $(this).val();
+    // Adapted for multiselects; parse these in separate loop
+      $(this).find('input[type=text], select').not('select[multiple]').each(function() {
+    	  searchTerm = $(this).val().trim();
     	  if (searchTerm != "") {
     		  dataEntered = true;
+    		  isValid = true;
+    	  }
+      });
+      
+      // Multiselects
+      $(this).find('select[multiple]').each(function() {
+    	  searchTerm = $(this).val();
+    	  if (searchTerm != null) {
+    		  dataEntered = true;
+    		  isValid = true;
     	  }
       });
 
@@ -116,7 +127,9 @@
     		  isValid = true;
     	  }
       }
-
+      
+//alert(searchTerm);
+      
     // Done validating, let's face the consequences:
     if (!isValid || !dataEntered) {
 
@@ -187,14 +200,15 @@
 						geoShape = '';
 					}
 				}
-			}
+				
+				$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
+				$(this).append("<input name='location' value='" + location + "' type='hidden'>");
+				$(this).append("<input name='category' value='" + category + "' type='hidden'>");
+				$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
+				$(this).append("<input name='mapCenter' value='" + getMapCenter() + "' type='hidden'>");
+				$(this).append("<input name='zoomLevel' value='" + getZoom() + "' type='hidden'>");
 
-			$(this).append("<input name='gid' value='" + gid + "' type='hidden'>");
-			$(this).append("<input name='location' value='" + location + "' type='hidden'>");
-			$(this).append("<input name='category' value='" + category + "' type='hidden'>");
-			$(this).append("<input name='geoShape' value='" + geoShape + "' type='hidden'>");
-			$(this).append("<input name='mapCenter' value='" + getMapCenter() + "' type='hidden'>");
-			$(this).append("<input name='zoomLevel' value='" + getZoom() + "' type='hidden'>");
+			}
 
 			return true;
 		});
