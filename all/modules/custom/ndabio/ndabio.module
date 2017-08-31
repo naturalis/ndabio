@@ -299,7 +299,7 @@ function _setHelpText ($field, $description, $label) {
 			$split = true;
 			break;
 		case 'false':
-			$output .= t('is is used literally, including any spaces');
+			$output .= t('is used literally, including any spaces');
 			break;
 	}
 	
