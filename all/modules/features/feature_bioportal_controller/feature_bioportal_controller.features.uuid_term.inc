@@ -4119,7 +4119,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_family',
-    'description' => 'Search taxa by scientific family name.',
+    'description' => 'Search taxa by scientific family name, e.g. "Laridae".',
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'fceb4c7d-3ac5-4e70-ac7e-f810b8b3643c',
@@ -4210,7 +4210,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_kindOfUnit',
-    'description' => 'Search specimens by unit type.',
+    'description' => 'Search specimens by nature, part(s) or class of materials.
+',
     'format' => 'markdown',
     'weight' => 9,
     'uuid' => 'fe755df0-08d1-4244-8a16-18dce0311b57',
@@ -4230,7 +4231,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Kind of unit',
+          'value' => 'Part or nature',
           'format' => NULL,
         ),
       ),

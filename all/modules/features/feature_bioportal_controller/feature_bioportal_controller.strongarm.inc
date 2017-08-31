@@ -19,13 +19,13 @@ function feature_bioportal_controller_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'metatags' => array(
-          'weight' => '2',
+          'weight' => 2,
         ),
         'title' => array(
-          'weight' => '0',
+          'weight' => 0,
         ),
         'path' => array(
-          'weight' => '1',
+          'weight' => 1,
         ),
       ),
       'display' => array(),
@@ -36,9 +36,25 @@ function feature_bioportal_controller_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_naturalis_featured_content';
+  $strongarm->value = 2;
+  $export['language_content_type_naturalis_featured_content'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_search_log';
-  $strongarm->value = '0';
+  $strongarm->value = 0;
   $export['language_content_type_search_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_options_naturalis_featured_content';
+  $strongarm->value = array(
+    0 => 'main-menu',
+  );
+  $export['menu_options_naturalis_featured_content'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -48,6 +64,13 @@ function feature_bioportal_controller_strongarm() {
     0 => 'main-menu',
   );
   $export['menu_options_search_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_parent_naturalis_featured_content';
+  $strongarm->value = 'main-menu:0';
+  $export['menu_parent_naturalis_featured_content'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -116,7 +139,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_maxgroupresults';
-  $strongarm->value = '10';
+  $strongarm->value = 10;
   $export['ndabioresults_config_maxgroupresults'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -213,6 +236,15 @@ function feature_bioportal_controller_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_naturalis_featured_content';
+  $strongarm->value = array(
+    0 => 'status',
+  );
+  $export['node_options_naturalis_featured_content'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_search_log';
   $strongarm->value = array(
     0 => 'status',
@@ -223,9 +255,23 @@ function feature_bioportal_controller_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_preview_naturalis_featured_content';
+  $strongarm->value = 1;
+  $export['node_preview_naturalis_featured_content'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_search_log';
-  $strongarm->value = '1';
+  $strongarm->value = 1;
   $export['node_preview_search_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_submitted_naturalis_featured_content';
+  $strongarm->value = 0;
+  $export['node_submitted_naturalis_featured_content'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -282,7 +328,7 @@ function feature_bioportal_controller_strongarm() {
     'default_favicon' => 1,
     'favicon_path' => '',
     'favicon_upload' => '',
-    'zurb_foundation_top_bar_enable' => '1',
+    'zurb_foundation_top_bar_enable' => 1,
     'zurb_foundation_top_bar_grid' => 1,
     'zurb_foundation_top_bar_sticky' => 0,
     'zurb_foundation_top_bar_scrolltop' => 1,
@@ -337,7 +383,7 @@ function feature_bioportal_controller_strongarm() {
     'default_favicon' => 1,
     'favicon_path' => '',
     'favicon_upload' => '',
-    'zurb_foundation_top_bar_enable' => '1',
+    'zurb_foundation_top_bar_enable' => 1,
     'zurb_foundation_top_bar_grid' => 1,
     'zurb_foundation_top_bar_sticky' => 0,
     'zurb_foundation_top_bar_scrolltop' => 1,
