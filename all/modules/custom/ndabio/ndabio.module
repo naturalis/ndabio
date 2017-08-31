@@ -292,11 +292,9 @@ function _setHelpText ($field, $description, $label) {
 			". ";
 	}
 	$output .= t('The search term') . ' ';
-	$split = false;
 	switch (_getAdvancedFieldSplitInfo($field)) {
 		case 'true':
 			$output .= t('is split into parts on any spaces');
-			$split = true;
 			break;
 		case 'false':
 			$output .= t('is used literally, including any spaces');
@@ -318,7 +316,8 @@ function _setHelpText ($field, $description, $label) {
 			break;
 		case 'MATCHES':
 			$output .= t(', and %s matched against the value of field "%s"');
-			$output = $split ? sprintf($output, 'is', $label) : sprintf($output, $splitTerm, $label);
+			$output = _getAdvancedFieldSplitInfo($field) == 'true' ? 
+				sprintf($output, $splitTerm, $label) : sprintf($output, 'is', $label);
 			break;
 		case 'CONTAINS':
 			$output .= '. ' . t('If the term is between %d and %d characters in length, ' .
