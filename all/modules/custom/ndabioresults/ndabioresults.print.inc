@@ -900,6 +900,9 @@ function _printHits ($row) {
 	$output = '';
 	if (isset($row['hits']) && !empty($row['hits'])) {
 		foreach ($row['hits'] as $field => $hit) {
+			if (_doNotPrintHit($field, $row['hits'])) {
+				continue;
+			}
 			$output .= ucfirst(translateNdaField($field)) . ': ' . $hit . '; ';
 		}
 	} else if (isset($row['nameResolutionHits']) && !empty($row['nameResolutionHits'])) {
@@ -911,6 +914,17 @@ function _printHits ($row) {
 		}
 	}
 	return !empty($output) ? substr($output, 0, -2) : null;
+}
+
+function _doNotPrintHit ($hit, $hits) {
+	if (array_key_exists($hit, doNotPrintHits()) && is_null(doNotPrintHits()[$hit])) {
+		return true;
+	}
+	if (array_key_exists($hit, doNotPrintHits()) && 
+		array_key_exists(doNotPrintHits()[$hit], $hits)) {
+		return true;
+	}
+	return false;
 }
 
 

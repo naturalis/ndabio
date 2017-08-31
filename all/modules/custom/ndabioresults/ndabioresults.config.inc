@@ -637,8 +637,7 @@ function nbaNameResolutionFieldMapping ()
 }
 
 
-function nameHits ()
-{
+function nameHits () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = array(
@@ -680,9 +679,22 @@ function nameHits ()
 	return $var;
 }
 
+/* Do not print hits
+ * 
+ * Hits in array key are not printed if there also is a hit in the array value.
+ * If value is null, hit is always hidden in results
+ * 
+ */
 
-function scientificNameElements ()
-{
+function doNotPrintHits () {
+	return [
+		'locality' => 'localityText',
+		'theme' => null,
+	];
+}
+
+
+function scientificNameElements () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [
