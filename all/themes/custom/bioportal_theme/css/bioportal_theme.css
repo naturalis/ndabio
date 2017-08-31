@@ -854,6 +854,7 @@ th .icon-sort_sortable {
     letter-spacing: 0.05em;
     overflow: hidden;
     background-image: none;
+    overflow: auto;
 }
 
 
