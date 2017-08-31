@@ -243,11 +243,12 @@ function _getAdvancedFieldSplitInfo ($field) {
 	return 'false';
 }
 
+/*
 function _setHelpText ($field, $description, $label) {
 	$output = $description . " ";
 	if (_isMultiAdvancedSelect($field)) {
 		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
-			".\n\n";
+			". ";
 	}
 	$output .= t('The term') . ' ';
 	$term = 'term';
@@ -282,6 +283,53 @@ function _setHelpText ($field, $description, $label) {
 	$output .= '.';
 	return sprintf($output, $term);
 }
+*/
+
+function _setHelpText ($field, $description, $label) {
+	$output = $description . " ";
+	if (_isMultiAdvancedSelect($field)) {
+		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
+			". ";
+	}
+	$output .= t('The search term') . ' ';
+	$split = false;
+	switch (_getAdvancedFieldSplitInfo($field)) {
+		case 'true':
+			$output .= t('is split into parts on any spaces');
+			$split = true;
+			break;
+		case 'false':
+			$output .= t('is is used literally, including any spaces');
+			break;
+	}
+	
+	$splitTerm = t('one or more of the search term parts are');
+	
+	switch (_getAdvancedFieldOperator($field)) {
+		case 'EQUALS':
+		case 'EQUALS_IC':
+			$output .= t(', and is matched against the exact value of field "' . $label . '"');
+			break;
+		case 'STARTS_WITH':
+		case 'STARTS_WITH_IC':
+			$output .= t(', and is matched against the start of field "' . $label . '"');
+			break;
+		case 'MATCHES':
+			$output .= t(', and %s matched against the value of field "' . $label . '"');
+			$output = $split ? sprintf($output, 'is') : sprintf($output, $splitTerm);
+			break;
+		case 'CONTAINS':
+			$output .= '. ' . t('The system will search for specimens of which the field "%s" ' . 
+				' contains %s, if the term is between %d and %d characters long. ' . 
+				'If longer, it will look for specimens of which the value starts with the search term');
+			$output = sprintf($output, $label, ($split ? $splitTerm : t('the term')), 
+				nbaMinContainsStringSize(), nbaMaxContainsStringSize());
+			break;
+	}
+	$output .= '.';
+	return sprintf($output, $term);
+}
+
 
 
 /*
@@ -1163,7 +1211,7 @@ function ndabio_advanced_taxonomysearch () {
 					'name' => 'term',
 					'placeholder' => $placeholder 
 				),
-				'#description' => t('Click arrow for advanced search') 
+				'#description' => t('Click the &#9660; symbol for advanced search') 
 			);
 			
 			$form[$sysname]['omnisearch']['submit'] = array(
