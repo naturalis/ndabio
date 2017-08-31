@@ -1990,14 +1990,13 @@ function _printMultimediaHit ($row) {
                     'infraspecificEpithet',
                     'subgenus',
                     'associatedSpecimenReference',
-                    'associatedTaxonReference'
+                    'associatedTaxonReference',
+                	'theme'
                 ))) {
                 continue;
 		    }
             // Rename field if it doesn't match ABCD term
-            $replace = array(
-                'name' => t('Common name')
-            );
+            $replace = ['name' => t('Common name')];
             
             if (isset($replace[$field])) {
                 $field = $replace[$field];

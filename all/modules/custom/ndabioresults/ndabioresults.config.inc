@@ -685,7 +685,6 @@ function nameHits () {
  * If value is null, hit is always hidden in results
  * 
  */
-
 function doNotPrintHits () {
 	return [
 		'locality' => 'localityText',
