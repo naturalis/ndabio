@@ -308,20 +308,23 @@ function _setHelpText ($field, $description, $label) {
 	switch (_getAdvancedFieldOperator($field)) {
 		case 'EQUALS':
 		case 'EQUALS_IC':
-			$output .= t(', and is matched against the exact value of field "' . $label . '"');
+			$output .= t(', and is matched against the exact value of field "%s"');
+			$output = sprintf($output, $label);
 			break;
 		case 'STARTS_WITH':
 		case 'STARTS_WITH_IC':
-			$output .= t(', and is matched against the start of field "' . $label . '"');
+			$output .= t(', and is matched against the start of field "%s"');
+			$output = sprintf($output, $label);
 			break;
 		case 'MATCHES':
-			$output .= t(', and %s matched against the value of field "' . $label . '"');
-			$output = $split ? sprintf($output, 'is') : sprintf($output, $splitTerm);
+			$output .= t(', and %s matched against the value of field "%s"');
+			$output = $split ? sprintf($output, 'is', $label) : sprintf($output, $splitTerm, $label);
 			break;
 		case 'CONTAINS':
-			$output .= '. ' . t('The system will search for specimens of which the field "%s" ' . 
-				' contains %s, if the term is between %d and %d characters long. ' . 
-				'If longer, it will look for specimens of which the value starts with the search term');
+			$output .= '. ' . t('If the term is between %d and %d characters in length, ' .
+				'the system will search for records of which the field "%s" ' . 
+				' contains %s, . If longer, it will look for specimens of which the value ' . 
+				'starts with the search term');
 			$output = sprintf($output, $label, ($split ? $splitTerm : t('the term')), 
 				nbaMinContainsStringSize(), nbaMaxContainsStringSize());
 			break;
