@@ -323,7 +323,7 @@ function _setHelpText ($field, $description, $label) {
 		case 'CONTAINS':
 			$output .= '. ' . t('If the term is between %d and %d characters in length, ' .
 				'the system will search for records of which the field "%s" ' . 
-				' contains %s. If longer, it will look for specimens of which the value ' . 
+				' contains %s. If shorter or longer, it will look for specimens of which the value ' . 
 				'starts with the search term');
 			$output = sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize(), 
 				$label, ($split ? $splitTerm : t('the term')));
