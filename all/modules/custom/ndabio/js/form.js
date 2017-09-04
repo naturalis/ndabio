@@ -123,14 +123,15 @@
       });
 
       // If the simple search is entered, but too short:
-      searchTerm = $($_omnibox).val().trim();
-      if (searchTerm != "") {
-    	  dataEntered = true;
-    	  if (searchTerm.length < minStringLength) {
-    		  isValid = false;
-    	  }
-      }
-
+      $.each($($_omnibox).val().trim().split(" "), function(index, searchTerm) {
+          if (searchTerm.trim() != "") {
+        	  dataEntered = true;
+        	  if (searchTerm.trim().length < minStringLength) {
+        		  isValid = false;
+        	  }
+          }
+      });
+ 
       // If we're on the geo-search page
       if ( $("body").hasClass("page-geographic-search") ){
     	  if (selectedShape || feature) {
@@ -158,7 +159,7 @@
 
       } else {
     	  
-		  var message = Drupal.t("Search field should contain at least [nr] characters.");
+		  var message = Drupal.t("Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!");
 		  alert(message.replace("[nr]", minStringLength));
         	  
       }
