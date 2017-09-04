@@ -2149,6 +2149,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Administrator role', array(), array('context' => ''));
+  $translations['nl:default']['0d53e150835643542ac7d41bb0c89677'] = array(
+    'source' => 'scientific name',
+    'context' => '',
+    'location' => '/result/specimen/scientificName=poa+annua&logicalOperator=AND&from=0&size=100',
+    'translation' => 'wetenschappelijke naam',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('scientific name', array(), array('context' => ''));
   $translations['nl:default']['0d682c020f9347a5cfaa8fbd18e92ead'] = array(
     'source' => 'Marshall Islands',
     'context' => '',
@@ -7235,6 +7244,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Close overlay', array(), array('context' => ''));
+  $translations['nl:default']['2ae3330084b44abd37672d0ca603471e'] = array(
+    'source' => '%s of %s',
+    'context' => '',
+    'location' => '/specimen/RMNH.AVES.208150/scientificName=larus&logicalOperator=AND&from=0',
+    'translation' => '%s van de %s',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('%s of %s', array(), array('context' => ''));
   $translations['nl:default']['2ae41fa6dbd644a6846389ad14167167'] = array(
     'source' => 'copyright',
     'context' => '',
@@ -14400,7 +14418,7 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'source' => 'Sort options',
     'context' => '',
     'location' => '/result/specimen/vernacularName=vogel&logicalOperator=AND&from=0&size=100',
-    'translation' => 'Sorteer opties',
+    'translation' => 'Sorteeropties',
     'plid' => 0,
     'plural' => 0,
   );
@@ -14810,6 +14828,15 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'plural' => 0,
   );
   $translatables[] = t('Preview full version', array(), array('context' => ''));
+  $translations['nl:default']['54e03c3ed1f796105f0062b9f689449f'] = array(
+    'source' => 'relevance',
+    'context' => '',
+    'location' => '/result/specimen/scientificName=poa+annua&logicalOperator=AND&from=0&size=100',
+    'translation' => 'relevantie',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('relevance', array(), array('context' => ''));
   $translations['nl:default']['54ed3dad90c8213a061ea116c4841b18'] = array(
     'source' => 'Search specimens by phase or stage',
     'context' => '',
@@ -29877,7 +29904,7 @@ password: Your password
     'source' => 'specimen count',
     'context' => '',
     'location' => '/result/specimen/vernacularName=vogel&logicalOperator=AND&from=0&size=100',
-    'translation' => 'specimen aantal',
+    'translation' => 'aantal specimens',
     'plid' => 0,
     'plural' => 0,
   );
