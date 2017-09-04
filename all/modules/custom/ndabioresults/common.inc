@@ -231,7 +231,7 @@ function _prettyJson ($json) {
 }
 
 function _init () {
-	unset($_SESSION['nbaDebug']);
+	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
 	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
 	$_SESSION['nbaNameResolutionTaxa'] = null;
 }
@@ -324,12 +324,13 @@ function _formatNumber ($n) {
 }
 
 
-function _printOops ($message = false) {
-	$output = '<h1>' .t('Error'). '!</h1><p>' . t('Oops, something went wrong') . '. ' .
-		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
-	if ($message) {
-		$output .= "<p>$message</p>";
+function _printOops () {
+	$output = '<h1>' .t('Error'). '!</h1><p>';
+	if (_getErrorMessage()) {
+		$output .= _getErrorMessage() . "</p>\n<p>";
 	}
+	$output .= t('Oops, something went wrong') . '. ' .
+		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
 	return $output;
 }
 
@@ -343,6 +344,14 @@ function _getSourceNameBySourceCode ($code) {
 		}
 	}
 	return false;
+}
+
+function _getErrorMessage () {
+	return isset($_SESSION['nbaErrorMessage']) ? $_SESSION['nbaErrorMessage'] : false;
+}
+
+function _setErrorMessage ($message) {
+	$_SESSION['nbaErrorMessage'] = $message;
 }
 
 /**

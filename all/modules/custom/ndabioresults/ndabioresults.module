@@ -134,11 +134,10 @@ function ndabioresults_menu() {
 function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $search = false) {
 	// Test if anything has been posted; if not return with error message
 	if (!$id) {
+		_setErrorMessage('Specimen ID missing');
 		return _printOops();
 	}
-	
 	$service = _getSpecimenService();
-	
 	$data = _getSpecimenByUnitId($id);
 	if (!$data) {
 		return _printOops();
@@ -173,6 +172,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
+			_setErrorMessage('NBA exception: ' . $set->exception);
 			return _printOops();
 		}
 		_setGenericDetailPageBackLink('specimen', $search);
@@ -214,6 +214,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
+			_setErrorMessage('NBA exception: ' . $set->exception);
 			return _printOops();
 		}
 		// Set back link -- from taxon detail
@@ -336,6 +337,7 @@ function _getSpecimenByUnitId ($unitId = false) {
 	_addDebugMessage('specimen detail', $query);
 	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return false;
 	}
 	return $data->resultSet[0]->item;	
@@ -347,6 +349,7 @@ function _getSpecimenByUnitId ($unitId = false) {
 function _nba_multimedia_callback ($id = false, $search = false) {
 	// Test if anything has been posted; if not return with error message
 	if (!$id) {
+		_setErrorMessage('Multimedia ID missing');
 		return _printOops();
 	}
 	
@@ -368,6 +371,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	_addDebugMessage('multimedia query', _getTimer($timer));
 	
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 	$data = $data->resultSet[0]->item;
@@ -392,6 +396,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
+			_setErrorMessage('NBA exception: ' . $set->exception);
 			return _printOops();
 		}
 		// Referred search; replace generic back link!
@@ -582,6 +587,7 @@ function _addDetailPageNavigation ($service, $data, $search = false, $set = fals
 function _nba_taxon_callback ($taxon = false, $search = false) {
 
     if (!$taxon) {
+    	_setErrorMessage('Taxon missing');
     	_printOops();
     }
     
@@ -611,6 +617,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
+			_setErrorMessage('NBA exception: ' . $data->exception);
 			return _printOops();
 		}
 		// Generic back link (will be overridden for referred search)
@@ -813,6 +820,7 @@ function _getTaxonByName ($name) {
     $query->addCondition($condition)->setSpecimensSize(5);
     $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return false;
 	}
 	$data = _getTaxonDetails($data);
@@ -1171,6 +1179,7 @@ function _nba_taxon_result_callback ($search = false) {
     
     // No search terms; die with grace
     if (!$terms) {
+    	_setErrorMessage('Missing search terms');
     	_printOops();
     }
     
@@ -1192,6 +1201,7 @@ function _nba_taxon_result_callback ($search = false) {
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 	
@@ -1219,6 +1229,7 @@ function _nba_multimedia_result_callback ($search = false) {
     
     // No search terms; die with grace
     if (!$terms) {
+    	_setErrorMessage('Missing search terms');
     	_printOops();
     }
     
@@ -1243,6 +1254,7 @@ function _nba_multimedia_result_callback ($search = false) {
 		
 	// We got an error; go oops
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 	
@@ -1264,6 +1276,7 @@ function _nba_specimen_result_callback ($search = false) {
     
     // No search terms; die with grace
     if (!$terms) {
+    	_setErrorMessage('Missing search terms');
     	_printOops();
     }
     
@@ -1316,6 +1329,7 @@ function _nba_specimen_result_callback ($search = false) {
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
+			_setErrorMessage('NBA exception: ' . $data->exception);
 			return _printOops();
 		}
 	
@@ -1337,6 +1351,7 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 	$data = _parseSpecimens($data, ['paginator']); 
@@ -1375,6 +1390,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
     
     // No search terms; die with grace
     if (!$scientificNameGroup || !$terms) {
+    	_setErrorMessage('Missing name group or search terms');
     	_printOops();
     }
     
@@ -1408,6 +1424,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 	
@@ -1431,6 +1448,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     
     // No search terms; die with grace
     if (!$scientificNameGroup || !$terms) {
+    	_setErrorMessage('Missing name group or search terms');
     	_printOops();
     }
     
@@ -1455,6 +1473,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
+		_setErrorMessage('NBA exception: ' . $data->exception);
 		return _printOops();
 	}
 
@@ -1582,6 +1601,7 @@ function _nbaAdvancedSearch () {
     
     // Test if anything has been posted; if not return with error message
     if (!_dataPosted($services)) {
+    	_setErrorMessage('Missing search terms');
         _printOops();
     }
 
