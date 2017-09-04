@@ -26889,7 +26889,7 @@ Your account on [site:name] has been canceled.
     'source' => 'Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!',
     'context' => '',
     'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Uw zoekterm moet minimaal [nr] karakters bevatten. Deze beperking geldt niet voor uitgebreid zoeken!',
+    'translation' => 'Ieder van uw zoektermen moet minimaal [nr] karakters bevatten. Deze beperking geldt niet voor uitgebreid zoeken!',
     'plid' => 0,
     'plural' => 0,
   );
