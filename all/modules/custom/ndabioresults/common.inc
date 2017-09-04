@@ -324,9 +324,12 @@ function _formatNumber ($n) {
 }
 
 
-function _printOops ($message) {
-	$output = '<h1>' .t('Error'). '!</h1>' . _wrap(t('Oops, something went wrong') . '. ' .
-		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
+function _printOops ($message = false) {
+	$output = '<h1>' .t('Error'). '!</h1><p>' . t('Oops, something went wrong') . '. ' .
+		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
+	if ($message) {
+		$output .= "<p>$message</p>";
+	}
 	return $output;
 }
 

@@ -402,12 +402,12 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 				'Back to taxon'
 			);
 		} else if (isset($data->associatedSpecimen) && _getReferredSearch($search)) {
-			_setBackLink(
-				'specimen/' .  urlencode($data->associatedSpecimen->unitID) . '/' .
-				urlencode($data->associatedSpecimen->identifications[0]->scientificName->scientificNameGroup) . 
-				'/' . _getReferredSearch($search),
-				'Back to specimen'
-			);
+			$backLink = 'specimen/' .  urlencode($data->associatedSpecimen->unitID) . '/';
+			if (_getSpecimenService() != 'specimen') {
+				$backLink .= urlencode($data->associatedSpecimen->identifications[0]->scientificName->scientificNameGroup) . '/';
+			}
+			$backLink .= _getReferredSearch($search);
+			_setBackLink($backLink, 'Back to specimen');
 		}
 		// Extract data for current id, plus ids of previous and next result
 		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
@@ -1076,11 +1076,15 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
    			$sort[] = [$path, isset($sortDirections[$i]) ? $sortDirections[$i] : null];
    		}
         $query->setSortFields($sort);
+        // If sort is used, we can safely turn it into a constant score query
+        $query->setConstantScore();
     }
     // groupSort
     if (isset($terms['groupSort']) && !empty($terms['groupSort']) && 
     	$query->getQuerySpecType() == 'GroupByScientificNameQuerySpec') {
     	$query->setGroupSort($terms['groupSort']);
+        // If sort is used, we can safely turn it into a constant score query
+        $query->setConstantScore();
     }
 //p($query->getQuerySpec(true)); die();
     
