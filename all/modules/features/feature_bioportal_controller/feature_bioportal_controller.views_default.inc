@@ -29,6 +29,7 @@ function feature_bioportal_controller_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Opnieuw instellen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sorteer op';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '1000';
@@ -277,7 +278,7 @@ function feature_bioportal_controller_views_default_views() {
     t('more'),
     t('Apply'),
     t('Opnieuw instellen'),
-    t('Sort by'),
+    t('Sorteer op'),
     t('Asc'),
     t('Desc'),
     t('<div class=\'view-geographic-areas\'>'),
@@ -314,6 +315,7 @@ function feature_bioportal_controller_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Opnieuw instellen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sorteer op';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -365,7 +367,7 @@ function feature_bioportal_controller_views_default_views() {
     t('more'),
     t('Apply'),
     t('Opnieuw instellen'),
-    t('Sort by'),
+    t('Sorteer op'),
     t('Asc'),
     t('Desc'),
     t('<li id="gid_[nid]">[title]</li>'),

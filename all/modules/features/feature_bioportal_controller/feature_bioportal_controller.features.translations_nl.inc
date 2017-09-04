@@ -8774,6 +8774,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Cuba', array(), array('context' => ''));
+  $translations['nl:default']['33d8042bd735c559cc3206f4bc99aedc'] = array(
+    'source' => 'Sort by',
+    'context' => '',
+    'location' => '/admin/structure/features/feature_bioportal_nodes_menus/recreate',
+    'translation' => 'Sorteer op',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Sort by', array(), array('context' => ''));
   $translations['nl:default']['34082694d21dbdcfc31e6e32d9fb2b9f'] = array(
     'source' => 'File name',
     'context' => '',
@@ -26876,6 +26885,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Run tests', array(), array('context' => ''));
+  $translations['nl:default']['9812f3a31029e7a9ad86b190c15fc0eb'] = array(
+    'source' => 'Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Uw zoekterm moet minimaal [nr] karakters bevatten. Deze beperking geldt niet voor uitgebreid zoeken!',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!', array(), array('context' => ''));
   $translations['nl:default']['981491184c8b74adb18e551603534d95'] = array(
     'source' => 'Security update required!',
     'context' => '',
