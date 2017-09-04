@@ -1,7 +1,7 @@
 name = Feature - Bioportal controller
 core = 7.x
 package = Bioportal
-version = 7.x-1.9a
+version = 7.x-1.9b
 dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = features

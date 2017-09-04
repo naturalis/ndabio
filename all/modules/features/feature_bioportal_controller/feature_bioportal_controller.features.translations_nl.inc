@@ -526,6 +526,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Day', array(), array('context' => ''));
+  $translations['nl:default']['03745e84555ad1205312e9baf4e43417'] = array(
+    'source' => 'Click the &#9660; symbol for advanced search',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'Klik op het &#9660; teken om uitgebreid te zoeken',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Click the &#9660; symbol for advanced search', array(), array('context' => ''));
   $translations['nl:default']['0381bc7facf0f83467fb53302b3e43a1'] = array(
     'source' => 'By default, Drupal comes with two user roles:',
     'context' => '',
@@ -544,6 +553,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Group', array(), array('context' => ''));
+  $translations['nl:default']['0398cf02e1a5710359b8dae2cc20d495'] = array(
+    'source' => 'is used literally, including any spaces',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'wordt letterlijk gebruikt, inclusief eventuele spaties',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('is used literally, including any spaces', array(), array('context' => ''));
   $translations['nl:default']['03a1c0f16284fa612505eda928f0c16a'] = array(
     'source' => 'Archivers can only operate on local files: %file not supported',
     'context' => '',
@@ -1681,6 +1699,24 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('South Sudan', array(), array('context' => ''));
+  $translations['nl:default']['0a6549211c67b0fc0998575787f69972'] = array(
+    'source' => ', and is matched against the exact value of field "%s"',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => ', en het veld "%s" komt exact overeen met de term',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t(', and is matched against the exact value of field "%s"', array(), array('context' => ''));
+  $translations['nl:default']['0a6564e07f3507cf6a31cc5b71261bfd'] = array(
+    'source' => 'Find taxa by their complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van hun complete wetenschappelijke naam (inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758"). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => ''));
   $translations['nl:default']['0a6de4460095f398e8a45ed512a7538f'] = array(
     'source' => 'Belarusian',
     'context' => '',
@@ -1978,6 +2014,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Croatian', array(), array('context' => ''));
+  $translations['nl:default']['0c262cbc4b6621ff6f7fe448c5100e51'] = array(
+    'source' => 'Find specimens by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun complete wetenschappelijke naam (inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758"). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").', array(), array('context' => ''));
   $translations['nl:default']['0c593ad49b8593c9d842b501bb800204'] = array(
     'source' => 'Minimum word length to index',
     'context' => '',
@@ -7334,6 +7379,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Changing colors', array(), array('context' => ''));
+  $translations['nl:default']['2bc4cfdfa3d7694991a6dace7cdaa55c'] = array(
+    'source' => 'Find specimens by their primary data source.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun primaire databron.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their primary data source.', array(), array('context' => ''));
   $translations['nl:default']['2be0edfba9241760446239e0b8404f46'] = array(
     'source' => 'Reset localized date formats to global defaults',
     'context' => '',
@@ -7676,6 +7730,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Guam', array(), array('context' => ''));
+  $translations['nl:default']['2dc5309e69bb8931ba8c855685e5cf4c'] = array(
+    'source' => 'The search term',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'De zoekterm',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('The search term', array(), array('context' => ''));
   $translations['nl:default']['2dc973a11e4488f29b6c9334d9fcb7da'] = array(
     'source' => 'The username %name has not been activated or is blocked.',
     'context' => '',
@@ -8738,6 +8801,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Attempt to create an instance of a field @field_name that doesn\'t exist or is currently inactive.', array(), array('context' => ''));
+  $translations['nl:default']['34498f409823c3bbd22c6c87dbdc0ce8'] = array(
+    'source' => 'Find taxa by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van hun populaire naam. Namen in het Engels of Nederlands leveren waarschijnlijk de meeste resultaten op.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ', array(), array('context' => ''));
   $translations['nl:default']['3455f08d540ef0bc099cae7a4d60ddca'] = array(
     'source' => 'Category for @title',
     'context' => '',
@@ -9041,6 +9113,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('There was a problem changing the widget for field %label.', array(), array('context' => ''));
+  $translations['nl:default']['35e5cd8fa24b4d197253fa86ebe8de66'] = array(
+    'source' => 'Find multimedia by their scientific phylum name.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van de wetenschappelijke naam van hun afdeling of stam.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their scientific phylum name.', array(), array('context' => ''));
   $translations['nl:default']['35e716d6e5fc0e1df1a8b00da8071969'] = array(
     'source' => 'You must enter a username.',
     'context' => '',
@@ -9347,6 +9428,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Within', array(), array('context' => ''));
+  $translations['nl:default']['37bb09ea5cd5c17951cd4b36723e699b'] = array(
+    'source' => 'Find multimedia by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun populaire naam. Namen in het Engels of Nederlands leveren waarschijnlijk de meeste resultaten op.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ', array(), array('context' => ''));
   $translations['nl:default']['37d0883c0e6ed3edf6754d6fc855476e'] = array(
     'source' => 'Delete an existing effect from a style.',
     'context' => '',
@@ -10691,6 +10781,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('No HTML tags allowed.', array(), array('context' => ''));
+  $translations['nl:default']['3f54d03185c9800cf15be1c3818cee07'] = array(
+    'source' => 'Find specimens by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun infraspecifieke epitheton (het derde deel van de infraspecifieke naam, b.v.  "graellsii" in Larus fuscus graellsii).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).', array(), array('context' => ''));
   $translations['nl:default']['3f66eab81ebe069bfe5a5fe9d8dd9e99'] = array(
     'source' => 'Account cancellation request for [user:name] at [site:name]',
     'context' => '',
@@ -11944,6 +12043,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('The content type for the %add-child link must be one of those selected as an allowed book outline type.', array(), array('context' => ''));
+  $translations['nl:default']['465306dd50902792035736a8cc4bb662'] = array(
+    'source' => ', and %s matched against the value of field "%s"',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => ', en %s komen overeen met het veld "%s"',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t(', and %s matched against the value of field "%s"', array(), array('context' => ''));
   $translations['nl:default']['465718d0a1bc8363ad01390923fad5d1'] = array(
     'source' => 'Syria',
     'context' => '',
@@ -13275,6 +13383,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('Maltese', array(), array('context' => ''));
+  $translations['nl:default']['4d34936c614a9ad85961ee9251027313'] = array(
+    'source' => 'Find taxa by their scientific kingdom name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van de wetenschappelijke naam van hun rijk.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific kingdom name.', array(), array('context' => ''));
   $translations['nl:default']['4d39150f3fcf3f3ecd1ea6c0c445b38e'] = array(
     'source' => 'The directory %directory exists but is not writable and could not be made writable.',
     'context' => '',
@@ -13464,6 +13581,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('Throbber', array(), array('context' => ''));
+  $translations['nl:default']['4e502a763ad02795509627e130bb9564'] = array(
+    'source' => 'Find specimens by their scientific order name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van de wetenschappelijke naam van hun orde.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their scientific order name.', array(), array('context' => ''));
   $translations['nl:default']['4e52d614d3902b63167e37449f173bb0'] = array(
     'source' => 'OPML feed',
     'context' => '',
@@ -15728,6 +15854,15 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'plural' => 0,
   );
   $translatables[] = t('Menu name', array(), array('context' => ''));
+  $translations['nl:default']['5a759a7a8a4f7233fe6a82d1ed87b1ac'] = array(
+    'source' => 'Find taxa by their scientific phylum name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van de wetenschappelijke naam van hun afdeling of stam.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific phylum name.', array(), array('context' => ''));
   $translations['nl:default']['5a8c064615c2d6b5f247db0e5dd2e1b0'] = array(
     'source' => 'Set @type %title to unpublished.',
     'context' => '',
@@ -18504,6 +18639,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Remove tables with the prefix "simpletest" and temporary directories that are left over from tests that crashed. This is intended for developers when creating tests.', array(), array('context' => ''));
+  $translations['nl:default']['69075f75845887da2ed9de5ffe7b1e2c'] = array(
+    'source' => 'Find specimens by their scientific family name (e.g. "Laridae").',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun wetenschappelijke familienaam (b.v. "Laridae").',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their scientific family name (e.g. "Laridae").', array(), array('context' => ''));
   $translations['nl:default']['69154cdfbbcadc574167117ce993f49d'] = array(
     'source' => 'You are not authorized to access this page.',
     'context' => '',
@@ -18594,6 +18738,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('The field has been created.', array(), array('context' => ''));
+  $translations['nl:default']['69c0e88808c0c27ba2b878f160f8436e'] = array(
+    'source' => 'Find multimedia by their scientific order name.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van de wetenschappelijke naam van hun orde.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their scientific order name.', array(), array('context' => ''));
   $translations['nl:default']['69d42466dfa39126143863cfd719051f'] = array(
     'source' => 'The type of the node.',
     'context' => '',
@@ -18990,6 +19143,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Hot topic threshold', array(), array('context' => ''));
+  $translations['nl:default']['6bfce8610978cacc2a18307e8381ca97'] = array(
+    'source' => 'Find taxa by their scientific order name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van de wetenschappelijke naam van hun orde.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific order name.', array(), array('context' => ''));
   $translations['nl:default']['6c02086ecbce34765f03e66d9e6cc828'] = array(
     'source' => 'The machine-readable name must contain only lowercase letters, numbers, and underscores.',
     'context' => '',
@@ -19422,6 +19584,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Login attempt failed for %user.', array(), array('context' => ''));
+  $translations['nl:default']['6e8408fa9ce4618b716de6f2932b9ee6'] = array(
+    'source' => 'Find taxa by their scientific class name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van de wetenschappelijke naam van hun klasse.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific class name.', array(), array('context' => ''));
   $translations['nl:default']['6e85c3ffa532335329e6b7900c7d3f09'] = array(
     'source' => 'What is OpenID?',
     'context' => '',
@@ -19557,6 +19728,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Database log messages to keep', array(), array('context' => ''));
+  $translations['nl:default']['6f5e0e7a6bd82e6db8cfe397f7f8739f'] = array(
+    'source' => ', and is matched against the start of field "%s"',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => ', en het veld "%s" begint met de term',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t(', and is matched against the start of field "%s"', array(), array('context' => ''));
   $translations['nl:default']['6f68ad67736982d161ec51d68ad7eca5'] = array(
     'source' => 'If you made a significant change, which means translations should be updated, you can flag all translations of this post as outdated. This will not change any other property of those posts, like whether they are published or not.',
     'context' => '',
@@ -20817,6 +20997,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Rearrange blocks for display on the <a href="@dashboard-url">Dashboard page</a>. Blocks placed in the <em>Dashboard (inactive)</em> region are not displayed when viewing the Dashboard page, but are available within its <em>Customize dashboard</em> interface. Removing a block from active dashboard display makes it available on the main <a href="@blocks-url">blocks administration page</a>.', array(), array('context' => ''));
+  $translations['nl:default']['775f6b09b009c0eb075e682d7a41852a'] = array(
+    'source' => 'Find specimens by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun populaire naam. Namen in het Engels of Nederlands leveren waarschijnlijk de meeste resultaten op.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ', array(), array('context' => ''));
   $translations['nl:default']['7778d3e3acc842d4e36e421cf8a35200'] = array(
     'source' => 'IP addresses listed here are blocked from your site. Blocked addresses are completely forbidden from accessing the site and instead see a brief message explaining the situation.',
     'context' => '',
@@ -23861,6 +24050,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Slovakia', array(), array('context' => ''));
+  $translations['nl:default']['88b594a1e05d7340498ef51726b41e78'] = array(
+    'source' => 'Find multimedia by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
+    'context' => '',
+    'location' => '/?searchagain=1',
+    'translation' => 'Vind multimedia op basis van hun geslachtnaam (het eerste deel van de soortnaam, b.v. "Larus" in Larus fuscus). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).', array(), array('context' => ''));
   $translations['nl:default']['88b6a89973e2d9a0cc59b984e37b350a'] = array(
     'source' => 'Removed date type %type.',
     'context' => '',
@@ -25508,6 +25706,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('The File module defines a <em>File</em> field type for the Field module, which lets you manage and validate uploaded files attached to content on your site (see the <a href="@field-help">Field module help page</a> for more information about fields). For more information, see the online handbook entry for <a href="@file">File module</a>.', array(), array('context' => ''));
+  $translations['nl:default']['91694e392883e88fc7c5a8fe74316c86'] = array(
+    'source' => 'Find multimedia by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun complete wetenschappelijke naam (inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758"). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").', array(), array('context' => ''));
   $translations['nl:default']['916979d854ed0ba453378f0010429322'] = array(
     'source' => 'Checking available update data',
     'context' => '',
@@ -25832,6 +26039,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Database system', array(), array('context' => ''));
+  $translations['nl:default']['93497952aa1c7995c8f4cc918275d2ea'] = array(
+    'source' => 'Find specimens by their collector.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun verzamelaar.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their collector.', array(), array('context' => ''));
   $translations['nl:default']['934da37d0c011ce3f390a9bea0f8f1ed'] = array(
     'source' => '%archive_file contains a version of %names that is not compatible with Drupal !version.',
     'context' => '',
@@ -25877,6 +26093,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('The Profile module allows site administrators to define custom fields (such as country, full name, or age) for user profiles, which are then displayed in the <a href="@user">My Account</a> section. This permits users of a site to share more information about themselves, and can help community-based sites organize users around specific information. For more information, see the online handbook entry for <a href="@profile">Profile module</a>.', array(), array('context' => ''));
+  $translations['nl:default']['938c4c85baffb4cf8695880992e651dc'] = array(
+    'source' => 'If the term is between %d and %d characters in length, the system will search for records of which the field "%s"  contains %s. If shorter or longer, it will look for specimens of which the value starts with the search term',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Als de zoekterm tussen de %d en %d karakters lang is, wordt er gezocht naar records die ergens in het veld "%s" %s bevatten. Is de zoekterm korter of langer, dan wordt er gezocht naar specimens waarvan het veld met de zoekterm begint',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('If the term is between %d and %d characters in length, the system will search for records of which the field "%s"  contains %s. If shorter or longer, it will look for specimens of which the value starts with the search term', array(), array('context' => ''));
   $translations['nl:default']['939c3c13a3d058c4c53109d7f804b631'] = array(
     'source' => 'Reunion',
     'context' => '',
@@ -26273,6 +26498,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Choose a set of shortcuts for this user', array(), array('context' => ''));
+  $translations['nl:default']['9570011e8ba2fc6605aecbbf45b9e9bc'] = array(
+    'source' => 'Find specimens by their phase or stage,',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun levensfase.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their phase or stage,', array(), array('context' => ''));
   $translations['nl:default']['95be12c0fb411b83037651d0dcdfcf36'] = array(
     'source' => 'Blue Lagoon (default)',
     'context' => '',
@@ -26516,6 +26750,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Delete date format', array(), array('context' => ''));
+  $translations['nl:default']['977881937ff3aca278af5063b6b09c15'] = array(
+    'source' => 'Find specimens by their type status.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun typestatus.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their type status.', array(), array('context' => ''));
   $translations['nl:default']['9794059efd21e7ab0be6dc5e85f1f19f'] = array(
     'source' => '1 pending update (@number_applied to be applied, @number_incompatible skipped)',
     'context' => '',
@@ -27956,6 +28199,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Use PHP for settings', array(), array('context' => ''));
+  $translations['nl:default']['9f97d01faefdaaefe98fe8d254d191c1'] = array(
+    'source' => 'Find specimens by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun geslachtnaam (het eerste deel van de soortnaam, b.v. "Larus" in Larus fuscus). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).', array(), array('context' => ''));
   $translations['nl:default']['9f9dee31f9b0b31daf120f1cc347deb0'] = array(
     'source' => 'List (integer)',
     'context' => '',
@@ -28496,6 +28748,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('New book', array(), array('context' => ''));
+  $translations['nl:default']['a3862f420a67eba9455dc7e2c0d8d952'] = array(
+    'source' => 'Find specimens by their scientific phylum name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van de wetenschappelijke naam van hun afdeling of stam.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their scientific phylum name.', array(), array('context' => ''));
   $translations['nl:default']['a3873da43d7c3da32aaed360f65ca38f'] = array(
     'source' => 'These settings apply to the %field field everywhere it is used. Because the field already has data, some settings can no longer be changed.',
     'context' => '',
@@ -28523,6 +28784,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Average page generation time', array(), array('context' => ''));
+  $translations['nl:default']['a39edff3e0822af8116f4ad27aa86f2d'] = array(
+    'source' => 'Find taxa by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind taxa op basis van hun infraspecifieke epitheton (het derde deel van de infraspecifieke naam, b.v.  "graellsii" in Larus fuscus graellsii).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).', array(), array('context' => ''));
   $translations['nl:default']['a3bc16892719ebd4d9c552bebe1b6358'] = array(
     'source' => 'Save order',
     'context' => '',
@@ -28541,6 +28811,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('and where', array(), array('context' => ''));
+  $translations['nl:default']['a3ca18f9f9e6c076a9452130b8ea4c8d'] = array(
+    'source' => 'Find multimedia by their scientific family name, e.g. "Laridae".',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun wetenschappelijke familienaam, b.v. "Laridae".',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their scientific family name, e.g. "Laridae".', array(), array('context' => ''));
   $translations['nl:default']['a3ccd568b9ec49952586089dd65ffcec'] = array(
     'source' => 'Displaying administrative links',
     'context' => '',
@@ -28802,6 +29081,15 @@ This link expires in one day and nothing will happen if it is not used.
     'plural' => 0,
   );
   $translatables[] = t('Author', array(), array('context' => ''));
+  $translations['nl:default']['a53016c5b41389006088af2c32d27a83'] = array(
+    'source' => 'Find taxa by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van hun geslachtnaam (het eerste deel van de soortnaam, b.v. "Larus" in Larus fuscus). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).', array(), array('context' => ''));
   $translations['nl:default']['a531abc58761191a634e3d485d0a199b'] = array(
     'source' => 'Guernsey',
     'context' => '',
@@ -29133,6 +29421,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Recent comments', array(), array('context' => ''));
+  $translations['nl:default']['a6e8a5c719f50faac9c38871a735bd25'] = array(
+    'source' => 'Find specimens by their registration number.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun registratienummer.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their registration number.', array(), array('context' => ''));
   $translations['nl:default']['a6ec3f3500746fdbfa8ca1f4218301ca'] = array(
     'source' => 'Infraspecific name
 ',
@@ -29270,6 +29567,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Resetting will remove all localized date formats for this language. This action cannot be undone.', array(), array('context' => ''));
+  $translations['nl:default']['a7e8e2a0581444d62d9a870b9b7a481a'] = array(
+    'source' => 'Find taxa by their scientific family name (e.g. "Laridae").',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van hun wetenschappelijke familienaam (b.v. "Laridae").',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific family name (e.g. "Laridae").', array(), array('context' => ''));
   $translations['nl:default']['a7e93d9dfc9ad92bfa99fdf20acd899b'] = array(
     'source' => 'What type of data the field will store',
     'context' => '',
@@ -29711,6 +30017,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Users may set their own time zone at registration.', array(), array('context' => ''));
+  $translations['nl:default']['aa858847626e715fba8d0f5062337685'] = array(
+    'source' => 'Find specimens by their locality (municipality, province, country, etc.). Use geographic search to use a map.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind specimens op basis van hun plaats of streek (gemeente, provincie, land, etc.). Gebruik geografisch zoeken om met behulp van een kaart te zoeken.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their locality (municipality, province, country, etc.). Use geographic search to use a map.', array(), array('context' => ''));
   $translations['nl:default']['aa8b8deaf021f6b1d9ca8182b48594ac'] = array(
     'source' => 'This theme requires PHP version @php_required and is incompatible with PHP version !php_version.',
     'context' => '',
@@ -31530,6 +31845,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Congratulations, you installed @drupal!', array(), array('context' => ''));
+  $translations['nl:default']['b31e0985bde4870fc25d3cc8a1cd5466'] = array(
+    'source' => 'Find specimens by their scientific class name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind multimedia op basis van de wetenschappelijke naam van hun klasse.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their scientific class name.', array(), array('context' => ''));
   $translations['nl:default']['b3378a1e96ddb07e97e3b740c7dad149'] = array(
     'source' => 'Account details for [user:name] at [site:name] (blocked)',
     'context' => '',
@@ -32286,6 +32610,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Found the @submit button', array(), array('context' => ''));
+  $translations['nl:default']['b766f073ac9185a22257c009bf20cdb4'] = array(
+    'source' => 'Find specimens by their part(s) or type of material.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind specimens op basis van onderdeel of materiaaltype.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their part(s) or type of material.', array(), array('context' => ''));
   $translations['nl:default']['b77efe4b9cf50eaf3d7753b2e8b9338d'] = array(
     'source' => 'Drupal could not be correctly setup with the existing database. Revise any errors.',
     'context' => '',
@@ -32520,6 +32853,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Make selected content sticky', array(), array('context' => ''));
+  $translations['nl:default']['b86c43469603dfbecfa1589cf724c3ca'] = array(
+    'source' => 'Find multimedia by their scientific family name (e.g. "Laridae").',
+    'context' => '',
+    'location' => '/?searchagain=1',
+    'translation' => 'Vind multimedia op basis van hun wetenschappelijke familienaam (b.v. "Laridae").',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their scientific family name (e.g. "Laridae").', array(), array('context' => ''));
   $translations['nl:default']['b86e3a1f5f7bb3cd3bb499690d32845b'] = array(
     'source' => 'Add %label effect',
     'context' => '',
@@ -33168,6 +33510,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Mongolia', array(), array('context' => ''));
+  $translations['nl:default']['bb7d55e9fdfdb783e62887640cff7eae'] = array(
+    'source' => 'Find specimens by their sex.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun sexe.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their sex.', array(), array('context' => ''));
   $translations['nl:default']['bb8985c9a93d30135e0a662d77228e87'] = array(
     'source' => 'Updated:',
     'context' => '',
@@ -33177,6 +33528,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Updated:', array(), array('context' => ''));
+  $translations['nl:default']['bb8c3437799fd4ab0aee11ca9d45c674'] = array(
+    'source' => 'Find multimedia by their scientific kingdom name.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van de wetenschappelijke naam van hun rijk.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their scientific kingdom name.', array(), array('context' => ''));
   $translations['nl:default']['bb913c50f6250e67a481e9c51d3425a0'] = array(
     'source' => 'Showing only results in',
     'context' => '',
@@ -35744,6 +36104,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Weight for row @number', array(), array('context' => ''));
+  $translations['nl:default']['ca41b4f6fd804b39bdee478e2fa08767'] = array(
+    'source' => 'Find specimens by their scientific kingdom name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van de wetenschappelijke naam van hun rijk.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their scientific kingdom name.', array(), array('context' => ''));
   $translations['nl:default']['ca4c73c1f333c437a47c58afd0623530'] = array(
     'source' => '1 year',
     'context' => '',
@@ -38520,6 +38889,15 @@ Thank you for registering at [site:name]. Your application for an account is cur
     'plural' => 0,
   );
   $translatables[] = t('Minimum height', array(), array('context' => ''));
+  $translations['nl:default']['db0ac740b92932fbd2d3c903c2bf41a3'] = array(
+    'source' => 'Find specimens by their locality (municipality, province, country, etc.). Use geographic search to search by coordinates.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun plaats of streek (gemeente, provincie, land, etc.). Gebruik geografisch zoeken om met behulp van een kaart te zoeken.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their locality (municipality, province, country, etc.). Use geographic search to search by coordinates.', array(), array('context' => ''));
   $translations['nl:default']['db1a1266ccf3cbc9803cb7db5f8fe41c'] = array(
     'source' => 'No changes were made',
     'context' => '',
@@ -39228,6 +39606,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('View site reports', array(), array('context' => ''));
+  $translations['nl:default']['df4d082b31c2f73f7e7fff8569b6745e'] = array(
+    'source' => 'is split into parts on any spaces',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'wordt eerst opgedeeld in woorden',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('is split into parts on any spaces', array(), array('context' => ''));
   $translations['nl:default']['df521c108ceffc08470131cf688277c9'] = array(
     'source' => 'The selected image handling toolkit %toolkit can not correctly process %function.',
     'context' => '',
@@ -39687,6 +40074,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Manage the actions defined for your site.', array(), array('context' => ''));
+  $translations['nl:default']['e26b0db66029daf43ea7e35d351cb5f5'] = array(
+    'source' => 'Find multimedia by their primary data source.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun primaire databron.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their primary data source.', array(), array('context' => ''));
   $translations['nl:default']['e26e2aac376466099632d94e0af73479'] = array(
     'source' => 'Attaching files to content',
     'context' => '',
@@ -39705,6 +40101,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('These settings apply only to the %field field when used in the %type type.', array(), array('context' => ''));
+  $translations['nl:default']['e282baa8f4f53d66da04e0eb55974f45'] = array(
+    'source' => 'Find specimens by their collection name.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun collectienaam.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their collection name.', array(), array('context' => ''));
   $translations['nl:default']['e28dbc93928c82849c99bd101ddb78ce'] = array(
     'source' => 'Cannot set default value of field %table.%field: field doesn\'t exist.',
     'context' => '',
@@ -40533,6 +40938,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Shortcut icon settings', array(), array('context' => ''));
+  $translations['nl:default']['e83d2ece009fd53d106aee4c60d931b8'] = array(
+    'source' => 'Find taxa by their scientific subgenus name.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind taxa op basis van de wetenschappelijke naam van hun subgenus.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their scientific subgenus name.', array(), array('context' => ''));
   $translations['nl:default']['e83da9bdf2a1d27f28ce810a0b692ded'] = array(
     'source' => 'Administer themes',
     'context' => '',
@@ -41136,6 +41550,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Afar', array(), array('context' => ''));
+  $translations['nl:default']['eb00f6d0a25a366507cfc3f4c253d9ff'] = array(
+    'source' => 'Find multimedia by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun infraspecifieke epitheton (het derde deel van de infraspecifieke naam, b.v.  "graellsii" in Larus fuscus graellsii).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).', array(), array('context' => ''));
   $translations['nl:default']['eb05440ba3b43ba6328713dea892eecd'] = array(
     'source' => 'The Taxonomy module allows you to classify the content of your website. To classify content, you define <em>vocabularies</em> that contain related <em>terms</em>, and then assign the vocabularies to content types. For more information, see the online handbook entry for the <a href="@taxonomy">Taxonomy module</a>.',
     'context' => '',
@@ -43017,6 +43440,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Warning: This permission may have security implications depending on how the text format is configured.', array(), array('context' => ''));
+  $translations['nl:default']['f6a7011c7b0f91351d0c38199990a4a1'] = array(
+    'source' => 'Part(s) or type of material',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Onderdeel of materiaaltype',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Part(s) or type of material', array(), array('context' => ''));
   $translations['nl:default']['f6b63838a7c68b1c8f3e76437c88508f'] = array(
     'source' => 'Removed 1 temporary directory.',
     'context' => '',
@@ -43071,6 +43503,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('The Tracker module adds a new menu item to the Navigation menu, called <em>Recent content</em>. You can configure menu items via the <a href="@menus">Menus administration page</a>.', array(), array('context' => ''));
+  $translations['nl:default']['f70af61864884e4cf7ac744ccfe11f4b'] = array(
+    'source' => 'one or more of the search term parts are',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'een of meerdere delen van de zoekterm',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('one or more of the search term parts are', array(), array('context' => ''));
   $translations['nl:default']['f70d85bc8c46264d9e7f72e720d2ce36'] = array(
     'source' => 'Enable !theme theme',
     'context' => '',
