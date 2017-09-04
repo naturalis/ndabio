@@ -13,13 +13,13 @@ function _printSortOptions ($service) {
 		})(jQuery);",
         ['type' => 'inline', 'scope' => 'footer']
     );
-	$output = "<form><select class='form-select' id='sort-options'>\n" .
-		"<option value='' selected>" . t('Sort options') . "...</option>\n";
-		"<option value='_score'>" . t('Relevance') . "</option>\n";
+	$output = "<form><select class='form-select' id='sort-options'>\n";
+	//	"<option value='' selected>" . t('Sort options') . "...</option>\n";
+	//	"<option value='_score'>" . t('Relevance') . "</option>\n";
 	foreach (sortOptions()[$service] as $label => $d) {
 		$url = _setSortUrl($d['path']);
-		$selected = $d == _getCurrentSort() ? ' class="sort-option-selected"' : '';
-		$output .= "<option value='$url'$selected>" . ucfirst($label) . "</option>\n";
+		$selected = $d == _getCurrentSort() ? ' selected' : '';
+		$output .= "<option value='$url'$selected>" . t('Sort by') . " $label</option>\n";
 	}
 //p($d); p(_getCurrentSort());
 	return  $output . "</select>\n</form>\n";
