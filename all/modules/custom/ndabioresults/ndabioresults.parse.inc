@@ -132,7 +132,7 @@ function _parseTaxa ($data, $options) {
 
 		$d['url'] = _setBasePath() . 'taxon/' . 
 			urlencode(ucfirst(str_replace(' ', '_', $row->item->name))) . '/' . 
-			http_build_query(_setDetailSearchTerms($service, $i));
+			safe_http_build_query(_setDetailSearchTerms($service, $i));
 		$d['sources'] = $sources;
 		$d['commonNames'] = ($d['type'] != 'common' ? _getCommonNames($row, true) : []);
 		$output['results'][] = $d;
@@ -221,7 +221,7 @@ function _parseMultimedia ($data, $options = []) {
 		$d['caption'] = $type == 'taxon' && isset($row->item->caption) ?
 			$row->item->caption : null;
 		$d['url'] = _setBasePath() . $service . '/' . urlencode($row->item->unitID) . '/' . 
-			http_build_query(_setDetailSearchTerms($service, $i));
+			safe_http_build_query(_setDetailSearchTerms($service, $i));
 		$d['source'] = isset($row->item->sourceSystem->name) ? 
 			$row->item->sourceSystem->name : null;
 		$d['imgSrc'] = isset($row->item->serviceAccessPoints[0]->accessUri) ?
@@ -833,7 +833,7 @@ function _parseSpecimensMap ($data) {
 		$terms = _getQueryTerms('names.specimens');
 		$terms['size'] = $output['total'];
 		$url = _setBasePath() . 'result/specimen/map/' . 
-			urlencode($data->resultSet[0]->item->name) . '/' . http_build_query($terms);
+			urlencode($data->resultSet[0]->item->name) . '/' . safe_http_build_query($terms);
 		$output['message'] = sprintf(t('The first %s specimens are displayed'), maxResults()) . 
 			'. <a href="' . $url . '">' . sprintf(t('Display all %s specimens'), $output['total']) . ".</a>\n";
 	} else if ($output['total'] > 1) {
@@ -874,7 +874,7 @@ function _parseSpecimens ($data, $options = []) {
 			$row->item->preparationType : null;
 		$d['collectionType'] = $row->item->collectionType;
 		$d['url'] = _setBasePath() . 'specimen/' . urlencode($row->item->unitID) . '/' . 
-			http_build_query(_setDetailSearchTerms($service, $i));
+			safe_http_build_query(_setDetailSearchTerms($service, $i));
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
@@ -941,7 +941,7 @@ function _resetUrl () {
 		}
 	}
 	$terms['from'] = 0;
-	return implode('/', $pathComponents) . '/' . http_build_query($terms);
+	return implode('/', $pathComponents) . '/' . safe_http_build_query($terms);
 }
 
 function _setTaxonId ($object) {
@@ -991,7 +991,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$s['collectionType'] = $specimen->collectionType;
 			$s['url'] = _setBasePath() . 'specimen/' . urlencode($specimen->unitID) . '/' . 
 				urlencode($row->item->name) . '/' .
-				http_build_query(_setDetailSearchTerms($service, $i)) . $sortExtension;
+				safe_http_build_query(_setDetailSearchTerms($service, $i)) . $sortExtension;
 			$hits = _getHits($service, $specimen);
 			$s['hits'] = _setNonNameHits($service, $hits);
 			
@@ -1015,14 +1015,14 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		
 		$d['allLink'] = $d['count'] > maxResultsInitial() ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
-			http_build_query($terms) . $sortExtension : null;
+			safe_http_build_query($terms) . $sortExtension : null;
 		
 		// No use for nameHits anymore; discard
 		unset($d['nameHits']);
 		$d['mapUrl'] = null;
 		if (_isGeoSearch()) {
 			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . 
-				urlencode($row->item->name) . '/' . http_build_query(_getQueryTerms($service));
+				urlencode($row->item->name) . '/' . safe_http_build_query(_getQueryTerms($service));
 		}
 		$output['results'][] = $d;
 	}
@@ -1362,7 +1362,7 @@ function _highlightMatch ($haystack, $needles) {
 function _setShowAllQuery ($total, $criteria) {
 	if ($total > maxResultsInitial()) {
 		$criteria['size'] = maxResults();
-		return http_build_query($criteria);
+		return safe_http_build_query($criteria);
 	}
 	return null;
 }

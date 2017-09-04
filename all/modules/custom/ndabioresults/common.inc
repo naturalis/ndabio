@@ -17,7 +17,7 @@ require_once $clientPath . 'Loader.php';
 use nl\naturalis\bioportal\Client as Client;
 
 
-function _initBioPortalClient () {
+function _initNbaClient () {
     $client = new Client();
     $client
     	->setNbaUrl(nbaBaseUrl())
@@ -25,8 +25,8 @@ function _initBioPortalClient () {
     return $client;
 }
 
-function _setClient ($service) {
-	$client = _initBioPortalClient();
+function _setNbaClient ($service) {
+	$client = _initNbaClient();
 	$service = _normaliseServiceName($service);
 	return $client->{$service}();
 }
@@ -58,7 +58,7 @@ function nbaFieldTypes () {
             $nbaFieldTypes = $cache->data;
             return $nbaFieldTypes;
         }
-        $client = _initBioPortalClient();
+        $client = _initNbaClient();
         $r = $client->all()->getFieldInfo();
         foreach ($r as $service => $json) {
             $nbaFieldTypes[$service] = _getOptimalOperators(json_decode($json));
@@ -96,7 +96,7 @@ function _stringToElements ($value) {
 
 
 function _getDistinctValues ($service, $nbaPath) {
-    $client = _initBioPortalClient();
+    $client = _initNbaClient();
     $d = $client->{$service}()->getDistinctValues($nbaPath);
     unset($client);
     $values = array_keys(json_decode($d, true));
@@ -192,6 +192,15 @@ function safe_parse_str ($source, &$target, $keep = false) {
 	}
 }
 
+function safe_http_build_query ($args) {
+	foreach ($args as $k => $v) {
+		if (is_null($v)) {
+			$args[$k] = '';
+		}
+	}
+	return http_build_query($args);
+}
+
 
 /**
  * Formats string between tags and optionally appends class
@@ -253,7 +262,7 @@ function _checkNbaVersion () {
 		return true;
 	}
 	// Use checks here that are incompatible in older versions of the NBA
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	$settings = json_decode($client->getSettings());
 	if (isset($settings->{'operator.CONTAINS.min_term_length'})) {
 		$_SESSION['nbaVersionCheck'] = 'OK';
@@ -361,7 +370,7 @@ function _markUp ($string){
 
 function _encodeReferrer ($data) {
 	if (is_array($data)) {
-		$data = http_build_query($data);
+		$data = safe_http_build_query($data);
 	}
  	return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
 } 

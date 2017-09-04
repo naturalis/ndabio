@@ -146,7 +146,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	
 //p($data);
 	
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
 	
 	if (!$scientificNameGroup && !$search) {
 		_setDetailPageNoSearchBackLink();
@@ -295,7 +295,7 @@ function _setSpecimenDetailPagePreviousLink ($search, $previousId, $scientificNa
 		if (isset($terms['from'])) {
 			$terms['from'] = $terms['from'] == 0 ? $terms['from'] : $terms['from'] - 1;
 			return _setBasePath() . 'specimen/' . urlencode($previousId) . '/' . 
-				urlencode($scientificNameGroup) . '/' . http_build_query($terms);
+				urlencode($scientificNameGroup) . '/' . safe_http_build_query($terms);
 		}
 	}
 	return null;
@@ -313,7 +313,7 @@ function _setSpecimenDetailPageNextLink ($search, $nextId, $previousId, $scienti
 		if (isset($terms['from'])) {
 			$terms['from'] = !isset($previousId) ? $terms['from'] : $terms['from'] + 1;
 			return _setBasePath() . 'specimen/' . urlencode($nextId) . '/' . 
-				urlencode($scientificNameGroup) . '/' . http_build_query($terms);
+				urlencode($scientificNameGroup) . '/' . safe_http_build_query($terms);
 		}
 	}
 	return null;
@@ -327,7 +327,7 @@ function _getSpecimenByUnitId ($unitId = false) {
 	if (!$unitId) {
 		return false;
 	}
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	$query = new QuerySpec();	
 	$query
 		->addCondition(new Condition('unitID', 'EQUALS', $unitId))
@@ -351,7 +351,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	}
 	
 	$service = 'multimedia';
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
 	
 	// Build query
 	$condition = new Condition('unitID', 'EQUALS', $id);
@@ -450,7 +450,7 @@ function _setGenericDetailPageBackLink ($service, $search) {
 		// Cannot use _setBackLink here!
 		$_SESSION['nbaBackLink'] = [
 			'href' => _setBasePath() . 'result/' . $service . '/' . 
-				http_build_query($terms),
+				safe_http_build_query($terms),
 			'label' => t('Back to search results'),
 		];
 	} else {
@@ -461,7 +461,7 @@ function _setGenericDetailPageBackLink ($service, $search) {
 function _setGenericResultPageBackLink () {
 	if (isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
 		_setBackLink(
-			'result?' . http_build_query($_SESSION['nbaSearch']),
+			'result?' . safe_http_build_query($_SESSION['nbaSearch']),
 			t('Back to general results')
 		);
 	} else {
@@ -486,7 +486,7 @@ function _getBackLinkFormatted () {
 
 function _setMultimediaAssociatedObject ($data) {
 	
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	foreach (['taxon', 'specimen'] as $service) {
 		$field = 'associated' . ucfirst($service) . 'Reference';
 		if (isset($data->{$field}) && !empty($data->{$field})) {
@@ -515,7 +515,7 @@ function _setDetailPagePreviousLink ($service, $search, $previousId) {
 		if (isset($terms['from'])) {
 			$terms['from'] = $terms['from'] == 0 ? $terms['from'] : $terms['from'] - 1;
 			return _setBasePath() . $service . '/' . urlencode($previousId) . '/' . 
-				http_build_query($terms);
+				safe_http_build_query($terms);
 		}
 	}
 	return null;
@@ -533,7 +533,7 @@ function _setDetailPageNextLink ($service, $search, $nextId, $previousId) {
 		if (isset($terms['from'])) {
 			$terms['from'] = !isset($previousId) ? $terms['from'] : $terms['from'] + 1;
 			return _setBasePath() . $service . '/' . urlencode($nextId) . '/' . 
-				http_build_query($terms);
+				safe_http_build_query($terms);
 		}
 	}
 	return null;
@@ -543,35 +543,8 @@ function _setDetailPageBackLink ($service, $search) {
 	// Need to reset search to correct from value
 	safe_parse_str($search, $terms);
 	$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
-	return _setBasePath() . 'result/' . $service . '/' . http_build_query($terms);
+	return _setBasePath() . 'result/' . $service . '/' . safe_http_build_query($terms);
 }
-
-
-
-
-/*
-function _setMultimediaDetailPageBackLink ($pathComponents) {
-	return _setDetailPageBackLink('multimedia', array_slice($pathComponents, -1)[0]);
-}
-
-
-function _setTaxonDetailPageBackLink ($pathComponents) {
-	return _setDetailPageBackLink('taxon', array_slice($pathComponents, -1)[0]);
-}
-
-
-function _setSpecimenDetailPageBackLink ($pathComponents) {
-	// Need to reset search to correct from value
-	safe_parse_str(array_slice($pathComponents, -1)[0], $terms);
-	$terms['from'] = floor(($terms['from'] + 1) * 0.01) * 100;
-	// From taxon page, which has four path components
-	if (count($pathComponents) == 4) {
-		return _setBasePath() . 'result/specimen/taxon/' . urlencode($pathComponents[2]) . 
-		'/' . http_build_query($terms);		
-	}
-	return  _setBasePath() . 'result/specimen/' . http_build_query($terms);
-}
-*/
 
 
 function _addDetailPageNavigation ($service, $data, $search = false, $set = false, 
@@ -619,7 +592,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		return _printOops();
 	}
 	
-    $client = _setClient($service);
+    $client = _setNbaClient($service);
 
     if ($search) {
 		$terms = _getQueryTerms($service, $search);		
@@ -677,7 +650,7 @@ function _createTaxonSubsectionLink ($object, $resultPath) {
 }
 
 function _getTaxonMultimedia ($object) {
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	$condition = new Condition('identifications.scientificName.genusOrMonomial', 'EQUALS', 
 		$object->taxa[0]->acceptedName->genusOrMonomial);
 	$condition->setAnd('identifications.scientificName.specificEpithet', 'EQUALS', 
@@ -744,7 +717,7 @@ function _getSpecimenMultimedia ($object) {
 	
 //p($object);
 	
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	$query = new QuerySpec();
 	$query
 		->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
@@ -813,7 +786,7 @@ function _setTaxonUrlName ($id) {
 function _getTaxonScientificNameById ($id = false) {
 	if ($id) {
 		if (!isset($_SESSION['nbaNameResolutionTaxa'][$id])) {
-		  	$client = _setClient('taxon');
+		  	$client = _setNbaClient('taxon');
 		  	$timer = _setTimer();
 		  	$data = json_decode($client->find($id));
 			_addDebugMessage('scientific name for ' . $id, _getTimer($timer));
@@ -828,7 +801,7 @@ function _getTaxonScientificNameById ($id = false) {
 
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
-  	$client = _setClient('taxon');
+  	$client = _setNbaClient('taxon');
   	$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 	if (count($taxon) > 1) {
 		$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
@@ -1183,7 +1156,7 @@ function _containsOperatorAllowed ($value = '') {
 function _nba_taxon_result_callback ($search = false) {
     $service = 'names.taxa';
 	
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
 	
     $terms = _getQueryTerms($service, $search);
     
@@ -1231,7 +1204,8 @@ function _nba_multimedia_result_callback ($search = false) {
 	
     $service = 'multimedia';
     $terms = _getQueryTerms($service, $search);
-    $client = _setClient($service);
+    
+    $client = _setNbaClient($service);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1277,7 +1251,7 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	$terms = _getQueryTerms($service, $search);
 	
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1383,7 +1357,7 @@ function _getSearchPaths ($service) {
 function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $search = false) {
 	
     $service = 'names.specimens';
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
 	
     $terms = _getQueryTerms($service, $search);
 	// Display full set on this page
@@ -1419,7 +1393,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	// Trim from from $search
 	safe_parse_str($search, $parts);
 	unset($parts['from']);
-	_setBackLink('result/specimen/' . http_build_query($parts), 'Back to search results');
+	_setBackLink('result/specimen/' . safe_http_build_query($parts), 'Back to search results');
 	
 	// Fetch data set
 	$timer = _setTimer();
@@ -1441,7 +1415,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 
 function _nba_specimen_map_result_callback ($scientificNameGroup = false, $search = false) {
     $service = 'names.specimens';
-	$client = _setClient($service);
+	$client = _setNbaClient($service);
 	
     $terms = _getQueryTerms($service, $search);
     $size = isset($terms['size']) ? $terms['size'] : maxResults();
@@ -1561,7 +1535,7 @@ function _getTaxonFromNba ($taxon) {
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
-		$client = _setClient('taxon');
+		$client = _setNbaClient('taxon');
 		$query = new GroupByScientificNameQuerySpec();
 		$query
 			->addCondition($condition)
@@ -1611,7 +1585,7 @@ function _nbaAdvancedSearch () {
     foreach ($services as $service => $terms) {
         if (_serviceUsed($terms)) {
             // Init client
-            $client = _setClient($service);
+            $client = _setNbaClient($service);
         	// Cap results
             $terms['size'] = maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
@@ -1675,7 +1649,7 @@ function _nbaAdvancedSearch () {
             		$mediaLinks[$service] = [
             			'total' => $data->totalSize,
             			'url' => _setBasePath() . 'result/multimedia/' .
-							http_build_query(_getQueryTerms($service)) . '&' . 
+							safe_http_build_query(_getQueryTerms($service)) . '&' . 
             				$associatedReference . '=&' . $associatedReference . 'Operator=NOT_EQUALS'
             		];
             	}
@@ -1749,7 +1723,7 @@ function _allTermsExistInMultimediaService ($terms) {
 }
 
 function _getSpecimensTotal ($terms, $useNameResolution = false) {
-	$client = _setClient('names.specimens');
+	$client = _setNbaClient('names.specimens');
 	foreach (['size', 'from', 'sort', 'sortDirection'] as $p) {
 		if (isset($terms[$p])) {
 			unset($terms[$p]);
@@ -1801,7 +1775,7 @@ function _getSpecimenDetails (&$data) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	// Aggregate conditions for all specimens in result
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->specimens as $item) {
@@ -1839,7 +1813,7 @@ function _getTaxonDetails (&$data) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
 	}
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	// Aggregate conditions for all specimens in result
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->taxa as $item) {
@@ -1921,6 +1895,7 @@ function _getQueryTerms ($service, $search = false) {
 	if (!isset($terms['from']) || !ctype_digit(strval($terms['from']))) {
 		$terms['from'] = 0;
 	}
+	
 	return $terms;
 }
 
@@ -2009,7 +1984,7 @@ function _setPaginatorUrl () {
     	unset($terms['from']);
     }
     return _setBasePath() . str_replace($search, '', current_path()) . 
-    	http_build_query($terms) . '&from=(:num)';
+    	safe_http_build_query($terms) . '&from=(:num)';
 }
 
 /**
@@ -2137,7 +2112,7 @@ function _nbaSimpleSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
-		$client = _setClient($service);
+		$client = _setNbaClient($service);
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		// Build QuerySpec; use name resolution
@@ -2262,7 +2237,7 @@ function _nbaThemeSearch () {
     // Get json response for each service that provides search parameters
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
-		$client = _setClient($service);
+		$client = _setNbaClient($service);
     	// Cap results
 		$terms['size'] = maxResultsInitial();
 		
@@ -2359,7 +2334,7 @@ function _setBasePath () {
 function _getOtherSpecimens ($data) {
 	if (isset($data->assemblageID) && !empty($data->assemblageID)) {
 		// This information is not present anymore in v2, we must query ourselves
-		$client = _initBioPortalClient();
+		$client = _initNbaClient();
 		$query = new QuerySpec();
 		$query
 			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))

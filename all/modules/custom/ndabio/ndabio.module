@@ -23,7 +23,7 @@ function nbaMinContainsStringSize () {
             $nbaMinContainsStringSize = $cache->data;
             return $nbaMinContainsStringSize;
         }
-        $client = _initBioPortalClient();
+        $client = _initNbaClient();
         $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
         cache_set($cacheId, $nbaMinContainsStringSize);
     }
@@ -39,7 +39,7 @@ function nbaMaxContainsStringSize () {
             $nbaMaxContainsStringSize = $cache->data;
             return $nbaMaxContainsStringSize;
         }
-        $client = _initBioPortalClient();
+        $client = _initNbaClient();
         $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
         cache_set($cacheId, $nbaMaxContainsStringSize);
     }
@@ -58,7 +58,7 @@ function nbaGeoAreas () {
             $nbaGeoAreas = $cache->data;
             return $nbaGeoAreas;
         }
-        $client = _initBioPortalClient();
+        $client = _initNbaClient();
         $nbaGeoAreas = $client->getGeoAreas(true);
         cache_set($cacheId, $nbaGeoAreas);
     }
@@ -181,7 +181,7 @@ function _isMultiAdvancedSelect ($field) {
   */
 function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
 	$options = _getDistinctValues($service, $optionPath);
-	$client = _initBioPortalClient();
+	$client = _initNbaClient();
 	foreach ($options as $option) {
 		$condition = new Condition($optionPath, 'EQUALS', $option);
 		$query = new QuerySpec();
@@ -703,7 +703,7 @@ function ndabio_ajax_callback() {
   if (!empty($_GET["nid"])) {
     $nid = $_GET["nid"];
     $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
-    $client = _initBioPortalClient();
+    $client = _initNbaClient();
     $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
     if (isset($geo->shape)) {
         // locality is sometimes empty in Dutch;
@@ -858,7 +858,7 @@ function _getStoredGeoShape ($jsonEncoded = false) {
     }
 	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
 			$_SESSION['nbaSearch']['gid'] != -1) {
-    	$client = _initBioPortalClient();
+    	$client = _initNbaClient();
     	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
     	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
     		'[getGeoJsonForGid method does not use QuerySpec]');

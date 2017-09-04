@@ -1136,9 +1136,9 @@ function printTaxonDetail ($data) {
 //p($data);
 
     $getSpecimenRequest = nbaBaseUrl() . specimenNamesService() .
-        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+        '/?' . safe_http_build_query($data['nameElements']) . '&_andOr=AND';
     $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
-        '/?' . http_build_query($data['nameElements']) . '&_andOr=AND';
+        '/?' . safe_http_build_query($data['nameElements']) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js("var getSpecimenRequest = '$getSpecimenRequest'", 'inline');
