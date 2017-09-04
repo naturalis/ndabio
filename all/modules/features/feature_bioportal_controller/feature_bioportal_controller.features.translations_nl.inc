@@ -1708,15 +1708,6 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t(', and is matched against the exact value of field "%s"', array(), array('context' => ''));
-  $translations['nl:default']['0a6564e07f3507cf6a31cc5b71261bfd'] = array(
-    'source' => 'Find taxa by their complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
-    'context' => '',
-    'location' => '/?language=nl&back',
-    'translation' => 'Vind taxa op basis van hun complete wetenschappelijke naam (inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758"). ',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Find taxa by their complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => ''));
   $translations['nl:default']['0a6de4460095f398e8a45ed512a7538f'] = array(
     'source' => 'Belarusian',
     'context' => '',
@@ -8972,6 +8963,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Changes made in this table will not be saved until the form is submitted.', array(), array('context' => ''));
+  $translations['nl:default']['3513ed26581a6549af8c7a23223024c4'] = array(
+    'source' => 'Find taxa by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind taxa op basis van hun complete wetenschappelijke naam (inclusief auteur, b.v. "Larus fuscus fuscus Linnaeus, 1758"). ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").', array(), array('context' => ''));
   $translations['nl:default']['35281f7f6ff98454e0d57ad32fa804ac'] = array(
     'source' => 'Defines selection, check box and radio button widgets for text and numeric fields.',
     'context' => '',
@@ -10263,7 +10263,7 @@ else {
     'source' => 'sex',
     'context' => '',
     'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fspecimen%252Fget-specimen%252F%253FunitID%253DRMNH.INS.823691',
-    'translation' => 'geslacht',
+    'translation' => 'sexe',
     'plid' => 0,
     'plural' => 0,
   );
@@ -12191,7 +12191,7 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'source' => 'Control-click (or option-click on the Mac) to (de)select multiple search terms',
     'context' => '',
     'location' => '/',
-    'translation' => 'Control-klik (or option-klik op de Mac) om meedere zoektermen te (de)selecteren',
+    'translation' => 'Control-klik (of ⌘-klik op de Mac) om meerdere zoektermen te (de)selecteren',
     'plid' => 0,
     'plural' => 0,
   );
@@ -12946,7 +12946,7 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'source' => 'Sex',
     'context' => 'term:14:description',
     'location' => 'taxonomy:term:14:description',
-    'translation' => 'Geslacht',
+    'translation' => 'Sexe',
     'plid' => 0,
     'plural' => 0,
   );
@@ -13671,15 +13671,6 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('Search taxa by vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ', array(), array('context' => ''));
-  $translations['nl:default']['4ebdc5c69c4224c36bba915892f15b52'] = array(
-    'source' => 'Search specimens by collectors field number',
-    'context' => '',
-    'location' => '/',
-    'translation' => 'Doorzoek specimens op het veldnummer van de verzamelaar',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Search specimens by collectors field number', array(), array('context' => ''));
   $translations['nl:default']['4ec6cc6d7d387eb544238af4850a416a'] = array(
     'source' => 'Weight for @block block',
     'context' => '',
@@ -18387,6 +18378,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Enable multilingual support for this content type. If enabled, a language selection field will be added to the editing form, allowing you to select from one of the <a href="!languages">enabled languages</a>. If disabled, new posts are saved with the default language. Existing content will not be affected by changing this option.', array(), array('context' => ''));
+  $translations['nl:default']['67ecf6bdc2e6dd1f59b4f51edbcdac37'] = array(
+    'source' => 'Search specimens by collectors field number.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Doorzoek specimens op het veldnummer van de verzamelaar.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Search specimens by collectors field number.', array(), array('context' => ''));
   $translations['nl:default']['67f26875da73f742a9ece16d1886bdf6'] = array(
     'source' => '<p>Add a custom block to your site, named "Welcome" . With its text format set to "PHP code" (or another format supporting PHP input), add the following in the Block body:</p>
 <pre>
@@ -21294,6 +21294,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('License', array(), array('context' => ''));
+  $translations['nl:default']['7955a9fa0957f244d9a16b15be939318'] = array(
+    'source' => 'Find multimedia by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Vind multimedia op basis van hun epitheton (het tweede deel van de soortnaam, b.v. "fuscus" in Larus fuscus).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find multimedia by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).', array(), array('context' => ''));
   $translations['nl:default']['7957003f4a499fd4af45be4fccd5abad'] = array(
     'source' => 'Cron run exceeded the time limit and was aborted.',
     'context' => '',
@@ -26223,7 +26232,7 @@ Your account on [site:name] has been canceled.
     'source' => 'matches the %s exactly',
     'context' => '',
     'location' => '/search/advancednda?language=nl&back=',
-    'translation' => 'komt extact overeen met de %s',
+    'translation' => 'komt exact overeen met de %s',
     'plid' => 0,
     'plural' => 0,
   );
@@ -31359,15 +31368,6 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('The title of the node.', array(), array('context' => ''));
-  $translations['nl:default']['b098993c39ee169020a5d21e1a2be610'] = array(
-    'source' => 'Search taxa by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
-    'context' => '',
-    'location' => '/',
-    'translation' => 'Doorzoek taxa op complete wetenschappelijke naam (inclusief auteur), b.v. "Larus fuscus fuscus Linnaeus, 1758".',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Search taxa by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".', array(), array('context' => ''));
   $translations['nl:default']['b0aa0804e676a38255af4fd70236af7c'] = array(
     'source' => 'Zambia',
     'context' => '',
@@ -38848,7 +38848,7 @@ Thank you for registering at [site:name]. Your application for an account is cur
     'source' => 'Sex',
     'context' => '',
     'location' => '',
-    'translation' => 'Geslacht',
+    'translation' => 'Sexe',
     'plid' => 0,
     'plural' => 0,
   );
@@ -40155,6 +40155,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Reusing fields', array(), array('context' => ''));
+  $translations['nl:default']['e2bb7539ed11a83abd4916aa3005df3c'] = array(
+    'source' => 'Find specimens by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind specimens op basis van hun epitheton (het tweede deel van de soortnaam, b.v. "fuscus" in Larus fuscus).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find specimens by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).', array(), array('context' => ''));
   $translations['nl:default']['e2d5a00791bce9a01f99bc6fd613a39d'] = array(
     'source' => 'configure',
     'context' => '',
@@ -40443,6 +40452,17 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Weight for new field', array(), array('context' => ''));
+  $translations['nl:default']['e479459e0a4b0b640e91f06adaf930f6'] = array(
+    'source' => 'Find taxa by their specific epithet (the second part of the species name, e.g. "Larus" in Larus fuscus).
+',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Vind taxa op basis van hun epitheton (het tweede deel van de soortnaam, b.v. "fuscus" in Larus fuscus).',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Find taxa by their specific epithet (the second part of the species name, e.g. "Larus" in Larus fuscus).
+', array(), array('context' => ''));
   $translations['nl:default']['e4875932c8cf3d2b423234a1d35b15e0'] = array(
     'source' => 'Kinyarwanda',
     'context' => '',
@@ -42850,7 +42870,7 @@ Your account on [site:name] has been blocked.
     'source' => 'Source',
     'context' => '',
     'location' => '/search/advancednda?language=nl',
-    'translation' => 'Bronsysteem',
+    'translation' => 'Bron',
     'plid' => 0,
     'plural' => 0,
   );
@@ -44315,6 +44335,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Require e-mail verification when a visitor creates an account.', array(), array('context' => ''));
+  $translations['nl:default']['fccab5e93d4cfe359b90b8e74a589eb5'] = array(
+    'source' => 'the term',
+    'context' => '',
+    'location' => '/?language=nl',
+    'translation' => 'de term',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('the term', array(), array('context' => ''));
   $translations['nl:default']['fcd182238eec56f52948dac946936147'] = array(
     'source' => 'Kongo',
     'context' => '',
@@ -44418,7 +44447,7 @@ Your account on [site:name] has been blocked.
     'source' => 'sexes',
     'context' => '',
     'location' => '/nba/result?nba_request=http%253A%252F%252Fapi.biodiversitydata.nl%252Fv0%252F%252Fmultimedia%252Fget-multimedia-object-for-specimen-within-result-set%252F%253FunitID%253DL.1670559%253A311622069',
-    'translation' => 'geslacht',
+    'translation' => 'sexe',
     'plid' => 0,
     'plural' => 0,
   );

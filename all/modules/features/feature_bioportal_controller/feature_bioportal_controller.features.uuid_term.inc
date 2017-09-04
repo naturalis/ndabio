@@ -12,7 +12,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
 
   $terms[] = array(
     'name' => 't_order',
-    'description' => 'Search taxa by scientific order name.',
+    'description' => 'Find taxa by their scientific order name.',
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '095ca378-8c58-45c3-969a-1a7c5978da9f',
@@ -158,7 +158,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_className',
-    'description' => 'Search taxa by scientific class name.',
+    'description' => 'Find taxa by their scientific class name.',
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => '0ebf93a1-6408-4c52-9bd4-48537da8d6bc',
@@ -367,7 +367,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_scientificName',
-    'description' => 'Search specimens by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'description' => 'Find specimens by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '19515d9c-2012-4f31-adab-0249626f3e23',
@@ -560,7 +560,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_sourceSystem',
-    'description' => 'Search multimedia by primary data source.',
+    'description' => 'Find multimedia by their primary data source.',
     'format' => 'markdown',
     'weight' => 5,
     'uuid' => '252b758f-e225-426d-96ac-b3b9f68f7637',
@@ -614,7 +614,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_phylum',
-    'description' => 'Search multimedia by scientific phylum name.',
+    'description' => 'Find multimedia by their scientific phylum name.',
     'format' => 'markdown',
     'weight' => 1,
     'uuid' => '28029cae-53b0-45c5-9a5f-aafac926a6e8',
@@ -763,7 +763,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_kingdom',
-    'description' => 'Search taxa by scientific kingdom name.',
+    'description' => 'Find taxa by their scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '32fc861e-68f3-4816-afba-4a4c6329fe4b',
@@ -817,7 +817,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_genusOrMonomial',
-    'description' => 'Search taxa by genus name (the first part of the species name), e.g. "Larus" in Larus fuscus.',
+    'description' => 'Find taxa by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => '33ab617b-d485-42a7-a592-c530998e9409',
@@ -857,7 +857,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_unitID',
-    'description' => 'Search specimens by registration number.',
+    'description' => 'Find specimens by their registration number.',
     'format' => 'plain_text',
     'weight' => 5,
     'uuid' => '34225b6c-5fba-4c11-89e7-b4ded4815039',
@@ -937,7 +937,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_family',
-    'description' => 'Search multimedia by scientific family name, e.g. "Laridae".',
+    'description' => 'Find multimedia by their scientific family name (e.g. "Laridae").',
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => '381d3a69-a9c4-46ae-b921-6c8eb5d00dc9',
@@ -977,7 +977,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_collectionType',
-    'description' => 'Search specimens by collection name.',
+    'description' => 'Find specimens by their collection name.',
     'format' => 'markdown',
     'weight' => 7,
     'uuid' => '3a89190c-0b9a-4593-9557-3154b8a8042e',
@@ -1150,7 +1150,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_family',
-    'description' => 'Search specimens by scientific family name, e.g. "Laridae".',
+    'description' => 'Find specimens by their scientific family name (e.g. "Laridae").',
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '43170a5f-503d-4304-b534-efe7e4511a7b',
@@ -1238,7 +1238,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_vernacularName',
-    'description' => 'Search taxa by vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'description' => 'Find taxa by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '453c7051-f8db-4fb1-b5ae-1dfe556c844d',
@@ -1278,7 +1278,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_subgenus',
-    'description' => 'Search taxa by scientific subgenus name.',
+    'description' => 'Find taxa by their scientific subgenus name.',
     'format' => 'markdown',
     'weight' => 4,
     'uuid' => '461be0f8-a9b5-413f-8ee7-dc8afdcc1909',
@@ -1459,7 +1459,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_vernacularName',
-    'description' => 'Search specimens by vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'description' => 'Find specimens by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '5582c7fb-ded2-4077-bfcb-94e8365b72af',
@@ -1534,7 +1534,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_scientificName',
-    'description' => 'Search taxa by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'description' => 'Find taxa by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '56a509e3-7621-495c-a21e-f2b828bdf04c',
@@ -1574,7 +1574,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_phaseOrStage',
-    'description' => 'Search specimens by phase or stage,',
+    'description' => 'Find specimens by their phase or stage,',
     'format' => 'plain_text',
     'weight' => 11,
     'uuid' => '56d49d5a-2348-4289-a578-61bb5c947bd9',
@@ -1674,7 +1674,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_infraspecificEpithet',
-    'description' => 'Search multimedia by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'description' => 'Find multimedia by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '5d26d474-beeb-49a7-9405-7707474c4bf4',
@@ -1737,7 +1737,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_scientificName',
-    'description' => 'Search multimedia by complete scientific name (including authorship), e.g. "Larus fuscus fuscus Linnaeus, 1758".',
+    'description' => 'Find multimedia by their complete scientific name (including authorship, e.g. "Larus fuscus fuscus Linnaeus, 1758").',
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '60f93dbc-38d9-499f-a617-28539e8df31a',
@@ -1807,7 +1807,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_genusOrMonomial',
-    'description' => 'Search multimedia by genus name (the first part of the species name), e.g. "Larus" in Larus fuscus.',
+    'description' => 'Find multimedia by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '618d5d30-d174-43d1-9345-d57654a4b03c',
@@ -1940,7 +1940,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_order',
-    'description' => 'Search multimedia by scientific order name.',
+    'description' => 'Find multimedia by their scientific order name.',
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '69161391-770f-4bff-87f4-316c302d0aec',
@@ -2126,7 +2126,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Collection specimens',
+          'value' => 'Specimens',
           'format' => NULL,
         ),
       ),
@@ -2146,7 +2146,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_kingdom',
-    'description' => 'Search multimedia by scientific kingdom name.',
+    'description' => 'Find multimedia by their scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '7908bd90-4e9e-4ff3-ae81-250317acf131',
@@ -2200,7 +2200,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_vernacularName',
-    'description' => 'Search multimedia by vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
+    'description' => 'Find multimedia by their vernacular (= common) name. Vernacular names in English and Dutch are most likely to produce results. ',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '79521971-58cf-4ea3-92f2-369eae187c14',
@@ -2262,7 +2262,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_sourceSystem',
-    'description' => 'Search specimens by primary data source.',
+    'description' => 'Find specimens by their primary data source.',
     'format' => 'markdown',
     'weight' => 6,
     'uuid' => '7d4df160-0941-49ae-9c74-30ba7d7372e2',
@@ -2541,7 +2541,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_specificEpithet',
-    'description' => 'Search taxa by specific epithet (the second part of the species name), e.g. "Larus" in Larus fuscus.
+    'description' => 'Find taxa by their specific epithet (the second part of the species name, e.g. "Larus" in Larus fuscus).
 ',
     'format' => 'plain_text',
     'weight' => 4,
@@ -2589,7 +2589,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_sex',
-    'description' => 'Search specimens by sex.',
+    'description' => 'Find specimens by their sex.',
     'format' => 'plain_text',
     'weight' => 12,
     'uuid' => '93f35ff9-dd82-4884-ba0b-efdaf8fdfbea',
@@ -2643,7 +2643,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_localityText',
-    'description' => 'Search specimens by locality (municipality, province, country, etc.). Use geographic search to search by coordinates.',
+    'description' => 'Find specimens by their locality (municipality, province, country, etc.). Use geographic search to use a map.',
     'format' => 'plain_text',
     'weight' => 10,
     'uuid' => '98cbc05f-3f0d-44e2-aa57-ef06fc984d80',
@@ -2779,7 +2779,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_collectorsFieldNumber',
-    'description' => 'Search specimens by collectors field number',
+    'description' => 'Search specimens by collectors field number.',
     'format' => 'plain_text',
     'weight' => 14,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
@@ -2823,7 +2823,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_phylum',
-    'description' => 'Search taxa by scientific phylum name.',
+    'description' => 'Find specimens by their scientific phylum name.',
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '9f2c4682-88b6-460d-8e9b-587f8b471737',
@@ -3007,7 +3007,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_className',
-    'description' => 'Search multimedia by scientific class name.',
+    'description' => 'Find taxa by their scientific class name.',
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'b35315b4-e928-4ed0-a1bc-ec384bc5cc6e',
@@ -3077,7 +3077,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_typeStatus',
-    'description' => 'Search specimens by type status.',
+    'description' => 'Find specimens by their type status.',
     'format' => 'plain_text',
     'weight' => 8,
     'uuid' => 'b8256f66-b26d-4fc7-8842-cc48feeede11',
@@ -3147,7 +3147,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_gatheringAgent',
-    'description' => 'Search specimens by the person who collected the specimen.',
+    'description' => 'Find specimens by their collector.',
     'format' => 'plain_text',
     'weight' => 13,
     'uuid' => 'bb2c083f-90cd-4a64-8c78-d90f19563ea4',
@@ -3187,7 +3187,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_genusOrMonomial',
-    'description' => 'Search specimens by genus name (the first part of the species name), e.g. "Larus" in Larus fuscus.',
+    'description' => 'Find specimens by their genus name (the first part of the species name, e.g. "Larus" in Larus fuscus).',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'bc27e6d3-4ae7-4d2f-ae3d-2eeb1ddbd719',
@@ -3317,7 +3317,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_infraspecificEpithet',
-    'description' => 'Search specimens by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'description' => 'Find specimens by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'c4a8bf82-0a73-4630-bb8a-126700cd9452',
@@ -3368,7 +3368,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_infraspecificEpithet',
-    'description' => 'Search taxa by infraspecific epithet (the third part of the infraspcies name), e.g. "graellsii" in Larus fuscus graellsii.',
+    'description' => 'Find taxa by their infraspecific epithet (the third part of the infraspcies name, e.g. "graellsii" in Larus fuscus graellsii).',
     'format' => 'plain_text',
     'weight' => 5,
     'uuid' => 'c7eaee57-8365-48b1-9bc5-eddbeba8210d',
@@ -3477,7 +3477,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_phylum',
-    'description' => 'Search taxa by scientific phylum name.',
+    'description' => 'Find taxa by their scientific phylum name.',
     'format' => 'markdown',
     'weight' => 1,
     'uuid' => 'd0a78838-d6a0-440b-a950-f7bcfb9efd84',
@@ -3517,7 +3517,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_kingdom',
-    'description' => 'Search specimens by scientific kingdom name.',
+    'description' => 'Find specimens by their scientific kingdom name.',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'd1179982-7bc2-44de-82c6-a70eeccefe9c',
@@ -3712,7 +3712,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 'm_specificEpithet',
-    'description' => 'Search multimedia by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
+    'description' => 'Find multimedia by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'deb807f4-558d-49ec-973b-057a4b570e47',
@@ -3832,7 +3832,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_specificEpithet',
-    'description' => 'Search specimens by specific epithet (the second part of the species name), e.g. "fuscus" in Larus fuscus.',
+    'description' => 'Find specimens by their specific epithet (the second part of the species name, e.g. "fuscus" in Larus fuscus).',
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'e3956f71-9c9e-41dd-a5f3-f656df13ad90',
@@ -3883,7 +3883,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_className',
-    'description' => 'Search specimens by scientific class name.',
+    'description' => 'Find specimens by their scientific class name.',
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => 'e7ec7114-3f31-4988-a955-0205dd43a697',
@@ -3950,7 +3950,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_sourceSystem',
-    'description' => 'Search taxa by primary data source.',
+    'description' => 'Find taxa by their primary data source.',
     'format' => 'markdown',
     'weight' => 5,
     'uuid' => 'eff23bd4-46a4-4f1b-93cd-b8e506d20c11',
@@ -4119,7 +4119,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 't_family',
-    'description' => 'Search taxa by scientific family name, e.g. "Laridae".',
+    'description' => 'Find taxa by their scientific family name (e.g. "Laridae").',
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'fceb4c7d-3ac5-4e70-ac7e-f810b8b3643c',
@@ -4175,7 +4175,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_order',
-    'description' => 'Search specimens by scientific order name.',
+    'description' => 'Find specimens by their scientific order name.',
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'fe616d3d-a1f9-4ef3-af77-6ace87e54b5f',
@@ -4210,8 +4210,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
   );
   $terms[] = array(
     'name' => 's_kindOfUnit',
-    'description' => 'Search specimens by nature, part(s) or class of materials.
-',
+    'description' => 'Find specimens by their part(s) or type of material.',
     'format' => 'markdown',
     'weight' => 9,
     'uuid' => 'fe755df0-08d1-4244-8a16-18dce0311b57',
@@ -4231,7 +4230,7 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'field_ndalabel' => array(
       'und' => array(
         0 => array(
-          'value' => 'Part or nature',
+          'value' => 'Part(s) or type of material',
           'format' => NULL,
         ),
       ),
