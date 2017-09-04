@@ -10430,6 +10430,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Description and guidelines for discussions within this forum.', array(), array('context' => ''));
+  $translations['nl:default']['3d8b808db3ae88b065ff285a529a7f45'] = array(
+    'source' => 'starts with the %s',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl&back=',
+    'translation' => 'begint met de %s',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('starts with the %s', array(), array('context' => ''));
   $translations['nl:default']['3dbcb6d5896399615dbeb92e71be311a'] = array(
     'source' => ' occuring in the species&apos; name.',
     'context' => '',
@@ -25985,6 +25994,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Performance', array(), array('context' => ''));
+  $translations['nl:default']['944885e370cf0c9b9d7831137bed9bee'] = array(
+    'source' => 'matches the %s exactly',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl&back=',
+    'translation' => 'komt extact overeen met de %s',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('matches the %s exactly', array(), array('context' => ''));
   $translations['nl:default']['944c84bfafb071ea7f357c4f23cddf53'] = array(
     'source' => 'Tajik',
     'context' => '',
@@ -29252,15 +29270,6 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Resetting will remove all localized date formats for this language. This action cannot be undone.', array(), array('context' => ''));
-  $translations['nl:default']['a7e6f5b11b91a90b5f0bd8e566412715'] = array(
-    'source' => 'matches the term',
-    'context' => '',
-    'location' => '/',
-    'translation' => 'komt overeen met de term',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('matches the term', array(), array('context' => ''));
   $translations['nl:default']['a7e93d9dfc9ad92bfa99fdf20acd899b'] = array(
     'source' => 'What type of data the field will store',
     'context' => '',
@@ -33339,6 +33348,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('You must include at least one positive keyword with 1 character or more.', array(), array('context' => ''));
+  $translations['nl:default']['bc4433f8f2ae24a5ee59f0583271b832'] = array(
+    'source' => 'is used as a wildcard if it is between %d and %d characters long',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'wordt gebruikt als een jokerteken (wildcard) als deze tussen de %d en %d karakters lang is',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('is used as a wildcard if it is between %d and %d characters long', array(), array('context' => ''));
   $translations['nl:default']['bc47da9c3b0b62b0f26c9b4574d00ba4'] = array(
     'source' => 'Default front page',
     'context' => '',
@@ -33753,15 +33771,6 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('The installation has encountered an error.', array(), array('context' => ''));
-  $translations['nl:default']['be8433f02c1ff04f7b50753862ac5630'] = array(
-    'source' => 'starts with the term',
-    'context' => '',
-    'location' => '/',
-    'translation' => 'begint met de term',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('starts with the term', array(), array('context' => ''));
   $translations['nl:default']['be8df1f28c0abc85a0ed0c6860e5d832'] = array(
     'source' => 'Blog',
     'context' => '',
@@ -34185,15 +34194,6 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('The name you used belongs to a registered user.', array(), array('context' => ''));
-  $translations['nl:default']['c08367bb901f576b50b0b32d21815041'] = array(
-    'source' => 'matches the term exactly',
-    'context' => '',
-    'location' => '/',
-    'translation' => 'komt exact overeen met de term',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('matches the term exactly', array(), array('context' => ''));
   $translations['nl:default']['c085fe671413562815cd4e2bb2df5e96'] = array(
     'source' => 'An advanced action offers additional configuration options which may be filled out below. Changing the <em>Description</em> field is recommended, in order to better identify the precise action taking place. This description will be displayed in modules such as the Trigger module when assigning actions to system events, so it is best if it is as descriptive as possible (for example, "Send e-mail to Moderation Team" rather than simply "Send e-mail").',
     'context' => '',
@@ -35418,6 +35418,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('South Africa', array(), array('context' => ''));
+  $translations['nl:default']['c8a9e720f2f983b4265ae5675fca7766'] = array(
+    'source' => 'matches the %s',
+    'context' => '',
+    'location' => '/search/advancednda?language=nl&back=',
+    'translation' => 'komt overeen met de %s',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('matches the %s', array(), array('context' => ''));
   $translations['nl:default']['c8b03b2d053bf6e54b1522653202d88c'] = array(
     'source' => 'The Field SQL storage module stores field data in the database. It is the default field storage module; other field storage mechanisms may be available as contributed modules. See the <a href="@field-help">Field module help page</a> for more information about fields.',
     'context' => '',
