@@ -345,7 +345,7 @@ function _printSpecimenDetail ($data) {
 				foreach ($data['enrichedVernaculars'] as $name => $lan) {
 					$vernaculars .= $name . (!empty($lan) ? ' ('. t($lan) . ')' : '') . ', ';
 				}
-				$output .= _printDL(t('Common name(s) from associated taxon'), substr($vernaculars, 0, -2));
+				$output .= _printDL(t('Vernaculars from associated taxon'), substr($vernaculars, 0, -2));
 			}
 			
 			if ($field == 'typeStatuses') {
@@ -679,7 +679,8 @@ function _printTaxonMediaDetail ($data) {
 		if ($field == 'source' && !empty($data['sourceUrls'])) {
             $data['source'] = _printSource($data, $data['source']);
 	    }
-	    $output .= _printDL(ucfirst(_translateNdaField($field)), _printValue($data[$field]));
+	    $output .= _printDL(ucfirst(_translateNdaField($field)), 
+	    	_printValue(isset($data[$field]) ? $data[$field] : ''));
 	}
 	
     // Drupal title empty; page title custom
@@ -2330,7 +2331,7 @@ function _printDL ($field, $value = '') {
  * @param string $license
  * @return string
  */
-function _printValue ($value) {
+function _printValue ($value = '') {
     if (strtolower($value) == 'cc0') {
         return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
             $value . '</a>';
