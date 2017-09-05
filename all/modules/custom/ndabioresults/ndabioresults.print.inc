@@ -359,7 +359,7 @@ function _printSpecimenDetail ($data) {
 					$value['dateTimeBegin'] != $value['dateTimeEnd']) {
 					$dateTime .= ' ' . t('to') . ' ' . $value['dateTimeEnd'];
 				}
-                $output .= _printDL(ucfirst(_translateNdaField('dateTime')), $dateTime);
+                $output .= _printDL(ucfirst(_translateNdaField('Date')), $dateTime);
                 
 			    $output .= _printDL(ucfirst(_translateNdaField('gatheringAgents')),
 			        _printValue(isset($value['gatheringAgents']) ? implode(', ', $value['gatheringAgents']) : ''));
