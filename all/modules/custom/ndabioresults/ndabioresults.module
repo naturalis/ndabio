@@ -2266,7 +2266,7 @@ function _nbaThemeSearch () {
 		$terms['size'] = maxResultsInitial();
 		
 		// Set default sort
-		if ($service == 'names.specimens') {
+		if ($service == 'names.specimens' || $service == 'multimedia') {
 			$terms['sort'] = 
 				'identifications.scientificName.genusOrMonomial,' . 
 				'identifications.scientificName.specificEpithet,' .

@@ -91,12 +91,16 @@ function ndabioresults_block_view ($delta = '') {
 			if (!empty($mytheme)) {
 				// Check if content with identical label is available
 				// Get node of type 'Naturalis thematic search'
-				$sql = "SELECT entity_id FROM field_data_field_nba_search_term st, node n WHERE st.field_nba_search_term_value = '" . $mytheme . "' AND st.entity_id = n.nid AND n.language = '" .
+				$sql = "SELECT entity_id 
+						FROM field_data_field_nba_search_term st, node n 
+						WHERE st.field_nba_search_term_value = '" . $mytheme . "' AND st.entity_id = n.nid AND n.language = '" .
 					 $language->language . "' LIMIT 1";
 				$myid = db_query($sql)->fetchAssoc();
 				
 				if (empty($myid)) {
-					$sql = "SELECT entity_id FROM field_data_field_nba_search_term WHERE field_nba_search_term_value = '" . $mytheme . "' AND language = 'und' LIMIT 1";
+					$sql = "SELECT entity_id 
+							FROM field_data_field_nba_search_term 
+							WHERE field_nba_search_term_value = '" . $mytheme . "' AND language = 'und' LIMIT 1";
 					$myid = db_query($sql)->fetchAssoc();
 				}
 				
@@ -108,10 +112,9 @@ function ndabioresults_block_view ($delta = '') {
 					
 					// Set title for correct display of breadcrumb
 					drupal_set_title($mynode->title);
-					$mycontent = $mynode->body[$mynode->language][0]['value'];
-					
-					if (empty($mycontent))
-						$mycontent = $mynode->body['und'][0]['value'];
+					$mycontent = isset($mynode->body[$mynode->language][0]['value']) ?
+						$mynode->body[$mynode->language][0]['value'] : 
+						isset($mynode->body['und'][0]['value']) ? $mynode->body['und'][0]['value'] : '';
 					$block['content'] = $mycontent . " ";
 				}
 			}

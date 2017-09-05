@@ -215,6 +215,9 @@ function _getAdvancedFieldOperator ($field) {
 		return 'EQUALS_IC';
 	}
 	$tmp = explode('_', $field);
+	if (!isset($tmp[1])) {
+		return false;
+	}
 	$field = $tmp[1];
 	$service = 'specimen';
 	if ($tmp[0] == 'm') {
@@ -230,6 +233,9 @@ function _getAdvancedFieldOperator ($field) {
 
 function _getAdvancedFieldSplitInfo ($field) {
 	$tmp = explode('_', $field);
+	if (!isset($tmp[1])) {
+		return false;
+	}
 	$field = $tmp[1];
 	$service = 'specimen';
 	if ($tmp[0] == 'm') {
@@ -325,11 +331,10 @@ function _setHelpText ($field, $description, $label) {
 				' contains %s. If shorter or longer, it will look for specimens of which the value ' . 
 				'starts with the search term');
 			$output = sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize(), 
-				$label, ($split ? $splitTerm : t('the term')));
+				$label, (_getAdvancedFieldSplitInfo($field) == 'true' ? $splitTerm : t('the term')));
 			break;
 	}
-	$output .= '.';
-	return sprintf($output, $term);
+	return $output .= '.';
 }
 
 
@@ -976,11 +981,8 @@ function ndabio_advanced_taxonomysearch () {
 	$form = array();
 	foreach ($terms as $item) {
 		$name = $item->name;
-		
-		$label = $item->field_ndalabel['und'][0]['safe_value'];
-		if (empty($label))
-			$label = $item->description;
-		
+		$label = isset($item->field_ndalabel['und'][0]['safe_value']) ?
+			$item->field_ndalabel['und'][0]['safe_value'] : $item->description;
 		$sysname = $item->name;
 		if (!empty($item->field_ndasystem))
 			$sysname = $item->field_ndasystem['und'][0]['safe_value'];
@@ -1009,10 +1011,8 @@ function ndabio_advanced_taxonomysearch () {
 			
 			foreach ($children as $child) {
 				$childdescription = t($child->description);
-				$childlabel = t($child->field_ndalabel['und'][0]['safe_value']);
-				if (empty($childlabel))
-					$childlabel = $child->description;
-				
+				$childlabel = isset($child->field_ndalabel['und'][0]['safe_value']) ?
+					t($child->field_ndalabel['und'][0]['safe_value']) : $child->description;
 				$childsysname = $child->name;
 				if (strpos($childsysname, " ") !== FALSE) {
 					$temp = explode(" ", $childsysname);
@@ -1046,10 +1046,8 @@ function ndabio_advanced_taxonomysearch () {
 					
 					foreach ($subchildren as $subchild) {
 						$subchilddescription = t($subchild->description);
-						$subchildlabel = t($subchild->field_ndalabel['und'][0]['safe_value']);
-						if (empty($subchildlabel))
-							$subchildlabel = $subchild->description;
-						
+						$subchildlabel = isset($subchild->field_ndalabel['und'][0]['safe_value']) ?
+							t($subchild->field_ndalabel['und'][0]['safe_value']) : $subchild->description;
 						$subchildsysname = $subchild->name;
 						$subchildvalues = "";
 						if (!empty($subchild->field_ndasystem))

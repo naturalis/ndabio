@@ -1276,6 +1276,10 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 			}
 			// Tracker is empty, we must have reached the correct path
 			if (empty($pathTracker)) {
+				// Objects will not contains results
+				if (is_object($result)) {
+					return false;
+				}
 				// Convert array to string if necessary
 				if (is_array($result)) {
 					$result = array_values($result)[0];

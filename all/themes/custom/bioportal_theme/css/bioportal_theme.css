@@ -831,7 +831,7 @@ th .icon-sort_sortable {
 /*# sourceMappingURL=bioportal_theme.css.map */
 
 #sort-options {
-	width: 250px;
+	width: auto;
 	float: right;
 }
 
