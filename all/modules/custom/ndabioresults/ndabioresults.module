@@ -677,18 +677,20 @@ function _getTaxonMultimedia ($object) {
 		$output['totalSize'] = $data->totalSize;
 		$output['showAllLink'] = $data->totalSize > 5 ?
 			_createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
-			'result/multimedia/') . '&from=0&logicalOperator=AND&size=100&referrer=' . 
-			$object->referrer : null;
+			'result/multimedia/') . '&from=0&logicalOperator=AND&size=100' . 
+			(isset($object->referrer) ? '&referrer=' . $object->referrer : '') : null;
+			
 		foreach ($data->resultSet as $i => $media) {
 			$output['items'][$i]['id'] = $media->item->id;
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
 			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
 			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
 				$media->item->sourceSystem->name : null;
-			$output['items'][$i]['caption'] = $scientificName;
+			$output['items'][$i]['caption'] = _getMultimediaUnitId($media);
 			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'multimedia/' . urlencode($media->item->unitID) . '/') .
-				'&from=' . (max(0, $i - 1)) . '&referrer=' . $object->referrer;
+				'&from=' . (max(0, $i - 1)) . 
+				(isset($object->referrer) ? '&referrer=' . $object->referrer : '');
 		}
 		return $output;
 	}
