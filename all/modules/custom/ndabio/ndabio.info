@@ -1,7 +1,7 @@
-name = NdaBio
+name = NBA Search 
 version = "7.x-0.1"
-description = "Naturalis bioportal module"
+description = "Bioportal search form (based on search taxonomy)"
 core = 7.x
-package = "Naturalis Biodiversity API"
 dependencies[] = ndabioresults
 configure = admin/config/naturalis
+package = "Bioportal"
