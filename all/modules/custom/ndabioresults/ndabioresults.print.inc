@@ -841,7 +841,7 @@ function _printSpecimenCollection ($row, $i) {
 				"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
 				"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
 				"</tr>\n";
-			if (!empty($specimen['hits']) || !empty($specimen['nameResolutionHits'])) {
+			if (!empty(_printHits($specimen))) {
 				$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
 					"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
 			}
@@ -856,7 +856,7 @@ function _printSpecimenCollection ($row, $i) {
 				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" . 
 					"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
 					"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
-				if (!empty($specimen['hits']) || !empty($specimen['nameResolutionHits'])) {
+				if (!empty(_printHits($specimen))) {
 					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>\n" .
 						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
 				}
