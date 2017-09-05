@@ -1,7 +1,7 @@
 name = Feature - Bioportal controller
 core = 7.x
 package = Bioportal
-version = 7.x-1.8Ingrid
+version = 7.x-1.8Joop
 dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = feature_bioportal_nodes_menus
@@ -17,7 +17,7 @@ dependencies[] = nba_dashboard
 dependencies[] = nba_dataset
 dependencies[] = ndabio
 dependencies[] = ndabioresults
-dependencies[] = node
+dependencies[] = node_export
 dependencies[] = number
 dependencies[] = options
 dependencies[] = php
