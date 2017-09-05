@@ -369,7 +369,7 @@ function _getSpecimenEnrichedVernaculars ($identifications = []) {
 			}
 		}
 	}
-	return isset($output) ? $output : null;
+	return isset($output) ? $output : [];
 }
 
 

@@ -340,12 +340,15 @@ function _printSpecimenDetail ($data) {
 			if ($field == 'vernaculars') {
 				$output .= _printDL(t('Common name(s)'), implode(', ', $data['vernaculars']));
 			}
-			if ($field == 'enrichedVernaculars' && !empty($data['enrichedVernaculars'])) {
+			if ($field == 'enrichedVernaculars') {
 				$vernaculars = '';
-				foreach ($data['enrichedVernaculars'] as $name => $lan) {
-					$vernaculars .= $name . (!empty($lan) ? ' ('. t($lan) . ')' : '') . ', ';
+				if (!empty($data['enrichedVernaculars'])) {
+					foreach ($data['enrichedVernaculars'] as $name => $lan) {
+						$vernaculars .= $name . (!empty($lan) ? ' ('. t($lan) . ')' : '') . ', ';
+					}
+					$vernaculars = substr($vernaculars, 0, -2);
 				}
-				$output .= _printDL(t('Vernaculars from associated taxon'), substr($vernaculars, 0, -2));
+				$output .= _printDL(t('Vernaculars from associated taxon'), _printValue($vernaculars));
 			}
 			
 			if ($field == 'typeStatuses') {
