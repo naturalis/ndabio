@@ -3933,6 +3933,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('The human-readable name %name is already taken.', array(), array('context' => ''));
+  $translations['nl:default']['177d552868e2bcc56146151ec37e4ad9'] = array(
+    'source' => 'Oops, something went wrong',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&--more--=&--more--=&--more--=&--more--=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&--more--=&--more--=&--more--=&--more--=&--more--=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&--more--=&--more--=&--more--=&--more--=&op=Zoeken&form_build_id=form-Uu8syir_2JEEGN98WBZWy-xEfa418b0uBRKCLmoVjho&form_token=m3f0xvdpRPpAUYZwLYwAas4N-GHoKTcHrS9-uiRF-24&form_id=ndabio_advanced_taxonomysearch&gid=&location=&category=&geoShape=',
+    'translation' => 'Oeps, er ging iets mis',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Oops, something went wrong', array(), array('context' => ''));
   $translations['nl:default']['179c4bf2a500d80737b2904fc0786358'] = array(
     'source' => 'There are no fields yet added. You can add new fields on the <a href="@link">Manage fields</a> page.',
     'context' => '',
@@ -31539,6 +31548,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('list selection', array(), array('context' => ''));
+  $translations['nl:default']['b1466189a29855202a2f99252e661b23'] = array(
+    'source' => 'Vernaculars from associated taxon',
+    'context' => '',
+    'location' => '/specimen/ZMA.MAM.10127.b/meles+meles/genusOrMonomial=Meles&genusOrMonomialOperator=EQUALS&specificEpithet=meles&specificEpithetOperator=EQUALS&infraspecificEpithet=&infraspecificEpithetOperator=EQUALS&logicalOperator=AND&from=0&referrer=dGVybT1tZWxlcyZmcm9tPTQ',
+    'translation' => 'Populaire namen van gerelateerd taxon',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Vernaculars from associated taxon', array(), array('context' => ''));
   $translations['nl:default']['b1514d047344fa7479fee99c516144f7'] = array(
     'source' => '%name: illegal value.',
     'context' => '',
@@ -32412,6 +32430,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Unapproved comments (@count)', array(), array('context' => ''));
+  $translations['nl:default']['b64d62ac66926c237938fda45c1be6bf'] = array(
+    'source' => 'vernaculars',
+    'context' => '',
+    'location' => '/specimen/RMNH.AVES.208150/scientificName=larus&logicalOperator=AND&from=0',
+    'translation' => 'populaire namen',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('vernaculars', array(), array('context' => ''));
   $translations['nl:default']['b651efdb98a5d6bd2b3935d0c3f4a5e2'] = array(
     'source' => 'Required',
     'context' => '',
