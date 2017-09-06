@@ -49,7 +49,7 @@ function _setTimer () {
 	return microtime(true);
 }
 
-function nbaFieldTypes () {
+function _nbaFieldTypes () {
     $nbaFieldTypes = &drupal_static(__FUNCTION__);
     if (!$nbaFieldTypes) {
         $cacheId = 'nbaFieldTypes';
@@ -139,67 +139,6 @@ function _dateTimeToDate ($v) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
-
-/**
- * Helper function that parses query string into array
- *
- * Alternate function for parse_url that preserves periods and other special
- * characters in parameter names
- *
- * @param array $target Output
- * @param string $source Input
- * @return array
- */
-function safe_parse_str ($source, &$target, $keep = false) {
-	if (!$source) {
-		return;
-	}
-	$keys = $target = [];
-	$source = preg_replace_callback(
-		'/
-        # Match at start of string or &
-        (?:^|(?<=&))
-        # Exclude cases where the period is in brackets, e.g. foo[bar.blarg]
-        [^=&\[]*
-        # Affected cases: periods and spaces
-        (?:\.|%20)
-        # Keep matching until assignment, next variable, end of string or
-        # start of an array
-        [^=&\[]*
-        /x',
-		function ($key) use (&$keys) {
-			$keys[] = $key = base64_encode(urldecode($key[0]));
-			return urlencode($key);
-		},
-		$source
-	);
-	parse_str($source, $data);
-	foreach ($data as $key => $val) {
-		// Only unprocess encoded keys
-		if (!in_array($key, $keys)) {
-			$target[$key] = $val;
-			continue;
-		}
-
-		$key = base64_decode($key);
-		$target[$key] = $val;
-
-		if ($keep) {
-			// Keep a copy in the underscore key version
-			$key = preg_replace('/(\.| )/', '_', $key);
-			$target[$key] = $val;
-		}
-	}
-}
-
-function safe_http_build_query ($args) {
-	foreach ($args as $k => $v) {
-		if (is_null($v)) {
-			$args[$k] = '';
-		}
-	}
-	return http_build_query($args);
-}
 
 
 /**
@@ -387,4 +326,80 @@ function _decodeReferrer ($data) {
 function _getCurrentUrl () {
 	return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http") . 
 		"://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
+}
+
+
+/**
+ * Check if a string is JSON.
+ * @param string
+ * @return boolean
+ */
+function _isJson ($string) {
+  json_decode($string);
+  return (json_last_error() == JSON_ERROR_NONE);
+}
+
+
+
+
+
+/**
+ * Helper function that parses query string into array
+ *
+ * Alternate function for parse_url that preserves periods and other special
+ * characters in parameter names
+ *
+ * @param array $target Output
+ * @param string $source Input
+ * @return array
+ */
+function safe_parse_str ($source, &$target, $keep = false) {
+	if (!$source) {
+		return;
+	}
+	$keys = $target = [];
+	$source = preg_replace_callback(
+		'/
+        # Match at start of string or &
+        (?:^|(?<=&))
+        # Exclude cases where the period is in brackets, e.g. foo[bar.blarg]
+        [^=&\[]*
+        # Affected cases: periods and spaces
+        (?:\.|%20)
+        # Keep matching until assignment, next variable, end of string or
+        # start of an array
+        [^=&\[]*
+        /x',
+		function ($key) use (&$keys) {
+			$keys[] = $key = base64_encode(urldecode($key[0]));
+			return urlencode($key);
+		},
+		$source
+	);
+	parse_str($source, $data);
+	foreach ($data as $key => $val) {
+		// Only unprocess encoded keys
+		if (!in_array($key, $keys)) {
+			$target[$key] = $val;
+			continue;
+		}
+
+		$key = base64_decode($key);
+		$target[$key] = $val;
+
+		if ($keep) {
+			// Keep a copy in the underscore key version
+			$key = preg_replace('/(\.| )/', '_', $key);
+			$target[$key] = $val;
+		}
+	}
+}
+
+function safe_http_build_query ($args) {
+	foreach ($args as $k => $v) {
+		if (is_null($v)) {
+			$args[$k] = '';
+		}
+	}
+	return http_build_query($args);
 }

@@ -1134,8 +1134,8 @@ function _getConditionOperator ($service, $nbaPath, $value = '') {
 		$service = array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
 			'taxon' : 'specimen';
 	}
-	if (isset(nbaFieldTypes()[$service][$nbaPath])) {
-        return _getOperatorFromMapping(nbaFieldTypes()[$service][$nbaPath], $value);
+	if (isset(_nbaFieldTypes()[$service][$nbaPath])) {
+        return _getOperatorFromMapping(_nbaFieldTypes()[$service][$nbaPath], $value);
     }
     return 'EQUALS';
 }

@@ -106,6 +106,7 @@ function advancedSelects () {
         	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_license'] =
         	_createAdvancedSelect(_getDistinctValues('multimedia', 'license'));
+        cache_set($cacheId, $nbaAdvancedSelects);
     }
     return $nbaAdvancedSelects;
 }
@@ -726,18 +727,6 @@ function ndabio_theme ($existing, $type, $theme, $path) {
   );
   return $data;
 }
-
-/**
- * Check if a string is JSON.
- * @param string
- * @return boolean
- */
-function isJson ($string) {
-  json_decode($string);
-  return (json_last_error() == JSON_ERROR_NONE);
-}
-
-
 
 
 /**
