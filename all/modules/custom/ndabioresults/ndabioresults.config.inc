@@ -15,7 +15,7 @@ define("NBADEBUGENCODED", 0);
 
 
 
-function ndabioresults_config_form($form, &$form_state) {
+function ndabioresults_config_form ($form, &$form_state) {
   $form['ndabioresults_config'] = array(
     '#type' => 'fieldset',
     '#title' => t('Naturalis config')
@@ -137,7 +137,7 @@ function ndabioresults_config_form($form, &$form_state) {
 /**
  * Used to write nba base url (ndabioresults_config_baseurl) to text file
  */
-function ndabioresults_admin_settings_submit($form, &$form_state) {
+function ndabioresults_admin_settings_submit ($form, &$form_state) {
   $baseurl = $form_state['values']['ndabioresults_config_baseurl'];
 
   $nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
@@ -311,8 +311,7 @@ function searchServices () {
     return $var;
 }
 
-function nbaFieldMapping ()
-{
+function nbaFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
@@ -543,10 +542,7 @@ function nbaFieldMapping ()
     return $var;
 }
 
-
-
-function nbaAdvancedSearchExceptions ()
-{
+function nbaAdvancedSearchExceptions () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
@@ -595,8 +591,7 @@ function nbaAdvancedSearchExceptions ()
 
 
 
-function nbaNameResolutionFieldMapping ()
-{
+function nbaNameResolutionFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
@@ -708,8 +703,7 @@ function scientificNameElements () {
 	return $var;
 }
 
-function scientificNameElementsInItalics ()
-{
+function scientificNameElementsInItalics () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [
@@ -721,8 +715,7 @@ function scientificNameElementsInItalics ()
 	return $var;
 }
 
-function sortOptions ()
-{
+function sortOptions () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [

@@ -9,6 +9,10 @@ require_once 'ndabioresults.parse.inc';
 require_once 'ndabioresults.print.inc';
 require_once 'Paginator.php';
 
+// Old code
+require_once 'redundant.inc';
+
+
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\GroupByScientificNameQuerySpec as GroupByScientificNameQuerySpec;
@@ -18,7 +22,9 @@ use nl\naturalis\bioportal\Filter as Filter;
 
 function ndabioresults_init () {
 	// Clear previously stored debug info
-	_init();
+	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
+	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
+	$_SESSION['nbaNameResolutionTaxa'] = null;
 }
 
 
@@ -29,11 +35,6 @@ function ndabioresults_init () {
  *
  */
 function ndabioresults_preprocess_html (&$vars) {
-	/*
-    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] !== 'form'){
-        $vars['classes_array'][] = "nba-result-detail";
-    }
-    */
 	$pathComponents = explode('/', current_path());
     if (in_array($pathComponents[0], ['multimedia', 'specimen', 'taxon'])) {
 	    $vars['classes_array'][] = 'nba-result-detail';
@@ -46,39 +47,10 @@ function ndabioresults_preprocess_html (&$vars) {
 	}
 }
 
-
 /**
  * Implements hook_menu().
  */
-function ndabioresults_menu() {
-  global $language;
-  $items['admin/config/naturalis/ndaresult'] = array(
-    'title' => 'NDA result config',
-    'description' => 'Configuration for Naturalis module',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ndabioresults_config_form'),
-    'access arguments' => array('access administration pages'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-  $items['result/%'] = array(
-    'page callback' => 'ndabioresults_pass',
-    'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
-  );
-  $items['result'] = array(
-    'page callback' => 'ndabioresults_pass',
-    'load arguments' => array('%map', '%index'),
-    'access callback' => TRUE,
-  );
-  $items['ajax'] = array(
-   'page callback' => 'ndabioresults_ajax_callback',
-   'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
-  );
-
-
-  /* This is the new shit */
-
+function ndabioresults_menu () {
 	$items['result'] = array(
 	    'page callback' => '_nba_general_result_callback',
 	    'load arguments' => array('%map', '%index'),
@@ -112,19 +84,45 @@ function ndabioresults_menu() {
 	$items['taxon'] = array(
 	    'page callback' => '_nba_taxon_callback',
 	    'access callback' => true,
-	  );
+	);
 	$items['specimen'] = array(
 	    'page callback' => '_nba_specimen_callback',
 	    'access callback' => true,
-	  );
+	);
 	$items['multimedia'] = array(
 		'page callback' => '_nba_multimedia_callback',
 		'access callback' => true,
 	);
-	
+	$items['ajax'] = array(
+		'page callback' => 'ndabioresults_ajax_callback',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
 	return $items;
 }
 
+
+/**
+ * Returns NBA result as JSON, based on given request
+ *
+ * Returns json from NBA from Ajax call; request should be given as GET parameter.
+ * Optionally this service can return just the total number of records, if getTotal
+ * is provided as GET parameter.
+ */
+function ndabioresults_ajax_callback () {
+    drupal_add_http_header('Content-Type', 'application/json');
+    if (isset($_GET['nba_request'])) {
+        // For the time being this service is used only to retrieve totalSize
+        // Therefore maxResults is capped to 1 by default
+        $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
+        if (isset($_GET['getTotal'])) {
+            $data = json_decode((reset($remoteData)));
+            die($data->totalSize);
+        }
+        die(reset($remoteData));
+    }
+    die('Invalid NBA request');
+}
 
 
 /*
@@ -320,10 +318,6 @@ function _setSpecimenDetailPageNextLink ($search, $nextId, $previousId, $scienti
 	return null;
 }
 
-
-
-
-
 function _getSpecimenByUnitId ($unitId = false) {
 	if (!$unitId) {
 		return false;
@@ -342,9 +336,6 @@ function _getSpecimenByUnitId ($unitId = false) {
 	}
 	return $data->resultSet[0]->item;	
 }
-
-
-
 
 function _nba_multimedia_callback ($id = false, $search = false) {
 	// Test if anything has been posted; if not return with error message
@@ -1768,6 +1759,7 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	}
 	return -1;
 }
+
 function _setFilterRejectEmptyGenus () {
 	$filter = new Filter();
 	$filter->rejectRegexp("\?.*");
@@ -1965,21 +1957,6 @@ function _getSearchTerms (array $terms) {
 	return !empty($terms) ? $terms : false;
 }
 
-
-/*
-function _getServiceSearchTerms ($service) {
-	if (isset($_SESSION['nbaQuery'][$service]['terms'])) {
-		$terms = $_SESSION['nbaQuery'][$service]['terms'];
-        foreach (searchFlags() as $flag) {
-            if (isset($terms[$flag])) {
-                unset($terms[$flag]);
-            }
-        }
-        return $terms;
-    }
-    return false;
-}
-*/
 
 function _getQueryPaths ($service) {
 	return isset($_SESSION['nbaQuery'][$service]['paths']) ?
@@ -2425,239 +2402,6 @@ function _getOtherSpecimens ($data) {
 
 
 
-
-
-
-
-/**
- * Distributes search parameter of the simple search to appropiate services and returns
- * formatted output
- *
- * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
- * the appropriate channels and returns formatted result
- *
- * @return string Formatted output
- */
-function nbaSimpleSearch () {
-
-    return 'Not so fast...';
-
-    $pageHeader = '';
-    $p['_search'] = $_SESSION['nbaSearch']['term'];
-
-    // Taxon search does not include geoShape and should not be invoked when coming from geo form
-    // when a search are has been entered
-    if (!isset($_SESSION['nbaSearch']['gid']) || empty($_SESSION['nbaSearch']['gid']) &&
-        empty($_SESSION['nbaSearch']['geoShape'])) {
-        $services[taxonService()] = $p;
-    }
-
-    // Other searches do include geoShape if entered
-    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
-        $p['_geoShape'] = $_SESSION['nbaSearch']['geoShape'];
-
-        $area =  (!empty($_SESSION['nbaSearch']['location']) ? $_SESSION['nbaSearch']['location'] :
-            t('area drawn on map'));
-
-        $pageHeader =
-            _wrap(
-                _wrap(
-                    t("Showing only results in")
-                   . " "
-                   . _wrap($area, "span", "term"),
-                   "h1"
-                ), "div", "panel"
-            );
-    };
-
-    $pageHeader .= _wrap(t('Search results for') . ' ' .
-        _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "H1");
-
-    $services[specimenNamesService()] = $p;
-    $services[multimediaService()] = $p;
-    $services[specimenService()] = $p;
-
-    // Set session with NBA query type;
-    // used to determine if show all should be printed
-    unset($_SESSION['nbaFilters']);
-    $_SESSION['nbaRequestType'] = 'form';
-    $_SESSION['nbaPageDetail'] = 'result from simple form';
-
-    $pageBody = performNdaRequest(setChannels($services));
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
-}
-
-
-
-
-
-
-
-
-/* The old stuff */
-
-
-
-
-/**
- * Mapping function: distributes parameters to appropriate specimen service
- *
- * Distributes specimens search parameters between specimen and specimen name
- * services. Important: list of parameters should be complete!
- *
- * @param array $sP Search parameters
- * @param string $type Service type
- *
- * @return array Reduced array of search criteria for the service of choice
- */
-function setSpecimenParameters (array $sP, $type) {
-    $parameters = array(
-        specimenService() => array(
-            'collectingStartDate',
-            'collectionFieldNumber',
-            'collectorsFieldNumber',
-            'gatheringAgent',
-            'localityText',
-            'phaseOrStage',
-            'unitID',
-            'sex',
-            'taxonomicStatus',
-            'typeStatus',
-            'sourceSystem',
-            'collectionType',
-            '_geoShape'
-        ),
-        specimenNamesService() => array(
-            'className',
-            'family',
-            'genusOrMonomial',
-            'kingdom',
-            'order',
-            'phylum',
-            'specificEpithet',
-            'infraspecificEpithet',
-            'vernacularName',
-            '_geoShape',
-            '_showMap',
-            'scientificName'
-        )
-    );
-    foreach ($parameters[$type] as $p) {
-        if (isset($sP[$p]) && (!empty($sP[$p]) || is_numeric($sP[$p]))) {
-            $d[$p] = $sP[$p];
-        }
-    }
-    // If any parameters are found, append andOr and geoShape (if applicable)
-    if (isset($d)) {
-        $d['_andOr'] = $sP['_andOr'];
-        if (!empty($sP['geoShape'])) {
-            $d['_geoShape'] = $sP['geoShape'];
-        }
-    }
-    return isset($d) ? $d : null;
-}
-
-/**
- * Accepts search form data and returns formatted result
- *
- * The main function that actually processes the incoming POST data, stores the
- * POST data in a SESSION, distributes the search to the appropriate channels
- * and returns the formatted output.
- *
- * Headers were added to avoid problems with "Webpage has expired" in IE after
- * hitting back button
- *
- * @return string The formatted output
-
-function ndabioresults_pass ($args = "") {
-    global $base_path;
-    $langs = language_list(); // Note: No argument
-    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
-    if (!empty($langcode)) {
-        variable_set('language_default', $langs[$langcode]);
-    }
-
-    // SESSION variables that have to be reset for each request
-    unset($_SESSION['nbaPageTitle']);
-
-    // Keep track of NBA search history
-    if (isset($_GET['nba_request']) || isset($_GET['form_id']) || isset($_GET['back'])
-        || isset($_GET['theme'])) {
-        // Add direct requests to history if they are search service requests...
-        if (isset($_GET['nba_request']) && isSearchService(urldecode($_GET['nba_request']))) {
-             $_SESSION['nbaHistory'][] = $_GET['nba_request'];
-        // ... or from the search form of course
-        } else if (isset($_GET['form_id'])) {
-            $_SESSION['nbaHistory'][] = 'form';
-        // ... or from a menu link to a theme
-        } else if (isset($_GET['theme'])) {
-            $_SESSION['nbaHistory'][] = 'theme';
-            // If coming from a back link itself, remove the link from history
-        } else if (isset($_GET['back']) && isSearchService($_SESSION['nbaCurrentService'])) {
-            array_pop($_SESSION['nbaHistory']);
-        }
-    }
-
-    drupal_add_http_header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
-    drupal_add_http_header('Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT');
-    drupal_add_http_header('Cache-Control', 'post-check=0, pre-check=0');
-    session_cache_limiter("must-revalidate");
-    drupal_add_js("var str_base_path = '$base_path' ", 'inline');
-
-    // Thematic search
-    if (isset($_GET['theme']) && !empty($_GET['theme'])) {
-        unset($_SESSION['nbaSearch']);
-        $_SESSION['nbaSearch']['theme'] = $_GET['theme'];
-        return ndaThematicSearch();
-    }
-
-    // Back link clicked. Check search history to see if user comes from search form
-    // or from paginated result set. If the latter, use history to navigate; else
-    // proceed as if POST data was received but retrieve this from SESSION
-    if (isset($_GET['back']) && isset($_SESSION['nbaSearch']) && !empty($_SESSION['nbaSearch'])) {
-       drupal_set_title(t("Search results"));
-
-       $lastSearch = isset($_SESSION['nbaHistory']) && !empty($_SESSION['nbaHistory']) ?
-            end($_SESSION['nbaHistory']) : false;
-       if ($lastSearch && $lastSearch != 'form' && $lastSearch != 'theme') {
-            return ndaDirectRequest(end($_SESSION['nbaHistory']));
-        } else if (!empty($_SESSION['nbaSearch']['term'])) {
-            return ndaSimpleSearch();
-        } else if (!empty($_SESSION['nbaSearch']['theme'])) {
-            return ndaThematicSearch();
-        } else {
-            return ndaAdvancedSearch();
-        }
-    }
-
-    // POST data from the search form?
-    // If so, add to SESSION or replace existing SESSION data
-    if (isset($_GET['form_id']) && $_GET['form_id'] == 'ndabio_advanced_taxonomysearch') {
-        drupal_set_title(t("Search results"));
-
-        $_SESSION['nbaSearch'] = $_GET;
-        logSearch();
-        return empty($_SESSION['nbaSearch']['term']) ? ndaAdvancedSearch() : ndaSimpleSearch();
-    }
-
-    // GET data from within NDA response?
-    // Forward directly to appropriate service
-    else if (isset($_GET['nba_request'])) {
-        // @todo: check direct url for injection?
-        return ndaDirectRequest(urldecode($_GET['nba_request']));
-    }
-
-    // If both POST and SESSION are empty we have a problem...
-    else {
-        // Probably best to redirect gracefully to search page?
-        handleError('No POST data received! Form validation should trap this.
-            Redirect to home if this occurs?');
-        drupal_goto('');
-    }
-}
-*/
-
 /**
  * Logs searches to Drupal
  *
@@ -2709,186 +2453,7 @@ function _logSearch ($saveToDb = false) {
     }
 }
 
-/**
- * Returns NBA result as JSON, based on given request
- *
- * Returns json from NBA from Ajax call; request should be given as GET parameter.
- * Optionally this service can return just the total number of records, if getTotal
- * is provided as GET parameter.
- */
-function ndabioresults_ajax_callback () {
-    drupal_add_http_header('Content-Type', 'application/json');
-    if (isset($_GET['nba_request'])) {
-        // For the time being this service is used only to retrieve totalSize
-        // Therefore maxResults is capped to 1 by default
-        $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
-        if (isset($_GET['getTotal'])) {
-            $data = json_decode((reset($remoteData)));
-            die($data->totalSize);
-        }
-        die(reset($remoteData));
-    }
-    die('Invalid NBA request');
-}
 
-
-/**
- * Distributes search parameter of the simple search to appropiate services and returns
- * formatted output
- *
- * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
- * the appropriate channels and returns formatted result
- *
- * @return string Formatted output
-
-function ndaSimpleSearch () {
-
-    $pageHeader = '';
-    $p['_search'] = $_SESSION['nbaSearch']['term'];
-
-    // Taxon search does not include geoShape and should not be invoked when coming from geo form
-    // when a search are has been entered
-    if (!isset($_SESSION['nbaSearch']['gid']) || empty($_SESSION['nbaSearch']['gid']) &&
-        empty($_SESSION['nbaSearch']['geoShape'])) {
-        $services[taxonService()] = $p;
-    }
-
-    // Other searches do include geoShape if entered
-    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
-        $p['_geoShape'] = $_SESSION['nbaSearch']['geoShape'];
-
-        $area =  (!empty($_SESSION['nbaSearch']['location']) ? $_SESSION['nbaSearch']['location'] :
-            t('area drawn on map'));
-
-        $pageHeader =
-            _wrap(
-                _wrap(
-                    t("Showing only results in")
-                   . " "
-                   . _wrap($area, "span", "term"),
-                   "h1"
-                ), "div", "panel"
-            );
-    };
-
-    $pageHeader .= _wrap(t('Search results for') . ' ' .
-        _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "H1");
-
-    $services[specimenNamesService()] = $p;
-    $services[multimediaService()] = $p;
-    $services[specimenService()] = $p;
-
-    // Set session with NBA query type;
-    // used to determine if show all should be printed
-    unset($_SESSION['nbaFilters']);
-    $_SESSION['nbaRequestType'] = 'form';
-    $_SESSION['nbaPageDetail'] = 'result from simple form';
-
-    $pageBody = performNdaRequest(setChannels($services));
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
-}
-*/
-
-/**
- * Distributes search parameters of the advanced search to appropiate services and returns
- * formatted output
- *
- * Retrieves search parameters from SESSION set by ndabioresults_pass, set to
- * the appropriate channels and returns formatted result
- *
- * @return string Formatted output
-
-function ndaAdvancedSearch () {
-
-    $pageHeader = '';
-
-    unset($_SESSION['nbaFilters']);
-    $services[multimediaService()] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
-    $services[taxonService()] = _setSectionParameters($_SESSION['nbaSearch'], 't_');
-    $services[specimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
-    $services[specimenNamesService()] = _setSectionParameters($_SESSION['nbaSearch'], 'n_');
-
-    // Special case for specimen/search: unset this service if only geoShape is present;
-    // results of specimen/name-search and specimen/search will then be identical
-    if (!serviceUsed($services[specimenService()])) {
-        unset($services[specimenService()]);
-    }
-
-    // Another check: specimen/search is used but specimen/name-search is not
-    if (isset($services[specimenService()]) && !serviceUsed($services[specimenNamesService()])) {
-        unset($services[specimenNamesService()]);
-    }
-
-    // Now check if either multimedia or specimen has search parameters
-    // If so, unset the "empty" service; if not, pass both
-    if (!serviceUsed($services[specimenNamesService()]) && serviceUsed($services[multimediaService()])) {
-        unset($services[specimenNamesService()]);
-    } else if (serviceUsed($services[specimenNamesService()]) && !serviceUsed($services[multimediaService()])) {
-        unset($services[multimediaService()]);
-    }
-
-    if (isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape'])) {
-        $area =  (!empty($_SESSION['nbaSearch']['location']) ?
-            $_SESSION['nbaSearch']['location'] : t('area drawn on map'));
-
-        $pageHeader =
-            _wrap(
-                _wrap(
-                    t("Showing only results in")
-                   . " "
-                   . _wrap($area, "span", "term"),
-                   "h1"
-            ), "div", "panel"
-        );
-    }
-    $pageHeader .= _wrap(t('Search results'),"H1");
-
-
-    // Test if anything has been posted; if not return with error message
-    if (!dataPosted($services)) {
-        return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
-            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
-    }
-
-    // Set session with NBA query type;
-    // used to determine if show all should be printed
-    $_SESSION['nbaRequestType'] = 'form';
-    $_SESSION['nbaPageDetail'] = 'result from advanced form';
-
-    $pageBody = performNdaRequest(setChannels($services));
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
-}
-*/
-
-/**
- * Sets url to search form
- *
- * Used to create links back to search form; differentiates between home and
- * geographic search page
- *
- * @return string Url to last used form
- */
-function setStartUrl () {
-    if (isset($_SESSION['nbaSearch']['geoShape'])) {
-        return setBasePath() . "geographic-search/";
-    }
-    return setBasePath();
-}
-
-/**
- * Sets base url
- *
- * Sometimes Drupal home is not accessible at the site root; this function returns the
- * base of of the Drupal installation
- *
- * @return string Url to Drupal root
- */
-function setBasePath () {
-    global $base_root, $base_path;
-    return $base_root . $base_path;
-}
 
 /**
  * Checks if any search parameters have been set for a service
@@ -2900,135 +2465,6 @@ function _serviceUsed ($service) {
     return _countSearchParameters($service) > 0;
 }
 
-/**
- * Performs thematic search
- *
- * For thematic search, two services are called: multimedia and specimen.
- * Currenty this service simply returns the search results. However, it is
- * already more or less ready to be used as an additional filter to the search form
- *
- * @return string Formatted result page
- */
-function ndaThematicSearch () {
-
-    unset($_SESSION['nbaFilters']);
-    $services[multimediaService()] = _setSectionParameters($_SESSION['nbaSearch'], 'm_');
-    $services[specimenService()] = _setSectionParameters($_SESSION['nbaSearch'], 's_');
-
-    $services[multimediaService()]['theme'] = $_SESSION['nbaSearch']['theme'];
-    // Sort multimedia by specimen name
-    $services[multimediaService()]['_sort'] = 'identifications.scientificName.fullScientificName';
-    $services[multimediaService()]['_sortDirection'] = 'ASC';
-
-    $services[specimenService()]['theme'] = $_SESSION['nbaSearch']['theme'];
-    // Sort specimens by registration number
-    $services[specimenService()]['_sort'] = 'unitID';
-    $services[specimenService()]['_sortDirection'] = 'ASC';
-
-    $pageHeader = '';
-    ctools_class_add(array('thematic-search'));
-
-    // Test if anything has been posted; if not return with error message
-    if (!dataPosted($services)) {
-        return $pageHeader. _wrap(t('Oops, something went wrong') . '. ' .
-            "<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.', 'p');
-    }
-
-    // Set session with NBA query type;
-    // used to determine if show all should be printed
-    $_SESSION['nbaRequestType'] = 'form';
-    $_SESSION['nbaPageDetail'] = 'result from thematic search';
-
-    // We have to override the default sort and sort direction for thematic search
-    // Add true flag to setChannels()
-    $pageBody = performNdaRequest(setChannels($services, true));
-
-    return $pageHeader . (!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
-}
-
-/**
- * Performs direct request
- *
- * Takes request from url as input, redirects this to the appropriate
- * service and returns formatted html.
- *
- * @param string $r Request url
- * @return string|void (empty array) Formatted output
- */
-function ndaDirectRequest ($r) {
-    foreach (serviceToFunctions() as $service => $d) {
-        if (strpos($r, $service) !== false) {
-            $url = parse_url($r);
-            //parse_str($url['query'], $q);
-            safe_parse_str($url['query'], $q);
-
-            // Cap maxResults to max
-            if (!isset($q['_maxResults']) || $q['_maxResults'] > maxResults()) {
-                $q['_maxResults'] = isGroupService($service) ? maxGroupResults() : maxResults();
-            }
-
-            // Special case for specimens on map: remove _sort and _offset
-            if (isset($q['_showMap'])) {
-                unset($q['_sort'], $q['_offset']);
-            }
-
-            // Set geoShape from SESSION if geoShape is part of the request
-            if (isset($q['_geoShape']) && $q['_geoShape'] == '[session]' &&
-                isset($_SESSION['nbaStoredGeoShape'])) {
-                $q['_geoShape'] = $_SESSION['nbaStoredGeoShape'];
-            }
-
-            $channels[0]['request'] = $service;
-            $channels[0]['url'] = nbaBaseUrl() . $service;
-    		$channels[0]['method'] = $d['method'];
-    		// If ES request parameter contains dots, these should be replaced with @ and reverted to
-    		// dots at this point
-    		$channels[0]['postfields'] = http_build_query($q);
-    		// Set session variable with last used service;
-            // used to determine current detail page
-            $_SESSION['nbaCurrentService'] = $service;
-            // Set session with NBA query type;
-            // used to determine if show all should be printed
-            $_SESSION['nbaRequestType'] = 'url';
-            // Set session with info about current page;
-            // used to set appropriate blocks
-            $_SESSION['nbaPageDetail'] = $d['info'];
-
-            return performNdaRequest($channels);
-        }
-    }
-    return array();
-}
-
-/**
- * Dedicated service to use for Ajax request
- *
- * Takes request url, redirects to the appropriate service and returns
- * unformatted NBA json
- *
- * @param string $r Request url
- * @param string $maxResults Optional max results
- * @return json|void
- */
-function ndaAjaxRequest ($r, $maxResults = false) {
-    foreach (serviceToFunctions() as $service => $d) {
-        if (strpos($r, $service) !== false) {
-            $url = parse_url($r);
-            safe_parse_str($url['query'], $q);
-
-            if ($maxResults && is_int($maxResults) && $maxResults <= maxResults()) {
-                $q['_maxResults'] = $maxResults;
-            }
-
-            $channels[0]['request'] = $service;
-    		$channels[0]['url'] = nbaBaseUrl() . $service;
-    		$channels[0]['method'] = $d['method'];
-    		$channels[0]['postfields'] = str_replace('%40', '.', http_build_query($q));
-            return queryNda($channels);
-        }
-    }
-    return null;
-}
 
 /**
  * Checks if data has been posted
@@ -3048,39 +2484,6 @@ function _dataPosted ($services) {
 }
 
 
-/**
- * Sets curl channels
- *
- * Sets request and url parameters for curl channels
- *
- * @param array Service array (service name => search parameters)
- * @return array|void Channels for curl
- */
-function setChannels (array $services, $overrideDefault = false) {
-    $i = 0;
-    $serviceSettings = serviceToFunctions();
-	foreach ($services as $s => $p) {
-	    if (!empty($p)) {
-	        $p = array_filter($p, 'strlen');
-
-	        // Append default search parameters for form
-	        $p['_maxResults'] = maxResultsInitial();
-	        // Allow override for default sort and sort direction
-	        // for special cases (thematic search)
-	        if (!$overrideDefault) {
-    	        $p['_sort'] = defaultSort();
-    	        $p['_sortDirection'] = defaultSortDirection();
-	        }
-
-	        $channels[$i]['request'] = $s;
-    		$channels[$i]['url'] = nbaBaseUrl() . $s;
-    		$channels[$i]['method'] = $serviceSettings[$s]['method'];
-    		$channels[$i]['postfields'] =  http_build_query($p);
-    		$i++;
-	    }
-	}
-	return isset($channels) ? $channels : array();
-}
 
 /**
  * Filters input parameters from advanced search
@@ -3145,543 +2548,6 @@ function _countSearchParameters ($d) {
 }
 
 
-/**
- * Performs curl requests and formats results
- *
- * Performs curl queries through multicurl. For each channel, resulting json is
- * parsed to an array by one function and subsequently printed by another.
- *
- * @param array $channels Service channels
- * @return string|void
- */
-function performNdaRequest (array $channels = array()) {
-	if (empty($channels)) {
-		handleError('Cannot set curl channels');
-	}
-	// Get json response(s) with curl
-	$remoteData = queryNda($channels);
-	// Reorder responses in print order if more than one response
-	if (count($remoteData) > 1) {
-	   $remoteData = sortArrayByArray($remoteData, resultOrder());
-	}
-	// Map functions to each channel result:
-	// parses and prints data
-	$output = '';
-	$serviceToFunctions = serviceToFunctions();
-	foreach ($remoteData as $service => $json) {
-		if (!isset($serviceToFunctions[$service]) || empty($json)) {
-			continue;
-		}
-		$parseFunction = isset($serviceToFunctions[$service]['parse']) ?
-		    $serviceToFunctions[$service]['parse'] : false;
-		$printFunction = isset($serviceToFunctions[$service]['print']) ?
-		    $serviceToFunctions[$service]['print'] : false;
-		if (!empty($parseFunction) && !empty($printFunction)) {
-		    $output .= $printFunction($parseFunction($json));
-		}
-	}
-
-    // Debug: print queries
-    if (DEBUG_CHANNELS == 1) {
-        p($channels);
-    }
-
-	return $output;
-}
-
-/**
- * Performs multicurl queries
- *
- * Core function for multicurl requests
- *
- * @param unknown $channels Service channels
- * @param integer $timeout Optional timeout
- *
- * @return array Results as key => value pairs for each channel
- */
-function queryNda ($channels = array(), $timeout = false) {
-    $mh = curl_multi_init();
-    for ($i = 0; $i < count($channels); $i++) {
-        $ch[$i] = curl_init();
-
-        if ($channels[$i]['method'] == 'post') {
-            curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-            curl_setopt($ch[$i], CURLOPT_POST, true);
-			curl_setopt($ch[$i], CURLOPT_HTTPHEADER, array('Expect:'));
-            curl_setopt($ch[$i], CURLOPT_POSTFIELDS, $channels[$i]['postfields']);
-        } else if ($channels[$i]['method'] == 'get') {
-            $channels[$i]['url'] .= '/?'  . $channels[$i]['postfields'];
-            curl_setopt($ch[$i], CURLOPT_URL, $channels[$i]['url']);
-        }
-
-        curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch[$i], CURLOPT_HEADER, false);
-        if ($timeout) {
-       		curl_setopt($ch[$i], CURLOPT_TIMEOUT, $timeout);
-        }
-        curl_multi_add_handle($mh, $ch[$i]);
-    }
-    // While we're still active, execute curl
-	do {
-		$mrc = curl_multi_exec($mh, $active);
-	} while ($mrc == CURLM_CALL_MULTI_PERFORM);
-
-    while ($active && $mrc == CURLM_OK) {
-        // Wait for activity on any curl-connection
-        if (curl_multi_select($mh) == -1) {
-            usleep(1);
-        }
-        // Continue to exec until curl is ready to
-        // give us more data
-        do {
-            $mrc = curl_multi_exec($mh, $active);
-        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
-    }
-    // Place results in results array and close handlers
-    for ($i = 0; $i < count($channels); $i++) {
-        $remoteData[$channels[$i]['request']] = curl_multi_getcontent($ch[$i]);
-        curl_multi_remove_handle($mh, $ch[$i]);
-    }
-    curl_multi_close($mh);
-    return $remoteData;
-}
-
-
-
-/**
- * NSR id of a taxon
- *
- * @param array $data NBA json response
- * @return int|void ID of NRS taxon record
- */
-function getTaxonId ($data) {
-    foreach ($data->searchResults as $row) {
-        if ($row->result->sourceSystem->code == 'NSR') {
-            return $row->result->sourceSystemId;
-        }
-    }
-    return null;
-}
-
-
-/**
- * Strips base url from string
- *
- * @param string $url
- * @return string $url Stripped url
- */
-function stripBaseUrl ($url) {
-    return str_replace(urlencode(nbaBaseUrl()), '', $url);
-}
-
-
-/**
- * Reverses setUnitId()
- *
- * @param string $string Unit id to "decode"
- * @return string $string
- */
-function unsetUnitId ($string) {
-    return str_replace('&nbsp;', ' ', $string);
-}
-
-
-
-/**
- * Gets sort direction
- *
- * Gets sort direction parameter from self link or, if self link is not provided,
- * returns default value
- *
- * @param string $self Self link
- * @param boolean $groupResult Service has grouped results?
- * @return string Result from self link or default value if self link is not provided
- */
-function getSortDirection ($self, $groupResult = false) {
-    $p = $groupResult ? '_groupSortDirection' : '_sortDirection';
-    if (!empty($self)) {
-        $value = getUrlParValue(urldecode($self), $p);
-        if (!empty($value)) {
-            return $value;
-        }
-    }
-    return $groupResult ? defaultGroupSortDirection() : defaultSortDirection();
-}
-
-/**
- * Sets sort url
- *
- * @param string $column Field to sort on
- * @param string $dir Default sort direction for column
- * @param string $self Self link
- * @param boolean $groupResult Service has grouped results?
- * @return string Url
- */
-function setSortUrl ($column, $dir, $self, $groupResult = false) {
-
-    // Set parameters differently for default or grouped results
-    $offset = $groupResult ? '_groupOffset' : '_offset';
-    $sort = $groupResult ? '_groupSort' : '_sort';
-    $sortDirection = $groupResult ? '_groupSortDirection' : '_sortDirection';
-
-    // Column currently selected; only switch sort direction
-    if ($column == getSort($self, $groupResult)) {
-        return setUrlPars(
-            geoShapeToSession($self, true),
-            array(
-                $sortDirection => getSortDirection($self, $groupResult) == 'DESC' ? 'ASC' : 'DESC',
-                $offset => 0
-            ),
-            true
-        );
-    }
-    // Other column is currently selected; set to current column in default direction
-    return setUrlPars(
-        geoShapeToSession($self, true),
-        array(
-            $sort => $column,
-            $sortDirection => $dir,
-            $offset => 0
-        ),
-        true
-    );
-}
-
-/**
- * Paginator
- *
- * Returns html-formatted paginator based on json input. $groupResult is used to
- * differentiate between regular or grouped services.
- *
- * @param unknown $data Parsed json
- * @param boolean $groupResult Regular or grouped service?
- * @return Html-formatted paginator | void
- */
-function getPaginator ($data) {
-    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] != 'form') {
-        $paginator = new Paginator(
-            getTotalRows($data),
-            setPaginatorItemsPerPage($groupResult),
-            setPaginatorCurrentPage($data, $groupResult),
-            setPaginatorUrl($data, $groupResult)
-        );
-        return $paginator->toHtml();
-    }
-    return null;
-}
-
-/**
- * Special case: paginator used for results within grouped results
- *
- * A modified function for getPaginator for results within a grouped result. The problem
- * was that the $groupedResult flag in that function cannot be used, because getTotalRows
- * would need to differentiate to accept the results of a group or within a group
- * (for services that returned grouped results). Instead of introducing a potentialy
- * confusing third parameter, this special case function handles the paginator for results
- * within a grouped result.
- *
- * @param array $data Json
- * @return Formatted html|void
- */
-function getPaginatorWithinGroup ($data) {
-    if (isset($_SESSION['nbaRequestType']) && $_SESSION['nbaRequestType'] != 'form') {
-        $paginator = new Paginator(
-            getTotalRowsWithinGroup($data),
-            setPaginatorItemsPerPage(),
-            setPaginatorCurrentPage($data),
-            setPaginatorUrl($data)
-        );
-        return $paginator->toHtml();
-    }
-    return null;
-}
-
-/**
- * Sets maximum number of results per page for paginator
- *
- * @param boolean $groupResult Regular or grouped service?
- * @return int Maximum number of results per page dependent of grouped or not
- */
-function setPaginatorItemsPerPage ($groupResult = false) {
-    return $groupResult ? maxGroupResults() : maxResults();
-}
-
-/**
- * Sets current page number for paginator
- *
- * @param boolean $groupResult Regular or grouped service?
- * @return int Current page number dependent of grouped or not
- */
-function setPaginatorCurrentPage ($data, $groupResult = false) {
-    return $groupResult ?
-        getGroupOffset($data) / maxGroupResults() + 1 :
-        getOffset($data) / maxResults() + 1;
-}
-
-/**
- *
- * Sets url for paginator
- *
- * Strips offset from self link and replaces this with placeholder for paginator
- *
- * @param array $data Json
- * @param boolean $groupResult
- * @return string Url
- */
-function setPaginatorUrl ($data, $groupResult = false) {
-    $offset = $groupResult ? 'groupOffset' : 'offset';
-    return printDrupalLink(
-        stripOffsetFromUrl(geoShapeToSession(urldecode(getSelfLink($data)))) . '&_' . $offset . '='
-    ) . '(:num)';
-}
-
-/**
- * Adds or replaces parameters in url with new parameters
- *
- * @param string $url Input url
- * @param array $newValues New values as key => value pairs
- * @param boolean $decodeEncode Decode url before replacement?
- * @return string $url Output string
- */
-function setUrlPars ($url, array $newValues, $decodeEncode = false) {
-    if ($decodeEncode) {
-        $url = urldecode($url);
-    }
-    $parts = parse_url($url);
-    safe_parse_str($parts['query'], $q);
-    foreach ($newValues as $p => $v) {
-        $q[$p] = $v;
-    }
-    $parts['query'] = http_build_query($q);
-    $url = reverse_parse_url($parts);
-    return $decodeEncode ? urlencode($url) : $url;
-}
-
-/**
- *  Replaces the value of the _geoShape parameter from any NBA-created url with [session].
- *  Stores the value in a session parameter, which should be retrieved when creating the NBA request.
- *
- * @param string $url
- * @return string, session parameter
- */
-function geoShapeToSession ($url, $decodeEncode = false) {
-    if ($decodeEncode) {
-        $url = urldecode($url);
-    }
-    $parts = parse_url($url);
-    safe_parse_str($parts['query'], $q);
-    if (isset($q['_geoShape'])) {
-        $_SESSION['nbaStoredGeoShape'] = $q['_geoShape'];
-        $q['_geoShape'] = '[session]';
-
-        $parts['query'] = http_build_query($q);
-        $url = reverse_parse_url($parts);
-    }
-    return $decodeEncode ? urlencode($url) : $url;
-}
-
-/**
- * Strips _offset and _groupOffset from url
- *
- * @param string $url Input url
- * @param string $decodeEncode Decode url before replacement?
- * @return string $url Output url
- */
-function stripOffsetFromUrl ($url, $decodeEncode = false) {
-    if ($decodeEncode) {
-        $url = urldecode($url);
-    }
-    $parts = parse_url($url);
-    safe_parse_str($parts['query'], $q);
-    foreach (array('_offset', '_groupOffset') as $p) {
-        if (isset($q[$p])) {
-            unset($q[$p]);
-        }
-    }
-    $parts['query'] = http_build_query($q);
-    $url = reverse_parse_url($parts);
-    return $decodeEncode ? urlencode($url) : $url;
-}
-
-/**
- * Gets value for specified parameter in url
- *
- * @param string $url Input utl
- * @param string $par Parameter to get value for
- * @return string|void Value
- */
-function getUrlParValue ($url, $par) {
-    if ($url != '' && $par != '') {
-        $parts = parse_url($url);
-        if (!empty($parts)) {
-            safe_parse_str($parts['query'], $q);
-            foreach ($q as $p => $v) {
-                if ($p == $par) {
-                    return $v;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-/**
- * Gets self link for current request
- *
- * Rather straightforward if the result is from a GET request. If the result is from
- * a POST request, the self link has to be reconstructed from the search terms in
- * the request.
- *
- * @param array $data Json
- * @return string|void Self link
- *
- */function getSelfLink ($data) {
-    if (isset($data->links) && !empty($data->links)) {
-        foreach ($data->links as $link) {
-            if ($link->rel == '_self') {
-                $self = $link->href;
-                break;
-            }
-        }
-    }
-    if (!isset($self) || empty($self)) {
-        return false;
-    }
-    // If data is returned from a POST request, we have to recompile the
-    // self link from the search terms...
-    $post = strpos(urldecode($self), '?') === false ? true : false;
-    if ($post) {
-        $p = '/?';
-        foreach (getSearchTerms($data) as $k => $v) {
-            $p .= $k . '=' . $v[0] . '&';
-        }
-        return $self . urlencode(substr($p, 0, -1));
-    }
-    return $self;
-}
-
-/**
- * Reassembles parsed url
- *
- * Function from php.net to reverse parse_url:
- * http://php.net/manual/en/function.parse-url.php#106731
- * Replacement for http_buil_url() because that function requires PECL.
- *
- * @param array $parsed_url Url components
- * @return string Reassembled url
- */
-function reverse_parse_url ($parsed_url) {
-    $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-    $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
-    $port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-    $user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
-    $pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
-    $pass = ($user || $pass) ? "$pass@" : '';
-    $path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-    $query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
-    $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
-    return "$scheme$user$pass$host$port$path$query$fragment";
-}
-
-
-/**
- * Validates json
- *
- * @param boolean Valid?
- */
-function validJson ($string) {
-	return is_object(json_decode($string));
-}
-
-
-
-/**
- * Creates properly formatted scientific name
- *
- * @param string $scientificname
- * @param object $nameObject Parsed json with individual name components
- * @param string $searchTerms Optional highlighting
- * @return string
- */
-function formatScientificName ($scientificname, $nameObject, $searchTerms = false) {
-	$output = $scientificname;
-	$elements = getScientificNameElements($nameObject);
-    $f = array(chr(4), chr(7));
-	$r = array('<span class="scientific">', '</span>');
-
-	foreach ($elements as $e) {
-		if (!empty($e)) {
-			$output = str_replace($e, chr(4) . $e . chr(7), $output);
-		}
-	}
-	$output = str_replace($f, $r, $output);
-
-	// Highlight the formatted output
-	return $searchTerms ? highlightSearchTerms($output, $searchTerms) : $output;
-}
-
-/**
- * Highlight search terms
- *
- * @param string $string
- * @param array $searchTerms
- * @return string $string
- *
- */function highlightSearchTerms ($string, $searchTerms) {
-    foreach ($searchTerms as $field => $value) {
-        // Do not highlight search flags
-         if (!in_array(str_replace('_', '', $field), searchFlags())) {
-            $term = is_array($value) ? $value[0] : $value;
-            // Split terms on space if necessary
-            $t = explode(' ', $term);
-            // Store as array keys to eliminate duplicates
-            foreach ($t as $i => $v) {
-                $terms[$v] = $field . $i;
-            }
-        }
-    }
-    if (isset($terms)) {
-        $string = highlightMatch($string, array_flip($terms));
-    }
-    return $string;
-}
-
-/**
- * Extracts scientific name components from json name object
- *
- * Returns scientific name elements from name object. Stores as keys and
- * flips to avoid duplicates (as in Larus fuscus fuscus)
- *
- * @param object $name Name object from json
- * @return array
- */
-function getScientificNameElements ($name) {
-	$elements = array(
-		$name->genusOrMonomial => 'genusOrMonomial',
-		$name->subgenus => 'subgenus',
-		$name->specificEpithet => 'specificEpithet',
-		$name->infraspecificEpithet => 'infraspecificEpithet'
-	);
-	return array_flip($elements);
-}
-
-/**
- * Extracts scientific name components from json name object, but unlike
- * getScientificNameElements() does not filter out duplicates
- *
- * Returns scientific name elements from name object.
- *
- * @param object $name Name object from json
- * @return array
- */
-function getScientificNameElementsWithDuplicates ($name) {
-	return array(
-		'genusOrMonomial' => $name->genusOrMonomial,
-		'subgenus' => $name->subgenus,
-		'specificEpithet' => $name->specificEpithet,
-		'infraspecificEpithet' => $name->infraspecificEpithet
-	);
-}
 
 /**
  * Checks if multimedia at specific url is mp4 file
@@ -3704,134 +2570,6 @@ function _isMp4 ($url) {
     return false;
 }
 
-
-
-/**
- * Decorates score in result table
- *
- * @param int $score Percentage from NBA response
- * @return string Formatted html
- */
-function decorateScore ($score) {
-    // Reset score so always one square is filled
-    $score = $score < 20 ? 20 : $score;
-	$roundScore = round( $score / 20 );
-    $result = "<span class='score' title='$score %'>";
-
-    for ($i = 1; $i <= 5; $i++){
-        if ($i <= $roundScore){
-            $result.= "<i class='icon-square_full'></i>";
-        } else {
-            $result.= "<i class='icon-square_empty'></i>";
-        }
-    }
-
-    return $result .= "</span>";
-}
-
-
-
-
-/**
- * Wrapper for logging
- *
- * Currently log to watchdog and print error on screen. Can be adapted to
- * instantantly die() etc.
- *
- * @param string $message
- */
-function handleError ($message) {
-    //Log to the drupal error log
-    watchdog("ndabioresults", $message, NULL, WATCHDOG_ERROR);
-    //Log to the screen?
-    drupal_set_message("Bioportal: " . $message);
-}
-
-/**
- * Translates NBA fields (usually ABCD/DC) to proper English
- *
- * Uses Drupal nba2text Taxonomy for translation
- *
- * @param string $str Input string
- * @return string Translated string
- */
-function translateNdaField ($str) {
-    $machine_name = "nba2text";
-    $myvalue = taxonomy_get_term_by_name($str, $machine_name);
-    if (is_array($myvalue)) {
-        $myvalues = array_shift($myvalue);
-        if(!empty($myvalues)) {
-            return t($myvalues->description);
-        }
-    }
-    return t($str);
-}
-
-/**
- * Recreates NBA request url for Drupal
- *
- * Enriches the NBA request url by appending the basic search parameters
- * to the base url and path to this module.
- *
- * @param string $url NBA search parameters
- * @return string Drupal url
- */
-function printDrupalLink ($url) {
-    return setBasePath() . 'nba/result?nba_request=' . urlencode($url);
-}
-
-
-/**
- * Translates decimal coordinate pair to DMS
- *
- * Adapted from
- * https://www.dougv.com/2012/03/converting-latitude-and-longitude-coordinates-between-decimal-and-degrees-minutes-seconds/
- *
- * Takes decimal coordinates and return degree, minute, second notation. Original function only
- * accepted single parameter; adapted to take both latitude and longitude immediately
- *
- * @param Decimal $lat Latitude
- * @param Decimal $lon Longitude
- * @return string Latitude, longitude
- */
-function decimalToDMS ($lat, $lon) {
-     $coordinates = array(
-        'lat' => $lat,
-        'lon' => $lon
-     );
-     foreach ($coordinates as $type => $decimal) {
-        if (!is_numeric($decimal) || abs($decimal) > 180) {
-            return false;
-        }
-        if ($type == 'lat' && $decimal < 0) {
-              $direction = t('S');
-        } else if ($type == 'lon' && $decimal < 0) {
-          $direction = 'W';
-        } else if ($type == 'lon') {
-          $direction = t('E');
-        } else {
-          $direction = 'N';
-        }
-        $d = abs($decimal);
-        $degrees = floor($d);
-        $seconds = ($d - $degrees) * 3600;
-        $minutes = floor($seconds / 60);
-        $seconds = floor($seconds - ($minutes * 60));
-        $output[$type] = $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
-     }
-     return isset($output) && count($output) == 2 ? implode(', ', $output) : false;
-}
-
-/**
- * Sets head and (optionally) page title
- *
- * @param string $head Head title
- * @param string $page Page title
- */
-function setTitle ($head, $page = '') {
-    $_SESSION['nbaPageTitle'] = $head;
-    drupal_set_title($page);
-}
 
 
 
@@ -3874,181 +2612,6 @@ function _loadPrettyPhoto ($imageUrl) {
     }
 }
 
-
-/**
- * Determines if service is a search service (contrary to detail service)
- *
- * @param unknown $r Request
- * @return boolean true/false
- */
-function isSearchService ($r) {
-    foreach (searchServices() as $service) {
-        if (strpos($r, $service) !== false) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Sets navigation SESSION for previous/next links in multimedia
- *
- * Returns the searchId, which can be usedfor background updating of
- * the navigation SESSION.
- *
- * @param array $data Parsed json
- * @return string $searchId
-*/
-function setNavigation ($data) {
-    $terms = getSearchTerms($data);
-    $searchId = setSearchId($terms);
-
-    // Search has already been stored previously
-    if (isset($_SESSION['nbaNavigation'][$searchId])) {
-        return $searchId;
-    }
-
-    $_SESSION['nbaNavigation'][$searchId]['offset'] =
-        array_key_exists('_offset', $terms) ? $terms['_offset'][0] : 0;
-    $_SESSION['nbaNavigation'][$searchId]['total'] = $data->totalSize;
-    // Previous/next set links
-    $navigation = getNavigationPreviousNextSets($data, multimediaService());
-    $_SESSION['nbaNavigation'][$searchId]['nextSet'] = $navigation['next'];
-    $_SESSION['nbaNavigation'][$searchId]['previousSet'] = $navigation['previous'];
-    // Links within results
-    $_SESSION['nbaNavigation'][$searchId]['currentSet'] = array();
-    foreach ($data->searchResults as $row) {
-        $_SESSION['nbaNavigation'][$searchId]['currentSet'][] =
-            stripNBABASEURL(getMultimediaDetailLink($row)) . '&searchID=' . $searchId;
-    }
-
-    return $searchId;
-}
-
-/**
- * Sets the urls for the previous/next result sets
- *
- * This should be pretty straightforward, as the NBA returns these links in the
- * response. However, this is not the case for POST requests! These have to
- * created from the search terms.
- *
- * @param array $data Parsed json data
- * @param string $service Service, required to determine GET/POST request
- * @return array $d Array with next and previous links
- */
-function getNavigationPreviousNextSets ($data, $service) {
-    // POST or GET service?
-    $config = serviceToFunctions();
-    foreach ($data->links as $i => $link) {
-        $links[$link->rel] = $link->href;
-    }
-    // For GET determining the sets is easy
-    if (strtolower($config[$service]['method']) == 'get') {
-        $d['next'] = $links['_self'] != $links['_nextPage'] ?
-            $links['_nextPage'] : false;
-        $d['previous'] = $links['_self'] != $links['_prevPage'] ?
-            $links['_prevPage'] : false;
-    // For POST we need to parse the queryParameters
-    } else {
-        $d['next'] = setNavigationSetLink($data, 'next');
-        $d['previous'] = setNavigationSetLink($data, 'previous');
-    }
-    return $d;
-}
-
-/**
- * Creates links for previous next result sets for POST request
- *
- * If GET request is used, the NBA returns correct links for previous and next
- * results sets. For POST however, these have to be reconstructed using the
- * queryParameters.
- *
- * @param array $data Parsed json data
- * @param string $direction previous/next
- * @return boolean|string
- */
-function setNavigationSetLink ($data, $direction) {
-    foreach ($data->links as $i => $link) {
-        $links[$link->rel] = $link->href;
-    }
-    $terms = getSearchTerms($data);
-    // Append _offset if this has not been set yet
-    if (!array_key_exists('_offset', $terms)) {
-        $terms['_offset'] = array(0, $data->totalSize - 1);
-    }
-    $p = '';
-    foreach ($terms as $k => $v) {
-        if ($k == '_offset') {
-            if ($direction == 'previous' && ($v[0] - $terms['_maxResults'][0] >= 0)) {
-                $p .= $k . '=' . ($v[0] - $terms['_maxResults'][0])  . '&';
-            } else if ($direction == 'next' &&
-                ($v[0] + $terms['_maxResults'][0] < $data->totalSize - 1)) {
-                 $p .= $k . '=' . ($v[0] + $terms['_maxResults'][0])  . '&';
-            } else {
-                return false;
-            }
-        } else {
-            $p .= $k . '=' . $v[0] . '&';
-        }
-    }
-    return $links['_self'] . urlencode('?' . substr($p, 0, -1));
-}
-
-
-/**
- * Background reset of the navigation SESSION
- *
- * Called when the user arrives at the first or last item in the navigation set.
- * The next/previous NBA request is called in the background and the SESSION is
- * reset. In this special case, the SESSION should not be reset again when the
- * new page loads. This is handled by setting reset = 0.
- *
- * @param string $r NBA request
- * @return string Updated $searchId
-
- function updatePreviousNext ($r) {
-    $json = file_get_contents(setBasePath() . 'nba/ajax?nba_request=' . $r);
-    if (!empty($json)) {
-        // Set new SESSION and return new searchId
-        return setNavigation(json_decode($json));
-    }
-}
-*/
-
-/**
- *  Sets unique id for search terms
- *
- *  Creates a hash based on the search terms. Used for navigation purpose.
- *
- * @param array $terms Search terms
- */
-function setSearchId ($terms) {
-    ksort($terms);
-    return md5(serialize($terms));
-}
-
-/**
- *  Get search id from NBA request
- *
- * @param string $r NBA request
- * @return string|false
- */
-function getSearchId ($r) {
-    safe_parse_str(urldecode($r), $q);
-    return isset($q['searchID']) ? $q['searchID'] : false;
-}
-
-function stripNBABASEURL ($url) {
-    $url = str_replace(nbaBaseUrl(), '', urldecode($url));
-    if ($url[0] == '/') {
-        $url = substr($url, 1);
-    }
-    return $url;
-}
-
-function setAnchor ($a) {
-    return str_replace('/', '_', $a);
-}
 
 
 /**

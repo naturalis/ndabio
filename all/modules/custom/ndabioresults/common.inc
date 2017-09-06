@@ -230,12 +230,6 @@ function _prettyJson ($json) {
 	return json_encode(json_decode($json), JSON_PRETTY_PRINT);
 }
 
-function _init () {
-	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
-	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
-	$_SESSION['nbaNameResolutionTaxa'] = null;
-}
-
 function _addDebugMessage ($title = false, $message = false) {
 	if ($title && $message) {
 		// QuerySpec/Client is passed; use ->getQuerySpec()
@@ -378,7 +372,6 @@ function _markUp ($string){
 	
 	return $result;
 }
-
 
 function _encodeReferrer ($data) {
 	if (is_array($data)) {

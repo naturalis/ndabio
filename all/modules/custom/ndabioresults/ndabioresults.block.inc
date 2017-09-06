@@ -133,7 +133,7 @@ function ndabioresults_block_view ($delta = '') {
 	return $block;
 }
 
-function _list_items($arr_items){
+function _list_items ($arr_items){
 
   $str_return = "<ul class='no-bullets'>";
 
@@ -151,7 +151,7 @@ function _list_items($arr_items){
   return $str_return;
 }
 
-function _item($arr_item){
+function _item ($arr_item){
   return array(
     'data' => $arr_item[0],
     'class' => isset($arr_item[1]) ? $arr_item[1] : null,
