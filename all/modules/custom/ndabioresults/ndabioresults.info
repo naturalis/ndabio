@@ -1,4 +1,4 @@
-name = NBA Search results
+name = NBA Results
 version = "7.x-0.1"
 description = "Bioportal search results module"
 core = 7.x

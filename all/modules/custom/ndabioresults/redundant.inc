@@ -396,6 +396,64 @@ function setBasePath () {
     global $base_root, $base_path;
     return $base_root . $base_path;
 }
+
+/**
+ * Mapping function: maps service to parse/print functions
+ *
+ * Each service response is handled by distinct parse and
+ * print functions. This function provides the mapping.
+ *
+ * @return array Names of parse and print function for the service of choice
+ */
+function serviceToFunctions () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'taxon' => array(
+        		'parse' => 'parseTaxa',
+        		'print' => 'printTaxa',
+        	    'info' => 'results taxa',
+        	    'method' => 'get'
+        	),
+            'multimedia' => array(
+        		'parse' => 'parseMultimedia',
+        		'print' => 'printMultimedia',
+        	    'info' => 'results multimedia',
+        	    'method' => 'post'
+        	),
+        	'specimen' => array(
+        		'parse' => 'parseSpecimens',
+        		'print' => 'printSpecimens',
+        	    'info' => 'results specimens',
+        	    'method' => 'post'
+        	),
+        );
+    }
+    return $var;
+}
+
+
+/**
+ * Constant: order of search results output
+ *
+ * Determines print order of search result, currently
+ * multimedia, taxon, specimen.
+ *
+ * @return array
+ */
+function resultOrder () {
+    $var = &drupal_static(__FUNCTION__);
+    if (!isset($var)) {
+         $var = array(
+        	'multimedia',
+        	'taxon',
+        	'specimen',
+        );
+    }
+    return $var;
+}
+
+
     
 /**
  * Performs thematic search
@@ -1171,7 +1229,7 @@ function setTitle ($head, $page = '') {
  * @return boolean true/false
  */
 function isSearchService ($r) {
-    foreach (searchServices() as $service) {
+    foreach (_searchServices() as $service) {
         if (strpos($r, $service) !== false) {
             return true;
         }

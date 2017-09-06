@@ -394,7 +394,7 @@ function ndabio_menu() {
 
   //Configuration page
   $items['admin/config/naturalis/ndabio'] = array(
-    'title' => 'NDABIO GMap config',
+    'title' => 'NBA Search Form config',
     'description' => 'Configuration for Naturalis module',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ndabio_config_form'),
@@ -729,9 +729,6 @@ function ndabio_theme ($existing, $type, $theme, $path) {
 }
 
 
-/**
- * DEFINE CUSTOM (BASIC) SEARCH
- */
 
 
 /**

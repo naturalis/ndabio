@@ -51,6 +51,14 @@ function ndabioresults_preprocess_html (&$vars) {
  * Implements hook_menu().
  */
 function ndabioresults_menu () {
+	$items['admin/config/naturalis/ndaresult'] = array(
+	    'title' => 'NBA Results config',
+	    'description' => 'Configuration for Naturalis module',
+	    'page callback' => 'drupal_get_form',
+	    'page arguments' => array('ndabioresults_config_form'),
+	    'access arguments' => array('access administration pages'),
+	    'type' => MENU_NORMAL_ITEM,
+	);
 	$items['result'] = array(
 	    'page callback' => '_nba_general_result_callback',
 	    'load arguments' => array('%map', '%index'),
@@ -887,8 +895,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				// Get NBA path(s) for field
 				$nbaPaths = [$field 
 				];
-				if (isset(nbaFieldMapping()[$lookupService][$field])) {
-					$nbaPaths = nbaFieldMapping()[$lookupService][$field];
+				if (isset(_nbaFieldMapping()[$lookupService][$field])) {
+					$nbaPaths = _nbaFieldMapping()[$lookupService][$field];
 				}
 				if ($useNameResolution && isset(nbaNameResolutionFieldMapping()[$lookupService][$field])) {
 					$nbaPaths = array_merge($nbaPaths, nbaNameResolutionFieldMapping()[$lookupService][$field]);
@@ -1355,7 +1363,7 @@ function _nba_specimen_result_callback ($search = false) {
 
 
 function _getSearchPaths ($service) {
-	$data = nbaFieldMapping()[_normaliseServiceName($service)];
+	$data = _nbaFieldMapping()[_normaliseServiceName($service)];
 	foreach ($data as $term => $paths) {
 		foreach ($paths as $i => $path) {
 			$result[$path] = $term . $i;
@@ -1731,7 +1739,7 @@ function _nbaAdvancedSearch () {
 function _allTermsExistInMultimediaService ($terms) {
 	foreach ($terms as $field => $value) {
 		if (!in_array($field, searchFlags())) {
-			if (!isset(nbaFieldMapping()['multimedia'][$field])) {
+			if (!isset(_nbaFieldMapping()['multimedia'][$field])) {
 				return false;
 			}
 		}
@@ -2007,9 +2015,9 @@ function _getPaginatorOffset ($service) {
 
 function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
 	$service = _normaliseServiceName($service);
-	if (isset(nbaFieldMapping()[$service])) {
+	if (isset(_nbaFieldMapping()[$service])) {
 		// Remove gid and search from mapping
-		$mapping = array_diff_key(nbaFieldMapping()[$service], 
+		$mapping = array_diff_key(_nbaFieldMapping()[$service], 
 			array_flip(['gid', 'term']));
 		// Remove search from additional terms
 		if (isset($additionalTerms['term'])) {

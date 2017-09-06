@@ -1,7 +1,4 @@
 <?php
-
-
-
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
@@ -139,12 +136,10 @@ function ndabioresults_config_form ($form, &$form_state) {
  */
 function ndabioresults_admin_settings_submit ($form, &$form_state) {
   $baseurl = $form_state['values']['ndabioresults_config_baseurl'];
-
   $nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
   $handle = fopen($nbabasefile, "w");
   fwrite($handle, $baseurl . "\n");
   fclose($handle);
-
   drupal_set_message(t('NBA base URL saved to text file:') . ' ' . $nbabasefile, 'status');
   return system_settings_form($form);
 }
@@ -243,15 +238,9 @@ function nbaDebugEncoded () {
 
 
 
-/**
- * Constant: order of search results output
- *
- * Determines print order of search result, currently
- * multimedia, taxon, specimen.
- *
- * @return array
- */
-function resultOrder () {
+
+
+function _searchServices () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
@@ -263,55 +252,7 @@ function resultOrder () {
     return $var;
 }
 
-
-/**
- * Mapping function: maps service to parse/print functions
- *
- * Each service response is handled by distinct parse and
- * print functions. This function provides the mapping.
- *
- * @return array Names of parse and print function for the service of choice
- */
-function serviceToFunctions () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = array(
-        	'taxon' => array(
-        		'parse' => 'parseTaxa',
-        		'print' => 'printTaxa',
-        	    'info' => 'results taxa',
-        	    'method' => 'get'
-        	),
-            'multimedia' => array(
-        		'parse' => 'parseMultimedia',
-        		'print' => 'printMultimedia',
-        	    'info' => 'results multimedia',
-        	    'method' => 'post'
-        	),
-        	'specimen' => array(
-        		'parse' => 'parseSpecimens',
-        		'print' => 'printSpecimens',
-        	    'info' => 'results specimens',
-        	    'method' => 'post'
-        	),
-        );
-    }
-    return $var;
-}
-
-function searchServices () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-         $var = array(
-        	'multimedia',
-        	'taxon',
-        	'specimen',
-        );
-    }
-    return $var;
-}
-
-function nbaFieldMapping () {
+function _nbaFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
