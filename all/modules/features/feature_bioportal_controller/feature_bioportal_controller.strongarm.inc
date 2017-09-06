@@ -83,21 +83,21 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_baseurl';
-  $strongarm->value = 'http://145.136.242.167:8080/v2';
+  $strongarm->value = 'http://145.136.240.252:30076/v2';
   $export['ndabioresults_config_baseurl'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_debug';
-  $strongarm->value = 1;
+  $strongarm->value = '1';
   $export['ndabioresults_config_debug'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_debug_encoded';
-  $strongarm->value = 0;
+  $strongarm->value = '1';
   $export['ndabioresults_config_debug_encoded'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -118,14 +118,14 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_initialmaxgroupresults';
-  $strongarm->value = 10;
+  $strongarm->value = '10';
   $export['ndabioresults_config_initialmaxgroupresults'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_initialmaxresults';
-  $strongarm->value = 10;
+  $strongarm->value = '10';
   $export['ndabioresults_config_initialmaxresults'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -146,14 +146,14 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_maxpagesinpaginator';
-  $strongarm->value = 20;
+  $strongarm->value = '20';
   $export['ndabioresults_config_maxpagesinpaginator'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_maxresults';
-  $strongarm->value = 100;
+  $strongarm->value = '100';
   $export['ndabioresults_config_maxresults'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -216,7 +216,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_timeout';
-  $strongarm->value = 30;
+  $strongarm->value = '30';
   $export['ndabioresults_config_timeout'] = $strongarm;
 
   $strongarm = new stdClass();

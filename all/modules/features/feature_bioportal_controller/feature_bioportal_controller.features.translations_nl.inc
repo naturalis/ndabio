@@ -3418,6 +3418,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Failed to connect to the server. The server reports the following message: !message For more help installing or updating code on your server, see the <a href="@handbook_url">handbook</a>.', array(), array('context' => ''));
+  $translations['nl:default']['1485480734e09f6e232e8ede93805493'] = array(
+    'source' => 'Sorry, the',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=laridae&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&op=Search&form_build_id=form-i5RdmDOoC59Ax8SjBJEj4ZEFSV7wiBiQPs5XDXY4IlM&form_token=eImm-sEisdEoopOAJl7I9OkEYAG-Qm2JQDH0trcB8Ik&form_id=ndabio_advanced_taxonomysearch&language=nl&back',
+    'translation' => 'Sorry, de',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Sorry, the', array(), array('context' => ''));
   $translations['nl:default']['1493f5cc82f60661349bfa84fba0b92e'] = array(
     'source' => 'Defines a file field type.',
     'context' => '',
@@ -24914,6 +24923,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Updated field %label field settings.', array(), array('context' => ''));
+  $translations['nl:default']['8d7fb1c7c65f0d119eaa630106bda157'] = array(
+    'source' => 'Please modify your search',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&--more--=&--more--=&--more--=&--more--=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&--more--=&--more--=&--more--=&--more--=&--more--=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&--more--=&--more--=&--more--=&--more--=&op=Zoeken&form_build_id=form-Uu8syir_2JEEGN98WBZWy-xEfa418b0uBRKCLmoVjho&form_token=m3f0xvdpRPpAUYZwLYwAas4N-GHoKTcHrS9-uiRF-24&form_id=ndabio_advanced_taxonomysearch&gid=&location=&category=&geoShape=',
+    'translation' => 'Pas AUB uw zoekopdracht aan',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Please modify your search', array(), array('context' => ''));
   $translations['nl:default']['8d842d3193b5335e5733964d44b2c445'] = array(
     'source' => 'Filter log messages',
     'context' => '',
@@ -29805,7 +29823,7 @@ password: Your password
     'source' => 'Back to home page',
     'context' => '',
     'location' => '/nba/result?language=nl',
-    'translation' => 'Terug naar startpagina',
+    'translation' => 'Terug naar de startpagina',
     'plid' => 0,
     'plural' => 0,
   );
@@ -37754,6 +37772,15 @@ This link can only be used once to log in and will lead you to a page where you 
     'plural' => 0,
   );
   $translatables[] = t('No specimens', array(), array('context' => ''));
+  $translations['nl:default']['d35e91a4e1e7bae2aaaa0079cbac6846'] = array(
+    'source' => 'query timed out after',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=dfgsdfgsdfgsdfgsdfg&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&op=Zoeken&form_build_id=form-ALjPLS-eYr5Yfzl27FzbZMvn8DXqjnEsNSE5OrzbUuY&form_token=haTpUEFIxBiDiK8jC__WmmPNnHA8WetUObPljWOyTQI&form_id=ndabio_advanced_taxonomysearch',
+    'translation' => 'zoekopdracht is afgebroken omdat deze langer duurde dan',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('query timed out after', array(), array('context' => ''));
   $translations['nl:default']['d36074cb21665127a4792a2e506ef93d'] = array(
     'source' => 'All pages except those listed',
     'context' => '',
