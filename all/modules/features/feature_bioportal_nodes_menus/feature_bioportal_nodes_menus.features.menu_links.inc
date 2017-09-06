@@ -799,6 +799,50 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'language' => 'nl',
     'menu_links_customized' => 1,
   );
+  // Exported menu link: menu-naturalis-help-menu_help:node/2.
+  $menu_links['menu-naturalis-help-menu_help:node/2'] = array(
+    'menu_name' => 'menu-naturalis-help-menu',
+    'link_path' => 'node/2',
+    'router_path' => 'node/%',
+    'link_title' => 'Help',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'menu-naturalis-help-menu_help:node/2',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'und',
+    'menu_links_customized' => 1,
+  );
+  // Exported menu link: menu-naturalis-help-menu_help:node/3765.
+  $menu_links['menu-naturalis-help-menu_help:node/3765'] = array(
+    'menu_name' => 'menu-naturalis-help-menu',
+    'link_path' => 'node/3765',
+    'router_path' => 'node/%',
+    'link_title' => 'Help',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'menu-naturalis-help-menu_help:node/3765',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => 0,
+    'customized' => 1,
+    'language' => 'und',
+    'menu_links_customized' => 1,
+  );
   // Exported menu link: menu-naturalis-language-menu_en:<front>.
   $menu_links['menu-naturalis-language-menu_en:<front>'] = array(
     'menu_name' => 'menu-naturalis-language-menu',
@@ -1001,6 +1045,7 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
   t('EN');
   t('Explore highlights');
   t('Extinct birds');
+  t('Help');
   t('Jongmans collection');
   t('Jongmanscollectie');
   t('Mammoetcollectie');

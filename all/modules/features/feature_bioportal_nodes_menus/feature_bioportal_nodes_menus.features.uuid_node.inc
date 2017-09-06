@@ -189,41 +189,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'Datasets',
-  'log' => '',
-  'status' => 1,
-  'comment' => 0,
-  'promote' => 0,
-  'sticky' => 0,
-  'ds_switch' => '',
-  'type' => 'naturalis_page',
-  'language' => 'nl',
-  'created' => 1493645348,
-  'tnid' => 3790,
-  'translate' => 0,
-  'uuid' => '35464bbb-597f-4d33-97f5-be398cc7dec5',
-  'body' => array(
-    'und' => array(
-      0 => array(
-        'value' => '<p>De volgende data sets zijn beschikbaar:</p>
-
-<?php 
-echo getNbaData();
-?>',
-        'summary' => '',
-        'format' => 'php_code',
-      ),
-    ),
-  ),
-  'field_file' => array(),
-  'path' => array(
-    'pathauto' => 0,
-  ),
-  'pathauto_perform_alias' => FALSE,
-  'date' => '2017-05-01 13:29:08 +0000',
-  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
-);
-  $nodes[] = array(
   'title' => 'Arts Collection',
   'log' => '',
   'status' => 1,

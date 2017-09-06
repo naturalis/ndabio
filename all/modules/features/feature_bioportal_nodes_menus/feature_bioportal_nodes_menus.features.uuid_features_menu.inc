@@ -608,26 +608,6 @@ function feature_bioportal_nodes_menus_menu_default_uuid_features_menu() {
     'uuid' => '984066d7-dfe9-4fda-97cb-c095e0b47478',
     'parent_uuid' => '8d4937b3-c429-4345-8140-6f09b7512199',
   );
-  // Exported menu link: 99cbc1f2-d29e-499a-b3ca-e72388d0da2a
-  $menu_uuid_links['99cbc1f2-d29e-499a-b3ca-e72388d0da2a'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/help',
-    'router_path' => 'admin/help',
-    'link_title' => 'Help',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Reference for usage, configuration, and modules.',
-      ),
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 9,
-    'uuid' => '99cbc1f2-d29e-499a-b3ca-e72388d0da2a',
-    'parent_uuid' => 'dcf4cd2d-a8c4-4ad5-b21a-f15bfe7d3964',
-  );
   // Exported menu link: ad90c2e0-a764-42cf-a677-91de3260c9b4
   $menu_uuid_links['ad90c2e0-a764-42cf-a677-91de3260c9b4'] = array(
     'menu_name' => 'menu-naturalis-service-menu',
@@ -900,26 +880,6 @@ function feature_bioportal_nodes_menus_menu_default_uuid_features_menu() {
     'weight' => 0,
     'uuid' => 'd67e98d5-05cb-4a4e-bf23-2e2cad1fdc9c',
   );
-  // Exported menu link: db8a6bec-dba3-4c6b-a8bc-446606f445f5
-  $menu_uuid_links['db8a6bec-dba3-4c6b-a8bc-446606f445f5'] = array(
-    'menu_name' => 'management',
-    'link_path' => 'admin/reports/views-plugins',
-    'router_path' => 'admin/reports/views-plugins',
-    'link_title' => 'Views plugins',
-    'options' => array(
-      'attributes' => array(
-        'title' => 'Overview of plugins used in all views.',
-      ),
-    ),
-    'module' => 'system',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => 0,
-    'uuid' => 'db8a6bec-dba3-4c6b-a8bc-446606f445f5',
-    'parent_uuid' => '0d641b0a-250c-409a-adee-78328e8fca97',
-  );
   // Exported menu link: e1665b85-a93a-4c93-b81e-0b0e39a4b261
   $menu_uuid_links['e1665b85-a93a-4c93-b81e-0b0e39a4b261'] = array(
     'menu_name' => 'menu-naturalis-externe-links',
@@ -1041,7 +1001,6 @@ function feature_bioportal_nodes_menus_menu_default_uuid_features_menu() {
   t('Timor collection');
   t('Timorcollectie');
   t('Uitgestorven vogels');
-  t('Views plugins');
 
   return $menu_uuid_links;
 }
