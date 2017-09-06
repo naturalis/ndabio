@@ -828,8 +828,59 @@ function _printMultimedia ($data) {
  * @param int $i Offset
  * @return string Formatted output
  */
-function _printSpecimenCollection ($row, $i) {
+function _printSpecimenCollection ($data, $i) {
 	$output = '';
+	
+	foreach ($data['specimens'] as $j => $row) {
+		// Specimen collection/set
+		if (isset($row['set'])) {
+				foreach ($row['set'] as $set => $specimens) {
+				$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
+					$set . "</td>" . _padTds(4) . "</tr>";
+				foreach ($specimens as $k => $specimen) {
+					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$k' data-parent='taxon-$i-collection'>" . 
+						"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+					if (!empty(_printHits($specimen))) {
+						$output .= "<tr class='indent-2' id='taxon-$i-specimen-$k' data-parent='taxon-$i-collection'>\n" .
+							"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
+					}
+				}
+			}
+		// Single specimen
+		} else {
+			$info = implode('; ', array_filter([
+				ucfirst($row['kindOfUnit']),
+				$row['preparationType']
+			]));
+			$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
+				"<td><a href='" . $row['url'] . "'>" . $row['unitID'] . "</a></td>\n" .
+				"<td colspan='2'>$info</td><td colspan='2'>" . $row['collectionType'] . "</td>\n" .
+				"</tr>\n";
+			if (!empty(_printHits($row))) {
+				$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
+					"<td colspan='4'>" . _printHits($row) . "</td>\n</tr>\n";
+			}
+		}
+	}
+	
+/*	
+	// Specimen collection/set
+	if (isset($row['sets'])) {
+		foreach ($row['sets'] as $set => $specimens) {
+			$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
+				$set . "</td>" . _padTds(4) . "</tr>";
+			foreach ($specimens as $j => $specimen) {
+				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" . 
+					"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+					"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+				if (!empty(_printHits($specimen))) {
+					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>\n" .
+						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
+				}
+			}
+		}
+	}
 	// Single specimen
 	if (isset($row['specimens'])) {
 		foreach ($row['specimens'] as $j => $specimen) {
@@ -846,27 +897,14 @@ function _printSpecimenCollection ($row, $i) {
 					"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
 			}
 		}
-		
-		// Specimen collection/set
-	} else if (isset($row['sets'])) {
-		foreach ($row['sets'] as $set => $specimens) {
-			$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
-				$set . "</td>" . padTds(4) . "</tr>";
-			foreach ($specimens as $j => $specimen) {
-				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" . 
-					"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-					"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
-				if (!empty(_printHits($specimen))) {
-					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>\n" .
-						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
-				}
-			}
-		}
-	}
-	if (!empty($row['allLink'])) {
+	} 
+	*/
+	
+	
+	if (!empty($data['allLink'])) {
 		$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
-		'<a href="' . $row['allLink'] . '">' . t('All') . ' ' .
-		_formatNumber($row['count']) . ' ' . t('specimens') . '...</a></td>' . padTds(4) . "</tr>\n";
+		'<a href="' . $data['allLink'] . '">' . t('All') . ' ' .
+		_formatNumber($data['count']) . ' ' . t('specimens') . '...</a></td>' . _padTds(4) . "</tr>\n";
 	}
 	return $output;
 }
@@ -1327,10 +1365,6 @@ function _printSpecimensTaxon ($data) {
 		return false;
 	}
 	
-	if (isset($data['_showMap'])) {
-		return printSpecimensByMap($data);
-	}
-	
  	// Drupal title empty; page title custom
 	$headTitle = t('Search results');
 	$nameSortFlag = 'identifications.scientificName.fullScientificName';
@@ -1451,7 +1485,59 @@ function _printSpecimensSingleTaxon ($data) {
 		'<table id="specimensBySingleTaxon"><thead>%s</thead>', _printHeaders($headers)
 	);
 	
-	foreach ($data['results'] as $i => $row) {
+//p($data['results']);
+	
+	foreach ($data['results'] as $i => $result) {
+		foreach ($result['specimens'] as $row) {
+			// Specimen collection/set
+			if (isset($row['set'])) {
+				foreach ($row['set'] as $set => $specimens) {
+					$output .= "<tr><td>" . $set . "</td>" . _padTds(4) . "</tr>";
+					foreach ($specimens as $specimen) {
+						$output .= "<tr class='indent'>" . 
+							"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . 
+							$specimen['unitID'] . "</a></td>" .
+							"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+						if (!empty(_printHits($specimen))) {
+							$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . 
+							_printHits($specimen) . "</td>\n</tr>\n";
+						}
+					}
+				}
+			// Single specimen
+			} else {
+				$info = implode('; ', array_filter([
+					ucfirst($row['kindOfUnit']),
+					$row['preparationType']
+				]));
+				$output .= "<tr>\n" .
+					"<td><a href='" . $row['url'] . "'>" . $row['unitID'] . "</a></td>\n" .
+					"<td colspan='2'>$info</td><td colspan='2'>" . $row['collectionType'] . "</td>\n" .
+					"</tr>\n";
+				if (!empty(_printHits($row))) {
+					$output .= "<tr>\n" .
+						"<td colspan='4'>" . _printHits($row) . "</td>\n</tr>\n";
+				}
+			}
+		}
+		
+		
+/*		
+		// Specimen collection/set
+		if (isset($row['sets'])) {
+			foreach ($row['sets'] as $set => $specimens) {
+				$output .= "<tr><td>" . $set . "</td>" . _padTds(4) . "</tr>";
+				foreach ($specimens as $j => $specimen) {
+					$output .= "<tr class='indent'>" . 
+						"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
+						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+					if (!empty(_printHits($specimen))) {
+						$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . _printHits($specimen) . 
+							"</td>\n</tr>\n";
+					}
+				}
+			}
+		}
 		// Single specimen
 		if (isset($row['specimens'])) {
 			foreach ($row['specimens'] as $j => $specimen) {
@@ -1463,26 +1549,15 @@ function _printSpecimensSingleTaxon ($data) {
 					"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
 					"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
 					"</tr>\n";
-				if (!empty($specimen['hits'])) {
+				if (!empty(_printHits($specimen))) {
 					$output .= "<tr>\n" .
 						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
 				}
 			}
-		// Specimen collection/set
-		} else if (isset($row['sets'])) {
-			foreach ($row['sets'] as $set => $specimens) {
-				$output .= "<tr><td>" . $set . "</td>" . padTds(4) . "</tr>";
-				foreach ($specimens as $j => $specimen) {
-					$output .= "<tr class='indent'>" . 
-						"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
-					if (!empty($specimen['hits'])) {
-						$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . _printHits($specimen) . 
-							"</td>\n</tr>\n";
-					}
-				}
-			}
 		}
+		
+		
+		*/
 	}
 	
 	$output .= "</table>";
@@ -1556,7 +1631,7 @@ function printSpecimensBySingleGroup ($data) {
         // Specimen collection/set
         } else if (isset($row['sets'])) {
             foreach ($row['sets'] as $set => $specimens) {
-            	$output .= "<tr><td>" . $set . "</td>" . padTds(4) . "</tr>";
+            	$output .= "<tr><td>" . $set . "</td>" . _padTds(4) . "</tr>";
             	foreach ($specimens as $j => $specimen) {
             	    $output .= "<tr class='indent-1'>
             	    <td><a href='" . printDrupalLink($specimen['url']) . "'>"  . $specimen['unitID'] . "</a></td>
@@ -2268,7 +2343,7 @@ function printNoResults () {
  * @param int $i How many tds should be padded?
  * @return string|void
  */
-function padTds ($i) {
+function _padTds ($i) {
 	if ((int)$i > 0) {
 		return "<td colspan='$i'></td>";
 	}

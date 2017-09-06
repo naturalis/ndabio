@@ -966,8 +966,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	$timer = _setTimer();
 	
 	// Default sort is not score, must be set explicitly!
-	$sortExtension = !array_key_exists('groupSort', _getQueryTerms($service)) ? 
-		'&groupSort=name_asc' : '';
+	$sortExtension = array_key_exists('groupSort', _getQueryTerms($service)) ? 
+		'&groupSort=' . _getQueryTerms($service)['groupSort'] : '';
 	$output['total'] = $data->totalSize;
 //_getSpecimenDetails($data);
 //p($data);
@@ -1009,8 +1009,8 @@ function _parseSpecimensTaxon ($data, $options = []) {
 				$d['nonAcceptedNames'] = 
 					_appendNonAcceptedNames($d['nonAcceptedNames'], $specimen, $row->item->name);
 			}
-			!isset($specimen->assemblageID) ? $d['specimens'][] = $s :
-				$d['sets'][_formatAssemblageId($specimen->assemblageID)][] = $s;
+			!isset($specimen->assemblageID) ? $d['specimens'][$i] = $s :
+				$d['sets'][_formatAssemblageId($specimen->assemblageID)][$i] = $s;
 		}
 		$d['fullScientificName'] = _setSpecimenScientificName($d);
 		
@@ -1021,13 +1021,23 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
 			safe_http_build_query($terms) . $sortExtension : null;
 		
-		// No use for nameHits anymore; discard
-		unset($d['nameHits']);
 		$d['mapUrl'] = null;
 		if (_isGeoSearch()) {
 			$d['mapUrl'] = _setBasePath() . 'result/specimen/map/' . 
 				urlencode($row->item->name) . '/' . safe_http_build_query(_getQueryTerms($service));
 		}
+		
+		// BIOPORVTWO-313: merge sets into specimen array
+		if (isset($d['sets'])) {
+			foreach ($d['sets'] as $assemblageId => $set) {
+				$d['specimens'][key($set)]['set'][$assemblageId] = $d['sets'][$assemblageId];
+			}
+			ksort($d['specimens']);
+		}
+		
+		// No use for nameHits and sets anymore; discard
+		unset($d['nameHits'], $d['sets']);
+		
 		$output['results'][] = $d;
 	}
 	
