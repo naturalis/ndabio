@@ -830,7 +830,7 @@ function _printMultimedia ($data) {
  */
 function _printSpecimenCollection ($data, $i) {
 	$output = '';
-	
+p($data);	
 	foreach ($data['specimens'] as $j => $row) {
 		// Specimen collection/set
 		if (isset($row['set'])) {
@@ -840,7 +840,8 @@ function _printSpecimenCollection ($data, $i) {
 				foreach ($specimens as $k => $specimen) {
 					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$k' data-parent='taxon-$i-collection'>" . 
 						"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+						"<td colspan='2'>" . $specimen['recordBasis'] . "</td>" .
+						"<td colspan='2'>" . $specimen['collectionType'] . "</td></tr>\n"; 
 					if (!empty(_printHits($specimen))) {
 						$output .= "<tr class='indent-2' id='taxon-$i-specimen-$k' data-parent='taxon-$i-collection'>\n" .
 							"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
@@ -1497,10 +1498,12 @@ function _printSpecimensSingleTaxon ($data) {
 						$output .= "<tr class='indent'>" . 
 							"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . 
 							$specimen['unitID'] . "</a></td>" .
-							"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
+							"<td colspan='2'>" . $specimen['recordBasis'] . "</td>" .
+							"<td colspan='2'>" . $specimen['collectionType'] . "</td></tr>\n"; 
 						if (!empty(_printHits($specimen))) {
-							$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . 
-							_printHits($specimen) . "</td>\n</tr>\n";
+							$output .= "<tr class='indent'>\n" .
+								"<td style='padding-left: 3em;' colspan='4'>" . 
+								_printHits($specimen) . "</td>\n</tr>\n";
 						}
 					}
 				}
