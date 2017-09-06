@@ -830,7 +830,7 @@ function _printMultimedia ($data) {
  */
 function _printSpecimenCollection ($data, $i) {
 	$output = '';
-p($data);	
+//p($data);	
 	foreach ($data['specimens'] as $j => $row) {
 		// Specimen collection/set
 		if (isset($row['set'])) {
