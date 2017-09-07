@@ -1569,3 +1569,46 @@ function _getGatheringEventSpecimens ($event = []) {
 	}
 	return isset($d) ? $d : null;
 }
+
+
+
+/**
+ * Translates decimal coordinate pair to DMS
+ *
+ * Adapted from
+ * https://www.dougv.com/2012/03/converting-latitude-and-longitude-coordinates-between-decimal-and-degrees-minutes-seconds/
+ *
+ * Takes decimal coordinates and return degree, minute, second notation. Original function only
+ * accepted single parameter; adapted to take both latitude and longitude immediately
+ *
+ * @param Decimal $lat Latitude
+ * @param Decimal $lon Longitude
+ * @return string Latitude, longitude
+ */
+function _decimalToDMS ($lat, $lon) {
+     $coordinates = array(
+        'lat' => $lat,
+        'lon' => $lon
+     );
+     foreach ($coordinates as $type => $decimal) {
+        if (!is_numeric($decimal) || abs($decimal) > 180) {
+            return false;
+        }
+        if ($type == 'lat' && $decimal < 0) {
+              $direction = t('S');
+        } else if ($type == 'lon' && $decimal < 0) {
+          $direction = 'W';
+        } else if ($type == 'lon') {
+          $direction = t('E');
+        } else {
+          $direction = 'N';
+        }
+        $d = abs($decimal);
+        $degrees = floor($d);
+        $seconds = ($d - $degrees) * 3600;
+        $minutes = floor($seconds / 60);
+        $seconds = floor($seconds - ($minutes * 60));
+        $output[$type] = $degrees . '&deg;' . $minutes . "'" . $seconds . '"' . $direction;
+     }
+     return isset($output) && count($output) == 2 ? implode(', ', $output) : false;
+}

@@ -66,7 +66,7 @@ function _printTaxonDetail ($data) {
 	}
     
     // Drupal title empty; page title custom
-    setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
+    _setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
 
     return $output;
 }
@@ -377,7 +377,7 @@ function _printSpecimenDetail ($data) {
                     _printValue(isset($value['localityText']) ? $value['localityText'] : ''));
 
 			    $coordinates = isset($value['siteCoordinates']) && !empty($value['siteCoordinates']) ?
-                    decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
+                    _decimalToDMS($value['siteCoordinates']['lat'], $value['siteCoordinates']['lon']) .
                         ' (= ' . $value['siteCoordinates']['lat'] . ', ' .
                         $value['siteCoordinates']['lon'] . ')' :
                         '';
@@ -397,13 +397,25 @@ function _printSpecimenDetail ($data) {
 	}
 	// Other specimens in collection/set are printed in different table
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
+ 		$output .= "</div>\n<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>";
+ 		foreach ($data['otherSpecimens'] as $i => $specimen) {
+			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
+			$output .= '<dd>' . $specimen['collectionType'] . '</dd></dl>';
+		}
+
+
+/*		
+		
 		$output .= "</div>" .
-			"<div class='property-list'>";
-		$output .= _printNamesWithLinks($data['otherSpecimens'], 'otherSpecimens');
+			"<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>";
+		$output .= _printNamesWithLinks($data['otherSpecimens'], '');
+		*/
 	}
 	$output .= "</div>";
 
-	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
+	$output .= ($lat && $lon ? 
+		"<h3>" . t('Map') . "</h3>\n<div id='map-canvas' style='margin-bottom: 3em;'></div>" : 
+		'');
 /*
     $getMultimediaRequest = _nbaBaseUrl() . multimediaService() .
         '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
@@ -946,7 +958,7 @@ function _printHits ($row) {
 			if (_doNotPrintHit($field, $row['hits'])) {
 				continue;
 			}
-			$output .= ucfirst(translateNdaField($field)) . ': ' . $hit . '; ';
+			$output .= ucfirst(_translateNdaField($field)) . ': ' . $hit . '; ';
 		}
 	} else if (isset($row['nameResolutionHits']) && !empty($row['nameResolutionHits'])) {
 		foreach ($row['nameResolutionHits'] as $hit) {
@@ -1068,7 +1080,7 @@ function _printSpecimensSingleTaxon ($data) {
 	// Drupal title empty; page title custom
 	$headTitle = t('Search results');
 	$nameSortFlag = 'identifications.scientificName.fullScientificName';
-	setTitle($headTitle, $headTitle);
+	_setTitle($headTitle, $headTitle);
 	
 	$headers = [
 		'identifications.scientificName.fullScientificName' => [
@@ -1261,7 +1273,7 @@ function _printMultimediaHit ($row) {
             if (isset($replace[$field])) {
                 $field = $replace[$field];
             }
-			$hits[] = ucfirst(translateNdaField($field)) . ': ' . $hit;
+			$hits[] = ucfirst(_translateNdaField($field)) . ': ' . $hit;
 		}
 	} else if (isset($row['nameResolutionHits']) && !empty($row['nameResolutionHits'])) {
 		foreach ($row['nameResolutionHits'] as $hit) {
@@ -1377,7 +1389,7 @@ function _printCommonNames ($data) {
 	        foreach ($d as $lan => $t) {
 			    $i = 0;
 			    foreach ($t as $name) {
-	               $output .= printDL($i == 0 ? t($lan) : '', $name);
+	               $output .= _printDL($i == 0 ? t($lan) : '', $name);
 			    }
 			    $i++;
 			}
@@ -1452,7 +1464,7 @@ function _printClassifications ($data) {
      			    ))) {
                         $name = '<span class="scientific">' . $name . '</span>';
     			    }
-    			    $output .= "<dl><dt>" . ucfirst(translateNdaField($rank)) . "</dt><dd>$name</dd></dl>";
+    			    $output .= "<dl><dt>" . ucfirst(_translateNdaField($rank)) . "</dt><dd>$name</dd></dl>";
     			}
     		}
     		$output .= "</div>";
@@ -1467,6 +1479,100 @@ function _printClassifications ($data) {
     "result-detail-section"
   );
 }
+
+function _printSpecimensTaxon ($data) {
+	global $language;
+	
+//p($data);
+	if (empty($data['results'])) {
+		return false;
+	}
+	
+ 	// Drupal title empty; page title custom
+	$headTitle = t('Search results');
+	$nameSortFlag = 'identifications.scientificName.fullScientificName';
+	_setTitle($headTitle, $headTitle);
+	
+	$headers = [
+		'identifications.scientificName.fullScientificName' => [
+			'label' => t('Name'),
+		],
+		'count' => [
+			'label' => ''
+		],
+		'mapIcon' => [
+			'label' => ''
+		],
+		'foundIn' => [
+			'label' => t('Found in')
+		],
+	];
+	
+	$output = '<div id="specimen"></div>';
+	$output .= sprintf(
+		'<h2 style="margin-bottom: 0;">%s %s %s %s</h2>',
+		($language->language == 'nl' ? 'Soorten' : 'Species'),
+		_wrap('(' . _formatNumber($data['total']) . ')', "span", "count"),
+		t('with specimens'),
+		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
+	);
+	if (!isset($_GET['form_id'])) {
+		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
+			'<a href="' . _resetUrl() . '&service=specimen' . '">' . t('Display by specimen') . "</a></div>\n" . 
+			"<div class='sort-options'>" . _printSortOptions('names.specimens') . "</div>\n</div>\n";
+	}
+	
+	$output .= sprintf(
+		'<table style="margin-top: 20px;" id="specimensByTaxon"><thead>%s</thead>', 
+		_printHeaders($headers)
+	);
+	
+	foreach ($data['results'] as $i => $row) {
+		$output .= "<tr class='indent-0' id='taxon-$i'>";
+		// Name
+		
+		$output .= "<td>" . "<a href='#''>" . $row['fullScientificName'] . "</a> " .
+			(!empty($row['commonNames']) ? '</br>' . 
+			implode(', ', array_keys($row['commonNames'])) : '') . "</td>\n";
+		// Number (and collection type)
+		$output .= "<td>" . _formatNumber($row['count']) . ' ' . 
+			($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>\n";
+		// Map icon
+		
+/*
+		$output .= "<td>" .
+			(isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape']) && 
+				!isset($_GET['noMap']) ?
+			"<a href='" . printDrupalLink(
+				specimenNamesService() . '?_geoShape=[session]&' .
+				'&identifications.scientificName.fullScientificName.raw=' .
+				urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
+			"' class='icon-location'></a>" : '') .
+			"</td>";
+*/			
+		// Set map url in parse	
+		$output .= "<td>" . (!empty($row['mapUrl']) ? "<a href='" . $row['mapUrl'] . 
+			"' class='icon-location'></a>" : '') . "</td>\n";
+		
+		// Source(s)
+		$output .= "<td>" . implode('</br>', $row['sources']) . "</td>\n";
+		// Match
+		//$output .= "<td>" . decorateScore($row['score']) . "</td>";
+		$output .= "</tr>";
+		$output .= _printSpecimenCollection($row, $i);
+	}
+	
+	$output .= "</table>";
+	//$output = _markUp($output);
+	
+	$output .= _printShowAll($data);
+	$output .= _printPaginator($data);
+	
+	return $output;
+}
+
+
+
 
 /**
  * Shorthand function to pad "filler" tds
