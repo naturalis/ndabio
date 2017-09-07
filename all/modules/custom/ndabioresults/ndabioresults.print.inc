@@ -265,7 +265,7 @@ function _printSpecimenDetail ($data) {
     	'notes',
     	'fromCaptivity',
     	'acquiredFrom',
-    	'otherSpecimensInAssemblage',
+    	'otherSpecimens',
     	'associatedTaxa',
 		'id',
 		'totalSize',
@@ -402,14 +402,6 @@ function _printSpecimenDetail ($data) {
 			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
 			$output .= '<dd>' . $specimen['collectionType'] . '</dd></dl>';
 		}
-
-
-/*		
-		
-		$output .= "</div>" .
-			"<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>";
-		$output .= _printNamesWithLinks($data['otherSpecimens'], '');
-		*/
 	}
 	$output .= "</div>";
 
@@ -479,13 +471,6 @@ function _printSpecimensPreview ($data) {
 	}
 	return isset($output) ? $output : null;
 }
-
-
-
-
-
-
-
 
 
 

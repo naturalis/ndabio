@@ -10,7 +10,7 @@ require_once 'ndabioresults.print.inc';
 require_once 'Paginator.php';
 
 // Old code
-require_once 'redundant.inc';
+//require_once 'redundant.inc';
 
 
 // Namespaces not defined in common.inc
