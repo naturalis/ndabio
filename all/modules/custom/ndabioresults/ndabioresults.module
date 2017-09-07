@@ -1482,7 +1482,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 }
 
 
-
+/*
 function _setLanguage () {
     $langs = language_list(); // Note: No argument
     $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
@@ -1490,7 +1490,7 @@ function _setLanguage () {
         variable_set('language_default', $langs[$langcode]);
     }
 }
-
+*/
 
 /**
  * Sets head and (optionally) page title

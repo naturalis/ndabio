@@ -1,22 +1,33 @@
 <?php
-// @TODO: restore caching of NBA field map!
+/**
+ * Helper methods used by both BP modules
+ */
 
-
-
-include("ndabioresults.block.inc");
-
-
-// Make module config globally available
+// Make block and module config globally available
+require_once "ndabioresults.block.inc";
 require_once 'ndabioresults.config.inc';
 
 // Initialize BioPortal client
-// Can't get autoloader to work, problem with namespaces in Drupal 7?
-$clientPath = DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/';
-require_once $clientPath . 'Loader.php';
+require_once DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/Loader.php';
 
 use nl\naturalis\bioportal\Client as Client;
 
+/**
+ * Set language
+ */
+function _setLanguage () {
+    $langs = language_list(); // Note: No argument
+    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
+    if (!empty($langcode)) {
+        variable_set('language_default', $langs[$langcode]);
+    }
+}
 
+/**
+ * Initialise PHP client
+ * 
+ * @return \nl\naturalis\bioportal\Client
+ */
 function _initNbaClient () {
     $client = new Client();
     $client
@@ -25,12 +36,31 @@ function _initNbaClient () {
     return $client;
 }
 
+/**
+ * Initialise PHP client with service (specimen, taxon, or multimedia)
+ * 
+ * @param string $service
+ * @return \nl\naturalis\bioportal\Client
+ */
 function _setNbaClient ($service) {
 	$client = _initNbaClient();
 	$service = _normaliseServiceName($service);
+	// Validate service name
+	if (!in_array($service, $client::$nbaClients)) {
+		_setErrorMessage($service . ' is not a valid NBA service!');
+		return false;
+	}
 	return $client->{$service}();
 }
 
+/**
+ * Normalise service name
+ * 
+ * Changes names.* service to valid NBA service name
+ *   
+ * @param unknown $service
+ * @return string
+ */
 function _normaliseServiceName ($service) {
 	if (strpos($service, '.') !== false) {
 		return array_values(array_slice(explode('.', $service), -1))[0] == 'taxa' ? 
@@ -39,16 +69,37 @@ function _normaliseServiceName ($service) {
 	return $service;
 }
 
+/**
+ * Start timer
+ * 
+ * @return float
+ */
+function _setTimer () {
+	return microtime(true);
+}
+
+/**
+ * End timer and get parsed time in seconds
+ * 
+ * @param float $start Unix timestamp with microseconds
+ * @param number $round precision
+ * @return string
+ */
 function _getTimer ($start, $round = 2) {
 	$time = round((microtime(true) - $start), $round);
 	$time = $time == 0 ? '<0.01' : $time;
 	return $time . 's';
 }
 
-function _setTimer () {
-	return microtime(true);
-}
-
+/**
+ * Valid NBA paths per service, including "optimal operator" per path
+ * 
+ * Dynamically fetched (and cached) valid query paths in the NBA. The so-called
+ * "optimal operator" is set for each path. This is the operator that fetches most
+ * results, so CONTAINS > STARTS_WITH > MATCHES > EQUALS
+ * 
+ * @return array
+ */
 function _nbaFieldTypes () {
     $nbaFieldTypes = &drupal_static(__FUNCTION__);
     if (!$nbaFieldTypes) {
@@ -69,7 +120,12 @@ function _nbaFieldTypes () {
     return $nbaFieldTypes;
 }
 
-/* Meer dan geo_shape en keyword hebben we voorlopig niet */
+/**
+ * Determines optimal operators for an NBA service based on NBA field type info
+ * 
+ * @param array $fields
+ * @return array|boolean
+ */
 function _getOptimalOperators ($fields) {
 	foreach ($fields as $path => $field) {
 		if ($field->type == 'geo_shape') {
@@ -87,23 +143,38 @@ function _getOptimalOperators ($fields) {
 	return isset($r) ? $r : false;
 }
 
-
+/**
+ * Split string by space
+ * 
+ * Cleans up empty values and trims chunks
+ * 
+ * @param string $value
+ * @return array|NULL[]
+ */
 function _stringToElements ($value) {
 	return $value != '' ?
 		array_map('trim', array_unique(array_filter(explode(' ', trim($value))))) : [null];	
 }
 
-
-
+/**
+ * Gets distinct values for NBA query path
+ * 
+ * @param string $service
+ * @param string $nbaPath
+ * @return array
+ */
 function _getDistinctValues ($service, $nbaPath) {
-    $client = _initNbaClient();
-    $d = $client->{$service}()->getDistinctValues($nbaPath);
-    unset($client);
-    $values = array_keys(json_decode($d, true));
-    sort($values);
-    return $values;
+    $client = _setNbaClient($service);
+    try {
+	    $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
+	    sort($values);
+	    unset($client);
+	    return $values;
+    } catch (Exception $e) {
+    	_setErrorMessage($e->getMessage());
+    	return false;
+    }
 }
-
 
 /**
  * Converts timestamp in milliseconds to year-month-day
@@ -120,7 +191,7 @@ function _timeStampToDate ($v) {
 
 
 /**
- * Converts timestamp in milliseconds to year-month-day
+ * Converts datetime to year-month-day
  *
  * @param string $v
  * @return string
@@ -139,8 +210,6 @@ function _dateTimeToDate ($v) {
    echo '<pre>'; print_r($a); echo "</pre>\n\n";
 }
 
-
-
 /**
  * Formats string between tags and optionally appends class
  *
@@ -154,6 +223,13 @@ function _wrap ($input, $tag = "div", $class = ""){
 	return "<$tag$class>$input</$tag>";
 }
 
+/**
+ * array_column() for a multi-dimensional array
+ * 
+ * @param array $haystack
+ * @param unknown $needle
+ * @return array
+ */
 function _arrayColumnRecursive (array $haystack, $needle) {
     $found = [];
     array_walk_recursive($haystack, function($value, $key) use (&$found, $needle) {
@@ -164,11 +240,26 @@ function _arrayColumnRecursive (array $haystack, $needle) {
     return $found;
 }
 
-
+/**
+ * Prettify json output
+ * 
+ * @param string $json
+ * @return string
+ */
 function _prettyJson ($json) {
 	return json_encode(json_decode($json), JSON_PRETTY_PRINT);
 }
 
+/**
+ * Add debug message to stack
+ * 
+ * Input can be either simple message string or PHP client or query object. 
+ * In case of the latter, the querySpec is extracted and printed as prettified
+ * json or url-encoded string (can be set in module config).
+ * 
+ * @param string $title
+ * @param string|object $message
+ */
 function _addDebugMessage ($title = false, $message = false) {
 	if ($title && $message) {
 		// QuerySpec/Client is passed; use ->getQuerySpec()
@@ -184,12 +275,24 @@ function _addDebugMessage ($title = false, $message = false) {
 	}
 }
 
+/**
+ * Get debug messages
+ * 
+ * @return array Debug stack
+ */
 function _getDebug () {
 	return $_SESSION['nbaDebug'];
 }
 
-
-
+/**
+ * Checks if NBA version can be used
+ * 
+ * This method should contain the NBA statement(s) that are required for the current version
+ * (in this case 'operator.CONTAINS.min_term_length', which previously was 
+ * 'operator.LIKE.min_term_length'; the latter would return an error).
+ * 
+ * @return boolean|string String in case wrong version is used
+ */
 function _checkNbaVersion () {
 	if (isset($_SESSION['nbaVersionCheck']) && $_SESSION['nbaVersionCheck'] == 'OK') {
 		return true;
@@ -205,12 +308,10 @@ function _checkNbaVersion () {
 		<a href="#overlay=admin/config/naturalis/ndaresult">Modify the NBA base URL setting</a>.</p>';
 }
 
-
-
 /**
  * Sorts associative array based on another associative array
  *
- * From http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
+ * Adapted from http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
  *
  * @param array $array
  * @param array $orderArray
@@ -229,7 +330,6 @@ function _sortArrayByArray ($array, $orderArray) {
     return $ordered + $array;
 }
 
-
 /**
  * Validates json
  *
@@ -238,7 +338,6 @@ function _sortArrayByArray ($array, $orderArray) {
 function _isValidJson ($string) {
 	return is_object(json_decode($string));
 }
-
 
 /**
  * Formats number to English/Dutch systems
@@ -256,7 +355,13 @@ function _formatNumber ($n) {
 	return number_format($n);
 }
 
-
+/**
+ * Prints a fine oops message
+ * 
+ * If any errors have been set these are printed as well
+ * 
+ * @return string
+ */
 function _printOops () {
 	$output = '<h1>' .t('Error'). '!</h1><p>';
 	if (_getErrorMessage()) {
@@ -267,7 +372,14 @@ function _printOops () {
 	return $output;
 }
 
-
+/**
+ * Gets NBA source.name for associated source.code
+ * 
+ * Uses the advanced form that has been set already, very economical!
+ * 
+ * @param unknown $code
+ * @return string|boolean
+ */
 function _getSourceNameBySourceCode ($code) {
 	
 //p(_advancedSelects()); die();
@@ -279,16 +391,26 @@ function _getSourceNameBySourceCode ($code) {
 	return false;
 }
 
+/**
+ * Get error message from stack
+ * 
+ * @return boolean|string
+ */
 function _getErrorMessage () {
 	return isset($_SESSION['nbaErrorMessage']) ? $_SESSION['nbaErrorMessage'] : false;
 }
 
+/**
+ * Add error message to stack
+ */
 function _setErrorMessage ($message) {
 	$_SESSION['nbaErrorMessage'] = $message;
 }
 
 /**
  * Beautifies source output
+ * 
+ * If it makes Maarten van der Velde happy, why not?
  *
  * @param string $string
  * @return string
@@ -312,25 +434,42 @@ function _markUp ($string){
 	return $result;
 }
 
-function _encodeReferrer ($data) {
-	if (is_array($data)) {
-		$data = safe_http_build_query($data);
+/**
+ * Encode terms in url safe string
+ * 
+ * @param string|array $terms
+ * @return string
+ */
+function _encodeReferrer ($terms) {
+	if (is_array($terms)) {
+		$terms = safe_http_build_query($terms);
 	}
- 	return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
+ 	return rtrim(strtr(base64_encode($terms), '+/', '-_'), '='); 
 } 
 
-function _decodeReferrer ($data) { 
-	return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT)); 
+/**
+ * Decode string encoded with _encodeReferrer()
+ * 
+ * @param string $referrer
+ * @return string
+ */
+function _decodeReferrer ($referrer) { 
+	return base64_decode(str_pad(strtr($referrer, '-_', '+/'), strlen($referrer) % 4, '=', STR_PAD_RIGHT)); 
 } 
 
+/**
+ * Gets current url
+ * 
+ * @return string
+ */
 function _getCurrentUrl () {
 	return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http") . 
 		"://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
 }
 
-
 /**
- * Check if a string is JSON.
+ * Check if a string is valid JSON
+ * 
  * @param string
  * @return boolean
  */
@@ -338,10 +477,6 @@ function _isJson ($string) {
   json_decode($string);
   return (json_last_error() == JSON_ERROR_NONE);
 }
-
-
-
-
 
 /**
  * Helper function that parses query string into array
@@ -395,6 +530,14 @@ function safe_parse_str ($source, &$target, $keep = false) {
 	}
 }
 
+/**
+ * Helper alternative to http_build_query that allows for null values
+ * 
+ * http_build_query discards parameters with null values, which is not what we want!
+ * 
+ * @param array $args
+ * @return string
+ */
 function safe_http_build_query ($args) {
 	foreach ($args as $k => $v) {
 		if (is_null($v)) {

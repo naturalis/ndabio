@@ -6,13 +6,6 @@ require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
 
-function ndabio_init () {
-	// Check if proper NBA is used
-	_checkNbaVersion();
-	// Set language (copied from v1, dunno if necessary)
-	_setLanguage();
-}
-
 /**
  * Default value for the GMAP key. Can be overridden in the module config page.
  * <siteroot>/admin/config/naturalis
@@ -20,104 +13,100 @@ function ndabio_init () {
 define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 
 
-function ndabio_boot() {
-  global $language;
-  //Execute on every page, check langauge env.
-  $langs = language_list(); // Note: No argument
-  if (isset($_GET["language"])) {
-    $langcode = $_GET["language"];
-    variable_set('language_default', $langs[$langcode]);
-    $_SESSION["currentlanguage"] = $langcode;
-  }
-  elseif (isset($_SESSION["currentlanguage"])) {
-    $langcode = $_SESSION["currentlanguage"];
-    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
-  }
-  else {
-    $language = $langs['nl'];
-  }
+/**
+ * Bootstrap functions
+ * 
+ * Check for appropriate NBA version and set language
+ */
+function ndabio_init () {
+	// Check if proper NBA is used
+	_checkNbaVersion();
+	_setLanguage();
 }
 
-function ndabio_menu() {
-  $urlAlias = drupal_lookup_path('alias',"nl/help");
-  if($urlAlias == '' ) {
-    $path1['alias'] = "nl/help";
-    $path1['source'] = "node/2";
-    path_save($path1);
-    $nlpath['alias'] = "nl/help";
-    $nlpath['source'] = "node/2";
-    $nlpath['language'] = "nl";
-    path_save($nlpath);
-    $path2['alias'] = "en/help";
-    $path2['source'] = "node/3765";
-    path_save($path2);
-    $enpath['alias'] = "en/help";
-    $enpath['source'] = "node/3765";
-    $enpath['language'] = "en";
-    path_save($enpath);
-  }
-
-  //Configuration page
-  $items['admin/config/naturalis/ndabio'] = array(
-    'title' => 'NBA Search Form config',
-    'description' => 'Configuration for Naturalis module',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ndabio_config_form'),
-    'access arguments' => array('access administration pages'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-
-  $items['search/geosearch'] = array(
-    'page callback' => 'ndabio_displayform',
-    'page arguments' => array('geo'),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['geographic-search'] = array(
-    'page callback' => 'ndabio_displayform',
-    'page arguments' => array('geo'),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['explore/%'] = array(
-    'page callback' => 'ndabio_searchthematic',
-    'page arguments' => array(1),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
-  //Currently used as front page
-  $items['search/advancednda'] = array(
-    'page callback' => 'ndabio_displayform',
-    'access arguments' => array('access content'),
-    'title' => 'Advanced Naturalis Data Search',
-    'type' => MENU_LOCAL_TASK,
-  );
-
-  /*
-   * Page used by javascript to retrieve geo coordinates based on a nid.
-   */
-  $items['naturalis/ajax'] = array(
-   'page callback' => 'ndabio_ajax_callback',
-   'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
-  );
-
-  $items['naturalis/clear_map_data'] = array(
-   'page callback' => 'ndabio_clear_map_data_callback',
-   'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
-  );
-
-  $items['new_areas'] = array(
-    'page callback' => 'nba_areas_callback',
-    'access callback' => TRUE,
-  );
 
 
-  return $items;
+
+
+/**
+ * Drupal defined pages
+ */
+function ndabio_menu () {
+	if (drupal_lookup_path('alias', "nl/help") == '') {
+
+		$path1['alias'] = "nl/help";
+		$path1['source'] = "node/2";
+		path_save($path1);
+		
+		$nlpath['alias'] = "nl/help";
+		$nlpath['source'] = "node/2";
+		$nlpath['language'] = "nl";
+		path_save($nlpath);
+		
+		$path2['alias'] = "en/help";
+		$path2['source'] = "node/3765";
+		path_save($path2);
+		
+		$enpath['alias'] = "en/help";
+		$enpath['source'] = "node/3765";
+		$enpath['language'] = "en";
+    	path_save($enpath);
+	}
+		
+	// Configuration page
+	$items['admin/config/naturalis/ndabio'] = array(
+		'title' => 'NBA Search Form config',
+		'description' => 'Configuration for Naturalis module',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('ndabio_config_form'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM 
+	);
+	$items['search/geosearch'] = array(
+		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['geographic-search'] = array(
+		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['explore/%'] = array(
+		'page callback' => 'ndabio_searchthematic','page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	// Currently used as front page
+	$items['search/advancednda'] = array(
+		'page callback' => 'ndabio_displayform','access arguments' => array('access content'),
+		'title' => 'Advanced Naturalis Data Search',
+		'type' => MENU_LOCAL_TASK 
+	);	
+	// Page used by javascript to retrieve geo coordinates based on a nid
+	$items['naturalis/ajax'] = array(
+		'page callback' => 'ndabio_ajax_callback',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['naturalis/clear_map_data'] = array(
+		'page callback' => 'ndabio_clear_map_data_callback',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['new_areas'] = array(
+		'page callback' => 'nba_areas_callback',
+		'access callback' => TRUE 
+	);
+	return $items;
 }
 
+/**
+ * Prints geo areas
+ * 
+ * @param string $type Area type (country, manucipality, nature)
+ * @return boolean
+ */
 function nba_areas_callback ($type = false) {
     if (!$type) {
         return false;
