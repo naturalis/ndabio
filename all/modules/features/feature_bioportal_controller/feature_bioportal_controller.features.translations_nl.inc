@@ -12214,6 +12214,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('The display option allows users to choose if a file should be shown when viewing the content.', array(), array('context' => ''));
+  $translations['nl:default']['46f3ea056caa3126b91f3f70beea068c'] = array(
+    'source' => 'Map',
+    'context' => '',
+    'location' => '/specimen/L.1220719/gid=1004000%40GEO&logicalOperator=AND&from=3',
+    'translation' => 'Kaart',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Map', array(), array('context' => ''));
   $translations['nl:default']['46f68c623fb3ee5efda4ebf9177d7505'] = array(
     'source' => 'The info file (%info_file) does not define a \'name\' attribute.',
     'context' => '',
@@ -27110,6 +27119,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('If you would like additional text to appear on the site-wide contact page, use a block. You can create and edit blocks on the <a href="@blocks">Blocks administration page</a>.', array(), array('context' => ''));
+  $translations['nl:default']['9916c5802e47cdf24b14dd3d53f555b5'] = array(
+    'source' => 'Other specimens in assemblage',
+    'context' => '',
+    'location' => '/specimen/L.2847339',
+    'translation' => 'Andere specimens in assemblage',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Other specimens in assemblage', array(), array('context' => ''));
   $translations['nl:default']['9943d09eb02873a9f332def1284e3168'] = array(
     'source' => 'Submission form settings',
     'context' => '',
