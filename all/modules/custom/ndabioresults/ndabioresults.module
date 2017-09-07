@@ -23,7 +23,7 @@ use nl\naturalis\bioportal\Filter as Filter;
 function ndabioresults_init () {
 	// Clear previously stored debug info
 	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
-	$_SESSION['nbaDebug']['server'] = nbaBaseUrl();
+	$_SESSION['nbaDebug']['server'] = _nbaBaseUrl();
 	$_SESSION['nbaNameResolutionTaxa'] = null;
 }
 
@@ -648,7 +648,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 
 function _createTaxonSubsectionLink ($object, $resultPath) {
 	$output = _setBasePath() . $resultPath;
-	foreach (scientificNameElementsInItalics() as $field) {
+	foreach (_scientificNameElementsInItalics() as $field) {
 		$value = isset($object->{$field}) ? urlencode($object->{$field}) : null;
 		$output .= $field . '=' . $value . '&' . $field . 'Operator=EQUALS&';
 	}
@@ -891,15 +891,15 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 		foreach ($values as $value) {
 			$statement = [];
 			// Exclude search flags; these will be processed later
-			if (!in_array($field, searchFlags())) {
+			if (!in_array($field, _searchFlags())) {
 				// Get NBA path(s) for field
 				$nbaPaths = [$field 
 				];
 				if (isset(_nbaFieldMapping()[$lookupService][$field])) {
 					$nbaPaths = _nbaFieldMapping()[$lookupService][$field];
 				}
-				if ($useNameResolution && isset(nbaNameResolutionFieldMapping()[$lookupService][$field])) {
-					$nbaPaths = array_merge($nbaPaths, nbaNameResolutionFieldMapping()[$lookupService][$field]);
+				if ($useNameResolution && isset(_nbaNameResolutionFieldMapping()[$lookupService][$field])) {
+					$nbaPaths = array_merge($nbaPaths, _nbaNameResolutionFieldMapping()[$lookupService][$field]);
 				}
 				// Get NBA field type
 				foreach ($nbaPaths as $path) {
@@ -929,8 +929,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						if (_isAdvancedSelect($field)) {
 							$statement[$path] = 'EQUALS_IC';
 							// Exception
-						} else if (isset(nbaAdvancedSearchExceptions()[$lookupService][$field])) {
-							$statement[$path] = nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
+						} else if (isset(_nbaAdvancedSearchExceptions()[$lookupService][$field])) {
+							$statement[$path] = _nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
 						}
 						// Simple search
 					} else {
@@ -946,8 +946,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			
 			// Value: to split or not to split?
 			// Split simple search and specific advanced search fields
-			if ($simpleSearch || (isset(nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
-				nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
+			if ($simpleSearch || (isset(_nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
+				_nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
 				$value = _stringToElements($value);
 			}
 			
@@ -1162,8 +1162,8 @@ function _getOperatorFromMapping ($type, $value) {
 
 function _containsOperatorAllowed ($value = '') {
     return
-        strlen($value) >= nbaMinContainsStringSize() &&
-        strlen($value) <= nbaMaxContainsStringSize();
+        strlen($value) >= _nbaMinContainsStringSize() &&
+        strlen($value) <= _nbaMaxContainsStringSize();
 }
 
 function _nba_taxon_result_callback ($search = false) {
@@ -1185,7 +1185,7 @@ function _nba_taxon_result_callback ($search = false) {
     }
     
 	// Display full set on this page
-	$terms['size'] = maxResults();
+	$terms['size'] = _maxResults();
 	// Save query
 	_setQueryTerms($service, $terms);
 	
@@ -1235,7 +1235,7 @@ function _nba_multimedia_result_callback ($search = false) {
     }
     
 	// Display full set on this page
-	$terms['size'] = maxResults();
+	$terms['size'] = _maxResults();
 	// Save query
 	_setQueryTerms($service, $terms);
 	
@@ -1282,7 +1282,7 @@ function _nba_specimen_result_callback ($search = false) {
     }
     
 	// Display full set on this page
-	$terms['size'] = maxResults();
+	$terms['size'] = _maxResults();
 	// Save query
 	_setQueryTerms($service, $terms);
 	
@@ -1381,7 +1381,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
     $terms = _getQueryTerms($service, $search);
 	// Display full set on this page
-	$terms['size'] = maxResults();
+	$terms['size'] = _maxResults();
 	// Save query
 	_setQueryTerms($service, $terms);
     
@@ -1406,7 +1406,7 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$query
 		->setGroupFilter($filter)
 		->setSpecimensFrom($specimensFrom)
-		->setSpecimensSize(maxResults());
+		->setSpecimensSize(_maxResults());
 		
 	// Store query in case user wants to print it on screen
 	_addDebugMessage('specimens of ' . ucfirst($scientificNameGroup), $query);
@@ -1440,7 +1440,7 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	$client = _setNbaClient($service);
 	
     $terms = _getQueryTerms($service, $search);
-    $size = isset($terms['size']) ? $terms['size'] : maxResults();
+    $size = isset($terms['size']) ? $terms['size'] : _maxResults();
     unset($terms['size'], $terms['from']);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
@@ -1612,7 +1612,7 @@ function _nbaAdvancedSearch () {
             // Init client
             $client = _setNbaClient($service);
         	// Cap results
-            $terms['size'] = maxResultsInitial();
+            $terms['size'] = _maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
             // defaults to score for others.
         	if ($service == 'names.specimens' && !isset($terms['groupSort'])) {
@@ -1640,7 +1640,7 @@ function _nbaAdvancedSearch () {
 			
 			$timerEnd = _getTimer($timer);
 			
-            if ($timerEnd > nbaTimeout()) {
+            if ($timerEnd > _nbaTimeout()) {
             	$timeOuts[$service] = $timerEnd;
             }
 
@@ -1738,7 +1738,7 @@ function _nbaAdvancedSearch () {
 
 function _allTermsExistInMultimediaService ($terms) {
 	foreach ($terms as $field => $value) {
-		if (!in_array($field, searchFlags())) {
+		if (!in_array($field, _searchFlags())) {
 			if (!isset(_nbaFieldMapping()['multimedia'][$field])) {
 				return false;
 			}
@@ -1957,7 +1957,7 @@ function _termsToQuerySpec ($service, $terms) {
 }
 
 function _getSearchTerms (array $terms) {
-	foreach (searchFlags() as $flag) {
+	foreach (_searchFlags() as $flag) {
 		if (isset($terms[$flag])) {
 			unset($terms[$flag]);
 		}
@@ -1972,8 +1972,8 @@ function _getQueryPaths ($service) {
 }
 
 function _getPaginator ($service, $total, $from) {
-	$offset = $from / maxResults() + 1;
-	$paginator = new Paginator($total, maxResults(), $offset, _setPaginatorUrl());
+	$offset = $from / _maxResults() + 1;
+	$paginator = new Paginator($total, _maxResults(), $offset, _setPaginatorUrl());
 	return $paginator->toHtml();
 }
 
@@ -2035,7 +2035,7 @@ function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
 
 function _localityInNba ($locality) {
 	$locality = ucfirst($locality);
-	$nbaAreas = (array) json_decode(nbaGeoAreas(), true);
+	$nbaAreas = (array) json_decode(_nbaGeoAreas(), true);
 	$suffices = [
 		'Landschap Noord-Holland',
 		'Staatsbosbeheer',
@@ -2125,7 +2125,7 @@ function _nbaSimpleSearch () {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setNbaClient($service);
     	// Cap results
-		$terms['size'] = maxResultsInitial();
+		$terms['size'] = _maxResultsInitial();
 		// Build QuerySpec; use name resolution
 		$query = _buildNbaQuery($service, $terms, $useNameResolution);
 		// Trim specimens from taxon query
@@ -2177,7 +2177,7 @@ function _nbaSimpleSearch () {
 		
 	$timerEnd = _getTimer($timer);
 	
-	if ($timerEnd > nbaTimeout()) {
+	if ($timerEnd > _nbaTimeout()) {
 		$timeOuts[] = $timerEnd;
 	}
 	
@@ -2250,7 +2250,7 @@ function _nbaThemeSearch () {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setNbaClient($service);
     	// Cap results
-		$terms['size'] = maxResultsInitial();
+		$terms['size'] = _maxResultsInitial();
 		
 		// Set default sort
 		if ($service == 'names.specimens' || $service == 'multimedia') {
@@ -2548,7 +2548,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
  */
 function _countSearchParameters ($d) {
     foreach ($d as $k => $v) {
-        if (in_array($k, searchFlags())) {
+        if (in_array($k, _searchFlags())) {
             unset($d[$k]);
         }
     }

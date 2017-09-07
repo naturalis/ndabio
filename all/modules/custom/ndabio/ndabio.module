@@ -13,8 +13,293 @@ function ndabio_init () {
 	_setLanguage();
 }
 
+/**
+ * Default value for the GMAP key. Can be overridden in the module config page.
+ * <siteroot>/admin/config/naturalis
+ */
+define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 
-function nbaMinContainsStringSize () {
+
+function ndabio_boot() {
+  global $language;
+  //Execute on every page, check langauge env.
+  $langs = language_list(); // Note: No argument
+  if (isset($_GET["language"])) {
+    $langcode = $_GET["language"];
+    variable_set('language_default', $langs[$langcode]);
+    $_SESSION["currentlanguage"] = $langcode;
+  }
+  elseif (isset($_SESSION["currentlanguage"])) {
+    $langcode = $_SESSION["currentlanguage"];
+    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
+  }
+  else {
+    $language = $langs['nl'];
+  }
+}
+
+function ndabio_menu() {
+  $urlAlias = drupal_lookup_path('alias',"nl/help");
+  if($urlAlias == '' ) {
+    $path1['alias'] = "nl/help";
+    $path1['source'] = "node/2";
+    path_save($path1);
+    $nlpath['alias'] = "nl/help";
+    $nlpath['source'] = "node/2";
+    $nlpath['language'] = "nl";
+    path_save($nlpath);
+    $path2['alias'] = "en/help";
+    $path2['source'] = "node/3765";
+    path_save($path2);
+    $enpath['alias'] = "en/help";
+    $enpath['source'] = "node/3765";
+    $enpath['language'] = "en";
+    path_save($enpath);
+  }
+
+  //Configuration page
+  $items['admin/config/naturalis/ndabio'] = array(
+    'title' => 'NBA Search Form config',
+    'description' => 'Configuration for Naturalis module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ndabio_config_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['search/geosearch'] = array(
+    'page callback' => 'ndabio_displayform',
+    'page arguments' => array('geo'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['geographic-search'] = array(
+    'page callback' => 'ndabio_displayform',
+    'page arguments' => array('geo'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['explore/%'] = array(
+    'page callback' => 'ndabio_searchthematic',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  //Currently used as front page
+  $items['search/advancednda'] = array(
+    'page callback' => 'ndabio_displayform',
+    'access arguments' => array('access content'),
+    'title' => 'Advanced Naturalis Data Search',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  /*
+   * Page used by javascript to retrieve geo coordinates based on a nid.
+   */
+  $items['naturalis/ajax'] = array(
+   'page callback' => 'ndabio_ajax_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
+  $items['naturalis/clear_map_data'] = array(
+   'page callback' => 'ndabio_clear_map_data_callback',
+   'access arguments' => array('access content'),
+   'type' => MENU_CALLBACK,
+  );
+
+  $items['new_areas'] = array(
+    'page callback' => 'nba_areas_callback',
+    'access callback' => TRUE,
+  );
+
+
+  return $items;
+}
+
+function nba_areas_callback ($type = false) {
+    if (!$type) {
+        return false;
+    }
+    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
+    if ($type == 'country') {
+        // First print favourites (hard-coded)
+        $f['en'] = ['Curaçao', 'Indonesia', 'Netherlands', 'Sint Maarten', 'Suriname'];
+        $f['nl'] = ['Curaçao', 'Indonesië', 'Nederland', 'Sint Maarten', 'Suriname'];
+        echo _printGeoFavourites(_createGeoList('Country', $language, $f));
+        // Complete list
+        echo _printGeoList(_createGeoList('Country', $language));
+    } else if ($type == 'municipality') {
+        // Fix names that do not start with a letter
+        $fixes = [
+            "'s-Gravenhage" => 'Den Haag',
+            "'s-Hertogenbosch" => 'Den Bosch',
+        ];
+        echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), $fixes));
+    } else {
+        echo _printGeoList(_createGeoList(ucfirst($type), $language));
+    }
+}
+
+
+function ndabio_block_info () {
+  $blocks['ndabio_languageselect'] = array(
+    'info' => t('NBA: Language select'),
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'region' => 'sidebar_first',
+    'status' => FALSE,
+  );
+  return $blocks;
+}
+
+function ndabio_block_view ($delta = '') {
+  global $base_url, $base_root, $base_path;
+  global $language;
+
+  $block = array();
+  switch ($delta) {
+        case 'ndabio_languageselect':
+
+            if (arg(0) == 'node' && is_numeric(arg(1))) {
+                $translations = translation_path_get_translations("node/" . arg(1));
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+            } else {
+                $currentpath = request_uri();
+                $cleanup = array(
+                    "&language=en",
+                    "&language=nl",
+                    "?language=en",
+                    "?language=nl",
+                    "&searchagain=1",
+                    "?searchagain=1",
+                    "&back",
+                    "?back"
+                );
+                $currentpath = str_replace($cleanup, "", $currentpath);
+                if (strpos($currentpath, "?") === FALSE) {
+                    $currentpath = $currentpath . "?";
+                }
+                else {
+                    $currentpath = $currentpath . "&";
+                }
+                $currentpathnl = $currentpathen = $currentpath;
+            }
+
+            $block['content'] = "<ul class='right' id='language-menu'>";
+            if ($language->language == "en") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathen, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+            }
+            $block['content'] .= "  </li>";
+
+            if ($language->language == "nl") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathnl, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+            }
+            $block['content'] .= "  </li>";
+            $block['content'] .= "</ul>";
+
+            break;
+    }
+    return $block;
+}
+
+
+
+function ndabio_searchthematic ($var1, $stitle = "") {
+  drupal_set_message("Thematic search");
+  session_unset();
+  $_POST['searchtype'] = 'thematicsearch';
+  $_POST['searchkey'] = $var1;
+  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+  //$_POST['term'] = $var1;
+  $_POST['s_theme'] = $var1;
+  $_POST['m_theme'] = $var1;
+
+  return ndabioresults_pass();
+}
+
+function ndabio_clear_map_data_callback () {
+    $_SESSION['nbaSearch']['geoShape'] = false;
+    $_SESSION['nbaSearch']['location'] = false;
+    $_SESSION['nbaSearch']['gid'] = false;
+    $_SESSION['nbaSearch']['zoomLevel'] = false;
+    $_SESSION['nbaSearch']['category'] = false;
+    $_SESSION['nbaSearch']['mapCenter'] = false;
+    die('Session data cleared');
+}
+
+/**
+* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
+* The resulting page is used as input for the map, so no additional Drupal processing should take place.
+* To avoid additional Drupal theming being applied the function ends with a die()
+*/
+function ndabio_ajax_callback () {
+  if (!empty($_GET["nid"])) {
+    $nid = $_GET["nid"];
+    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
+    $client = _initNbaClient();
+    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
+    if (isset($geo->shape)) {
+        // locality is sometimes empty in Dutch;
+        $locality = $geo->locality;
+        if ($language == 'nl' && $geo->areaType == 'Country' &&
+            !empty($geo->countryNL) && $geo->countryNL != '\N') {
+            $locality = $geo->countryNL;
+        }
+        echo json_encode([
+            'nid' => $nid,
+            'locality' => $locality,
+            'source' => $geo->source,
+            'geometry' => $geo->shape
+        ]);
+    }
+    die(); // die() is required to avoid displaying the entire drupal interface
+	}
+}
+function ndabio_config_form ($form, &$form_state) {
+	$form['ndabio_config'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Naturalis Data API config') 
+	);
+	$form['ndabio_config']['ndabio_config_gmapkey'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Google maps key'),
+		'#default_value' => variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY),
+		'#size' => 140,
+		'#maxlength' => 200,
+		'#description' => t('The key used by Google maps for a geographic search.') . '<br />' . t('Default') . ': ' . NDABIO_GMAPKEY,'#required' => TRUE 
+	);
+	
+	return system_settings_form($form);
+}
+
+function ndabio_displayform ($arg1 = "") {
+	drupal_add_js(drupal_get_path('module', 'ndabio') . '/js/form.js');
+	
+	if ($arg1 === "geo")
+		variable_set("geosearch", "1");
+	else
+		variable_set("geosearch", "0");
+	$form = drupal_get_form('ndabio_advanced_taxonomysearch');
+	return (drupal_render($form));
+}
+
+function _nbaMinContainsStringSize () {
     $nbaMinContainsStringSize = &drupal_static(__FUNCTION__);
     if (!$nbaMinContainsStringSize) {
         $cacheId = 'nbaMinContainsStringSize';
@@ -30,10 +315,10 @@ function nbaMinContainsStringSize () {
     return $nbaMinContainsStringSize;
 }
 
-function nbaMaxContainsStringSize () {
+function _nbaMaxContainsStringSize () {
     $nbaMaxContainsStringSize = &drupal_static(__FUNCTION__);
     if (!$nbaMaxContainsStringSize) {
-        $cacheId = 'nbaMaxContainsStringSize';
+        $cacheId = 'nbaMaxContainsStringSize(';
         $cache = cache_get($cacheId, 'cache');
         if ($cache && !empty($cache->data)) {
             $nbaMaxContainsStringSize = $cache->data;
@@ -41,15 +326,12 @@ function nbaMaxContainsStringSize () {
         }
         $client = _initNbaClient();
         $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
-        cache_set($cacheId, $nbaMaxContainsStringSize);
+        cache_set($cacheId, $_nbaMaxContainsStringSize);
     }
-    return $nbaMaxContainsStringSize;
+    return $_nbaMaxContainsStringSize;
 }
 
-
-
-
-function nbaGeoAreas () {
+function _nbaGeoAreas () {
     $nbaGeoAreas = &drupal_static(__FUNCTION__);
     if (!$nbaGeoAreas) {
         $cacheId = 'nbaGeoAreas';
@@ -65,7 +347,7 @@ function nbaGeoAreas () {
     return $nbaGeoAreas;
 }
 
-function advancedSelects () {
+function _advancedSelects () {
     $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
     if (!$nbaAdvancedSelects) {
         $cacheId = 'nbaAdvancedSelects';
@@ -212,7 +494,7 @@ function _setNbaGid ($gid = false) {
 
 
 function _getAdvancedFieldOperator ($field) {
-	if (isset(advancedSelects()[$field])) {
+	if (isset(_advancedSelects()[$field])) {
 		return 'EQUALS_IC';
 	}
 	$tmp = explode('_', $field);
@@ -226,8 +508,8 @@ function _getAdvancedFieldOperator ($field) {
 	} else if ($tmp[0] == 't') {
 		$service = 'taxon';
 	}
-	if (isset(nbaAdvancedSearchExceptions()[$service][$field])) {
-		return nbaAdvancedSearchExceptions()[$service][$field]['operator'];
+	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
+		return _nbaAdvancedSearchExceptions()[$service][$field]['operator'];
 	}
 	return 'STARTS_WITH_IC';
 }
@@ -244,8 +526,8 @@ function _getAdvancedFieldSplitInfo ($field) {
 	} else if ($tmp[0] == 't') {
 		$service = 'taxon';
 	}
-	if (isset(nbaAdvancedSearchExceptions()[$service][$field])) {
-		return var_export(nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
+	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
+		return var_export(_nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
 	}
 	return 'false';
 }
@@ -291,7 +573,7 @@ function _setHelpText ($field, $description, $label) {
 				'the system will search for records of which the field "%s" ' . 
 				' contains %s. If shorter or longer, it will look for specimens of which the value ' . 
 				'starts with the search term');
-			$output = sprintf($output, nbaMinContainsStringSize(), nbaMaxContainsStringSize(), 
+			$output = sprintf($output, _nbaMinContainsStringSize(), _nbaMaxContainsStringSize(), 
 				$label, (_getAdvancedFieldSplitInfo($field) == 'true' ? $splitTerm : t('the term')));
 			break;
 	}
@@ -306,7 +588,7 @@ function _setHelpText ($field, $description, $label) {
  * $selected = option that should be select in form
  */
 function _setAdvancedSelect ($field, $taxonomy = '') {
-    if (!isset(advancedSelects()[$field])) {
+    if (!isset(_advancedSelects()[$field])) {
         return false;
     }
     // First entry is an empty string for regular select
@@ -317,170 +599,15 @@ function _setAdvancedSelect ($field, $taxonomy = '') {
     if (strpos($taxonomy, '-- all --') !== false) {
         $select['NOT_NULL'] = '-- ' . t('all') . ' --';
     }
-    foreach (advancedSelects()[$field] as $option => $value) {
+    foreach (_advancedSelects()[$field] as $option => $value) {
     	$select[$option] = $value;
     }
     return $select;
 }
 
 
-
-/**
- * @file
- * Naturalis bioportal module used to integrate Drupal with the Naturalis Data API formally
- * known as the NDA.
- * @version 0.1
- * @author Naturalis
- * @package Bioportal
- */
-
-/**
- * Default value for the GMAP key. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
-
-
-/**
- * DEFINE CUSTOM PAGES
- * Module administration and all custom pages. Each page includes a callback where the
- * page functionality is defined.
- * @package custompages
- */
-
-/**
- *
- **/
-function ndabio_boot() {
-  global $language;
-  //Execute on every page, check langauge env.
-  $langs = language_list(); // Note: No argument
-  if (isset($_GET["language"])) {
-    $langcode = $_GET["language"];
-    variable_set('language_default', $langs[$langcode]);
-    $_SESSION["currentlanguage"] = $langcode;
-  }
-  elseif (isset($_SESSION["currentlanguage"])) {
-    $langcode = $_SESSION["currentlanguage"];
-    if (isset($langs[$langcode])) variable_set('language_default', $langs[$langcode]);
-  }
-  else {
-    $language = $langs['nl'];
-  }
-}
-
-
-/**
- * Implements hook_menu().
- */
-function ndabio_menu() {
-  $urlAlias = drupal_lookup_path('alias',"nl/help");
-  if($urlAlias == '' ) {
-    $path1['alias'] = "nl/help";
-    $path1['source'] = "node/2";
-    path_save($path1);
-    $nlpath['alias'] = "nl/help";
-    $nlpath['source'] = "node/2";
-    $nlpath['language'] = "nl";
-    path_save($nlpath);
-    $path2['alias'] = "en/help";
-    $path2['source'] = "node/3765";
-    path_save($path2);
-    $enpath['alias'] = "en/help";
-    $enpath['source'] = "node/3765";
-    $enpath['language'] = "en";
-    path_save($enpath);
-  }
-
-  //Configuration page
-  $items['admin/config/naturalis/ndabio'] = array(
-    'title' => 'NBA Search Form config',
-    'description' => 'Configuration for Naturalis module',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('ndabio_config_form'),
-    'access arguments' => array('access administration pages'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-
-  $items['search/geosearch'] = array(
-    'page callback' => 'ndabio_displayform',
-    'page arguments' => array('geo'),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['geographic-search'] = array(
-    'page callback' => 'ndabio_displayform',
-    'page arguments' => array('geo'),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['explore/%'] = array(
-    'page callback' => 'ndabio_searchthematic',
-    'page arguments' => array(1),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
-  //Currently used as front page
-  $items['search/advancednda'] = array(
-    'page callback' => 'ndabio_displayform',
-    'access arguments' => array('access content'),
-    'title' => 'Advanced Naturalis Data Search',
-    'type' => MENU_LOCAL_TASK,
-  );
-
-  /*
-   * Page used by javascript to retrieve geo coordinates based on a nid.
-   */
-  $items['naturalis/ajax'] = array(
-   'page callback' => 'ndabio_ajax_callback',
-   'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
-  );
-
-  $items['naturalis/clear_map_data'] = array(
-   'page callback' => 'ndabio_clear_map_data_callback',
-   'access arguments' => array('access content'),
-   'type' => MENU_CALLBACK,
-  );
-
-  $items['new_areas'] = array(
-    'page callback' => 'nda_areas_callback',
-    'access callback' => TRUE,
-  );
-
-
-  return $items;
-}
-
-
-
-function nda_areas_callback ($type = false) {
-    if (!$type) {
-        return false;
-    }
-    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
-    if ($type == 'country') {
-        // First print favourites (hard-coded)
-        $f['en'] = ['Curaçao', 'Indonesia', 'Netherlands', 'Saint Martin', 'Suriname'];
-        $f['nl'] = ['Curaçao', 'Indonesië', 'Nederland', 'Sint Maarten', 'Suriname'];
-        echo _printGeoFavourites(_createGeoList('Country', $language, $f));
-        // Complete list
-        echo _printGeoList(_createGeoList('Country', $language));
-    } else if ($type == 'municipality') {
-        // Fix names that do not start with a letter
-        $fixes = [
-            "'s-Gravenhage" => 'Den Haag',
-            "'s-Hertogenbosch" => 'Den Bosch',
-        ];
-        echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), $fixes));
-    } else {
-        echo _printGeoList(_createGeoList(ucfirst($type), $language));
-    }
-}
-
 function _createGeoList ($type, $language, $intersect = false) {
-    $all = json_decode(nbaGeoAreas(), true);
+    $all = json_decode(_nbaGeoAreas(), true);
     if (!isset($all[$type])) {
         return [];
     }
@@ -533,179 +660,6 @@ function _printGeoList ($list) {
     return $output .= "</ul></div>\n";
 }
 
-
-/**
- * Implements hook_block_info().
- */
-function ndabio_block_info () {
-  $blocks['ndabio_languageselect'] = array(
-    'info' => t('NBA: Language select'),
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'region' => 'sidebar_first',
-    'status' => FALSE,
-  );
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view().
- */
-function ndabio_block_view ($delta = '') {
-  global $base_url, $base_root, $base_path;
-  global $language;
-
-  $block = array();
-  switch ($delta) {
-        case 'ndabio_languageselect':
-
-            if (arg(0) == 'node' && is_numeric(arg(1))) {
-                $translations = translation_path_get_translations("node/" . arg(1));
-                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
-                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
-            } else {
-                $currentpath = request_uri();
-                $cleanup = array(
-                    "&language=en",
-                    "&language=nl",
-                    "?language=en",
-                    "?language=nl",
-                    "&searchagain=1",
-                    "?searchagain=1",
-                    "&back",
-                    "?back"
-                );
-                $currentpath = str_replace($cleanup, "", $currentpath);
-                if (strpos($currentpath, "?") === FALSE) {
-                    $currentpath = $currentpath . "?";
-                }
-                else {
-                    $currentpath = $currentpath . "&";
-                }
-                $currentpathnl = $currentpathen = $currentpath;
-            }
-
-            $block['content'] = "<ul class='right' id='language-menu'>";
-            if ($language->language == "en") {
-                $block['content'] .= "  <li class='active'>";
-            } else {
-                $block['content'] .= "  <li>";
-            }
-            if (strpos($currentpathen, "nba_request") === FALSE) {
-                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
-            } else {
-                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
-            }
-            $block['content'] .= "  </li>";
-
-            if ($language->language == "nl") {
-                $block['content'] .= "  <li class='active'>";
-            } else {
-                $block['content'] .= "  <li>";
-            }
-            if (strpos($currentpathnl, "nba_request") === FALSE) {
-                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
-            } else {
-                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
-            }
-            $block['content'] .= "  </li>";
-            $block['content'] .= "</ul>";
-
-            break;
-    }
-    return $block;
-}
-
-
-
-function ndabio_searchthematic ($var1, $stitle = "") {
-  drupal_set_message("Thematic search");
-  session_unset();
-  $_POST['searchtype'] = 'thematicsearch';
-  $_POST['searchkey'] = $var1;
-  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
-  //$_POST['term'] = $var1;
-  $_POST['s_theme'] = $var1;
-  $_POST['m_theme'] = $var1;
-
-  return ndabioresults_pass();
-}
-
-function ndabio_clear_map_data_callback () {
-    $_SESSION['nbaSearch']['geoShape'] = false;
-    $_SESSION['nbaSearch']['location'] = false;
-    $_SESSION['nbaSearch']['gid'] = false;
-    $_SESSION['nbaSearch']['zoomLevel'] = false;
-    $_SESSION['nbaSearch']['category'] = false;
-    $_SESSION['nbaSearch']['mapCenter'] = false;
-    die('Session data cleared');
-}
-
-/**
-* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
-* The resulting page is used as input for the map, so no additional Drupal processing should take place.
-* To avoid additional Drupal theming being applied the function ends with a die()
-*/
-function ndabio_ajax_callback () {
-  if (!empty($_GET["nid"])) {
-    $nid = $_GET["nid"];
-    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
-    $client = _initNbaClient();
-    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
-    if (isset($geo->shape)) {
-        // locality is sometimes empty in Dutch;
-        $locality = $geo->locality;
-        if ($language == 'nl' && $geo->areaType == 'Country' &&
-            !empty($geo->countryNL) && $geo->countryNL != '\N') {
-            $locality = $geo->countryNL;
-        }
-        echo json_encode([
-            'nid' => $nid,
-            'locality' => $locality,
-            'source' => $geo->source,
-            'geometry' => $geo->shape
-        ]);
-    }
-    die(); //die() is required to avoid displaying the entire drupal interface
-  }
-}
-
-
-/**
- * Form used to configure the ndabio module.
- */
-function ndabio_config_form ($form, &$form_state) {
-  $form['ndabio_config'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Naturalis Data API config')
-  );
-  $form['ndabio_config']['ndabio_config_gmapkey'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Google maps key'),
-    '#default_value' => variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY),
-    '#size' => 140,
-    '#maxlength' => 200,
-    '#description' => t('The key used by Google maps for a geographic search.') . '<br />' .
-      t('Default') . ': ' . NDABIO_GMAPKEY,
-    '#required' => TRUE,
-  );
-
-  return system_settings_form($form);
-}
-
-/**
- *
- */
-function ndabio_displayform ($arg1 = "") {
-  drupal_add_js(drupal_get_path('module', 'ndabio') .'/js/form.js');
-
-  if ($arg1 === "geo") variable_set("geosearch", "1");
-  else variable_set("geosearch", "0");
-  $form = drupal_get_form('ndabio_advanced_taxonomysearch');
-
-
-
-  return (drupal_render($form));
-}
 
 /**
  *
@@ -1007,13 +961,13 @@ function ndabio_advanced_taxonomysearch () {
 								// put all children in group
 								foreach ($category as $catitem) {
 									
-									// New way to create select: it should be present in advancedSelects().
+									// New way to create select: it should be present in _advancedSelects().
 									// Taxonomy value will still be needed to indicate if --all-- option should be printed!
 									$morelabel = t($catitem->field_ndalabel['und'][0]['safe_value']);
 									$moredescription = t($catitem->description);
 									$help = _setHelpText($subchildsysname, $moredescription, $morelabel);
 									
-									if (isset(advancedSelects()[$catitem->name])) {
+									if (isset(_advancedSelects()[$catitem->name])) {
 										$options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
 										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = [
 											'#type' => 'select',
@@ -1046,7 +1000,7 @@ function ndabio_advanced_taxonomysearch () {
 							// Default search fields
 							$help = _setHelpText($subchildsysname, $subchilddescription, $subchildlabel);
 							
-							if (isset(advancedSelects()[$subchildsysname])) {
+							if (isset(_advancedSelects()[$subchildsysname])) {
 								$options = _setAdvancedSelect($subchildsysname, $subchildvalues);
 								$form[$sysname][$childsysname][$subchildsysname] = array(
 									'#type' => 'select',
@@ -1080,7 +1034,7 @@ function ndabio_advanced_taxonomysearch () {
 				} else {
 					// Default search fields
 					$help = _setHelpText($subchildsysname, $subchilddescription, $subchildlabel);
-					if (isset(advancedSelects()[$childsysname])) {
+					if (isset(_advancedSelects()[$childsysname])) {
 						$options = _setAdvancedSelect($childsysname, $child->field_ndavalues['und'][0]['safe_value']);
 						$form[$sysname][$childsysname][$subchildsysname] = array(
 							'#type' => 'select',

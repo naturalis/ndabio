@@ -1,7 +1,7 @@
 name = Feature - Bioportal controller
 core = 7.x
 package = Bioportal
-version = 7.x-1.8Leen
+version = 7.x-1.8Miep
 dependencies[] = boxes
 dependencies[] = ctools
 dependencies[] = feature_bioportal_nodes_menus

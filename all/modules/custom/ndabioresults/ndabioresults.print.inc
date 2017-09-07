@@ -16,7 +16,7 @@ function _printSortOptions ($service) {
 	$output = "<form><select class='form-select' id='sort-options'>\n";
 	//	"<option value='' selected>" . t('Sort options') . "...</option>\n";
 	//	"<option value='_score'>" . t('Relevance') . "</option>\n";
-	foreach (sortOptions()[$service] as $label => $d) {
+	foreach (_sortOptions()[$service] as $label => $d) {
 		$url = _setSortUrl($d['path']);
 		$selected = $d == _getCurrentSort() ? ' selected' : '';
 		$output .= "<option value='$url'$selected>" . t('Sort by') . " $label</option>\n";
@@ -405,7 +405,7 @@ function _printSpecimenDetail ($data) {
 
 	$output .= ($lat && $lon ? "\n<div id='map-canvas' style='margin-bottom: 30px;'></div>" : '');
 /*
-    $getMultimediaRequest = nbaBaseUrl() . multimediaService() .
+    $getMultimediaRequest = _nbaBaseUrl() . multimediaService() .
         '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
 
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
@@ -960,11 +960,11 @@ function _printHits ($row) {
 }
 
 function _doNotPrintHit ($hit, $hits) {
-	if (array_key_exists($hit, doNotPrintHits()) && is_null(doNotPrintHits()[$hit])) {
+	if (array_key_exists($hit, _doNotPrintHits()) && is_null(_doNotPrintHits()[$hit])) {
 		return true;
 	}
-	if (array_key_exists($hit, doNotPrintHits()) && 
-		array_key_exists(doNotPrintHits()[$hit], $hits)) {
+	if (array_key_exists($hit, _doNotPrintHits()) && 
+		array_key_exists(_doNotPrintHits()[$hit], $hits)) {
 		return true;
 	}
 	return false;
@@ -1511,7 +1511,7 @@ function _printValue ($value = '') {
 
 
 function _printDebug () {
-    if ((user_access('administer site configuration') || nbaDebug() == 1) && !empty(_getDebug())) {
+    if ((user_access('administer site configuration') || _nbaDebug() == 1) && !empty(_getDebug())) {
 	    drupal_add_js(
 	        "jQuery(function() { 
 				jQuery('#nba-debug-link').click(function(){ 

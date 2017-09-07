@@ -142,7 +142,7 @@ function _parseTaxa ($data, $options) {
 	}
 
 	// Show all link
-	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+	if (in_array('showAll', $options) && $output['total'] > _maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/taxon/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
@@ -244,7 +244,7 @@ function _parseMultimedia ($data, $options = []) {
 		$output['results'][] = $d;
 	}
 	// Show all link
-	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+	if (in_array('showAll', $options) && $output['total'] > _maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/' . $service . '/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
@@ -436,7 +436,7 @@ function _getScientificName ($object, $fullScientificName = true) {
 	// Can be used to generate a full italicized name (default) or 
 	// a simple non-formatted name without authorship
 	$elements = $fullScientificName ? 
-		scientificNameElements() : scientificNameElementsInItalics();
+		_scientificNameElements() : _scientificNameElementsInItalics();
 	// Name can be stored in either acceptedName (taxon) or 
 	// scientificName (specimen); try both
 	foreach (['acceptedName', 'scientificName'] as $path) {
@@ -446,7 +446,7 @@ function _getScientificName ($object, $fullScientificName = true) {
 				trim($object->{$path}->{$element}) : null;
 			// Italics only for full option
 			if (!empty($name[$i]) && $fullScientificName &&
-				in_array($element, scientificNameElementsInItalics())) {
+				in_array($element, _scientificNameElementsInItalics())) {
 				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 			}
 		}
@@ -469,7 +469,7 @@ function _getTaxonUrl ($object, $checkNba = true) {
 	// Name can be stored in either acceptedName (taxon) or 
 	// scientificName (specimen); try both
 	foreach (['acceptedName', 'scientificName'] as $path) {
-		foreach (scientificNameElementsInItalics() as $i => $element) {
+		foreach (_scientificNameElementsInItalics() as $i => $element) {
 			$name[$i] = isset($object->{$path}->{$element}) &&
 				!empty(trim($object->{$path}->{$element})) ?
 				trim($object->{$path}->{$element}) : null;
@@ -508,7 +508,7 @@ function _setDetailSearchTerms ($service, $i) {
 function _setNonNameHits ($service, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $hit) {
-			if (in_array($path, nameHits()[_normaliseServiceName($service)]) ||
+			if (in_array($path, _nameHits()[_normaliseServiceName($service)]) ||
 				// Name resolution hits 
 				strpos($path, 'taxonomicEnrichments') !== false) {
 				unset($hits[$path]);
@@ -542,7 +542,7 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 										$hit = _highlightMatch($hit, $paths[$path]['values']);
 									} else {
 										// Elements in regular scientific name elements
-										foreach (scientificNameElements() as $i => $element) {
+										foreach (_scientificNameElements() as $i => $element) {
 											$name[$i] = isset($enrichmentType->{$element}) && 
 												!empty(trim($enrichmentType->{$element})) ? 
 												trim($enrichmentType->{$element}) : '';
@@ -551,7 +551,7 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 												$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
 											}
 											// Italics
-											if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+											if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 												$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 											}
 										}
@@ -642,7 +642,7 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 	$paths = _getQueryPaths($service);
 	$name = [];
 	// Elements in regular scientific name elements
-	foreach (scientificNameElements() as $i => $element) {
+	foreach (_scientificNameElements() as $i => $element) {
 		$name[$i] = isset($taxon->acceptedName->{$element}) && 
 			!empty(trim($taxon->acceptedName->{$element})) ? 
 			trim($taxon->acceptedName->{$element}) : '';
@@ -652,7 +652,7 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 				$paths['acceptedName.' . $element]['values']);
 		}
 		// Italics
-		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+		if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 		}
 	}
@@ -667,7 +667,7 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 		foreach ($taxon->synonyms as $synonym) {
 			$name = [];
 			$hit = false;
-			foreach (scientificNameElements() as $i => $element) {
+			foreach (_scientificNameElements() as $i => $element) {
 				$name[$i] = isset($synonym->{$element}) && 
 					!empty(trim($synonym->{$element})) ? 
 					trim($synonym->{$element}) : '';
@@ -680,7 +680,7 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 					}
 				}
 				// Italics
-				if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+				if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 				}
 			}
@@ -697,12 +697,12 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 function _formatScientificName ($object) {
 	$name = [];
 	// Elements in regular scientific name elements
-	foreach (scientificNameElements() as $i => $element) {
+	foreach (_scientificNameElements() as $i => $element) {
 		$name[$i] = isset($object->{$element}) && 
 			!empty(trim($object->{$element})) ? 
 			trim($object->{$element}) : '';
 		// Italics
-		if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+		if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 		}
 	}
@@ -726,7 +726,7 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 	foreach ($identifications as $j => $identification) {
 		$name = [];
 		// Elements in regular scientific name elements
-		foreach (scientificNameElements() as $i => $element) {
+		foreach (_scientificNameElements() as $i => $element) {
 			$name[$i] = isset($identification->scientificName->{$element}) && 
 				!empty(trim($identification->scientificName->{$element})) ? 
 				trim($identification->scientificName->{$element}) : '';
@@ -736,7 +736,7 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 					$paths['identifications.scientificName.' . $element]['values']);
 			}
 			// Italics
-			if (!empty($name[$i]) && in_array($element, scientificNameElementsInItalics())) {
+			if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 				$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 			}
 		}
@@ -833,12 +833,12 @@ function _parseSpecimensMap ($data) {
 		$output['results'][$i]['name'] = $name;
 	}
 	
-	if ($output['total'] > maxResults() && count($output['results']) <= maxResults()) {
+	if ($output['total'] > _maxResults() && count($output['results']) <= _maxResults()) {
 		$terms = _getQueryTerms('names.specimens');
 		$terms['size'] = $output['total'];
 		$url = _setBasePath() . 'result/specimen/map/' . 
 			urlencode($data->resultSet[0]->item->name) . '/' . safe_http_build_query($terms);
-		$output['message'] = sprintf(t('The first %s specimens are displayed'), maxResults()) . 
+		$output['message'] = sprintf(t('The first %s specimens are displayed'), _maxResults()) . 
 			'. <a href="' . $url . '">' . sprintf(t('Display all %s specimens'), $output['total']) . ".</a>\n";
 	} else if ($output['total'] > 1) {
 		$output['message'] = sprintf(
@@ -891,7 +891,7 @@ function _parseSpecimens ($data, $options = []) {
 	$terms['from'] = 0;
 */	
 	// Show all link
-	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+	if (in_array('showAll', $options) && $output['total'] > _maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service));
 	}
@@ -949,7 +949,7 @@ function _resetUrl () {
 }
 
 function _setTaxonId ($object) {
-	foreach (scientificNameElementsInItalics() as $element) {
+	foreach (_scientificNameElementsInItalics() as $element) {
 		$name[] = isset($object->{$element}) && !empty(isset($object->{$element})) ? 
 			$object->{$element} : null;
 	}
@@ -1017,7 +1017,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$terms = _getQueryTerms($service);
 		unset($terms['from'], $terms['size']);
 		
-		$d['allLink'] = $d['count'] > maxResultsInitial() ?
+		$d['allLink'] = $d['count'] > _maxResultsInitial() ?
 			_setBasePath() . 'result/specimen/taxon/' . urlencode($row->item->name) . '/' .
 			safe_http_build_query($terms) . $sortExtension : null;
 		
@@ -1053,7 +1053,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		$data->specimensFrom : _getPaginatorOffset($service);
 	
 	// Show all link
-	if (in_array('showAll', $options) && $output['total'] > maxResultsInitial()) {
+	if (in_array('showAll', $options) && $output['total'] > _maxResultsInitial()) {
 		$output['showAll'] = _setBasePath() . 'result/specimen/' .
 			_setShowAllQuery($output['total'], _getQueryTerms($service)) . 
 			$sortExtension;
@@ -1095,7 +1095,7 @@ function _setSpecimenScientificName ($data) {
 		// Use individual name parts for CRS records! CRS specimens can be identified by not
 		// being aggregated in a set:
 		if (!isset($data['sets'])) {
-			foreach (scientificNameElements() as $i => $element) {
+			foreach (_scientificNameElements() as $i => $element) {
 				$name[$i] = isset($identification->{$element}) && 
 					!empty(trim($identification->{$element})) ? 
 					trim($identification->{$element}) : '';
@@ -1110,7 +1110,7 @@ function _setSpecimenScientificName ($data) {
 				}
 				// Italics
 				if (!empty($name[$i]) && in_array($element, 
-					scientificNameElementsInItalics())) {
+					_scientificNameElementsInItalics())) {
 					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 				}
 			}
@@ -1119,7 +1119,7 @@ function _setSpecimenScientificName ($data) {
 			// First highlight
 			$name[0] = _highlightMatch($identification->fullScientificName, 
 				array_unique(array_values($hits)));
-			foreach (scientificNameElementsInItalics() as $element) {
+			foreach (_scientificNameElementsInItalics() as $element) {
 				if (isset($identification->{$element}) && 
 					!empty(trim($identification->{$element}))) {
 					$name[0] = str_replace($identification->{$element}, 
@@ -1189,7 +1189,7 @@ function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup)
 function _appendNameHits ($nameHits, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $value) {
-			if (in_array($path, nameHits()['specimen'])) {
+			if (in_array($path, _nameHits()['specimen'])) {
 				$nameHits[$path] = $value;
 			}
 		}
@@ -1378,8 +1378,8 @@ function _highlightMatch ($haystack, $needles) {
 
 
 function _setShowAllQuery ($total, $criteria) {
-	if ($total > maxResultsInitial()) {
-		$criteria['size'] = maxResults();
+	if ($total > _maxResultsInitial()) {
+		$criteria['size'] = _maxResults();
 		return safe_http_build_query($criteria);
 	}
 	return null;

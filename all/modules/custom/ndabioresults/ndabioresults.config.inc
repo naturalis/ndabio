@@ -1,4 +1,5 @@
 <?php
+
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
@@ -129,33 +130,28 @@ function ndabioresults_config_form ($form, &$form_state) {
   return system_settings_form($form);
 }
 
-
-
 /**
  * Used to write nba base url (ndabioresults_config_baseurl) to text file
  */
 function ndabioresults_admin_settings_submit ($form, &$form_state) {
-  $baseurl = $form_state['values']['ndabioresults_config_baseurl'];
-  $nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
-  $handle = fopen($nbabasefile, "w");
-  fwrite($handle, $baseurl . "\n");
-  fclose($handle);
-  drupal_set_message(t('NBA base URL saved to text file:') . ' ' . $nbabasefile, 'status');
-  return system_settings_form($form);
+	$baseurl = $form_state['values']['ndabioresults_config_baseurl'];
+	$nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
+	$handle = fopen($nbabasefile, "w");
+	fwrite($handle, $baseurl . "\n");
+	fclose($handle);
+	drupal_set_message(t('NBA base URL saved to text file:') . ' ' . $nbabasefile, 'status');
+	return system_settings_form($form);
 }
-
-
-
 
 /**
  * Constant: base url of NBA service
  *
  * @todo Config option in module?
- *
+ *      
  * @return string
  */
-function nbaBaseUrl () {
-  return variable_get('ndabioresults_config_baseurl', NBABASEURL);
+function _nbaBaseUrl () {
+	return variable_get('ndabioresults_config_baseurl', NBABASEURL);
 }
 
 /**
@@ -163,7 +159,7 @@ function nbaBaseUrl () {
  *
  * @return array
  */
-function searchFlags () {
+function _searchFlags () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
          $var = array(
@@ -185,8 +181,8 @@ function searchFlags () {
  *
  * @return integer
  */
-function maxResultsInitial () {
-  return variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS);
+function _maxResultsInitial () {
+	return variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS);
 }
 
 /**
@@ -194,8 +190,8 @@ function maxResultsInitial () {
  *
  * @return integer
  */
-function maxResults () {
-  return variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS);
+function _maxResults () {
+	return variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS);
 }
 
 
@@ -203,41 +199,38 @@ function maxResults () {
  * Constant: maximum results for grouped results (currently specimen name search)
  *
  * @return integer
- */
+
 function maxGroupResultsInitial () {
   return variable_get('ndabioresults_config_initialmaxgroupresults', NBAINITMAXGROUPRESULTS);
 }
-
+ */
 
 /**
  * Constant: default sort field
  *
  * @return string
  */
-function nbaTimeout () {
-  return variable_get('ndabioresults_config_timeout', NBATIMEOUT);
+function _nbaTimeout () {
+	return variable_get('ndabioresults_config_timeout', NBATIMEOUT);
 }
 
 /**
  * Constant: maximum results for subsequent queries
  *
  * @return integer
- */
+
 function maxPagesInPaginator () {
   return variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR);
 }
+ */
 
-
-function nbaDebug () {
-  return variable_get('ndabioresults_config_debug', NBADEBUG);
+function _nbaDebug () {
+	return variable_get('ndabioresults_config_debug', NBADEBUG);
 }
 
-function nbaDebugEncoded () {
-  return variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED);
+function _nbaDebugEncoded () {
+	return variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED);
 }
-
-
-
 
 
 function _searchServices () {
@@ -483,7 +476,7 @@ function _nbaFieldMapping () {
     return $var;
 }
 
-function nbaAdvancedSearchExceptions () {
+function _nbaAdvancedSearchExceptions () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
@@ -532,7 +525,7 @@ function nbaAdvancedSearchExceptions () {
 
 
 
-function nbaNameResolutionFieldMapping () {
+function _nbaNameResolutionFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
         $var = array(
@@ -573,7 +566,7 @@ function nbaNameResolutionFieldMapping () {
 }
 
 
-function nameHits () {
+function _nameHits () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = array(
@@ -621,7 +614,7 @@ function nameHits () {
  * If value is null, hit is always hidden in results
  * 
  */
-function doNotPrintHits () {
+function _doNotPrintHits () {
 	return [
 		'locality' => 'localityText',
 		'theme' => null,
@@ -629,7 +622,7 @@ function doNotPrintHits () {
 }
 
 
-function scientificNameElements () {
+function _scientificNameElements () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [
@@ -644,7 +637,7 @@ function scientificNameElements () {
 	return $var;
 }
 
-function scientificNameElementsInItalics () {
+function _scientificNameElementsInItalics () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [
@@ -656,7 +649,7 @@ function scientificNameElementsInItalics () {
 	return $var;
 }
 
-function sortOptions () {
+function _sortOptions () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [

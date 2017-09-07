@@ -20,8 +20,8 @@ use nl\naturalis\bioportal\Client as Client;
 function _initNbaClient () {
     $client = new Client();
     $client
-    	->setNbaUrl(nbaBaseUrl())
-    	->setNbaTimeout(nbaTimeout());
+    	->setNbaUrl(_nbaBaseUrl())
+    	->setNbaTimeout(_nbaTimeout());
     return $client;
 }
 
@@ -173,7 +173,7 @@ function _addDebugMessage ($title = false, $message = false) {
 	if ($title && $message) {
 		// QuerySpec/Client is passed; use ->getQuerySpec()
 		if (is_object($message) && method_exists($message, 'getQuerySpec')) {
-			if (nbaDebugEncoded() == 1) {
+			if (_nbaDebugEncoded() == 1) {
 				$message = $message->getQuerySpec(true);
 			} else {
 				$message = _prettyJson($message->getQuerySpec());
@@ -270,10 +270,10 @@ function _printOops () {
 
 function _getSourceNameBySourceCode ($code) {
 	
-//p(advancedSelects()); die();
+//p(_advancedSelects()); die();
 	foreach (['t', 's', 'm'] as $prefix) {
-		if (isset(advancedSelects()[$prefix . '_sourceSystem'][$code])) {
-			return advancedSelects()[$prefix . '_sourceSystem'][$code];
+		if (isset(_advancedSelects()[$prefix . '_sourceSystem'][$code])) {
+			return _advancedSelects()[$prefix . '_sourceSystem'][$code];
 		}
 	}
 	return false;
