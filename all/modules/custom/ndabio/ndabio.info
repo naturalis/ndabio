@@ -1,5 +1,5 @@
 name = NBA Search Form
-version = "7.x-0.1"
+version = "7.x-2.0"
 description = "Bioportal search form (based on search taxonomy)"
 core = 7.x
 dependencies[] = ndabioresults

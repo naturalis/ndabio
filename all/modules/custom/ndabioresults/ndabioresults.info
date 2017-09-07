@@ -1,5 +1,5 @@
 name = NBA Results
-version = "7.x-0.1"
+version = "7.x-2.0"
 description = "Bioportal search results module"
 core = 7.x
 package = "Bioportal"
