@@ -133,6 +133,25 @@ function _geoMunicipalityFixes () {
 }
 
 /**
+ * Lookup for nature geo areas suffices
+ * 
+ * These suffices are used to append to nature areas: Area (Suffix)
+ * 
+ * @return array
+ */
+function _geoNatureAreasSuffices () {
+	return [
+		'Landschap Noord-Holland',
+		'Staatsbosbeheer',
+		'PWN',
+		'Natura 2000',
+		'Beschermde Natuurmonumenten',
+		'Wetlands 2005',
+	];
+}
+
+
+/**
  * Values to omit from kind of unit select
  * 
  * @return array

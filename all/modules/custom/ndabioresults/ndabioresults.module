@@ -10,7 +10,7 @@ require_once 'ndabioresults.print.inc';
 require_once 'Paginator.php';
 
 // Old code
-//require_once 'redundant.inc';
+require_once 'redundant.inc';
 
 
 // Namespaces not defined in common.inc
@@ -2036,14 +2036,6 @@ function _setSimpleQueryTerms ($service, $term, $additionalTerms = []) {
 function _localityInNba ($locality) {
 	$locality = ucfirst($locality);
 	$nbaAreas = (array) json_decode(_nbaGeoAreas(), true);
-	$suffices = [
-		'Landschap Noord-Holland',
-		'Staatsbosbeheer',
-		'PWN',
-		'Natura 2000',
-		'Beschermde Natuurmonumenten',
-		'Wetlands 2005',
-	];
 	$areas = array_merge(
 		_arrayColumnRecursive($nbaAreas, 'en'),
 		_arrayColumnRecursive($nbaAreas, 'nl')
@@ -2062,7 +2054,7 @@ function _localityInNba ($locality) {
 		}
 	}
 	// Nature areas (no translation required)
-	foreach ($suffices as $suffix) {
+	foreach (_geoNatureAreasSuffices() as $suffix) {
 		if (in_array($locality . ' (' . $suffix . ')', $areas)) {
 			return $locality . ' (' . $suffix . ')';
 		}

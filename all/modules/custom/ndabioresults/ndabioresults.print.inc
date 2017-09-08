@@ -915,13 +915,13 @@ function _printSpecimenCollection ($data, $i) {
  */
 function _printNoResults ($timeOuts = []) {
 	if (empty($timeOuts)) {
-	    return '<p>' . t('Sorry, no results found') . '. <a href="' . setStartUrl() . '?searchagain=1">' .
+	    return '<p>' . t('Sorry, no results found') . '. <a href="' . _setStartUrl() . '?searchagain=1">' .
 	        t('Please modify your search') . '</a>.</p>';
 	}
 	if (count($timeOuts) == 1) {
 		return '<p>' . t('Sorry, the') . ' ' . _normaliseServiceName(key($timeOuts)) . ' ' .  
 			t('query timed out after') . ' ' . reset($timeOuts) . 
-			'. <a href="' . setStartUrl() . '?searchagain=1">' . t('Please modify your search') . '</a>.</p>';
+			'. <a href="' . _setStartUrl() . '?searchagain=1">' . t('Please modify your search') . '</a>.</p>';
 	}
 	return '<p>' . t('Sorry, multiple queries timed out. There may be a problem with the server.') . '</p>';
 }
