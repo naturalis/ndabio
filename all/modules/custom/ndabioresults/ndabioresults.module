@@ -1,5 +1,5 @@
 <?php
-// Drupal
+// Config
 require_once 'ndabioresults.config.inc';
 require_once 'ndabioresults.block.inc';
 
@@ -2048,9 +2048,20 @@ function _localityInNba ($locality) {
 		_arrayColumnRecursive($nbaAreas, 'en'),
 		_arrayColumnRecursive($nbaAreas, 'nl')
 	);
-	if (in_array($locality, $areas)) {
-		return $locality;
+	// We must use the English version!
+	foreach ($nbaAreas as $type => $areas) {
+		foreach ($areas as $i => $area) {
+			// English version
+			if ($area['locality']['en'] == $locality) {
+				return $locality;
+			}
+			// Dutch
+			if ($area['locality']['nl'] == $locality) {
+				return $nbaAreas[$type][$i]['locality']['en'];
+			}
+		}
 	}
+	// Nature areas (no translation required)
 	foreach ($suffices as $suffix) {
 		if (in_array($locality . ' (' . $suffix . ')', $areas)) {
 			return $locality . ' (' . $suffix . ')';

@@ -1,5 +1,6 @@
 <?php
 
+// Default values
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
@@ -475,54 +476,6 @@ function _nbaFieldMapping () {
     }
     return $var;
 }
-
-function _nbaAdvancedSearchExceptions () {
-    $var = &drupal_static(__FUNCTION__);
-    if (!isset($var)) {
-        $var = array(
-            'multimedia' => [
-                'localityText' => [
-                    'split' => true,
-                	'operator' => 'MATCHES'
-                ],
-              	'vernacularName' => [
-                    'split' => false,
-                	'operator' => 'CONTAINS'
-                ],
-            ],
-            'specimen' => [
-                'collectorsFieldNumber' => [
-                    'split' => true,
-                	'operator' => 'MATCHES'
-                ],
-                'gatheringAgent' => [
-                    'split' => true,
-                	'operator' => 'MATCHES'
-                ],
-                'localityText' => [
-                    'split' => true,
-                	'operator' => 'MATCHES'
-                ],
-                'vernacularName' => [
-                    'split' => false,
-                 	'operator' => 'CONTAINS'
-                ],
-                'unitID' => [
-                    'split' => false,
-                 	'operator' => 'EQUALS_IC'
-                ],
-            ],
-            'taxon' => [
-                'vernacularName' => [
-                    'split' => false,
-                 	'operator' => 'CONTAINS'
-                ],
-            ],
-        );
-    }
-    return $var;
-}
-
 
 
 function _nbaNameResolutionFieldMapping () {

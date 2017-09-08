@@ -1,16 +1,14 @@
 <?php
-// Load shared library
+
+// Shared library in ndabioresult module
 require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
+
+// Config
+require_once 'ndabio.config.inc';
 
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
-
-/**
- * Default value for the GMAP key. Can be overridden in the module config page.
- * <siteroot>/admin/config/naturalis
- */
-define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
 
 
 /**
@@ -23,753 +21,6 @@ function ndabio_init () {
 	_checkNbaVersion();
 	_setLanguage();
 }
-
-
-
-
-
-/**
- * Drupal defined pages
- */
-function ndabio_menu () {
-	if (drupal_lookup_path('alias', "nl/help") == '') {
-
-		$path1['alias'] = "nl/help";
-		$path1['source'] = "node/2";
-		path_save($path1);
-		
-		$nlpath['alias'] = "nl/help";
-		$nlpath['source'] = "node/2";
-		$nlpath['language'] = "nl";
-		path_save($nlpath);
-		
-		$path2['alias'] = "en/help";
-		$path2['source'] = "node/3765";
-		path_save($path2);
-		
-		$enpath['alias'] = "en/help";
-		$enpath['source'] = "node/3765";
-		$enpath['language'] = "en";
-    	path_save($enpath);
-	}
-		
-	// Configuration page
-	$items['admin/config/naturalis/ndabio'] = array(
-		'title' => 'NBA Search Form config',
-		'description' => 'Configuration for Naturalis module',
-		'page callback' => 'drupal_get_form',
-		'page arguments' => array('ndabio_config_form'),
-		'access arguments' => array('access administration pages'),
-		'type' => MENU_NORMAL_ITEM 
-	);
-	$items['search/geosearch'] = array(
-		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
-		'access arguments' => array('access content'),
-		'type' => MENU_CALLBACK 
-	);
-	$items['geographic-search'] = array(
-		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
-		'access arguments' => array('access content'),
-		'type' => MENU_CALLBACK 
-	);
-	$items['explore/%'] = array(
-		'page callback' => 'ndabio_searchthematic','page arguments' => array(1),
-		'access arguments' => array('access content'),
-		'type' => MENU_CALLBACK 
-	);
-	// Currently used as front page
-	$items['search/advancednda'] = array(
-		'page callback' => 'ndabio_displayform','access arguments' => array('access content'),
-		'title' => 'Advanced Naturalis Data Search',
-		'type' => MENU_LOCAL_TASK 
-	);	
-	// Page used by javascript to retrieve geo coordinates based on a nid
-	$items['naturalis/ajax'] = array(
-		'page callback' => 'ndabio_ajax_callback',
-		'access arguments' => array('access content'),
-		'type' => MENU_CALLBACK 
-	);
-	$items['naturalis/clear_map_data'] = array(
-		'page callback' => 'ndabio_clear_map_data_callback',
-		'access arguments' => array('access content'),
-		'type' => MENU_CALLBACK 
-	);
-	$items['new_areas'] = array(
-		'page callback' => 'nba_areas_callback',
-		'access callback' => TRUE 
-	);
-	return $items;
-}
-
-/**
- * Prints geo areas
- * 
- * @param string $type Area type (country, manucipality, nature)
- * @return boolean
- */
-function nba_areas_callback ($type = false) {
-    if (!$type) {
-        return false;
-    }
-    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
-    if ($type == 'country') {
-        // First print favourites (hard-coded)
-        $f['en'] = ['Curaçao', 'Indonesia', 'Netherlands', 'Sint Maarten', 'Suriname'];
-        $f['nl'] = ['Curaçao', 'Indonesië', 'Nederland', 'Sint Maarten', 'Suriname'];
-        echo _printGeoFavourites(_createGeoList('Country', $language, $f));
-        // Complete list
-        echo _printGeoList(_createGeoList('Country', $language));
-    } else if ($type == 'municipality') {
-        // Fix names that do not start with a letter
-        $fixes = [
-            "'s-Gravenhage" => 'Den Haag',
-            "'s-Hertogenbosch" => 'Den Bosch',
-        ];
-        echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), $fixes));
-    } else {
-        echo _printGeoList(_createGeoList(ucfirst($type), $language));
-    }
-}
-
-
-function ndabio_block_info () {
-  $blocks['ndabio_languageselect'] = array(
-    'info' => t('NBA: Language select'),
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'region' => 'sidebar_first',
-    'status' => FALSE,
-  );
-  return $blocks;
-}
-
-function ndabio_block_view ($delta = '') {
-  global $base_url, $base_root, $base_path;
-  global $language;
-
-  $block = array();
-  switch ($delta) {
-        case 'ndabio_languageselect':
-
-            if (arg(0) == 'node' && is_numeric(arg(1))) {
-                $translations = translation_path_get_translations("node/" . arg(1));
-                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
-                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
-            } else {
-                $currentpath = request_uri();
-                $cleanup = array(
-                    "&language=en",
-                    "&language=nl",
-                    "?language=en",
-                    "?language=nl",
-                    "&searchagain=1",
-                    "?searchagain=1",
-                    "&back",
-                    "?back"
-                );
-                $currentpath = str_replace($cleanup, "", $currentpath);
-                if (strpos($currentpath, "?") === FALSE) {
-                    $currentpath = $currentpath . "?";
-                }
-                else {
-                    $currentpath = $currentpath . "&";
-                }
-                $currentpathnl = $currentpathen = $currentpath;
-            }
-
-            $block['content'] = "<ul class='right' id='language-menu'>";
-            if ($language->language == "en") {
-                $block['content'] .= "  <li class='active'>";
-            } else {
-                $block['content'] .= "  <li>";
-            }
-            if (strpos($currentpathen, "nba_request") === FALSE) {
-                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
-            } else {
-                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
-            }
-            $block['content'] .= "  </li>";
-
-            if ($language->language == "nl") {
-                $block['content'] .= "  <li class='active'>";
-            } else {
-                $block['content'] .= "  <li>";
-            }
-            if (strpos($currentpathnl, "nba_request") === FALSE) {
-                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
-            } else {
-                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
-            }
-            $block['content'] .= "  </li>";
-            $block['content'] .= "</ul>";
-
-            break;
-    }
-    return $block;
-}
-
-
-
-function ndabio_searchthematic ($var1, $stitle = "") {
-  drupal_set_message("Thematic search");
-  session_unset();
-  $_POST['searchtype'] = 'thematicsearch';
-  $_POST['searchkey'] = $var1;
-  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
-  //$_POST['term'] = $var1;
-  $_POST['s_theme'] = $var1;
-  $_POST['m_theme'] = $var1;
-
-  return ndabioresults_pass();
-}
-
-function ndabio_clear_map_data_callback () {
-    $_SESSION['nbaSearch']['geoShape'] = false;
-    $_SESSION['nbaSearch']['location'] = false;
-    $_SESSION['nbaSearch']['gid'] = false;
-    $_SESSION['nbaSearch']['zoomLevel'] = false;
-    $_SESSION['nbaSearch']['category'] = false;
-    $_SESSION['nbaSearch']['mapCenter'] = false;
-    die('Session data cleared');
-}
-
-/**
-* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
-* The resulting page is used as input for the map, so no additional Drupal processing should take place.
-* To avoid additional Drupal theming being applied the function ends with a die()
-*/
-function ndabio_ajax_callback () {
-  if (!empty($_GET["nid"])) {
-    $nid = $_GET["nid"];
-    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
-    $client = _initNbaClient();
-    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
-    if (isset($geo->shape)) {
-        // locality is sometimes empty in Dutch;
-        $locality = $geo->locality;
-        if ($language == 'nl' && $geo->areaType == 'Country' &&
-            !empty($geo->countryNL) && $geo->countryNL != '\N') {
-            $locality = $geo->countryNL;
-        }
-        echo json_encode([
-            'nid' => $nid,
-            'locality' => $locality,
-            'source' => $geo->source,
-            'geometry' => $geo->shape
-        ]);
-    }
-    die(); // die() is required to avoid displaying the entire drupal interface
-	}
-}
-function ndabio_config_form ($form, &$form_state) {
-	$form['ndabio_config'] = array(
-		'#type' => 'fieldset',
-		'#title' => t('Naturalis Data API config') 
-	);
-	$form['ndabio_config']['ndabio_config_gmapkey'] = array(
-		'#type' => 'textfield',
-		'#title' => t('Google maps key'),
-		'#default_value' => variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY),
-		'#size' => 140,
-		'#maxlength' => 200,
-		'#description' => t('The key used by Google maps for a geographic search.') . '<br />' . t('Default') . ': ' . NDABIO_GMAPKEY,'#required' => TRUE 
-	);
-	
-	return system_settings_form($form);
-}
-
-function ndabio_displayform ($arg1 = "") {
-	drupal_add_js(drupal_get_path('module', 'ndabio') . '/js/form.js');
-	
-	if ($arg1 === "geo")
-		variable_set("geosearch", "1");
-	else
-		variable_set("geosearch", "0");
-	$form = drupal_get_form('ndabio_advanced_taxonomysearch');
-	return (drupal_render($form));
-}
-
-function _nbaMinContainsStringSize () {
-    $nbaMinContainsStringSize = &drupal_static(__FUNCTION__);
-    if (!$nbaMinContainsStringSize) {
-        $cacheId = 'nbaMinContainsStringSize';
-        $cache = cache_get($cacheId, 'cache');
-        if ($cache && !empty($cache->data)) {
-            $nbaMinContainsStringSize = $cache->data;
-            return $nbaMinContainsStringSize;
-        }
-        $client = _initNbaClient();
-        $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
-        cache_set($cacheId, $nbaMinContainsStringSize);
-    }
-    return $nbaMinContainsStringSize;
-}
-
-function _nbaMaxContainsStringSize () {
-    $nbaMaxContainsStringSize = &drupal_static(__FUNCTION__);
-    if (!$nbaMaxContainsStringSize) {
-        $cacheId = 'nbaMaxContainsStringSize(';
-        $cache = cache_get($cacheId, 'cache');
-        if ($cache && !empty($cache->data)) {
-            $nbaMaxContainsStringSize = $cache->data;
-            return $nbaMaxContainsStringSize;
-        }
-        $client = _initNbaClient();
-        $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
-        cache_set($cacheId, $_nbaMaxContainsStringSize);
-    }
-    return $_nbaMaxContainsStringSize;
-}
-
-function _nbaGeoAreas () {
-    $nbaGeoAreas = &drupal_static(__FUNCTION__);
-    if (!$nbaGeoAreas) {
-        $cacheId = 'nbaGeoAreas';
-        $cache = cache_get($cacheId, 'cache');
-        if ($cache && !empty($cache->data)) {
-            $nbaGeoAreas = $cache->data;
-            return $nbaGeoAreas;
-        }
-        $client = _initNbaClient();
-        $nbaGeoAreas = $client->getGeoAreas(true);
-        cache_set($cacheId, $nbaGeoAreas);
-    }
-    return $nbaGeoAreas;
-}
-
-function _advancedSelects () {
-    $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
-    if (!$nbaAdvancedSelects) {
-        $cacheId = 'nbaAdvancedSelects';
-        $cache = cache_get($cacheId, 'cache');
-        if ($cache && !empty($cache->data)) {
-            $nbaAdvancedSelects = $cache->data;
-            return $nbaAdvancedSelects;
-        }
-        $nbaAdvancedSelects['s_sourceSystem'] =
-        	_createAdvancedSelectDifferentOptionValue('specimen', 'sourceSystem.code', 'sourceSystem.name');
-        $nbaAdvancedSelects['s_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType'));
-        $nbaAdvancedSelects['s_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus'));
-        $nbaAdvancedSelects['s_kindOfUnit'] =
-        	_createAdvancedSelect(_kindOfUnitSelectValues());
-        $nbaAdvancedSelects['s_sex'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'sex'));
-        $nbaAdvancedSelects['s_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage'));
-        $nbaAdvancedSelects['s_kingdom'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
-        $nbaAdvancedSelects['t_sourceSystem'] =
-        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name');
-        $nbaAdvancedSelects['t_kingdom'] =
-        	_createAdvancedSelect(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
-        $nbaAdvancedSelects['m_sourceSystem'] =
-        	_createAdvancedSelectDifferentOptionValue('multimedia', 'sourceSystem.code', 'sourceSystem.name');
-        $nbaAdvancedSelects['m_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType'));
-        $nbaAdvancedSelects['m_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus'));
-        $nbaAdvancedSelects['m_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages'));
-        $nbaAdvancedSelects['m_sex'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'sexes'));
-        $nbaAdvancedSelects['m_kingdom'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
-        $nbaAdvancedSelects['m_license'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'license'));
-        cache_set($cacheId, $nbaAdvancedSelects);
-    }
-    return $nbaAdvancedSelects;
-}
-
-function _kindOfUnitSelectValues () {
-	$discard = [
-		'fossilspecimen',
-		'indet.',
-		'multimediaobject',
-		'not a',
-		'not applicable',
-		'not',
-		'other',
-		'otherspecimen',
-		'preservedspecimen',
-		'unknown',
-		'unspecified',
-		'virtual specimen',
-	];
-	$output = array_merge(
-		_getDistinctValues('specimen', 'kindOfUnit'),
-		_getDistinctValues('specimen', 'recordBasis')	
-	);
-	// Remove unwanted values and duplicates (case insenstive)
-	Foreach ($output as $v) {
-		$k = strtolower($v);
-		if (!in_array($k, $discard)) {
-			$filteredOutput[$k] = $v;
-		}
-	}
-	$output = array_values($filteredOutput);
-	sort($output, SORT_NATURAL | SORT_FLAG_CASE);
-	return $output;
-}
-
-
-
-function _createAdvancedSelect ($array, $labelUcFirst = true) {
-	foreach ($array as $k => $v) {
-		$output[htmlspecialchars($v, ENT_QUOTES)] = $labelUcFirst ? ucfirst($v) : $v;
-	}
-	return isset($output) ? $output : array();
-}
-
-
-// Used to determine operator for advanced search
-function _isAdvancedSelect ($field) {
-	return in_array($field, [
-        'sourceSystem', 
-		'collectionType',
-		'typeStatus',
-		'sex',
-		'phaseOrStage',
-		'kingdom',
-		'kindOfUnit',
-		'license'
-	]);
-}
-
-// Select will be multi-selcet
-function _isMultiAdvancedSelect ($field) {
-	return in_array($field, [
-		's_kindOfUnit',
-		'm_license'
-	]);
-}
-
-
-/*
- * Cannot use _getDistinctValues for select with different option-value pairs
- * (specifically sourceSystem, where option should be different from value)
- * Both fields should be linked of course!
-  */
-function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
-	$options = _getDistinctValues($service, $optionPath);
-	$client = _initNbaClient();
-	foreach ($options as $option) {
-		$condition = new Condition($optionPath, 'EQUALS', $option);
-		$query = new QuerySpec();
-		$query->addCondition($condition)->setSize(1);
-		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
-		// Convert NBA path to object path
-		$pathArray = explode('.', $valuePath);
-		if (isset($data->resultSet[0]->item)) {
-			$objPath = $data->resultSet[0]->item;
-			foreach ($pathArray as $deeper) {
-				$objPath = $objPath->{$deeper};
-			}
-			$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
-		}
-	}
-	return isset($output) ? $output : [];
-}
-
-/* Must be used to correctly format NBA gid */
-function _setNbaGid ($gid = false) {
-	if (!$gid) {
-		return false;
-	}
-	$gid = str_replace('gid_', '', $gid);
-	return strpos($gid, '@') === false ? $gid . '@GEO' : $gid;
-}
-
-
-function _getAdvancedFieldOperator ($field) {
-	if (isset(_advancedSelects()[$field])) {
-		return 'EQUALS_IC';
-	}
-	$tmp = explode('_', $field);
-	if (!isset($tmp[1])) {
-		return false;
-	}
-	$field = $tmp[1];
-	$service = 'specimen';
-	if ($tmp[0] == 'm') {
-		$service = 'specimen';
-	} else if ($tmp[0] == 't') {
-		$service = 'taxon';
-	}
-	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
-		return _nbaAdvancedSearchExceptions()[$service][$field]['operator'];
-	}
-	return 'STARTS_WITH_IC';
-}
-
-function _getAdvancedFieldSplitInfo ($field) {
-	$tmp = explode('_', $field);
-	if (!isset($tmp[1])) {
-		return false;
-	}
-	$field = $tmp[1];
-	$service = 'specimen';
-	if ($tmp[0] == 'm') {
-		$service = 'multimedia';
-	} else if ($tmp[0] == 't') {
-		$service = 'taxon';
-	}
-	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
-		return var_export(_nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
-	}
-	return 'false';
-}
-
-
-
-function _setHelpText ($field, $description, $label) {
-	$output = $description . " ";
-	if (_isMultiAdvancedSelect($field)) {
-		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
-			". ";
-	}
-	$output .= t('The search term') . ' ';
-	switch (_getAdvancedFieldSplitInfo($field)) {
-		case 'true':
-			$output .= t('is split into parts on any spaces');
-			break;
-		case 'false':
-			$output .= t('is used literally, including any spaces');
-			break;
-	}
-	
-	$splitTerm = t('one or more of the search term parts are');
-	
-	switch (_getAdvancedFieldOperator($field)) {
-		case 'EQUALS':
-		case 'EQUALS_IC':
-			$output .= t(', and is matched against the exact value of field "%s"');
-			$output = sprintf($output, $label);
-			break;
-		case 'STARTS_WITH':
-		case 'STARTS_WITH_IC':
-			$output .= t(', and is matched against the start of field "%s"');
-			$output = sprintf($output, $label);
-			break;
-		case 'MATCHES':
-			$output .= t(', and %s matched against the value of field "%s"');
-			$output = _getAdvancedFieldSplitInfo($field) == 'true' ? 
-				sprintf($output, $splitTerm, $label) : sprintf($output, 'is', $label);
-			break;
-		case 'CONTAINS':
-			$output .= '. ' . t('If the term is between %d and %d characters in length, ' .
-				'the system will search for records of which the field "%s" ' . 
-				' contains %s. If shorter or longer, it will look for specimens of which the value ' . 
-				'starts with the search term');
-			$output = sprintf($output, _nbaMinContainsStringSize(), _nbaMaxContainsStringSize(), 
-				$label, (_getAdvancedFieldSplitInfo($field) == 'true' ? $splitTerm : t('the term')));
-			break;
-	}
-	return $output .= '.';
-}
-
-
-
-/*
- * $field = name of form field
- * $taxonomy = Drupal values for taxonomy (old situation): indicates if --all-- option should be printed
- * $selected = option that should be select in form
- */
-function _setAdvancedSelect ($field, $taxonomy = '') {
-    if (!isset(_advancedSelects()[$field])) {
-        return false;
-    }
-    // First entry is an empty string for regular select
-    if (!_isMultiAdvancedSelect($field)) {
-    	$select[''] = '';
-    };
-    	// Add --all-- option if this is set in taxonomy value
-    if (strpos($taxonomy, '-- all --') !== false) {
-        $select['NOT_NULL'] = '-- ' . t('all') . ' --';
-    }
-    foreach (_advancedSelects()[$field] as $option => $value) {
-    	$select[$option] = $value;
-    }
-    return $select;
-}
-
-
-function _createGeoList ($type, $language, $intersect = false) {
-    $all = json_decode(_nbaGeoAreas(), true);
-    if (!isset($all[$type])) {
-        return [];
-    }
-    $list = $all[$type];
-    foreach ($list as $item) {
-        $d[$item['id']] = isset($item['locality'][$language]) ?
-        	$item['locality'][$language] : $item['locality']['en'];
-    }
-    if ($intersect && is_array($intersect)) {
-        $d = array_intersect($d, $intersect[$language]);
-    }
-    asort($d);
-    return $d;
-}
-
-function _fixGeoList ($list, $fixes = []) {
-    if (empty($fixes)) {
-        return $list;
-    }
-    foreach ($list as $id => $item) {
-        if (isset($fixes[$item])) {
-            $list[$id] = $fixes[$item];
-        }
-    }
-    asort($list);
-    return $list;
-}
-
-function _printGeoFavourites ($list) {
-    $output = "<div class=\"item-list\">\n<h3>" . t('Highlighted') . "</h3>\n<ul>\n";
-    foreach ($list as $id => $item) {
-        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
-    }
-    return $output .= "</ul></div>\n";
-}
-
-function _printGeoList ($list) {
-    $output = $letter = $prevLetter = '';
-    foreach ($list as $id => $item) {
-        $letter = strtoupper($item[0]);
-        if ($letter != $prevLetter) {
-            if ($prevLetter != '') {
-                $output .= "</ul>\n</div>\n";
-            }
-            $output .= "<div class=\"item-list\">\n<h3>$letter</h3>\n<ul>\n";
-        }
-        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
-        $prevLetter = $letter;
-    }
-    return $output .= "</ul></div>\n";
-}
-
-
-/**
- *
- */
-function _wrap_inner_grid_cols (&$form_element, $n = 6) {
-  if (!isset($form_element['#prefix'])) $form_element['#prefix'] = '';
-  if (!isset($form_element['#suffix'])) $form_element['#prefix'] = '';
-  $form_element['#prefix'] = $form_element['#suffix'] . "<div class='small-$n columns'>";
-  $form_element['#suffix'] = "</div>" . $form_element['#suffix'];
-}
-
-/**
- * Implements hook_theme().
- */
-function ndabio_theme ($existing, $type, $theme, $path) {
-  //Provide a theme function for the 'omnisearch' field
-  $data['ndabio_omnisearch'] = array(
-    'render element' => 'element',
-  );
-  return $data;
-}
-
-
-
-
-/**
- * Implements hook_search_page().
- */
-function ndabio_search_page ($results) {
-  //drupal_set_message("Naturalis: ndabio_search_page");
-
-  $output['prefix']['#markup'] = '<h2>' . t('Search results') . '</h2>' ;
-  $output['prefix']['#markup'] .= '<ol class="search-results">';
-
-  if (!empty($results)) {
-    foreach ($results as $entry) {
-      $output[] = array(
-        '#theme' => 'search_result',
-        '#result' => $entry,
-        '#module' => 'naturalis',
-      );
-    }
-  }
-  $output['suffix']['#markup'] = '</ol>' . theme('pager');
-
-  return $output;
-}
-
-function _getExpandedFlag () {
-    foreach ($_SESSION['nbaSearch'] as $k => $v) {
-        // All true search parameters als formatted as x_etc
-        if (isset($k[1]) && $k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-function _getStoredZoomLevel () {
-    if (isset($_SESSION['nbaSearch']['zoomLevel']) && 
-    	!empty($_SESSION['nbaSearch']['zoomLevel'])) {
-        return $_SESSION['nbaSearch']['zoomLevel'];
-    }
-    return -1;
-}
-
-function _getStoredCategory () {
-    if (isset($_SESSION['nbaSearch']['category']) && 
-    	$_SESSION['nbaSearch']['category'] != '') {
-        return $_SESSION['nbaSearch']['category'];
-    }
-    return -1;
-}
-
-
-function _getStoredGeoShape ($jsonEncoded = false) {
-	if (isset($_SESSION['nbaSearch']['geoShape']) && 
-		!empty($_SESSION['nbaSearch']['geoShape'])) {
-        return $jsonEncoded ? json_encode($_SESSION['nbaSearch']['geoShape']) : 
-        	$_SESSION['nbaSearch']['geoShape'];
-    }
-	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
-			$_SESSION['nbaSearch']['gid'] != -1) {
-    	$client = _initNbaClient();
-    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
-    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
-    		'[getGeoJsonForGid method does not use QuerySpec]');
-    	return $jsonEncoded ? json_encode($shape) : $shape;
-    }
-    return -1;
-}
-
-function _isGeoSearch () {
-	return (isset($_SESSION['nbaSearch']['geoShape']) && 
-			!empty($_SESSION['nbaSearch']['geoShape'])) || 
-		(isset($_SESSION['nbaSearch']['gid']) && 
-			!empty($_SESSION['nbaSearch']['gid']) && 
-			$_SESSION['nbaSearch']['gid'] != -1); 
-}
-
-function _getStoredMapCenter () {
-    if (isset($_SESSION['nbaSearch']['mapCenter'])) {
-         return $_SESSION['nbaSearch']['mapCenter'];
-    }
-    return null;
-}
-
-function _getStoredLocation () {
-    if (isset($_SESSION['nbaSearch']['location'])) {
-         return $_SESSION['nbaSearch']['location'];
-    }
-    return null;
-}
-
-function _getStoredGid () {
-    if (isset($_SESSION['nbaSearch']['gid']) && $_SESSION['nbaSearch']['gid'] != -1) {
-         return $_SESSION['nbaSearch']['gid'];
-    }
-    return null;
-}
-
 
 
 /**
@@ -1179,6 +430,802 @@ function ndabio_omnisearch_form() {
 	
 	return ($form);
 }
+
+function ndabio_menu () {
+	if (drupal_lookup_path('alias', "nl/help") == '') {
+
+		$path1['alias'] = "nl/help";
+		$path1['source'] = "node/2";
+		path_save($path1);
+		
+		$nlpath['alias'] = "nl/help";
+		$nlpath['source'] = "node/2";
+		$nlpath['language'] = "nl";
+		path_save($nlpath);
+		
+		$path2['alias'] = "en/help";
+		$path2['source'] = "node/3765";
+		path_save($path2);
+		
+		$enpath['alias'] = "en/help";
+		$enpath['source'] = "node/3765";
+		$enpath['language'] = "en";
+    	path_save($enpath);
+	}
+		
+	// Configuration page
+	$items['admin/config/naturalis/ndabio'] = array(
+		'title' => 'NBA Search Form config',
+		'description' => 'Configuration for Naturalis module',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('ndabio_config_form'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM 
+	);
+	$items['search/geosearch'] = array(
+		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['geographic-search'] = array(
+		'page callback' => 'ndabio_displayform','page arguments' => array('geo'),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['explore/%'] = array(
+		'page callback' => 'ndabio_searchthematic','page arguments' => array(1),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	// Currently used as front page
+	$items['search/advancednda'] = array(
+		'page callback' => 'ndabio_displayform','access arguments' => array('access content'),
+		'title' => 'Advanced Naturalis Data Search',
+		'type' => MENU_LOCAL_TASK 
+	);	
+	// Page used by javascript to retrieve geo coordinates based on a nid
+	$items['naturalis/ajax'] = array(
+		'page callback' => 'ndabio_ajax_callback',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['naturalis/clear_map_data'] = array(
+		'page callback' => 'ndabio_clear_map_data_callback',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK 
+	);
+	$items['new_areas'] = array(
+		'page callback' => 'nba_areas_callback',
+		'access callback' => TRUE 
+	);
+	return $items;
+}
+
+
+function ndabio_block_info () {
+  $blocks['ndabio_languageselect'] = array(
+    'info' => t('NBA: Language select'),
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'region' => 'sidebar_first',
+    'status' => FALSE,
+  );
+  return $blocks;
+}
+
+function ndabio_block_view ($delta = '') {
+  global $base_url, $base_root, $base_path;
+  global $language;
+
+  $block = array();
+  switch ($delta) {
+        case 'ndabio_languageselect':
+
+            if (arg(0) == 'node' && is_numeric(arg(1))) {
+                $translations = translation_path_get_translations("node/" . arg(1));
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+            } else {
+                $currentpath = request_uri();
+                $cleanup = array(
+                    "&language=en",
+                    "&language=nl",
+                    "?language=en",
+                    "?language=nl",
+                    "&searchagain=1",
+                    "?searchagain=1",
+                    "&back",
+                    "?back"
+                );
+                $currentpath = str_replace($cleanup, "", $currentpath);
+                if (strpos($currentpath, "?") === FALSE) {
+                    $currentpath = $currentpath . "?";
+                }
+                else {
+                    $currentpath = $currentpath . "&";
+                }
+                $currentpathnl = $currentpathen = $currentpath;
+            }
+
+            $block['content'] = "<ul class='right' id='language-menu'>";
+            if ($language->language == "en") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathen, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en&back' title>EN</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathen . "language=en' title>EN</a>";
+            }
+            $block['content'] .= "  </li>";
+
+            if ($language->language == "nl") {
+                $block['content'] .= "  <li class='active'>";
+            } else {
+                $block['content'] .= "  <li>";
+            }
+            if (strpos($currentpathnl, "nba_request") === FALSE) {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl&back' title>NL</a>";
+            } else {
+                $block['content'] .= "    <a href='" . $currentpathnl . "language=nl' title>NL</a>";
+            }
+            $block['content'] .= "  </li>";
+            $block['content'] .= "</ul>";
+
+            break;
+    }
+    return $block;
+}
+
+
+
+function ndabio_searchthematic ($var1, $stitle = "") {
+  drupal_set_message("Thematic search");
+  session_unset();
+  $_POST['searchtype'] = 'thematicsearch';
+  $_POST['searchkey'] = $var1;
+  $_POST['form_id'] = 'ndabio_advanced_taxonomysearch';
+  //$_POST['term'] = $var1;
+  $_POST['s_theme'] = $var1;
+  $_POST['m_theme'] = $var1;
+
+  return ndabioresults_pass();
+}
+
+function ndabio_clear_map_data_callback () {
+    $_SESSION['nbaSearch']['geoShape'] = false;
+    $_SESSION['nbaSearch']['location'] = false;
+    $_SESSION['nbaSearch']['gid'] = false;
+    $_SESSION['nbaSearch']['zoomLevel'] = false;
+    $_SESSION['nbaSearch']['category'] = false;
+    $_SESSION['nbaSearch']['mapCenter'] = false;
+    die('Session data cleared');
+}
+
+/**
+* Output a json formatted detail page with geo coordinates based on the nid passed in the url.
+* The resulting page is used as input for the map, so no additional Drupal processing should take place.
+* To avoid additional Drupal theming being applied the function ends with a die()
+*/
+function ndabio_ajax_callback () {
+  if (!empty($_GET["nid"])) {
+    $nid = $_GET["nid"];
+    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
+    $client = _initNbaClient();
+    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
+    if (isset($geo->shape)) {
+        // locality is sometimes empty in Dutch;
+        $locality = $geo->locality;
+        if ($language == 'nl' && $geo->areaType == 'Country' &&
+            !empty($geo->countryNL) && $geo->countryNL != '\N') {
+            $locality = $geo->countryNL;
+        }
+        echo json_encode([
+            'nid' => $nid,
+            'locality' => $locality,
+            'source' => $geo->source,
+            'geometry' => $geo->shape
+        ]);
+    }
+    die(); // die() is required to avoid displaying the entire drupal interface
+	}
+}
+
+function ndabio_theme ($existing, $type, $theme, $path) {
+  //Provide a theme function for the 'omnisearch' field
+  $data['ndabio_omnisearch'] = array(
+    'render element' => 'element',
+  );
+  return $data;
+}
+
+function ndabio_search_page ($results) {
+  $output['prefix']['#markup'] = '<h2>' . t('Search results') . '</h2>' ;
+  $output['prefix']['#markup'] .= '<ol class="search-results">';
+
+  if (!empty($results)) {
+    foreach ($results as $entry) {
+      $output[] = array(
+        '#theme' => 'search_result',
+        '#result' => $entry,
+        '#module' => 'naturalis',
+      );
+    }
+  }
+  $output['suffix']['#markup'] = '</ol>' . theme('pager');
+
+  return $output;
+}
+
+function ndabio_displayform ($arg1 = "") {
+	drupal_add_js(drupal_get_path('module', 'ndabio') . '/js/form.js');
+	
+	if ($arg1 === "geo")
+		variable_set("geosearch", "1");
+	else
+		variable_set("geosearch", "0");
+	$form = drupal_get_form('ndabio_advanced_taxonomysearch');
+	return (drupal_render($form));
+}
+
+/**
+ * Prints geo areas
+ * 
+ * Offers the option to create favourites and to rename areas
+ * 
+ * @param string $type Area type (country, manucipality, nature)
+ * @return string Formatted html
+ */
+function nba_areas_callback ($type = false) {
+    if (!$type) {
+        return false;
+    }
+    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
+    if ($type == 'country') {
+        // First print favourites (hard-coded)
+        echo _printGeoFavourites(_createGeoList('Country', $language, _geoCountryFavourites()));
+        // Complete list
+        echo _printGeoList(_createGeoList('Country', $language));
+    } else if ($type == 'municipality') {
+        // Fix names that do not start with a letter
+         echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), 
+         	_geoMunicipalityFixes()));
+    } else {
+        echo _printGeoList(_createGeoList(ucfirst($type), $language));
+    }
+}
+
+/**
+ * Retrieves NBA geo areas
+ * 
+ * Dynamically gets NBA geo areas. These are cached for better performance.
+ * 
+ * @return array
+ */
+function _nbaGeoAreas () {
+    $nbaGeoAreas = &drupal_static(__FUNCTION__);
+    if (!$nbaGeoAreas) {
+        $cacheId = 'nbaGeoAreas';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaGeoAreas = $cache->data;
+            return $nbaGeoAreas;
+        }
+        $client = _initNbaClient();
+        $nbaGeoAreas = $client->getGeoAreas(true);
+        cache_set($cacheId, $nbaGeoAreas);
+    }
+    return $nbaGeoAreas;
+}
+
+/**
+ * Generates kind of unit advanced select
+ * 
+ * Kind of unit is composed of values from kindOfUnit and recordBasis.
+ * Some values are filtered (list can be adpated in config).
+ * 
+ * @return array
+ */
+function _kindOfUnitSelectValues () {
+	$output = array_merge(
+		_getDistinctValues('specimen', 'kindOfUnit'),
+		_getDistinctValues('specimen', 'recordBasis')	
+	);
+	// Remove unwanted values and duplicates (case insenstive)
+	foreach ($output as $v) {
+		$k = strtolower($v);
+		if (!in_array($k, _discardKindOfUnitSelectValues())) {
+			$filteredOutput[$k] = $v;
+		}
+	}
+	$output = array_values($filteredOutput);
+	sort($output, SORT_NATURAL | SORT_FLAG_CASE);
+	return $output;
+}
+
+/**
+ * Retrieves advanced select from NBA
+ * 
+ * Dynamically gets NBA values to populate advanced selects. 
+ * These are cached for better performance.
+ * 
+ * @return array
+ */
+function _advancedSelects () {
+    $nbaAdvancedSelects = &drupal_static(__FUNCTION__);
+    if (!$nbaAdvancedSelects) {
+        $cacheId = 'nbaAdvancedSelects';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaAdvancedSelects = $cache->data;
+            return $nbaAdvancedSelects;
+        }
+        $nbaAdvancedSelects['s_sourceSystem'] =
+        	_createAdvancedSelectDifferentOptionValue('specimen', 'sourceSystem.code', 'sourceSystem.name');
+        $nbaAdvancedSelects['s_collectionType'] =
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType'));
+        $nbaAdvancedSelects['s_typeStatus'] =
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus'));
+        $nbaAdvancedSelects['s_kindOfUnit'] =
+        	_createAdvancedSelect(_kindOfUnitSelectValues());
+        $nbaAdvancedSelects['s_sex'] =
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'sex'));
+        $nbaAdvancedSelects['s_phaseOrStage'] =
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage'));
+        $nbaAdvancedSelects['s_kingdom'] =
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
+        $nbaAdvancedSelects['t_sourceSystem'] =
+        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name');
+        $nbaAdvancedSelects['t_kingdom'] =
+        	_createAdvancedSelect(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
+        $nbaAdvancedSelects['m_sourceSystem'] =
+        	_createAdvancedSelectDifferentOptionValue('multimedia', 'sourceSystem.code', 'sourceSystem.name');
+        $nbaAdvancedSelects['m_collectionType'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType'));
+        $nbaAdvancedSelects['m_typeStatus'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus'));
+        $nbaAdvancedSelects['m_phaseOrStage'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages'));
+        $nbaAdvancedSelects['m_sex'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'sexes'));
+        $nbaAdvancedSelects['m_kingdom'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
+        $nbaAdvancedSelects['m_license'] =
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'license'));
+        cache_set($cacheId, $nbaAdvancedSelects);
+    }
+    return $nbaAdvancedSelects;
+}
+
+/**
+ * Reformats array so it can be used as a Drupal select
+ * 
+ * @param array $array
+ * @param string $labelUcFirst First letter uppercased?
+ * @return array 
+ */
+function _createAdvancedSelect ($array, $labelUcFirst = true) {
+	foreach ($array as $k => $v) {
+		$output[htmlspecialchars($v, ENT_QUOTES)] = $labelUcFirst ? ucfirst($v) : $v;
+	}
+	return isset($output) ? $output : array();
+}
+
+
+/**
+ * Is field a select in the advanced search form?
+ * 
+ * @param string $field
+ * @return boolean
+ */
+function _isAdvancedSelect ($field) {
+	return in_array(_advancedSelectFields());
+}
+
+/**
+ * Is field a multiselect in the advanced search form?
+ * 
+ * @param unknown $field
+ * @return boolean
+ */
+function _isMultiAdvancedSelect ($field) {
+	return in_array(_advancedMultiSelectFields());
+}
+
+/**
+ * Create select with different values for option and value
+ * 
+ * Cannot use _getDistinctValues() for select with different option-value pairs
+ * (specifically sourceSystem, where option should be different from value)
+ * Both fields should be linked of course!
+ * 
+ * @param string $service NBA service
+ * @param string $optionPath NBA path to option value
+ * @param string $valuePath NBA path to value value
+ * @return array
+ */
+function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
+	$options = _getDistinctValues($service, $optionPath);
+	$client = _initNbaClient();
+	foreach ($options as $option) {
+		$condition = new Condition($optionPath, 'EQUALS', $option);
+		$query = new QuerySpec();
+		$query->addCondition($condition)->setSize(1);
+		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+		// Convert NBA path to object path
+		$pathArray = explode('.', $valuePath);
+		if (isset($data->resultSet[0]->item)) {
+			$objPath = $data->resultSet[0]->item;
+			foreach ($pathArray as $deeper) {
+				$objPath = $objPath->{$deeper};
+			}
+			$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
+		}
+	}
+	return isset($output) ? $output : [];
+}
+
+/**
+ * Remaps gid from search form to NBA id
+ * 
+ * @param string $gid
+ * @return string|boolean
+ */
+function _setNbaGid ($gid = false) {
+	if (!$gid) {
+		return false;
+	}
+	$gid = str_replace('gid_', '', $gid);
+	return strpos($gid, '@') === false ? $gid . '@GEO' : $gid;
+}
+
+/**
+ * Get operator for select in advanced form
+ * 
+ * Default: STARTS_WITH_IC
+ * 
+ * @param string $field
+ * @return string|boolean
+ */
+function _getAdvancedFieldOperator ($field) {
+	if (isset(_advancedSelects()[$field])) {
+		return 'EQUALS_IC';
+	}
+	$tmp = explode('_', $field);
+	if (!isset($tmp[1])) {
+		return false;
+	}
+	$field = $tmp[1];
+	$service = 'specimen';
+	if ($tmp[0] == 'm') {
+		$service = 'multimedia';
+	} else if ($tmp[0] == 't') {
+		$service = 'taxon';
+	}
+	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
+		return _nbaAdvancedSearchExceptions()[$service][$field]['operator'];
+	}
+	return 'STARTS_WITH_IC';
+}
+
+/**
+ * Should value of advanced select be split by space or not?
+ * 
+ * Default: 'false'
+ * 
+ * @param string $field
+ * @return string
+ */
+function _getAdvancedFieldSplitInfo ($field) {
+	$tmp = explode('_', $field);
+	if (!isset($tmp[1])) {
+		return false;
+	}
+	$field = $tmp[1];
+	$service = 'specimen';
+	if ($tmp[0] == 'm') {
+		$service = 'multimedia';
+	} else if ($tmp[0] == 't') {
+		$service = 'taxon';
+	}
+	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
+		return var_export(_nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
+	}
+	return 'false';
+}
+
+/**
+ * Set help text for advanced form field, to be displayed as tooltip
+ * 
+ * @param string $field Name of form field
+ * @param string $description Description of field (Drupal search taxonomy)
+ * @param string $label Label of field (Drupal search taxonomy)
+ * @return string
+ */
+function _setHelpText ($field, $description, $label) {
+	$output = $description . " ";
+	if (_isMultiAdvancedSelect($field)) {
+		$output .= t('Control-click (or option-click on the Mac) to (de)select multiple search terms') . 
+			". ";
+	}
+	$output .= t('The search term') . ' ';
+	switch (_getAdvancedFieldSplitInfo($field)) {
+		case 'true':
+			$output .= t('is split into parts on any spaces');
+			break;
+		case 'false':
+			$output .= t('is used literally, including any spaces');
+			break;
+	}
+	
+	$splitTerm = t('one or more of the search term parts are');
+	
+	switch (_getAdvancedFieldOperator($field)) {
+		case 'EQUALS':
+		case 'EQUALS_IC':
+			$output .= t(', and is matched against the exact value of field "%s"');
+			$output = sprintf($output, $label);
+			break;
+		case 'STARTS_WITH':
+		case 'STARTS_WITH_IC':
+			$output .= t(', and is matched against the start of field "%s"');
+			$output = sprintf($output, $label);
+			break;
+		case 'MATCHES':
+			$output .= t(', and %s matched against the value of field "%s"');
+			$output = _getAdvancedFieldSplitInfo($field) == 'true' ? 
+				sprintf($output, $splitTerm, $label) : sprintf($output, 'is', $label);
+			break;
+		case 'CONTAINS':
+			$output .= '. ' . t('If the term is between %d and %d characters in length, ' .
+				'the system will search for records of which the field "%s" ' . 
+				' contains %s. If shorter or longer, it will look for specimens of which the value ' . 
+				'starts with the search term');
+			$output = sprintf($output, _nbaMinContainsStringSize(), _nbaMaxContainsStringSize(), 
+				$label, (_getAdvancedFieldSplitInfo($field) == 'true' ? $splitTerm : t('the term')));
+			break;
+	}
+	return $output .= '.';
+}
+
+/**
+ * Generate select
+ * 
+ * @param string $field
+ * @param string $taxonomy Drupal values for taxonomy (old situation): 
+ * indicates if --all-- option should be printed
+ * @return boolean|mixed
+ */
+function _setAdvancedSelect ($field, $taxonomy = '') {
+    if (!isset(_advancedSelects()[$field])) {
+        return false;
+    }
+    // First entry is an empty string for regular select
+    if (!_isMultiAdvancedSelect($field)) {
+    	$select[''] = '';
+    };
+    	// Add --all-- option if this is set in taxonomy value
+    if (strpos($taxonomy, '-- all --') !== false) {
+        $select['NOT_NULL'] = '-- ' . t('all') . ' --';
+    }
+    foreach (_advancedSelects()[$field] as $option => $value) {
+    	$select[$option] = $value;
+    }
+    return $select;
+}
+
+/**
+ * Gets geo list by type and language
+ * 
+ * Additionally offers to return a subselection, based on the
+ * third parameter. See _geoCountryFavourites() on how to format
+ * this array.
+ * 
+ * @param unknown $type Geo type (country, etc)
+ * @param unknown $language
+ * @param string $intersect Return only these values
+ * @return array
+ */
+function _createGeoList ($type, $language, $intersect = false) {
+    $all = json_decode(_nbaGeoAreas(), true);
+    if (!isset($all[$type])) {
+        return [];
+    }
+    $list = $all[$type];
+    foreach ($list as $item) {
+        $d[$item['id']] = isset($item['locality'][$language]) ?
+        	$item['locality'][$language] : $item['locality']['en'];
+    }
+    if ($intersect && is_array($intersect)) {
+        $d = array_intersect($d, $intersect[$language]);
+    }
+    asort($d);
+    return $d;
+}
+
+/**
+ * Rename geo areas
+ * 
+ * See _geoMunicipalityFixes() for fix list
+ * 
+ * @param unknown $list Complete list
+ * @param array $fixes
+ * @return array
+ */
+function _fixGeoList ($list, $fixes = []) {
+    if (empty($fixes)) {
+        return $list;
+    }
+    foreach ($list as $id => $item) {
+        if (isset($fixes[$item])) {
+            $list[$id] = $fixes[$item];
+        }
+    }
+    asort($list);
+    return $list;
+}
+
+/**
+ * Print the geo favourites
+ * 
+ * @param array $list
+ * @return string
+ */
+function _printGeoFavourites ($list) {
+    $output = "<div class=\"item-list\">\n<h3>" . t('Highlighted') . "</h3>\n<ul>\n";
+    foreach ($list as $id => $item) {
+        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
+    }
+    return $output .= "</ul></div>\n";
+}
+
+/**
+ * Print the geo list
+ * 
+ * @param array $list
+ * @return string Html formatted
+ */
+function _printGeoList ($list) {
+    $output = $letter = $prevLetter = '';
+    foreach ($list as $id => $item) {
+        $letter = strtoupper($item[0]);
+        if ($letter != $prevLetter) {
+            if ($prevLetter != '') {
+                $output .= "</ul>\n</div>\n";
+            }
+            $output .= "<div class=\"item-list\">\n<h3>$letter</h3>\n<ul>\n";
+        }
+        $output .= '<li class="row-area"><a id="gid_' . $id . '">' . $item . "</a></li>\n";
+        $prevLetter = $letter;
+    }
+    return $output .= "</ul></div>\n";
+}
+
+
+/**
+ * Dunno, some formating I guess
+ */
+function _wrap_inner_grid_cols (&$form_element, $n = 6) {
+  if (!isset($form_element['#prefix'])) $form_element['#prefix'] = '';
+  if (!isset($form_element['#suffix'])) $form_element['#prefix'] = '';
+  $form_element['#prefix'] = $form_element['#suffix'] . "<div class='small-$n columns'>";
+  $form_element['#suffix'] = "</div>" . $form_element['#suffix'];
+}
+
+/**
+ * Did the user use the advanced form?
+ * 
+ * Options are 1/0
+ * 
+ * @return number
+ */
+function _getExpandedFlag () {
+    foreach ($_SESSION['nbaSearch'] as $k => $v) {
+        // All true search parameters als formatted as x_etc
+        if (isset($k[1]) && $k[1] == '_' && strpos($k, 'andOr') === false && $v != '') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/**
+ * Zoom level of map
+ * 
+ * Options are zoom level/-1
+ * 
+ * @return number
+ */
+function _getStoredZoomLevel () {
+    if (isset($_SESSION['nbaSearch']['zoomLevel']) && 
+    	!empty($_SESSION['nbaSearch']['zoomLevel'])) {
+        return $_SESSION['nbaSearch']['zoomLevel'];
+    }
+    return -1;
+}
+
+/**
+ * Type of geo search
+ * 
+ * Options are category/-1
+ * 
+ * @return string|number
+ */
+function _getStoredCategory () {
+    if (isset($_SESSION['nbaSearch']['category']) && 
+    	$_SESSION['nbaSearch']['category'] != '') {
+        return $_SESSION['nbaSearch']['category'];
+    }
+    return -1;
+}
+
+/**
+ * Geo shape json
+ * 
+ * Options are json/-1
+ * 
+ * @param string $jsonEncoded
+ * @return string|unknown|number
+ */
+function _getStoredGeoShape ($jsonEncoded = false) {
+	if (isset($_SESSION['nbaSearch']['geoShape']) && 
+		!empty($_SESSION['nbaSearch']['geoShape'])) {
+        return $jsonEncoded ? json_encode($_SESSION['nbaSearch']['geoShape']) : 
+        	$_SESSION['nbaSearch']['geoShape'];
+    }
+	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
+			$_SESSION['nbaSearch']['gid'] != -1) {
+    	$client = _initNbaClient();
+    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
+    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
+    		'[getGeoJsonForGid method does not use QuerySpec]');
+    	return $jsonEncoded ? json_encode($shape) : $shape;
+    }
+    return -1;
+}
+
+/**
+ * Was the search a geo search?
+ * 
+ * @return boolean
+ */
+function _isGeoSearch () {
+	return (isset($_SESSION['nbaSearch']['geoShape']) && 
+			!empty($_SESSION['nbaSearch']['geoShape'])) || 
+		(isset($_SESSION['nbaSearch']['gid']) && 
+			!empty($_SESSION['nbaSearch']['gid']) && 
+			$_SESSION['nbaSearch']['gid'] != -1); 
+}
+
+/**
+ * Get map center
+ * 
+ * Options 
+ * 
+ * @return string|NULL
+ */
+function _getStoredMapCenter () {
+    if (isset($_SESSION['nbaSearch']['mapCenter'])) {
+         return $_SESSION['nbaSearch']['mapCenter'];
+    }
+    return null;
+}
+
+function _getStoredLocation () {
+    if (isset($_SESSION['nbaSearch']['location'])) {
+         return $_SESSION['nbaSearch']['location'];
+    }
+    return null;
+}
+
+function _getStoredGid () {
+    if (isset($_SESSION['nbaSearch']['gid']) && $_SESSION['nbaSearch']['gid'] != -1) {
+         return $_SESSION['nbaSearch']['gid'];
+    }
+    return null;
+}
+
+
 
 function _wrap_label ($help, $caption) {
 	global $language;
