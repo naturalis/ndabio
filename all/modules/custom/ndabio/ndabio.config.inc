@@ -21,7 +21,6 @@ function ndabio_config_form ($form, &$form_state) {
 	return system_settings_form($form);
 }
 
-
 /**
  * These fields are select in the search form
  * 

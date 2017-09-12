@@ -10,7 +10,7 @@ require_once 'ndabioresults.print.inc';
 require_once 'Paginator.php';
 
 // Old code
-require_once 'redundant.inc';
+//require_once 'redundant.inc';
 
 
 // Namespaces not defined in common.inc
@@ -19,7 +19,9 @@ use nl\naturalis\bioportal\GroupByScientificNameQuerySpec as GroupByScientificNa
 use nl\naturalis\bioportal\Condition as Condition;
 use nl\naturalis\bioportal\Filter as Filter;
 
-
+/**
+ * Things to do when loading the module
+ */
 function ndabioresults_init () {
 	// Clear previously stored debug info
 	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
@@ -27,12 +29,8 @@ function ndabioresults_init () {
 	$_SESSION['nbaNameResolutionTaxa'] = null;
 }
 
-
 /**
- * Implements template_preprocess_html().
- *
  * Add an extra class to the body to trigger CSS styles
- *
  */
 function ndabioresults_preprocess_html (&$vars) {
 	$pathComponents = explode('/', current_path());
@@ -685,7 +683,7 @@ function _getTaxonMultimedia ($object) {
 			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
 			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
 				$media->item->sourceSystem->name : null;
-			$output['items'][$i]['caption'] = _getMultimediaUnitId($media);
+			$output['items'][$i]['caption'] = _getMultimediaSpecimenUnitId($media);
 			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'multimedia/' . urlencode($media->item->unitID) . '/') .
 				'&from=' . (max(0, $i - 1)) . 

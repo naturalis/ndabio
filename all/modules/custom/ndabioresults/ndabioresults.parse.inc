@@ -1,14 +1,17 @@
 <?php
 
-
+/**
+ * Parses taxon media detail NBA response to PHP array
+ *
+ * @param object $data
+ * @return boolean|array
+ */
 function _parseTaxonDetail ($data) {
 	
 //p($data);
 	
 	$service = 'names.taxa';
-
 	$skipFields = [];
-	
 	$timer = _setTimer();
 
 	foreach ((array) $data as $field => $value) {
@@ -22,7 +25,6 @@ function _parseTaxonDetail ($data) {
 		$row = $row->taxonDetails;
 		$source = $row->sourceSystem->name;
 		$output['sourceUrls'][$source] = $row->recordURI;
-
 		if (isset($row->defaultClassification)) {
 			$output['classifications']['default'][$source] =
 				_parseClassification($row->defaultClassification);
@@ -57,7 +59,6 @@ function _parseTaxonDetail ($data) {
 				$key = isset($name->language) ? $name->language : null;
 				$output['commonNames'][$source][$key][] = $name->name;
 			}
-
 		}
 	}
 	$output['acceptedName'] = $acceptedNames[0];
@@ -66,17 +67,21 @@ function _parseTaxonDetail ($data) {
 	
 	_addDebugMessage('Parsing taxon', _getTimer($timer));
 	
-	return $output;
+	return isset($output) ? $output : false;;
 }
 
-
-
-
-
+/**
+ * Parses taxa NBA response to PHP array
+ * 
+ * Offers options to include 'Show all' and 'Media' links, paginator.
+ *
+ * @param object $data
+ * @param array $options
+ * @return boolean|array
+ */
 function _parseTaxa ($data, $options) {
 	
 	$service = 'names.taxa';
-	
 	$timer = _setTimer();
 	
 	if (empty($data->resultSet) || $data->totalSize == 0) {
@@ -85,7 +90,6 @@ function _parseTaxa ($data, $options) {
 	}
 		
 	$output['total'] = $data->totalSize;
-//	_getTaxonDetails($data);
 
 //p($data);
 
@@ -96,7 +100,7 @@ function _parseTaxa ($data, $options) {
 			$hits = _getHits($service, $taxon);
 			$type = _getResultType($hits);
 			$sources[] = _getSourceNameBySourceCode($taxon->sourceSystem->code);
-			$names['common'] = _getTaxonVernaculars($service, $taxon, $hits, true);
+			$names['common'] = _getTaxonVernaculars($service, $taxon, true);
 			$names['accepted'][] = _getTaxonAcceptedName($service, $taxon, $hits);
 			$names['synonyms'][] = _getTaxonSynonyms($service, $taxon, $hits, true);
 		}
@@ -161,6 +165,13 @@ function _parseTaxa ($data, $options) {
 	return isset($output) ? $output : false;
 }
 
+/**
+ * Get common names for taxon in result row of taxa query
+ * 
+ * @param object $row Taxon object
+ * @param string $languageCheck Option to only return language-specific names
+ * @return boolean|array
+ */
 function _getCommonNames ($row, $languageCheck = false) {
 	global $language;
 	foreach ($row->item->taxa as $i => $taxon) {
@@ -182,8 +193,16 @@ function _getCommonNames ($row, $languageCheck = false) {
 	return isset($output) ? array_unique($output) : false;
 }
 
-
-function _getResultType ($hits) {
+/**
+ * Get type of hit in result row of taxa query
+ * 
+ * @param unknown $hits
+ * @return string|boolean
+ */
+function _getResultType ($hits = []) {
+	if (empty($hits)) {
+		return false;
+	}
 	$result = [];
 	foreach ($hits as $path => $hit) {
 		if (strpos($path, 'synonyms') !== false) {
@@ -202,8 +221,15 @@ function _getResultType ($hits) {
 	return false;
 }
 
-
-
+/**
+ * Parses multimedia NBA response to PHP array
+ * 
+ * Offers options to include 'Show all' and 'Media' links, paginator.
+ *
+ * @param object $data
+ * @param array $options
+ * @return boolean|array
+ */
 function _parseMultimedia ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
@@ -240,7 +266,7 @@ function _parseMultimedia ($data, $options = []) {
 		$d['hits'] = _setNonNameHits($service, $hits);
 		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row);
 		$d['taxon'] = _getSpecimenScientificNames($service, $row, $hits);
-		$d['unitID'] = _getMultimediaUnitId($row, $hits);
+		$d['unitID'] = _getMultimediaSpecimenUnitId($row, $hits);
 		$output['results'][] = $d;
 	}
 	// Show all link
@@ -261,10 +287,10 @@ function _parseMultimedia ($data, $options = []) {
 }
 
 /**
- * Parses specimen media detail json to PHP array
- *
- * @param string $json NBA response
- * @return array $output
+ * Parses specimen multimedia NBA response to PHP array
+ * 
+ * @param object $data
+ * @return boolean|array
  */
 function _parseSpecimenMediaDetail ($data) {
 	if (!isset($data->id)) {
@@ -300,11 +326,15 @@ function _parseSpecimenMediaDetail ($data) {
 
 	_addDebugMessage('Parsing multimedia', _getTimer($timer));
 	   		
-	return $output;
+	return isset($output) ? $output : false;
 }
 
-
-
+/**
+ * Parses specimen detail NBA response to PHP array
+ * 
+ * @param object $data
+ * @return boolean|array
+ */
 function _parseSpecimenDetail ($data) {
 	
 	if (!isset($data->id)) {
@@ -313,7 +343,6 @@ function _parseSpecimenDetail ($data) {
 //p($data);
 
 	$timer = _setTimer();
-
     $skipFields = array(
         'objectPublic',
 	    'sourceSystemId',
@@ -352,10 +381,15 @@ function _parseSpecimenDetail ($data) {
 	
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
 	
-	return $output;
+	return isset($output) ? $output : false;
 }
 
-
+/**
+ * Gets vernacular names for specimen from associated taxon
+ * 
+ * @param array $identifications
+ * @return array|NULL
+ */
 function _getSpecimenEnrichedVernaculars ($identifications = []) {
 	foreach ($identifications as $row) {
 		if (isset($row->taxonomicEnrichments)) {
@@ -372,12 +406,11 @@ function _getSpecimenEnrichedVernaculars ($identifications = []) {
 	return isset($output) ? $output : [];
 }
 
-
 /**
  * Get url for Nth specimen in "collection"/set
  *
  * @param int $i Offset for specimen in searchResults->links
- * @return string|void Url
+ * @return string|null Url
  */
 function _getSpecimenInCollectionUrl ($data, $scientificNameGroup) {
 	foreach ($data->identifications as $id) {
@@ -388,15 +421,11 @@ function _getSpecimenInCollectionUrl ($data, $scientificNameGroup) {
 	return null;
 }
 
-
-
-
-
 /**
- * Parses taxon media detail json to PHP array
- *
- * @param string $json NBA response
- * @return array $output
+ * Parses taxon multimedia detail NBA response to PHP array
+ * 
+ * @param object $data
+ * @return boolean|array
  */
 function _parseTaxonMediaDetail ($data) {
 	if (!isset($data->id)) {
@@ -426,13 +455,19 @@ function _parseTaxonMediaDetail ($data) {
 	
 	_addDebugMessage('Parsing multimedia', _getTimer($timer));
 	
-	//p($output);
-	
 	return $output;
 }
 
+/**
+ * Gets scientific name from NBA object
+ * 
+ * Can be used for specimen and taxon objects
+ * 
+ * @param object $object
+ * @param string $fullScientificName Include authorship and italicize?
+ * @return string|NULL
+ */
 function _getScientificName ($object, $fullScientificName = true) {
-//p($object);	
 	// Can be used to generate a full italicized name (default) or 
 	// a simple non-formatted name without authorship
 	$elements = $fullScientificName ? 
@@ -464,7 +499,16 @@ function _getScientificName ($object, $fullScientificName = true) {
 	return null;
 }
 
-
+/**
+ * Check if taxon is present in index
+ * 
+ * If so, return url; if not, return null.
+ * Results are cached in session.
+ * 
+ * @param unknown $object
+ * @param string $checkNba
+ * @return unknown|NULL|string|NULL
+ */
 function _getTaxonUrl ($object, $checkNba = true) {
 	// Name can be stored in either acceptedName (taxon) or 
 	// scientificName (specimen); try both
@@ -485,13 +529,24 @@ function _getTaxonUrl ($object, $checkNba = true) {
 				$url = _setBasePath() . 'taxon/' . implode('_', $name);
 			}
 			$_SESSION['nbaTaxa'][$key] = $url;
+			// Make sure session isn't overloaded by crawlers etc.
+			// Cap urls to a maximum. If max is reached, delete oldest entry
+			if (count($_SESSION['nbaTaxa']) > _maxSizeTaxonUrlCache()) {
+				array_pop($_SESSION['nbaTaxa']);
+			}
 			return $url;
 		}
 	}
 	return null;
 }
 
-
+/**
+ * Sets search terms for detail page in result set
+ * 
+ * @param unknown $service
+ * @param unknown $i Nth result in set, determines offset
+ * @return array
+ */
 function _setDetailSearchTerms ($service, $i) {
 	// Differentiate between from details and general!!
 	$from = (int) _getQueryTerms($service)['from'];
@@ -503,8 +558,13 @@ function _setDetailSearchTerms ($service, $i) {
 	return $terms;
 }
 
-
-
+/**
+ * Filter hits pertaining to the name and highlight these
+ * 
+ * @param string $service
+ * @param array $hits
+ * @return boolean|array
+ */
 function _setNonNameHits ($service, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $hit) {
@@ -516,12 +576,18 @@ function _setNonNameHits ($service, $hits = []) {
 		}
 		return _highlightHits($service, $hits);
 	}
+	return false;
 }
 
-
+/**
+ * Filter hits pertaining to name resolution and highlight these
+ * 
+ * @param string $service
+ * @param array $hits
+ * @param object $object
+ * @return boolean|array
+ */
 function _setNameResolutionHits ($service, $hits = [], $object) {
-//p($object);
-//p($hits);
 	if (!empty($hits)) {
 		$paths = _getQueryPaths($service);
 		$types = [];
@@ -592,21 +658,17 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 	}
 }
 
-function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
+/**
+ * Get vernaculars names for taxon
+ * 
+ * @param string $service
+ * @param object $taxon
+ * @param boolean $hitsOnly
+ * @return boolean|array
+ */
+function _getTaxonVernaculars ($service, $taxon, $hitsOnly = false) {
 	if (isset($taxon->vernacularNames)) {
-		
-/* @sng-fix
-		foreach (_getQueryPaths($service) as $path => $value) {
-			$paths[str_replace('taxa.', '', $path)] = $value;
-		}
-		// Same for hits
-		foreach ($hits as $path => $value) {
-			$temp[str_replace('taxa.', '', $path)] = $value;
-		}
-		$hits = isset($temp) ? $temp : $hits;
-*/		
 		$paths = _getQueryPaths($service);
-
 		foreach ($taxon->vernacularNames as $i => $name) {
 			$hit = false;
 			$vernacular['name'] = _highlightMatch($name->name, 
@@ -619,26 +681,20 @@ function _getTaxonVernaculars ($service, $taxon, $hits, $hitsOnly = false) {
 				$vernaculars[$i] = $vernacular;
 			}
 		}
-//p($vernaculars);		
 		return isset($vernaculars) ? $vernaculars : false;
 	}
 	return false;
 }
 
+/**
+ * Get accepted name for taxon
+ * 
+ * @param string $service
+ * @param object $taxon
+ * @param array $hits
+ * @return boolean|string
+ */
 function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
-/* @sng-fix
-	// Trim taxa prefix from path to facilite highlighting
-	if ($service) {
-		foreach (_getQueryPaths($service) as $path => $value) {
-			$paths[str_replace('taxa.', '', $path)] = $value;
-		}
-	}
-	// Same for hits
-	foreach ($hits as $path => $value) {
-		$temp[str_replace('taxa.', '', $path)] = $value;
-	}
-	$hits = isset($temp) ? $temp : $hits;
-*/
 	$paths = _getQueryPaths($service);
 	$name = [];
 	// Elements in regular scientific name elements
@@ -659,6 +715,15 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 	return !empty($name) ? implode(' ', array_filter($name)) : false;
 }
 
+/**
+ * Get synonyms for taxon
+ * 
+ * @param string $service
+ * @param object $taxon
+ * @param array $hits
+ * @param boolean $hitsOnly
+ * @return boolean|array
+ */
 function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 	if (isset($taxon->synonyms)) {
 		$paths = _getQueryPaths($service);
@@ -693,7 +758,14 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 	return false;
 }
 
-
+/**
+ * Format scientific name based on individual name parts
+ * 
+ * If no genus is set, fullScientificName is used instead. * 
+ * 
+ * @param object $object
+ * @return boolean|string
+ */
 function _formatScientificName ($object) {
 	$name = [];
 	// Elements in regular scientific name elements
@@ -714,6 +786,17 @@ function _formatScientificName ($object) {
 	return !empty($name) ? implode(' ', array_filter($name)) : false;
 }
 
+/**
+ * Get scientific name(s) for specimen row in result set
+ * 
+ * Optionally wrap these in links.
+ * 
+ * @param string $service
+ * @param object $row
+ * @param array $hits
+ * @param boolean $createLinks
+ * @return boolean|string
+ */
 function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks = false) {
 	$paths = _getQueryPaths($service);
 	
@@ -773,7 +856,14 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 	return isset($names) ? implode('; ', array_unique($names)) : false;
 }
 
-function _getMultimediaUnitId ($row, $hits = []) {
+/**
+ * Get unitId (registration number) of specimen in multimedia result
+ * 
+ * @param object $row Result row
+ * @param array $hits
+ * @return string|NULL
+ */
+function _getMultimediaSpecimenUnitId ($row, $hits = []) {
 	if (isset($row->item->associatedSpecimenReference)) {
 		$pos = strpos($row->item->associatedSpecimenReference, '@');
 		$id = substr($row->item->associatedSpecimenReference, 0, $pos);
@@ -789,11 +879,10 @@ function _getMultimediaUnitId ($row, $hits = []) {
 
 /**
  * Parses specimen data json searched by name and map to PHP array
+ * 
+ * Data will be plotted on a map.
  *
- * As the data arrives to this function through parseSpecimensByTaxon(),
- * json parsing and validation can be skipped.
- *
- * @param array $data Parsed json from parseSpecimensByTaxon()
+ * @param array $data
  * @return array $output
  */
 function _parseSpecimensMap ($data) {
@@ -852,6 +941,15 @@ function _parseSpecimensMap ($data) {
 	return isset($output) ? $output : false;
 }
 
+/**
+ * Parses specimens NBA response to PHP array
+ * 
+ * Offers options to include 'Show all' and 'Media' links, paginator.
+ *
+ * @param object $data
+ * @param array $options
+ * @return boolean|array
+ */
 function _parseSpecimens ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
 		return false;
@@ -911,15 +1009,36 @@ function _parseSpecimens ($data, $options = []) {
 	return $output;
 }
 
+/**
+ * Get search criteria for previous search
+ * 
+ * @param string $url
+ * @return boolean|array
+ */
 function _getReferredSearch ($url) {
 	safe_parse_str($url, $terms);
 	return isset($terms['referrer']) ? _decodeReferrer($terms['referrer']) : false;
 }
 
+/**
+ * Append score to current path
+ * 
+ * Except when it is set as 'score'; see _sortOptions().
+ * 
+ * @param unknown $path
+ * @return string
+ */
 function _setSortUrl ($path) {
 	return _resetUrl() . ($path == 'sort=score' ? '' : '&' . $path);
 }
 
+/**
+ * Get sort criteria from current url
+ * 
+ * Constructs path and returns this in array
+ * 
+ * @return boolean|array
+ */
 function _getCurrentSort () {
 	$pathComponents = explode('/', _getCurrentUrl());
 	safe_parse_str(array_pop($pathComponents), $terms);	
@@ -934,7 +1053,11 @@ function _getCurrentSort () {
 	return isset($path) ? ['path' => $path] : false;
 }
 
-// Strips sort parameters and sets from to 0
+/**
+ * Rebuild url without most search flags
+ * 
+ * @return string Url
+ */
 function _resetUrl () {
 	$pathComponents = explode('/', _getCurrentUrl());
 	$path = array_pop($pathComponents);
@@ -948,6 +1071,14 @@ function _resetUrl () {
 	return implode('/', $pathComponents) . '/' . safe_http_build_query($terms);
 }
 
+/**
+ * Construct taxon id from name elements
+ * 
+ * Results in Genus_species_infraspecise string.
+ * 
+ * @param object $object
+ * @return string
+ */
 function _setTaxonId ($object) {
 	foreach (_scientificNameElementsInItalics() as $element) {
 		$name[] = isset($object->{$element}) && !empty(isset($object->{$element})) ? 
@@ -956,6 +1087,15 @@ function _setTaxonId ($object) {
 	return ucfirst(implode('_', array_filter($name)));
 }
 
+/**
+ * Parses specimens grouped by taxon NBA response to PHP array
+ * 
+ * Offers options to include 'Show all' and 'Media' links, paginator.
+ *
+ * @param object $data
+ * @param array $options
+ * @return boolean|array
+ */
 
 function _parseSpecimensTaxon ($data, $options = []) {
 	if (!isset($data->resultSet) || empty($data->resultSet)) {
@@ -1069,7 +1209,12 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	return $output;
 }
 
-
+/**
+ * Convert NBA assemblageID to true Bramhs set id
+ * 
+ * @param string $id
+ * @return string|boolean
+ */
 function _formatAssemblageId ($id) {
 	$parts = explode('@', $id);
 	if (count($parts) == 2) {
@@ -1078,7 +1223,12 @@ function _formatAssemblageId ($id) {
 	return false;
 }
 
-
+/**
+ * Set highlighted scientific name for a specimen
+ * 
+ * @param array $data
+ * @return string
+ */
 function _setSpecimenScientificName ($data) {
 	$paths = _getQueryPaths('names.specimens');
 	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
@@ -1175,7 +1325,15 @@ function _setSpecimenScientificName ($data) {
 	return array_values($names)[0];
 }
 
-
+/**
+ * Append non-accepted names to a previously constructed (or still empty) 
+ * array of non-accepted names
+ * 
+ * @param array $nonAcceptedNames
+ * @param object $row Result row
+ * @param object $scientificNameGroup
+ * @return array
+ */
 function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup) {
 	foreach ($row->identifications as $identification) {
 		if ($scientificNameGroup == $identification->scientificName->scientificNameGroup) {
@@ -1186,6 +1344,14 @@ function _appendNonAcceptedNames ($nonAcceptedNames, $row, $scientificNameGroup)
 	return $nonAcceptedNames;
 }
 
+/**
+ * Extract name hits from hits and append to a previously constructed (or still empty) 
+ * array of name hits
+ * 
+ * @param array $nameHits
+ * @param array $hits
+ * @return array
+ */
 function _appendNameHits ($nameHits, $hits = []) {
 	if (!empty($hits)) {
 		foreach ($hits as $path => $value) {
@@ -1197,6 +1363,12 @@ function _appendNameHits ($nameHits, $hits = []) {
 	return $nameHits;
 }
 
+/**
+ * Get accepted names from specimen result
+ * 
+ * @param object $row Result row
+ * @return NULL|array
+ */
 function _getSpecimenAcceptedNames ($row) {
 //p($row);
 	if (isset($row->item->taxa)) {
@@ -1209,33 +1381,15 @@ function _getSpecimenAcceptedNames ($row) {
 }
 
 
-/* Old
+/**
+ * Get fields in result object matching the search term(s)
+ * 
+ * @param string $service
+ * @param object $result
+ * @return array|boolean
+ */
 function _getHits ($service, $result) {
-	// Path used are stored in session
-	$queryPaths = _getQueryPaths($service);
-	if (!$queryPaths) {
-		return false;
-	}
-	foreach ($queryPaths as $path => $item) {
-		// Convert NBA path to object path
-		$pathElements = explode('.', $path);
-		// Chop off first part of path in case of names service
-		if (strpos($service, '.') !== false) {
-			unset($pathElements[0]);
-		}
-		$hits = _getHitInResult($pathElements, $result, 
-			$item['value'], $item['operator']);
-		if (!empty($hits)) {
-			$output[$path] = $hits[0];
-		}
-	}
-	return isset($output) ? $output : false;
-}
-*/
-
-
-function _getHits ($service, $result) {
-	// Path used are stored in session
+	// Paths used are stored in session
 	$queryPaths = _getQueryPaths($service);
 	if (!$queryPaths) {
 		return false;
@@ -1244,12 +1398,6 @@ function _getHits ($service, $result) {
 		$hits = [];
 		// Convert NBA path to object path
 		$pathElements = explode('.', $path);
-/* @sng-fix
-		// Chop off first part of path in case of names service
-		if (strpos($service, '.') !== false) {
-			unset($pathElements[0]);
-		}
-*/		
 		foreach ($item['values'] as $value) {
 			$hit = _getHitInResult($pathElements, $result, $value, $item['operator']);
 			if (!empty($hit)) {
@@ -1263,9 +1411,21 @@ function _getHits ($service, $result) {
 	}
 	return isset($output) ? $output : false;
 }
-
  
- 
+/**
+ * Get hit(s) in result object
+ * 
+ * Recursive function looping over path elements (as in the three elements in
+ * acceptedNames.scientificName.genusOrMonomial). First find appropriate element
+ * in the result object, next check if there's a match based on the operator used
+ * for the search. 
+ * 
+ * @param array $pathElements 
+ * @param object $result
+ * @param string $value
+ * @param string $operator
+ * @return boolean|array Hits
+ */
 function _getHitInResult ($pathElements, $result, $value, $operator) {
 	if (!$pathElements || !$result || !$value || !$operator) {
 		return false;
@@ -1316,7 +1476,15 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 	return $hits;
 }
 
-/* Highlight and reduces path to last word to facilitate translation */
+/**
+ * Highlight hits
+ * 
+ * Highlight and reduces path to last word to facilitate translation
+ * 
+ * @param unknown $service
+ * @param array $hits
+ * @return boolean|string
+ */
 function _highlightHits ($service, $hits = []) {
 	$paths = _getQueryPaths($service);
 	if (!empty($hits)) {
@@ -1329,11 +1497,11 @@ function _highlightHits ($service, $hits = []) {
 	return isset($output) ? $output : false;
 }
 
-
 /**
  * Highlight match
  *
- * Experimental highlight function from Linnaeus NG by Maarten Schermer
+ * Experimental highlight function from Linnaeus NG by Maarten Schermer.
+ * Modified to use anonymous callback functions.
  *
  * @param string $haystack Input string
  * @param array $needles Matches
@@ -1370,13 +1538,17 @@ function _highlightMatch ($haystack, $needles) {
 			}, $m[0]) . chr(7);
 		}, $haystack);
 	}
-	
-	
 	// Restore temporarily replaced tags
 	return str_replace($r, $f, $haystack);
 }
 
-
+/**
+ * Sets url with size reset to maximum
+ * 
+ * @param int $total
+ * @param array $criteria
+ * @return string|NULL
+ */
 function _setShowAllQuery ($total, $criteria) {
 	if ($total > _maxResultsInitial()) {
 		$criteria['size'] = _maxResults();
@@ -1384,8 +1556,6 @@ function _setShowAllQuery ($total, $criteria) {
 	}
 	return null;
 }
-
-
 
 /**
  * Total size
@@ -1420,7 +1590,6 @@ function _setUnitId ($string, $field = false) {
 	return $string;
 }
 
-
 /**
  * Scientific names and their urls for a specimen
  *
@@ -1450,7 +1619,12 @@ function _getSpecimenNames ($identifications = []) {
 	return [];
 }
 
-
+/**
+ * Type statuses for a specimen
+ * 
+ * @param array $identifications
+ * @return array
+ */
 function _getSpecimenTypeStatuses ($identifications = []) {
     foreach ($identifications as $identification) {
     	if (isset($identification->typeStatus)) {
@@ -1470,31 +1644,6 @@ function _getSpecimenTypeStatuses ($identifications = []) {
 	return [];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Parses classification of taxon
  *
@@ -1512,8 +1661,6 @@ function _parseClassification ($classification) {
     }
     return isset($c) ? $c : $classification;
 }
-
-
 
 /**
  * Vernacular names for a specimen
@@ -1534,7 +1681,6 @@ function _getSpecimenVernaculars ($identifications = []) {
 	}
 	return isset($output) ? $output : false;
 }
-
 
 /**
  * Gets gathering event data for specimen
@@ -1570,8 +1716,6 @@ function _getGatheringEventSpecimens ($event = []) {
 	return isset($d) ? $d : null;
 }
 
-
-
 /**
  * Translates decimal coordinate pair to DMS
  *
@@ -1579,7 +1723,7 @@ function _getGatheringEventSpecimens ($event = []) {
  * https://www.dougv.com/2012/03/converting-latitude-and-longitude-coordinates-between-decimal-and-degrees-minutes-seconds/
  *
  * Takes decimal coordinates and return degree, minute, second notation. Original function only
- * accepted single parameter; adapted to take both latitude and longitude immediately
+ * accepted single parameter; adapted to take both latitude and longitude immediately.
  *
  * @param Decimal $lat Latitude
  * @param Decimal $lon Longitude

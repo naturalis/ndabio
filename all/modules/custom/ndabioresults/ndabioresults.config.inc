@@ -216,6 +216,20 @@ function _nbaTimeout () {
 }
 
 /**
+ * Max size taxon url cache
+ * 
+ * Taxon urls are stored to reduce the number of queries to the NBA.
+ * However, crawlers should not blow up the session.
+ * 
+ * @return number
+ */
+function _maxSizeTaxonUrlCache () {
+	return 1000;
+}
+
+
+
+/**
  * Constant: maximum results for subsequent queries
  *
  * @return integer
