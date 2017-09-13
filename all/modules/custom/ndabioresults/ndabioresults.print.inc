@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Prints _sortOptions() for specified service
+ * 
+ * @param string $service
+ * @return string
+ */
 function _printSortOptions ($service) {
     drupal_add_js(
         "(function($) {
@@ -21,15 +27,17 @@ function _printSortOptions ($service) {
 		$selected = $d == _getCurrentSort() ? ' selected' : '';
 		$output .= "<option value='$url'$selected>" . t('Sort by') . " $label</option>\n";
 	}
-//p($d); p(_getCurrentSort());
 	return  $output . "</select>\n</form>\n";
 }
 
+/**
+ * Prints taxon detail
+ *
+ * @param array $data
+ * @return string
+ */
 function _printTaxonDetail ($data) {
     global $language;
-    
-//p($data['specimens']);
-
     
     $output = _printDebug();
     $output .= "<div class='category'>".t('Taxon')."</div>";
@@ -71,7 +79,12 @@ function _printTaxonDetail ($data) {
     return $output;
 }
 
-
+/**
+ * Prints taxon results
+ * 
+ * @param array $data
+ * @return boolean|string
+ */
 function _printTaxa ($data) {
 //p($data);
     if (empty($data['results'])) {
@@ -124,12 +137,10 @@ function _printTaxa ($data) {
 
         // Source(s)
         $output .= "<td>" . implode('</br>', $row['sources']) . "</td>";
-
-        $output .= "</tr>";
+        $output .= "</tr>\n";
     }
 
-    $output .= "</tbody></table>";
-    //$output = _markUp($output);
+    $output .= "</tbody></table>\n";
 
     $output .= _printShowAll($data);
     $output .= _printMediaLink($data);
@@ -138,13 +149,11 @@ function _printTaxa ($data) {
     return $output;
 }
 
-
-
 /**
- * Prints specimen search result
- *
- * @param array $data Parsed json data
- * @return string Formatted output
+ * Print specimen results
+ * 
+ * @param array $data
+ * @return boolean|string
  */
 function _printSpecimens ($data) {
 
@@ -194,12 +203,10 @@ function _printSpecimens ($data) {
 		// Species
 		$output .= "<td>" . $row['names'] . "</td>";
 		// Source(s)
-		$output .= "<td>" . $row['source'] . "</td>";
-		// Match
-		$output .= "</tr>";
+		$output .= "<td>" . $row['source'] . "</td></tr>\n";
 	}
 
-	$output .= "</tbody></table>";
+	$output .= "</tbody></table>\n";
 
     $output .= _printShowAll($data);
     $output .= _printMediaLink($data);
@@ -208,8 +215,12 @@ function _printSpecimens ($data) {
     return $output;
 }
 
-
-// Print specimen detail on screen
+/**
+ * Print specimen details
+ * 
+ * @param array $data
+ * @return string
+ */
 function _printSpecimenDetail ($data) {
     drupal_add_js(
         "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
@@ -326,7 +337,7 @@ function _printSpecimenDetail ($data) {
 	$output .= _wrap( t("Details")    , "h3"  );
 	$output .= _wrap( $data['source'] , "h4", "source");
 
-	$output .= "<div class='property-list'>";
+	$output .= "<div class='property-list'>\n";
 
 	foreach ($data as $field => $value) {
 	    if (in_array($field, $hideFields)) {
@@ -397,28 +408,17 @@ function _printSpecimenDetail ($data) {
 	}
 	// Other specimens in collection/set are printed in different table
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
- 		$output .= "</div>\n<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>";
+ 		$output .= "</div>\n<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>\n";
  		foreach ($data['otherSpecimens'] as $i => $specimen) {
 			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
-			$output .= '<dd>' . $specimen['collectionType'] . '</dd></dl>';
+			$output .= '<dd>' . $specimen['collectionType'] . "</dd></dl>\n";
 		}
 	}
-	$output .= "</div>";
+	$output .= "</div>\n";
 
 	$output .= ($lat && $lon ? 
-		"<h3>" . t('Map') . "</h3>\n<div id='map-canvas' style='margin-bottom: 3em;'></div>" : 
-		'');
-/*
-    $getMultimediaRequest = _nbaBaseUrl() . multimediaService() .
-        '/?associatedSpecimenReference=' . urlencode(unsetUnitId($data['unitID'])) . '&_andOr=AND';
+		"<h3>" . t('Map') . "</h3>\n<div id='map-canvas' style='margin-bottom: 3em;'></div>" : '');
 
-    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
-    drupal_add_js("var getMultimediaRequest = '$getMultimediaRequest' ", 'inline');
-    drupal_add_js(
-        "jQuery(function() { getNbaData(getMultimediaRequest, setMultimediaPreview, '&_maxResults=5'); });",
-        array('type' => 'inline', 'scope' => 'footer')
-    );
-*/
 	if (!empty($data['multimedia'])) {
     	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
     		_printMultimediaPreview($data['multimedia']) . "</p>\n";
@@ -430,12 +430,15 @@ function _printSpecimenDetail ($data) {
 	return $output;
 }
 
-	
-	
-
+/**
+ * Print row of five media thumbnails on taxon detail page
+ * 
+ * @param array $data
+ * @return NULL|string
+ */
 function _printMultimediaPreview ($data) {
 	if (isset($data['items']) && !empty($data['items'])) {
-		$output = "<div style='overflow: hidden;'>";
+		$output = "<div style='overflow: hidden;'>\n";
 		foreach ($data['items'] as $i => $media) {
 			$src = $media['src'];
 			if ($media['format'] == 'video/mp4') {
@@ -456,6 +459,12 @@ function _printMultimediaPreview ($data) {
 	return isset($output) ? $output : null;
 }
 
+/**
+ * Print list of five specimens on taxon detail page
+ * 
+ * @param array $data
+ * @return NULL|string
+ */
 function _printSpecimensPreview ($data) {
 	if (isset($data->items) && !empty($data->items)) {
 		$output = '';
@@ -472,17 +481,13 @@ function _printSpecimensPreview ($data) {
 	return isset($output) ? $output : null;
 }
 
-
-
-
-
 /**
- * Prints taxon identifications for specimen (used only for non-name search)
- *
- * Replaces default <span> with <span class="result-query">
- *
- * @param array $row Parsed json data
- * @return string|void Formatted output
+ * Prints names with links plus label
+ * 
+ * @param array $details
+ * @param string $fieldLabel
+ * @param string $referrer
+ * @return NULL|string
  */
 function _printNamesWithLinks ($details, $fieldLabel, $referrer = false) {
 	$output = '';
@@ -497,6 +502,13 @@ function _printNamesWithLinks ($details, $fieldLabel, $referrer = false) {
 	return !empty($output) ? $output : null;
 }
 
+/**
+ * Prints type statuses for specimen plus label
+ * 
+ * @param array $details
+ * @param string $fieldLabel
+ * @return string
+ */
 function _printTypeStatuses ($details, $fieldLabel) {
 	if (count($details) <= 1) {
 		return _printDL(t($fieldLabel), 
@@ -509,6 +521,12 @@ function _printTypeStatuses ($details, $fieldLabel) {
 	return _printDL(t($fieldLabel), implode(', ', $values));
 }
 
+/**
+ * Prints specimen details
+ * 
+ * @param array $data
+ * @return string
+ */
 function _printSpecimenMediaDetail ($data) {
 //p($data);
 
@@ -522,23 +540,6 @@ function _printSpecimenMediaDetail ($data) {
     	'nextUrl' => $data['nextUrl'],
     	'backUrl' => $data['backUrl'],
     ]);
-
-    
-    /* For the time being disable PURL for media
-     *
-    drupal_add_js(
-        "jQuery(function() { jQuery('#purl').focus().click(function(){ jQuery(this).select(); } ); });",
-        ['type' => 'inline', 'scope' => 'footer']
-    );
-
-	$purl = '<input id="purl" type="text" value="http://data.biodiversitydata.nl/naturalis/multimedia/' .
-	   $data['mediaUnitID'] . '"></input>';
-	$helpText = t('Please cite the object described here by using this PURL (Persistent Uniform Resource Locator). Naturalis will try to assure the permanent character of this PURL.');
-	$output .= '<div class="property-list">
-	   <dl><dt style="cursor: help; width: 100%;" title="' . $helpText . '">'.
-	   t("Cite as") . ':</dt><dd></dd></dl><p>' . $purl . '</p>
-	   </div>';
-    */
 
     $altParts = array(
         isset($data['unitID']) ? strip_tags($data['unitID']) : '',
@@ -615,8 +616,6 @@ function _printSpecimenMediaDetail ($data) {
     return $output . "</dd>\n</div>\n";
 }
 
-
-
 /**
  * Prints taxon media result
  *
@@ -685,14 +684,16 @@ function _printTaxonMediaDetail ($data) {
 	
     // Drupal title empty; page title custom
 	setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
-    
 
     return $output . "</div>";
 }
 
-
-
-
+/**
+ * Prints previous/next block on detail pages
+ * 
+ * @param array $p Parameters (urls)
+ * @return NULL|string
+ */
 function _printPreviousNext ($p) {
 	$previousUrl = isset($p['previousUrl']) ? $p['previousUrl'] : false;
 	$nextUrl = isset($p['nextUrl']) ? $p['nextUrl'] : false;
@@ -718,7 +719,7 @@ function _printPreviousNext ($p) {
     if (!empty($previousUrl)) {
         $output .= '</a>';
     }
-    $output .="</li>";
+    $output .= "</li>\n";
 
     // Next
     $output .= "<li>";
@@ -733,7 +734,7 @@ function _printPreviousNext ($p) {
     if (!empty($nextUrl)) {
         $output .= '</a>';
     }
-    $output .= '</li>';
+    $output .= "</li>\n";
     
     // Back
     $output .= "<li>";
@@ -748,14 +749,13 @@ function _printPreviousNext ($p) {
     if (!empty($backUrl)) {
         $output .= '</a>';
     }
-    $output .= '</li></ul></div>';
+    $output .= "</li>\n</ul></div>\n";
 
     return $output;
 }
 
-
 /**
- * Prints multimedia
+ * Prints multimedia results
  *
  * @param array $data Parsed json data
  * @return string Formatted output
@@ -792,28 +792,24 @@ function _printMultimedia ($data) {
 				
 		$output .=
 		"<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
-		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>" .
+		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>\n" .
 		"  <div class='polaroid-caption'>" .
 		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
-		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>";
+		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>\n";
 		$output .= !empty($row['caption']) ?
-		"    <div class='image-hits'>" . $row['caption'] . "</div>" : '';
+		"    <div class='image-hits'>" . $row['caption'] . "</div>\n" : '';
 		$output .= $mmHit ?
 		"    <div class='image-hits'>" . $mmHit ."</div>" : '';
-		$output .= "  </div>" .
-				"</a>";
+		$output .= "  </div>\n" . "</a>";
 	}
 	
-	$output .=  "</div>";
-	$output = _markUp($output);
+	$output .=  "</div>\n";
 	
 	$output .= _printShowAll($data);
 	$output .= _printPaginator($data);
-
 	
 	return $output;
 }
-
 
 /**
  * Prints specimen rows in result table
@@ -862,43 +858,6 @@ function _printSpecimenCollection ($data, $i) {
 		}
 	}
 	
-/*	
-	// Specimen collection/set
-	if (isset($row['sets'])) {
-		foreach ($row['sets'] as $set => $specimens) {
-			$output .= "<tr class='indent-1' id='taxon-$i-collection' data-parent='taxon-$i'><td>" .
-				$set . "</td>" . _padTds(4) . "</tr>";
-			foreach ($specimens as $j => $specimen) {
-				$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>" . 
-					"<td><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-					"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
-				if (!empty(_printHits($specimen))) {
-					$output .= "<tr class='indent-2' id='taxon-$i-specimen-$j' data-parent='taxon-$i-collection'>\n" .
-						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
-				}
-			}
-		}
-	}
-	// Single specimen
-	if (isset($row['specimens'])) {
-		foreach ($row['specimens'] as $j => $specimen) {
-			$info = implode('; ', array_filter([
-				ucfirst($specimen['kindOfUnit']),
-				$specimen['preparationType']
-			]));
-			$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
-				"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
-				"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
-				"</tr>\n";
-			if (!empty(_printHits($specimen))) {
-				$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'>\n" .
-					"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
-			}
-		}
-	} 
-	*/
-	
-	
 	if (!empty($data['allLink'])) {
 		$output .= "<tr class='indent-1' id='taxon-$i-specimen-0' data-parent='taxon-$i'><td>" .
 		'<a href="' . $data['allLink'] . '">' . t('All') . ' ' .
@@ -906,8 +865,6 @@ function _printSpecimenCollection ($data, $i) {
 	}
 	return $output;
 }
-
-
 
 /** Prints no result message
  *
@@ -925,8 +882,6 @@ function _printNoResults ($timeOuts = []) {
 	}
 	return '<p>' . t('Sorry, multiple queries timed out. There may be a problem with the server.') . '</p>';
 }
-
-
 
 /**
  * Prints hits (matched results) as field: hits
@@ -956,6 +911,13 @@ function _printHits ($row) {
 	return !empty($output) ? substr($output, 0, -2) : null;
 }
 
+/**
+ * Skip these hits please!
+ * 
+ * @param string $hit
+ * @param array $hits
+ * @return boolean
+ */
 function _doNotPrintHit ($hit, $hits) {
 	if (array_key_exists($hit, _doNotPrintHits()) && is_null(_doNotPrintHits()[$hit])) {
 		return true;
@@ -968,9 +930,14 @@ function _doNotPrintHit ($hit, $hits) {
 }
 
 
-// Prints specimen result set on screen.
+/**
+ * Prints geographic results on map
+ * 
+ * @param array $data
+ * @return string
+ */
 function _printSpecimensMap ($data) {
-     // Add Google Maps scripts from ndabio module (REQUIRED!)
+    // Add Google Maps scripts from ndabio module (REQUIRED!)
     //global $base_root, $base_path;
 
 //p($data);
@@ -1013,26 +980,15 @@ function _printSpecimensMap ($data) {
     return _printDebug() . $output;
 }
 
-
-
-
-
-
-
-
 /**
- * Prints common names
- *
- * Transposes common names array and prints common names
- *
- * @param array $data Parsed json data
- * @return string Formatted output
+ * Prints synonyms for taxon
+ * 
+ * @param array $data
+ * @return string
  */
-
 function _printSynonyms ($data) {
 //p($data);
 	$output = "";
-
 	$header = "<h3>" . t('Synonyms') . "</h3>";
 
 	if (isset($data['synonyms']) && !empty($data['synonyms'])) {
@@ -1053,10 +1009,12 @@ function _printSynonyms ($data) {
 	);
 }
 
-
-
-
-
+/**
+ * Group all specimens under one taxon
+ * 
+ * @param array $data
+ * @return boolean|unknown
+ */
 function _printSpecimensSingleTaxon ($data) {
 //p($data);
 	if (empty($data['results'])) {
@@ -1093,8 +1051,6 @@ function _printSpecimensSingleTaxon ($data) {
 		'<table id="specimensBySingleTaxon"><thead>%s</thead>', _printHeaders($headers)
 	);
 	
-//p($data['results']);
-	
 	foreach ($data['results'] as $i => $result) {
 		foreach ($result['specimens'] as $row) {
 			// Specimen collection/set
@@ -1130,44 +1086,6 @@ function _printSpecimensSingleTaxon ($data) {
 				}
 			}
 		}
-		
-		
-/*		
-		// Specimen collection/set
-		if (isset($row['sets'])) {
-			foreach ($row['sets'] as $set => $specimens) {
-				$output .= "<tr><td>" . $set . "</td>" . _padTds(4) . "</tr>";
-				foreach ($specimens as $j => $specimen) {
-					$output .= "<tr class='indent'>" . 
-						"<td style='padding-left: 3em;'><a href='" . $specimen['url'] . "'>"  . $specimen['unitID'] . "</a></td>" .
-						"<td colspan='4'>" . $specimen['recordBasis'] . "</td></tr>\n"; 
-					if (!empty(_printHits($specimen))) {
-						$output .= "<tr class='indent'>\n" ."<td style='padding-left: 3em;' colspan='4'>" . _printHits($specimen) . 
-							"</td>\n</tr>\n";
-					}
-				}
-			}
-		}
-		// Single specimen
-		if (isset($row['specimens'])) {
-			foreach ($row['specimens'] as $j => $specimen) {
-				$info = implode('; ', array_filter([
-					ucfirst($specimen['kindOfUnit']),
-					$specimen['preparationType']
-				]));
-				$output .= "<tr>\n" .
-					"<td><a href='" . $specimen['url'] . "'>" . $specimen['unitID'] . "</a></td>\n" .
-					"<td colspan='2'>$info</td><td colspan='2'>" . $specimen['collectionType'] . "</td>\n" .
-					"</tr>\n";
-				if (!empty(_printHits($specimen))) {
-					$output .= "<tr>\n" .
-						"<td colspan='4'>" . _printHits($specimen) . "</td>\n</tr>\n";
-				}
-			}
-		}
-		
-		
-		*/
 	}
 	
 	$output .= "</table>";
@@ -1175,10 +1093,6 @@ function _printSpecimensSingleTaxon ($data) {
 	
 	return $output;
 }
-
-
-
-
 
 /**
  * Prints Show all... link
@@ -1197,6 +1111,12 @@ function _printShowAll ($data) {
     return $output;
 }
 
+/**
+ * Prints link to Show all media for this query
+ * 
+ * @param array $data
+ * @return NULL|string
+ */
 function _printMediaLink ($data) {
     if (!isset($data['mediaLink']) || empty($data['mediaLink'])) {
         return null;
@@ -1208,8 +1128,6 @@ function _printMediaLink ($data) {
     return $output;
 	
 }
-
-
 
 /**
  * Prints paginator
@@ -1226,9 +1144,6 @@ function _printPaginator ($data) {
 	}
 	return null;
 }
-
-
-
 
 /**
  * Only prints first hit
@@ -1271,8 +1186,6 @@ function _printMultimediaHit ($row) {
 	return isset($hits) ? implode('<br>', $hits) : false;
 }
 
-
-
 /**
  * Prints headers of result table
  *
@@ -1296,9 +1209,6 @@ function _printHeaders ($headers) {
 	return $output . "</tr>";
 }
 
-
-
-
 /**
  * Prints single source as formatted html
  *
@@ -1312,8 +1222,6 @@ function _printSource ($data, $source) {
     }
     return $source;
 }
-
-
 
 /**
  * Prints description(s)
@@ -1350,8 +1258,6 @@ function _printDescriptions ($data) {
 	);
 }
 
-
-
 /**
  * Prints common names
  *
@@ -1360,7 +1266,6 @@ function _printDescriptions ($data) {
  * @param array $data Parsed json data
  * @return string Formatted output
  */
-
 function _printCommonNames ($data) {
 //p($data);
 	$output = "";
@@ -1390,8 +1295,6 @@ function _printCommonNames ($data) {
 		"result-detail-section"
 	);
 }
-
-
 
 /**
  * Prints classification(s)
@@ -1456,15 +1359,20 @@ function _printClassifications ($data) {
     	}
 	}
 
-
 	return _wrap(
-    $header . (!empty($output) ? $output :
-        "<p class='property-list'>" . t('No classifications available') . '</p>'),
-    "section",
-    "result-detail-section"
-  );
+	    $header . (!empty($output) ? $output :
+	        "<p class='property-list'>" . t('No classifications available') . '</p>'),
+	    "section",
+	    "result-detail-section"
+	  );
 }
 
+/**
+ * Print specimens per taxon
+ * 
+ * @param array $data
+ * @return boolean|string
+ */
 function _printSpecimensTaxon ($data) {
 	global $language;
 	
@@ -1522,19 +1430,6 @@ function _printSpecimensTaxon ($data) {
 		// Number (and collection type)
 		$output .= "<td>" . _formatNumber($row['count']) . ' ' . 
 			($row['count'] > 1 ? t('specimens') : t('specimen')) . "</td>\n";
-		// Map icon
-		
-/*
-		$output .= "<td>" .
-			(isset($_SESSION['nbaSearch']['geoShape']) && !empty($_SESSION['nbaSearch']['geoShape']) && 
-				!isset($_GET['noMap']) ?
-			"<a href='" . printDrupalLink(
-				specimenNamesService() . '?_geoShape=[session]&' .
-				'&identifications.scientificName.fullScientificName.raw=' .
-				urlencode($row['fullScientificName']) . '&_showMap&_maxResults=100') .
-			"' class='icon-location'></a>" : '') .
-			"</td>";
-*/			
 		// Set map url in parse	
 		$output .= "<td>" . (!empty($row['mapUrl']) ? "<a href='" . $row['mapUrl'] . 
 			"' class='icon-location'></a>" : '') . "</td>\n";
@@ -1556,9 +1451,6 @@ function _printSpecimensTaxon ($data) {
 	return $output;
 }
 
-
-
-
 /**
  * Shorthand function to pad "filler" tds
  *
@@ -1572,8 +1464,6 @@ function _padTds ($i) {
 	return null;
 }
 
-
-
 /**
  * Prints description list
  *
@@ -1586,7 +1476,6 @@ function _printDL ($field, $value = '') {
 }
 
 /**
- *
  * Prints value, modifying a few if they meet criteria
  *
  * @param string $license
@@ -1600,7 +1489,11 @@ function _printValue ($value = '') {
     return $value != '' ? $value : '—';
 }
 
-
+/**
+ * Prints debug stack
+ * 
+ * @return string
+ */
 function _printDebug () {
     if ((user_access('administer site configuration') || _nbaDebug() == 1) && !empty(_getDebug())) {
 	    drupal_add_js(
