@@ -689,7 +689,7 @@ function _printTaxonMediaDetail ($data) {
 	}
 	
     // Drupal title empty; page title custom
-	setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
+	_setTitle(t('Multimedia') . ' | ' . strip_tags($data['acceptedName']));
 
     return $output . "</div>";
 }
