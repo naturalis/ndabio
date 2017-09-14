@@ -1,10 +1,11 @@
 <?php
 
+// Config
+require_once 'ndabio.config.inc';
+
 // Shared library in ndabioresult module
 require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 
-// Config
-require_once 'ndabio.config.inc';
 
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
@@ -829,7 +830,7 @@ function _isAdvancedSelect ($field) {
  * @return boolean
  */
 function _isMultiAdvancedSelect ($field) {
-	return in_array(_advancedMultiSelectFields());
+	return in_array($field, _advancedMultiSelectFields());
 }
 
 /**
