@@ -520,12 +520,12 @@ function _getTaxonUrl ($object, $checkNba = true) {
 		}
 		$name = array_filter($name);
 		if (!empty($name)) {
-			$key = serialize($name);
+			$key = strtolower(implode(' ', $name));
 			if (array_key_exists($key, $_SESSION['nbaTaxa'])) {
 				return $_SESSION['nbaTaxa'][$key];
 			}
 			$url = null;
-			if ($checkNba && _getTaxonFromNba($name) || !$checkNba) {
+			if ($checkNba && _getTaxonFromNba($name, true) || !$checkNba) {
 				$url = _setBasePath() . 'taxon/' . implode('_', $name);
 			}
 			$_SESSION['nbaTaxa'][$key] = $url;

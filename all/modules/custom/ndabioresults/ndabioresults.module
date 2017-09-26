@@ -1544,7 +1544,17 @@ function _nba_general_result_callback () {
 
 }
 
-function _getTaxonFromNba ($taxon) {
+/**
+ * Get taxon data for name from NBA
+ * 
+ * Optionally, only boolean can be returned. This speeds up the query, as no 
+ * GroupByScientificNameQuerySpec has to be used.
+ * 
+ * @param string|array $taxon
+ * @param bool $existsOnly Return only exists true/false, no data
+ * @return object|boolean
+ */
+function _getTaxonFromNba ($taxon, $existsOnly = false) {
 	if (is_string($taxon)) {
 		$taxon = explode(' ', $taxon);
 	} 
@@ -1558,14 +1568,26 @@ function _getTaxonFromNba ($taxon) {
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
 		$client = _setNbaClient('taxon');
-		$query = new GroupByScientificNameQuerySpec();
-		$query
-			->addCondition($condition)
-			->setConstantScore()
-			->setSpecimensSize(0);
-		_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
 		$timer = _setTimer();
-	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+		// Full data
+		if (!$existsOnly) {
+			$query = new GroupByScientificNameQuerySpec();
+			$query
+				->addCondition($condition)
+				->setConstantScore()
+				->setSpecimensSize(0);
+			_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
+		    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+		// Exists true/false only
+		} else {
+			$query = new QuerySpec();
+			$query
+				->addCondition($condition)
+				->setConstantScore();
+			_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
+		    $data = json_decode($client->setQuerySpec($query)->query());
+		    return isset($data->totalSize) && $data->totalSize > 0;
+		}
 		_addDebugMessage(implode(' ', $taxon) . ' query', _getTimer($timer));
 	    return isset($data->resultSet) ? $data->resultSet : false;
 	} 
@@ -1734,7 +1756,14 @@ function _nbaAdvancedSearch () {
 		(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
 }
 
-
+/**
+ * Used to check if all terms in taxon/specimen query exist in multimedia index
+ * 
+ * If so, query can be repeated for multimedia link
+ * 
+ * @param array $terms
+ * @return boolean
+ */
 function _allTermsExistInMultimediaService ($terms) {
 	foreach ($terms as $field => $value) {
 		if (!in_array($field, _searchFlags())) {
@@ -1767,6 +1796,11 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	return -1;
 }
 
+/**
+ * Filter to exclude records with an empty genus name
+ * 
+ * @return \nl\naturalis\bioportal\Filter
+ */
 function _setFilterRejectEmptyGenus () {
 	$filter = new Filter();
 	$filter->rejectRegexp("\?.*");
