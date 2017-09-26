@@ -82,48 +82,51 @@ function initialize() {
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-  drawingManager = new google.maps.drawing.DrawingManager({
-    drawingtrol: true,
-    drawingControlOptions: {
-      position: google.maps.ControlPosition.TOP_CENTER,
-      drawingModes: [
-        google.maps.drawing.OverlayType.POLYGON,
-        google.maps.drawing.OverlayType.RECTANGLE
-      ]
-    },
-    polygonOptions: mapStyle,
-    rectangleOptions: mapStyle
-  });
-  drawingManager.setMap(map);
+	drawingManager = new google.maps.drawing.DrawingManager({
+		drawingtrol : true,
+		drawingControlOptions : {
+			position : google.maps.ControlPosition.TOP_CENTER,
+			drawingModes : [ 
+				google.maps.drawing.OverlayType.POLYGON,
+				google.maps.drawing.OverlayType.RECTANGLE
+			]
+		},
+		polygonOptions : mapStyle,
+		rectangleOptions : mapStyle
+	});
+	drawingManager.setMap(map);
 
-  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
-     if (e.type != google.maps.drawing.OverlayType.MARKER) {
-        // Switch back to non-drawing mode after drawing a shape.
-        drawingManager.setDrawingMode(null);
-		// Add an event listener that selects the newly-drawn shape when the user
-        // mouses down on it.
-        var newShape = e.overlay;
-        newShape.type = e.type;
-        google.maps.event.addListener(newShape, 'click', function() {
-          setSelection(newShape);
-        });
-        setSelection(newShape);
-      }
-    });
+	google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
+		if (e.type != google.maps.drawing.OverlayType.MARKER) {
+			// Switch back to non-drawing mode after drawing a shape.
+			drawingManager.setDrawingMode(null);
+			// Add an event listener that selects the newly-drawn shape
+			// when the user
+			// mouses down on it.
+			var newShape = e.overlay;
+			newShape.type = e.type;
+			google.maps.event.addListener(newShape, 'click',
+				function() {
+					setSelection(newShape);
+				});
+			setSelection(newShape);
+		}
+	});
 
- 	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
+	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
+	google.maps.event.addListener(map, 'click', clearMap);
 
- 	if (typeof storedGeoShape != 'undefined' && storedGeoShape != -1) {
+	if (typeof storedGeoShape != 'undefined' && storedGeoShape != -1) {
 		feature = {
-			type: "Feature",
-			geometry: JSON.parse(storedGeoShape)
+			type : "Feature",
+			geometry : JSON.parse(storedGeoShape)
 		};
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
 		zoom(map, false);
- 	} else if (typeof storedGid != 'undefined' && storedGid != -1) {
- 		plotMapArea(storedGid, language, false);
- 	}
+	} else if (typeof storedGid != 'undefined' && storedGid != -1) {
+		plotMapArea(storedGid, language, false);
+	}
 }
 
 function initializeSpecimens() {
@@ -334,13 +337,22 @@ function setDrawingMode(mode) {
 function clearMap() {
 	jQuery('.geo-search-area-name').html('');
     clearMapSessionData();
-	map.data.forEach(function(_feature) {
-		map.data.remove(_feature);
+    
+	map.data.forEach(function(feature) {
+		map.data.remove(feature);
 	});
+	feature = null;
+	
     if (selectedShape) {
-      selectedShape.setMap(null);
+    	clearSelection();
     }
+    
     selectedShape = null;
+    storedGid = "-1";
+    storedGeoShape = -1;
+    storedZoomLevel = -1;
+    storedMapCenter = null;
+    storedCategory = -1;    
 }
 
 /**

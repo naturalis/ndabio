@@ -594,12 +594,21 @@ function ndabio_searchthematic ($var1, $stitle = "") {
 }
 
 function ndabio_clear_map_data_callback () {
+	$parameters = ['geoShape', 'location', 'gid', 'zoomLevel', 'category', 'mapCenter'];
+	foreach ($parameters as $p) {
+		if (isset($_SESSION['nbaSearch'][$p])) {
+			unset($_SESSION['nbaSearch'][$p]);
+		}
+	}
+	/*
     $_SESSION['nbaSearch']['geoShape'] = false;
     $_SESSION['nbaSearch']['location'] = false;
     $_SESSION['nbaSearch']['gid'] = false;
     $_SESSION['nbaSearch']['zoomLevel'] = false;
     $_SESSION['nbaSearch']['category'] = false;
     $_SESSION['nbaSearch']['mapCenter'] = false;
+    p($_SESSION['nbaSearch']);
+    */
     die('Session data cleared');
 }
 
