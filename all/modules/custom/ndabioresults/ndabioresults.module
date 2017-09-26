@@ -1652,7 +1652,8 @@ function _nbaAdvancedSearch () {
             _setQueryTerms($service);
             
             // Check if multimedia exists for this query
-            if ($service != 'multimedia' && _allTermsExistInMultimediaService($terms)) {
+            if (empty($services['multimedia']) && $service != 'multimedia' && 
+            	_allTermsExistInMultimediaService($terms)) {
             	$query = _buildNbaQuery('multimedia', $terms, $useNameResolution);
             	$associatedReference = 'associated' . ucfirst(_normaliseServiceName($service)) . 
             		'Reference';
