@@ -295,7 +295,7 @@ function _getDebug () {
  */
 function _checkNbaVersion () {
 	if (isset($_SESSION['nbaVersionCheck']) && $_SESSION['nbaVersionCheck'] == 'OK') {
-		return true;
+		//return true;
 	}
 	// Use checks here that are incompatible in older versions of the NBA
 	$client = _initNbaClient();

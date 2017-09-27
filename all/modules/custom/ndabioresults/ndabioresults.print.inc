@@ -552,6 +552,12 @@ function _printSpecimenMediaDetail ($data) {
         isset($data['names'][0]['name']) ? strip_tags($data['names'][0]['name']) : ''
     );
     $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
+		
+	// Get headers, so we don't have to download image
+	$headers = @get_headers($data['imgSrc']);
+	if (!$headers || !strpos($headers[0], '200')) {
+		$data['imgSrc'] = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
+	}
     
     list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
     $img = "<img src=\"" . $data['imgSrc'] . "\" alt=\"$alt\" title=\"$alt\" " .
@@ -784,20 +790,27 @@ function _printMultimedia ($data) {
 	);
 	$output .= "<div class='multimedia-wrapper'>";
 	
+	$fallbackSrc = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
+	
 	foreach ($data['results'] as $i => $row) {
 		$w = "240";
 		$h = 100 + $i * 50;
 		
 		// Reset imgUrl if media is mp4
 		if ($row['format'] == 'video/mp4') {
-			$row['imgSrc'] = _setBasePath() .
-				'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
+			$row['imgSrc'] = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
 		}
-		
+/*		
+		// Get headers, so we don't have to download image
+		$headers = @get_headers($row['imgSrc']);		
+		if (!$headers || !strpos($headers[0], '200')) {
+			$row['imgSrc'] = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
+		}
+*/				
 		$mmHit = _printMultimediaHit($row);
-				
-		$output .=
-		"<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
+		
+		$output .= "<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
+		//"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. "), url(". $fallbackSrc . ");' alt='" . $row['title'] . "'></div>\n" .
 		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>\n" .
 		"  <div class='polaroid-caption'>" .
 		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
