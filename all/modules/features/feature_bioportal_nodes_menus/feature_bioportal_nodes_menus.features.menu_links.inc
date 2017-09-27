@@ -61,11 +61,10 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'router_path' => 'node/%',
     'link_title' => 'API',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
+      'attributes' => array(),
       'alter' => TRUE,
       'identifier' => 'main-menu_api:node/3794',
+      'node_type' => 'naturalis_page',
     ),
     'module' => 'menu',
     'hidden' => 0,
@@ -575,11 +574,10 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'router_path' => 'node/%',
     'link_title' => 'Over',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
+      'attributes' => array(),
       'alter' => TRUE,
       'identifier' => 'main-menu_over:node/3793',
+      'node_type' => 'naturalis_page',
     ),
     'module' => 'menu',
     'hidden' => 0,

@@ -27,9 +27,9 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Bioportal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details about the Naturalis collections, using the Netherlands Biodiversity API (NBA). More than 4 million Naturalis objects are already ‘searchable’ via the BioPortal and by July 2015, the complete collection of 37 million objects will have been placed within the BioPortal. This information will continue to be further extended with all the data linked together in the NBA so that we in the Netherlands will be able to use a single website that enables us to consult the full range of digital sources, with a guaranteed level of scientific quality.</p>
+        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details about the Naturalis collections, using the Netherlands Biodiversity API (NBA). More than 4 million Naturalis objects are already ‘searchable’ via the BioPortal and by July 2015, the complete collection of 37 million objects will have been placed within the BioPortal. This information will continue to be further extended with all the data linked together in the NBA so that we in the Netherlands will be able to use a single website that enables us to consult the full range of digital sources, with a guaranteed level of scientific quality.</p>
 
-<p>Via the NBA, Bioportal can access the following data sources</p>
+<p>Via the NBA, BioPortal can access the following data sources</p>
 
 <ul>
 	<li>Brahms: botanic specimen data at Naturalis</li>
@@ -37,6 +37,8 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a>: list with descriptions of all Dutch species</li>
 	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: list of species occurring worldwide</li>
 </ul>
+
+<p>We call this collection of data the NDS: the Naturalis Data Store. The data is fed into this store through an ETL-process that harmonizes several different data formats into a single, ABCD-compatible document model.</p>
 
 <p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
 
@@ -107,7 +109,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Naturalis has one of the largest collection of woolly mammoth worldwide. de collection consists of ca. 9000 specimens. The majority is trawled up from the bottom of the North Sea. The collection is of course largely made up of large and heavy objects, but also the small details such as the first milk molar of a baby mammoth and the fragile hyoid are represented. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/">More information</a></p>
+        'value' => '<p>Naturalis has one of the largest collection of woolly mammoth worldwide. de collection consists of ca. 9000 specimens. The majority is trawled up from the bottom of the North Sea. The collection is of course largely made up of large and heavy objects, but also the small details such as the first milk molar of a baby mammoth and the fragile hyoid are represented. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/" target="_blank">More information</a> [Dutch]</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -500,7 +502,7 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
 
 <h2>Netherlands Biodiversity API starts by opening up the extensive Naturalis Collection</h2>
 
-<p>The collection at Naturalis is one of the largest in the world. As well as their numbers, the quality of the objects is excellent, and together they are of immeasurable scientific value. Financed with FES (Economic Structure Enhancement) funds over the past few years, Naturalis has undertaken a unique digitisation project, according to which by 1 July 2015, all 37 million objects will have been recorded on digital cards, 7 million of them to a high level of detail. All in all, from the moment of its initial launch, this means that the Netherlands Biodiversity API is not only extensive in terms of size but also offers a valuable level of in-depth information.</p>
+<p>The collection at Naturalis is one of the largest in the world. As well as their numbers, the quality of the objects is excellent, and together they are of immeasurable scientific value. Financed with FES (Economic Structure Enhancement) funds over the past few years, Naturalis has undertaken a unique digitisation project, according to which by 1 July 2015, all 42 million objects will have been recorded on digital cards, 8 million of them to a high level of detail. All in all, from the moment of its initial launch, this means that the Netherlands Biodiversity API is not only extensive in terms of size but also offers a valuable level of in-depth information.</p>
 
 <h2>Netherlands Biodiversity API is freely accessible</h2>
 
@@ -512,11 +514,11 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
 
 <h2>More about the Netherlands Biodiversity API</h2>
 
-<p>Further information or questions about the Netherlands Biodiversity API</p>
+<p>Further information or questions about the Netherlands Biodiversity API:</p>
 
-<p><a href="http://docs.biodiversitydata.nl" target="_blank">Github</a>&nbsp;offers more functional and technical information.</p>
+<p><a href="http://docs.biodiversitydata.nl" target="_blank">docs.biodiversitydata.nl</a>&nbsp;offers more functional and technical information.</p>
 
-<p>For questions, requests or comments, please mail to: <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
+<p>For questions, requests or comments, please mail to <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
 
 <p>&nbsp;</p>
 ',
@@ -551,7 +553,23 @@ Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van mu
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Available data sets are:</p>
+        'value' => '<p>
+Below are download links for Darwin Core Archives for the separate collections that make up the NBA.
+</p>
+
+<p>
+Darwin Core Archive (DwC-A or DwCA) is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for species occurrence or checklist data. See TDWG\'s <a href="http://rs.tdwg.org/dwc/index.htm" target="_blank">Darwin Core introduction</a> for a more detailed description.
+</p>
+
+<p>
+In this case, the files contain the specimen and multimedia data of the collection specified in it\'s name, with the exception of the \'nsr\' file, which contains names, taxonomy and occurrence status for all the species from the <a href="http://www.nederlandsesoorten.nl/" target="_blank">Dutch Species Register</a>.
+</p>
+
+<p>
+The files listed below are generated weekly. The timestamp part of the filename reflects the moment the file was generated, and does not hold any relation to the date data was entered into the NBA, or the date the original data was created.
+</p>
+
+<p>Available data sets are:</p>
 
 <?php 
 echo getNbaData();
@@ -758,7 +776,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Naturalis heeft een van de grootste collecties mammoetbotten ter wereld. De collectie omvat ca. 9000 specimens. Het merendeel hiervan is afkomstig uit de Noordzee. Bij het woord mammoet wordt meteen aan groot gedacht en natuurlijk bestaat de collectie grotendeels uit grote en zware objecten, maar ook kleine details zoals het eerste melkkiesje van een babymammoet en het fragiele tongbeen zijn in de collectie vertegenwoordigd. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/">Meer informatie</a></p>
+        'value' => '<p>Naturalis heeft een van de grootste collecties mammoetbotten ter wereld. De collectie omvat ca. 9000 specimens. Het merendeel hiervan is afkomstig uit de Noordzee. Bij het woord mammoet wordt meteen aan groot gedacht en natuurlijk bestaat de collectie grotendeels uit grote en zware objecten, maar ook kleine details zoals het eerste melkkiesje van een babymammoet en het fragiele tongbeen zijn in de collectie vertegenwoordigd. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/mammoet-collectie/"  target="_blank">Meer informatie</a></p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -872,7 +890,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuurhistorische informatie: van basisgegevens van museumobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis met behulp van de Netherlands Biodiversity API (NBA). Nu zijn er al bijna 4 miljoen Naturalis objecten te doorzoeken, maar in juli 2015 is de complete collectie van 37 miljoen objecten via het BioPortal te vinden. De informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van wetenschappelijk gegarandeerde kwaliteit samen zijn te raadplegen.</p>
+        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuurhistorische informatie: van basisgegevens van museumobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis met behulp van de Netherlands Biodiversity API (NBA). Nu zijn er al meer dan 8 miljoen Naturalis objecten te doorzoeken, maar de informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van wetenschappelijk gegarandeerde kwaliteit samen zijn te raadplegen.</p>
 
 <p>Het BioPortal bevraagt via de NBA de volgende databronnen:</p>
 
@@ -882,6 +900,8 @@ echo getNbaData();
 	<li><a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlands Soortenregister</a>: lijst en beschrijvingen van alle in Nederland voorkomende soorten.</li>
 	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: lijst van wereldwijd voorkomende soorten.</li>
 </ul>
+
+<p>We noemen deze gegevensverzameling de NDS, de Naturalis Data Store. De gegevens worden via een ETL-proces in de NDS ingelezen en geharmoniseerd tot een ABCD-compatibel documentmodel.</p>
 
 <p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
 
@@ -1040,7 +1060,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Naturalis houses the probably largest collection in the world of cainozoic molluscs from Indonesia. The most important part of it is the so-called Martin Collection of fossil shells from Java. The materials were collected between 1845 and 1910 by a.o. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin and his wife Hillegonda Martin-Icke. Thanks to the extensive taxonomical studies of Martin and his wife the Martin Collection has become a frequently consulted key collection for South-East Asian molluscs, fossil and recent. It contains nearly 2000 type lots of hundreds of species. Data on all samples and photographs of all types can be consulted via the Bioportal. Also available online are two versions of the type catalogue: (<a href="http://www.repository.naturalis.nl/document/45042">version 2002</a>) and (<a href="http://www.repository.naturalis.nl/document/143887">version 2009</a>).</p>
+        'value' => '<p>Naturalis houses the probably largest collection in the world of cainozoic molluscs from Indonesia. The most important part of it is the so-called Martin Collection of fossil shells from Java. The materials were collected between 1845 and 1910 by a.o. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin and his wife Hillegonda Martin-Icke. Thanks to the extensive taxonomical studies of Martin and his wife the Martin Collection has become a frequently consulted key collection for South-East Asian molluscs, fossil and recent. It contains nearly 2000 type lots of hundreds of species. Data on all samples and photographs of all types can be consulted via the Bioportal. Also available online are two versions of the type catalogue: (<a href="http://www.repository.naturalis.nl/document/45042" target="_blank">version 2002</a>) and (<a href="http://www.repository.naturalis.nl/document/143887" target="_blank">version 2009</a>).</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1188,7 +1208,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>De Dubois-collectie bestaat uit zo’n 40.000 objecten die tussen 1887 en 1900 door Eugène Dubois verzameld zijn in Indonesië. Het is een unieke verzameling fossielen die een beeld geeft van de prehistorische fauna op Java en Sumatra, maar ook van de persoon Dubois en zijn toewijding aan het paleontologisch onderzoek. Naast fossielen bevat de collectie persoonlijke eigendommen, zoals een archief, meetinstrumenten, het koffertje van Dubois en zelfs enkele van zijn tanden die getrokken moesten worden en die hij gebruikte om ze te vergelijken met fossielen tanden van mensen en apen. De collectie is meer dan een verzameling oude fossielen in een opslagruimte, ze vertelt het verhaal van een bijzondere man die grote dromen had en er alles voor over had om zijn doelen te bereiken. De vondsten van Dubois spelen een belangrijke rol in de kennis die we hebben over de evolutie van de mens. Het was Dubois’ levensdoel om de evolutietheorie van Darwin te bewijzen, door op zoek te gaan naar de ‘Missing Link’, de ontbrekende schakel tussen aap en mens. Dubois slaagde in zijn missie maar kreeg niet de erkenning waar hij op hoopte. In de laatste decennia is dit veranderd en de Dubois-collectie wordt heden ten dage door onderzoeker van over de gehele wereld onderzocht. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/">Meer informatie</a></p>
+        'value' => '<p>De Dubois-collectie bestaat uit zo’n 40.000 objecten die tussen 1887 en 1900 door Eugène Dubois verzameld zijn in Indonesië. Het is een unieke verzameling fossielen die een beeld geeft van de prehistorische fauna op Java en Sumatra, maar ook van de persoon Dubois en zijn toewijding aan het paleontologisch onderzoek. Naast fossielen bevat de collectie persoonlijke eigendommen, zoals een archief, meetinstrumenten, het koffertje van Dubois en zelfs enkele van zijn tanden die getrokken moesten worden en die hij gebruikte om ze te vergelijken met fossiele tanden van mensen en apen. De collectie is meer dan een verzameling oude fossielen in een opslagruimte, ze vertelt het verhaal van een bijzondere man die grote dromen had en er alles voor over had om zijn doelen te bereiken. De vondsten van Dubois spelen een belangrijke rol in de kennis die we hebben over de evolutie van de mens. Het was Dubois’ levensdoel om de evolutietheorie van Darwin te bewijzen, door op zoek te gaan naar de ‘Missing Link’, de ontbrekende schakel tussen aap en mens. Dubois slaagde in zijn missie maar kreeg niet de erkenning waar hij op hoopte. In de laatste decennia is dit veranderd en de Dubois-collectie wordt heden ten dage door onderzoekers van over de gehele wereld onderzocht. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/" target="_blank">Meer informatie</a></p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1485,7 +1505,7 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Dubois collection consists of circa 40,000 objects, all collected between 1887 and 1900 in Indonesia by Eugène Dubois. It is a unique collection of fossils, providing an overview of the prehistoric fauna on Java and Sumatra, as well as Dubois as a person and his dedication to palaeontological research. The collection does not only contain fossils, but also a vast archive, some of Dubois’ personal belongings, such as measuring instruments, his suitcase and some of his own teeth which he used to compare with fossil teeth of primates. The collection is much more than just a collection of fossils in a storage space, it tells the story of a remarkable man, his dreams and his determination to reach his goals. Dubois’ findings play a very important role in the knowledge we have today on human evolution. It was Dubois’ life goal to prove Darwin’s theory of evolution by searching for the Missing Link between apes and humans. Dubois succeeded but unfortunately did not get the recognition he hoped for. In recent decades this has changed and the Dubois collection is subject to research by scholars worldwide. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/">More information</a></p>
+        'value' => '<p>The Dubois collection consists of circa 40,000 objects, all collected between 1887 and 1900 in Indonesia by Eugène Dubois. It is a unique collection of fossils, providing an overview of the prehistoric fauna on Java and Sumatra, as well as Dubois as a person and his dedication to palaeontological research. The collection does not only contain fossils, but also a vast archive, some of Dubois’ personal belongings, such as measuring instruments, his suitcase and some of his own teeth which he used to compare with fossil teeth of primates. The collection is much more than just a collection of fossils in a storage space, it tells the story of a remarkable man, his dreams and his determination to reach his goals. Dubois’ findings play a very important role in the knowledge we have today on human evolution. It was Dubois’ life goal to prove Darwin’s theory of evolution by searching for the Missing Link between apes and humans. Dubois succeeded but unfortunately did not get the recognition he hoped for. In recent decades this has changed and the Dubois collection is subject to research by scholars worldwide. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/" target="_blank">More information</a> [Dutch]</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1569,19 +1589,19 @@ Bringing all this information together will help distinguish facts from fables i
       0 => array(
         'value' => '<h2>Netherlands Biodiversity API is een biodiversiteitsdataservice</h2>
 
-<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens door het&nbsp;<a href="http://www.naturalis.nl" target="_blank">Naturalis Biodiversity Center</a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, namelijk specimen-, multimedia- en taxongegevens.</p>
+<p>De Netherlands Biodiversity API is een moderne dataservice voor wetenschappers, applicatieontwikkelaars, nationale en regionale overheidsinstanties, en andere geïnteresseerden in biodiversiteit en biodiversiteitsgegevens. Deze dienst start met het beschikbaar stellen van biodiversiteitsgegevens van <a href="http://www.naturalis.nl" target="_blank">Naturalis Biodiversity Center</a>. &nbsp;Door haar zeer omvangrijke catalogi open te stellen komen diverse soorten historische en actuele data beschikbaar, zoals specimen-, multimedia- en taxongegevens.</p>
 
 <h2>Netherlands Biodiversity API biedt mogelijkheden</h2>
 
-<p>De vrijgegeven gegevens zijn uitstekend geschikt voor gebruik door wetenschappers, werkzaam in het taxonomisch en thematisch biodiversiteitsonderzoek. Gedetailleerde inventarisaties van verschillende aard en een brede variëteit aan (historische) data-analyses behoren tot de gebruiksmogelijkheden. Voor overheden kunnen de gegevens een belangrijke bron van informatie vormen bij het ontwikkelen van nieuw natuur(bescherming)beleid, en, het evalueren en monitoren van staand beleid op dit terrein. Applicatieontwikkelaars tenslotte kunnen voor specifieke doelgroepen planten, paddenstoelen, dieren, fossielen, mineralen en gesteenten tot leven laten komen in interactieve applicaties.</p>
+<p>De vrijgegeven gegevens zijn uitstekend geschikt voor gebruik door wetenschappers, werkzaam in het taxonomisch en thematisch biodiversiteitsonderzoek. Gedetailleerde inventarisaties van verschillende aard en een brede variëteit aan (historische) data-analyses behoren tot de gebruiksmogelijkheden. Voor overheden kunnen de gegevens een belangrijke bron van informatie vormen bij het ontwikkelen van nieuw natuur(bescherming)beleid, en het evalueren en monitoren van staand beleid op dit terrein. Applicatieontwikkelaars tenslotte, kunnen voor specifieke doelgroepen planten, paddenstoelen, dieren, fossielen, mineralen en gesteenten tot leven laten komen in interactieve applicaties.</p>
 
 <h2>Netherlands Biodiversity API begint met het ontsluiten van de omvangrijke Naturalis Collectie</h2>
 
-<p>De collectie van Naturalis behoort tot de grootste van de wereld. Behalve de hoeveelheid, is de kwaliteit van de objecten hoog en vertegenwoordigen ze een onschatbare wetenschappelijke waarde. Gefinancierd vanuit de FES gelden heeft Naturalis de afgelopen jaren een uniek digitaliseringsproject uitgevoerd, waarmee alle 37 miljoen objecten op 1 juli 2015 digitaal in kaart zijn gebracht, &nbsp;waarvan 7 miljoen objecten op een hoog detailniveau. Dit alles maakt dat de Netherlands Biodiversity API reeds bij de start een omvangrijk karakter heeft met een waardevolle mate van diepgang.</p>
+<p>De collectie van Naturalis behoort tot de grootste van de wereld. Behalve de hoeveelheid, is de kwaliteit van de objecten hoog en vertegenwoordigen ze een onschatbare wetenschappelijke waarde. Gefinancierd vanuit de FES-gelden (Fonds Economische Structuurversterking) heeft Naturalis de afgelopen jaren een uniek digitaliseringsproject uitgevoerd, waarmee alle 42 miljoen objecten op 1 juli 2015 digitaal in kaart zijn gebracht, waarvan 8 miljoen objecten op een hoog detailniveau. Dit alles maakt dat de Netherlands Biodiversity API een omvangrijke gegevensverzameling met een grote mate van diepgang.</p>
 
 <h2>Netherlands Biodiversity API is vrij toegankelijk</h2>
 
-<p>Tenzij anders aangegeven zet Naturalis al haar data in het open domein onder&nbsp;<a href="http://creativecommons.nl/publiek-domein/" target="_blank">CC0-licentie</a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft dus geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.&nbsp;Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
+<p>Tenzij anders aangegeven zet Naturalis al haar data in het open domein onder&nbsp;<a href="http://creativecommons.nl/publiek-domein/" target="_blank">CC0-licentie</a>, dus vrij voor een ieder om te gebruiken. Een gebruiker heeft geen autorisatie nodig om toegang te krijgen tot de biodiversiteitsgegevens.&nbsp;Dit betekent dat iedere vorm van (her)gebruik van de inhoud is toegestaan, met uitzondering van content (zoals fotomateriaal of documenten) waarvan auteursrecht expliciet wordt vermeld.</p>
 
 <h2>Netherlands Biodiversity API en compatibiliteit</h2>
 
@@ -1589,11 +1609,11 @@ Bringing all this information together will help distinguish facts from fables i
 
 <h2>Meer over Netherlands Biodiversity API</h2>
 
-<p>Informatie of vragen over de Netherlands Biodiversity API</p>
+<p>Informatie of vragen over de Netherlands Biodiversity API:</p>
 
-<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">Github</a> vindt u meer functionele en technische informatie over de API.</p>
+<p>Op <a href="http://docs.biodiversitydata.nl/en/latest/" target="_blank">docs.biodiversitydata.nl</a> vindt u meer functionele en technische informatie over de API.</p>
 
-<p>Voor vragen, verzoeken en opmerkingen kunt u mailen met: <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
+<p>Voor vragen, verzoeken en opmerkingen kunt u mailen met <a href="mailto:nba@naturalis.nl">nba@naturalis.nl</a></p>
 
 <p>&nbsp;</p>
 ',
@@ -1628,7 +1648,7 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Naturalis beheert de waarschijnlijk grootste collectie ter wereld van cainozoïsche mollusken uit Indonesië. Het belangrijkste onderdeel hiervan is de zogenaamde Martin Collectie met fossiele schelpen van Java. Dit materiaal werd tussen 1845 en 1910 verzameld door o.a. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin en zijn vrouw Hillegonda Martin-Icke. Dankzij de uitgebreide taxonomische studies door Martin en zijn vrouw is de Martin Collectie een veel geraadpleegde sleutelcollectie geworden voor Zuidoost-Aziatische mollusken, fossiel en recent. Zij bevat bijna 2000 typenmonsters van vele honderden soorten. Gegevens van de monsters en foto’s van alle typen zijn via het Bioportal te raadplegen. Ook zijn twee versies van de typencatalogus online beschikbaar: (<a href="http://www.repository.naturalis.nl/document/45042">versie 2002</a>) en (<a href="http://www.repository.naturalis.nl/document/143887">versie 2009</a>).</p>
+        'value' => '<p>Naturalis beheert de waarschijnlijk grootste collectie ter wereld van cainozoïsche mollusken uit Indonesië. Het belangrijkste onderdeel hiervan is de zogenaamde Martin Collectie met fossiele schelpen van Java. Dit materiaal werd tussen 1845 en 1910 verzameld door o.a. Franz Junghuhn, Pieter van Dijk, Rogier Verbeek, Karl Martin en zijn vrouw Hillegonda Martin-Icke. Dankzij de uitgebreide taxonomische studies door Martin en zijn vrouw is de Martin Collectie een veel geraadpleegde sleutelcollectie geworden voor Zuidoost-Aziatische mollusken, fossiel en recent. Zij bevat bijna 2000 typenmonsters van vele honderden soorten. Gegevens van de monsters en foto’s van alle typen zijn via het Bioportal te raadplegen. Ook zijn twee versies van de typencatalogus online beschikbaar: (<a href="http://www.repository.naturalis.nl/document/45042" target="_blank">versie 2002</a>) en (<a href="http://www.repository.naturalis.nl/document/143887" target="_blank">versie 2009</a>).</p>
 ',
         'summary' => '',
         'format' => 'full_html',
