@@ -197,7 +197,7 @@ function _printSpecimens ($data) {
   	foreach ($data['results'] as $i => $row) {
 		$output .= "<tr>";
 		// Registration number plus hits
-		$output .= "<td><a href='" . $row['url'] . "'>" . $row['unitID'] . "</a>" .
+		$output .= "<td><a href='" . $row['url'] . "'>" . _setUnitId($row['unitID']) . "</a>" .
 			(!empty($row['hits']) || !empty($row['nameResolutionHits']) ? '<br/>' . _printHits($row) : '') .
 			"</td>";
 		// Species
@@ -316,7 +316,7 @@ function _printSpecimenDetail ($data) {
 
 	$output = _printDebug();
 	$output .= _wrap( t("Specimen")   , "div", "category");
-	$output .= _wrap( $data['unitID'] , "h2"  );
+	$output .= _wrap(_setUnitId($data['unitID']) , "h2"  );
     $output .= _printPreviousNext([
     	'total' => $data['totalSize'], 
     	'offset' => $data['offset'], 
@@ -416,7 +416,7 @@ function _printSpecimenDetail ($data) {
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
  		$output .= "</div>\n<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>\n";
  		foreach ($data['otherSpecimens'] as $i => $specimen) {
-			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . $specimen['unitID'] . '</a></dt>';
+			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . _setUnitId($specimen['unitID']) . '</a></dt>';
 			$output .= '<dd>' . $specimen['collectionType'] . "</dd></dl>\n";
 		}
 	}
@@ -591,7 +591,7 @@ function _printSpecimenMediaDetail ($data) {
             ucfirst(_translateNdaField('unitID')),
             '<a href="' . _setBasePath() . 'specimen/' . urlencode($data['unitID']) . 
 				(isset($data['referrer']) ? '?referrer=' . $data['referrer'] : '') . '">' . 
-				$data['unitID'] . '</a>'
+				_setUnitId($data['unitID']) . '</a>'
 		);
 	}
 	if (!empty($data['names'])) {

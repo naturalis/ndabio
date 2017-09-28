@@ -13,10 +13,10 @@ function _parseTaxonDetail ($data) {
 	$service = 'names.taxa';
 	$skipFields = [];
 	$timer = _setTimer();
-
+	
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
-			$output[$field] = _setUnitId($value, $field);
+			$output[$field] = $value;
 		}
 	}
 	
@@ -104,7 +104,6 @@ function _parseTaxa ($data, $options) {
 			$names['accepted'][] = _getTaxonAcceptedName($service, $taxon, $hits);
 			$names['synonyms'][] = _getTaxonSynonyms($service, $taxon, $hits, true);
 		}
-		
 		// Reformat synonyms
 		if (!empty(array_filter($names['synonyms']))) {
 			foreach ($names['synonyms'] as $i => $v) {
@@ -306,7 +305,7 @@ function _parseSpecimenMediaDetail ($data) {
 	}
 	$output['source'] = $data->sourceSystem->name;
 	$output['names'] = _getSpecimenNames($data->associatedSpecimen->identifications);
-	$output['unitID'] = _setUnitId($data->associatedSpecimen->unitID);
+	$output['unitID'] = $data->associatedSpecimen->unitID;
 	$output['mediaUnitID'] = $data->unitID;
 	$output['imgSrc'] = isset($data->serviceAccessPoints[0]->accessUri) ?
 		$data->serviceAccessPoints[0]->accessUri: null;
@@ -360,7 +359,7 @@ function _parseSpecimenDetail ($data) {
 
 	foreach ((array) $data as $field => $value) {
 		if (!is_array($value) && !is_object($value) && !in_array($field, $skipFields)) {
-			$output[$field] = _setUnitId($value, $field);
+			$output[$field] = $value;
 		}
 	}
 	
@@ -712,6 +711,19 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
 		}
 	}
+	if (!empty($name)) {
+		// Could also be a hit in fullScientificName; try highlighting
+		if (isset($paths['acceptedName.fullScientificName'])) {
+			foreach ($name as $i => $element) {
+				// Only add if not highlighted yet
+				if (strpos($element, 'class="result-query"') === false) {
+					$name[$i] = _highlightMatch($name[$i], 
+						$paths['acceptedName.fullScientificName']['values']);
+				}
+			}
+		}
+	}
+	
 	return !empty($name) ? implode(' ', array_filter($name)) : false;
 }
 
@@ -869,8 +881,8 @@ function _getMultimediaSpecimenUnitId ($row, $hits = []) {
 		$id = substr($row->item->associatedSpecimenReference, 0, $pos);
 		// Highlight
 		if (isset($hits['unitID'])) {
-			$highlight = _highlightMatch($id, ['unitID']);
-			$id = str_replace($id, _setUnitId($id), $highlight);
+			$id = _highlightMatch($id, ['unitID']);
+			//$id = str_replace($id, _setUnitId($id), $highlight);
 		}
 		return $id;
 	}
@@ -892,7 +904,7 @@ function _parseSpecimensMap ($data) {
 
 	foreach ($data->resultSet[0]->item->specimens as $i => $specimen) {
 		$d['nonAcceptedNames'] = [];
-		$d['unitID'] = _setUnitId($specimen->unitID);
+		$d['unitID'] = $specimen->unitID;
 		$d['source'] = _getSourceNameBySourceCode($specimen->sourceSystem->code);
 		$d['assemblageID'] = _formatAssemblageId($specimen->assemblageID);
 		$s['recordBasis'] = isset($specimen->recordBasis) ? $specimen->recordBasis : null;
@@ -967,7 +979,7 @@ function _parseSpecimens ($data, $options = []) {
 		//$d['url'] = _setSpecimensAllLink($row);
 		$d['source'] = $row->item->sourceSystem->name;
 
-		$d['unitID'] = _setUnitId($row->item->unitID);
+		$d['unitID'] = $row->item->unitID;
 		$d['recordBasis'] = isset($row->item->recordBasis) ?
 			$row->item->recordBasis : null;
 		$d['kindOfUnit'] = isset($row->item->kindOfUnit) ?
@@ -1125,7 +1137,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 		//$d['score'] = 0;
 		foreach ($row->item->specimens as $i => $specimen) {
 			//$specimen = $sp->specimenDetails;
-			$s['unitID'] = _setUnitId($specimen->unitID);
+			$s['unitID'] = $specimen->unitID;
 			$s['recordBasis'] = isset($specimen->recordBasis) ? 
 				$specimen->recordBasis : null;
 			$s['kindOfUnit'] = isset($specimen->kindOfUnit) ? 

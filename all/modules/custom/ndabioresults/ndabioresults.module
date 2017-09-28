@@ -2368,10 +2368,6 @@ function _setBasePath () {
     return $base_root . $base_path;
 }
 
-
-
-
-
 /**
  * Gets other specimens in "specimen collection" (Brahms)
  *
@@ -2392,7 +2388,7 @@ function _getOtherSpecimens ($data) {
 			foreach ($result->resultSet as $specimen) {
 				if ($specimen->item->unitID != $data->unitID) {
 					$s = [];
-					$s['unitID'] = _setUnitId($specimen->item->unitID);
+					$s['unitID'] = $specimen->item->unitID;
 					$s['collectionType'] = $specimen->item->collectionType;
 // 					$s['url'] = _getSpecimenInCollectionUrl(
 // 						$specimen->item, 
