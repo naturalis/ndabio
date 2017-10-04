@@ -594,7 +594,7 @@ function _scientificNameElements () {
 	if (!isset($var)) {
 		$var = [
 			'genusOrMonomial', 
-			'genus',
+			'subgenus',
 			'specificEpithet', 
 			'infraspecificMarker',
 			'infraspecificEpithet', 
@@ -605,6 +605,19 @@ function _scientificNameElements () {
 }
 
 function _scientificNameElementsInItalics () {
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = [
+			'genusOrMonomial',
+			'subgenus',
+			'specificEpithet',
+			'infraspecificEpithet',
+		];
+	}
+	return $var;
+}
+
+function _groupByScientificNameElements () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
 		$var = [

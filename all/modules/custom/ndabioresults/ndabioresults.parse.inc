@@ -478,6 +478,11 @@ function _getScientificName ($object, $fullScientificName = true) {
 			$name[$i] = isset($object->{$path}->{$element}) && 
 				!empty(trim($object->{$path}->{$element})) ?
 				trim($object->{$path}->{$element}) : null;
+			// Subgenus between brackets
+			if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+				substr($name[$i], -1) != ')') {
+				$name[$i] = '(' . $name[$i] . ')';
+			}
 			// Italics only for full option
 			if (!empty($name[$i]) && $fullScientificName &&
 				in_array($element, _scientificNameElementsInItalics())) {
@@ -512,7 +517,7 @@ function _getTaxonUrl ($object, $checkNba = true) {
 	// Name can be stored in either acceptedName (taxon) or 
 	// scientificName (specimen); try both
 	foreach (['acceptedName', 'scientificName'] as $path) {
-		foreach (_scientificNameElementsInItalics() as $i => $element) {
+		foreach (_groupByScientificNameElements() as $i => $element) {
 			$name[$i] = isset($object->{$path}->{$element}) &&
 				!empty(trim($object->{$path}->{$element})) ?
 				trim($object->{$path}->{$element}) : null;
@@ -615,6 +620,11 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 											if (!empty($name[$i]) && $element == $field) {
 												$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
 											}
+											// Subgenus between brackets
+											if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+												substr($name[$i], -1) != ')') {
+												$name[$i] = '(' . $name[$i] . ')';
+											}
 											// Italics
 											if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 												$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
@@ -706,6 +716,11 @@ function _getTaxonAcceptedName ($service, $taxon, $hits = []) {
 			$name[$i] = _highlightMatch($taxon->acceptedName->{$element}, 
 				$paths['acceptedName.' . $element]['values']);
 		}
+		// Subgenus between brackets
+		if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+			substr($name[$i], -1) != ')') {
+			$name[$i] = '(' . $name[$i] . ')';
+		}
 		// Italics
 		if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
@@ -756,6 +771,11 @@ function _getTaxonSynonyms ($service, $taxon, $hits = [], $hitsOnly = false) {
 						$hit = true;
 					}
 				}
+				// Subgenus between brackets
+				if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+					substr($name[$i], -1) != ')') {
+					$name[$i] = '(' . $name[$i] . ')';
+				}
 				// Italics
 				if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 					$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
@@ -785,6 +805,11 @@ function _formatScientificName ($object) {
 		$name[$i] = isset($object->{$element}) && 
 			!empty(trim($object->{$element})) ? 
 			trim($object->{$element}) : '';
+		// Subgenus between brackets
+		if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+			substr($name[$i], -1) != ')') {
+			$name[$i] = '(' . $name[$i] . ')';
+		}
 		// Italics
 		if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
 			$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
@@ -829,6 +854,11 @@ function _getSpecimenScientificNames ($service, $row, $hits = [], $createLinks =
 			if (!empty($name[$i]) && isset($hits['identifications.scientificName.' . $element])) {
 				$name[$i] = _highlightMatch($identification->scientificName->{$element}, 
 					$paths['identifications.scientificName.' . $element]['values']);
+			}
+			// Subgenus between brackets
+			if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+				substr($name[$i], -1) != ')') {
+				$name[$i] = '(' . $name[$i] . ')';
 			}
 			// Italics
 			if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
@@ -1269,6 +1299,11 @@ function _setSpecimenScientificName ($data) {
 						$name[$i] = _highlightMatch($identification->{$element}, 
 							$paths[$hitPath]['values']);
 					}
+				}
+				// Subgenus between brackets
+				if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
+					substr($name[$i], -1) != ')') {
+					$name[$i] = '(' . $name[$i] . ')';
 				}
 				// Italics
 				if (!empty($name[$i]) && in_array($element, 
