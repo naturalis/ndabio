@@ -949,14 +949,15 @@ function _parseSpecimensMap ($data) {
 		$d['lon'] = $specimen->gatheringEvent->siteCoordinates[0]->geoShape->coordinates[0];
 		
 		if (empty($d['acceptedNames'])) {
-			$name = $specimen->identifications[0]->scientificName;
-			$d['nonAcceptedNames'][md5(serialize($name))] = $name;
+			foreach ($specimen->identifications as $id) {
+				if (_scientificNameGroupName($id->scientificName) == $data->resultSet[0]->item->name) {
+					$d['nonAcceptedNames'][md5(serialize($id->scientificName))] = $id->scientificName;
+				}
+			}
 		}
 		
 		$output['results'][] = $d;
 	}
-	
-//p($output);
 
 	$name = _setSpecimenScientificName($d);
 	for ($i = 0; $i < count($output['results']); $i++) {
@@ -978,9 +979,23 @@ function _parseSpecimensMap ($data) {
 		) . '.';
 	}
 	
-//p($output);
-	
 	return isset($output) ? $output : false;
+}
+
+/**
+ * Parse scientific name elements from NBA to scientific name group
+ * 
+ * @param object $elements Object with name elements
+ * @return string
+ */
+function _scientificNameGroupName ($elements) {
+	$output[] = isset($elements->genusOrMonomial) && !empty($elements->genusOrMonomial) ?
+		strtolower($elements->genusOrMonomial) : '?';
+	$output[] = isset($elements->specificEpithet) && !empty($elements->specificEpithet) ?
+		strtolower($elements->specificEpithet) : '?';
+	$output[] = isset($elements->infraspecificEpithet) && !empty($elements->infraspecificEpithet) ?
+		strtolower($elements->infraspecificEpithet) : null;
+	return implode(' ', array_filter($output));
 }
 
 /**
@@ -1272,6 +1287,7 @@ function _formatAssemblageId ($id) {
  * @return string
  */
 function _setSpecimenScientificName ($data) {
+//p($data);
 	$paths = _getQueryPaths('names.specimens');
 	$hits = isset($data['nameHits']) ? $data['nameHits'] : [];
 	$source = !empty($data['acceptedNames']) ? 
@@ -1354,6 +1370,8 @@ function _setSpecimenScientificName ($data) {
 				implode(' ', array_filter($name));
 		}
 	}
+//p($names);	
+	
 	// if we end up with one name it's simple
 	if (count($names) == 1) {
 		return array_values($names)[0];
