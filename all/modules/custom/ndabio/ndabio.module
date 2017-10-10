@@ -691,18 +691,69 @@ function nba_areas_callback ($type = false) {
         return false;
     }
     $language = isset($_GET['language']) ? $_GET['language'] : 'en';
-    if ($type == 'country') {
-        // First print favourites (hard-coded)
-        echo _printGeoFavourites(_createGeoList('Country', $language, _geoCountryFavourites()));
-        // Complete list
-        echo _printGeoList(_createGeoList('Country', $language));
-    } else if ($type == 'municipality') {
-        // Fix names that do not start with a letter
-         echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), 
-         	_geoMunicipalityFixes()));
-    } else {
-        echo _printGeoList(_createGeoList(ucfirst($type), $language));
+    switch ($type) {
+    	case 'country':
+	        // First print favourites (hard-coded)
+	        echo _printGeoFavourites(_createGeoList('Country', $language, _geoCountryFavourites()));
+	        // Complete list
+	        echo _printGeoList(_createGeoList('Country', $language));
+	        break;
+    	case 'municipality':
+	       // Fix names that do not start with a letter
+	         echo _printGeoList(_fixGeoList(_createGeoList('Municipality', $language), 
+	         	_geoMunicipalityFixes()));
+	         break;
+    	case 'nature':
+         	echo _printGeoList(_natureAreasWithResultsOnly());
+    		break;
+    	default: 
+    		echo _printGeoList(_createGeoList(ucfirst($type), $language));
     }
+}
+
+/**
+ * Filters out all nature areas that have no specimens records within their limits
+ * 
+ * Uses a heavy batch query to do so, so result is cached.
+ * 
+ * @return array
+ */
+function _natureAreasWithResultsOnly () {
+	$natureAreasWithResults = &drupal_static(__FUNCTION__);
+    if (!$natureAreasWithResults) {
+    	// From cache
+        $cacheId = 'natureAreasWithResults';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $natureAreasWithResults = $cache->data;
+            return $natureAreasWithResults;
+        } 
+		// No cached verion yet, we have to work hard to fetch them results!
+		$all = json_decode(_nbaGeoAreas(), true);
+		$natureAreas = $all['Nature'];
+	    $client = _setNbaClient('specimen');
+		foreach ($natureAreas as $area) {
+			$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
+			$query = new QuerySpec();
+			$batch[$area['locality']['en']] = $query->setSize(1)->addCondition($condition);
+		}
+		$result = $client->singleClientBatchQuery($batch);
+	   	foreach ($result as $area => $json) {
+	    	$data = json_decode($json);
+	    	if (isset($data->totalSize) && $data->totalSize == 0) {
+	    		$natureAreasWithoutResults[] = $area;
+	    	}
+	    }
+    	// Trim empty areas
+		foreach ($natureAreas as $i => $area) {
+			if (!in_array($area['locality']['en'], $natureAreasWithoutResults)) {
+				$natureAreasWithResults[$area['id']] = $area['locality']['en'];
+			}
+		}
+		asort($natureAreasWithResults);
+        cache_set($cacheId, $natureAreasWithResults);
+    }    
+    return $natureAreasWithResults;
 }
 
 /**
@@ -1069,10 +1120,10 @@ function _fixGeoList ($list, $fixes = []) {
     foreach ($list as $id => $item) {
         if (isset($fixes[$item])) {
             $list[$id] = $fixes[$item];
-        }
-    }
-    asort($list);
-    return $list;
+		}
+	}
+	asort($list);
+	return $list;
 }
 
 /**
