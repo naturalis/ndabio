@@ -1342,8 +1342,6 @@ function _setSpecimenScientificName ($data) {
 			}
 		}
 		
-//p($data['nonAcceptedNames']); p($name); die();
-		
 		if (!empty($name)) {
 			// Could also be a hit in fullScientificName; try highlighting
 			$scientificNamePath = 'identifications.scientificName.fullScientificName';
@@ -1370,7 +1368,6 @@ function _setSpecimenScientificName ($data) {
 				implode(' ', array_filter($name));
 		}
 	}
-//p($names);	
 	
 	// if we end up with one name it's simple
 	if (count($names) == 1) {
@@ -1573,7 +1570,8 @@ function _highlightHits ($service, $hits = []) {
  * @return string
  */
 function _highlightMatch ($haystack, $needles) {
-	// Intermediate set required to prevent highlighting of html
+	// Intermediate set required to prevent highlighting of html;
+	// temporarily converted to non-printing characters
 	$f = [
 		'<span class="scientific">',
 		'</span>',
@@ -1603,7 +1601,7 @@ function _highlightMatch ($haystack, $needles) {
 			}, $m[0]) . chr(7);
 		}, $haystack);
 	}
-	// Restore temporarily replaced tags
+	// Flip back temporarily replaced terms
 	return str_replace($r, $f, $haystack);
 }
 
