@@ -6803,6 +6803,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Exported %locale translation file: %filename.', array(), array('context' => ''));
+  $translations['nl:default']['281fe9f45a94fa9143775c1d444ff416'] = array(
+    'source' => ' elements in your search term is too short. Each element ',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => ' elementen in uw zoekterm is te kort. Ieder element ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t(' elements in your search term is too short. Each element ', array(), array('context' => ''));
   $translations['nl:default']['2822b8f5aac2191afe534140a6629eea'] = array(
     'source' => 'Amharic',
     'context' => '',
@@ -17324,6 +17333,15 @@ Meer informatie over het installeren van Drupal vindt u in het bestand <a href="
     'plural' => 0,
   );
   $translatables[] = t('Books', array(), array('context' => ''));
+  $translations['nl:default']['6254c3fbbe5b25459111d56abae16cdc'] = array(
+    'source' => 'Your search term ',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Uw zoekterm ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Your search term ', array(), array('context' => ''));
   $translations['nl:default']['6261deabda92a6ee198c1059343d1e39'] = array(
     'source' => 'Number of views',
     'context' => '',
@@ -24977,6 +24995,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('The name is used in URLs for generated images. Use only lowercase alphanumeric characters, underscores (_), and hyphens (-).', array(), array('context' => ''));
+  $translations['nl:default']['8dcddb4de9711d3e0bd910ca0714804d'] = array(
+    'source' => 'should contain at least [nr] characters. This limitation does not apply to advanced search!',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'moet bestaan uit minimaal [nr] karakters. Deze beperking geldt niet voor uitgebreid zoeken!',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('should contain at least [nr] characters. This limitation does not apply to advanced search!', array(), array('context' => ''));
   $translations['nl:default']['8dd3460dc74b5757a8c41c1268aa75fa'] = array(
     'source' => 'Add child page',
     'context' => '',
@@ -26903,15 +26930,6 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Run tests', array(), array('context' => ''));
-  $translations['nl:default']['9812f3a31029e7a9ad86b190c15fc0eb'] = array(
-    'source' => 'Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!',
-    'context' => '',
-    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Ieder van uw zoektermen moet minimaal [nr] karakters bevatten. Deze beperking geldt niet voor uitgebreid zoeken!',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!', array(), array('context' => ''));
   $translations['nl:default']['981491184c8b74adb18e551603534d95'] = array(
     'source' => 'Security update required!',
     'context' => '',
@@ -35814,15 +35832,6 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Interlingua', array(), array('context' => ''));
-  $translations['nl:default']['c8451e59f166919561a340ac069a9c50'] = array(
-    'source' => 'Search field should contain at least [nr] characters.',
-    'context' => '',
-    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
-    'translation' => 'Zoekveld moet tenminste [nr] karakters bevatten.',
-    'plid' => 0,
-    'plural' => 0,
-  );
-  $translatables[] = t('Search field should contain at least [nr] characters.', array(), array('context' => ''));
   $translations['nl:default']['c85a501d237c9e749274baf1c8b7fd7d'] = array(
     'source' => '- Select a field type -',
     'context' => '',
@@ -39930,6 +39939,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Delete menu link', array(), array('context' => ''));
+  $translations['nl:default']['e0dd11e16e74e2008f0cef95602f306e'] = array(
+    'source' => 'One or more of the ',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Een of meer van de ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('One or more of the ', array(), array('context' => ''));
   $translations['nl:default']['e109705703e0324d1a5de1d84a3a8951'] = array(
     'source' => 'Relations',
     'context' => '',
