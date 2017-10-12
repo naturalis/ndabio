@@ -92,6 +92,7 @@
     var minStringLength = 3;
     var maxMultiSelectValues = 5;
     var searchTerm = '';
+    var nrSimpleTermsElements = 0;
 
     // BIOPORVTWO-299: skip test for advanced search
     // Adapted for multiselects; parse these in separate loop
@@ -124,6 +125,7 @@
 
       // If the simple search is entered, but too short:
       $.each($($_omnibox).val().trim().split(" "), function(index, searchTerm) {
+    	  nrSimpleTermsElements++;
           if (searchTerm.trim() != "") {
         	  dataEntered = true;
         	  if (searchTerm.trim().length < minStringLength) {
@@ -139,8 +141,6 @@
     		  isValid = true;
     	  }
       }
-      
-//alert(searchTerm);
       
     // Done validating, let's face the consequences:
     if (!isValid || !dataEntered) {
@@ -159,7 +159,12 @@
 
       } else {
     	  
-		  var message = Drupal.t("Your search term(s) should contain at least [nr] characters. This limitation does not apply to advanced search!");
+    	  var term = Drupal.t("Your search term ");
+    	  if (nrSimpleTermsElements > 1) {
+    		  term = Drupal.t("One or more of the ") + nrSimpleTermsElements + Drupal.t(" elements in your search term is too short. Each element ");
+    	  }
+    	  
+		  var message = term + Drupal.t("should contain at least [nr] characters. This limitation does not apply to advanced search!");
 		  alert(message.replace("[nr]", minStringLength));
         	  
       }
