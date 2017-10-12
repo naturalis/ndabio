@@ -2138,7 +2138,7 @@ function _nbaSimpleSearch () {
 
         $terms['geoShape'] = _getStoredGeoShape();
         $terms['gid'] = _setNbaGid(_getStoredGid());
-       
+        
         $area = !empty(_getStoredLocation()) ? _getStoredLocation() :
             t('area drawn on map');
 

@@ -114,8 +114,8 @@ function _nbaAdvancedSearchExceptions () {
  */
 function _geoCountryFavourites () {
 	return [
-        'en' => ['Curaçao', 'Indonesia', 'Netherlands', 'Sint Maarten', 'Suriname'],
-        'nl' => ['Curaçao', 'Indonesië', 'Nederland', 'Sint Maarten', 'Suriname'],
+        'en' => ['Netherlands', 'Aruba', 'Curaçao', 'Bonaire', 'Sint Eustasius', 'Sint Maarten', 'Indonesia', 'Suriname'],
+        'nl' => ['Nederland', 'Aruba', 'Curaçao', 'Bonaire', 'Sint Eustasius', 'Sint Maarten', 'Indonesië', 'Suriname'],
     ];
 }
 
@@ -189,6 +189,7 @@ function _nbaMinContainsStringSize () {
         $client = _initNbaClient();
         $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
         cache_set($cacheId, $nbaMinContainsStringSize);
+        unset($client);
     }
     return $nbaMinContainsStringSize;
 }
@@ -210,6 +211,35 @@ function _nbaMaxContainsStringSize () {
         $client = _initNbaClient();
         $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
         cache_set($cacheId, $nbaMaxContainsStringSize);
+        unset($client);
     }
     return $nbaMaxContainsStringSize;
+}
+
+/**
+ * Dynamically fetch max result windows for NBA taxon and specimen services
+ * 
+ * @return array
+ */
+function _nbaMaxResultWindow () {
+    $nbaMaxResultWindow = &drupal_static(__FUNCTION__);
+    if (!$nbaMaxResultWindow) {
+        $cacheId = 'nbaMaxResultWindow';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaMaxResultWindow = $cache->data;
+            return $nbaMaxResultWindow;
+        }
+        $client = _initNbaClient();
+        $nbaMaxResultWindow = false;
+        foreach (['taxon', 'specimen'] as $service) {
+        	try {
+        		$nbaMaxResultWindow[$service] = $client->{$service}()->getIndexMaxResultWindow();
+        	} catch (Exception $e) { }
+        }
+        cache_set($cacheId, $nbaMaxResultWindow);
+        unset($client);
+    }
+    return $nbaMaxResultWindow;
+    
 }

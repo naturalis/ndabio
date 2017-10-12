@@ -23,13 +23,14 @@
 
 		// AJAX
 		$.get( str_url, function( data ) {
-
+			
 			$_active_link.css( 'cursor', 'pointer' );
 
 			$_search_areas_target.html( data );
 
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
+				
 				var target = $_search_areas_target.find('.row-area a#' + storedGid);
 				if (target.length > 0) {
 					target.addClass('active');
@@ -103,7 +104,8 @@
 		.before("<div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Search') + ":</div>");
 
 	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
-		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + 
+				":</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 

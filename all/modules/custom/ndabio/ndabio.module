@@ -29,7 +29,7 @@ function ndabio_init () {
  */
 function ndabio_advanced_taxonomysearch () {
 	global $base_root, $base_path, $language;
-	
+
 	// Set default values for searchagain
 	$expandedFlag = $storedGid = -1;
 	$placeholder = t('e.g. species name or locality');
@@ -39,10 +39,10 @@ function ndabio_advanced_taxonomysearch () {
 		if (intval($_GET['searchagain']) == 1) {
 			$expandedFlag = _getExpandedFlag();
 			$storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ? $_SESSION['nbaSearch']['gid'] : -1;
-			
 			$loadold = 1;
 		}
 	}
+	
 	$geosearch = 0;
 	$path = drupal_get_path('module', 'ndabio');
 	
@@ -61,6 +61,7 @@ function ndabio_advanced_taxonomysearch () {
 		drupal_add_js('var storedZoomLevel = ' . _getStoredZoomLevel() . ';', 'inline');
 		drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
 		drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
+		drupal_add_js('var storedLocation = ' . _getStoredLocation() . ';', 'inline');
 		drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . 
 			variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
         drupal_add_js(
@@ -693,10 +694,19 @@ function nba_areas_callback ($type = false) {
     $language = isset($_GET['language']) ? $_GET['language'] : 'en';
     switch ($type) {
     	case 'country':
-	        // First print favourites (hard-coded)
-	        echo _printGeoFavourites(_createGeoList('Country', $language, _geoCountryFavourites()));
-	        // Complete list
-	        echo _printGeoList(_createGeoList('Country', $language));
+	        // First print favourites (hard-coded list in config)
+	        $favourites = array_intersect(_createGeoList('Country', $language, false), 
+	        	_geoCountryFavourites()[$language]);
+	        foreach (_geoCountryFavourites()[$language] as $area) {
+	        	$key = array_search($area, $favourites);
+	        	if ($key) {
+	        		$areas[$key] = $area;
+	        	}
+	        }
+	        echo _printGeoFavourites($areas);
+	        // Complete list minus favourites
+	        echo _printGeoList(array_diff(_createGeoList('Country', $language), 
+	        	_geoCountryFavourites()[$language]));
 	        break;
     	case 'municipality':
 	       // Fix names that do not start with a letter
@@ -1087,7 +1097,7 @@ function _setAdvancedSelect ($field, $taxonomy = '') {
  * @param string $intersect Return only these values
  * @return array
  */
-function _createGeoList ($type, $language, $intersect = false) {
+function _createGeoList ($type, $language, $sort = true) {
     $all = json_decode(_nbaGeoAreas(), true);
     if (!isset($all[$type])) {
         return [];
@@ -1097,10 +1107,9 @@ function _createGeoList ($type, $language, $intersect = false) {
         $d[$item['id']] = isset($item['locality'][$language]) ?
         	$item['locality'][$language] : $item['locality']['en'];
     }
-    if ($intersect && is_array($intersect)) {
-        $d = array_intersect($d, $intersect[$language]);
+    if ($sort) {
+ 		asort($d);   
     }
-    asort($d);
     return $d;
 }
 

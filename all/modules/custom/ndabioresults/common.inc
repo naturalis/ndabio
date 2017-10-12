@@ -288,23 +288,21 @@ function _getDebug () {
  * Checks if NBA version can be used
  * 
  * This method should contain the NBA statement(s) that are required for the current version
- * (in this case 'operator.CONTAINS.min_term_length', which previously was 
+ * (in this case 'operator.contains.min_term_length', which previously was 
  * 'operator.LIKE.min_term_length'; the latter would return an error).
  * 
  * @return boolean|string String in case wrong version is used
  */
 function _checkNbaVersion () {
 	if (isset($_SESSION['nbaVersionCheck']) && $_SESSION['nbaVersionCheck'] == 'OK') {
-		//return true;
+		return true;
 	}
 	// Use checks here that are incompatible in older versions of the NBA
-	$client = _initNbaClient();
-	$settings = json_decode($client->getSettings());
-	if (isset($settings->{'operator.CONTAINS.min_term_length'})) {
+	if (isset(_nbaMaxResultWindow()['taxon'])) {
 		$_SESSION['nbaVersionCheck'] = 'OK';
 		return true;
 	}
-	echo '<p style="color: red; font-weight: bold;">Invalid version of NBA used! Use NBA v2.9 or higher. 
+	echo '<p style="color: red; font-weight: bold;">Invalid version of NBA used! Use NBA v2.11 or higher. 
 		<a href="#overlay=admin/config/naturalis/ndaresult">Modify the NBA base URL setting</a>.</p>';
 }
 
