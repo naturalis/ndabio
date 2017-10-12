@@ -880,7 +880,7 @@ function _createAdvancedSelect ($array, $labelUcFirst = true) {
  * @return boolean
  */
 function _isAdvancedSelect ($field) {
-	return in_array(_advancedSelectFields());
+	return in_array($field, _advancedSelectFields());
 }
 
 /**

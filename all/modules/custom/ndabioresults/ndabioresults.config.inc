@@ -136,7 +136,7 @@ function ndabioresults_config_form ($form, &$form_state) {
  */
 function ndabioresults_admin_settings_submit ($form, &$form_state) {
 	$baseurl = $form_state['values']['ndabioresults_config_baseurl'];
-	$nbabasefile = $_SERVER['DOCUMENT_ROOT'] . '/sites/default/files/' . 'nbabase.txt';
+	$nbabasefile = '/tmp/nbabase.txt';
 	$handle = fopen($nbabasefile, "w");
 	fwrite($handle, $baseurl . "\n");
 	fclose($handle);

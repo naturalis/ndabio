@@ -602,6 +602,11 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 				$type = $tmp[2];
 				$field = $tmp[3];
 				$types[] = $type;
+				
+				if (!isset($object->identifications)) {
+					$object->identifications = $object->item->identifications;
+				}
+
 				foreach ($object->identifications as $i => $identification) {
 					if (isset($identification->taxonomicEnrichments)) {
 						foreach ($identification->taxonomicEnrichments as $enrichment) {
@@ -663,7 +668,7 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 				}
 			}
 		}
-		return isset($d) ? array_unique($d) : false;
+		return isset($d) ? array_map("unserialize", array_unique(array_map("serialize", $d))) : false;
 	}
 }
 

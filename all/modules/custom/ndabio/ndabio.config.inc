@@ -209,7 +209,7 @@ function _nbaMaxContainsStringSize () {
         }
         $client = _initNbaClient();
         $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
-        cache_set($cacheId, $_nbaMaxContainsStringSize);
+        cache_set($cacheId, $nbaMaxContainsStringSize);
     }
-    return $_nbaMaxContainsStringSize;
+    return $nbaMaxContainsStringSize;
 }
