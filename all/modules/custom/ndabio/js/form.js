@@ -165,7 +165,7 @@
     	  }
     	  
 		  var message = term + Drupal.t("should contain at least [nr] characters. This limitation does not apply to advanced search!");
-		  alert(message.replace("[nr]", minStringLength));
+ 		  alert(message.replace("[nr]", minStringLength));
         	  
       }
 
