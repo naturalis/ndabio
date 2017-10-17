@@ -18,6 +18,8 @@ use nl\naturalis\bioportal\Condition as Condition;
  * Check for appropriate NBA version and set language
  */
 function ndabio_init () {
+	// Test if NBA is available
+	//_checkIfNbaIsUp();
 	// Check if proper NBA is used
 	_checkNbaVersion();
 	_setLanguage();

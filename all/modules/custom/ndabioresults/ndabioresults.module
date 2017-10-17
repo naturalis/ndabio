@@ -23,6 +23,7 @@ use nl\naturalis\bioportal\Filter as Filter;
  * Things to do when loading the module
  */
 function ndabioresults_init () {
+	//_checkIfNbaIsUp();
 	// Clear previously stored debug info
 	unset($_SESSION['nbaDebug'], $_SESSION['nbaErrorMessage']);
 	$_SESSION['nbaDebug']['server'] = _nbaBaseUrl();
@@ -2334,11 +2335,6 @@ function _nbaThemeSearch () {
     return $pageHeader .  _printDebug() . 
     	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
 }
-
-
-
-
-
 
 /**
  * Sets url to search form

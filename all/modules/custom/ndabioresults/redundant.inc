@@ -377,7 +377,7 @@ function ndaAdvancedSearch () {
  *
  * @return string Url to last used form
  */
-function setStartUrl () {
+function _setStartUrl () {
     if (isset($_SESSION['nbaSearch']['geoShape'])) {
         return setBasePath() . "geographic-search/";
     }

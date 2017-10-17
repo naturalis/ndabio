@@ -36,6 +36,7 @@ function _initNbaClient () {
     return $client;
 }
 
+
 /**
  * Initialise PHP client with service (specimen, taxon, or multimedia)
  * 
@@ -307,6 +308,16 @@ function _checkNbaVersion () {
 }
 
 /**
+ * Ping NBA to set _nbaIsUp()
+ */
+function _checkIfNbaIsUp () {
+	$client = _initNbaClient();
+	if (!$client->ping()) {
+		// echo down;
+	}
+}
+
+/**
  * Sorts associative array based on another associative array
  *
  * Adapted from http://stackoverflow.com/questions/348410/sort-an-array-by-keys-based-on-another-array
@@ -366,7 +377,7 @@ function _printOops () {
 		$output .= _getErrorMessage() . "</p>\n<p>";
 	}
 	$output .= t('Oops, something went wrong') . '. ' .
-		"<a href='" . setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
+		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
 	return $output;
 }
 
