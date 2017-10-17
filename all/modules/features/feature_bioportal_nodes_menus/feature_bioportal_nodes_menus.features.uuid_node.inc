@@ -233,7 +233,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<h2>Vragen en suggesties over BioPortal</h2>
+        'value' => '<h2>Vragen en suggesties over BioPortal website</h2>
 
 <table border="0" style="width:100%">
 	<tbody>
@@ -244,13 +244,33 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 	</tbody>
 </table>
 
+<h2>Vragen en suggesties over BioPortal content</h2>
+
+<table border="0" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="width:50%">E-mail<br />
+  			<span style="font-size: 12px;line-height: 12px;">Indien van toepassing, vermeld in het Onderwerp bron en collectienaam</span></td>
+			<td style="vertical-align:top"><a href="mailto:collectie@naturalis.nl?subject=Bioportal content: [bron] [collectienaam]">collectie@naturalis.nl</a></td>
+		</tr>
+	</tbody>
+</table>
+
 <h2>Naturalis Biodiversity Center</h2>
 
 <table border="0" style="width:100%">
 	<tbody>
 		<tr>
-			<td style="width:50%">Bezoekadres</td>
-			<td>Darwinweg 2, 2333 CR Leiden</td>
+			<td style="width:50%">Museumadres</td>
+			<td>Pesthuislaan 7,&nbsp;2332 AA Leiden</td>
+		</tr>
+		<tr>
+			<td style="width:50%">Kantooradres (algemeen)</td>
+			<td>Vondellaan 55, 2332 AA Leiden</td>
+		</tr>
+		<tr>
+			<td style="width:50%">Kantoooradres (herbarium)</td>
+			<td>Nieuwenhuizenweg 19, 2314 XP Leiden</td>
 		</tr>
 		<tr>
 			<td>Postadres</td>
@@ -258,23 +278,15 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 		</tr>
 		<tr>
 			<td>Telefoonnummer</td>
-			<td>+ 31-(0)71 568 7600</td>
+			<td>+31-(0)71-7519600</td>
 		</tr>
 		<tr>
 			<td>Fax</td>
-			<td>+ 31-(0)71 568 7666</td>
+			<td>+31-(0)71-7519666</td>
 		</tr>
 		<tr>
 			<td>E-mail</td>
 			<td><a href="mailto:contact@naturalis.nl">contact@naturalis.nl</a></td>
-		</tr>
-		<tr>
-			<td>Kantoor</td>
-			<td>Darwinweg 2, 2333 CR Leiden</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
 		</tr>
 	</tbody>
 </table>
@@ -309,54 +321,40 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Op deze site kun je zoeken op multimedia, specimens (collectie-exemplaren), taxa (dieren, planten, paddenstoelen), fossielen, mineralen en stenen.</p>
+        'value' => '<p>Op deze site kunt u zoeken op multimedia, specimens (collectie-exemplaren), taxa (dieren, planten, paddenstoelen), fossielen, mineralen en stenen.</p>
 
 <p>De informatie komt uit de catalogi van <a href="http://www.naturalis.nl" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a> te Leiden, uit het <a href="http://www.nederlandsesoorten.nl/" style="text-decoration:none;" target="_blank">Nederlands Soortenregister</a> en uit de <a href="http://www.catalogueoflife.org/" style="text-decoration:none;" target="_blank">Catalogue of Life</a>.</p>
 
-<p>Op de meeste specimenpagina’s is een PURL (Persistent Uniform Resource Locator) aanwezig. Als je dit object wilt citeren dan kun je gebruik maken van deze PURL. Naturalis stelt alles in het werk om het permanente karakter van deze PURL te garanderen.</p>
+<p>Op de meeste specimenpagina’s is een PURL (Persistent Uniform Resource Locator) aanwezig. Als u een object wilt citeren dan kunt u gebruik maken van deze PURL. Naturalis stelt alles in het werk om het permanente karakter van deze PURL te garanderen.</p>
 
 <p>Het BioPortal biedt vier mogelijkheden om deze gegevens te doorzoeken:</p>
 
 <ul>
-	<li><a href="#simple-search"><em>zoeken</em> </a></li>
-	<li><a href="#advanced-search"><em>geavanceerd zoeken</em> </a></li>
-	<li><a href="#geo-search"><em>geografisch zoeken</em> </a></li>
-	<li><a href="#explore"><em>bijzondere collecties</em> </a></li>
+	<li><em><a href="#simple-search">Eenvoudig&nbsp;zoeken</a></em></li>
+	<li><a name="simple-search"></a><em><a href="#advanced-search">Geavanceerd zoeken</a></em></li>
+	<li><em><a href="#geo-search">Geografisch zoeken</a></em></li>
+	<li><em><a href="#explore">Bijzondere collecties</a></em></li>
 </ul>
-
-<p>&nbsp;<a name="simple-search"></a></p>
 
 <h2>Zoeken</h2>
 
-<p>&nbsp;</p>
+<h3><br />Eenvoudig zoeken</h3>
 
-<h3>Zoeken</h3>
+<p>De zoekmachine in het BioPortal gebruikt uw zoektermen om de verschillende bronnen te doorzoeken. Hij kijkt daarbij naar alle relevante velden, zoals de populaire naam, wetenschappelijke naam, vindplaats en registratienummer. Simpel zoeken doorzoekt ook velden die niet worden doorzocht door geavanceerd zoeken.</p>
 
-<p>De zoekmachine in het BioPortal gebruikt jouw zoektermen om de verschillende bronnen te doorzoeken. Hij kijkt daarbij naar alle relevante velden, zoals de populaire naam, wetenschappelijke naam, vindplaats en registratienummer.</p>
+<p>Wanneer u een zoekopdracht uitvoert die uit meer dan één zoekterm bestaat, worden resultaten getoond waarin één, sommige of alle termen voorkomen. De resultaten worden zo weergegeven dat de best <em>matchende</em> bovenaan komt te staan.</p>
 
-<p>Voorbeeld : je kan zowel op [ bruine rat ] als op [ rattus norvegicus ] zoeken.</p>
-
-<p>Wanneer je een zoekopdracht uitvoert die uit meer dan één zoekterm bestaat, worden resultaten getoond waarin één, sommige of alle termen voorkomen. De resultaten worden zo weergegeven dat de best matchende bovenaan komt te staan.</p>
-
-<p>Bij een simple search wordt een zoekterm geanalyseerd en dat leidt in het geval van meerdere termen tot een opdeling in brokjes. Dit zijn allemaal potentiële zoektermen die als een OR worden behandeld en dit kan zorgen voor een groot aantal zoekresultaten.</p>
-
-<p><a name="advanced-search"></a><a name="multimedia"></a><a name="taxa"></a><a name="collection-specimens-by-name"></a><a name="collection-specimens"></a>Je kan geen gebruik maken van haakjes of zogenoemde <em> wildcards. </em>Om zoektermen te combineren kan je gebruik maken van de <a href="#advanced-search"> Geavanceerd zoeken</a></p>
-
-<p>&nbsp;</p>
+<p><a name="advanced-search"></a>Simpel zoeken herkent geen haakjes, aanhalingstekens of <em>wildcards</em> voor het beïnvloeden van de zoekactie. <a href="#advanced-search">Geavanceerd zoeken</a> biedt wel de mogelijkheid om meerdere woorden als één zoekterm in te voeren.</p>
 
 <h3>Geavanceerd zoeken</h3>
 
-<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kun je de resultaten beperken tot de categorieën (multimedia, specimens of taxa) en specifieke velden.</p>
+<p>Door op het driehoekje in het gewone zoekveld te klikken, worden de geavanceerde zoekopties zichtbaar. Hiermee kan de zoekopdracht worden beperkt tot de categorieën multimedia, specimens en taxa, en specifieke velden binnen die categorieën.</p>
 
-<p>Wanneer je voor meer categorieën zoektermen opgeeft, worden voor elke categorie resultaten getoond.</p>
+<p>Wanneer u voor meer categorieën zoektermen opgeeft, worden voor elke categorie resultaten getoond.</p>
 
-<p>Als je binnen een categorie meerdere zoekvelden invult, worden resultaten getoond die één of meer van de ingevulde termen bevatten.</p>
+<p>Om te bepalen hoe verschilende zoektermen worden gecombineerd in de zoekopdracht, kunt u onder “Combineer zoektermen” kiezen voor "Of" of "En". Kies "Of" om resultaten te tonen die één of meer van de ingevulde termen bevatten; kies "En" voor resultaten die ieder alle ingevulde termen bevatten.</p>
 
-<p>Wanneer je “En” kiest voor “Combineer zoektermen” krijg je resultaten te zien die alle ingevulde termen bevatten en beperk je de resultaten.</p>
-
-<p>Binnen de categorieën Collectie specimens en Multimedia is het ook mogelijk te zoeken binnen een specifieke collectie door de naam van een collectie te kiezen in het veld Collectienaam. Eveneens&nbsp;<a name="geo-search"></a>kan de zoekopdracht&nbsp;voor de categorieën Collectie&nbsp;specimens, Taxa en Multimedia beperkt worden tot een bronsysteem (b.v. Botany of Zoology and Geology catalogues).</p>
-
-<p>&nbsp;</p>
+<p>Binnen de categorieën Specimens en Multimedia is het ook mogelijk te zoeken binnen een specifieke collectie door de naam van een collectie te kiezen in het veld Collectienaam. <a name="geo-search"></a>Eveneens kan de zoekopdracht&nbsp;voor de categorieën Specimens, Taxa en Multimedia beperkt worden tot een bronsysteem (b.v. Botany of Zoology and Geology catalogues).</p>
 
 <h3>Geografisch zoeken</h3>
 
@@ -366,23 +364,21 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 
 <p><a name="explore"></a>We maken gebruik van verschillende <a href="/colofon#databronnen?language=nl">bronnen</a>. Daardoor kan het voorkomen dat gebieden dubbel genoemd worden. Vaak verschillen deze gebieden in de gedetailleerdheid van de begrenzing.</p>
 
-<p>&nbsp;</p>
-
 <h3>Bijzondere collecties</h3>
 
-<p>Een eenvoudige en snelle manier van zoeken is “Bijzondere collecties”. Hiermee zie je alle specimens die behoren tot een van de bijzondere collecties van Naturalis. Je krijgt direct alle resultaten te zien.</p>
+<p>Een eenvoudige en snelle manier van zoeken is “Bijzondere collecties”. Hiermee zie je alle specimens die behoren tot een van de bijzondere collecties van Naturalis. U krijgt direct alle resultaten te zien.</p>
 
 <h2>Zoekresultaten</h2>
 
-<p>Het&nbsp;BioPortal probeert je snel de resultaten te geven die je zoekt en gebruikt daarvoor <em>name resolution</em> en <em>ranking</em>.</p>
+<p>Het&nbsp;BioPortal probeert snel de gewenste resultaten te leveren en gebruikt daarvoor <em>name resolution</em> en <em>ranking</em>.</p>
 
 <h3>Name resolution</h3>
 
-<p>Het BioPortal zal trachten jouw zoekterm te <em>matchen</em> met een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a> en de <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
+<p>Het BioPortal zal trachten een zoekterm te herleiden tot een wetenschappelijke naam. Dit wordt gedaan door verschillende velden te doorzoeken van het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a> en de <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
 
 <ol>
 	<li>
-	<p>Wetenschappelijke naam</p>
+	<p>Wetenschappelijke naam, zowel synoniemen als geaccepteerde wetenschappelijke namen</p>
 
 	<ul>
 		<li>
@@ -411,56 +407,23 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 </ol>
 
 <p><br />
-Deze wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van multimedia en specimens. Hierdoor kan het zijn dat je jouw oorspronkelijke zoekopdracht niet letterlijk terugziet in sommige resultaten.</p>
+De gevonden wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken van multimedia en specimens. Hierdoor kan het zijn dat u de oorspronkelijke zoekopdracht niet letterlijk terugziet in de resultaten.</p>
 
-<h3>Ranking</h3>
+<h3>Sortering</h3>
 
-<p>De zoekresultaten worden geordend aan de hand van</p>
+<p>De zoekresultaten worden geordend aan de hand van een interne manier van sorteren die vooral rekening houdt met hoe uniek de gevraagde zoektermen zijn binnen de index.&nbsp;</p>
 
-<ol>
-	<li>
-	<p>Volledige <em>match</em> op de wetenschappelijke naam</p>
-	</li>
-	<li>
-	<p>Volledige <em>match</em> op de soortnaam</p>
-	</li>
-	<li>
-	<p>Volledige <em>match</em> op de naam van het geslacht</p>
-	</li>
-	<li>
-	<p>Gedeeltelijke <em>match</em> op de wetenschappelijke naam</p>
-	</li>
-	<li>
-	<p>Volledige <em>match</em> op enig ander veld</p>
-	</li>
-	<li>
-	<p>Gedeeltelijke <em>match</em> op enig ander veld</p>
-	</li>
-	<li>
-	<p>Gewicht van het zoekveld</p>
-	</li>
-</ol>
+<h3>Multimedia bij specimens</h3>
 
-<h3>Categorieën</h3>
+<p>Wanneer u via geavanceerd zoeken naar specimens gezocht, dan is er onder het totaaloverzicht van gevonden specimen een extra link beschikbaar, \'Toon alle <em>n</em> media objecten bij deze zoekopdracht\'. Via deze link kunt u direct alle mediaobjecten opvragen die gekoppeld zijn aan de specimen uit uw oorspronkelijke zoekopdracht. Opmerking: de geavanceerde zoekvelden voor specimen zijn uitgebreider dan die voor multimedia, waardoor u via deze functie indirect ook meer geavanceerde zoekopdrachten naar multimedia kunt uitvoeren.</p>
 
-<p>De zoekresultaten zijn onderverdeeld in vier categorieën:</p>
+<h3>Weergave resultaten specimen</h3>
 
-<ol>
-	<li>
-	<p>Multimedia: afbeeldingen, geluid of bewegend beeld</p>
-	</li>
-	<li>
-	<p>Taxa (soortbeschrijvingen)</p>
-	</li>
-	<li>
-	<p>Specimens met de zoekterm in de soortnaam.&nbsp;Resultaten waarvan in de taxonomische informatie van het specimen de zoekterm voorkomt</p>
-	</li>
-	<li>
-	<p>Specimens met de zoekterm in een ander veld.&nbsp;Resultaten waarbij de zoekterm voorkomt in bijvoorbeeld collectie-informatie, geografische informatie of informatie met betrekking tot datum en tijd. “Rat” geeft bijvoorbeeld ook resultaten die “Rat Island” als vindplaats hebben</p>
-	</li>
-</ol>
+<p>In het scherm met resultaten uit de specimen-index heeft u de mogelijkheid om te schakelen tussen weergave als lijst van unieke specimens (\'Toon op specimen\'), en een weergave waarin de resultaten gegroepeerd zijn op soortsnaam (\'Toon op wetenschappelijke naam\'). Met die laatste weergave krijgt u snel inzicht in de verschillende soorten waarvoor er specimen gevonden zijn, terwijl de eerste weergave direct een compleet overzicht van de specimen geeft.</p>
 
-<p>Specimens zijn verwijzingen naar en beschrijvingen van objecten die zijn opgeslagen in de collectie van Naturalis (en soms ook daarbuiten). Deze beschrijvingen kunnen veel verschillende velden bevatten.</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -682,8 +645,21 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Beschikbare datasets zijn:</p>
+        'value' => '<p>Hieronder vindt u downloadlinks naar Darwin Core Archive-bestanden voor de deelcollecties van de NBA.
+</p>
+<p>
+Darwin Core Archive (DwC-A of DwCA) is een biodiversiteitsinformatica datastandaard die gebruik maakt van de Darwin Core termen om een enkele, op zichzelf staande dataset voor voorkomensgegevens of <em>checklist data</em> te produceren. Zie TDWG\'s <a href="http://rs.tdwg.org/dwc/index.htm" target="_blank">Darwin Core introductie (Engels)</a> voor een meer gedetailleerde beschrijving.
+</p>
 
+<p>
+In dit geval bevatten de bestanden de specimen- en multimediagegevens van de collectie uit de betreffende bestandsnaam, met uitzondering van het \'nsr\'-bestand, dat namen, taxonomie en voorkeursstatus bevat voor alle soorten uit het <a href = "http : //www.nederlandsesoorten.nl/ "target =" _ blank ">Nederlands Soortenregister</a>.
+</p>
+
+<p>
+Onderstaande bestanden worden wekelijks gegenereerd. De <em>timestamp</em> in de bestandsnaam correspondeert met het moment waarop het bestand gegenereerd is, en houdt geen verband met het moment van import in de NBA, dan wel de oorspronkelijke datum waarop de gegevens werden ingevoerd.
+</p>
+
+<p>De volgende datasets zijn beschikbaar:</p>
 
 <?php 
 echo getNbaData();
@@ -849,8 +825,9 @@ echo getNbaData();
 <h2>Data sources</h2>
 
 <ul>
-	<li><a href="https://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanical and zoological specimens, species information</li>
-	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2015</li>
+	<li><a href="https://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanical and zoological specimens,</li>
+	<li><a href="http://www.nederlandsesoorten.nl/">Nederlands Soortenregister</a><a href="http://www.nederlandsesoorten.nl/" target="_blank">:</a> Dutch species information</li>
+	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2015, global species information&nbsp;</li>
 	<li><a href="http://www.natura2000.nl" style="text-decoration:none;" target="_blank">Natura 2000</a>: ESRI-files of nature reserves (Annemiek Adams)</li>
 	<li><a href="http://www.staatsbosbeheer.nl/english" style="text-decoration:none;" target="_blank">Staatsbosbeheer</a>: ESRI-files of nature reserves (Jac Hakkens)</li>
 	<li><a href="https://www.natuurmonumenten.nl" style="text-decoration:none;" target="_blank">Vereniging Natuurmonumenten</a>: ESRI-files of nature reserves (Rombout de Wijs)</li>
@@ -953,8 +930,9 @@ echo getNbaData();
 <h2>Databronnen</h2>
 
 <ul>
-	<li><a href="https://www.naturalis.nl/nl/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanische en zoölogische specimens, soortinformatie</li>
-	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2016</li>
+	<li><a href="https://www.naturalis.nl/nl/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanische en zoölogische specimens</li>
+	<li><a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister:</a> soortinformatie Nederlandse soorten</li>
+	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2016, soortinformatie wereldwijd</li>
 	<li><a href="http://www.natura2000.nl" style="text-decoration:none;" target="_blank">Natura 2000</a>: ESRI-bestanden van natuurgebieden (Annemiek Adams)</li>
 	<li><a href="http://www.staatsbosbeheer.nl" style="text-decoration:none;" target="_blank">Staatsbosbeheer</a>: ESRI-bestanden van natuurgebieden (Jac Hakkens)</li>
 	<li><a href="https://www.natuurmonumenten.nl" style="text-decoration:none;" target="_blank">Vereniging Natuurmonumenten</a>: ESRI-bestanden van natuurgebieden (Rombout de Wijs)</li>
@@ -1136,7 +1114,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<h2>Questions and feedback for BioPortal</h2>
+        'value' => '<h2>Questions and feedback for BioPortal website</h2>
 
 <table border="0" style="width:100%">
 	<tbody>
@@ -1147,13 +1125,33 @@ echo getNbaData();
 	</tbody>
 </table>
 
+<h2>Questions and feedback for BioPortal content</h2>
+
+<table border="0" style="width:100%">
+	<tbody>
+		<tr>
+			<td style="width:50%">E-mail<br />
+  			<span style="font-size: 12px;line-height: 12px;">If applicable add source and collection name to the subject.</span></td>
+			<td style="vertical-align:top"><a href="mailto:collectie@naturalis.nl?subject=Bioportal content: [source] [collection name]">collectie@naturalis.nl</a></td>
+		</tr>
+	</tbody>
+</table>
+
 <h2>Naturalis Biodiversity Center</h2>
 
 <table border="0" style="width:100%">
 	<tbody>
 		<tr>
-			<td style="width:50%">Visiting address</td>
-			<td>Darwinweg 2, 2333 CR Leiden</td>
+			<td style="width:50%">Museum adress</td>
+			<td>Pesthuislaan 7,&nbsp;2332 AA Leiden</td>
+		</tr>
+		<tr>
+			<td style="width:50%">Visiting address (general)</td>
+			<td>Vondellaan 55, 2332 AA Leiden</td>
+		</tr>
+		<tr>
+			<td style="width:50%">Visiting address (herbarium)</td>
+			<td>Nieuwenhuizenweg 19, 2314 XP Leiden</td>
 		</tr>
 		<tr>
 			<td>Postal address</td>
@@ -1161,22 +1159,20 @@ echo getNbaData();
 		</tr>
 		<tr>
 			<td>Telephone number</td>
-			<td>+ 31-(0)71 568 7600</td>
+			<td>+31-(0)71-7519600</td>
 		</tr>
 		<tr>
 			<td>Fax</td>
-			<td>+ 31-(0)71 568 7666</td>
+			<td>+ 31-(0)71-7519666&nbsp;</td>
 		</tr>
 		<tr>
 			<td>E-mail</td>
 			<td><a href="mailto:contact@naturalis.nl">contact@naturalis.nl</a></td>
 		</tr>
-		<tr>
-			<td>Office address</td>
-			<td>Darwinweg 2, 2333 CR Leiden</td>
-		</tr>
 	</tbody>
 </table>
+
+<p>&nbsp;</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1697,28 +1693,24 @@ Bringing all this information together will help distinguish facts from fables i
 <p>The BioPortal offers four possibilities for browsing this data:</p>
 
 <ul>
-	<li><a href="#simple-search"><em>simple search</em></a></li>
-	<li><a href="#advanced-search"><em>advanced search</em></a></li>
-	<li><em><a href="#geo-search">geographic search</a></em></li>
-	<li><em><a name="simple-search"></a><a href="#explore-highlights">explore highlights</a></em></li>
+	<li><a href="#simple-search"><em>Simple search</em></a></li>
+	<li><a href="#advanced-search"><em>Advanced search</em></a></li>
+	<li><em><a href="#geo-search">Geographic search</a></em></li>
+	<li><a name="simple-search"></a><em><a href="#explore">Explore highlights</a></em></li>
 </ul>
 
 <h2><strong>Searching</strong></h2>
 
-<p><br />
-<strong>Simple Search</strong></p>
+<h3><br />
+<strong>Simple Search</strong></h3>
 
 <p>Bioportal works in the same way as other well-known search engines: it uses your search terms to browse our sources. Within its search operations, it will examine all the fields specified in the advanced search (such as popular name, scientific name or discovery location) and will even browse fields not accessible via the advanced search.</p>
-
-<p>Example: you can search for either [ brown rat ] or [ rattus norvegicus ].</p>
 
 <p>If you type more than one search term, we will display all the results in which one, some or all of the terms occur, but we will head the list with results with the best match.</p>
 
 <p>When you make a simple search the search term will be analyzed and if there are more terms the search is divided into various parts. All these parts lead to potential search results and are combined with an OR, which can lead to very big search result sets.</p>
 
-<p><a name="advanced-search"></a>It is not possible to use brackets or so-called wildcards. All foreign characters will be ignored in the query. To combine search terms, use the <a href="#advanced-search">Advanced Search</a> option.</p>
-
-<p>&nbsp;</p>
+<p><a name="advanced-search"></a>It is not possible to use brackets, double-quotes or so-called wildcards to constrict or widen your searchterms. All foreign characters will be ignored in the query. To combine search terms, use the <a href="#advanced-search">Advanced Search</a> option.</p>
 
 <h3><strong>Advanced Search</strong></h3>
 
@@ -1726,13 +1718,9 @@ Bringing all this information together will help distinguish facts from fables i
 
 <p>If you enter search terms for more than one category, the result for each category will be shown.</p>
 
-<p>If you enter more than one search field within a single category, initially, those results will be shown that include one or more of these terms.</p>
+<p>When entering multiple search&nbsp;terms in the same category, you can use the&nbsp;‘Combine search terms’ switch to influence the behaviour of the search engine. Choose \'Or\'&nbsp;for results that include one or more of these terms, or&nbsp;‘And’ for results that contain all terms.</p>
 
-<p>If you opt to use ‘And’ for ‘Combine search terms’, the search engine will display results that contain all terms; in other words you will reduce the number of results.</p>
-
-<p><a name="geo-search"></a>Within the categories specimens and multimedia, you also have the option to restrict your search to a specific collection by selecting its name in the Collection name field. You can also limit your query for the categories Collection specimens, Taxa and Multimedia by selecting a specific Source (e.g. Botany or Zoology and Geology catalogues).</p>
-
-<p>&nbsp;</p>
+<p>Within the categories specimens and multimedia, you also have the option to restrict your search to a specific collection by selecting its name in the Collection name field. <a name="geo-search"></a>You can also limit your query for the categories Collection specimens, Taxa and Multimedia by selecting a specific Source (e.g. Botany or Zoology and Geology catalogues).</p>
 
 <h3><strong>Geographic Search</strong></h3>
 
@@ -1740,9 +1728,7 @@ Bringing all this information together will help distinguish facts from fables i
 
 <p>The results will always be limited to collection specimens and multimedia. Within this search type, only those results for which the geographical coordinates of the discovery location are stored in the source systems will be displayed.</p>
 
-<p><em><a id="explore-highlights" name="explore-highlights"></a></em>We make use of a range of different <a href="/colophon#datasources?language=en">sources</a>. This means that in some cases, areas may be listed more than once. These areas will often differ in terms of degree of detail of the boundaries.</p>
-
-<p>&nbsp;</p>
+<p><a name="explore"></a>We make use of a range of different <a href="/colophon#datasources?language=en">sources</a>. This means that in some cases, areas may be listed more than once. These areas will often differ in terms of degree of detail of the boundaries.</p>
 
 <h3><strong>Explore Highlights</strong></h3>
 
@@ -1754,7 +1740,7 @@ Bringing all this information together will help distinguish facts from fables i
 
 <h3><strong>Name resolution</strong></h3>
 
-<p>The BioPortal will attempt to <em>match</em> your search term to a scientific name. This will be achieved by browsing through various fields in the <a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a> and the <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
+<p>The BioPortal will attempt to convert your search term to a scientific name. This will be achieved by searching through various fields in the <a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a> and the <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
 
 <p>1. &nbsp;&nbsp;&nbsp;Scientific name<br />
 ○ &nbsp;&nbsp;&nbsp;&nbsp;For example: <em>“Rattus norvegicus”</em><br />
@@ -1763,30 +1749,23 @@ Bringing all this information together will help distinguish facts from fables i
 3. &nbsp;&nbsp;&nbsp;Higher orders<br />
 ○ &nbsp;&nbsp;&nbsp;&nbsp;For example “Rodentia” for the biological order rodents</p>
 
-<p>This scientific name is then used to browse through multimedia and specimens. This may mean that your original query will not necessarily be literally reproduced in certain results.</p>
+<p>This scientific name is then used to browse through multimedia and specimens. This may mean that your original query will not necessarily be literally reproduced in the results.</p>
 
 <h3><strong>Ranking</strong></h3>
 
-<p>The search results will be ranked according to</p>
+<p>Search results are sorted using an internal algorithm that primarily takes into account the level of uniqueness of the search terms within the entire index.</p>
 
-<p>1. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the scientific name<br />
-2. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the species name<br />
-3. &nbsp;&nbsp;&nbsp;Full <em>match</em> for the genus name<br />
-4. &nbsp;&nbsp;&nbsp;Partial <em>match</em> for the scientific name<br />
-5. &nbsp;&nbsp;&nbsp;Full <em>match</em> for any other field<br />
-6. &nbsp;&nbsp;&nbsp;Partial <em>match</em> for any other field<br />
-7. &nbsp; &nbsp;The number of times a matched is found/&nbsp;The importance of a field</p>
+<h3><strong>Multimedia for specimens</strong></h3>
 
-<p><strong>Categories</strong><br />
-<br />
-The search results are divided into four categories:</p>
+<p>When you search&nbsp;for specimen through the advanced search form, there will appear an additional link underneath the search results, \'Show all <em>n</em>&nbsp;media items for this query\'. Using this link, you can access all multimedia objects associated with the specimens in the resultset of your original search action. Please note: the advanced search form for specimen allows for searching a broader set of fields than that for multimedia. However, the function described above allows you to indirectly execute more advanced&nbsp;multimedia searches.</p>
 
-<p>1. &nbsp;&nbsp;&nbsp;Multimedia: pictures, sound or moving images from all data<br />
-2. &nbsp;&nbsp;&nbsp;Taxa (species description)<br />
-3. &nbsp;&nbsp;&nbsp;Specimens with the search term in the species name.&nbsp;Generates results if the search term occurs in the &nbsp;taxonomical information of the specimen<br />
-4. &nbsp;&nbsp;&nbsp;Specimens with the search term in another field.&nbsp;Generates results if the search term occurs in (for example) collection information, geographical information or information relating to time and dates.&nbsp;‘Rat’ also generates results for ‘Rat Island in Plymouth, UK.</p>
+<h3><strong>Displaying specimen results</strong></h3>
 
-<p>Specimens are references to and descriptions of objects stored in the Naturalis collection (and sometimes other collections). These descriptions can contain many different fields.</p>
+<p>In the screen displaying search results from the specimen index you can switch between two display modes: \'Display by specimen\', which lists the results as one long list, giving you an overview of all found specimen. Alternatively, you can choose \'Display by scientific name\', which&nbsp;lists the&nbsp;results grouped by scientific name, which allows you to quicky assess the different species for which specimens have been found.</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
 ',
         'summary' => '',
         'format' => 'full_html',

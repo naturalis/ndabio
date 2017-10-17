@@ -13815,6 +13815,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('Search specimens by type status.', array(), array('context' => ''));
+  $translations['nl:default']['4f8878b8163b079901ff6c32991d84b0'] = array(
+    'source' => 'Specimen label data plus associated multimedia',
+    'context' => '',
+    'location' => '/',
+    'translation' => ' Specimen label data plus geassocieerde multimedia',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Specimen label data plus associated multimedia', array(), array('context' => ''));
   $translations['nl:default']['4f95f737da6954557744a521602be70e'] = array(
     'source' => 'The image was resized to fit within the maximum allowed dimensions of %dimensions pixels.',
     'context' => '',
@@ -18364,7 +18373,7 @@ password: Your password
     'source' => 'Multimedia of specimens and taxa',
     'context' => '',
     'location' => '/',
-    'translation' => 'Doorzoek multimedia op wetenschappelijke naam van de klasse',
+    'translation' => 'Multimedia van specimens en taxa',
     'plid' => 0,
     'plural' => 0,
   );
@@ -37461,7 +37470,7 @@ This link can only be used once to log in and will lead you to a page where you 
     'source' => 'Scientific names of taxa plus associated multimedia',
     'context' => '',
     'location' => '/',
-    'translation' => 'Wetenschappelijke name van taxa plus bijbehorende multimedia',
+    'translation' => 'Wetenschappelijke namen van taxa plus bijbehorende multimedia',
     'plid' => 0,
     'plural' => 0,
   );
