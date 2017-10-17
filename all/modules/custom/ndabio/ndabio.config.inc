@@ -1,7 +1,7 @@
 <?php 
-
-// Default value
 define('NDABIO_GMAPKEY', 'AIzaSyCv168azSiPAf0wjVe36gNqdANDqEXkpvQ');
+define("NBABASEURLFILE", "/tmp/nbabase.txt");
+
 
 function ndabio_config_form ($form, &$form_state) {
 	$form['ndabio_config'] = array(

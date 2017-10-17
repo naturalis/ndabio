@@ -21,6 +21,9 @@ function ndabio_init () {
 	// Check if proper NBA is used
 	_checkNbaVersion();
 	_setLanguage();
+	if (!file_exists(NBABASEURLFILE)) {
+		_writeBaseFile();
+	}
 }
 
 
@@ -1303,4 +1306,15 @@ function _wrap_label ($help, $caption) {
 	//<a href='/" . $language->language . "/help?language=" . $language->language . "#advanced-search' target='_blank'> . "$caption</a></span>";
 	"$caption</span>";
 }
+
+function _writeBaseFile ($baseUrl = false) {
+	if (!$baseUrl) {
+		$baseUrl = _nbaBaseUrl();
+	}
+	$handle = fopen(NBABASEURLFILE, "w");
+	fwrite($handle, $baseUrl . "\n");
+	fclose($handle);
+}
+
+
 
