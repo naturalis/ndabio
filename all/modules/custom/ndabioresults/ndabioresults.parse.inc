@@ -371,7 +371,10 @@ function _parseSpecimenDetail ($data) {
 	$output['typeStatuses'] = _getSpecimenTypeStatuses($data->identifications);
 	$output['vernaculars'] = _getSpecimenVernaculars($data->identifications);
 	$output['enrichedVernaculars'] = _getSpecimenEnrichedVernaculars($data->identifications);
-	$output['gatheringEvent'] = _getGatheringEventSpecimens($data->gatheringEvent);
+	$event = _getGatheringEventSpecimens($data->gatheringEvent);
+	if (!is_null($event)) {
+		$output['gatheringEvent'] = _getGatheringEventSpecimens($data->gatheringEvent);
+	}
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
