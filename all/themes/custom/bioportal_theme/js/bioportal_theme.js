@@ -183,14 +183,14 @@
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
         }
-        
-        // Hide help text
-        $(".fieldset-omnisearch .description").hide();
-
+ 
       })
   }
-
-  // ---------------------------------------------------------
+  
+  // Clicking on help text also invokes advanced form
+  $(".description").click(function(){
+	  $("div.ndabio-toggle-advanced").click(); 
+  });
 
 
 

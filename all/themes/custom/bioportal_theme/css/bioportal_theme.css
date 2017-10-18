@@ -843,6 +843,7 @@ th .icon-sort_sortable {
 	padding: 0; 
 	margin: 0px;
 	font-size: 0.8em;
+	cursor: pointer;
 }
 
 #edit-extended select[multiple] {

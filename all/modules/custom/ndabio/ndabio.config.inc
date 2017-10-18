@@ -114,8 +114,8 @@ function _nbaAdvancedSearchExceptions () {
  */
 function _geoCountryFavourites () {
 	return [
-        'en' => ['Netherlands', 'Aruba', 'Curaçao', 'Bonaire', 'Sint Eustasius', 'Sint Maarten', 'Indonesia', 'Suriname'],
-        'nl' => ['Nederland', 'Aruba', 'Curaçao', 'Bonaire', 'Sint Eustasius', 'Sint Maarten', 'Indonesië', 'Suriname'],
+        'en' => ['Netherlands', 'Aruba', 'Bonaire', 'Curaçao', 'Saba', 'Sint Eustasius', 'Sint Maarten', 'Indonesia', 'Suriname'],
+        'nl' => ['Nederland', 'Aruba', 'Bonaire', 'Curaçao', 'Saba', 'Sint Eustasius', 'Sint Maarten', 'Indonesië', 'Suriname'],
     ];
 }
 
