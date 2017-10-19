@@ -152,9 +152,19 @@ function _getOptimalOperators ($fields) {
  * @param string $value
  * @return array|NULL[]
  */
-function _stringToElements ($value) {
-	return $value != '' ?
-		array_map('trim', array_unique(array_filter(explode(' ', trim($value))))) : [null];	
+function _stringToElements ($value, $stringSizeThreshold = false) {
+	if ($value == '') {
+		return [null];
+	}
+	$elements = array_map('trim', array_unique(array_filter(explode(' ', trim($value)))));
+	if ($stringSizeThreshold) {
+		foreach ($elements as $i => $element) {
+			if (strlen($element) < (int)$stringSizeThreshold) {
+				unset($elements[$i]);
+			}
+		}
+	}
+	return $elements;
 }
 
 /**

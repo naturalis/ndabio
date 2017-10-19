@@ -924,7 +924,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					
 					$paths[$path] = [
 						'operator' => $statement[$path],
-						'values' => _stringToElements($value)  // Used to determine hits
+						'values' => _stringToElements($value, NBAMINSTRINGLENGTHSIMPLESEARCH)  // Used to determine hits
 					];
 				}
 			}
