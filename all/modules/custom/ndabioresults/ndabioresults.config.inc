@@ -14,7 +14,7 @@ define("NBADEBUGENCODED", 0);
 // Minimum string length for individual elements in simple search term
 define("NBAMINSTRINGLENGTHSIMPLESEARCH", 3);
 // ES boost factor for full length simple search term (if there are more elements)
-define("NBASIMPLESEARCHFULLTERMBOOST", 3);
+define("NBASIMPLESEARCHFULLTERMBOOST", 2);
 
 
 
@@ -574,6 +574,51 @@ function _nameHits () {
 	}
 	return $var;
 }
+
+
+
+function _boostPaths () {
+	$var = &drupal_static(__FUNCTION__);
+	if (!isset($var)) {
+		$var = [
+			'multimedia' => [
+				'identifications.defaultClassification.genus' => 2,
+				'identifications.scientificName.genusOrMonomial' => 2,
+				'identifications.defaultClassification.specificEpithet' => 2,
+				'identifications.scientificName.specificEpithet' => 2,
+				'identifications.defaultClassification.infraspecificEpithet' => 2,
+				'identifications.scientificName.infraspecificEpithet' => 2,
+				'identifications.scientificName.fullScientificName' => 2,
+				'identifications.vernacularNames.name' => 2,
+                'identifications.taxonomicEnrichments.vernacularNames.name' => 0.5
+			],			
+			'specimen' => [
+				'identifications.defaultClassification.genus' => 2,
+				'identifications.scientificName.genusOrMonomial' => 2,
+				'identifications.defaultClassification.specificEpithet' => 2,
+				'identifications.scientificName.specificEpithet' => 2,
+				'identifications.defaultClassification.infraspecificEpithet' => 2,
+				'identifications.scientificName.infraspecificEpithet' => 2,
+				'identifications.scientificName.fullScientificName' => 2,
+				'identifications.vernacularNames.name' => 2,
+                'identifications.taxonomicEnrichments.vernacularNames.name' => 2
+			],
+			'taxon' => [
+				'defaultClassification.genus' => 2,
+				'acceptedName.genusOrMonomial' => 2,
+				'defaultClassification.specificEpithet' => 2,
+				'acceptedName.specificEpithet' => 2,
+				'defaultClassification.infraspecificEpithet' => 2,
+				'acceptedName.infraspecificEpithet' => 2,
+				'acceptedName.fullScientificName' => 2,
+				'vernacularNames.name' => 2
+			],
+		];
+	}
+	return $var;
+}
+
+
 
 /* Do not print hits
  * 

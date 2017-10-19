@@ -906,25 +906,25 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					// If operator has been set in url use this; overrules all other settings
 					if (isset($operators[$field])) {
 						$statement[$path] = strtoupper($operators[$field]);
-						// Advanced search
+					// Advanced search
 					} else if (!$simpleSearch) {
 						// Default
 						$statement[$path] = 'STARTS_WITH_IC';
 						// Select
 						if (_isAdvancedSelect($field)) {
 							$statement[$path] = 'EQUALS_IC';
-							// Exception
+						// Exception
 						} else if (isset(_nbaAdvancedSearchExceptions()[$lookupService][$field])) {
 							$statement[$path] = _nbaAdvancedSearchExceptions()[$lookupService][$field]['operator'];
 						}
-						// Simple search
+					// Simple search
 					} else {
 						$statement[$path] = _getConditionOperator($service, $path, $value);
 					}
-					
+					// Used to determine hits
 					$paths[$path] = [
 						'operator' => $statement[$path],
-						'values' => _stringToElements($value, NBAMINSTRINGLENGTHSIMPLESEARCH)  // Used to determine hits
+						'values' => _stringToElements($value, NBAMINSTRINGLENGTHSIMPLESEARCH)  
 					];
 				}
 			}
@@ -1014,9 +1014,18 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				}
 				// Create condition
 				$condition = new Condition($path, $operator, $element);
-				// Add boost if set
-				if (isset($boost[$element])) {
-					$condition->setBoost($boost[$element]);
+				// Boost
+				if (isset($boost[$element]) || isset(_boostPaths()[$lookupService][$path])) {
+					$boostValue = 1;
+					// Regular boost
+					if (isset(_boostPaths()[$lookupService][$path])) {
+						$boostValue *= _boostPaths()[$lookupService][$path];
+					}
+					// Simple search boost; may be added to regular boost
+					if (isset($boost[$element])) {
+						$boostValue *= $boost[$element];
+					}
+					$condition->setBoost($boostValue);
 				}				
 				// First condition
 				if ($first) {
