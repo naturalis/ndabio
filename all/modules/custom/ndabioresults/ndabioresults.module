@@ -934,7 +934,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			if ($simpleSearch || (isset(_nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
 				_nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
 				$elements = array_merge(_stringToElements($value), [$value]);
-				$boost = [$value => 2];
+				$boost = [$value => NBASIMPLESEARCHFULLTERMBOOST];
 			}
 			// Group associated statements
 			if (!empty($statement)) {

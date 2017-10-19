@@ -10,7 +10,11 @@ define("NBATIMEOUT", 5);
 define("NBAMAXPAGESINPAGINATOR", 20);
 define("NBADEBUG", 0);
 define("NBADEBUGENCODED", 0);
+
+// Minimum string length for individual elements in simple search term
 define("NBAMINSTRINGLENGTHSIMPLESEARCH", 3);
+// ES boost factor for full length simple search term (if there are more elements)
+define("NBASIMPLESEARCHFULLTERMBOOST", 3);
 
 
 
