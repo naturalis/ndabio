@@ -86,14 +86,17 @@
 	 $("#ndabio-advanced-taxonomysearch").submit(function(event){
 
     var $_omnibox              = $("#edit-term");
+    var simpleSearchTerm = $($_omnibox).val().trim();
+    
+    var nrSimpleTermsElements = 0;
+    var nrSimpleTermsElementsTooShort = 0;
 
     var isValid = false;
     var dataEntered = false;
     var minStringLength = 3;
     var maxMultiSelectValues = 5;
     var searchTerm = '';
-    var nrSimpleTermsElements = 0;
-
+    
     // BIOPORVTWO-299: skip test for advanced search
     // Adapted for multiselects; parse these in separate loop
       $(this).find('input[type=text], select').not('select[multiple]').each(function() {
@@ -122,17 +125,33 @@
     	  } 
 
       });
-
-      // If the simple search is entered, but too short:
-      $.each($($_omnibox).val().trim().split(" "), function(index, searchTerm) {
-    	  nrSimpleTermsElements++;
-          if (searchTerm.trim() != "") {
-        	  dataEntered = true;
-        	  if (searchTerm.trim().length < minStringLength) {
-        		  isValid = false;
-        	  }
-          }
-      });
+      
+      // Simple search
+      if (simpleSearchTerm != "") {
+    	  
+	      // Entire search string is too short
+	      if (simpleSearchTerm.length < minStringLength) {
+	    	  isValid = false;
+	    		
+		  // Total simple search string is long enough, but check individual element of simple search term.
+	      // At least one element should be longer than minimum length!
+	      } else {
+	    	  
+		      $.each(simpleSearchTerm.split(" "), function(index, searchTerm) {
+		          if (searchTerm.trim() != "") {
+		        	  dataEntered = true;
+		        	  nrSimpleTermsElements++;
+		        	  if (searchTerm.trim().length < minStringLength) {
+		        		  nrSimpleTermsElementsTooShort++;
+		        	  }
+		          }
+		      });
+		      
+		      if (nrSimpleTermsElements > 1 && nrSimpleTermsElements == nrSimpleTermsElementsTooShort) {
+				  isValid = false;
+		      }
+	      }
+      }
  
       // If we're on the geo-search page
       if ( $("body").hasClass("page-geographic-search") ){
@@ -142,33 +161,38 @@
     	  }
       }
       
+      
     // Done validating, let's face the consequences:
     if (!isValid || !dataEntered) {
 
-      if ( $("body").hasClass("page-geographic-search") ){
-
-        alert(
+      if ($("body").hasClass("page-geographic-search")){
+        
+    	alert(
         	Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
         );
-
+ 
       } else if (!dataEntered) {
 
         alert(
         	Drupal.t("Please make sure that you enter at least one search field.")
         );
 
-      } else {
+  	  // Entire simple search term is too short
+      } else if (simpleSearchTerm != "" && simpleSearchTerm.length < minStringLength) {
     	  
-    	  var term = Drupal.t("Your search term ");
-    	  if (nrSimpleTermsElements > 1) {
-    		  term = Drupal.t("One or more of the ") + nrSimpleTermsElements + Drupal.t(" elements in your search term is too short. Each element ");
-    	  }
-    	  
-		  var message = term + Drupal.t("should contain at least [nr] characters. This limitation does not apply to advanced search!");
+    	  var message = Drupal.t("Your search term should contain at least [nr] characters.") + 
+    	  	  " " + Drupal.t("This limitation does not apply to advanced search!");
  		  alert(message.replace("[nr]", minStringLength));
-        	  
+   	          	  
+ 	  // Entire simple search term is long enough but all individuel element are too short
+      } else if (simpleSearchTerm != "" && nrSimpleTermsElements == nrSimpleTermsElementsTooShort) {
+    	  
+    	  var message = Drupal.t("All elements in your search term are too short. At least one element should contain at least [nr] characters. ") +
+		     Drupal.t("This limitation does not apply to advanced search!");
+ 		  alert(message.replace("[nr]", minStringLength));
+    	  
       }
-
+	 
       event.preventDefault();
 
     } else {

@@ -888,12 +888,12 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     		$values = [$values];
 		}
 		foreach ($values as $value) {
-			$statement = [];
+			$statement = $elements = $boost = [];
+			$value = trim($value);
 			// Exclude search flags; these will be processed later
 			if (!in_array($field, _searchFlags())) {
 				// Get NBA path(s) for field
-				$nbaPaths = [$field 
-				];
+				$nbaPaths = [$field];
 				if (isset(_nbaFieldMapping()[$lookupService][$field])) {
 					$nbaPaths = _nbaFieldMapping()[$lookupService][$field];
 				}
@@ -902,20 +902,6 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				}
 				// Get NBA field type
 				foreach ($nbaPaths as $path) {
-					/*
-					 * @sng-fix
-					 * $path = $type . $path;
-					 */
-					// Names identifications are buried even deeper...
-					// and to compilate matters, taxonomicEnrichments should be excluded
-					// from renaming.
-					/*
-					 * @sng-fix
-					 * if ($service == 'names' && strpos($path, '.identifications.') !== false) {
-					 * $path = str_replace('identifications', 'matchingIdentifications', $path);
-					 * }
-					 */
-					
 					// Operator: difference between simple and advanced search
 					// If operator has been set in url use this; overrules all other settings
 					if (isset($operators[$field])) {
@@ -942,23 +928,24 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					];
 				}
 			}
-			
 			// Value: to split or not to split?
 			// Split simple search and specific advanced search fields
+			// Add original term to value if it has been split
 			if ($simpleSearch || (isset(_nbaAdvancedSearchExceptions()[$lookupService][$field]) && 
 				_nbaAdvancedSearchExceptions()[$lookupService][$field]['split'] === true)) {
-				$value = _stringToElements($value);
+				$elements = array_merge(_stringToElements($value), [$value]);
+				$boost = [$value => 2];
 			}
-			
 			// Group associated statements
 			if (!empty($statement)) {
 				$statements[] = [
-					'statement' => $statement,'value' => is_array($value) ? $value : [$value],
-					'operator' => $andOr 
+					'statement' => $statement,
+					'value' => !empty($elements) ? $elements : [$value],
+					'operator' => $andOr,
+					'boost' => $boost
 				];
 			}
 		}
-    	
     }
     
     // Store paths for term highlighting
@@ -973,8 +960,15 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 	foreach ($statements as $d) {
 		$statement = $d['statement'];
 		$elements = $d['value'];
+		// Set boost only if there is more than one element
+		$boost = count($elements) > 1 ? $d['boost'] : [];
 		$condition = $subconditions = null;
-		foreach ($elements as $element) {			
+		foreach ($elements as $element) {
+			// Simple search check: 
+			// skip individual elements that are shorter than min size
+			if ($simpleSearch && strlen($element) < NBAMINSTRINGLENGTHSIMPLESEARCH) {
+				continue;
+			}
 			$first = true;
 			foreach ($statement as $path => $operator) {
 				// Search for empty value
@@ -1018,16 +1012,24 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				if (!is_null($element)) {
 					$element = html_entity_decode($element);
 				}
+				// Create condition
+				$condition = new Condition($path, $operator, $element);
+				// Add boost if set
+				if (isset($boost[$element])) {
+					$condition->setBoost($boost[$element]);
+				}				
+				// First condition
 				if ($first) {
-					$condition = new Condition($path, $operator, $element);
+					$mainCondition = $condition;
 					$first = false;
 					continue;
 				}
-				$condition->setOr($path, $operator, $element);
+				// Append other elements if necessary
+				$mainCondition->setOr($condition);
 			}
 			if (!empty($condition)) {
 				$subconditions[] = [
-					'condition'	=> $condition,
+					'condition'	=> $mainCondition,
 					'operator' => $d['operator'],
 				];
 			}
