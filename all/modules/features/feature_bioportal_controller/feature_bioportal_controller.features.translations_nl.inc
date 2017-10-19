@@ -1150,6 +1150,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Containing the phrase', array(), array('context' => ''));
+  $translations['nl:default']['0713c61347db4d123acc13ec089d500b'] = array(
+    'source' => 'This limitation does not apply to advanced search!',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Deze beperking geldt niet voor uitgebreid zoeken!',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('This limitation does not apply to advanced search!', array(), array('context' => ''));
   $translations['nl:default']['072b4665bd3df41ebd773e8667037c8c'] = array(
     'source' => 'Main background',
     'context' => '',
@@ -6219,6 +6228,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Feed aggregator', array(), array('context' => ''));
+  $translations['nl:default']['25380b4df83b17ccda1e2b9c13655ff0'] = array(
+    'source' => 'Your search term should contain at least [nr] characters.',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Uw zoekterm moet minimaal [nr] karakters bevatten.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Your search term should contain at least [nr] characters.', array(), array('context' => ''));
   $translations['nl:default']['254f642527b45bc260048e30704edb39'] = array(
     'source' => 'Configuration',
     'context' => '',
@@ -11728,6 +11746,15 @@ Unless you know what you are doing, it is highly recommended that you prefix the
     'plural' => 0,
   );
   $translatables[] = t('%field has no field settings.', array(), array('context' => ''));
+  $translations['nl:default']['44d26f3ee89540a17909603b574d671a'] = array(
+    'source' => 'All elements in your search term are too short. At least one element should contain at least [nr] characters. ',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/form.js',
+    'translation' => 'Alle elementen in uw zoekterm zijn te kort. Tenminste een element moet bestaan uit minimaal [nr] karakters. ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('All elements in your search term are too short. At least one element should contain at least [nr] characters. ', array(), array('context' => ''));
   $translations['nl:default']['44d313759a0edd70e93945dc7a716211'] = array(
     'source' => 'Track content',
     'context' => '',
