@@ -227,27 +227,31 @@ function _maxSizeTaxonUrlCache () {
 	return 1000;
 }
 
-
-
 /**
- * Constant: maximum results for subsequent queries
- *
- * @return integer
-
-function maxPagesInPaginator () {
-  return variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR);
-}
+ * Setting for debugging (1/0)
+ * 
+ * @return int
  */
-
 function _nbaDebug () {
 	return variable_get('ndabioresults_config_debug', NBADEBUG);
 }
 
+/**
+ * Setting to encode queries (1/0)
+ * 
+ * Handy when used directly in a url
+ * 
+ * @return int
+ */
 function _nbaDebugEncoded () {
 	return variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED);
 }
 
-
+/**
+ * Search services (excludes geo)
+ * 
+ * @return array
+ */
 function _searchServices () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -260,6 +264,11 @@ function _searchServices () {
     return $var;
 }
 
+/**
+ * Mapping from search form fields to NBA paths
+ * 
+ * @return array
+ */
 function _nbaFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -491,7 +500,11 @@ function _nbaFieldMapping () {
     return $var;
 }
 
-
+/**
+ * Additional paths used for name resolution
+ * 
+ * @return array
+ */
 function _nbaNameResolutionFieldMapping () {
     $var = &drupal_static(__FUNCTION__);
     if (!isset($var)) {
@@ -532,7 +545,11 @@ function _nbaNameResolutionFieldMapping () {
     return $var;
 }
 
-
+/**
+ * Name-releated paths
+ * 
+ * @return array
+ */
 function _nameHits () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
@@ -575,8 +592,11 @@ function _nameHits () {
 	return $var;
 }
 
-
-
+/**
+ * Paths that will receive an ES boost in the condition
+ * 
+ * @return array
+ */
 function _boostPaths () {
 	$var = &drupal_static(__FUNCTION__);
 	if (!isset($var)) {
@@ -590,7 +610,7 @@ function _boostPaths () {
 				'identifications.scientificName.infraspecificEpithet' => 2,
 				'identifications.scientificName.fullScientificName' => 2,
 				'identifications.vernacularNames.name' => 2,
-                'identifications.taxonomicEnrichments.vernacularNames.name' => 0.5
+                'identifications.taxonomicEnrichments.vernacularNames.name' => 2
 			],			
 			'specimen' => [
 				'identifications.defaultClassification.genus' => 2,
@@ -617,8 +637,6 @@ function _boostPaths () {
 	}
 	return $var;
 }
-
-
 
 /* Do not print hits
  * 

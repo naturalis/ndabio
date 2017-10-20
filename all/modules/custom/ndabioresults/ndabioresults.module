@@ -1021,7 +1021,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					if (isset(_boostPaths()[$lookupService][$path])) {
 						$boostValue *= _boostPaths()[$lookupService][$path];
 					}
-					// Simple search boost; may be added to regular boost
+					// Simple search boost; will multiply regular boost
 					if (isset($boost[$element])) {
 						$boostValue *= $boost[$element];
 					}
