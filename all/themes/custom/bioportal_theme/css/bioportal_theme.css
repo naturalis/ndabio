@@ -876,4 +876,16 @@ th .icon-sort_sortable {
     padding: 0 5px;
  }
 
+.advanced-label-help {
+	border-radius: 50%;
+	border: 1px solid #fff;
+	font-size: 0.7em;
+	padding: 1px;
+    background-color: #000;
+    margin-left: 4px;
+}
+
+.advanced-label-help:hover {
+    color: #fff;
+}
  
