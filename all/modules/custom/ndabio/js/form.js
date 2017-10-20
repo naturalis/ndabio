@@ -3,87 +3,9 @@
   // ---------------------------------------------------------
   // SEARCH FORM: form validation
   // ---------------------------------------------------------
+
 	
-	/*
-
-  $("#ndabio-advanced-taxonomysearch").submit(function(){
-
-    var $_omnibox              = $("#edit-term");
-
-    int_valid = 0;
-
-
-
-      // If there's more then one textfield with containing more
-      // then three characters:
-      $(this).find('input[type=text], select').each(function(){
-        str_val = $(this).val();
-        if( str_val != "" && str_val.length > 2) {
-          int_valid += 1;
-        }
-      });
-
-      // 'select boxes' also count as valid choices, ofcourse
-      $(this).find('select').each(function(){
-        str_val = $(this).val();
-        if( str_val != "" ) {
-          int_valid += 1;
-        }
-      });
-
-      // If the simple search is entered, but too short:
-      str_val = $($_omnibox).val();
-      if( str_val != "" && str_val.length < 2){
-        int_valid = 0;
-      }
-
-      // If we're on the geo-search page
-      if ( $("body").hasClass("page-geographic-search") ){
-
-    	  if (selectedShape) {
-    		  int_valid = 1;
-    	  }
-    	  map.data.forEach(function() {
-    		  int_valid = 1;
-    	  });
-      }
-
-
-
-    // Done validating, let's face the consequences:
-
-    if (int_valid < 1){
-
-      if ( $("body").hasClass("page-geographic-search") ){
-
-        alert(
-          Drupal.t("Please, select an area or draw one on the map. This can be combined with a text search.")
-        );
-
-      } else {
-
-        alert(
-          Drupal.t("Please, make sure that you complete at least one field containing at least three characters.")
-        );
-
-      }
-
-      return false;
-
-    } else {
-
-      preloader();
-
-    }
-
-  });
-} }; })(jQuery, Drupal);
-
-*/
-	
-	// Rewritten
-	
-	 $("#ndabio-advanced-taxonomysearch").submit(function(event){
+$("#ndabio-advanced-taxonomysearch").submit(function(event){
 
     var $_omnibox              = $("#edit-term");
     var simpleSearchTerm = $($_omnibox).val().trim();

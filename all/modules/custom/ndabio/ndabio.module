@@ -66,7 +66,7 @@ function ndabio_advanced_taxonomysearch () {
 		drupal_add_js('var storedZoomLevel = ' . _getStoredZoomLevel() . ';', 'inline');
 		drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
 		drupal_add_js('var storedCategory = ' . _getStoredCategory() . ';', 'inline');
-		drupal_add_js('var storedLocation = ' . _getStoredLocation() . ';', 'inline');
+		drupal_add_js('var storedLocation = "' . _getStoredLocation() . '";', 'inline');
 		drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" . 
 			variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
         drupal_add_js(

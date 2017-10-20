@@ -25,8 +25,12 @@
 		$.get( str_url, function( data ) {
 			
 			$_active_link.css( 'cursor', 'pointer' );
-
 			$_search_areas_target.html( data );
+			
+			// Set name in "within" field
+			if (storedLocation != "") {
+				$('.geo-search-area-name').html(storedLocation);
+			}
 
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
@@ -49,6 +53,8 @@
 				return false;
 
 			});
+			
+			
 
 		});
 
