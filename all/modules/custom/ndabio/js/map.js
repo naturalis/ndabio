@@ -72,16 +72,32 @@ function getRectangleGeometry() {
 		'[' + SW.lng() + ',' + NE.lat() + ']]]}';
 }
 
+// Custom control to wipe the map clean
+function clearControl (controlDiv, map) {
+	var clearControlButton = document.createElement('div');
+	controlDiv.appendChild(clearControlButton);
+	
+	var clearControlLabel = document.createElement('div');
+	clearControlLabel.id = "clear-map-label";
+	clearControlLabel.innerHTML = Drupal.t('clear map');
+	clearControlButton.appendChild(clearControlLabel);
+	
+	clearControlButton.addEventListener('click', function() {
+	    clearMap();
+	});
+}
+
 function initialize() {
 
 	var mapOptions = {
 		center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		mapTypeId: 'satellite',
 		streetViewControl: false,
+		fullscreenControl: false,
 		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
+	
 	drawingManager = new google.maps.drawing.DrawingManager({
 		drawingtrol : true,
 		drawingControlOptions : {
@@ -95,14 +111,18 @@ function initialize() {
 		rectangleOptions : mapStyle
 	});
 	drawingManager.setMap(map);
+	
+	var clearControlDiv = document.createElement('div');
+	clearControlDiv.id = "clear-map-button";
+	new clearControl(clearControlDiv, map);
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(clearControlDiv);
 
 	google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
 		if (e.type != google.maps.drawing.OverlayType.MARKER) {
 			// Switch back to non-drawing mode after drawing a shape.
 			drawingManager.setDrawingMode(null);
 			// Add an event listener that selects the newly-drawn shape
-			// when the user
-			// mouses down on it.
+			// when the user mouses down on it.
 			var newShape = e.overlay;
 			newShape.type = e.type;
 			google.maps.event.addListener(newShape, 'click',
@@ -114,7 +134,7 @@ function initialize() {
 	});
 
 	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
-	google.maps.event.addListener(map, 'click', clearMap);
+//google.maps.event.addListener(map, 'click', clearMap);
 
 	if (typeof storedGeoShape != 'undefined' && storedGeoShape != -1) {
 		feature = {
@@ -232,8 +252,8 @@ function createInfoText(marker) {
 
 function clearSelection() {
     if (selectedShape) {
-      selectedShape.setEditable(false);
-      selectedShape = null;
+    	selectedShape.setMap(null);
+    	selectedShape = null;
     }
 }
 

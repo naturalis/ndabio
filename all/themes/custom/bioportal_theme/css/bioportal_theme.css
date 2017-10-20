@@ -858,5 +858,22 @@ th .icon-sort_sortable {
     overflow: auto;
 }
 
+#clear-map-button {
+    border-radius: 5px;
+    height: 23px;
+	margin-top: 5px;
+    background-color: #fff;
+    cursor: default;
+}
+
+#clear-map-button:hover {
+    background-color: #ebebeb;
+}
+
+#clear-map-label {
+	color: #565656;
+	margin-top: 4px;
+    padding: 0 5px;
+ }
 
  
