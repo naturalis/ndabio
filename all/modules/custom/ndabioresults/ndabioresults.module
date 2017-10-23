@@ -1966,6 +1966,13 @@ function _getQueryTerms ($service, $search = false) {
 	if (!isset($terms['from']) || !ctype_digit(strval($terms['from']))) {
 		$terms['from'] = 0;
 	}
+	// Make sure size does not exceed maximum
+	$terms['size'] = min($terms['size'], _maxResults());
+	// Check if size plus from does not exceed maximum results;
+	// if so, quietly reset both to zero.
+	if (_exceedsMaxResults($service, ($terms['size'] + $terms['from'] - 1))) {
+		$terms['size'] = $terms['from'] = 0;
+	}
 	
 	return $terms;
 }
@@ -2017,13 +2024,14 @@ function _getQueryPaths ($service) {
 }
 
 function _getPaginator ($service, $total, $from) {
+	// Reset total to max results if necessary
+	$total = min($total, _getMaxResultsPerPage($service));
 	$offset = $from / _maxResults() + 1;
 	$paginator = new Paginator($total, _maxResults(), $offset, _setPaginatorUrl());
 	return $paginator->toHtml();
 }
 
 /**
- *
  * Sets url for paginator
  *
  * Strips offset from self link and replaces this with placeholder for paginator
@@ -2272,7 +2280,23 @@ function _nbaSimpleSearch () {
     	(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
 }
 
-
+/**
+ * Test if number of results exceeds maximum
+ * 
+ * Used to issue warning on result pages and to trim paginator
+ * 
+ * @param string $service
+ * @param int $total
+ * @return boolean
+ */
+function _exceedsMaxResults ($service, $total = 1) {
+	// Grouped service
+	if (strpos($service, '.') !== false) {
+		return $total >= _nbaMaxNumPerScientificNameGroup()[_normaliseServiceName($service)];
+	}
+	// Regular service
+	return $total > _nbaMaxResultWindow()[$service];
+}
 
 
 
@@ -2567,6 +2591,7 @@ function _setSectionParameters (array $terms, $typeId = '') {
         in_array($typeId, ['m_', 's_'])) {
         $d['gid'] = _setNbaGid($terms['gid']);
     }
+    // We have a valid query!
     if (_countSearchParameters($d) >= 1) {
     	// Rewrite andOr to logicalOperator
         $d['logicalOperator'] = $d['andOr'] == 0 ? 'AND' : 'OR';

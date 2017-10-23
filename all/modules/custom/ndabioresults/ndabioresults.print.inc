@@ -87,6 +87,9 @@ function _printTaxonDetail ($data) {
  */
 function _printTaxa ($data) {
 //p($data);
+
+	$service = 'names.taxa';
+	
     if (empty($data['results'])) {
         return false;
     }
@@ -107,18 +110,22 @@ function _printTaxa ($data) {
     	],
     );
 
-    $explanation = _wrap(t("(matching scientific or common name)"),"span","explanation");
-
     $output = '<div id="taxon"></div>';
+    
+    $formattedTotal = _formatNumber($data['total']);
+    if ($data['total'] >= _nbaMaxNumPerScientificNameGroup()[_normaliseServiceName($service)]) {
+    	$formattedTotal = '&gt;' . $formattedTotal;
+    }
+    $explanation = _wrap(t("(matching scientific or common name)"),"span","explanation");
     $output .= sprintf(
         '<h2>%s <span class="count">(%s)</span> %s</h2>',
-        t('Species names'),
-        _formatNumber($data['total']),
-        $explanation
+        t('Species names'), $formattedTotal, $explanation
     );
+    
     if (!isset($_GET['form_id'])) {
-		$output .= "<div class='view-options'>\n" . 
-			"<div class='sort-options'>" . _printSortOptions('names.taxa') . "</div>\n</div>\n";
+		$output .= _printMaxResultWarning($data);
+    	$output .= "<div class='view-options'>\n" . 
+			"<div class='sort-options'>" . _printSortOptions($service) . "</div>\n</div>\n";
     }
     
     $output .= sprintf('<table><thead>%s</thead><tbody>', _printHeaders($headers));
@@ -157,6 +164,7 @@ function _printTaxa ($data) {
  */
 function _printSpecimens ($data) {
 
+	$service = 'specimen';
     if (empty($data['results'])) {
         return false;
     }
@@ -187,9 +195,9 @@ function _printSpecimens ($data) {
     
     if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-			'<a href="' . _resetUrl() . '&service=taxon">' . 
-			t('Display by scientific name') . "</a></div>\n<div class='sort-options'>" . 
-			_printSortOptions('specimen') . "</div>\n</div>\n";
+			'<a href="' . _resetUrl() . '&service=taxon">' . t('Display by scientific name') . "</a></div>\n";
+		$output .= _printMaxResultWarning($data);
+		$output .="<div class='sort-options'>" . _printSortOptions('specimen') . "</div>\n</div>\n";
     }
     
     $output .= sprintf('<table style="margin-top: 20px;"><thead>%s</thead><tbody>', _printHeaders($headers));
@@ -788,6 +796,11 @@ function _printMultimedia ($data) {
 		t('Multimedia'),
 		_formatNumber($data['total'])
 	);
+	
+	if (!isset($_GET['form_id']) && !isset($_GET['theme'])) {
+		$output .= _printMaxResultWarning($data);
+	}
+	
 	$output .= "<div class='multimedia-wrapper'>";
 	
 	$fallbackSrc = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
@@ -1395,6 +1408,8 @@ function _printClassifications ($data) {
 function _printSpecimensTaxon ($data) {
 	global $language;
 	
+	$service = 'names.specimens';
+	
 //p($data);
 	if (empty($data['results'])) {
 		return false;
@@ -1421,17 +1436,24 @@ function _printSpecimensTaxon ($data) {
 	];
 	
 	$output = '<div id="specimen"></div>';
+	
+    $formattedTotal = _formatNumber($data['total']);
+    if ($data['total'] >= _nbaMaxNumPerScientificNameGroup()[_normaliseServiceName($service)]) {
+    	$formattedTotal = '&gt;' . $formattedTotal;
+    }	
 	$output .= sprintf(
 		'<h2 style="margin-bottom: 0;">%s %s %s %s</h2>',
 		($language->language == 'nl' ? 'Soorten' : 'Species'),
-		_wrap('(' . _formatNumber($data['total']) . ')', "span", "count"),
+		_wrap('(' .$formattedTotal . ')', "span", "count"),
 		t('with specimens'),
 		_wrap('(' . _formatNumber($data['specimensTotal']) . ')', "span", "count")
 	);
+	
 	if (!isset($_GET['form_id'])) {
 		$output .= "<div class='view-options'>\n<div class='specimen-service-select'>" .
-			'<a href="' . _resetUrl() . '&service=specimen' . '">' . t('Display by specimen') . "</a></div>\n" . 
-			"<div class='sort-options'>" . _printSortOptions('names.specimens') . "</div>\n</div>\n";
+			'<a href="' . _resetUrl() . '&service=specimen' . '">' . t('Display by specimen') . "</a></div>\n"; 
+		$output .= _printMaxResultWarning($data);
+		$output .= "<div class='sort-options'>" . _printSortOptions($service) . "</div>\n</div>\n";
 	}
 	
 	$output .= sprintf(
@@ -1468,6 +1490,18 @@ function _printSpecimensTaxon ($data) {
 	$output .= _printPaginator($data);
 	
 	return $output;
+}
+
+/**
+ * Prints 'too many results' warning on result page
+ * 
+ * @param string $service
+ * @param int $total
+ * @return string
+ */
+function _printMaxResultWarning ($data) {
+	return isset($data['result_warning']) && !empty($data['result_warning']) ?
+		"<p class='result-warning'>" . $data['result_warning'] . "</p>\n" : '';
 }
 
 /**

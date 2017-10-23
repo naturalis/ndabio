@@ -91,6 +91,9 @@ function _parseTaxa ($data, $options) {
 		
 	$output['total'] = $data->totalSize;
 
+	$output['result_warning'] = _exceedsMaxResults($service, $data->totalSize) ?
+		 _maxResultWarning($service) : '';
+	
 //p($data);
 
 	foreach ($data->resultSet as $i => $row) {
@@ -162,6 +165,32 @@ function _parseTaxa ($data, $options) {
 	_addDebugMessage('Parsing taxa', _getTimer($timer));
 	
 	return isset($output) ? $output : false;
+}
+
+/**
+ * Creates 'too many results' warning on result page
+ * 
+ * @param string $service
+ * @param int $total
+ * @return string
+ */
+function _maxResultWarning ($service) {
+	return  
+		t('The total number of results exceeds the maximum number of results that can be displayed.') . 
+		' ' . sprintf(t('You can only browse the first %s results.'), 
+		_formatNumber(_getMaxResultsPerPage($service)));
+}
+
+/**
+ * Determine max results per page for given serviec
+ * 
+ * @param string $service
+ * @return int
+ */
+function _getMaxResultsPerPage ($service) {
+	return strpos($service, '.') !== false ?
+		_nbaMaxNumPerScientificNameGroup()[_normaliseServiceName($service)] :
+		_nbaMaxResultWindow()[$service];
 }
 
 /**
@@ -238,6 +267,9 @@ function _parseMultimedia ($data, $options = []) {
 	
 	$service = 'multimedia';
 	$output['total'] = _getTotalRows($data);
+
+	$output['result_warning'] = _exceedsMaxResults($service, $data->totalSize) ?
+		 _maxResultWarning($service) : '';
 	
 //p($data);
 	
@@ -284,6 +316,7 @@ function _parseMultimedia ($data, $options = []) {
 	
 	return isset($output) ? $output : false;
 }
+
 
 /**
  * Parses specimen multimedia NBA response to PHP array
@@ -1025,6 +1058,9 @@ function _parseSpecimens ($data, $options = []) {
 	
 	$output['total'] = $data->totalSize;
 	
+	$output['result_warning'] = _exceedsMaxResults($service, $data->totalSize) ?
+		 _maxResultWarning($service) : '';
+	
 //p($data);
 	
 	foreach ($data->resultSet as $i => $row) {
@@ -1174,6 +1210,10 @@ function _parseSpecimensTaxon ($data, $options = []) {
 	$sortExtension = array_key_exists('groupSort', _getQueryTerms($service)) ? 
 		'&groupSort=' . _getQueryTerms($service)['groupSort'] : '';
 	$output['total'] = $data->totalSize;
+	
+	$output['result_warning'] = _exceedsMaxResults($service, $data->totalSize) ?
+		 _maxResultWarning($service) : '';
+	
 //_getSpecimenDetails($data);
 //p($data);
 	//@todo: from

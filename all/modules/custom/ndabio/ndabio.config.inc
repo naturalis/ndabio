@@ -232,7 +232,7 @@ function _nbaMaxResultWindow () {
         }
         $client = _initNbaClient();
         $nbaMaxResultWindow = false;
-        foreach (['taxon', 'specimen'] as $service) {
+        foreach (['taxon', 'specimen', 'multimedia'] as $service) {
         	try {
         		$nbaMaxResultWindow[$service] = $client->{$service}()->getIndexMaxResultWindow();
         	} catch (Exception $e) { }
@@ -241,5 +241,37 @@ function _nbaMaxResultWindow () {
         unset($client);
     }
     return $nbaMaxResultWindow;
+    
+}
+
+
+/**
+ * Dynamically fetch max result windows for NBA taxon and specimen services
+ * 
+ * @return array
+ */
+function _nbaMaxNumPerScientificNameGroup () {
+    $nbaMaxNumPerScientificNameGroup = &drupal_static(__FUNCTION__);
+    if (!$nbaMaxNumPerScientificNameGroup) {
+        $cacheId = 'nbaMaxNumPerScientificNameGroup';
+        $cache = cache_get($cacheId, 'cache');
+        if ($cache && !empty($cache->data)) {
+            $nbaMaxNumPerScientificNameGroup = $cache->data;
+            return $nbaMaxNumPerScientificNameGroup;
+        }
+        $client = _initNbaClient();
+        $nbaMaxNumPerScientificNameGroup = false;
+        foreach (['taxon', 'specimen'] as $service) {
+        	try {
+        		$nbaMaxNumPerScientificNameGroup[$service] = 
+        			$client->{$service}()->getGroupByScientificNameMaxNumBuckets();
+        	} catch (Exception $e) { 
+        		p($e);die();
+        	}
+        }
+        cache_set($cacheId, $nbaMaxNumPerScientificNameGroup);
+        unset($client);
+    }
+    return $nbaMaxNumPerScientificNameGroup;
     
 }
