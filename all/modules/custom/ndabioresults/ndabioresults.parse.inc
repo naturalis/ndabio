@@ -704,6 +704,25 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 				}
 			}
 		}
+		// We end up with an array that still should be checked for duplicates: BIOPORVTWO-333
+		foreach ($d as $i => $hit) {
+			$type = array_keys($hit)[1];
+			$string = strip_tags($hit[$type]);
+			$nrHits = substr_count($hit[$type], 'class="result-query"');
+			if (isset($data[$type][$string])) {
+				// Check number of hits in string; highest number wins
+				// Already exists, has more hits -- delete older entry
+				if ($nrHits > $data[$type][$string]['count']) {
+					unset($d[$data[$type][$string]['nr']]);
+				// Already exists, has fewer hits -- delete this entry
+				} else {
+					unset($d[$i]);
+				}
+			}
+			$data[$type][$string] = ['nr' => $i, 'count' => $nrHits];
+		}
+		// Garbage collector
+		unset($data);
 		return isset($d) ? array_map("unserialize", array_unique(array_map("serialize", $d))) : false;
 	}
 }
