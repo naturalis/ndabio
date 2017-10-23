@@ -709,14 +709,16 @@ function _sortOptions () {
 				t('scientific name') . ' [A-Z]' => [
 					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
-						'identifications.scientificName.infraspecificEpithet&' .
-						'sortDirection=asc,asc,asc'
+						'identifications.scientificName.infraspecificEpithet,' . 
+						'identifications.scientificName.fullScientificName&' .
+						'sortDirection=asc,asc,asc,asc'
 				],
 				t('scientific name') . ' [Z-A]' => [
 					'path' => 'sort=identifications.scientificName.genusOrMonomial,'  .
 						'identifications.scientificName.specificEpithet,' .
-						'identifications.scientificName.infraspecificEpithet&' .
-						'sortDirection=desc,desc,desc'
+						'identifications.scientificName.infraspecificEpithet,' . 
+						'identifications.scientificName.fullScientificName&' .
+						'sortDirection=desc,desc,desc,desc'
 				]
 			],
 			'names.specimens' => [

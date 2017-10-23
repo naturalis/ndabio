@@ -20,8 +20,6 @@ function _printSortOptions ($service) {
         ['type' => 'inline', 'scope' => 'footer']
     );
 	$output = "<form><select class='form-select' id='sort-options'>\n";
-	//	"<option value='' selected>" . t('Sort options') . "...</option>\n";
-	//	"<option value='_score'>" . t('Relevance') . "</option>\n";
 	foreach (_sortOptions()[$service] as $label => $d) {
 		$url = _setSortUrl($d['path']);
 		$selected = $d == _getCurrentSort() ? ' selected' : '';
