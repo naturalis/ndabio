@@ -435,7 +435,7 @@ function _printSpecimenDetail ($data) {
 		t('Scientific name') . ': ' . strip_tags($data['names'][0]['name']) . "\n" . 
 		t('Collection name') . ': ' . $data['collectionType'] . "\n" .
 		'Url: ' . _getCurrentUrl() . "\n\n" .
-		t('Your feedback') . ":\n\n"
+		t('Your feedback') . ":\n\n\n"
 	);
 	$mail = sprintf($mailLink, "mailto:collectie@naturalis.nl?$mailSubject&$mailBody");
 	$output .= "<h3>Feedback</h3>\n" . sprintf($feedback, $mail);
