@@ -321,7 +321,7 @@ function _printSpecimenDetail ($data) {
 //p($data);
 
 	$output = _printDebug();
-	$output .= _wrap( t("Specimen")   , "div", "category");
+	$output .= _wrap( t("Specimen"), "div", "category");
 	$output .= _wrap(_setUnitId($data['unitID']) , "h2"  );
     $output .= _printPreviousNext([
     	'total' => $data['totalSize'], 
@@ -395,7 +395,6 @@ function _printSpecimenDetail ($data) {
 			    	$value['localityText'] = $value['locality'];
 			    }
 			   
-			    
 			    $output .= _printDL(ucfirst(_translateNdaField('localityText')),
                     _printValue(isset($value['localityText']) ? $value['localityText'] : ''));
 
@@ -427,7 +426,20 @@ function _printSpecimenDetail ($data) {
 		}
 	}
 	$output .= "</div>\n";
-
+	
+	$feedback = "<p>" . t('Please report inaccuracies or errors for this specimen to %s.') . "</p>";
+	$mailLink = '<a href="%s">collectie@naturalis.nl</a>';
+	$mailSubject = 'subject=' . rawurlencode(t('Feedback for specimen') . ' ' . $data['unitID']);
+	$mailBody = 'body=' . rawurlencode(
+		t('Registration number') . ': ' . $data['unitID'] . "\n" . 
+		t('Scientific name') . ': ' . strip_tags($data['names'][0]['name']) . "\n" . 
+		t('Collection name') . ': ' . $data['collectionType'] . "\n" .
+		'Url: ' . _getCurrentUrl() . "\n\n" .
+		t('Your feedback') . ":\n\n"
+	);
+	$mail = sprintf($mailLink, "mailto:collectie@naturalis.nl?$mailSubject&$mailBody");
+	$output .= "<h3>Feedback</h3>\n" . sprintf($feedback, $mail);
+	
 	$output .= ($lat && $lon ? 
 		"<h3>" . t('Map') . "</h3>\n<div id='map-canvas' style='margin-bottom: 3em;'></div>" : '');
 

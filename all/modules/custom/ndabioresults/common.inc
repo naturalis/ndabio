@@ -238,7 +238,7 @@ function _wrap ($input, $tag = "div", $class = ""){
  * array_column() for a multi-dimensional array
  * 
  * @param array $haystack
- * @param unknown $needle
+ * @param string $needle
  * @return array
  */
 function _arrayColumnRecursive (array $haystack, $needle) {

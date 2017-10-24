@@ -385,7 +385,7 @@ function _parseSpecimenDetail ($data) {
 	    'licenseType',
 	    'license',
 	    'assemblyID',
-	    'collectionType',
+	    //'collectionType',
     	//'referrer'
 		// etc
 	);
