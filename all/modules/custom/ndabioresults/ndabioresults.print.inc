@@ -429,7 +429,7 @@ function _printSpecimenDetail ($data) {
 	
 	$feedback = "<p style='margin-bottom: 30px;'>" . t('Please report inaccuracies or errors for this specimen to %s.') . "</p>";
 	$mailLink = '<a href="%s">collectie@naturalis.nl</a>';
-	$mailSubject = 'subject=' . rawurlencode(t('Feedback for specimen') . ' ' . $data['unitID']);
+	$mailSubject = 'subject=' . rawurlencode(t('Feedback on specimen') . ' ' . $data['unitID']);
 	$mailBody = 'body=' . rawurlencode(
 		t('Registration number') . ': ' . $data['unitID'] . "\n" . 
 		t('Scientific name') . ': ' . strip_tags($data['names'][0]['name']) . "\n" . 
