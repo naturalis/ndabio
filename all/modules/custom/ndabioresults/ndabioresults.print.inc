@@ -247,10 +247,22 @@ function _printSpecimenDetail ($data) {
         drupal_add_js($path . "/js/map.js", ['weight' => 1]);
         drupal_add_js("https://maps.googleapis.com/maps/api/js?key=" .
             variable_get('ndabio_config_gmapkey', NDABIO_GMAPKEY) . "&libraries=drawing");
+        
+        /*
         drupal_add_js(
             "jQuery(function() { google.maps.event.addDomListener(window, 'load', initializeSpecimenDetail); });",
             ['type' => 'inline', 'scope' => 'footer']
         );
+        */
+        drupal_add_js(
+            "jQuery(function() { google.maps.event.addDomListener(window, 'load', function() {
+  				initializeSpecimenDetail(" . (!is_null($data['geoJson']) ? $data['geoJson'] : '') . ")
+			}); });",
+            ['type' => 'inline', 'scope' => 'footer']
+        );
+        
+        // (!is_null($data['geoJson']) ? '"' . $data['geoJson'] . '"' : '')
+        
         drupal_add_js("var str_base_path = '" . _setBasePath() . "' ", 'inline');
         drupal_add_js("var specimenMarker = " .
             json_encode(['lat' => $lat, 'lon' => $lon]), 'inline');
@@ -292,7 +304,8 @@ function _printSpecimenDetail ($data) {
 		'backUrl',
 		'multimedia',
 		'scientificNameGroup',
-		'referrer'
+		'referrer',
+		'geoJson'
 	];
 	$fieldOrder = [
         'names',

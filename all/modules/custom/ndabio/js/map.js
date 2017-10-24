@@ -1,5 +1,7 @@
 var map, feature, geometry, drawingManager, selectedShape;
 var markers = [];
+var defaultZoomLevel = 7;
+
 var mapStyle = {
 	fillColor: '#fff',
 	fillOpacity: 0.2,
@@ -154,6 +156,7 @@ function initializeSpecimens() {
 		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		  mapTypeId: 'satellite',
 		  streetViewControl: false,
+		  fullscreenControl: false,
 		  zoom: setZoomLevel()
 		};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -213,7 +216,7 @@ function initializeSpecimens() {
 	});
 }
 
-function initializeSpecimenDetail() {
+function initializeSpecimenDetail(area) {
 
 	var myLatlng = new google.maps.LatLng(specimenMarker.lat, specimenMarker.lon);
 
@@ -221,9 +224,20 @@ function initializeSpecimenDetail() {
 		center: myLatlng,
 		mapTypeId: 'satellite',
 		streetViewControl: false,
-		zoom: 7
+		fullscreenControl: false,
+		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	map.data.setStyle(mapStyle);
+	
+	// Draw area if this has been provided
+	if (area) {
+		feature = {
+			type: "Feature",
+			geometry: area
+		};
+		map.data.addGeoJson(feature);
+	}
 
 	var marker = new google.maps.Marker({
 		position: myLatlng,
@@ -342,7 +356,7 @@ function setMapCenterLon () {
 
 function setZoomLevel () {
 	if (typeof storedZoomLevel == "undefined" || storedZoomLevel == -1) {
-		return 7;
+		return defaultZoomLevel;
 	}
 	return storedZoomLevel;
 }

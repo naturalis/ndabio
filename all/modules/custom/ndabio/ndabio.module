@@ -1249,7 +1249,7 @@ function _getStoredGeoShape ($jsonEncoded = false) {
         	$_SESSION['nbaSearch']['geoShape'];
     }
 	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
-			$_SESSION['nbaSearch']['gid'] != -1) {
+		$_SESSION['nbaSearch']['gid'] != -1) {
     	$client = _initNbaClient();
     	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
     	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 

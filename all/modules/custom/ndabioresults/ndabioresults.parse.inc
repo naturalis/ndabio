@@ -177,7 +177,7 @@ function _parseTaxa ($data, $options) {
 function _maxResultWarning ($service) {
 	return  
 		t('The total number of results exceeds the maximum number of results that can be displayed.') . 
-		' ' . sprintf(t('You can only browse the first %s results.'), 
+		' ' . sprintf(t('You can only browse the first %s records.'), 
 		_formatNumber(_getMaxResultsPerPage($service)));
 }
 
@@ -532,9 +532,8 @@ function _getScientificName ($object, $fullScientificName = true) {
 			unset($name[1], $name[2], $name[3]);
 		}
 		if (!empty(array_filter($name))) {
-			return implode(' ', $name);
+			return implode(' ', array_filter($name));
 		}
-		
 	}
 	return null;
 }
