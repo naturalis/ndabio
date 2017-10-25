@@ -710,7 +710,7 @@ function _printTaxonMediaDetail ($data) {
 	    'license',
         'copyrightText',
 		'sourceInstitutionID',
-        'collectionType',
+        //'collectionType',
 	    'description',
     	'locality',
     	'date',
