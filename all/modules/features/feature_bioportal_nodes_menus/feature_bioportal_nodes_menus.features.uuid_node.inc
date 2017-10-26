@@ -27,7 +27,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects right through to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details about the Naturalis collections, using the Netherlands Biodiversity API (NBA). More than 4 million Naturalis objects are already ‘searchable’ via the BioPortal and by July 2015, the complete collection of 37 million objects will have been placed within the BioPortal. This information will continue to be further extended with all the data linked together in the NBA so that we in the Netherlands will be able to use a single website that enables us to consult the full range of digital sources, with a guaranteed level of scientific quality.</p>
+        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details of the Naturalis collections, using the Netherlands Biodiversity API (NBA). More than 4 million Naturalis objects are already ‘searchable’ via the BioPortal and from July 2015, the complete collection of 37 million objects is included in&nbsp;the BioPortal. This information will continue to be further extended with all the data linked together in the NBA so that we in the Netherlands will be able to use a single website that enables us to consult the full range of digital sources, with a guaranteed level of scientific quality.</p>
 
 <p>Via the NBA, BioPortal can access the following data sources</p>
 
@@ -42,7 +42,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 
 <p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
 
-<p>Within the portal, special Naturalis collections will be spotlighted, and thanks to their own menu are easily scrollable.</p>
+<p>Within the portal, special Naturalis collections will be highlighted, and thanks to their own menu are easily browsable.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -52,7 +52,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 1,
+    'pathauto' => 0,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
@@ -500,7 +500,7 @@ De gevonden wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'Data sets',
+  'title' => 'Downloads',
   'log' => '',
   'status' => 1,
   'comment' => 0,
@@ -529,7 +529,7 @@ In this case, the files contain the specimen and multimedia data of the collecti
 </p>
 
 <p>
-The files listed below are generated weekly. The timestamp part of the filename reflects the moment the file was generated, and does not hold any relation to the date data was entered into the NBA, or the date the original data was created.
+The files listed below are generated weekly. The date part of the filename reflects the moment the file was generated, and does not hold any relation to the date data was entered into the NBA, or the date the original data was created.
 </p>
 
 <p>Available data sets are:</p>
@@ -629,7 +629,7 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'Datasets',
+  'title' => 'Downloads',
   'log' => '',
   'status' => 1,
   'comment' => 0,
@@ -656,7 +656,7 @@ In dit geval bevatten de bestanden de specimen- en multimediagegevens van de col
 </p>
 
 <p>
-Onderstaande bestanden worden wekelijks gegenereerd. De <em>timestamp</em> in de bestandsnaam correspondeert met het moment waarop het bestand gegenereerd is, en houdt geen verband met het moment van import in de NBA, dan wel de oorspronkelijke datum waarop de gegevens werden ingevoerd.
+Onderstaande bestanden worden wekelijks gegenereerd. De datum in de bestandsnaam correspondeert met het moment waarop het bestand gegenereerd is, en houdt geen verband met het moment van import in de NBA, dan wel de oorspronkelijke datum waarop de gegevens werden ingevoerd.
 </p>
 
 <p>De volgende datasets zijn beschikbaar:</p>
@@ -867,22 +867,22 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuurhistorische informatie: van basisgegevens van museumobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal alle gedigitaliseerde collectiegegevens van Naturalis met behulp van de Netherlands Biodiversity API (NBA). Nu zijn er al meer dan 8 miljoen Naturalis objecten te doorzoeken, maar de informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van wetenschappelijk gegarandeerde kwaliteit samen zijn te raadplegen.</p>
+        'value' => '<p>Het BioPortal is de nationale toegangspoort voor natuurhistorische informatie: van basisgegevens van museumobjecten tot en met volledige, geïllustreerde soortbeschrijvingen. Via één website ontsluit het BioPortal de gegevens van alle op objectniveau gedigitaliseerde collectieobjecten van Naturalis. Het BioPortal maakt daarbij gebruik van de Netherlands Biodiversity API (NBA). Nu zijn er al meer dan 8 miljoen Naturalis-objecten te doorzoeken, maar de informatie wordt continu verder uitgebreid en middels de NBA gekoppeld en ontsloten, waarmee we in Nederland over een website beschikken waarin digitale bronnen van gegarandeerde wetenschappelijk kwaliteit samen zijn te raadplegen.</p>
 
 <p>Het BioPortal bevraagt via de NBA de volgende databronnen:</p>
 
 <ul>
 	<li>Brahms: botanische specimengegevens van Naturalis.</li>
-	<li>Collectie Registratie Systeem (CRS): zoölogische, palaeontologische, mineralogische en petrologische specimengegevens van Naturalis.</li>
+	<li>Collectie Registratiesysteem (CRS): zoölogische, palaeontologische, mineralogische en petrologische specimengegevens van Naturalis.</li>
 	<li><a href="http://www.nederlandsesoorten.nl" target="_blank">Nederlands Soortenregister</a>: lijst en beschrijvingen van alle in Nederland voorkomende soorten.</li>
 	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: lijst van wereldwijd voorkomende soorten.</li>
 </ul>
 
-<p>We noemen deze gegevensverzameling de NDS, de Naturalis Data Store. De gegevens worden via een ETL-proces in de NDS ingelezen en geharmoniseerd tot een ABCD-compatibel documentmodel.</p>
+<p>We noemen deze gegevensverzameling de NDS, de Naturalis Document Store. De gegevens worden via een ETL-proces in de NDS ingelezen en geharmoniseerd tot een ABCD-compatibel documentmodel.</p>
 
 <p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
 
-<p>Ook een aantal bijzondere collecties van Naturalis worden in het portaal uitgelicht, en zijn via het hoofdmenu direct te benaderen.</p>
+<p>Ook een aantal bijzondere collecties van Naturalis wordt in het portaal uitgelicht, en zijn via het hoofdmenu direct te benaderen.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -892,7 +892,7 @@ echo getNbaData();
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 1,
+    'pathauto' => 0,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
@@ -1131,7 +1131,7 @@ echo getNbaData();
 	<tbody>
 		<tr>
 			<td style="width:50%">E-mail<br />
-  			<span style="font-size: 12px;line-height: 12px;">If applicable add source and collection name to the subject.</span></td>
+			If applicable add source and collection name to the subject.</td>
 			<td style="vertical-align:top"><a href="mailto:collectie@naturalis.nl?subject=Bioportal content: [source] [collection name]">collectie@naturalis.nl</a></td>
 		</tr>
 	</tbody>
@@ -1142,7 +1142,7 @@ echo getNbaData();
 <table border="0" style="width:100%">
 	<tbody>
 		<tr>
-			<td style="width:50%">Museum adress</td>
+			<td style="width:50%">Museum address</td>
 			<td>Pesthuislaan 7,&nbsp;2332 AA Leiden</td>
 		</tr>
 		<tr>

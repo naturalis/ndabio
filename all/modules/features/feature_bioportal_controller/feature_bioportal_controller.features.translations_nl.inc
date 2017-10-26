@@ -6030,6 +6030,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('Filters content in preparation for display.', array(), array('context' => ''));
+  $translations['nl:default']['238ea6a48396c760d757d6ba16d27503'] = array(
+    'source' => 'clear map',
+    'context' => '',
+    'location' => 'sites/all/modules/custom/ndabio/js/map.js',
+    'translation' => 'kaart wissen',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('clear map', array(), array('context' => ''));
   $translations['nl:default']['239959e37b524db940db159c09984c0a'] = array(
     'source' => '- None -',
     'context' => '',
@@ -9392,6 +9401,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('%module module uninstalled.', array(), array('context' => ''));
+  $translations['nl:default']['372412469aeee2a615c9dddce0d7286f'] = array(
+    'source' => 'You can only browse the first %s results.',
+    'context' => '',
+    'location' => '/result?term=vos&op=Zoeken&s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&form_build_id=form-PjYYXiMGu6jqrZ-dsNK9X8BrEDh9GPtzFbbPo6j-5mE&form_token=dt0LdU7tkqVNYuvUxQNkf-ukwB8DfyGLn0tT-VMvX4E&form_id=ndabio_advanced_taxonomysearch',
+    'translation' => 'U kunt alleen door de eerste %s rijen bladeren.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('You can only browse the first %s results.', array(), array('context' => ''));
   $translations['nl:default']['373096179026e562d87e64619223e9d2'] = array(
     'source' => 'Entity %entity has no base table.',
     'context' => '',
@@ -10079,6 +10097,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('Update failed! See the log below for more information.', array(), array('context' => ''));
+  $translations['nl:default']['3aed505f5871c7dde097d5d1b936bb11'] = array(
+    'source' => 'Please report inaccuracies or errors for this specimen to %s.',
+    'context' => '',
+    'location' => '/specimen/RMNH.MOL.219732/term=larus&from=0',
+    'translation' => 'U kunt onjuistheden en fouten voor dit specimen rapporteren bij %s.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Please report inaccuracies or errors for this specimen to %s.', array(), array('context' => ''));
   $translations['nl:default']['3af004c9c516258bfe8afdacc938a1e9'] = array(
     'source' => 'Your modules have been downloaded and updated.',
     'context' => '',
@@ -21069,6 +21096,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('View pages that have recently been visited.', array(), array('context' => ''));
+  $translations['nl:default']['77054940c7f7c4d22dcc889f96a8a763'] = array(
+    'source' => 'The total number of results exceeds the maximum number of results that can be displayed.',
+    'context' => '',
+    'location' => '/result?term=vos&op=Zoeken&s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&form_build_id=form-PjYYXiMGu6jqrZ-dsNK9X8BrEDh9GPtzFbbPo6j-5mE&form_token=dt0LdU7tkqVNYuvUxQNkf-ukwB8DfyGLn0tT-VMvX4E&form_id=ndabio_advanced_taxonomysearch',
+    'translation' => 'Het totaal aantal resultaten overtreft het maximum aantal resultaten dat getoond kan worden.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('The total number of results exceeds the maximum number of results that can be displayed.', array(), array('context' => ''));
   $translations['nl:default']['77148f0db54afe1e2cd8c830b4a93f45'] = array(
     'source' => 'No help provided for tag %tag.',
     'context' => '',
@@ -29585,6 +29621,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('You are now using the new %set_name shortcut set. You can edit it from this page or <a href="@switch-url">switch back to a different one.</a>', array(), array('context' => ''));
+  $translations['nl:default']['a6fb260b8ddf731ef263ecbcf4f6ab2a'] = array(
+    'source' => 'Your feedback',
+    'context' => '',
+    'location' => '/specimen/RMNH.MOL.219732/term=larus&from=0',
+    'translation' => 'Uw feedback',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Your feedback', array(), array('context' => ''));
   $translations['nl:default']['a6ff5eea4b531c5ab12bac8e66524671'] = array(
     'source' => 'Search specimens by scientific order name.',
     'context' => '',
@@ -37925,6 +37970,15 @@ This link can only be used once to log in and will lead you to a page where you 
     'plural' => 0,
   );
   $translatables[] = t('Maximum height', array(), array('context' => ''));
+  $translations['nl:default']['d3cbb0f8fa10feb3dbac0f48791ebef1'] = array(
+    'source' => 'Feedback on specimen',
+    'context' => '',
+    'location' => '/specimen/RMNH.MOL.219732/term=larus&from=0',
+    'translation' => 'Feedback op specimen',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Feedback on specimen', array(), array('context' => ''));
   $translations['nl:default']['d3d25b29d48f9b4020f1e53061bed982'] = array(
     'source' => 'The block cannot be placed in this region.',
     'context' => '',
@@ -38222,6 +38276,15 @@ This link can only be used once to log in and will lead you to a page where you 
     'plural' => 0,
   );
   $translatables[] = t('Images must be exactly !size pixels.', array(), array('context' => ''));
+  $translations['nl:default']['d5950beb315becbad054706aaa4f7912'] = array(
+    'source' => 'Please note, soon the new version of the Bioportal will be available, making use of the new API.',
+    'context' => '',
+    'location' => '/',
+    'translation' => 'Let op, binnenkort is de nieuwe BioPortal beschikbaar die gebruik maakt van de nieuwe API.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Please note, soon the new version of the Bioportal will be available, making use of the new API.', array(), array('context' => ''));
   $translations['nl:default']['d5b9290a0b67727d4ba1ca6059dc31a6'] = array(
     'source' => 'Norway',
     'context' => '',

@@ -10,16 +10,16 @@
 function feature_bioportal_nodes_menus_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: main-menu_about:node/3792.
-  $menu_links['main-menu_about:node/3792'] = array(
+  // Exported menu link: main-menu_about-bioportal:node/3792.
+  $menu_links['main-menu_about-bioportal:node/3792'] = array(
     'menu_name' => 'main-menu',
     'link_path' => 'node/3792',
     'router_path' => 'node/%',
-    'link_title' => 'About',
+    'link_title' => 'About BioPortal',
     'options' => array(
       'attributes' => array(),
       'alter' => TRUE,
-      'identifier' => 'main-menu_about:node/3792',
+      'identifier' => 'main-menu_about-bioportal:node/3792',
       'node_type' => 'naturalis_page',
     ),
     'module' => 'menu',
@@ -27,7 +27,31 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -41,
+    'weight' => -50,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
+  );
+  // Exported menu link: main-menu_about:<front>.
+  $menu_links['main-menu_about:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'About',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_about:<front>',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -47,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
@@ -49,10 +73,11 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -43,
+    'weight' => -46,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
   );
   // Exported menu link: main-menu_api:node/3794.
   $menu_links['main-menu_api:node/3794'] = array(
@@ -71,10 +96,11 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -42,
+    'weight' => -46,
     'customized' => 1,
     'language' => 'nl',
     'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
   );
   // Exported menu link: main-menu_arts-collection:result.
   $menu_links['main-menu_arts-collection:result'] = array(
@@ -180,6 +206,54 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'language' => 'nl',
     'menu_links_customized' => 1,
   );
+  // Exported menu link: main-menu_contact:node/3626.
+  $menu_links['main-menu_contact:node/3626'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3626',
+    'router_path' => 'node/%',
+    'link_title' => 'Contact',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_contact:node/3626',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
+  );
+  // Exported menu link: main-menu_contact:node/6.
+  $menu_links['main-menu_contact:node/6'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/6',
+    'router_path' => 'node/%',
+    'link_title' => 'Contact',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_contact:node/6',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
+  );
   // Exported menu link: main-menu_dashboard:dashboard.
   $menu_links['main-menu_dashboard:dashboard'] = array(
     'menu_name' => 'main-menu',
@@ -198,54 +272,81 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -46,
+    'weight' => -48,
     'customized' => 1,
     'language' => 'nl',
     'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
   );
-  // Exported menu link: main-menu_data-sets:node/3790.
-  $menu_links['main-menu_data-sets:node/3790'] = array(
+  // Exported menu link: main-menu_dashboard:http://145.136.242.149/dashboard/?language=en.
+  $menu_links['main-menu_dashboard:http://145.136.242.149/dashboard/?language=en'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'node/3790',
-    'router_path' => 'node/%',
-    'link_title' => 'Data sets',
+    'link_path' => 'http://145.136.242.149/dashboard/?language=en',
+    'router_path' => '',
+    'link_title' => 'Dashboard',
     'options' => array(
-      'attributes' => array(),
+      'attributes' => array(
+        'title' => '',
+      ),
       'alter' => TRUE,
-      'identifier' => 'main-menu_data-sets:node/3790',
-      'node_type' => 'naturalis_page',
+      'identifier' => 'main-menu_dashboard:http://145.136.242.149/dashboard/?language=en',
     ),
     'module' => 'menu',
     'hidden' => 0,
-    'external' => 0,
+    'external' => 1,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -45,
+    'weight' => -48,
     'customized' => 1,
     'language' => 'en',
     'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
   );
-  // Exported menu link: main-menu_datasets:node/3810.
-  $menu_links['main-menu_datasets:node/3810'] = array(
+  // Exported menu link: main-menu_downloads:node/3790.
+  $menu_links['main-menu_downloads:node/3790'] = array(
     'menu_name' => 'main-menu',
-    'link_path' => 'node/3810',
+    'link_path' => 'node/3790',
     'router_path' => 'node/%',
-    'link_title' => 'Datasets',
+    'link_title' => 'Downloads',
     'options' => array(
       'attributes' => array(),
       'alter' => TRUE,
+      'identifier' => 'main-menu_downloads:node/3790',
       'node_type' => 'naturalis_page',
-      'identifier' => 'main-menu_datasets:node/3810',
     ),
     'module' => 'menu',
     'hidden' => 0,
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -44,
+    'weight' => -47,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
+  );
+  // Exported menu link: main-menu_downloads:node/3810.
+  $menu_links['main-menu_downloads:node/3810'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3810',
+    'router_path' => 'node/%',
+    'link_title' => 'Downloads',
+    'options' => array(
+      'attributes' => array(),
+      'alter' => TRUE,
+      'node_type' => 'naturalis_page',
+      'identifier' => 'main-menu_downloads:node/3810',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -47,
     'customized' => 1,
     'language' => 'nl',
     'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
   );
   // Exported menu link: main-menu_dubois-collection:result.
   $menu_links['main-menu_dubois-collection:result'] = array(
@@ -567,16 +668,16 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_explore-highlights:<front>',
   );
-  // Exported menu link: main-menu_over:node/3793.
-  $menu_links['main-menu_over:node/3793'] = array(
+  // Exported menu link: main-menu_over-bioportal:node/3793.
+  $menu_links['main-menu_over-bioportal:node/3793'] = array(
     'menu_name' => 'main-menu',
     'link_path' => 'node/3793',
     'router_path' => 'node/%',
-    'link_title' => 'Over',
+    'link_title' => 'Over BioPortal',
     'options' => array(
       'attributes' => array(),
       'alter' => TRUE,
-      'identifier' => 'main-menu_over:node/3793',
+      'identifier' => 'main-menu_over-bioportal:node/3793',
       'node_type' => 'naturalis_page',
     ),
     'module' => 'menu',
@@ -584,7 +685,31 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -40,
+    'weight' => -50,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
+  );
+  // Exported menu link: main-menu_over:<front>.
+  $menu_links['main-menu_over:<front>'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Over',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'alter' => TRUE,
+      'identifier' => 'main-menu_over:<front>',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 1,
+    'has_children' => 1,
+    'expanded' => 0,
+    'weight' => -48,
     'customized' => 1,
     'language' => 'nl',
     'menu_links_customized' => 1,
@@ -750,6 +875,50 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'language' => 'nl',
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
+  );
+  // Exported menu link: main-menu_wat-is-er-nieuw:node/3820.
+  $menu_links['main-menu_wat-is-er-nieuw:node/3820'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3820',
+    'router_path' => 'node/%',
+    'link_title' => 'Wat is er nieuw',
+    'options' => array(
+      'node_type' => 'naturalis_page',
+      'alter' => TRUE,
+      'identifier' => 'main-menu_wat-is-er-nieuw:node/3820',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -49,
+    'customized' => 1,
+    'language' => 'nl',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_over:<front>',
+  );
+  // Exported menu link: main-menu_whats-new:node/3821.
+  $menu_links['main-menu_whats-new:node/3821'] = array(
+    'menu_name' => 'main-menu',
+    'link_path' => 'node/3821',
+    'router_path' => 'node/%',
+    'link_title' => 'What\'s new',
+    'options' => array(
+      'node_type' => 'naturalis_page',
+      'alter' => TRUE,
+      'identifier' => 'main-menu_whats-new:node/3821',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -49,
+    'customized' => 1,
+    'language' => 'en',
+    'menu_links_customized' => 1,
+    'parent_identifier' => 'main-menu_about:<front>',
   );
   // Exported menu link: menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/en/.
   $menu_links['menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/en/'] = array(
@@ -1027,6 +1196,7 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
   // Included for use with string extractors like potx.
   t('API');
   t('About');
+  t('About BioPortal');
   t('Arts collection');
   t('Beekbergerwoud collection');
   t('Beekbergerwoudcollectie');
@@ -1035,9 +1205,8 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
   t('Colophon');
   t('Contact');
   t('Dashboard');
-  t('Data sets');
-  t('Datasets');
   t('Disclaimer');
+  t('Downloads');
   t('Dubois collection');
   t('Duboiscollectie');
   t('EN');
@@ -1055,12 +1224,15 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
   t('NL');
   t('Naturalis.nl');
   t('Over');
+  t('Over BioPortal');
   t('Prentencollectie');
   t('Siebold collection');
   t('Sieboldcollectie');
   t('Timor collection');
   t('Timorcollectie');
   t('Uitgestorven vogels');
+  t('Wat is er nieuw');
+  t('What\'s new');
 
   return $menu_links;
 }
