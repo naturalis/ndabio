@@ -37,7 +37,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_naturalis_featured_content';
-  $strongarm->value = 2;
+  $strongarm->value = '2';
   $export['language_content_type_naturalis_featured_content'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -46,6 +46,25 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->name = 'language_content_type_search_log';
   $strongarm->value = 0;
   $export['language_content_type_search_log'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_default';
+  $strongarm->value = (object) array(
+    'language' => 'nl',
+    'name' => 'Dutch',
+    'native' => 'Nederlands',
+    'direction' => '0',
+    'enabled' => '1',
+    'plurals' => '2',
+    'formula' => '($n!=1)',
+    'domain' => '',
+    'prefix' => 'nl',
+    'weight' => '0',
+    'javascript' => 'V-cbMJJwz9wmuD3sx2a2nUKuUhG0t8ZyxbrUNWMcRr4',
+  );
+  $export['language_default'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -83,7 +102,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_baseurl';
-  $strongarm->value = 'http://145.136.242.164:8080/v2/';
+  $strongarm->value = 'http://api.biodiversitydata.nl/v2';
   $export['ndabioresults_config_baseurl'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -256,7 +275,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_naturalis_featured_content';
-  $strongarm->value = 1;
+  $strongarm->value = '1';
   $export['node_preview_naturalis_featured_content'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -433,6 +452,56 @@ function feature_bioportal_controller_strongarm() {
     'favicon_upload' => '',
   );
   $export['theme_settings'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_naturalis_featured_content';
+  $strongarm->value = array(
+    'status' => '0',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_naturalis_featured_content'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_naturalis_help';
+  $strongarm->value = array(
+    'status' => '1',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_naturalis_help'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_naturalis_page';
+  $strongarm->value = array(
+    'status' => '1',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_naturalis_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_naturalis_service_menu_page';
+  $strongarm->value = array(
+    'status' => '1',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_naturalis_service_menu_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'xmlsitemap_settings_node_ndabio_header_image';
+  $strongarm->value = array(
+    'status' => '0',
+    'priority' => '0.5',
+  );
+  $export['xmlsitemap_settings_node_ndabio_header_image'] = $strongarm;
 
   return $export;
 }
