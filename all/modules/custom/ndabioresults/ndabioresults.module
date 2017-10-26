@@ -1033,7 +1033,13 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						$boostValue *= $boost[$element];
 					}
 					$condition->setBoost($boostValue);
-				}				
+				}
+				// Add extra condition for simple search exact match
+				if ($simpleSearch && strpos($operator, 'EQUALS') === false) {
+					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
+					$boostEquals->setBoost(5);
+					$condition->setOr($boostEquals);
+				}
 				// First condition
 				if ($first) {
 					$mainCondition = $condition;
