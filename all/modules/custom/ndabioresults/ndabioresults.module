@@ -1038,7 +1038,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				if ($simpleSearch && strpos($operator, 'EQUALS') === false) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
 					$boostEquals->setBoost(5);
-					$condition->setOr($boostEquals);
+// @todo: boost weer aanzetten zodra NBA dit aankan!
+					//$condition->setOr($boostEquals);
 				}
 				// First condition
 				if ($first) {
@@ -2252,10 +2253,6 @@ function _nbaSimpleSearch () {
 	
  	_addDebugMessage('batch query', $timerEnd);
 	
- 	
- 	
- 	
-      
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "h1");
 
@@ -2273,6 +2270,8 @@ function _nbaSimpleSearch () {
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
 	*/
+	
+//p($remoteData);
 	
 	if (!empty($remoteData['specimen'])) {
 		$data = json_decode($remoteData['specimen']); 
