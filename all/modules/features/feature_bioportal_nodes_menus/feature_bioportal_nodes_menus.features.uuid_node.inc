@@ -27,22 +27,22 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details of the Naturalis collections, using the Netherlands Biodiversity API (NBA). More than 4 million Naturalis objects are already ‘searchable’ via the BioPortal and from July 2015, the complete collection of 37 million objects is included in&nbsp;the BioPortal. This information will continue to be further extended with all the data linked together in the NBA so that we in the Netherlands will be able to use a single website that enables us to consult the full range of digital sources, with a guaranteed level of scientific quality.</p>
+        'value' => '<p>The BioPortal is a website that serves as the national access portal for all information relating to natural history, from basic data about museum objects to fully illustrated species descriptions. Via a single website, BioPortal grants access to all digitized details of the Naturalis collections, using the Netherlands Biodiversity API (NBA). Per October 2017 already more than 8 Million objects&nbsp; are included and the information is continuously extended. The NBA links the data to various digital sources of guaranteed scientific&nbsp; quality. This allows to consult these data through one single website.</p>
 
 <p>Via the NBA, BioPortal can access the following data sources</p>
 
 <ul>
-	<li>Brahms: botanic specimen data at Naturalis</li>
-	<li>Naturalis Collection Registration System (CRS): zoological, paleontological, mineralogical and petrological specimen data from Naturalis</li>
-	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a>: list with descriptions of all Dutch species</li>
-	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: list of species occurring worldwide</li>
+	<li>Brahms: botanical specimen data at Naturalis;</li>
+	<li>Naturalis Collectieregistragiesysteem (CRS): zoological, paleontological, mineralogical and petrological specimen data of&nbsp;Naturalis;</li>
+	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a>: list and descriptions of all species that occur in the Netherlands;</li>
+	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: index of names of all known species of the world</li>
 </ul>
 
 <p>We call this collection of data the NDS: the Naturalis Data Store. The data is fed into this store through an ETL-process that harmonizes several different data formats into a single, ABCD-compatible document model.</p>
 
 <p>The BioPortal reflects the strength of the NBA. It is effectively a ‘client’ of the NBA, an example application that delivers data from the NBA in an appealing manner, via a web portal. By means of this portal, anyone – from the interested amateur to the research scientist – can carry out full-text searches or simply graze through the data using specific fields and geographical locations.</p>
 
-<p>Within the portal, special Naturalis collections will be highlighted, and thanks to their own menu are easily browsable.</p>
+<p>Special Naturalis collections are highlighted in the portal, directly accessible in the section \'Explore highlights\'.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -56,6 +56,64 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'NBA Import',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'en',
+  'created' => 1508239089,
+  'tnid' => 3818,
+  'translate' => 0,
+  'uuid' => '1d6d1ba0-c144-4609-8f0f-f516577d5fa7',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<table border="0" cellpadding="1" cellspacing="1">
+	<tbody>
+		<tr>
+			<td><strong>Naturalis Botany catalogues</strong></td>
+			<td style="text-align:right; white-space:nowrap">October 12th, 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Naturalis Zoology and Geology catalogues</strong></td>
+			<td style="text-align:right; white-space:nowrap">October 14th, 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Naturalis Storage Units</strong></td>
+			<td style="text-align:right; white-space:nowrap">May 22nd, 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Cataologue of Life</strong></td>
+			<td style="text-align:right; white-space:nowrap">April 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Dutch Species Register</strong></td>
+			<td style="text-align:right; white-space:nowrap">October 14th, 2017</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'field_file' => array(),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
+  'date' => '2017-10-17 11:18:09 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -589,6 +647,56 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
+  'title' => 'What\'s new',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'en',
+  'created' => 1508844495,
+  'tnid' => 3820,
+  'translate' => 0,
+  'uuid' => '46d4297a-a90c-4157-ab08-8209a20de589',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>v2.0:</p>
+
+<ul>
+	<li><u>New</u>: BioPortal uses the updated and much improved <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> for data queries.</li>
+	<li><u>New</u>: <a href="dashboard">Dashboard</a> demonstrating statistics of the Naturalis collection.</li>
+	<li><u>New</u>: downloadable <a href="downloads">DarwinCore archives</a> of selected collections.</li>
+	<li><u>New</u>: NBA queries are handled by a dedicated, open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> that mirrors the functionality of the <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
+	<li><u>New</u>: download images of specimens in the highest possible resolution.</li>
+	<li><u>New</u>: provide feedback for inaccurate or erroneous specimen data.</li>
+	<li><u>Improved</u>: specimen queries in the advanced search form have been merged into a single form.</li>
+	<li><u>Improved</u>: clearer help texts for the advanced search form.</li>
+	<li><u>Improved</u>: browse individual specimen, taxon and multimedia results (multimedia only in v1.0).</li>
+	<li><u>Improved</u>: search results based on "name resolution" indicate the link between search term and result.</li>
+	<li><u>Improved</u>: advanced search form has been tailored to the needs of collection administrators.</li>
+	<li><u>Improved</u>: "show all media" links for specimen and taxon searches: fetch all media for your search criteria with a single click.</li>
+	<li><u>Improved</u>: all nature areas in the <a href="geographic-search">geographical search form</a> now produce results.</li>
+	<li><u>Fixed</u>: AND/OR queries now always produce accurate results.</li>
+</ul>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'field_file' => array(),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
+  'date' => '2017-10-24 11:28:15 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
   'title' => 'Meteorieten collectie',
   'log' => '',
   'status' => 1,
@@ -675,6 +783,64 @@ echo getNbaData();
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-26 13:52:57 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'NBA Import',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'nl',
+  'created' => 1508239048,
+  'tnid' => 3818,
+  'translate' => 0,
+  'uuid' => '4d6f769f-d127-4c3b-9cb6-ae6ed215c753',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<table border="0" cellpadding="1" cellspacing="1">
+	<tbody>
+		<tr>
+			<td><strong>Naturalis Botany catalogues</strong></td>
+			<td style="text-align:right; white-space:nowrap">12 oktober 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Naturalis Zoology and Geology catalogues</strong></td>
+			<td style="text-align:right; white-space:nowrap">14 oktober 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Naturalis bewaareenheden</strong></td>
+			<td style="text-align:right; white-space:nowrap">22 mei 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Cataologue of Life</strong></td>
+			<td style="text-align:right; white-space:nowrap">April 2017</td>
+		</tr>
+		<tr>
+			<td><strong>Nederlands Soortenregister</strong></td>
+			<td style="text-align:right; white-space:nowrap">14 oktober 2017</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'field_file' => array(),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
+  'date' => '2017-10-17 11:17:28 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
@@ -1361,6 +1527,56 @@ Bringing all this information together will help distinguish facts from fables i
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-27 10:34:11 +0000',
+  'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
+);
+  $nodes[] = array(
+  'title' => 'Wat is er nieuw',
+  'log' => '',
+  'status' => 1,
+  'comment' => 0,
+  'promote' => 0,
+  'sticky' => 0,
+  'ds_switch' => '',
+  'type' => 'naturalis_page',
+  'language' => 'nl',
+  'created' => 1508844448,
+  'tnid' => 3820,
+  'translate' => 0,
+  'uuid' => 'c198f239-f0ed-4a21-8822-32dd38df828f',
+  'body' => array(
+    'und' => array(
+      0 => array(
+        'value' => '<p>v2.0:</p>
+
+<ul>
+	<li><u>Nieuw</u>: BioPortal gebruikt de vernieuwde en sterk verbeterde <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> voor zoekopdrachten.</li>
+	<li><u>Nieuw</u>: <a href="dashboard">Dashboard</a> met statistieken over de Naturalis collectie.</li>
+	<li><u>Nieuw</u>: downloadbare <a href="downloads">DarwinCore archives</a> van een deel van de collectie.</li>
+	<li><u>Nieuw</u>: NBA zoekopdrachten worden uitgevoerd met een speciaal daarvoor geschreven open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> met dezelfde functionaliteit als de <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
+	<li><u>Nieuw</u>: download afbeeldingen van specimens in de hoogste resolutie.</li>
+	<li><u>Nieuw</u>: optie om onvolkomenheden of fouten te rapporteren bij specimens.</li>
+	<li><u>Verbeterd</u>: zoekopdrachten voor specimens in uitgebreid zoeken samengevoegd tot één formulier.</li>
+	<li><u>Verbeterd</u>: duidelijkere helpteksten bij uitgebreid zoeken.</li>
+	<li><u>Verbeterd</u>: blader door de individuele specimen-, taxon- en multimediaresultaten (alleen multimedia in v1.0).</li>
+	<li><u>Verbeterd</u>: resultaten gebaseerd op "name resolution" tonen het verband tussen zoekterm en resultaat.</li>
+	<li><u>Verbeterd</u>: uitgebreid zoekformulier aangepast naar de wensen van collectiebeheerders.</li>
+	<li><u>Verbeterd</u>: "toon alle media" links voor specimen en taxon zoekopdrachten: haal met één klik alle media op voor uw zoekcriteria.</li>
+	<li><u>Verbeterd</u>: alle natuurgebieden in het <a href="geographic-search">geografisch zoekformulier</a> tonen nu resultaten.</li>
+	<li><u>Opgelost</u>: EN/OF zoekopdrachten produceren nu altijd betrouwbare resultaten.</li>
+</ul>
+',
+        'summary' => '',
+        'format' => 'full_html',
+        'safe_summary' => '',
+      ),
+    ),
+  ),
+  'field_file' => array(),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
+  'date' => '2017-10-24 11:27:28 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
