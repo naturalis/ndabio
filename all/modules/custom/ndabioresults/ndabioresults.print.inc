@@ -442,7 +442,7 @@ function _printSpecimenDetail ($data) {
 	
 	$feedback = "<p style='margin-bottom: 30px;'>" . t('Please report inaccuracies or errors for this specimen to %s.') . "</p>";
 	$mailLink = '<a href="%s">collectie@naturalis.nl</a>';
-	$mailSubject = 'subject=' . rawurlencode(t('Feedback on specimen') . ' ' . $data['unitID']);
+	$mailSubject = 'subject=' . rawurlencode(t('Feedback on specimen') . ' ' . $data['unitID'] . ' (' . $data['collectionType'] . ')');
 	$mailBody = 'body=' . rawurlencode(
 		t('Registration number') . ': ' . $data['unitID'] . "\n" . 
 		t('Scientific name') . ': ' . strip_tags($data['names'][0]['name']) . "\n" . 
@@ -1222,6 +1222,9 @@ function _printMultimediaHit ($row) {
                 ))) {
                 continue;
 		    }
+		    if (_doNotPrintHit($field, $row['hits'])) {
+				continue;
+			}
             // Rename field if it doesn't match ABCD term
             $replace = ['name' => t('Common name')];
             
