@@ -1082,7 +1082,9 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 	    	}
 	    	$mainCondition = _setCondition($condition, $mainCondition);
 		}
-    	$query->addCondition($mainCondition);
+		if (isset($mainCondition)) {
+    		$query->addCondition($mainCondition);
+		}
 	// AND search: all conditions are top level conditions controlled by logicalOperator
 	} else {
 		foreach (array_values($conditions) as $condition) {
@@ -1650,6 +1652,21 @@ function _nbaAdvancedSearch () {
     if (!_dataPosted($services)) {
     	_setErrorMessage('Missing search terms');
         _printOops();
+    }
+    
+    // BIOPORVTWO-363: if geo search is used, check if advanced search has been used. 
+    // If so disable the section that has no criteria!
+    if (_isGeoSearch()) {
+    	$pM = _countSearchParameters($services['multimedia']);
+    	$pS = _countSearchParameters($services[_getSpecimenService()]);
+    	// Either specimen of multimedia has at least one criterium
+    	if ($pM + $pS > 2) {
+    		if ($pM == 1) {
+    			$services['multimedia'] = [];
+    		} else if ($pS == 1) {
+    			$services[_getSpecimenService()] = [];
+    		}
+    	}
     }
 
     // Get json response for each service that provides search parameters
