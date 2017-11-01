@@ -962,8 +962,6 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 		}
     }
     
-   p($statements);
-    
     // Store paths for term highlighting
     if (isset($paths)) {
     	//$_SESSION['nbaQuery'][empty($type) ? $service : $service . '.' . 
