@@ -834,6 +834,12 @@ function _getTaxonByName ($name) {
 	return $data->resultSet[0]->item;	
 }
 
+/**
+ * Operators manually set in query string (not form)
+ * 
+ * @param array $terms
+ * @return array
+ */
 function _filterQueryOperators (&$terms) {
 	foreach ($terms as $field => $value) {
 		if (substr($field, -strlen('Operator')) === 'Operator') {
@@ -844,8 +850,22 @@ function _filterQueryOperators (&$terms) {
 	return isset($operators) ? $operators : [];
 }
 
-
+/**
+ * Main function that builds NBA query
+ * 
+ * See inline documentation for logic!
+ * 
+ * @param string $service
+ * @param array $terms
+ * @param bool $useNameResolution
+ * @return \nl\naturalis\bioportal\GroupByScientificNameQuerySpec|\nl\naturalis\bioportal\QuerySpec
+ */
 function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
+	// Logical operator is important to compile main QuerySpec: 
+	// - for OR we will create one big nested OR query
+	// - for AND we will create separate conditions ruled by main logical operator AND
+	$logicalOperator = isset($terms['logicalOperator']) && !empty($terms['logicalOperator']) ?
+		strtoupper($terms['logicalOperator']) : 'OR';
 	// Set operator used to string subconditions together: setOr for simple search, 
 	// but setAnd for advanced search fields such as fullScientificName!
 	// Simple search
@@ -857,35 +877,22 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 		$simpleSearch = true;
 	// Advanced search
     } else {
-		$andOr = 'setAnd';
+		$andOr = $logicalOperator == 'OR' ? 'setOr' : 'setAnd';
 		$simpleSearch = false;
 	}
 	// Names service must include prefix, so use names.taxa or names.specimens
 	if (strpos($service, '.') !== false) {
-/* @sng-fix 
-		list($service, $type) = explode('.', $service);
-		$lookupService = $type == 'taxa' ? 'taxon' : 'specimen';
-*/
 		$lookupService = _normaliseServiceName($service);
-/* @sng-fix
-		$type .= '.';
-*/
 		$query = new GroupByScientificNameQuerySpec();
 	} else {
-/* @sng-fix 
-		$type = '';
-*/
 		$lookupService = $service;
 		$query = new QuerySpec();
 	}
 	// Logical operator is always AND (form and map are exclusive)
 	$query->setLogicalOperator('AND');
-	// Logical operator is important to compile main QuerySpec: 
-	// - for OR we will create one big nested OR query
-	// - for AND we will create separate conditions ruled by main logical operator AND
-	$logicalOperator = isset($terms['logicalOperator']) && !empty($terms['logicalOperator']) ?
-		strtoupper($terms['logicalOperator']) : 'OR';
-	// Filter any specific operators from terms; these are used later when constructing the query
+	// Filter any specific operators from terms; these are used later when constructing the query.
+	// Currently the form only allows a global AND/OR, but users can manually construct links that
+	// support specific operators. These are set as [field]Operator=AND/OR.
 	$operators = _filterQueryOperators($terms);
 	
 	// Translate fields to NBA paths and get their operators
@@ -954,6 +961,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			}
 		}
     }
+    
+   p($statements);
     
     // Store paths for term highlighting
     if (isset($paths)) {
@@ -1673,7 +1682,7 @@ function _nbaAdvancedSearch () {
     foreach ($services as $service => $terms) {
         if (_serviceUsed($terms)) {
             // Init client
-            $client = _setNbaClient($service);
+        	$client = _setNbaClient($service);
         	// Cap results
             $terms['size'] = _maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
