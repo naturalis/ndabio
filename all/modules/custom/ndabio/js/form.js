@@ -185,6 +185,11 @@ function clearForm () {
 	jQuery('#edit-s-andor-0').prop("checked", true)
 	jQuery('#edit-m-andor-0').prop("checked", true)
 	jQuery('#edit-t-andor-0').prop("checked", true);
+	
+	// Map
+	if (typeof clearMap === 'function') {
+		clearMap();
+	}
 }
 
 
