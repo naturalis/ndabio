@@ -2218,6 +2218,8 @@ function _nbaSimpleSearch () {
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setNbaClient($service);
+		// Use POST instead of GET!
+		$client->setPostHttpRequestType();
     	// Cap results
 		$terms['size'] = _maxResultsInitial();
 		// Build QuerySpec; use name resolution
