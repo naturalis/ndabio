@@ -1046,7 +1046,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
 					$boostEquals->setBoost(5);
 // @todo: boost weer aanzetten zodra NBA dit aankan!
-					//$condition->setOr($boostEquals);
+					$condition->setOr($boostEquals);
 				}
 				// First condition
 				if ($first) {
