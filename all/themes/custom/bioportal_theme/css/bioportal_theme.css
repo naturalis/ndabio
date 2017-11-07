@@ -29,6 +29,8 @@ body.thematic-search .title {
 body.page-result h1#page-title {
   display: none; }
 
+article.node-naturalis-page {width: 554px; }
+
 #ie8 {
   display: none;
   background-color: #e3004a;
