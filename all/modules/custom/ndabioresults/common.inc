@@ -41,10 +41,14 @@ function _initNbaClient () {
  * Initialise PHP client with service (specimen, taxon, or multimedia)
  * 
  * @param string $service
+ * @param bool $post Use POST method? (default is GET)
  * @return \nl\naturalis\bioportal\Client
  */
-function _setNbaClient ($service) {
+function _setNbaClient ($service, $post = false) {
 	$client = _initNbaClient();
+	if ($post) {
+		$client->setPostHttpRequestType();
+	}
 	$service = _normaliseServiceName($service);
 	// Validate service name
 	if (!in_array($service, $client::$nbaClients)) {

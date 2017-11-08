@@ -746,7 +746,7 @@ function _natureAreasWithResultsOnly () {
 		// No cached verion yet, we have to work hard to fetch them results!
 		$all = json_decode(_nbaGeoAreas(), true);
 		$natureAreas = $all['Nature'];
-	    $client = _setNbaClient('specimen');
+	    $client = _setNbaClient('specimen', true);
 		foreach ($natureAreas as $area) {
 			$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
 			$query = new QuerySpec();
