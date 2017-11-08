@@ -16,7 +16,7 @@ define("NBAMINSTRINGLENGTHSIMPLESEARCH", 3);
 // ES boost factor for full length simple search term (if there are more elements)
 define("NBASIMPLESEARCHFULLTERMBOOST", 2);
 // ES boost factor for exact match
-define("NBASIMPLESEARCHEXACTMATCHBOOST", 4);
+define("NBASIMPLESEARCHEXACTMATCHBOOST", 5);
 
 
 
@@ -622,7 +622,7 @@ function _boostPaths () {
 				'identifications.defaultClassification.infraspecificEpithet' => 1.5,
 				'identifications.scientificName.infraspecificEpithet' => 1.5,
 				'identifications.scientificName.fullScientificName' => 2,
-				'identifications.vernacularNames.name' => 3,
+				'identifications.vernacularNames.name' => 5,
                 'identifications.taxonomicEnrichments.vernacularNames.name' => 2
 			],
 			'taxon' => [
