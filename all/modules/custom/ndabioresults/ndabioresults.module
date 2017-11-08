@@ -969,6 +969,9 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
     }
     
+//p($statements);
+    
+    
     // Compile conditions
 	$conditions = [];
 	foreach ($statements as $d) {
@@ -1044,7 +1047,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				// Add extra condition for simple search exact match
 				if ($simpleSearch && !in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN'])) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
-					$boostEquals->setBoost(5);
+					$boostEquals->setBoost(NBASIMPLESEARCHEXACTMATCHBOOST);
 					$condition->setOr($boostEquals);
 				}
 				// First condition
