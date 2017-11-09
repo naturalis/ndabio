@@ -102,7 +102,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_baseurl';
-  $strongarm->value = 'http://145.136.242.164:8080/v2';
+  $strongarm->value = 'http://145.136.242.164:8080/v2/';
   $export['ndabioresults_config_baseurl'] = $strongarm;
 
   $strongarm = new stdClass();

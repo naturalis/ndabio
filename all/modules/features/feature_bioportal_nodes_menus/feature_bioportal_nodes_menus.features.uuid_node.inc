@@ -88,7 +88,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 			<td style="text-align:right; white-space:nowrap">May 22nd, 2017</td>
 		</tr>
 		<tr>
-			<td><strong>Cataologue of Life</strong></td>
+			<td><strong>Catalogue of Life</strong></td>
 			<td style="text-align:right; white-space:nowrap">April 2017</td>
 		</tr>
 		<tr>
@@ -801,7 +801,7 @@ echo getNbaData();
 			<td style="text-align:right; white-space:nowrap">22 mei 2017</td>
 		</tr>
 		<tr>
-			<td><strong>Cataologue of Life</strong></td>
+			<td><strong>Catalogue of Life</strong></td>
 			<td style="text-align:right; white-space:nowrap">April 2017</td>
 		</tr>
 		<tr>
