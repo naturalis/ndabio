@@ -1,7 +1,7 @@
 name = Feature - Bioportal nodes & menus
 core = 7.x
 package = Bioportal
-version = 7.x-1.1Henk
+version = 7.x-1.1Isolda
 dependencies[] = feature_bioportal_controller
 dependencies[] = features
 dependencies[] = menu
@@ -46,8 +46,6 @@ features[menu_links][] = main-menu_sieboldcollectie:result
 features[menu_links][] = main-menu_timor-collection:result
 features[menu_links][] = main-menu_timorcollectie:result
 features[menu_links][] = main-menu_uitgestorven-vogels:result
-features[menu_links][] = main-menu_wat-is-er-nieuw:node/3820
-features[menu_links][] = main-menu_whats-new:node/3821
 features[menu_links][] = menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/en/
 features[menu_links][] = menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/nl/
 features[menu_links][] = menu-naturalis-help-menu_help:node/2
