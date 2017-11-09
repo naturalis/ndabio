@@ -876,50 +876,6 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
     'menu_links_customized' => 1,
     'parent_identifier' => 'main-menu_bijzondere-collecties:<front>',
   );
-  // Exported menu link: main-menu_wat-is-er-nieuw:node/3820.
-  $menu_links['main-menu_wat-is-er-nieuw:node/3820'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => 'node/3820',
-    'router_path' => 'node/%',
-    'link_title' => 'Wat is er nieuw',
-    'options' => array(
-      'node_type' => 'naturalis_page',
-      'alter' => TRUE,
-      'identifier' => 'main-menu_wat-is-er-nieuw:node/3820',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -49,
-    'customized' => 1,
-    'language' => 'nl',
-    'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_over:<front>',
-  );
-  // Exported menu link: main-menu_whats-new:node/3821.
-  $menu_links['main-menu_whats-new:node/3821'] = array(
-    'menu_name' => 'main-menu',
-    'link_path' => 'node/3821',
-    'router_path' => 'node/%',
-    'link_title' => 'What\'s new',
-    'options' => array(
-      'node_type' => 'naturalis_page',
-      'alter' => TRUE,
-      'identifier' => 'main-menu_whats-new:node/3821',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -49,
-    'customized' => 1,
-    'language' => 'en',
-    'menu_links_customized' => 1,
-    'parent_identifier' => 'main-menu_about:<front>',
-  );
   // Exported menu link: menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/en/.
   $menu_links['menu-naturalis-externe-links_naturalisnl:https://www.naturalis.nl/en/'] = array(
     'menu_name' => 'menu-naturalis-externe-links',
@@ -1231,8 +1187,6 @@ function feature_bioportal_nodes_menus_menu_default_menu_links() {
   t('Timor collection');
   t('Timorcollectie');
   t('Uitgestorven vogels');
-  t('Wat is er nieuw');
-  t('What\'s new');
 
   return $menu_links;
 }

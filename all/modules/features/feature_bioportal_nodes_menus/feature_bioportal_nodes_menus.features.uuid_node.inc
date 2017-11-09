@@ -17,7 +17,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
   'created' => 1493645348,
@@ -34,7 +33,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 <ul>
 	<li>Brahms: botanical specimen data at Naturalis;</li>
 	<li>Naturalis Collectieregistragiesysteem (CRS): zoological, paleontological, mineralogical and petrological specimen data of&nbsp;Naturalis;</li>
-	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a>: list and descriptions of all species that occur in the Netherlands;</li>
+	<li><a href="http://www.nederlandsesoorten.nl/content/english">Dutch Species Register:</a> list and descriptions of all species that occur in the Netherlands;</li>
 	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: index of names of all known species of the world</li>
 </ul>
 
@@ -65,7 +64,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
   'created' => 1508239089,
@@ -123,7 +121,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'en',
   'created' => 1413896301,
@@ -147,6 +144,10 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 0,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-21 12:58:21 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -157,7 +158,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500988713,
@@ -197,7 +197,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500543934,
@@ -207,7 +206,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Siebold Collection of natural history objects includes a total of 200 mammals, 900 birds, 750 fishes, 170 reptiles, over 5,000 invertebrates, 2,000 different species of plants and 12,000 herbarium specimens. Many of these are stored in Naturalis\' collection depots, part of which has been digitized and made available in the BioPortal. The material was collected by Von Siebold, between 1823 and 1829, during his stay in Japan. The Siebold Collection was the first major collection of Japanese specimen in Europe and contained many species of plants and animals that were unknown in Europe at the time. <a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="text-decoration:none;" target="_blank"><u>Read more</u></a> [Dutch]</p>
+        'value' => '<p>The Siebold Collection of natural history objects includes a total of 200 mammals, 900 birds, 750 fishes, 170 reptiles, over 5,000 invertebrates, 2,000 different species of plants and 12,000 herbarium specimens. Many of these are stored in Naturalis\' collection depots and available in the BioPortal. The material was collected by Von Siebold&nbsp;between 1823 and 1829&nbsp;during his stay in Japan. The Siebold Collection was the first major collection of Japanese specimen in Europe and contained many species of plants and animals that were unknown in Europe at the time. <a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="text-decoration:none;" target="_blank"><u>Read more</u></a> [Dutch]</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -237,7 +236,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 1,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'ndabio_header_image',
   'language' => 'en',
   'created' => 1416470988,
@@ -255,7 +253,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 1,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500543934,
@@ -281,7 +278,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'nl',
   'created' => 1418588269,
@@ -308,7 +304,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 	<tbody>
 		<tr>
 			<td style="width:50%">E-mail<br />
-  			<span style="font-size: 12px;line-height: 12px;">Indien van toepassing, vermeld in het Onderwerp bron en collectienaam</span></td>
+			Indien van toepassing, vermeld in het Onderwerp bron en collectienaam</td>
 			<td style="vertical-align:top"><a href="mailto:collectie@naturalis.nl?subject=Bioportal content: [bron] [collectienaam]">collectie@naturalis.nl</a></td>
 		</tr>
 	</tbody>
@@ -320,27 +316,23 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 	<tbody>
 		<tr>
 			<td style="width:50%">Museumadres</td>
-			<td>Pesthuislaan 7,&nbsp;2332 AA Leiden</td>
+			<td>Pesthuislaan 7,&nbsp;2333 AB&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td style="width:50%">Kantooradres (algemeen)</td>
-			<td>Vondellaan 55, 2332 AA Leiden</td>
+			<td>Vondellaan 55, 2332 AA&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td style="width:50%">Kantoooradres (herbarium)</td>
-			<td>Nieuwenhuizenweg 19, 2314 XP Leiden</td>
+			<td>Nieuwenhuizenweg 19, 2314 XP&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td>Postadres</td>
-			<td>Postbus 9517, 2300 RA Leiden</td>
+			<td>Postbus 9517, 2300 RA&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td>Telefoonnummer</td>
 			<td>+31-(0)71-7519600</td>
-		</tr>
-		<tr>
-			<td>Fax</td>
-			<td>+31-(0)71-7519666</td>
 		</tr>
 		<tr>
 			<td>E-mail</td>
@@ -369,7 +361,6 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_help',
   'language' => 'nl',
   'created' => 1413895042,
@@ -503,7 +494,6 @@ De gevonden wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
   'created' => 1493645561,
@@ -515,15 +505,15 @@ De gevonden wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken
       0 => array(
         'value' => '<h2>The Netherlands Biodiversity API is a biodiversity data service</h2>
 
-<p>The Netherlands Biodiversity API is a modern data service for scientists, application developers, national and regional government bodies and anyone else interested in biodiversity and biodiversity-related data. The provision of biodiversity-related data by the <a href="http://www.naturalis.nl/en/" target="_blank">Naturalis Biodiversity Center</a>&nbsp;is the starting point for this service. By granting access to its very extensive catalogue, historical and recent data relating to a variety of species will be made available, including specimen, multimedia and taxon data.</p>
+<p>The Netherlands Biodiversity API is a modern data service for scientists, application developers, national and regional government bodies and anyone else interested in biodiversity and biodiversity-related data. This service starts with the&nbsp;biodiversity-related data of the <a href="http://www.naturalis.nl/en/" target="_blank">Naturalis Biodiversity Center</a>&nbsp;by granting access to its very extensive catalogue, historical and recent data relating to a variety of species, including specimen, multimedia and taxon data.</p>
 
 <h2>Netherlands Biodiversity API offers a raft of possibilities</h2>
 
-<p>The information released via this application is eminently suitable for use by scientists working in taxonomical and thematic biodiversity studies. Detailed inventories of various types and a wide variety of (historical) data analyses are just some of the possible applications. For government bodies, the data can be an important source of information in developing new nature (conservation) policy as well as evaluating and monitoring existing policy in this field. Finally, application developers will be able to use the interface to bring plants, fungi, animals, fossils, minerals and rocks to life in interactive applications, aimed at specific target groups.</p>
+<p>The information released via this application is highly suitable for use by scientists working in taxonomical and thematic biodiversity studies. Detailed inventories of various types and a wide variety of (historical) data analyses are just some of the possible applications. For government bodies, the data can be an important source of information in developing new nature (conservation) policy as well as evaluating and monitoring existing policy in this field. Finally, application developers will be able to use the interface to bring plants, fungi, animals, fossils, minerals and rocks to life in interactive applications, aimed at specific target groups.</p>
 
 <h2>Netherlands Biodiversity API starts by opening up the extensive Naturalis Collection</h2>
 
-<p>The collection at Naturalis is one of the largest in the world. As well as their numbers, the quality of the objects is excellent, and together they are of immeasurable scientific value. Financed with FES (Economic Structure Enhancement) funds over the past few years, Naturalis has undertaken a unique digitisation project, according to which by 1 July 2015, all 42 million objects will have been recorded on digital cards, 8 million of them to a high level of detail. All in all, from the moment of its initial launch, this means that the Netherlands Biodiversity API is not only extensive in terms of size but also offers a valuable level of in-depth information.</p>
+<p>The collection at Naturalis is one of the largest in the world and the quality of the objects is excellent.&nbsp;The collection represents an invaluable&nbsp;scientific value. Financed with FES (Economic Structure Enhancement) funds over the past few years, Naturalis has undertaken a unique digitisation project, according to which by 1 July 2015, all 42 million objects will have been recorded on digital cards, 8 million of them to a high level of detail. All in all, from the moment of its initial launch, this means that the Netherlands Biodiversity API is not only extensive in terms of size but also offers a valuable level of in-depth information.</p>
 
 <h2>Netherlands Biodiversity API is freely accessible</h2>
 
@@ -564,7 +554,6 @@ De gevonden wetenschappelijke naam wordt vervolgens gebruikt voor het doorzoeken
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
   'created' => 1500543934,
@@ -587,7 +576,7 @@ In this case, the files contain the specimen and multimedia data of the collecti
 </p>
 
 <p>
-The files listed below are generated weekly. The date part of the filename reflects the moment the file was generated, and does not hold any relation to the date data was entered into the NBA, or the date the original data was created.
+The files listed below are generated weekly. The date part of the filename reflects the moment the file was generated, and does not hold any relation to the date the data was entered into the NBA, or the date the original data was created.
 </p>
 
 <p>Available data sets are:</p>
@@ -615,7 +604,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'nl',
   'created' => 1418387013,
@@ -653,7 +641,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'en',
   'created' => 1508844495,
@@ -703,7 +690,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1501151692,
@@ -743,7 +729,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
   'created' => 1501077177,
@@ -792,7 +777,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
   'created' => 1508239048,
@@ -850,7 +834,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 1,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'ndabio_header_image',
   'language' => 'en',
   'created' => 1416470934,
@@ -868,7 +851,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500989226,
@@ -878,7 +860,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Jongmans collection is the largest Dutch collection of Carboniferous fossils from the province of Limburg. The majority of the collection consists of beautifully preserved plant fossils. But faunal material is present as well. These mostly represent aquatic animals, although some terrestrial animals - mainly insects - are also part of the collection.</p>
+        'value' => '<p>The Jongmans collection is the largest Dutch collection of Carboniferous fossils from the province of Limburg. The major part&nbsp;of the collection consists of beautifully preserved plant fossils. But faunal material is present as well. These mostly are aquatic animals, although some terrestrial animals - mainly insects - are also part of the collection.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -908,7 +890,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500988632,
@@ -948,7 +929,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 1,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'ndabio_header_image',
   'language' => 'en',
   'created' => 1416470910,
@@ -966,7 +946,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'en',
   'created' => 1493645561,
@@ -1023,7 +1002,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
   'created' => 1493645348,
@@ -1071,7 +1049,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'nl',
   'created' => 1493645561,
@@ -1122,13 +1099,12 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'The Jongmans-collectie',
+  'title' => 'De Jongmans-collectie',
   'log' => '',
   'status' => 1,
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500989081,
@@ -1138,7 +1114,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>De Jongmans collectie is de grootste Nederlandse collectie van Carboonmateriaal uit Limburg. Het overgrote deel bestaat uit prachtig bewaarde plantenfossielen. Maar ook faunamateriaal is bewaard gebleven. Het gaat dan met name om fossielen van dieren die in zoet- en zoutwateromstandigheden leefden, hoewel er ook een aantal landdieren - en dan voornamelijk insecten - aanwezig zijn.</p>
+        'value' => '<p>De Jongmans-collectie is de grootste Nederlandse collectie van Carboonmateriaal uit Limburg. Het overgrote deel bestaat uit prachtig bewaarde plantenfossielen. Maar ook faunamateriaal is bewaard gebleven. Het gaat dan met name om fossielen van dieren die in zoet- en zoutwateromstandigheden leefden, hoewel er ook een aantal landdieren - en dan voornamelijk insecten - aanwezig zijn.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1168,7 +1144,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500543934,
@@ -1194,7 +1169,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1501152048,
@@ -1234,7 +1208,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500543934,
@@ -1244,7 +1217,7 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Het Beekbergerwoud behoort met 160 vermelde en/of verzamelde plantensoorten uit de periode 1827-1875 tot de best doorvorste Nederlanse natuurgebieden uit de 19de eeuw. Wat nog niet volledig geïnventariseerd is zijn de zoölogische collecties uit het Beekbergerwoud gemaakt in dezelfde periode. Dat is een gemis omdat herintroductie van lokaal uitgestorven soorten zich tegenwoordig allang niet meer beperkt tot alleen plantensoorten. Het bijeenbrengen van deze gegevens zal toekomstige herintroducties van de vroegere fauna uit het Beekbergerwoud helpen faciliteren zodat herstel van de dierenwereld van dit bos geen eeuwen hoeft te duren.&nbsp;<a href="https://science.naturalis.nl/en/education/bachelor-students/projects/#Beekbergerwoud" style="line-height: 20.7999992370605px;" target="_blank">Lees meer</a></p>
+        'value' => '<p>Het Beekbergerwoud behoort met 160 vermelde en/of verzamelde plantensoorten uit de periode 1827-1875 tot de best doorvorste Nederlanse natuurgebieden uit de 19de eeuw. Wat nog niet volledig geïnventariseerd is zijn de zoölogische collecties uit het Beekbergerwoud gemaakt in dezelfde periode. Dat is een gemis omdat herintroductie van lokaal uitgestorven soorten zich tegenwoordig allang niet meer beperkt tot alleen plantensoorten. Het bijeenbrengen van deze gegevens zal toekomstige herintroducties van de vroegere fauna uit het Beekbergerwoud helpen faciliteren zodat herstel van de dierenwereld van dit bos geen eeuwen hoeft te duren.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1260,6 +1233,10 @@ echo getNbaData();
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -1270,7 +1247,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_service_menu_page',
   'language' => 'en',
   'created' => 1413984173,
@@ -1309,27 +1285,23 @@ echo getNbaData();
 	<tbody>
 		<tr>
 			<td style="width:50%">Museum address</td>
-			<td>Pesthuislaan 7,&nbsp;2332 AA Leiden</td>
+			<td>Pesthuislaan 7,&nbsp;2333 BA&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td style="width:50%">Visiting address (general)</td>
-			<td>Vondellaan 55, 2332 AA Leiden</td>
+			<td>Vondellaan 55, 2332 AA&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td style="width:50%">Visiting address (herbarium)</td>
-			<td>Nieuwenhuizenweg 19, 2314 XP Leiden</td>
+			<td>Nieuwenhuizenweg 19, 2314 XP&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td>Postal address</td>
-			<td>Postbus 9517, 2300 RA Leiden</td>
+			<td>Postbus 9517, 2300 RA&nbsp; Leiden</td>
 		</tr>
 		<tr>
 			<td>Telephone number</td>
 			<td>+31-(0)71-7519600</td>
-		</tr>
-		<tr>
-			<td>Fax</td>
-			<td>+ 31-(0)71-7519666&nbsp;</td>
 		</tr>
 		<tr>
 			<td>E-mail</td>
@@ -1360,7 +1332,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500988459,
@@ -1400,7 +1371,6 @@ echo getNbaData();
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500543934,
@@ -1410,8 +1380,8 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>With 160 registered and/or collected plant species from the period 1827-1875, the Beekbergerwoud is one of the most closely scrutinised 19th century Dutch nature conservation areas. The zoological collections from the Beekbergerwoud assembled during the same period have not yet been fully inventorised. This is a clear lacuna, as the reintroduction of locally-extinct species has for some time no longer been restricted to plant species alone.&nbsp;<br />
-Bringing all this information together will help distinguish facts from fables in the myths that have arisen around the Beekbergerwoud, thereby assisting future reintroductions of its former biodiversity.&nbsp;<a href="https://science.naturalis.nl/en/education/bachelor-students/projects/#Beekbergerwoud" style="line-height: 20.7999992370605px;" target="_blank">Read more</a></p>
+        'value' => '<p>With 160 registered and/or collected plant species from the period 1827-1875, the Beekbergerwoud is one of the most closely scrutinised 19th century Dutch nature conservation areas. However, the zoological collections from the Beekbergerwoud assembled during the same period have not yet been fully inventorised. This is a clear lacuna, as the reintroduction of locally-extinct species is nog longer restricted to plant species alone for some time already.&nbsp;<br />
+Bringing all information together will help distinguish facts from fables in the myths that have arisen around the Beekbergerwoud, enabling the recovery of the original biodiversity.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1427,6 +1397,10 @@ Bringing all this information together will help distinguish facts from fables i
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -1437,7 +1411,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500543934,
@@ -1447,13 +1420,14 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The more than 200 extinct birds in the Naturalis collection are a collection-highlight which raises much interest among ornithologists. 135 extinct birds specimen are accessible through the BioPortal. Some specimens are unique. Naturalis is the only museum in the world to hold a Tahiti-Sandpiper <em>Prosobonia leucoptera</em> (Gmelin, 1789) and a specimen of Sharpe\'s Rail <em>Gallirallus sharpei</em> (Büttikofer, 1893). You can view the digitized extinct birds in the collection from all angles by rotating the 3d-images.</p>
+        'value' => '<p>The more than 200 extinct birds in the Naturalis collection are a collection highlight which raises much interest among ornithologists. 135 extinct bird&nbsp;specimens are accessible through the BioPortal. Some of these specimens are unique. Naturalis is the only museum in the world to hold a Tahiti-Sandpiper <em>Prosobonia leucoptera</em> (Gmelin, 1789) and a specimen of Sharpe\'s Rail <em>Gallirallus sharpei</em> (Büttikofer, 1893). You can view the digitized extinct birds from all angles by rotating the 3d-images.</p>
 
 <p>The nomenclature is based on The Howard &amp; Moore Complete Checklist of the Birds of the World Dickinson, E.C. (Editor) 3rd Edition, Princeton University Press, 2003.</p>
 
 <div>&nbsp;</div>
 
-<div>&nbsp;</div>',
+<div>&nbsp;</div>
+',
         'summary' => '',
         'format' => 'full_html',
         'safe_summary' => '',
@@ -1468,6 +1442,10 @@ Bringing all this information together will help distinguish facts from fables i
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -1478,7 +1456,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 1,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'ndabio_header_image',
   'language' => 'en',
   'created' => 1416470954,
@@ -1496,7 +1473,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1501151651,
@@ -1506,7 +1482,7 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>At Naturalis we manage the largest meteorite collection in the Netherlands, including some unique specimens. This diverse collection includes meteorites gathered around the world. In the Netherlands 5 meteorites have been recovered after an impact. Our collection includes 3 of these meteorites, the Uden meteorite, the Glanerbrug meteorite and the Diepenveen meteorite. Naturalis has been formally recognized by the Meteoritical Society as a meteorite institute and much research is being done on this collection. Analyzes of meteorites provide evidence of the origin of the Solar System and life on Earth. The entire collection is digitally available and supplemented with photographs of the meteorites.</p>
+        'value' => '<p>At Naturalis we preserve the largest meteorite collection in the Netherlands, including some unique specimens. The&nbsp;diverse collection includes meteorites collected around the world. In the Netherlands 5 meteorites have been recovered after an impact. Our collection includes 3 of these meteorites, the Uden meteorite, the Glanerbrug meteorite and the Diepenveen meteorite. Naturalis has been formally acknowledged by the Meteoritical Society as a meteorite institute and much research is being done on this collection. Analyses of meteorites provide evidence of the origin of the Solar System and life on Earth. The entire collection is digitally available and supplemented with photographs of the meteorites.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1536,7 +1512,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
   'created' => 1508844448,
@@ -1586,7 +1561,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500543934,
@@ -1626,7 +1600,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500988915,
@@ -1668,7 +1641,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1500543934,
@@ -1678,11 +1650,12 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>De meer dan 200 uitgestorven vogelsoorten in de Naturalis collectie zijn een collectie-hoogtepunt waar veel interesse voor is vanuit ornithologen. 135 van deze soorten zijn beschikbaar in het BioPortal. Sommige exemplaren zijn uniek. Zo is Naturalis het enige museum in de wereld dat een Tahitistrandloper <em>Prosobonia leucoptera</em> (Gmelin, 1789) en een exemplaar van de Büttikofer-ral <em>Gallirallus sharpei</em> (Büttikofer, 1893) in de collectie heeft. Je kan hier de gedigitaliseerde uitgestorven vogels van alle kanten bekijken middels draaiende 3d-beelden.</p>
+        'value' => '<p>De meer dan 200 uitgestorven vogelsoorten in de Naturalis collectie zijn een collectiehoogtepunt waar veel interesse voor is vanuit ornithologen. 135 van deze soorten zijn beschikbaar in het BioPortal. Sommige exemplaren zijn uniek. Zo is Naturalis het enige museum in de wereld dat een Tahitistrandloper <em>Prosobonia leucoptera</em> (Gmelin, 1789) en een exemplaar van de Büttikofer-ral <em>Gallirallus sharpei</em> (Büttikofer, 1893) in de collectie heeft. Je kan hier de gedigitaliseerde uitgestorven vogels van alle kanten bekijken middels draaiende 3d-beelden.</p>
 
 <p>De nomenclatuur is gebaseerd op The Howard &amp; Moore Complete Checklist of the Birds of the World Dickinson, E.C. (Editor) 3rd Edition, Princeton University Press, 2003.</p>
 
-<div>&nbsp;</div>',
+<div>&nbsp;</div>
+',
         'summary' => '',
         'format' => 'full_html',
         'safe_summary' => '',
@@ -1697,6 +1670,10 @@ Bringing all this information together will help distinguish facts from fables i
       ),
     ),
   ),
+  'path' => array(
+    'pathauto' => 1,
+  ),
+  'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-20 09:45:34 +0000',
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
@@ -1707,7 +1684,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500988549,
@@ -1717,7 +1693,7 @@ Bringing all this information together will help distinguish facts from fables i
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Dubois collection consists of circa 40,000 objects, all collected between 1887 and 1900 in Indonesia by Eugène Dubois. It is a unique collection of fossils, providing an overview of the prehistoric fauna on Java and Sumatra, as well as Dubois as a person and his dedication to palaeontological research. The collection does not only contain fossils, but also a vast archive, some of Dubois’ personal belongings, such as measuring instruments, his suitcase and some of his own teeth which he used to compare with fossil teeth of primates. The collection is much more than just a collection of fossils in a storage space, it tells the story of a remarkable man, his dreams and his determination to reach his goals. Dubois’ findings play a very important role in the knowledge we have today on human evolution. It was Dubois’ life goal to prove Darwin’s theory of evolution by searching for the Missing Link between apes and humans. Dubois succeeded but unfortunately did not get the recognition he hoped for. In recent decades this has changed and the Dubois collection is subject to research by scholars worldwide. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/" target="_blank">More information</a> [Dutch]</p>
+        'value' => '<p>The Dubois collection consists of circa 40,000 objects, all collected between 1887 and 1900 in Indonesia by Eugène Dubois. It is a unique collection of fossils, providing an overview of the prehistoric fauna on Java and Sumatra, but as well of Dubois as a person and his dedication to palaeontological research. Besides fossils, the collections holds&nbsp;a vast archive and some of Dubois’ personal belongings, such as measuring instruments, his suitcase and some of his own teeth which he used to compare with fossil teeth of primates. The collection is much more than just a collection of fossils in a storage space, it tells the story of a remarkable man, his dreams and his determination to reach his goals. Dubois’ findings play a very important role in the knowledge we have today on human evolution. It was Dubois’ life goal to prove Darwin’s theory of evolution by searching for the Missing Link between apes and humans. Dubois succeeded but unfortunately did not get the recognition he hoped for. In recent decades this has changed and the Dubois collection is subject to research by scholars worldwide. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/Duboiscollectie/" target="_blank">More information</a> [Dutch]</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1747,7 +1723,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'en',
   'created' => 1500988964,
@@ -1759,7 +1734,7 @@ Bringing all this information together will help distinguish facts from fables i
       0 => array(
         'value' => '<p>During the Permian and Triassic the area which is now the Indonesian island of Timor was covered with a shallow sea containing a very species diverse reef. The fossils representing that reef are remarkably well preserved en form a unique source of information for the reconstruction of the Permian and Triassic marine world.</p>
 
-<p>Between 1910 and 1916 a number of expeditions were undertaken by the Technische Hoogschool Delft (now Delft University of Technology) to the Indonesian island of Timor. In 1937 the Geological Institute of the University of Amsterdam continued the fieldwork. In Naturalis both collections have been amalgamated, digitized and made available for research.</p>
+<p>Between 1910 and 1916 a number of expeditions were undertaken by the Technische Hoogschool Delft (now Delft University of Technology) to the Indonesian island of Timor. In 1937 the Geological Institute of the University of Amsterdam continued the fieldwork. In Naturalis both collections have been merged, digitized and made available for research.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1789,7 +1764,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_page',
   'language' => 'nl',
   'created' => 1493645348,
@@ -1809,7 +1783,7 @@ Bringing all this information together will help distinguish facts from fables i
 
 <h2>Netherlands Biodiversity API begint met het ontsluiten van de omvangrijke Naturalis Collectie</h2>
 
-<p>De collectie van Naturalis behoort tot de grootste van de wereld. Behalve de hoeveelheid, is de kwaliteit van de objecten hoog en vertegenwoordigen ze een onschatbare wetenschappelijke waarde. Gefinancierd vanuit de FES-gelden (Fonds Economische Structuurversterking) heeft Naturalis de afgelopen jaren een uniek digitaliseringsproject uitgevoerd, waarmee alle 42 miljoen objecten op 1 juli 2015 digitaal in kaart zijn gebracht, waarvan 8 miljoen objecten op een hoog detailniveau. Dit alles maakt dat de Netherlands Biodiversity API een omvangrijke gegevensverzameling met een grote mate van diepgang.</p>
+<p>De collectie van Naturalis behoort tot de grootste van de wereld. Het grote aantal objecten&nbsp;is van hoge kwaliteit en vertegenwoordigt&nbsp;een onschatbare wetenschappelijke waarde. Met financiering vanuit de FES-gelden (Fonds Economische Structuurversterking) heeft Naturalis de afgelopen jaren een uniek digitaliseringsproject uitgevoerd, waarmee alle 42 miljoen objecten op 1 juli 2015 digitaal in kaart zijn gebracht, waarvan 8 miljoen objecten op een hoog detailniveau. Dit alles maakt dat de Netherlands Biodiversity API een omvangrijke gegevensverzameling met een grote mate van diepgang toegankelijk maakt.</p>
 
 <h2>Netherlands Biodiversity API is vrij toegankelijk</h2>
 
@@ -1850,7 +1824,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_featured_content',
   'language' => 'nl',
   'created' => 1501151975,
@@ -1890,7 +1863,6 @@ Bringing all this information together will help distinguish facts from fables i
   'comment' => 0,
   'promote' => 0,
   'sticky' => 0,
-  'ds_switch' => '',
   'type' => 'naturalis_help',
   'language' => 'en',
   'created' => 1418640288,
