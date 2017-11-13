@@ -233,7 +233,7 @@ function _printSpecimenDetail ($data) {
         array('type' => 'inline', 'scope' => 'footer')
     );
 
-// Do we have a valid set of coordinates? If so, add Google Map
+// Do we have a valid set of coordinates? If so, add Google Map 
     $lat = isset($data['gatheringEvent']['siteCoordinates']['lat']) ?
         $data['gatheringEvent']['siteCoordinates']['lat'] : false;
     $lon = isset($data['gatheringEvent']['siteCoordinates']['lon']) ?
@@ -1564,8 +1564,8 @@ function _printValue ($value = '') {
     if (strtolower($value) == 'cc0') {
         return '<a href="http://creativecommons.org/about/cc0" target="_blank">' .
             $value . '</a>';
-    }
-    return $value != '' ? $value : '—';
+    } 
+    return $value != '' ? str_replace('  ', '&nbsp;&nbsp;', $value) : '—';
 }
 
 /**
