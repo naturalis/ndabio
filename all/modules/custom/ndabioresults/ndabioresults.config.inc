@@ -630,8 +630,8 @@ function _boostPaths () {
 				'acceptedName.genusOrMonomial' => 2,
 				'defaultClassification.specificEpithet' => 2,
 				'acceptedName.specificEpithet' => 2,
-				'defaultClassification.infraspecificEpithet' => 2,
-				'acceptedName.infraspecificEpithet' => 2,
+				'defaultClassification.infraspecificEpithet' => 1.25,
+				'acceptedName.infraspecificEpithet' => 1.25,
 				'acceptedName.fullScientificName' => 2,
 				'vernacularNames.name' => 3
 			],
