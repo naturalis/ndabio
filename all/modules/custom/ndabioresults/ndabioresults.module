@@ -32,6 +32,12 @@ function ndabioresults_menu() {
     'load arguments' => array('%map', '%index'),
     'access callback' => TRUE,
   );
+  $items['specimen'] = array(
+    'page callback' => 'specimen_redirect',
+    'load arguments' => array('%map', '%index'),
+    'access callback' => TRUE,
+  );
+  
   $items['nba/ajax'] = array(
    'page callback' => 'ndabioresults_ajax_callback',
    'access arguments' => array('access content'),
@@ -40,6 +46,22 @@ function ndabioresults_menu() {
 
   return $items;
 }
+
+
+
+function specimen_redirect ($id = false) {
+	global $base_path;
+	if (!$id) {
+		drupal_goto('');
+	}
+    $url = $base_path . '/nba/result?nba_request=' . 
+     	urlencode('http://api.biodiversitydata.nl/v0/specimen/get-specimen/?unitID=' . $id);    
+    header("Location: $url");
+	exit;
+}
+
+
+
 
 /**
  * Implements template_preprocess_html().
