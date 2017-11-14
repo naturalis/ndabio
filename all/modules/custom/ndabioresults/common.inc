@@ -17,8 +17,13 @@ use nl\naturalis\bioportal\Client as Client;
  */
 function _setLanguage () {
     $langs = language_list(); // Note: No argument
-    $langcode = isset($_GET["language"]) && !empty($_GET["language"]) ? $_GET["language"] : '';
-    if (!empty($langcode)) {
+    if (isset($_GET["language"]) && !empty($_GET["language"])) {
+    	$langcode = $_GET["language"];
+    	$_SESSION['nbaLanguage'] = $langcode;
+    } else if (isset($_SESSION['nbaLanguage']) && !empty($_SESSION['nbaLanguage'])) {
+    	$langcode = $_SESSION['nbaLanguage'];
+    }
+    if (isset($langcode)) {
         variable_set('language_default', $langs[$langcode]);
     }
 }
