@@ -609,8 +609,8 @@ function _boostPaths () {
 				'identifications.defaultClassification.specificEpithet' => 2,
 				'identifications.scientificName.specificEpithet' => 2,
 				'identifications.defaultClassification.infraspecificEpithet' => 2,
-				'identifications.scientificName.infraspecificEpithet' => 1.5,
-				'identifications.scientificName.fullScientificName' => 1.5,
+				'identifications.scientificName.infraspecificEpithet' => 1.25,
+				'identifications.scientificName.fullScientificName' => 1.25,
 				'identifications.vernacularNames.name' => 3,
                 'identifications.taxonomicEnrichments.vernacularNames.name' => 2
 			],			
@@ -619,8 +619,8 @@ function _boostPaths () {
 				'identifications.scientificName.genusOrMonomial' => 2,
 				'identifications.defaultClassification.specificEpithet' => 2,
 				'identifications.scientificName.specificEpithet' => 2,
-				'identifications.defaultClassification.infraspecificEpithet' => 1.5,
-				'identifications.scientificName.infraspecificEpithet' => 1.5,
+				'identifications.defaultClassification.infraspecificEpithet' => 1.25,
+				'identifications.scientificName.infraspecificEpithet' => 1.25,
 				'identifications.scientificName.fullScientificName' => 2,
 				'identifications.vernacularNames.name' => 5,
                 'identifications.taxonomicEnrichments.vernacularNames.name' => 2
