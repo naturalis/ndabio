@@ -56,9 +56,6 @@ function specimen_redirect ($id = false) {
 	}
     $url = '//' . $_SERVER['HTTP_HOST'] . $base_path . 'nba/result?nba_request=' . 
      	urlencode('http://api.biodiversitydata.nl/v0/specimen/get-specimen/?unitID=' . $id);    
-    
-     	die($url);
-     	
     header("Location: $url");
 	exit;
 }
