@@ -51,7 +51,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
@@ -108,7 +108,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-10-17 11:18:09 +0000',
@@ -145,7 +145,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
     ),
   ),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-21 12:58:21 +0000',
@@ -348,7 +348,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
     ),
   ),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2014-12-14 20:17:49 +0000',
@@ -629,7 +629,7 @@ echo getNbaData();
     ),
   ),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2014-12-12 12:23:33 +0000',
@@ -765,7 +765,7 @@ echo getNbaData();
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-07-26 13:52:57 +0000',
@@ -822,7 +822,7 @@ echo getNbaData();
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-10-17 11:17:28 +0000',
@@ -1037,7 +1037,7 @@ echo getNbaData();
   ),
   'field_file' => array(),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2017-05-01 13:29:08 +0000',
@@ -1320,7 +1320,7 @@ echo getNbaData();
     ),
   ),
   'path' => array(
-    'pathauto' => 0,
+    'pathauto' => 1,
   ),
   'pathauto_perform_alias' => FALSE,
   'date' => '2014-10-22 13:22:53 +0000',
