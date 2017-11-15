@@ -23,8 +23,14 @@ function ndabio_init () {
 	// Check if proper NBA is used
 	_checkNbaVersion();
 	_setLanguage();
+	_checkNbaBaseFile();
+}
+
+function _checkNbaBaseFile () {
 	if (!file_exists(NBABASEURLFILE)) {
 		_writeBaseFile();
+	} else if (!is_writable(NBABASEURLFILE)) {
+		watchdog('php', NBABASEURLFILE . ' is not writable!', null, WATCHDOG_ERROR);
 	}
 }
 
@@ -1311,9 +1317,13 @@ function _writeBaseFile ($baseUrl = false) {
 	if (!$baseUrl) {
 		$baseUrl = _nbaBaseUrl();
 	}
-	$handle = fopen(NBABASEURLFILE, "w");
-	fwrite($handle, $baseUrl . "\n");
-	fclose($handle);
+	$handle = @fopen(NBABASEURLFILE, "w");
+	if ($handle) {
+		fwrite($handle, $baseUrl . "\n");
+		fclose($handle);
+	} else {
+		
+	}
 }
 
 
