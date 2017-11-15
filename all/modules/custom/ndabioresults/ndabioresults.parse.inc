@@ -412,6 +412,19 @@ function _parseSpecimenDetail ($data) {
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
 	
+	// Collect Dutch and ENglish names for title
+	if (!empty($output['vernaculars'])) {
+		$titleNames = array_flip($output['vernaculars']);
+	}
+	if (!empty($output['enrichedVernaculars'])) {
+		foreach ($output['enrichedVernaculars'] as $name => $language) {
+			if ($language == 'Dutch' || $language == 'English') {
+				$titleNames[$name] = $language;
+			}
+		}
+	}
+	$output['titleNames'] = isset($titleNames) ? implode(', ', array_flip($titleNames)) : null;
+	
 //p($output);
 	
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
