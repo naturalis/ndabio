@@ -305,7 +305,8 @@ function _printSpecimenDetail ($data) {
 		'multimedia',
 		'scientificNameGroup',
 		'referrer',
-		'geoJson'
+		'geoJson',
+		'titleNames'
 	];
 	$fieldOrder = [
         'names',
@@ -460,9 +461,12 @@ function _printSpecimenDetail ($data) {
     	$output .= '<h3>' . t('Multimedia') . '</h3><p id="nba_multimedia">' .
     		_printMultimediaPreview($data['multimedia']) . "</p>\n";
 	}
-
-    _setTitle(t('Specimen') . ' | ' .
-        strip_tags($data['names'][0]['name']) . ' | ' . $data['unitID']);
+	
+	$title = t('Specimen') . ' | ' . strip_tags($data['names'][0]['name']);
+	if (!empty($data['titleNames'])) {
+		$title .= ' (' . $data['titleNames'] . ')';
+	}
+    _setTitle($title . ' | ' . $data['unitID']);
 
 	return $output;
 }
