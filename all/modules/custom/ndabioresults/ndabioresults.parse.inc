@@ -419,11 +419,12 @@ function _parseSpecimenDetail ($data) {
 	if (!empty($output['enrichedVernaculars'])) {
 		foreach ($output['enrichedVernaculars'] as $name => $language) {
 			if ($language == 'Dutch' || $language == 'English') {
-				$titleNames[$name] = $language;
+				$titleNames[$name] = rand();
 			}
 		}
 	}
-	$output['titleNames'] = isset($titleNames) ? implode(', ', array_flip($titleNames)) : null;
+	$output['titleNames'] = isset($titleNames) ? 
+		implode(', ', array_slice(array_flip($titleNames), 0, 5)) : null;
 	
 //p($output);
 	
