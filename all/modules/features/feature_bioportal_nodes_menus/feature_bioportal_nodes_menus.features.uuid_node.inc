@@ -33,7 +33,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 <ul>
 	<li>Brahms: botanical specimen data at Naturalis;</li>
 	<li>Naturalis Collectieregistragiesysteem (CRS): zoological, paleontological, mineralogical and petrological specimen data of&nbsp;Naturalis;</li>
-	<li><a href="http://www.nederlandsesoorten.nl/content/english">Dutch Species Register:</a> list and descriptions of all species that occur in the Netherlands;</li>
+	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Dutch Species Register</a>: list and descriptions of all species that occur in the Netherlands;</li>
 	<li><a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>: index of names of all known species of the world</li>
 </ul>
 
@@ -387,7 +387,8 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
 
 <h2>Zoeken</h2>
 
-<h3><br />Eenvoudig zoeken</h3>
+<h3><br />
+Eenvoudig zoeken</h3>
 
 <p>De zoekmachine in het BioPortal gebruikt uw zoektermen om de verschillende bronnen te doorzoeken. Hij kijkt daarbij naar alle relevante velden, zoals de populaire naam, wetenschappelijke naam, vindplaats en registratienummer. Simpel zoeken doorzoekt ook velden die niet worden doorzocht door geavanceerd zoeken.</p>
 
@@ -572,7 +573,7 @@ Darwin Core Archive (DwC-A or DwCA) is a biodiversity informatics data standard 
 </p>
 
 <p>
-In this case, the files contain the specimen and multimedia data of the collection specified in it\'s name, with the exception of the \'nsr\' file, which contains names, taxonomy and occurrence status for all the species from the <a href="http://www.nederlandsesoorten.nl/" target="_blank">Dutch Species Register</a>.
+In this case, the files contain the specimen and multimedia data of the collection specified in it\'s name, with the exception of the \'nsr\' file, which contains names, taxonomy and occurrence status for all the species from the <a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Dutch Species Register</a>.
 </p>
 
 <p>
@@ -654,8 +655,8 @@ echo getNbaData();
 
 <ul>
 	<li><u>New</u>: BioPortal uses the updated and much improved <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> for data queries.</li>
-	<li><u>New</u>: <a href="dashboard">Dashboard</a> demonstrating statistics of the Naturalis collection.</li>
-	<li><u>New</u>: downloadable <a href="downloads">DarwinCore archives</a> of selected collections.</li>
+	<li><u>New</u>: <a href="/dashboard">Dashboard</a> demonstrating statistics of the Naturalis collection.</li>
+	<li><u>New</u>: downloadable <a href="/downloads">DarwinCore archives</a> of selected collections.</li>
 	<li><u>New</u>: NBA queries are handled by a dedicated, open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> that mirrors the functionality of the <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
 	<li><u>New</u>: download images of specimens in the highest possible resolution.</li>
 	<li><u>New</u>: provide feedback for inaccurate or erroneous specimen data.</li>
@@ -665,7 +666,7 @@ echo getNbaData();
 	<li><u>Improved</u>: search results based on "name resolution" indicate the link between search term and result.</li>
 	<li><u>Improved</u>: advanced search form has been tailored to the needs of collection administrators.</li>
 	<li><u>Improved</u>: "show all media" links for specimen and taxon searches: fetch all media for your search criteria with a single click.</li>
-	<li><u>Improved</u>: all nature areas in the <a href="geographic-search">geographical search form</a> now produce results.</li>
+	<li><u>Improved</u>: all nature areas in the <a href="/geographic-search">geographical search form</a> now produce results.</li>
 	<li><u>Fixed</u>: AND/OR queries now always produce accurate results.</li>
 </ul>
 ',
@@ -741,7 +742,7 @@ echo getNbaData();
         'value' => '<p>Hieronder vindt u downloadlinks naar Darwin Core Archive-bestanden voor de deelcollecties van de NBA.
 </p>
 <p>
-Darwin Core Archive (DwC-A of DwCA) is een biodiversiteitsinformatica datastandaard die gebruik maakt van de Darwin Core termen om een enkele, op zichzelf staande dataset voor voorkomensgegevens of <em>checklist data</em> te produceren. Zie TDWG\'s <a href="http://rs.tdwg.org/dwc/index.htm" target="_blank">Darwin Core introductie (Engels)</a> voor een meer gedetailleerde beschrijving.
+Darwin Core Archive (DwC-A of DwCA) is een biodiversiteitsinformatica datastandaard die gebruik maakt van de Darwin Core termen om een enkele, op zichzelf staande dataset voor voorkomensgegevens of <em>checklist data</em> te produceren. Zie TDWG\'s <a href="http://rs.tdwg.org/dwc/index.htm" target="_blank">Darwin Core introductie</a> voor een meer gedetailleerde beschrijving.
 </p>
 
 <p>
@@ -971,7 +972,7 @@ echo getNbaData();
 
 <ul>
 	<li><a href="https://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a>: botanical and zoological specimens,</li>
-	<li><a href="http://www.nederlandsesoorten.nl/">Nederlands Soortenregister</a><a href="http://www.nederlandsesoorten.nl/" target="_blank">:</a> Dutch species information</li>
+	<li><a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Dutch Species Register</a>: Dutch species information</li>
 	<li><a href="http://www.catalogueoflife.org" style="text-decoration:none;" target="_blank">Species 2000 &amp; ITIS Catalogue of Life</a>: Annual Checklist 2015, global species information&nbsp;</li>
 	<li><a href="http://www.natura2000.nl" style="text-decoration:none;" target="_blank">Natura 2000</a>: ESRI-files of nature reserves (Annemiek Adams)</li>
 	<li><a href="http://www.staatsbosbeheer.nl/english" style="text-decoration:none;" target="_blank">Staatsbosbeheer</a>: ESRI-files of nature reserves (Jac Hakkens)</li>
@@ -1026,7 +1027,7 @@ echo getNbaData();
 
 <p>Het BioPortal toont de kracht van de NBA. Het is een “klant” van de NBA, een voorbeeldapplicatie die de gegevens uit de NBA via een webportaal toegankelijk maakt. Via dit portaal kan iedereen, geïnteresseerde of wetenschapper, in de gegevensbronnen van Naturalis grasduinen, met simpele zoekopdrachten, via complexe queries of op basis van specifieke geografische locaties.</p>
 
-<p>Ook een aantal bijzondere collecties van Naturalis wordt in het portaal uitgelicht, en zijn via het hoofdmenu direct te benaderen.</p>
+<p>Een aantal bijzondere collecties van Naturalis wordt in het portaal uitgelicht, en zijn via het hoofdmenu "Bijzondere collecties" direct te benaderen.</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1525,8 +1526,8 @@ Bringing all information together will help distinguish facts from fables in the
 
 <ul>
 	<li><u>Nieuw</u>: BioPortal gebruikt de vernieuwde en sterk verbeterde <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> voor zoekopdrachten.</li>
-	<li><u>Nieuw</u>: <a href="dashboard">Dashboard</a> met statistieken over de Naturalis collectie.</li>
-	<li><u>Nieuw</u>: downloadbare <a href="downloads">DarwinCore archives</a> van een deel van de collectie.</li>
+	<li><u>Nieuw</u>: <a href="/dashboard">Dashboard</a> met statistieken over de Naturalis collectie.</li>
+	<li><u>Nieuw</u>: downloadbare <a href="/downloads">DarwinCore archives</a> van een deel van de collectie.</li>
 	<li><u>Nieuw</u>: NBA zoekopdrachten worden uitgevoerd met een speciaal daarvoor geschreven open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> met dezelfde functionaliteit als de <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
 	<li><u>Nieuw</u>: download afbeeldingen van specimens in de hoogste resolutie.</li>
 	<li><u>Nieuw</u>: optie om onvolkomenheden of fouten te rapporteren bij specimens.</li>
@@ -1536,7 +1537,7 @@ Bringing all information together will help distinguish facts from fables in the
 	<li><u>Verbeterd</u>: resultaten gebaseerd op "name resolution" tonen het verband tussen zoekterm en resultaat.</li>
 	<li><u>Verbeterd</u>: uitgebreid zoekformulier aangepast naar de wensen van collectiebeheerders.</li>
 	<li><u>Verbeterd</u>: "toon alle media" links voor specimen en taxon zoekopdrachten: haal met één klik alle media op voor uw zoekcriteria.</li>
-	<li><u>Verbeterd</u>: alle natuurgebieden in het <a href="geographic-search">geografisch zoekformulier</a> tonen nu resultaten.</li>
+	<li><u>Verbeterd</u>: alle natuurgebieden in het <a href="/geographic-search">geografisch zoekformulier</a> tonen nu resultaten.</li>
 	<li><u>Opgelost</u>: EN/OF zoekopdrachten produceren nu altijd betrouwbare resultaten.</li>
 </ul>
 ',
@@ -1874,7 +1875,7 @@ Bringing all information together will help distinguish facts from fables in the
       0 => array(
         'value' => '<p>On this site, you can search for multimedia, specimens (collection specimens) and taxa (species descriptions of animals, plants, fungi), fossils, minerals and rocks.</p>
 
-<p>The information will be supplied from the catalogues of <a href="https://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a> in Leiden, from the <a href="http://www.nederlandsesoorten.nl/content/english" style="text-decoration:none;" target="_blank">Nederlands Soortenregister</a> and the <a href="http://www.catalogueoflife.org/" style="text-decoration:none;" target="_blank">Catalogue of Life</a>.</p>
+<p>The information will be supplied from the catalogues of <a href="https://www.naturalis.nl/en/" style="text-decoration:none;" target="_blank">Naturalis Biodiversity Center</a> in Leiden, from the <a href="http://www.nederlandsesoorten.nl/content/english" style="text-decoration:none;" target="_blank">Dutch Species Register</a> and the <a href="http://www.catalogueoflife.org/" style="text-decoration:none;" target="_blank">Catalogue of Life</a>.</p>
 
 <p>On practically every specimen-page a PURL (Persistent Uniform Resource Locator) is present. You can cite the object described here by using this PURL. Naturalis will try to assure the permanent character of this PURL.</p>
 
@@ -1928,7 +1929,7 @@ Bringing all information together will help distinguish facts from fables in the
 
 <h3><strong>Name resolution</strong></h3>
 
-<p>The BioPortal will attempt to convert your search term to a scientific name. This will be achieved by searching through various fields in the <a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Nederlands Soortenregister</a> and the <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
+<p>The BioPortal will attempt to convert your search term to a scientific name. This will be achieved by searching through various fields in the <a href="http://www.nederlandsesoorten.nl/content/english" target="_blank">Dutch Species Register</a> and the <a href="http://www.catalogueoflife.org/" target="_blank">Catalogue of Life</a>.</p>
 
 <p>1. &nbsp;&nbsp;&nbsp;Scientific name<br />
 ○ &nbsp;&nbsp;&nbsp;&nbsp;For example: <em>“Rattus norvegicus”</em><br />

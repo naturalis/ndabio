@@ -353,6 +353,76 @@ function feature_bioportal_nodes_menus_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_featured_content_en_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_featured_content_en_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_featured_content_nl_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_featured_content_nl_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_featured_content_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_featured_content_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_featured_content_und_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_featured_content_und_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_help_en_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_help_en_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_help_nl_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_help_nl_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_help_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_help_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_help_und_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_help_und_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_page_en_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_page_en_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_page_nl_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_page_nl_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_naturalis_page_pattern';
   $strongarm->value = '[node:title]';
   $export['pathauto_node_naturalis_page_pattern'] = $strongarm;
@@ -360,9 +430,44 @@ function feature_bioportal_nodes_menus_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_page_und_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_page_und_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_service_menu_page_en_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_service_menu_page_en_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_service_menu_page_nl_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_service_menu_page_nl_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_naturalis_service_menu_page_pattern';
   $strongarm->value = '[node:title]';
   $export['pathauto_node_naturalis_service_menu_page_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_naturalis_service_menu_page_und_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_naturalis_service_menu_page_und_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_ndabio_header_image_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_ndabio_header_image_pattern'] = $strongarm;
 
   return $export;
 }
