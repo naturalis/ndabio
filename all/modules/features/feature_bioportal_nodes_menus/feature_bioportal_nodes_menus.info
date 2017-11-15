@@ -1,7 +1,7 @@
 name = Feature - Bioportal nodes & menus
 core = 7.x
 package = Bioportal
-version = 7.x-1.1Leontien
+version = 7.x-1.1Marie
 dependencies[] = feature_bioportal_controller
 dependencies[] = features
 dependencies[] = menu

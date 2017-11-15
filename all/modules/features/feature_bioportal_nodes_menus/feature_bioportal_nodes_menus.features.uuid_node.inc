@@ -58,7 +58,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'NBA Import',
+  'title' => 'NBAImport',
   'log' => '',
   'status' => 1,
   'comment' => 0,
@@ -772,7 +772,7 @@ echo getNbaData();
   'user_uuid' => '3f7b751f-de9b-4b15-b939-437e11ff7ae7',
 );
   $nodes[] = array(
-  'title' => 'NBA Import',
+  'title' => 'NBAImport',
   'log' => '',
   'status' => 1,
   'comment' => 0,
