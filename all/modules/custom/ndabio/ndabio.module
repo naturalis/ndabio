@@ -218,7 +218,7 @@ function ndabio_advanced_taxonomysearch () {
 										$options = _setAdvancedSelect($catitem->name, $catitem->field_ndavalues['und'][0]['safe_value']);
 										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = [
 											'#type' => 'select',
-											'#title' => _wrap_label($help, $morelabel),
+											'#title' => _wrap_label($help, $morelabel . '<span class="icon-help advanced-label-help"></span>'),
 											'#options' => $options,
 											'#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? 
 												$_SESSION['nbaSearch']["{$catitem->name}"] : "",
@@ -230,7 +230,7 @@ function ndabio_advanced_taxonomysearch () {
 									else {
 										$form[$sysname][$childsysname][$subchildsysname][$subchild->name][$catitem->name] = array(
 											'#type' => 'textfield',
-											'#title' => _wrap_label($help, $morelabel),
+											'#title' => _wrap_label($help, $morelabel . '<span class="icon-help advanced-label-help"></span>'),
 											'#default_value' => (!empty($_SESSION['nbaSearch']["{$catitem->name}"]) && $loadold) ? 
 												$_SESSION['nbaSearch']["{$catitem->name}"] : "",
 											'#required' => FALSE,
@@ -987,10 +987,10 @@ function _getAdvancedFieldOperator ($field) {
 /**
  * Should value of advanced select be split by space or not?
  * 
- * Default: 'false'
+ * Default: false
  * 
  * @param string $field
- * @return string
+ * @return boolean
  */
 function _getAdvancedFieldSplitInfo ($field) {
 	$tmp = explode('_', $field);
@@ -1005,9 +1005,9 @@ function _getAdvancedFieldSplitInfo ($field) {
 		$service = 'taxon';
 	}
 	if (isset(_nbaAdvancedSearchExceptions()[$service][$field])) {
-		return var_export(_nbaAdvancedSearchExceptions()[$service][$field]['split'], true);
+		return true;
 	}
-	return 'false';
+	return false;
 }
 
 /**
@@ -1026,12 +1026,12 @@ function _setHelpText ($field, $description, $label) {
 	}
 	$output .= t('The search term') . ' ';
 	switch (_getAdvancedFieldSplitInfo($field)) {
-		case 'true':
+		case true:
 			$output .= t('is split into parts on any spaces');
 			break;
-		case 'false':
+		default:
 			$output .= t('is used literally, including any spaces');
-			break;
+		break;
 	}
 	
 	$splitTerm = t('one or more of the search term parts are');
@@ -1040,11 +1040,6 @@ function _setHelpText ($field, $description, $label) {
 		case 'EQUALS':
 		case 'EQUALS_IC':
 			$output .= t(', and is matched against the exact value of field "%s"');
-			$output = sprintf($output, $label);
-			break;
-		case 'STARTS_WITH':
-		case 'STARTS_WITH_IC':
-			$output .= t(', and is matched against the start of field "%s"');
 			$output = sprintf($output, $label);
 			break;
 		case 'MATCHES':
@@ -1060,6 +1055,12 @@ function _setHelpText ($field, $description, $label) {
 			$output = sprintf($output, _nbaMinContainsStringSize(), _nbaMaxContainsStringSize(), 
 				$label, (_getAdvancedFieldSplitInfo($field) == 'true' ? $splitTerm : t('the term')));
 			break;
+		case 'STARTS_WITH':
+		case 'STARTS_WITH_IC':
+		default:
+			$output .= t(', and is matched against the start of field "%s"');
+			$output = sprintf($output, $label);
+		break;
 	}
 	return $output .= '.';
 }
