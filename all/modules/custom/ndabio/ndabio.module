@@ -1257,13 +1257,24 @@ function _getStoredGeoShape ($jsonEncoded = false) {
     }
 	if (isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) &&
 		$_SESSION['nbaSearch']['gid'] != -1) {
-    	$client = _initNbaClient();
-    	$shape = $client->getGeoJsonForGid(_setNbaGid($_SESSION['nbaSearch']['gid']));
-    	_addDebugMessage('get geoShape for ' . _setNbaGid($_SESSION['nbaSearch']['gid']), 
-    		'[getGeoJsonForGid method does not use QuerySpec]');
-    	return $jsonEncoded ? json_encode($shape) : $shape;
-    }
-    return -1;
+    	return  _getGeoShapeForGeoId($_SESSION['nbaSearch']['gid'], $jsonEncoded);
+	}
+	return -1;
+}
+
+/**
+ * Get geojson for given NBA geo id
+ * 
+ * @param string $id
+ * @param boolean $jsonEncoded
+ * @return unknown
+ */
+function _getGeoShapeForGeoId ($id, $jsonEncoded = false) {
+	$client = _initNbaClient();
+	$shape = $client->getGeoJsonForGid(_setNbaGid($id));
+	_addDebugMessage('get geoShape for ' . _setNbaGid($id), 
+		'[getGeoJsonForGid method does not use QuerySpec]');
+	return $jsonEncoded ? json_encode($shape) : $shape;
 }
 
 /**

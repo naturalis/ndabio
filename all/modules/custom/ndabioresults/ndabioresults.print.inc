@@ -1017,7 +1017,9 @@ function _printSpecimensMap ($data) {
     );
     drupal_add_js("var str_base_path = '" . _setBasePath() . "';", 'inline');
     drupal_add_js("var specimenMarkers = " . json_encode($data['results']) .';', 'inline');
-    drupal_add_js("var geoShape = " . _getStoredGeoShape() .';', 'inline');
+	drupal_add_js("var geoShape = " . $data['geoJson'] .';', 'inline');
+
+    
     if (!empty(_getStoredMapCenter())) {
         drupal_add_js('var storedMapCenter = "' . _getStoredMapCenter() . '";', 'inline');
     }

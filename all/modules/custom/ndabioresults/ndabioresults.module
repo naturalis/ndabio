@@ -1514,6 +1514,16 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	_setGenericDetailPageBackLink('specimen', $search);
 	
+	
+	// Set geoShape
+    if (!empty(_getStoredGeoShape()) && _getStoredGeoShape() != -1) {
+    	$data->geoJson = _getStoredGeoShape();
+    } else if (isset($terms['gid'])) {
+    	$data->geoJson = _getGeoShapeForGeoId($terms['gid']);
+    } else if (isset($terms['geoShape'])) {
+    	$data->geoJson = $terms['geoShape'];
+    }
+ 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
 		_setErrorMessage('NBA exception: ' . $data->exception);

@@ -161,13 +161,15 @@ function initializeSpecimens() {
 		};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-	feature = {
-		type: "Feature",
-		geometry: geoShape
-	};
-	map.data.addGeoJson(feature);
-	map.data.setStyle(mapStyle);
-	zoom(map);
+	if (typeof geoShape != 'undefined' && geoShape != -1) {
+		feature = {
+			type : "Feature",
+			geometry : geoShape
+		};
+		map.data.addGeoJson(feature);
+		map.data.setStyle(mapStyle);
+		zoom(map, false);
+	}
 
 	var oms = new OverlappingMarkerSpiderfier(map, {
 		markersWontMove: true,

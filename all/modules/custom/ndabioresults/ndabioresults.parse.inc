@@ -1006,6 +1006,8 @@ function _getMultimediaSpecimenUnitId ($row, $hits = []) {
 function _parseSpecimensMap ($data) {
 //p($data);
 	$output['total'] = $data->resultSet[0]->item->specimenCount;
+	$output['geoJson'] = $data->geoJson;
+
 	$d['acceptedNames'] = _getSpecimenAcceptedNames($data->resultSet[0]);
 
 	foreach ($data->resultSet[0]->item->specimens as $i => $specimen) {
@@ -1034,7 +1036,7 @@ function _parseSpecimensMap ($data) {
 		
 		$output['results'][] = $d;
 	}
-
+	
 	$name = _setSpecimenScientificName($d);
 	for ($i = 0; $i < count($output['results']); $i++) {
 		unset($output['results'][$i]['nonAcceptedNames'], $output['results'][$i]['acceptedNames']);
