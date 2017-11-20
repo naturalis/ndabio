@@ -683,6 +683,7 @@ function _getTaxonMultimedia ($object) {
 		->setSize(5);
 	_addDebugMessage('taxon multimedia', $query);
 	$data = json_decode($client->setQuerySpec($query)->query());
+//p($data);		
 	if ($data && $data->totalSize > 0) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
@@ -695,9 +696,9 @@ function _getTaxonMultimedia ($object) {
 			$output['items'][$i]['id'] = $media->item->id;
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
 			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
-			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
-				$media->item->sourceSystem->name : null;
-			$output['items'][$i]['caption'] = _getMultimediaSpecimenUnitId($media);
+			$output['items'][$i]['hits'] = isset($media->item->associatedSpecimenReference) ?
+				_getMultimediaSpecimenUnitId($media) : $media->item->caption;
+			$output['items'][$i]['caption'] = _getSpecimenScientificNames('multimedia', $media);
 			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'multimedia/' . urlencode($media->item->unitID) . '/') .
 				'&from=' . (max(0, $i - 1)) . 
@@ -749,6 +750,7 @@ function _getSpecimenMultimedia ($object) {
 	$scientificName = $names[0]['name'];
 	
 	$data = json_decode($client->setQuerySpec($query)->query());
+//p($data);
 	if ($data && $data->totalSize > 0) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
@@ -760,8 +762,7 @@ function _getSpecimenMultimedia ($object) {
 			$output['items'][$i]['id'] = $media->item->id;
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
 			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
-			$output['items'][$i]['hits'] = isset($media->item->sourceSystem->name) ? 
-				$media->item->sourceSystem->name : null;
+			$output['items'][$i]['hits'] = $media->item->unitID;
 			$output['items'][$i]['caption'] = $scientificName;
 			$output['items'][$i]['url'] = _setBasePath() . 'multimedia/' . 
 				urlencode($media->item->unitID) . '/associatedSpecimenReference=' . 
