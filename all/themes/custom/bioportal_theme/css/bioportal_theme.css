@@ -836,6 +836,7 @@ th .icon-sort_sortable {
 #sort-options {
 	width: auto;
 	float: right;
+	padding-right: 20px;
 }
 
 .sort-option-selected {
