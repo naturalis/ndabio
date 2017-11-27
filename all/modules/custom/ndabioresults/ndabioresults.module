@@ -1372,7 +1372,7 @@ function _nba_specimen_result_callback ($search = false) {
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
-			_setErrorMessage('NBA exception: ' . $data->exception);
+			_setErrorMessage('NBA ' . $data->exception->type);
 			return _printOops();
 		}
 	
