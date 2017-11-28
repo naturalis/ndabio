@@ -25013,6 +25013,15 @@ Your account on [site:name] has been canceled.
     'plural' => 0,
   );
   $translatables[] = t('Updated field %label field settings.', array(), array('context' => ''));
+  $translations['nl:default']['8d7fb1c7c65f0d119eaa630106bda157'] = array(
+    'source' => 'Please modify your search',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&--more--=&--more--=&--more--=&--more--=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&--more--=&--more--=&--more--=&--more--=&--more--=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&--more--=&--more--=&--more--=&--more--=&op=Zoeken&form_build_id=form-Uu8syir_2JEEGN98WBZWy-xEfa418b0uBRKCLmoVjho&form_token=m3f0xvdpRPpAUYZwLYwAas4N-GHoKTcHrS9-uiRF-24&form_id=ndabio_advanced_taxonomysearch&gid=&location=&category=&geoShape=',
+    'translation' => 'Pas AUB uw zoekopdracht aan',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Please modify your search', array(), array('context' => ''));
   $translations['nl:default']['8d842d3193b5335e5733964d44b2c445'] = array(
     'source' => 'Filter log messages',
     'context' => '',
