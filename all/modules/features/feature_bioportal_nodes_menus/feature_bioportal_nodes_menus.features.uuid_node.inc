@@ -654,10 +654,10 @@ echo getNbaData();
         'value' => '<p>v2.0:</p>
 
 <ul>
-	<li><u>New</u>: BioPortal uses the updated and much improved <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> for data queries.</li>
+	<li><u>New</u>: BioPortal uses the updated and much improved <a href="http://api.biodiversitydata.nl/v2" target="_blank">NBA v2.0</a> for data queries.</li>
 	<li><u>New</u>: <a href="/dashboard">Dashboard</a> demonstrating statistics of the Naturalis collection.</li>
 	<li><u>New</u>: downloadable <a href="/downloads">DarwinCore archives</a> of selected collections.</li>
-	<li><u>New</u>: NBA queries are handled by a dedicated, open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> that mirrors the functionality of the <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
+	<li><u>New</u>: NBA queries are handled by a dedicated, open source <a href="https://github.com/naturalis/bioportal-php-client" target="_blank">PHP client</a> that mirrors the functionality of the <a href="https://github.com/naturalis/naturalis_data_api" target="_blank">NBA Java client</a>.</li>
 	<li><u>New</u>: download images of specimens in the highest possible resolution.</li>
 	<li><u>New</u>: provide feedback for inaccurate or erroneous specimen data.</li>
 	<li><u>Improved</u>: specimen queries in the advanced search form have been merged into a single form.</li>
@@ -746,7 +746,7 @@ Darwin Core Archive (DwC-A of DwCA) is een biodiversiteitsinformatica datastanda
 </p>
 
 <p>
-In dit geval bevatten de bestanden de specimen- en multimediagegevens van de collectie uit de betreffende bestandsnaam, met uitzondering van het \'nsr\'-bestand, dat namen, taxonomie en voorkeursstatus bevat voor alle soorten uit het <a href = "http : //www.nederlandsesoorten.nl/ "target =" _ blank ">Nederlands Soortenregister</a>.
+In dit geval bevatten de bestanden de specimen- en multimediagegevens van de collectie uit de betreffende bestandsnaam, met uitzondering van het \'nsr\'-bestand, dat namen, taxonomie en voorkeursstatus bevat voor alle soorten uit het <a href="http://www.nederlandsesoorten.nl/" target="_blank">Nederlands Soortenregister</a>.
 </p>
 
 <p>
@@ -1525,10 +1525,10 @@ Bringing all information together will help distinguish facts from fables in the
         'value' => '<p>v2.0:</p>
 
 <ul>
-	<li><u>Nieuw</u>: BioPortal gebruikt de vernieuwde en sterk verbeterde <a href="http://api.biodiversitydata.nl/v2">NBA v2.0</a> voor zoekopdrachten.</li>
-	<li><u>Nieuw</u>: <a href="/dashboard">Dashboard</a> met statistieken over de Naturalis collectie.</li>
-	<li><u>Nieuw</u>: downloadbare <a href="/downloads">DarwinCore archives</a> van een deel van de collectie.</li>
-	<li><u>Nieuw</u>: NBA zoekopdrachten worden uitgevoerd met een speciaal daarvoor geschreven open source <a href="https://github.com/naturalis/bioportal-php-client">PHP client</a> met dezelfde functionaliteit als de <a href="https://github.com/naturalis/naturalis_data_api">NBA Java client</a>.</li>
+	<li><u>Nieuw</u>: BioPortal gebruikt de vernieuwde en sterk verbeterde <a href="http://api.biodiversitydata.nl/v2" target="_blank">NBA v2.0</a> voor zoekopdrachten.</li>
+	<li><u>Nieuw</u>: <a href="/dashboard?language=nl">Dashboard</a> met statistieken over de Naturalis collectie.</li>
+	<li><u>Nieuw</u>: downloadbare <a href="/downloads?language=nl">DarwinCore archives</a> van een deel van de collectie.</li>
+	<li><u>Nieuw</u>: NBA zoekopdrachten worden uitgevoerd met een speciaal daarvoor geschreven open source <a href="https://github.com/naturalis/bioportal-php-client" target="_blank">PHP client</a> met dezelfde functionaliteit als de <a href="https://github.com/naturalis/naturalis_data_api" target="_blank">NBA Java client</a>.</li>
 	<li><u>Nieuw</u>: download afbeeldingen van specimens in de hoogste resolutie.</li>
 	<li><u>Nieuw</u>: optie om onvolkomenheden of fouten te rapporteren bij specimens.</li>
 	<li><u>Verbeterd</u>: zoekopdrachten voor specimens in uitgebreid zoeken samengevoegd tot één formulier.</li>
@@ -1537,7 +1537,7 @@ Bringing all information together will help distinguish facts from fables in the
 	<li><u>Verbeterd</u>: resultaten gebaseerd op "name resolution" tonen het verband tussen zoekterm en resultaat.</li>
 	<li><u>Verbeterd</u>: uitgebreid zoekformulier aangepast naar de wensen van collectiebeheerders.</li>
 	<li><u>Verbeterd</u>: "toon alle media" links voor specimen en taxon zoekopdrachten: haal met één klik alle media op voor uw zoekcriteria.</li>
-	<li><u>Verbeterd</u>: alle natuurgebieden in het <a href="/geographic-search">geografisch zoekformulier</a> tonen nu resultaten.</li>
+	<li><u>Verbeterd</u>: alle natuurgebieden in het <a href="/geographic-search?language=nl">geografisch zoekformulier</a> tonen nu resultaten.</li>
 	<li><u>Opgelost</u>: EN/OF zoekopdrachten produceren nu altijd betrouwbare resultaten.</li>
 </ul>
 ',
