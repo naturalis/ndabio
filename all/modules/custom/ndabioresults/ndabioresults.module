@@ -145,6 +145,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	$service = _getSpecimenService();
 	$data = _getSpecimenByUnitId($id);
 	if (!$data) {
+		_setErrorMessage($data->exception);
 		return _printOops();
 	}
 	
@@ -184,19 +185,24 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
-			_setErrorMessage('NBA exception: ' . $set->exception);
+			_setErrorMessage($set->exception);
 			return _printOops();
 		}
+		
 		_setGenericDetailPageBackLink('specimen', $search);
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation(
-			$service, 
-			$data, 
-			$search, 
-			$set, 
-			$id, 
-			$terms['from']
-		);
+		
+		// Only show navigation if this is available
+		if ($set->totalSize > 0) {
+			// Extract data for current id, plus ids of previous and next result
+			$data = _addDetailPageNavigation(
+				$service, 
+				$data, 
+				$search, 
+				$set, 
+				$id, 
+				$terms['from']
+			);
+		}
 	}
 	
 	else if ($scientificNameGroup && $search) {
@@ -221,14 +227,14 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		_addDebugMessage('navigation query', _getTimer($timer));
 		
-		
 		_setGenericDetailPageBackLink('specimen', $search);
 		
 		// We got an error; go oops
 		if (isset($set->exception)) {
-			_setErrorMessage('NBA exception: ' . $set->exception);
+			_setErrorMessage($set->exception);
 			return _printOops();
 		}
+		
 		// Set back link -- from taxon detail
 		if (_getReferredSearch($search)) {
 			_setBackLink(
@@ -237,15 +243,19 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 				'Back to taxon'
 			);
 		}
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addSpecimenDetailPageNavigation(
-			$data,
-			$search, 
-			$set, 
-			$id, 
-			$specimensFrom, 
-			$scientificNameGroup
-		);
+
+		// Only show navigation if this is available
+		if ($set->totalSize > 0) {
+			// Extract data for current id, plus ids of previous and next result
+			$data = _addSpecimenDetailPageNavigation(
+				$data,
+				$search, 
+				$set, 
+				$id, 
+				$specimensFrom, 
+				$scientificNameGroup
+			);
+		}
 	}
 
 	// Get map when geo search has been used
@@ -351,10 +361,10 @@ function _getSpecimenByUnitId ($unitId = false) {
 	_addDebugMessage('specimen detail', $query);
 	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return false;
 	}
-	return $data->resultSet[0]->item;	
+	return isset($data->resultSet[0]->item) ? $data->resultSet[0]->item : false;	
 }
 
 function _nba_multimedia_callback ($id = false, $search = false) {
@@ -378,15 +388,17 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	
 	// Fetch data
 	$data = json_decode($client->setQuerySpec($query)->query());
+	if (isset($data->exception)) {
+		_setErrorMessage($data->exception);
+		return _printOops();
+	// Nothing?!
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
+	}
 	
 	_addDebugMessage('multimedia query', _getTimer($timer));
 	
-	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
-		return _printOops();
-	}
 	$data = $data->resultSet[0]->item;
-	
 	$data = _setMultimediaAssociatedObject($data);
 	
 	if ($search) {
@@ -404,10 +416,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$set = json_decode($client->setQuerySpec($query)->query());
 		_addDebugMessage('navigation query', _getTimer($timer));
 		
-		
 		// We got an error; go oops
 		if (isset($set->exception)) {
-			_setErrorMessage('NBA exception: ' . $set->exception);
+			_setErrorMessage($set->exception);
 			return _printOops();
 		}
 		// Referred search; replace generic back link!
@@ -426,7 +437,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 			_setBackLink($backLink, 'Back to specimen');
 		}
 		// Extract data for current id, plus ids of previous and next result
-		$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+		if ($set->totalSize > 0) {
+			$data = _addDetailPageNavigation($service, $data, $search, $set, $id, $terms['from']);
+		}
 	}	
 	
 	else {
@@ -624,26 +637,25 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		$set = json_decode($client->setQuerySpec($query)->groupByScientificName());
 		_addDebugMessage('navigation query', _getTimer($timer));
 				
-//die(p($set));
-		
 		// We got an error; go oops
 		if (isset($set->exception)) {
-			_setErrorMessage('NBA exception: ' . $data->exception);
+			_setErrorMessage($data->exception);
 			return _printOops();
 		}
 		// Generic back link (will be overridden for referred search)
 		_setGenericDetailPageBackLink('taxon', $search);
-		// Extract data for current id, plus ids of previous and next result
-		$data = _addTaxonDetailPageNavigation(
-			$data, 
-			$search, 
-			$set, 
-			$data->name, 
-			$terms['from']
-		);
-    }
-    
-	else {
+		
+		if ($set->totalSize > 0) {
+			// Extract data for current id, plus ids of previous and next result
+			$data = _addTaxonDetailPageNavigation(
+				$data, 
+				$search, 
+				$set, 
+				$data->name, 
+				$terms['from']
+			);
+		}
+    } else {
 		_setDetailPageNoSearchBackLink();
 		$data = _addDetailPageNavigation($service, $data);
 	}
@@ -834,7 +846,7 @@ function _getTaxonByName ($name) {
     $query->addCondition($condition)->setSpecimensSize(5);
     $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return false;
 	}
 	$data = _getTaxonDetails($data);
@@ -1210,15 +1222,12 @@ function _containsOperatorAllowed ($value = '') {
 
 function _nba_taxon_result_callback ($search = false) {
     $service = 'names.taxa';
-	
 	$client = _setNbaClient($service, true);
-	
     $terms = _getQueryTerms($service, $search);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     _setTitle($headTitle, '');   
-    
     
     // No search terms; die with grace
     if (!$terms) {
@@ -1244,8 +1253,10 @@ function _nba_taxon_result_callback ($search = false) {
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return _printOops();
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
 	}
 	
 	_setGenericResultPageBackLink();
@@ -1256,19 +1267,16 @@ function _nba_taxon_result_callback ($search = false) {
 }
 
 
-function _nba_multimedia_result_callback ($search = false) {
-    global $base_path;
+function _nba_multimedia_result_callback ($search = false) {    global $base_path;
 	
     $service = 'multimedia';
     $terms = _getQueryTerms($service, $search);
-    
     $client = _setNbaClient($service, true);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');   
-    
     
     // No search terms; die with grace
     if (!$terms) {
@@ -1291,14 +1299,14 @@ function _nba_multimedia_result_callback ($search = false) {
 	// Fetch data set
 	$data = json_decode($client->setQuerySpec($query)->query());
 	_addDebugMessage($service . ' query', _getTimer($timer));
-	
-	
 	_setGenericResultPageBackLink();
 		
 	// We got an error; go oops
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return _printOops();
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
 	}
 	
 	return _printDebug() . _printMultimedia(_parseMultimedia($data, ['paginator']));
@@ -1307,9 +1315,7 @@ function _nba_multimedia_result_callback ($search = false) {
 function _nba_specimen_result_callback ($search = false) {
 	
 	$service = _getSpecimenService($search);
-	
 	$terms = _getQueryTerms($service, $search);
-	
 	$client = _setNbaClient($service, true);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
@@ -1334,31 +1340,7 @@ function _nba_specimen_result_callback ($search = false) {
 	_setGenericResultPageBackLink();
 	
 	if ($service == 'names.specimens') {
-		
-		/*
-		
-		$query->setFields(
-			array_merge(_getSearchPaths($service),
-			[
-	    		'unitID',
-				'sourceSystemId',
-	    		'recordBasis',
-	    		'kindOfUnit',
-	    		'preparationType',
-	    		'assemblageID',
-				'identifications.scientificName.scientificNameGroup',
-				'identifications.taxonomicEnrichments.taxonId'
-			]	
-		));
-		
-		// Default to names alphabetical in case no sort is set
-		if (!isset($terms['groupSort'])) {
-			$query->setGroupSort('name_asc');
-		}
-		
-		*/
-		
-		
+
 		$query->setGroupFilter(_setFilterRejectEmptyGenus());
 		
 		_addDebugMessage('Specimen by taxon', $query);
@@ -1367,17 +1349,18 @@ function _nba_specimen_result_callback ($search = false) {
 		
 		// Fetch data set
 		$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
-		
 		_addDebugMessage('Specimen by taxon query', _getTimer($timer));
 		
 		// We got an error; go oops
 		if (isset($data->exception)) {
-			_setErrorMessage('NBA ' . $data->exception->type);
+			_setErrorMessage($data->exception);
 			return _printOops();
+		// No data?!
+		} else if ($data->totalSize == 0) {
+			return _printNoResults();
 		}
 	
 		$data->specimensTotal = _getSpecimensTotal($terms);
-		
 		$data = _parseSpecimensTaxon($data, ['paginator']); 
 		return _printDebug() . _printSpecimensTaxon($data);
 	
@@ -1394,9 +1377,13 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	// We got an error; go oops
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return _printOops();
+	// No data?!
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
 	}
+	
 	$data = _parseSpecimens($data, ['paginator']); 
 	return _printDebug() . _printSpecimens($data);
 	
@@ -1420,17 +1407,13 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
     $service = 'names.specimens';
 	$client = _setNbaClient($service, true);
-	
     $terms = _getQueryTerms($service, $search);
-	// Display full set on this page
 	$terms['size'] = _maxResults();
-	// Save query
 	_setQueryTerms($service, $terms);
     
     $specimensFrom = isset($terms['from']) ? $terms['from'] : 0;
 	unset($terms['size'], $terms['from']);
-    
-    
+     
     // No search terms; die with grace
     if (!$scientificNameGroup || !$terms) {
     	_setErrorMessage('Missing name group or search terms');
@@ -1439,12 +1422,8 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
     
 	// Build query
 	$query = _buildNbaQuery($service, $terms);	
-	
     $filter = new Filter();
     $filter->acceptValues([$scientificNameGroup]);
-	
-	
-	
 	$query
 		->setGroupFilter($filter)
 		->setSpecimensFrom($specimensFrom)
@@ -1463,12 +1442,13 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	_addDebugMessage('specimens of ' . ucfirst($scientificNameGroup) . ' query', _getTimer($timer));
 	
-//p($data);
-	
 	// We got an error; go oops
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return _printOops();
+	// No data?
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
 	}
 	
 	$data->specimensFrom = $specimensFrom;
@@ -1478,9 +1458,9 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 
 
 function _nba_specimen_map_result_callback ($scientificNameGroup = false, $search = false) {
-    $service = 'names.specimens';
+
+	$service = 'names.specimens';
 	$client = _setNbaClient($service, true);
-	
     $terms = _getQueryTerms($service, $search);
     $size = isset($terms['size']) ? $terms['size'] : _maxResults();
     unset($terms['size'], $terms['from']);
@@ -1497,10 +1477,8 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
     
 	// Build query
 	$query = _buildNbaQuery($service, $terms);	
-	
     $filter = new Filter();
     $filter->acceptValues([$scientificNameGroup]);
-	
 	$query
 		->setGroupFilter($filter)
 		->setSpecimensFrom(0)
@@ -1514,7 +1492,6 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 	$data = json_decode($client->setQuerySpec($query)->groupByScientificName());
 	_setGenericDetailPageBackLink('specimen', $search);
 	
-	
 	// Set geoShape
     if (!empty(_getStoredGeoShape()) && _getStoredGeoShape() != -1) {
     	$data->geoJson = _getStoredGeoShape();
@@ -1526,8 +1503,11 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
  	
 	// We got an error; go oops
 	if (isset($data->exception)) {
-		_setErrorMessage('NBA exception: ' . $data->exception);
+		_setErrorMessage($data->exception);
 		return _printOops();
+	// No results
+	} else if ($data->totalSize == 0) {
+		return _printNoResults();
 	}
 
 	return _printSpecimensMap(_parseSpecimensMap($data));
@@ -1576,7 +1556,6 @@ function _nba_general_result_callback () {
 	
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
-    //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
     _setTitle($headTitle, '');   
     $_SESSION['nbaSearch'] = $_GET;
     
@@ -2193,19 +2172,7 @@ function _nbaSimpleSearch () {
     $useNameResolution = true;
     $timeOuts = [];
     
-//p($_SESSION['nbaSearch']); die();
-	
-/*	
-    foreach ($services as $service => $querySpec) {
-    	if ($service == 'names.taxa') {
-	    	header('Content-Type: application/json');
-	    	echo $querySpec->getQuerySpec(false);
-    	}
-    }
-*/    
     $terms['term'] = $_SESSION['nbaSearch']['term'];
-    
-    
     $services['names.taxa'] = $terms;
     
     // Taxon search does not include geoShape and should 
@@ -2280,16 +2247,10 @@ function _nbaSimpleSearch () {
 		//_setQueryTerms($service);
     }
     
-    
-    
  	// Batch query
  	$timer = _setTimer();
- 
     $remoteData = $client->multiClientBatchQuery($multiQuery);
-    
-//    p($remoteData);
-		
-	$timerEnd = _getTimer($timer);
+ 	$timerEnd = _getTimer($timer);
 	
 	if ($timerEnd > _nbaTimeout()) {
 		$timeOuts[] = $timerEnd;
@@ -2360,7 +2321,6 @@ function _exceedsMaxResults ($service, $total = 1) {
 
 
 function _nbaThemeSearch () {
-
 	
 	// Delete previous search terms when performing new query
     unset($_SESSION['nbaQuery']);

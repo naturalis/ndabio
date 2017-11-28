@@ -431,8 +431,18 @@ function _getErrorMessage () {
 /**
  * Add error message to stack
  */
-function _setErrorMessage ($message) {
-	$_SESSION['nbaErrorMessage'] = $message;
+function _setErrorMessage ($message = false) {
+	// Parse NBA exceptions into message
+	if (is_object($message)) {
+		if (isset($message->message)) {
+			$output[] = $message->message;
+		}
+		if (isset($message->type)) {
+			$output[] = $message->type;
+		}
+	}
+	$_SESSION['nbaErrorMessage'] = isset($output) ?
+		implode('<br>', $output) : $message;
 }
 
 /**
