@@ -16,7 +16,7 @@ define("NBAMINSTRINGLENGTHSIMPLESEARCH", 3);
 // ES boost factor for full length simple search term (if there are more elements)
 define("NBASIMPLESEARCHFULLTERMBOOST", 2);
 // ES boost factor for exact match
-define("NBASIMPLESEARCHEXACTMATCHBOOST", 5);
+define("NBAEXACTMATCHBOOST", 5);
 
 
 

@@ -1063,10 +1063,10 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					}
 					$condition->setBoost($boostValue);
 				}
-				// Add extra condition for simple search exact match
-				if ($simpleSearch && !in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN'])) {
+				// Add extra condition for exact match
+				if (!in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN'])) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
-					$boostEquals->setBoost(NBASIMPLESEARCHEXACTMATCHBOOST);
+					$boostEquals->setBoost(NBAEXACTMATCHBOOST);
 					$condition->setOr($boostEquals);
 				}
 				// First condition

@@ -206,7 +206,7 @@ function feature_bioportal_nodes_menus_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>The Siebold Collection of natural history objects includes a total of 200 mammals, 900 birds, 750 fishes, 170 reptiles, over 5,000 invertebrates, 2,000 different species of plants and 12,000 herbarium specimens. Many of these are stored in Naturalis\' collection depots and available in the BioPortal. The material was collected by Von Siebold&nbsp;between 1823 and 1829&nbsp;during his stay in Japan. The Siebold Collection was the first major collection of Japanese specimen in Europe and contained many species of plants and animals that were unknown in Europe at the time. <a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="text-decoration:none;" target="_blank"><u>Read more</u></a> [Dutch]</p>
+        'value' => '<p>The Siebold Collection of natural history objects includes a total of 200 mammals, 900 birds, 750 fishes, 170 reptiles, over 5,000 invertebrates, 2,000 different species of plants and 12,000 herbarium specimens. Many of these are stored in Naturalis\' collection depots and available in the BioPortal. The material was collected by Von Siebold&nbsp;between 1823 and 1829&nbsp;during his stay in Japan. The Siebold Collection was the first major collection of Japanese specimen in Europe and contained many species of plants and animals that were unknown in Europe at the time. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" target="_blank">More information</a> [Dutch]</p>
 ',
         'summary' => '',
         'format' => 'full_html',
@@ -1571,7 +1571,7 @@ Bringing all information together will help distinguish facts from fables in the
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>De Siebold Collectie van natuurhistorische objecten omvat in totaal 200 zoogdieren, 900 vogels, 750 vissen, 170 reptielen, meer dan 5000 ongewervelde dieren, 2000 verschillende soorten planten en 12.000 herbariumexemplaren. Een groot deel hiervan bevindt zich in de opslagtoren van Naturalis, een deel hiervan is ook gedigitaliseerd en beschikbaar in het BioPortal. Von Siebold verzamelde het materiaal tussen 1823 en 1829 tijdens zijn verblijf in Japan. De collectie was de eerste grote verzameling van Japanse specimen in Europa en bevatte veel tot dan toe onbekende dier- en plantensoorten.&nbsp;<a href="https://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" style="line-height: 20.7999992370605px; text-decoration: none;" target="_blank">Lees meer</a></p>
+        'value' => '<p>De Siebold Collectie van natuurhistorische objecten omvat in totaal 200 zoogdieren, 900 vogels, 750 vissen, 170 reptielen, meer dan 5000 ongewervelde dieren, 2000 verschillende soorten planten en 12.000 herbariumexemplaren. Een groot deel hiervan bevindt zich in de opslagtoren van Naturalis, een deel hiervan is ook gedigitaliseerd en beschikbaar in het BioPortal. Von Siebold verzamelde het materiaal tussen 1823 en 1829 tijdens zijn verblijf in Japan. De collectie was de eerste grote verzameling van Japanse specimen in Europa en bevatte veel tot dan toe onbekende dier- en plantensoorten. <a href="http://www.naturalis.nl/nl/kennis/collectie/Verhalen-uit-Naturalis/siebold-de-collectie/" target="_blank">Meer informatie</a></p>
 ',
         'summary' => '',
         'format' => 'full_html',
