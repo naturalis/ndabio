@@ -472,7 +472,7 @@ function ndabio_menu () {
 		'description' => 'Configuration for Naturalis module',
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('ndabio_config_form'),
-		'access arguments' => array('access administration pages'),
+		'access arguments' => array('administration site configuration'),
 		'type' => MENU_NORMAL_ITEM 
 	);
 	$items['search/geosearch'] = array(
