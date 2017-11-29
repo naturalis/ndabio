@@ -1580,7 +1580,7 @@ function _printValue ($value = '') {
  * @return string
  */
 function _printDebug () {
-    if ((user_access('administer site configuration') || _nbaDebug() == 1) && !empty(_getDebug())) {
+    if ((user_is_logged_in() || _nbaDebug() == 1) && !empty(_getDebug())) {
 	    drupal_add_js(
 	        "jQuery(function() { 
 				jQuery('#nba-debug-link').click(function(){ 
