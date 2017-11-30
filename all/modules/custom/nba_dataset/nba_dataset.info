@@ -1,0 +1,6 @@
+name = NBA Dataset
+description = "Naturalis dataset node"
+version = "7.x-0.1"
+core = 7.x
+dependencies[] = php
+package = "Bioportal"

@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Bioportal Header Images feature.
- */
-
-include_once 'bioportal_header_images.features.inc';

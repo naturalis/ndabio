@@ -1,0 +1,70 @@
+<?php
+
+include_once( "dashboard_collector.php" );
+
+/**
+ * Implements hook_init().
+ */
+function nba_dashboard_init()
+{
+  $module_path = drupal_get_path('module', 'nba_dashboard');
+
+  if('dashboard' === arg(0)) {
+    drupal_add_js($module_path . '/nba_dashboard.js');
+  
+    drupal_add_js($module_path . '/js/nba-dashboard.js');
+    drupal_add_js($module_path . '/js/inline_templates.js');
+    drupal_add_js($module_path . '/js/d3.v3.min.js');
+    drupal_add_js($module_path . '/js/Donut3D.js');
+    drupal_add_js($module_path . '/js/topojson.v1.min.js');
+
+    drupal_add_css($module_path . '/nba_dashboard.css');
+    drupal_add_css($module_path . '/css/style.css');
+    drupal_add_css($module_path . '/css/inline_templates.css');
+  }
+}
+
+/* 
+ * Implements hook_menu()
+ */
+function nba_dashboard_menu()
+{
+  $items = array();
+
+  $items['dashboard'] = array(
+    'title' => 'Dashboard Page',
+    'description' => 'NDS dashboard',
+    'page callback' => 'basic_dashboard',
+    'access arguments' => array('access content'),
+    );
+
+  return $items;
+}
+
+function basic_dashboard()
+{
+	$page = [
+		'#type' => 'markup',
+		'#prefix' => '<div id="">',
+		'#suffix' => '</div>',
+		'#markup' => getCollectorData( '145.136.242.167:9200' )
+		//'#markup' => t('Available data sets are:') . '<br /><br />' . getNbaData() . '<br />' ,
+	];
+
+	return $page;
+
+}
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+	
+

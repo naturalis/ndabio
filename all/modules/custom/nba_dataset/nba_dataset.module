@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * @file
+ * Naturalis dataset display 
+ * @version 0.1
+ * @author Naturalis
+ * @package Bioportal
+ */
+
+/**
+ * Module exists because of BIOPORVTWO-223
+ * Requirement: manually create a symbolic link at:
+ *   /var/www/drupal/sites/default/files/dwca-downloads
+ * pointing to the dwca downloads (/var/opt/dwca-downloads/downloads/)
+ */
+
+/* System folder containing the downloadable files (zip format) */
+define("NBADATAFOLDER", '/var/www/drupal/sites/default/files/dwca-downloads/');
+
+/* Path used in the URL (relative to site root) to the downloadable files */
+define("NBADOWNLOADFOLDER", "/sites/default/files/dwca-downloads/");
+
+/**
+ * Implements hook_menu().
+ *
+ * Provides a default page with the datasets.
+ */
+function nba_dataset_menu() {
+  $items['nba/datasets'] = array(
+    'page callback' => 'nba_dataset_page',
+    'access callback' => TRUE,
+    'title' => t('Data sets'),
+  );
+  return $items;
+}
+
+/**
+ * Create datasets page.
+ */
+function nba_dataset_page() {
+  $page = array(
+    '#type' => 'markup',
+    '#markup' => t('Available data sets are:') . '<br /><br />' . getNbaData() . '<br />' ,
+  );
+  return $page;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function nba_dataset_block_info() {
+  $blocks['nba_dataset'] = array(
+    'info' => t('Dataset'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+ 
+/**
+ * Implements hook_block_view().
+ */
+function nba_dataset_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'nba_dataset':
+      $block['subject'] = t('Datesets');
+      $block['content'] = getNbaData();
+      break;
+  }
+  return $block;
+}
+
+
+
+/**
+ * Help functions
+ */
+function getNbaData() {
+  $data = "<ul>";
+  foreach(glob(NBADATAFOLDER . '*.zip') as $file) {
+    $data .= "<li id='file'>" . 
+               "<a href='" . NBADOWNLOADFOLDER . basename($file) . "'>"  . 
+	         basename($file) . 
+               "</a> " . 
+               "(" . formatBytes(filesize($file)) . ")" .
+             "</li>"; 
+  }
+  $data .= "</ul>";
+  return $data;
+}
+
+function formatBytes($bytes, $precision = 2) { 
+  $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+
+  $bytes = max($bytes, 0); 
+  $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+  $pow = min($pow, count($units) - 1); 
+  $bytes /= pow(1024, $pow);
+
+  return round($bytes, $precision) . ' ' . $units[$pow]; 
+} 
+
+

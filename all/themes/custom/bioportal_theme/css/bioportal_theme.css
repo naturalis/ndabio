@@ -26,8 +26,10 @@
 body.thematic-search .title {
   display: none; }
 
-body.page-nba-result h1#page-title {
+body.page-result h1#page-title {
   display: none; }
+
+article.node-naturalis-page {width: 554px; }
 
 #ie8 {
   display: none;
@@ -76,6 +78,11 @@ button, .button {
 
 .background-gray-9 {
   background-color: #333333; }
+
+form#ndabio-advanced-taxonomysearch div.description {
+  color: #4D4D4D;
+  font-size: 13px;
+  margin-top: -10px;}
 
 #naturalis-header #title-and-slogan {
   position: relative;
@@ -280,16 +287,16 @@ html.js fieldset.collapsible .fieldset-legend {
 #edit-extended fieldset fieldset.collapsible .fieldset-legend {
   margin: 0;
   padding: 0; }
-#edit-extended fieldset fieldset.collapsible a {
+#edit-extended fieldset fieldset.collapsible a.fieldset-title {
   color: #ef6d14;
   text-transform: lowercase;
   font-weight: 400; }
-  #edit-extended fieldset fieldset.collapsible a:after {
+  #edit-extended fieldset fieldset.collapsible a.fieldset-title:after {
     font-family: 'App2';
     position: relative;
     top: 3px;
     content: ""; }
-#edit-extended fieldset fieldset.collapsible.collapsed a:after {
+#edit-extended fieldset fieldset.collapsible.collapsed a.fieldset-title:after {
   content: ""; }
 
 #edit-submit-bottom {
@@ -313,13 +320,29 @@ html.js fieldset.collapsible .fieldset-legend {
     color: #ef6d14;
     border-color: #ef6d14; }
 
-.to-help, .search-explanation {
+
+
+.to-help, .search-explanation, .search-explanation a {
   color: #ffffff;
-  border-bottom: 1px dotted #b2b1a8;
   cursor: help !important;
   transition: color 300ms; }
-  .to-help:hover, .search-explanation:hover {
+ 
+.to-help:hover, .search-explanation:hover {
     color: #009ee0; }
+
+.to-help {
+  border-bottom: 1px dotted #b2b1a8;
+  cursor: pointer !important;
+}
+.form-type-textfield label {
+  cursor: default !important;
+}
+.form-type-radios label {
+  cursor: default !important;
+}
+.form-type-radios input {
+  cursor: pointer !important;
+}
 
 .row.collapse .geo-search-label {
   height: 50px;
@@ -420,7 +443,7 @@ html.js fieldset.collapsible .fieldset-legend {
   .page-nba-result main .show-all, .page-explore main .show-all {
     margin-left: 8.33333%; }
 .page-nba-result .column-first, .page-explore .column-first {
-  width: 30%; }
+  width: 40%; }
 .page-nba-result .column-match, .page-explore .column-match {
   width: 8%; }
 .page-nba-result .result-query, .page-explore .result-query {
@@ -531,9 +554,11 @@ table .indent-0, table .indent-0:nth-of-type(2n), table .indent-0:hover, table .
   background-color: #ffffff; }
 table .indent-0 td {
   transition: padding-bottom 300ms; }
+/*
 table .indent-0:not(.expanded):hover td {
   padding-bottom: 15px;
   transition: padding-bottom 1000ms; }
+*/
 table .indent-0:not(.expanded):hover .icon-triangle-right:before {
   content: ""; }
 table .indent-1, table .indent-1:nth-of-type(2n), table .indent-2, table .indent-2:nth-of-type(2n) {
@@ -628,7 +653,7 @@ tr:hover {
 
 .indent-2 td:first-child {
   padding-left: 6em; }
-
+  
 i {
   font-size: 24px;
   position: relative;
@@ -716,7 +741,7 @@ th .icon-sort_sortable {
   -webkit-transition: all 1s linear; }
 
 .top-bar {
-  transition: max-height 500ms ease-in-out; }
+  transition: max-height 700ms ease-in-out; }
   .top-bar .text-help {
     display: none; }
 
@@ -807,3 +832,75 @@ th .icon-sort_sortable {
     color: #1a1a1a; } }
 
 /*# sourceMappingURL=bioportal_theme.css.map */
+
+#sort-options {
+	width: auto;
+	float: right;
+	padding-right: 20px;
+}
+
+.sort-option-selected {
+	font-weight: bold;
+}
+
+.fieldset-omnisearch .description {
+	padding: 0; 
+	margin: 0px;
+	font-size: 0.8em;
+	cursor: pointer;
+}
+
+#edit-extended select[multiple] {
+    margin: 0;
+    padding: 3px;
+    height: 96px; 
+    font-weight: bolder;
+    box-shadow: none;
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    background-image: none;
+    overflow: auto;
+}
+
+#clear-map-button {
+    border-radius: 3px;
+    height: 24px;
+	margin-top: 5px;
+    background-color: #fff;
+    cursor: default;
+}
+
+#clear-map-button:hover {
+    background-color: #ebebeb;
+}
+
+#clear-map-label {
+	color: #565656;
+	margin-top: 5px;
+    padding: 0 5px;
+ }
+
+.advanced-label-help {
+	border-radius: 50%;
+	border: 1px solid #fff;
+	font-size: 0.7em;
+	padding: 1px;
+    margin-left: 4px;
+}
+
+.advanced-label-help:hover {
+    color: #fff;
+}
+
+.result-warning {
+	margin: 15px 0;
+	line-height: 1.3;
+	max-width: 70%;
+}
+
+.property-list i {
+    font-size: inherit;
+    position: inherit;
+    top: inherit;
+}; }
+ 

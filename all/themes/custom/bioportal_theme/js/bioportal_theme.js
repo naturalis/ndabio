@@ -175,19 +175,22 @@
             $_bottom_submit.css("opacity","1")
           });
 
-        // Exchange value with placeholder value
+    	// Exchange value with placeholder value
         if ($_omnibox.val() !== ""){
           $_omnibox.attr("placeholder", $_omnibox.val()  );
           $_omnibox.val("");
-        } else {
+        } else if ($_omnibox.attr("placeholder") != placeholder) {
           $_omnibox.val( $_omnibox.attr("placeholder") );
           $_omnibox.removeAttr("placeholder");
         }
-
+ 
       })
   }
-
-  // ---------------------------------------------------------
+  
+  // Clicking on help text also invokes advanced form
+  $(".description").click(function(){
+	  $("div.ndabio-toggle-advanced").click(); 
+  });
 
 
 
@@ -255,7 +258,7 @@
 
       // submit form on enter
       if (e.keyCode == 13) {
-        $("#ndabio-advanced-taxonomysearch").submit();
+	document.getElementById("ndabio-advanced-taxonomysearch").submit();
       }
 
     });
@@ -291,6 +294,8 @@
   	if (typeof expandAdvanced != 'undefined' && expandAdvanced == 1) {
   		$(".icon-triangle-down").trigger("click");
   	}
+  	
+  	
 
    // ---------------------------------------------------------
   // PRELOADER
@@ -499,3 +504,4 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
         }
     }
 }
+

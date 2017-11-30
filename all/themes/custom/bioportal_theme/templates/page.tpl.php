@@ -54,7 +54,7 @@
 
       <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
 
-      <div class="medium-2 columns" id="naturalis-logo">
+      <div class="medium-2 columns" id="naturalis-logo" style="cursor:pointer;" onclick="window.open('https://www.naturalis.nl','_top')">
         <img src="<?php print "$base_url$naturalis_logo"; ?>"/>
       </div>
 
@@ -77,7 +77,8 @@
 
         <div id="intro">
 
-            <?php print t($intro, array(), array('langcode' => $language->language)); ?>
+            <?php $intro = "At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions."; ?>
+	    <p><?php print t($intro); ?></p>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
               <?php print t('Back'); ?>
@@ -272,7 +273,7 @@
             <div class="medium-3 columns external-links">
               <ul class="links">
                 <li>
-                  <a target="_blank" href="http://www.naturalis.nl">Naturalis.nl</a>
+		<a target="_blank" href="https://www.naturalis.nl/<?php  global $language; print $language->language; ?>/">Naturalis.nl</a>
                 </li>
               </ul>
             </div>

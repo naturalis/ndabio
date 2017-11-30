@@ -17,20 +17,25 @@
 
 		$_geo_filter.val("");
 
-		$_active_link.css( 'cursor', 'wait' );
+		$_active_link.css('cursor', 'wait');
 		$("a[data-rel='ajax']").parent().removeClass("active");
 		$_active_link.parent().addClass("active");
 
 		// AJAX
 		$.get( str_url, function( data ) {
-
+			
 			$_active_link.css( 'cursor', 'pointer' );
-
 			$_search_areas_target.html( data );
+			
+			// Set name in "within" field
+			if (storedLocation != "") {
+				$('.geo-search-area-name').html(storedLocation);
+			}
 
 			// Select appropriate name if coming from modify search
 			if (storedGid != -1) {
-				var target = $_search_areas_target.find('.row-area a#gid_' + storedGid);
+				
+				var target = $_search_areas_target.find('.row-area a#' + storedGid);
 				if (target.length > 0) {
 					target.addClass('active');
 					$_search_areas_target.scrollTo(target);
@@ -44,10 +49,12 @@
 
 				$(".row-area a").removeClass("active");
 				$(this).addClass("active");
-				plotMapArea(this.id.substr(4));
+				plotMapArea(this.id, language);
 				return false;
 
 			});
+			
+			
 
 		});
 
@@ -103,7 +110,8 @@
 		.before("<div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Search') + ":</div>");
 
 	$(".fieldset-omnisearch.form-wrapper .fieldset-wrapper")
-		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + ":</div><div class='geo-search-area-name'></div></div");
+		.append("<div class='row collapse'><div class='small-2 large-2 columns geo-search-label'>" + Drupal.t('Within') + 
+				":</div><div class='geo-search-area-name'></div></div");
 
 } }; })(jQuery, Drupal);
 

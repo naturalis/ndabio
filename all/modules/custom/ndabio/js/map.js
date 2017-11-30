@@ -1,5 +1,7 @@
 var map, feature, geometry, drawingManager, selectedShape;
 var markers = [];
+var defaultZoomLevel = 7;
+
 var mapStyle = {
 	fillColor: '#fff',
 	fillOpacity: 0.2,
@@ -72,129 +74,102 @@ function getRectangleGeometry() {
 		'[' + SW.lng() + ',' + NE.lat() + ']]]}';
 }
 
+// Custom control to wipe the map clean
+function clearControl (controlDiv, map) {
+	var clearControlButton = document.createElement('div');
+	controlDiv.appendChild(clearControlButton);
+	
+	var clearControlLabel = document.createElement('div');
+	clearControlLabel.id = "clear-map-label";
+	clearControlLabel.innerHTML = Drupal.t('clear map');
+	clearControlButton.appendChild(clearControlLabel);
+	
+	clearControlButton.addEventListener('click', function() {
+	    clearMap();
+	});
+}
+
 function initialize() {
 
 	var mapOptions = {
 		center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		mapTypeId: 'satellite',
 		streetViewControl: false,
+		fullscreenControl: false,
 		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	
+	drawingManager = new google.maps.drawing.DrawingManager({
+		drawingtrol : true,
+		drawingControlOptions : {
+			position : google.maps.ControlPosition.TOP_CENTER,
+			drawingModes : [ 
+				google.maps.drawing.OverlayType.POLYGON,
+				google.maps.drawing.OverlayType.RECTANGLE
+			]
+		},
+		polygonOptions : mapStyle,
+		rectangleOptions : mapStyle
+	});
+	drawingManager.setMap(map);
+	
+	var clearControlDiv = document.createElement('div');
+	clearControlDiv.id = "clear-map-button";
+	new clearControl(clearControlDiv, map);
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(clearControlDiv);
 
-  drawingManager = new google.maps.drawing.DrawingManager({
-    drawingtrol: true,
-    drawingControlOptions: {
-      position: google.maps.ControlPosition.TOP_CENTER,
-      drawingModes: [
-        google.maps.drawing.OverlayType.POLYGON,
-        google.maps.drawing.OverlayType.RECTANGLE
-      ]
-    },
-    polygonOptions: mapStyle,
-    rectangleOptions: mapStyle
-  });
-  drawingManager.setMap(map);
+	google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
+		if (e.type != google.maps.drawing.OverlayType.MARKER) {
+			// Switch back to non-drawing mode after drawing a shape.
+			drawingManager.setDrawingMode(null);
+			// Add an event listener that selects the newly-drawn shape
+			// when the user mouses down on it.
+			var newShape = e.overlay;
+			newShape.type = e.type;
+			google.maps.event.addListener(newShape, 'click',
+				function() {
+					setSelection(newShape);
+				});
+			setSelection(newShape);
+		}
+	});
 
-  google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
-     if (e.type != google.maps.drawing.OverlayType.MARKER) {
-        // Switch back to non-drawing mode after drawing a shape.
-        drawingManager.setDrawingMode(null);
-		// Add an event listener that selects the newly-drawn shape when the user
-        // mouses down on it.
-        var newShape = e.overlay;
-        newShape.type = e.type;
-        google.maps.event.addListener(newShape, 'click', function() {
-          setSelection(newShape);
-        });
-        setSelection(newShape);
-      }
-    });
+	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
+//google.maps.event.addListener(map, 'click', clearMap);
 
- 	google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearMap);
-
- 	if (storedGeoShape != -1) {
+	if (typeof storedGeoShape != 'undefined' && storedGeoShape != -1) {
 		feature = {
-			type: "Feature",
-			geometry: JSON.parse(storedGeoShape)
+			type : "Feature",
+			geometry : JSON.parse(storedGeoShape)
 		};
 		map.data.addGeoJson(feature);
 		map.data.setStyle(mapStyle);
 		zoom(map, false);
- 	} else if (storedGid != -1) {
- 		plotMapArea(storedGid, false);
- 	}
+	} else if (typeof storedGid != 'undefined' && storedGid != -1) {
+		plotMapArea(storedGid, language, false);
+	}
 }
-
-/*
-function initializeSpecimens() {
-	var mapOptions = {
-		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
-		  mapTypeId: 'satellite',
-		  zoom: setZoomLevel()
-		};
-	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-	feature = {
-		type: "Feature",
-		geometry: geoShape
-	};
-	map.data.addGeoJson(feature);
-	map.data.setStyle(mapStyle);
-	zoom(map);
-
-	var previousInfowindow = false;
-
-	jQuery.each(specimenMarkers, function() {
-		var myLatlng = new google.maps.LatLng(this.lat, this.lon);
-		var marker = new google.maps.Marker({
-	      position     : myLatlng,
-	      name         : this.name,
-	      icon         : pin,
-	      assemblageID : this.assemblageID,
-	      source       : this.source,
-	      unitID       : this.unitID,
-	      localityText : this.localityText,
-	      date         : this.date,
-	      taxonUrl     : this.taxonUrl,
-	      url		   : this.url
-		});
-
-		var infowindow = new google.maps.InfoWindow({
-		    content: createInfoText(marker),
-		    maxWidth: 350
-		});
-
-		google.maps.event.addListener(marker, 'click', function() {
-			if (previousInfowindow) {
-				previousInfowindow.close();
-		    }
-			previousInfowindow = infowindow;
-			infowindow.open(map, marker);
-		});
-
-		marker.setMap(map);
-		markers.push(marker);
-	});
-}
-*/
 
 function initializeSpecimens() {
 	var mapOptions = {
 		  center: new google.maps.LatLng(setMapCenterLat(), setMapCenterLon()),
 		  mapTypeId: 'satellite',
 		  streetViewControl: false,
+		  fullscreenControl: false,
 		  zoom: setZoomLevel()
 		};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-	feature = {
-		type: "Feature",
-		geometry: geoShape
-	};
-	map.data.addGeoJson(feature);
-	map.data.setStyle(mapStyle);
-	zoom(map);
+	if (typeof geoShape != 'undefined' && geoShape != -1) {
+		feature = {
+			type : "Feature",
+			geometry : geoShape
+		};
+		map.data.addGeoJson(feature);
+		map.data.setStyle(mapStyle);
+		zoom(map, false);
+	}
 
 	var oms = new OverlappingMarkerSpiderfier(map, {
 		markersWontMove: true,
@@ -243,7 +218,7 @@ function initializeSpecimens() {
 	});
 }
 
-function initializeSpecimenDetail() {
+function initializeSpecimenDetail(area) {
 
 	var myLatlng = new google.maps.LatLng(specimenMarker.lat, specimenMarker.lon);
 
@@ -251,9 +226,20 @@ function initializeSpecimenDetail() {
 		center: myLatlng,
 		mapTypeId: 'satellite',
 		streetViewControl: false,
-		zoom: 7
+		fullscreenControl: false,
+		zoom: setZoomLevel()
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	map.data.setStyle(mapStyle);
+	
+	// Draw area if this has been provided
+	if (area) {
+		feature = {
+			type: "Feature",
+			geometry: area
+		};
+		map.data.addGeoJson(feature);
+	}
 
 	var marker = new google.maps.Marker({
 		position: myLatlng,
@@ -265,11 +251,11 @@ function initializeSpecimenDetail() {
 
 
 function createInfoText(marker) {
-	var taxon = marker.taxonUrl == '' ? marker.name :
-		'<a href="?nba_request=' + marker.taxonUrl + '">' + marker.name + '</a>';
+	var taxon = marker.taxonUrl == null ? marker.name :
+		'<a href="' + marker.taxonUrl + '">' + marker.name + '</a>';
 	return '<div class="map-infoWindow">' +
 		'<div class="marker-name" style="color:#000;">' + taxon + '</div>' +
-		'<div class="marker-unitID">' + '<a href="?nba_request=' +
+		'<div class="marker-unitID">' + '<a href="' +
 			marker.url + '">' + marker.unitID + '</a>' + '</div>' +
 		'<div class="marker-source">' + marker.source + '</div>' +
 		'<div class="marker-localityText">' +
@@ -282,8 +268,8 @@ function createInfoText(marker) {
 
 function clearSelection() {
     if (selectedShape) {
-      selectedShape.setEditable(false);
-      selectedShape = null;
+    	selectedShape.setMap(null);
+    	selectedShape = null;
     }
 }
 
@@ -294,12 +280,15 @@ function setSelection(shape) {
 }
 
 
-function plotMapArea(gid, fit) {
+function plotMapArea(gid, language, fit) {
 
 	if (!gid || typeof str_base_path == 'undefined') {
 		return;
 	}
 
+	if (typeof language == 'undefined') {
+		var language = 'en';
+	}
 	if (typeof fit == 'undefined') {
 		var fit = true;
 	}
@@ -308,7 +297,7 @@ function plotMapArea(gid, fit) {
 		url: str_base_path + 'naturalis/ajax',
 		type: "GET",
 		dataType: "json",
-		data: ( {nid: gid} ),
+		data: ( {nid: gid, language: language} ),
 		success: function (json) {
 			clearMap();
 			if (json) {
@@ -369,7 +358,7 @@ function setMapCenterLon () {
 
 function setZoomLevel () {
 	if (typeof storedZoomLevel == "undefined" || storedZoomLevel == -1) {
-		return 7;
+		return defaultZoomLevel;
 	}
 	return storedZoomLevel;
 }
@@ -384,13 +373,22 @@ function setDrawingMode(mode) {
 function clearMap() {
 	jQuery('.geo-search-area-name').html('');
     clearMapSessionData();
-	map.data.forEach(function(_feature) {
-		map.data.remove(_feature);
+    
+	map.data.forEach(function(feature) {
+		map.data.remove(feature);
 	});
+	feature = null;
+	
     if (selectedShape) {
-      selectedShape.setMap(null);
+    	clearSelection();
     }
+    
     selectedShape = null;
+    storedGid = "-1";
+    storedGeoShape = -1;
+    storedZoomLevel = -1;
+    storedMapCenter = null;
+    storedCategory = -1;    
 }
 
 /**

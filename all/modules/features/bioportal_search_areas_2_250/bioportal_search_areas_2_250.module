@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the bioportal search areas (2 - 250) feature.
- */
-
-include_once 'bioportal_search_areas_2_250.features.inc';
