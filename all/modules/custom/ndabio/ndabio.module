@@ -6,6 +6,16 @@ require_once 'ndabio.config.inc';
 // Shared library in ndabioresult module
 require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 
+/**
+ * An extra css file is added, to allow for some modifications of the admin theme (seven)
+ */ 
+function bioportal_admin_style_preprocess_html(&$variables) {
+  global $theme;
+  if (theme == 'seven') {
+    drupal_add_css(drupal_get_path('module', 'ndabio') . '/css/ndabio_admin_style.css', array('weight' => CSS_THEME));
+  }
+}
+
 
 // Namespaces not defined in common.inc
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
