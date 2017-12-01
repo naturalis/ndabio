@@ -161,14 +161,21 @@ function _getOptimalOperators ($fields) {
  * @param string $value
  * @return array|NULL[]
  */
-function _stringToElements ($value, $stringSizeThreshold = false) {
+function _stringToElements ($value, $settings = []) {
 	if ($value == '') {
 		return [null];
 	}
 	$elements = array_map('trim', array_unique(array_filter(explode(' ', trim($value)))));
-	if ($stringSizeThreshold) {
+	if (isset($settings['shorten'])) {
 		foreach ($elements as $i => $element) {
-			if (strlen($element) < (int)$stringSizeThreshold) {
+			if (strlen($element) > $settings['shorten']) {
+				$elements[$i] = substr($element, 0, $settings['shorten']);
+			}
+		}
+	}	
+	if (isset($settings['threshold'])) {
+		foreach ($elements as $i => $element) {
+			if (strlen($element) < $settings['threshold']) {
 				unset($elements[$i]);
 			}
 		}

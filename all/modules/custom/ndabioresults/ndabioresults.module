@@ -955,9 +955,16 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						$statement[$path] = _getConditionOperator($service, $path, $value);
 					}
 					// Used to determine hits
+					$settings = [];
+					if ($simpleSearch) {
+						$settings = [
+							'threshold' => NBAMINSTRINGLENGTHSIMPLESEARCH,
+							'shorten' => _nbaMaxContainsStringSize(),
+						];
+					}
 					$paths[$path] = [
 						'operator' => $statement[$path],
-						'values' => _stringToElements($value, NBAMINSTRINGLENGTHSIMPLESEARCH)  
+						'values' => _stringToElements($value, $settings)  
 					];
 				}
 			}
@@ -1019,9 +1026,16 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					$operator = 'NOT_EQUALS';
 					$element = null;
 				}
-				// Test if LIKE is still allowed; if not change to STARTS_WITH_IC
+				// Test if CONTAINS is still allowed; if not:
 				if ($operator == 'CONTAINS' && !_containsOperatorAllowed($element)) {
-					$operator = 'STARTS_WITH_IC';
+					// Simple search: shorten term to max length
+					if ($simpleSearch) {
+						$element = substr($element, 0, _nbaMaxContainsStringSize());
+					// Advanced search: change operator to STARTS_WITH_IC
+					} else {
+						$operator = 'STARTS_WITH_IC';
+					}
+					
 				}
 				// geoShape is a special case
 				if (strpos($path, 'geoShape') !== false) {
