@@ -49,7 +49,8 @@ function ndabio_advanced_taxonomysearch () {
 	if (!empty($_GET['searchagain'])) {
 		if (intval($_GET['searchagain']) == 1) {
 			$expandedFlag = _getExpandedFlag();
-			$storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ? $_SESSION['nbaSearch']['gid'] : -1;
+			$storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ? 
+				$_SESSION['nbaSearch']['gid'] : -1;
 			$loadold = 1;
 		}
 	}

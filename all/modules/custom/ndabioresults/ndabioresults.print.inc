@@ -1607,3 +1607,20 @@ function _printDebug () {
     }
 }
 
+
+function _printAdvancedSearchSuggestion ($data) {
+		foreach ($data['modified'] as $label => $value) {
+			$replacement[] .= '<strong>' . $data['original'][$label] . '</strong> ' 
+				. t('with') . ' ' . '<a href="' . $data['url'] . '" class="result-query">' . $value . '</a>';
+		}
+		$message = '<p style="padding-top: 12px; width: 700px;">' . 
+			t('Your query did not produce any results.' . 
+			'This may be due to the fact that the search engine reverts to a ' .
+			'"starts with" instead of a "contains" search when a term is longer than ' .
+			'%d characters.') . '<p></p>' . 
+			t('Retry your search replacing %s or <a href="%s">modify your search</a>.');
+		return sprintf($message, _nbaMaxContainsStringSize(), implode(', ', $replacement), 
+			_setStartUrl() . '?searchagain=1');
+}
+
+

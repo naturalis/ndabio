@@ -1574,6 +1574,7 @@ function _nba_general_result_callback () {
     	_setBackLink('/', 'Home');
         return _nbaThemeSearch();
     }
+    return _printOops();
 
 }
 
@@ -1800,8 +1801,78 @@ function _nbaAdvancedSearch () {
 		$pageBody .= _printTaxa(_parseTaxa($data, ['showAll', 'mediaLink']));
 	}
 	
+	// Lieveheersbeestje! Check if we can present an alternate query
+	if (empty($pageBody)) {
+		// Check if characters > 15 and uses contains
+		$service = _advancedSearchSingleServiceUsed($services);
+		if ($service) {
+			$suggestion =_advancedSearchNoResultSuggestion($service);
+			if ($suggestion) {
+				$pageBody = _printAdvancedSearchSuggestion($suggestion);
+			}
+		}
+	}
+	
 	return $pageHeader . _printDebug() . 
 		(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
+}
+
+
+/**
+ * Quick test if only a single service is used for advanced search
+ * 
+ * @param array $services
+ * @return boolean
+ */
+function _advancedSearchSingleServiceUsed ($services) {
+	foreach ($services as $service => $values) {
+		if (!empty($values)) {
+			$used[] = $service;
+		}
+	}
+	return isset($used) && count($used) == 1 ? $used[0] : false;
+}
+
+function _advancedSearchNoResultSuggestion ($service) {
+	$service = _normaliseServiceName($service);
+	// If session is not set, skip the whole thing
+	if (!isset($_SESSION['nbaQuery'][$service]['terms'])) {
+		return false;
+	}
+	$terms = $_SESSION['nbaQuery'][$service]['terms'];
+	$paths = $_SESSION['nbaQuery'][$service]['paths'];
+	
+	foreach ($paths as $path => $p) {
+		foreach ($p['values'] as $value) {
+			if ($p['operator'] == 'CONTAINS') {
+				if (strlen($value) > _nbaMaxContainsStringSize()) {
+					$modified[_nbaPathToTerm($service, $path)] = 
+						substr($value, 0, _nbaMaxContainsStringSize());
+				}
+			}
+		}
+	}
+	// Do we have at least one hit?
+	if (isset($modified)) {
+		return [
+			'modified' => $modified,
+			'original' => _getSearchTerms($terms),
+			'url' => _setStartUrl() . 'result' . '/' . $service . '/' . 
+				http_build_query(array_merge($terms, $modified)),
+		];
+	}
+	return false;
+}
+
+function _nbaPathToTerm ($service, $checkPath) {
+	foreach (_nbaFieldMapping()[_normaliseServiceName($service)] as $term => $paths) {
+		foreach ($paths as $path) {
+			if ($checkPath == $path) {
+				return $term;
+			}
+		}
+	}
+	return false;
 }
 
 /**
@@ -2295,6 +2366,14 @@ function _nbaSimpleSearch () {
 	
     return $pageHeader .  _printDebug() . 
     	(!empty($pageBody) ? $pageBody : _printNoResults($timeOuts));
+}
+
+
+function _rewriteSimpleSearchTerm ($term) {
+	foreach ($terms as $i => $term) {
+		$terms[$i] = substr($term, 0, _nbaMaxContainsStringSize());
+	}
+	return $terms;
 }
 
 /**
