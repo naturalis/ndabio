@@ -150,7 +150,7 @@ function _printTaxa ($data) {
     $output .= _printShowAll($data);
 
     // @todo: mediaLink hidden for now because of errors. Requested by Daphne on 4 december 2017
-    if (user_is_logged_in() {
+    if (user_is_logged_in()) {
         $output .= _printMediaLink($data);
     }
     $output .= _printPaginator($data);
