@@ -148,7 +148,11 @@ function _printTaxa ($data) {
     $output .= "</tbody></table>\n";
 
     $output .= _printShowAll($data);
-    $output .= _printMediaLink($data);
+
+    // @todo: mediaLink hidden for now because of errors. Requested by Daphne on 4 december 2017
+    if (user_is_logged_in() {
+        $output .= _printMediaLink($data);
+    }
     $output .= _printPaginator($data);
 
     return $output;
