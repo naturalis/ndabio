@@ -49,11 +49,13 @@ function _checkNbaBaseFile () {
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch () {
-	global $base_root, $base_path, $language;
+    global $base_root, $base_path;
+    $language = _getLanguage();
 
 	// Set default values for searchagain
 	$expandedFlag = $storedGid = -1;
 	$placeholder = t('e.g. species name or locality');
+
 	
 	$loadold = 0;
 	if (!empty($_GET['searchagain'])) {
@@ -413,7 +415,6 @@ function ndabio_advanced_taxonomysearch () {
 		'#nowrapper' => TRUE,
 		'#id' => 'edit-submit-bottom' 
 	);
-	global $language;
 	$form['#action'] = url('result');
 	$form['#method'] = 'get';
 	
@@ -537,7 +538,7 @@ function ndabio_block_info () {
 
 function ndabio_block_view ($delta = '') {
   global $base_url, $base_root, $base_path;
-  global $language;
+  $language = _getLanguage();
 
   $block = array();
   switch ($delta) {
@@ -642,7 +643,8 @@ function ndabio_clear_map_data_callback () {
 function ndabio_ajax_callback () {
   if (!empty($_GET["nid"])) {
     $nid = $_GET["nid"];
-    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
+    $lang = _getLanguage();
+    $language = (is_object($lang)) ? $lang->language : 'en';
     $client = _initNbaClient();
     $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
     if (isset($geo->shape)) {
@@ -712,7 +714,8 @@ function nba_areas_callback ($type = false) {
     if (!$type) {
         return false;
     }
-    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
+    $lang = _getLanguage();
+    $language = (is_object($lang)) ? $lang->language : 'en';
     switch ($type) {
     	case 'country':
 	        // First print favourites (hard-coded list in config)
