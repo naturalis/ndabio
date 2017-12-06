@@ -390,22 +390,24 @@ function _formatNumber ($n) {
 	return number_format($n);
 }
 
-/**
- * Prints a fine oops message
- * 
- * If any errors have been set these are printed as well
- * 
- * @return string
- */
-function _printOops () {
-	$output = '<h1>' .t('Error'). '!</h1><p>';
+
+function _checkInvalidNbaRequest ($data, $noResultCheck =  false) {
+	// There's no reponse at all: 
+	// assume the PHP client has thrown an exception and this has been caught
+	if (!isset($data)) {
+		return _printOops();
+	} 
+	// The NBA returned an exception
 	if (_getErrorMessage()) {
-		$output .= _getErrorMessage() . "</p>\n<p>";
+		return _printOops();
 	}
-	$output .= t('Oops, something went wrong') . '. ' .
-		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
-	return $output;
+	// Optional check: there's no data, but there definitely should be
+	if ($noResultCheck && $data->totalSize == 0) {
+		return _printNoResults();
+	}
+	return false;
 }
+
 
 /**
  * Gets NBA source.name for associated source.code
@@ -436,20 +438,17 @@ function _getErrorMessage () {
 }
 
 /**
- * Add error message to stack
+ * Add error message to stack and Drupal log
  */
 function _setErrorMessage ($message = false) {
 	// Parse NBA exceptions into message
-	if (is_object($message)) {
-		if (isset($message->message)) {
-			$output[] = $message->message;
-		}
-		if (isset($message->type)) {
-			$output[] = $message->type;
-		}
+	if (is_object($message) && is_a($message, 'Exception')) {
+		$message = $message->getMessage();
 	}
-	$_SESSION['nbaErrorMessage'] = isset($output) ?
-		implode('<br>', $output) : $message;
+	// Output to debug
+	$_SESSION['nbaErrorMessage'] = $message;
+	// Add to Drupal log
+	watchdog('php', $message, null, WATCHDOG_ERROR);
 }
 
 /**

@@ -754,26 +754,31 @@ function _natureAreasWithResultsOnly () {
 		$all = json_decode(_nbaGeoAreas(), true);
 		$natureAreas = $all['Nature'];
 	    $client = _setNbaClient('specimen', true);
-		foreach ($natureAreas as $area) {
-			$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
-			$query = new QuerySpec();
-			$batch[$area['locality']['en']] = $query->setSize(1)->addCondition($condition);
-		}
-		$result = $client->singleClientBatchQuery($batch);
-	   	foreach ($result as $area => $json) {
-	    	$data = json_decode($json);
-	    	if (isset($data->totalSize) && $data->totalSize == 0) {
-	    		$natureAreasWithoutResults[] = $area;
-	    	}
-	    }
-    	// Trim empty areas
-		foreach ($natureAreas as $i => $area) {
-			if (!in_array($area['locality']['en'], $natureAreasWithoutResults)) {
-				$natureAreasWithResults[$area['id']] = $area['locality']['en'];
+	    try {
+			foreach ($natureAreas as $area) {
+				$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
+				$query = new QuerySpec();
+				$batch[$area['locality']['en']] = $query->setSize(1)->addCondition($condition);
 			}
-		}
-		asort($natureAreasWithResults);
-        cache_set($cacheId, $natureAreasWithResults);
+			$result = $client->singleClientBatchQuery($batch);
+		   	foreach ($result as $area => $json) {
+		    	$data = json_decode($json);
+		    	if (isset($data->totalSize) && $data->totalSize == 0) {
+		    		$natureAreasWithoutResults[] = $area;
+		    	}
+		    }
+	    	// Trim empty areas
+			foreach ($natureAreas as $i => $area) {
+				if (!in_array($area['locality']['en'], $natureAreasWithoutResults)) {
+					$natureAreasWithResults[$area['id']] = $area['locality']['en'];
+				}
+			}
+			asort($natureAreasWithResults);
+	        cache_set($cacheId, $natureAreasWithResults);
+	    } catch (Exception $e) {
+	    	_setErrorMessage($e);
+	    	$natureAreasWithResults = false;
+	    }
     }    
     return $natureAreasWithResults;
 }
@@ -930,20 +935,24 @@ function _isMultiAdvancedSelect ($field) {
 function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
 	$options = _getDistinctValues($service, $optionPath);
 	$client = _initNbaClient();
-	foreach ($options as $option) {
-		$condition = new Condition($optionPath, 'EQUALS', $option);
-		$query = new QuerySpec();
-		$query->addCondition($condition)->setSize(1);
-		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
-		// Convert NBA path to object path
-		$pathArray = explode('.', $valuePath);
-		if (isset($data->resultSet[0]->item)) {
-			$objPath = $data->resultSet[0]->item;
-			foreach ($pathArray as $deeper) {
-				$objPath = $objPath->{$deeper};
+	try {
+		foreach ($options as $option) {
+			$condition = new Condition($optionPath, 'EQUALS', $option);
+			$query = new QuerySpec();
+			$query->addCondition($condition)->setSize(1);
+			$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+			// Convert NBA path to object path
+			$pathArray = explode('.', $valuePath);
+			if (isset($data->resultSet[0]->item)) {
+				$objPath = $data->resultSet[0]->item;
+				foreach ($pathArray as $deeper) {
+					$objPath = $objPath->{$deeper};
+				}
+				$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
 			}
-			$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
 		}
+	} catch (Exception $e) {
+		_setErrorMessage($e);
 	}
 	return isset($output) ? $output : [];
 }

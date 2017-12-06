@@ -1607,6 +1607,22 @@ function _printDebug () {
     }
 }
 
+/**
+ * Prints a fine oops message
+ * 
+ * If any errors have been set these are printed as well
+ * 
+ * @return string
+ */
+function _printOops () {
+	$output = '<h1>' .t('Error'). '!</h1><p>';
+	if (_getErrorMessage()) {
+		$output .= _getErrorMessage() . "</p>\n<p>";
+	}
+	$output .= t('Oops, something went wrong') . '. ' .
+		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
+	return $output;
+}
 
 function _printAdvancedSearchSuggestion ($data) {
 		foreach ($data['modified'] as $label => $value) {
