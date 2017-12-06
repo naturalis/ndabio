@@ -352,17 +352,21 @@ function _getSpecimenByUnitId ($unitId = false) {
 	if (!$unitId) {
 		return false;
 	}
-	$client = _initNbaClient();
-	$query = new QuerySpec();	
-	$query
-		->addCondition(new Condition('unitID', 'EQUALS', $unitId))
-		->setConstantScore()
-		->setSize(1);
-	_addDebugMessage('specimen detail', $query);
-	$data = json_decode($client->specimen()->setQuerySpec($query)->query());
-	if (isset($data->exception)) {
-		_setErrorMessage($data->exception);
-		return false;
+	try {
+		$client = _initNbaClient();
+		$query = new QuerySpec();	
+		$query
+			->addCondition(new Condition('unitID', 'EQUALS', $unitId))
+			->setConstantScore()
+			->setSize(1);
+		_addDebugMessage('specimen detail', $query);
+		$data = json_decode($client->specimen()->setQuerySpec($query)->query());
+		if (isset($data->exception)) {
+			_setErrorMessage($data->exception);
+			return false;
+		}
+	} catch (Exception $e) {
+		_setErrorMessage($e);
 	}
 	return isset($data->resultSet[0]->item) ? $data->resultSet[0]->item : false;	
 }
@@ -377,21 +381,24 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	$service = 'multimedia';
 	$client = _setNbaClient($service, true);
 	
-	// Build query
-	$condition = new Condition('unitID', 'EQUALS', $id);
-	$query = new QuerySpec();
-	$query->addCondition($condition);
+	try {
+		$condition = new Condition('unitID', 'EQUALS', $id);
+		$query = new QuerySpec();
+		$query->addCondition($condition);
+		
+		_addDebugMessage($service, $query);
+		
+		$timer = _setTimer();
+		
+		$data = json_decode($client->setQuerySpec($query)->query());
+	} catch (Exception $e) {
+		_setErrorMessage($e);
+	}
 	
-	_addDebugMessage($service, $query);
-	
-	$timer = _setTimer();
-	
-	// Fetch data
-	$data = json_decode($client->setQuerySpec($query)->query());
-	if (isset($data->exception)) {
+	// Error handling
+	if (!isset($data) || isset($data->exception)) {
 		_setErrorMessage($data->exception);
 		return _printOops();
-	// Nothing?!
 	} else if ($data->totalSize == 0) {
 		return _printNoResults();
 	}
@@ -409,15 +416,19 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 		$data->referrer = _encodeReferrer($terms);		
 		$terms['size'] = 3;		
 
-		$query = _buildNbaQuery($service, $terms);
-		_addDebugMessage('previous, current and next item', $query);
-		
-		$timer = _setTimer();
-		$set = json_decode($client->setQuerySpec($query)->query());
-		_addDebugMessage('navigation query', _getTimer($timer));
+		try {
+			$query = _buildNbaQuery($service, $terms);
+			_addDebugMessage('previous, current and next item', $query);
+			
+			$timer = _setTimer();
+			$set = json_decode($client->setQuerySpec($query)->query());
+			_addDebugMessage('navigation query', _getTimer($timer));
+		} catch (Exception $e) {
+			_setErrorMessage($e);
+		}
 		
 		// We got an error; go oops
-		if (isset($set->exception)) {
+		if (!isset($set) || isset($set->exception)) {
 			_setErrorMessage($set->exception);
 			return _printOops();
 		}
@@ -1078,7 +1089,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					$condition->setBoost($boostValue);
 				}
 				// Add extra condition for exact match
-				if (!in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN'])) {
+				if (!in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN']) && !is_null($element)) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
 					$boostEquals->setBoost(NBAEXACTMATCHBOOST);
 					$condition->setOr($boostEquals);
