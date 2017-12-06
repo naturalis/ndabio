@@ -1064,7 +1064,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					$condition->setBoost($boostValue);
 				}
 				// Add extra condition for exact match
-				if (!in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN'])) {
+				if (!in_array($operator, ['EQUALS', 'EQUALS_IC', 'IN']) && !is_null($element)) {
 					$boostEquals = new Condition($path, 'EQUALS_IC', $element);
 					$boostEquals->setBoost(NBAEXACTMATCHBOOST);
 					$condition->setOr($boostEquals);
