@@ -201,7 +201,8 @@ function _getMaxResultsPerPage ($service) {
  * @return boolean|array
  */
 function _getCommonNames ($row, $languageCheck = false) {
-	global $language;
+    $language = _getLanguage();
+
 	foreach ($row->item->taxa as $i => $taxon) {
 		if (isset($taxon->vernacularNames)) {
 			foreach ($taxon->vernacularNames as $name) {

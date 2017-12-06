@@ -35,8 +35,8 @@ function _printSortOptions ($service) {
  * @return string
  */
 function _printTaxonDetail ($data) {
-    global $language;
-    
+    $language = _getLanguage();
+
     $output = _printDebug();
     $output .= "<div class='category'>".t('Taxon')."</div>";
     $output .= "<h2><span class='scientific-name'>";
@@ -814,7 +814,7 @@ function _printPreviousNext ($p) {
  * @return string Formatted output
  */
 function _printMultimedia ($data) {
-	
+
 	if (empty($data['results'])) {
 		return false;
 	}
@@ -1300,7 +1300,7 @@ function _printSource ($data, $source) {
  * @return string Formatted output
  */
 function _printDescriptions ($data) {
-	global $language;
+	$language = _getLanguage();
 	$output = '';
 	$header = "<h3>" . t('Descriptions') . "</h3>";
 	if (isset($data['descriptions']) && !empty($data['descriptions'])) {
@@ -1373,7 +1373,8 @@ function _printCommonNames ($data) {
  * @return string Formatted output
  */
 function _printClassifications ($data) {
-	global $language;
+    $language = _getLanguage();
+
 	$output = '';
 	$header = "<h3>" . t('Classifications') . "</h3>";
 	$printClassifications = array();
@@ -1444,8 +1445,8 @@ function _printClassifications ($data) {
  * @return boolean|string
  */
 function _printSpecimensTaxon ($data) {
-	global $language;
-	
+    $language = _getLanguage();
+
 	$service = 'names.specimens';
 	
 //p($data);
