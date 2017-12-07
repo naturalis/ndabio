@@ -204,9 +204,13 @@ function _getDistinctValues ($service, $nbaPath) {
 	    $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
 	    sort($values);
 	    unset($client);
+
 	    return $values;
+
     } catch (Exception $e) {
+
     	_setErrorMessage($e->getMessage());
+
     	return false;
     }
 }
@@ -373,10 +377,11 @@ function _sortArrayByArray ($array, $orderArray) {
     return $ordered + $array;
 }
 
-/**
+/*
  * Validates json
  *
- * @param boolean Valid?
+ * @param string
+ * @return boolean
  */
 function _isValidJson ($string) {
 	return is_object(json_decode($string));
@@ -426,8 +431,6 @@ function _checkInvalidNbaRequest ($data, $noResultCheck =  false) {
  * @return string|boolean
  */
 function _getSourceNameBySourceCode ($code) {
-	
-//p(_advancedSelects()); die();
 	foreach (['t', 's', 'm'] as $prefix) {
 		if (isset(_advancedSelects()[$prefix . '_sourceSystem'][$code])) {
 			return _advancedSelects()[$prefix . '_sourceSystem'][$code];
