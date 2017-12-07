@@ -729,7 +729,8 @@ function _getTaxonMultimedia ($object) {
 			$output['items'][$i]['src'] = $media->item->serviceAccessPoints[0]->accessUri;
 			$output['items'][$i]['format'] = $media->item->serviceAccessPoints[0]->format;
 			$output['items'][$i]['hits'] = isset($media->item->associatedSpecimenReference) ?
-				_getMultimediaSpecimenUnitId($media) : $media->item->caption;
+				_getMultimediaSpecimenUnitId($media) : 
+					isset($media->item->caption) ? $media->item->caption : null;
 			$output['items'][$i]['caption'] = _getSpecimenScientificNames('multimedia', $media);
 			$output['items'][$i]['url'] = _createTaxonSubsectionLink($object->taxa[0]->acceptedName, 
 				'multimedia/' . urlencode($media->item->unitID) . '/') .

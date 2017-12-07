@@ -1864,29 +1864,31 @@ function _getSpecimenVernaculars ($identifications = []) {
  * @return array|void
  */
 function _getGatheringEventSpecimens ($event = []) {
-	foreach ($event as $k => $v) {
-		if (!is_array($v) && !is_object($k) && $v != '') {
-			if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
-				$v = _dateTimeToDate($v);
-			}
-			$d[$k] = $v;
-		}
-	}
-	if (isset($event->gatheringPersons)) {
-		foreach ($event->gatheringPersons as $a) {
-			$agent[] = $a->fullName . (isset($a->organization->name) ? 
-				' (' . $a->organization->name . ')' : '');
-		}
-		$d['gatheringAgents'] = $agent;
-	}
-	if (isset($event->siteCoordinates)) {
-		foreach ($event->siteCoordinates as $c) {
-			if (isset($c->longitudeDecimal) && isset($c->latitudeDecimal)) {
-				$coordinates['lat'] = $c->latitudeDecimal;
-				$coordinates['lon'] = $c->longitudeDecimal;
+	if (!empty($event)) {
+		foreach ($event as $k => $v) {
+			if (!is_array($v) && !is_object($k) && $v != '') {
+				if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
+					$v = _dateTimeToDate($v);
+				}
+				$d[$k] = $v;
 			}
 		}
-		$d['siteCoordinates'] = isset($coordinates) ? $coordinates : null;
+		if (isset($event->gatheringPersons)) {
+			foreach ($event->gatheringPersons as $a) {
+				$agent[] = $a->fullName . (isset($a->organization->name) ? 
+					' (' . $a->organization->name . ')' : '');
+			}
+			$d['gatheringAgents'] = $agent;
+		}
+		if (isset($event->siteCoordinates)) {
+			foreach ($event->siteCoordinates as $c) {
+				if (isset($c->longitudeDecimal) && isset($c->latitudeDecimal)) {
+					$coordinates['lat'] = $c->latitudeDecimal;
+					$coordinates['lon'] = $c->longitudeDecimal;
+				}
+			}
+			$d['siteCoordinates'] = isset($coordinates) ? $coordinates : null;
+		}
 	}
 	return isset($d) ? $d : null;
 }
