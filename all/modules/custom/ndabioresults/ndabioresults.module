@@ -265,6 +265,7 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 	}
 	
 	$data->multimedia = _getSpecimenMultimedia($data);
+
 	return _printSpecimenDetail(_parseSpecimenDetail($data));
 }
 
@@ -273,7 +274,6 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 function _addSpecimenDetailPageNavigation ($data, $search = false, $set = false, 
 	$id = false, $from = false, $scientificNameGroup = false) {
 	
-//p($set);
 	if ($set && $search && $scientificNameGroup) {
 		$previousId = $nextId = null;
 		foreach ($set->resultSet[0]->item->specimens as $i => $row) {
@@ -640,7 +640,7 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 		$terms['size'] = 3;		
 		
 		try {
-    	
+
 			$query = _buildNbaQuery($service, $terms);
 			$query->setSpecimensSize(0);
 			_addDebugMessage('previous, current and next item', $query);
@@ -1925,11 +1925,15 @@ function _getSpecimensTotal ($terms, $useNameResolution = false) {
 		->setSize(1);
 	_addDebugMessage('total specimens', $query);
 	$timer = _setTimer();
-	$data = json_decode($client->setQuerySpec($query)->query());
-	_addDebugMessage('total specimens query', _getTimer($timer));
-	if (isset($data->totalSize)) {
-		return $data->totalSize;
-	}
+	try {
+        $data = json_decode($client->setQuerySpec($query)->query());
+        _addDebugMessage('total specimens query', _getTimer($timer));
+        if (isset($data->totalSize)) {
+            return $data->totalSize;
+        }
+    } catch (Exception $e) {
+        _setErrorMessage($e);
+    }
 	return -1;
 }
 
@@ -2445,20 +2449,23 @@ function _nbaThemeSearch () {
 		}
 		
 		// Build QuerySpec; use name resolution
-		$query = _buildNbaQuery($service, $terms, true);
-		$client->setQuerySpec($query);
-            
-		$remoteData[$service] = strpos($service, 'names') === false ? 
-			$client->query() : $client->groupByScientificName();
-		
-		// Save service-specific query to session;
-		// used for further navigation
-		$_SESSION['nbaQuery'][$service]['terms'] = $terms;
-		//_setQueryTerms($service);
-		_addDebugMessage($service, $client);
+		try {
+            $query = _buildNbaQuery($service, $terms, true);
+            $client->setQuerySpec($query);
+
+            $remoteData[$service] = strpos($service, 'names') === false ?
+                $client->query() : $client->groupByScientificName();
+
+            // Save service-specific query to session;
+            // used for further navigation
+            $_SESSION['nbaQuery'][$service]['terms'] = $terms;
+            //_setQueryTerms($service);
+            _addDebugMessage($service, $client);
+        } catch (Exception $e) {
+            _setErrorMessage($e);
+        }
     }
-    
-     
+
 	// Order is multimedia > specimens > taxa
 	if (!empty($remoteData['multimedia'])) {
 		$data = json_decode($remoteData['multimedia']);
@@ -2545,45 +2552,6 @@ function _getOtherSpecimens ($data) {
 	}
 	return isset($c) ? $c : null;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Logs searches to Drupal
