@@ -3,6 +3,9 @@ a
 {
     outline : 0 !important;
 }
+.admin-menu  #language-menu, .admin-menu  #help {
+    padding-top : 25px !important;
+}
 ::-webkit-input-placeholder {
     /* WebKit browsers */
     color: #cccccc;

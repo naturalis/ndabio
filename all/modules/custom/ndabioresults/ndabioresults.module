@@ -1798,8 +1798,9 @@ function _nbaAdvancedSearch () {
 			$useNameResolution);
 		$pageBody .= _printSpecimensTaxon(_parseSpecimensTaxon($data, ['showAll']));
 	}
-*/	
-	
+*/
+
+
 	if (!empty($remoteData['specimen'])) {
 		$data = json_decode($remoteData['specimen']);
 		$data->mediaLink = isset($mediaLinks['specimen']) ?
@@ -1810,7 +1811,7 @@ function _nbaAdvancedSearch () {
 		}
 		$pageBody .= _printSpecimens(_parseSpecimens($data, $options));
 	}
-	
+
 	if (!empty($remoteData['names.taxa'])) {
 		$data = json_decode($remoteData['names.taxa']); 
 		$data->mediaLink = isset($mediaLinks['names.taxa']) ?

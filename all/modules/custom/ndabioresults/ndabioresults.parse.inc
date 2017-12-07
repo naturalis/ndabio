@@ -1120,7 +1120,7 @@ function _parseSpecimens ($data, $options = []) {
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
 		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row->item);
-		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
+		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);
 		$output['results'][] = $d;
 	}
 /*	
@@ -1606,14 +1606,14 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 				if (is_array($result)) {
 					$result = array_values($result)[0];
 				}
-				// Operator determines if we have a hit: 
+				// Operator determines if we have a hit:
 				// CONTAINS...
 				if (($operator == 'CONTAINS' && stripos($result, $value) !== false) ||
 				// STARTS_WITH_IC
 					($operator == 'STARTS_WITH_IC' && stripos($result, $value) === 0) ||						
 				// ... MATCHES or EQUALS_IC	
 					(($operator == 'MATCHES' || $operator == 'EQUALS_IC') && 
-						preg_match("/\b$value\b/i", $result)) ||
+                        preg_match('/(?<!\pL)'.$value.'(?!\pL)/ui', $result)) ||
 				// ... EQUALS
 					($operator == 'EQUALS' && $value == $result)) {
 					$hits[] = $result;
