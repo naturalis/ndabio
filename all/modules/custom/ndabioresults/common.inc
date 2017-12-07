@@ -402,7 +402,7 @@ function _formatNumber ($n) {
 function _checkInvalidNbaRequest ($data, $noResultCheck =  false) {
 	// There's no reponse at all: 
 	// assume the PHP client has thrown an exception and this has been caught
-	if (!isset($data)) {
+	if (!isset($data) || empty($data)) {
 		return _printOops();
 	} 
 	// The NBA returned an exception
