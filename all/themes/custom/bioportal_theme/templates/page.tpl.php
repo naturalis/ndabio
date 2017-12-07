@@ -54,8 +54,10 @@
 
       <!--Prints the Naturalis logo. Only it's colors can be changed by means of admin > settings > appereance -->
 
-      <div class="medium-2 columns" id="naturalis-logo" style="cursor:pointer;" onclick="window.open('https://www.naturalis.nl','_top')">
-        <img src="<?php print "$base_url$naturalis_logo"; ?>"/>
+      <div class="medium-2 columns" id="naturalis-logo">
+          <a href="https://www.naturalis.nl" target="_blank">
+            <img src="<?php print "$base_url$naturalis_logo"; ?>" alt="Naturalis" />
+          </a>
       </div>
 
       <div class="medium-6 columns" id="title-and-slogan" role="header">

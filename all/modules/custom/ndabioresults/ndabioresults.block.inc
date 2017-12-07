@@ -68,7 +68,8 @@ function ndabioresults_block_info() {
  * Implements hook_block_view().
  */
 function ndabioresults_block_view ($delta = '') {
-	global $base_root, $base_path, $language;
+	global $base_root, $base_path;
+	$language = _getLanguage();
 	
 	$icon = "<i class='icon-arrow-left'></i>";
 	

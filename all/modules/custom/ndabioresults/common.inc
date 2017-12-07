@@ -15,17 +15,25 @@ use nl\naturalis\bioportal\Client as Client;
 /**
  * Set language
  */
-function _setLanguage () {
-    $langs = language_list(); // Note: No argument
-    if (isset($_GET["language"]) && !empty($_GET["language"])) {
-    	$langcode = $_GET["language"];
-    	$_SESSION['nbaLanguage'] = $langcode;
-    } else if (isset($_SESSION['nbaLanguage']) && !empty($_SESSION['nbaLanguage'])) {
-    	$langcode = $_SESSION['nbaLanguage'];
+function _setLanguage() {
+    $language = _getLanguage();
+    $_SESSION['nbaLanguage'] = $language->language;
+    $_SESSION['language'] = $language->language;
+}
+
+function _getLanguage() {
+    global $language;
+    // first check the default language
+    if ($language) {
+        $lang = $language->language;
     }
-    if (isset($langcode)) {
-        variable_set('language_default', $langs[$langcode]);
-    }
+    // if the language already set in the session
+    $lang = (array_key_exists('nbaLanguage', $_SESSION) && !empty($_SESSION['nbaLanguage'])) ? $_SESSION['nbaLanguage'] : $lang;
+    // or is it overuled in the _GET parameter
+    $lang = (array_key_exists('language', $_GET) && !empty($_GET['language'])) ? $_GET['language'] : $lang;
+
+    $langs = language_list();
+    return $langs[$lang];
 }
 
 /**
@@ -383,7 +391,7 @@ function _isValidJson ($string) {
  * @return string Formatted number
  */
 function _formatNumber ($n) {
-	global $language;
+	$language = _getLanguage();
 	if ($language->language == 'nl') {
 		return number_format($n, 0, ',', '.');
 	}
