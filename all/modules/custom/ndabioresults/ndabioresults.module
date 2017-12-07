@@ -697,22 +697,26 @@ function _createTaxonSubsectionLink ($object, $resultPath) {
 
 function _getTaxonMultimedia ($object) {
 	$client = _setNbaClient('multimedia', true);
-	$condition = new Condition('identifications.scientificName.genusOrMonomial', 'EQUALS', 
-		$object->taxa[0]->acceptedName->genusOrMonomial);
-	$condition->setAnd('identifications.scientificName.specificEpithet', 'EQUALS', 
-		$object->taxa[0]->acceptedName->specificEpithet);
-	$condition->setAnd('identifications.scientificName.infraspecificEpithet', 'EQUALS', 
-		isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
-			$object->taxa[0]->acceptedName->infraspecificEpithet : null);
-	//$condition->setAnd('associatedSpecimenReference', 'EQUALS');
-	$query = new QuerySpec();
-	$query
-		->addCondition($condition)
-		->setSize(5);
-	_addDebugMessage('taxon multimedia', $query);
-	$data = json_decode($client->setQuerySpec($query)->query());
+	try {
+		$condition = new Condition('identifications.scientificName.genusOrMonomial', 'EQUALS', 
+			$object->taxa[0]->acceptedName->genusOrMonomial);
+		$condition->setAnd('identifications.scientificName.specificEpithet', 'EQUALS', 
+			$object->taxa[0]->acceptedName->specificEpithet);
+		$condition->setAnd('identifications.scientificName.infraspecificEpithet', 'EQUALS', 
+			isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
+				$object->taxa[0]->acceptedName->infraspecificEpithet : null);
+		//$condition->setAnd('associatedSpecimenReference', 'EQUALS');
+		$query = new QuerySpec();
+		$query
+			->addCondition($condition)
+			->setSize(5);
+		_addDebugMessage('taxon multimedia', $query);
+		$data = json_decode($client->setQuerySpec($query)->query());
+	} catch (Exception $e) {
+		_setErrorMessage($e);
+	}
 //p($data);		
-	if ($data && $data->totalSize > 0) {
+	if (isset($data->totalSize) && $data->totalSize > 0) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
 		$output['showAllLink'] = $data->totalSize > 5 ?
@@ -764,22 +768,25 @@ function _getTaxonSpecimens ($object) {
 
 function _getSpecimenMultimedia ($object) {
 	
-//p($object);
-	
 	$client = _setNbaClient('multimedia', true);
-	$query = new QuerySpec();
-	$query
-		->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
-		->setSize(5)
-		->setConstantScore();
-	_addDebugMessage('specimen multimedia', $query);
+	try {
+		$query = new QuerySpec();
+		$query
+			->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
+			->setSize(5)
+			->setConstantScore();
+		_addDebugMessage('specimen multimedia', $query);
+		
+		$names = _getSpecimenNames($object->identifications);
+		$scientificName = $names[0]['name'];
+		
+		$data = json_decode($client->setQuerySpec($query)->query());
+	} catch (Exception $e) {
+		_setErrorMessage($e);
+	}
 	
-	$names = _getSpecimenNames($object->identifications);
-	$scientificName = $names[0]['name'];
-	
-	$data = json_decode($client->setQuerySpec($query)->query());
 //p($data);
-	if ($data && $data->totalSize > 0) {
+	if (isset($data->totalSize) && $data->totalSize > 0) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
 		$output['showAllLink'] = $data->totalSize > 5 ?
@@ -851,22 +858,26 @@ function _getTaxonScientificNameById ($id = false) {
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
   	$client = _setNbaClient('taxon');
-  	$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
-	if (count($taxon) > 1) {
-		$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-		$condition->setAnd('acceptedName.infraspecificEpithet', 
-			(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
-			(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+  	try {
+	  	$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+		if (count($taxon) > 1) {
+			$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+			$condition->setAnd('acceptedName.infraspecificEpithet', 
+				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
+				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+		}
+	    $query = new GroupByScientificNameQuerySpec();
+	    $query->addCondition($condition)->setSpecimensSize(5);
+	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+		if (isset($data->exception)) {
+			_setErrorMessage($data->exception);
+			return false;
+		}
+		$data = _getTaxonDetails($data);
+  	} catch (Exception $e) {
+		_setErrorMessage($e);
 	}
-    $query = new GroupByScientificNameQuerySpec();
-    $query->addCondition($condition)->setSpecimensSize(5);
-    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
-	if (isset($data->exception)) {
-		_setErrorMessage($data->exception);
-		return false;
-	}
-	$data = _getTaxonDetails($data);
-	return $data->resultSet[0]->item;	
+	return isset($data->resultSet[0]->item) ? $data->resultSet[0]->item : false;	
 }
 
 /**
@@ -1594,35 +1605,39 @@ function _getTaxonFromNba ($taxon, $existsOnly = false) {
 	} 
 	$taxon = array_filter($taxon);
 	if (isset($taxon[0]) && isset($taxon[1])) {
-		$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
-		if (count($taxon) > 1) {
-			$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
-			$condition->setAnd('acceptedName.infraspecificEpithet', 
-				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
-				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+		try {
+			$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
+			if (count($taxon) > 1) {
+				$condition->setAnd('acceptedName.specificEpithet', 'EQUALS_IC', $taxon[1]);
+				$condition->setAnd('acceptedName.infraspecificEpithet', 
+					(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
+					(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
+			}
+			$client = _setNbaClient('taxon');
+			$timer = _setTimer();
+			// Full data
+			if (!$existsOnly) {
+				$query = new GroupByScientificNameQuerySpec();
+				$query
+					->addCondition($condition)
+					->setConstantScore()
+					->setSpecimensSize(0);
+				_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
+			    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
+			// Exists true/false only
+			} else {
+				$query = new QuerySpec();
+				$query
+					->addCondition($condition)
+					->setConstantScore();
+				_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
+			    $data = json_decode($client->setQuerySpec($query)->query());
+			    return isset($data->totalSize) && $data->totalSize > 0;
+			}
+			_addDebugMessage(implode(' ', $taxon) . ' query', _getTimer($timer));
+		} catch (Exception $e) {
+			_setErrorMessage($e);
 		}
-		$client = _setNbaClient('taxon');
-		$timer = _setTimer();
-		// Full data
-		if (!$existsOnly) {
-			$query = new GroupByScientificNameQuerySpec();
-			$query
-				->addCondition($condition)
-				->setConstantScore()
-				->setSpecimensSize(0);
-			_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
-		    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
-		// Exists true/false only
-		} else {
-			$query = new QuerySpec();
-			$query
-				->addCondition($condition)
-				->setConstantScore();
-			_addDebugMessage(implode(' ', $taxon) . ' exists in NBA', $query);
-		    $data = json_decode($client->setQuerySpec($query)->query());
-		    return isset($data->totalSize) && $data->totalSize > 0;
-		}
-		_addDebugMessage(implode(' ', $taxon) . ' query', _getTimer($timer));
 	    return isset($data->resultSet) ? $data->resultSet : false;
 	} 
 	return false;
@@ -1998,16 +2013,20 @@ function _getTaxonDetails (&$data) {
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->taxa as $item) {
 			// Cannot use id for batch query unfortunately...
-			$condition = new Condition('sourceSystem.code', 'EQUALS', $item->sourceSystem->code);
-			$condition->setAnd('acceptedName.fullScientificName', 'EQUALS', 
-				$item->acceptedName->fullScientificName);
-			$query = new QuerySpec();
-			$query
-				->addCondition($condition)
-				->setConstantScore()
-				->setSize(1);
-			$batch[$item->id] = $query;
-			_addDebugMessage('details for ' . $item->acceptedName->fullScientificName, $query);
+			try {
+				$condition = new Condition('sourceSystem.code', 'EQUALS', $item->sourceSystem->code);
+				$condition->setAnd('acceptedName.fullScientificName', 'EQUALS', 
+					$item->acceptedName->fullScientificName);
+				$query = new QuerySpec();
+				$query
+					->addCondition($condition)
+					->setConstantScore()
+					->setSize(1);
+				$batch[$item->id] = $query;
+				_addDebugMessage('details for ' . $item->acceptedName->fullScientificName, $query);
+			} catch (Exception $e) {
+				_setErrorMessage($e);
+			}
 		}
 	}
 	// Fetch all specimens at once
@@ -2497,13 +2516,17 @@ function _getOtherSpecimens ($data) {
 	if (isset($data->assemblageID) && !empty($data->assemblageID)) {
 		// This information is not present anymore in v2, we must query ourselves
 		$client = _initNbaClient();
-		$query = new QuerySpec();
-		$query
-			->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
-			->setConstantScore();
-		_addDebugMessage('other specimens in assemblage', $query);
-		$result = json_decode($client->specimen()->setQuerySpec($query)->query());
-		if ($result && $result->totalSize > 1) {
+		try {
+			$query = new QuerySpec();
+			$query
+				->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
+				->setConstantScore();
+			_addDebugMessage('other specimens in assemblage', $query);
+			$result = json_decode($client->specimen()->setQuerySpec($query)->query());
+		} catch (Exception $e) {
+			_setErrorMessage($e);
+		}
+		if (isset($result->totalSize) && $result->totalSize > 1) {
 			foreach ($result->resultSet as $specimen) {
 				if ($specimen->item->unitID != $data->unitID) {
 					$s = [];
