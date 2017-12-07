@@ -1391,8 +1391,6 @@ function _nba_specimen_result_callback ($search = false) {
 	
 	}
 	
-	_addDebugMessage("Specimen", $query);
-	
 	try {
 		
 		$query = _buildNbaQuery($service, $terms);	
@@ -1401,6 +1399,7 @@ function _nba_specimen_result_callback ($search = false) {
 		
 		_addDebugMessage('Specimen query', _getTimer($timer));		
 		$data = _parseSpecimens($data, ['paginator']);
+		_addDebugMessage("Specimen", $query);
 		
 	} catch (Exception $e) {
 		_setErrorMessage($e);
