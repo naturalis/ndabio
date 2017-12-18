@@ -6048,6 +6048,15 @@ function feature_bioportal_controller_translations_nl_defaults() {
     'plural' => 0,
   );
   $translatables[] = t('- None -', array(), array('context' => ''));
+  $translations['nl:default']['23a58bf9274bedb19375e527a0744fa9'] = array(
+    'source' => 'with',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=lieveheersbeestje&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=nederland&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&op=Search&form_build_id=form-Pk5QlpNSQmUrN6ZvvERxGwM3ZEr1HQbg573TipPEL7c&form_token=AbuPnMoiEPTTBlWJBT0RoqkKyCwuedxnsWSFnek59KQ&form_id=ndabio_advanced_taxonomysearch&language=nl&back',
+    'translation' => 'met',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('with', array(), array('context' => ''));
   $translations['nl:default']['23b0f8b87bef2bd77117ceb477dadc84'] = array(
     'source' => 'Unpublish content containing keyword(s)',
     'context' => '',
@@ -34869,6 +34878,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Unresolved dependency', array(), array('context' => ''));
+  $translations['nl:default']['c14a0c1850792894fb22bdfb56c4f1e8'] = array(
+    'source' => 'Your query did not produce any results. This may be due to the fact that the search engine reverts to a "starts with" instead of a "contains" search when a term is longer than %d characters.',
+    'context' => '',
+    'location' => '/result?s_vernacularName=lieveheersbeestjes&s_localityText=nederland&form_id=ndabio_advanced_taxonomysearch&language=nl&back',
+    'translation' => 'Uw zoekopdracht leverde geen resultaten op. Dit heeft mogelijk te maken met het feit dat de zoekmachine terugvalt op een "begint met" in plaats van een "bevat" zoekopdracht als de zoekterm langer is dan %d karakters.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Your query did not produce any results. This may be due to the fact that the search engine reverts to a "starts with" instead of a "contains" search when a term is longer than %d characters.', array(), array('context' => ''));
   $translations['nl:default']['c1504279b652d5ca0db908adbb525738'] = array(
     'source' => 'The <a href="@create-topic">Forum topic</a> link on the <a href="@content-add">Add new content</a> page creates the first post of a new threaded discussion, or thread.',
     'context' => '',
@@ -40029,6 +40047,15 @@ Your account on [site:name] has been blocked.
     'plural' => 0,
   );
   $translatables[] = t('Replacement style', array(), array('context' => ''));
+  $translations['nl:default']['e0d079b6183d294ec85430a7c0166a76'] = array(
+    'source' => 'Retry your search replacing %s or <a href="%s">modify your search</a>.',
+    'context' => '',
+    'location' => '/result?s_andOr=0&s_scientificName=&s_vernacularName=lieveheersbeestje&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=nederland&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&op=Search&form_build_id=form-Pk5QlpNSQmUrN6ZvvERxGwM3ZEr1HQbg573TipPEL7c&form_token=AbuPnMoiEPTTBlWJBT0RoqkKyCwuedxnsWSFnek59KQ&form_id=ndabio_advanced_taxonomysearch&language=nl&back',
+    'translation' => 'Vervang in uw zoekopdracht %s of <a href="%s">pas uw zoekopdracht aan</a>. ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('Retry your search replacing %s or <a href="%s">modify your search</a>.', array(), array('context' => ''));
   $translations['nl:default']['e0d63c5fa4cd00369289719ba0803147'] = array(
     'source' => 'Block caching is inactive because you have enabled modules defining content access restrictions.',
     'context' => '',
