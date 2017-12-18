@@ -538,8 +538,8 @@ function ndabio_block_view ($delta = '') {
 
             if (arg(0) == 'node' && is_numeric(arg(1))) {
                 $translations = translation_path_get_translations("node/" . arg(1));
-                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
-                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"],'nl') . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"], 'en') . "?";
             } else {
                 $currentpath = request_uri();
                 $cleanup = array(
