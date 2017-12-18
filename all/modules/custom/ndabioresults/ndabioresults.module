@@ -1852,7 +1852,6 @@ function _advancedSearchSingleServiceUsed ($services) {
 }
 
 function _advancedSearchNoResultSuggestion ($service) {
-	$service = _normaliseServiceName($service);
 	// If session is not set, skip the whole thing
 	if (!isset($_SESSION['nbaQuery'][$service]['terms'])) {
 		return false;
@@ -1875,8 +1874,8 @@ function _advancedSearchNoResultSuggestion ($service) {
 		return [
 			'modified' => $modified,
 			'original' => _getSearchTerms($terms),
-			'url' => _setStartUrl() . 'result' . '/' . $service . '/' . 
-				http_build_query(array_merge($terms, $modified)),
+			'url' => _setStartUrl() . 'result' . '/' . _normaliseServiceName($service) . 
+				'/' . http_build_query(array_merge($terms, $modified)),
 		];
 	}
 	return false;
