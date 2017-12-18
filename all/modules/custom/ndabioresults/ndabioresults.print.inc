@@ -219,9 +219,7 @@ function _printSpecimens ($data) {
 	$output .= "</tbody></table>\n";
 
     $output .= _printShowAll($data);
-    if (user_is_logged_in()) {
-        $output .= _printMediaLink($data);
-    }
+    $output .= _printMediaLink($data);
     $output .= _printPaginator($data);
 
     return $output;
