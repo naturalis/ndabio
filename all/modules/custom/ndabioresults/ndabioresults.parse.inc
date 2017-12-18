@@ -384,7 +384,7 @@ function _parseSpecimenDetail ($data) {
 	    'title',
 	    'multiMediaPublic',
 	    'licenseType',
-	    'license',
+	    //'license',
 	    'assemblyID',
 	    //'collectionType',
     	//'referrer'
