@@ -33,15 +33,6 @@ function ndabio_init () {
 	// Check if proper NBA is used
 	_checkNbaVersion();
 	_setLanguage();
-	_checkNbaBaseFile();
-}
-
-function _checkNbaBaseFile () {
-	if (!file_exists(NBABASEURLFILE)) {
-		_writeBaseFile();
-	} else if (!is_writable(NBABASEURLFILE)) {
-		watchdog('php', NBABASEURLFILE . ' is not writable!', null, WATCHDOG_ERROR);
-	}
 }
 
 
@@ -49,17 +40,20 @@ function _checkNbaBaseFile () {
  * 'search' TAXONOMY TO ADVANCED SEARCH FORM
  */
 function ndabio_advanced_taxonomysearch () {
-	global $base_root, $base_path, $language;
+    global $base_root, $base_path;
+    $language = _getLanguage();
 
 	// Set default values for searchagain
 	$expandedFlag = $storedGid = -1;
 	$placeholder = t('e.g. species name or locality');
+
 	
 	$loadold = 0;
 	if (!empty($_GET['searchagain'])) {
 		if (intval($_GET['searchagain']) == 1) {
 			$expandedFlag = _getExpandedFlag();
-			$storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ? $_SESSION['nbaSearch']['gid'] : -1;
+			$storedGid = isset($_SESSION['nbaSearch']['gid']) && !empty($_SESSION['nbaSearch']['gid']) ? 
+				$_SESSION['nbaSearch']['gid'] : -1;
 			$loadold = 1;
 		}
 	}
@@ -413,7 +407,6 @@ function ndabio_advanced_taxonomysearch () {
 		'#nowrapper' => TRUE,
 		'#id' => 'edit-submit-bottom' 
 	);
-	global $language;
 	$form['#action'] = url('result');
 	$form['#method'] = 'get';
 	
@@ -537,7 +530,7 @@ function ndabio_block_info () {
 
 function ndabio_block_view ($delta = '') {
   global $base_url, $base_root, $base_path;
-  global $language;
+  $language = _getLanguage();
 
   $block = array();
   switch ($delta) {
@@ -545,8 +538,8 @@ function ndabio_block_view ($delta = '') {
 
             if (arg(0) == 'node' && is_numeric(arg(1))) {
                 $translations = translation_path_get_translations("node/" . arg(1));
-                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"]) . "?";
-                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"]) . "?";
+                $currentpathnl = $base_url . "/" . drupal_get_path_alias($translations["nl"],'nl') . "?";
+                $currentpathen = $base_url . "/" . drupal_get_path_alias($translations["en"], 'en') . "?";
             } else {
                 $currentpath = request_uri();
                 $cleanup = array(
@@ -642,7 +635,8 @@ function ndabio_clear_map_data_callback () {
 function ndabio_ajax_callback () {
   if (!empty($_GET["nid"])) {
     $nid = $_GET["nid"];
-    $language = isset($_GET["language"]) ? $_GET["language"] : 'en';
+    $lang = _getLanguage();
+    $language = (is_object($lang)) ? $lang->language : 'en';
     $client = _initNbaClient();
     $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
     if (isset($geo->shape)) {
@@ -712,7 +706,8 @@ function nba_areas_callback ($type = false) {
     if (!$type) {
         return false;
     }
-    $language = isset($_GET['language']) ? $_GET['language'] : 'en';
+    $lang = _getLanguage();
+    $language = (is_object($lang)) ? $lang->language : 'en';
     switch ($type) {
     	case 'country':
 	        // First print favourites (hard-coded list in config)
@@ -763,26 +758,31 @@ function _natureAreasWithResultsOnly () {
 		$all = json_decode(_nbaGeoAreas(), true);
 		$natureAreas = $all['Nature'];
 	    $client = _setNbaClient('specimen', true);
-		foreach ($natureAreas as $area) {
-			$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
-			$query = new QuerySpec();
-			$batch[$area['locality']['en']] = $query->setSize(1)->addCondition($condition);
-		}
-		$result = $client->singleClientBatchQuery($batch);
-	   	foreach ($result as $area => $json) {
-	    	$data = json_decode($json);
-	    	if (isset($data->totalSize) && $data->totalSize == 0) {
-	    		$natureAreasWithoutResults[] = $area;
-	    	}
-	    }
-    	// Trim empty areas
-		foreach ($natureAreas as $i => $area) {
-			if (!in_array($area['locality']['en'], $natureAreasWithoutResults)) {
-				$natureAreasWithResults[$area['id']] = $area['locality']['en'];
+	    try {
+			foreach ($natureAreas as $area) {
+				$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
+				$query = new QuerySpec();
+				$batch[$area['locality']['en']] = $query->setSize(1)->addCondition($condition);
 			}
-		}
-		asort($natureAreasWithResults);
-        cache_set($cacheId, $natureAreasWithResults);
+			$result = $client->singleClientBatchQuery($batch);
+		   	foreach ($result as $area => $json) {
+		    	$data = json_decode($json);
+		    	if (isset($data->totalSize) && $data->totalSize == 0) {
+		    		$natureAreasWithoutResults[] = $area;
+		    	}
+		    }
+	    	// Trim empty areas
+			foreach ($natureAreas as $i => $area) {
+				if (!in_array($area['locality']['en'], $natureAreasWithoutResults)) {
+					$natureAreasWithResults[$area['id']] = $area['locality']['en'];
+				}
+			}
+			asort($natureAreasWithResults);
+	        cache_set($cacheId, $natureAreasWithResults);
+	    } catch (Exception $e) {
+	    	_setErrorMessage($e);
+	    	$natureAreasWithResults = false;
+	    }
     }    
     return $natureAreasWithResults;
 }
@@ -939,20 +939,24 @@ function _isMultiAdvancedSelect ($field) {
 function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
 	$options = _getDistinctValues($service, $optionPath);
 	$client = _initNbaClient();
-	foreach ($options as $option) {
-		$condition = new Condition($optionPath, 'EQUALS', $option);
-		$query = new QuerySpec();
-		$query->addCondition($condition)->setSize(1);
-		$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
-		// Convert NBA path to object path
-		$pathArray = explode('.', $valuePath);
-		if (isset($data->resultSet[0]->item)) {
-			$objPath = $data->resultSet[0]->item;
-			foreach ($pathArray as $deeper) {
-				$objPath = $objPath->{$deeper};
+	try {
+		foreach ($options as $option) {
+			$condition = new Condition($optionPath, 'EQUALS', $option);
+			$query = new QuerySpec();
+			$query->addCondition($condition)->setSize(1);
+			$data = json_decode($client->{$service}()->setQuerySpec($query)->query());
+			// Convert NBA path to object path
+			$pathArray = explode('.', $valuePath);
+			if (isset($data->resultSet[0]->item)) {
+				$objPath = $data->resultSet[0]->item;
+				foreach ($pathArray as $deeper) {
+					$objPath = $objPath->{$deeper};
+				}
+				$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
 			}
-			$output[htmlspecialchars($option, ENT_QUOTES)] = $objPath;
 		}
+	} catch (Exception $e) {
+		_setErrorMessage($e);
 	}
 	return isset($output) ? $output : [];
 }
@@ -1332,19 +1336,6 @@ function _getStoredGid () {
 
 function _wrap_label ($help, $caption) {
 	return "<span class='search-explanation' title='$help'>$caption</span>";
-}
-
-function _writeBaseFile ($baseUrl = false) {
-	if (!$baseUrl) {
-		$baseUrl = _nbaBaseUrl();
-	}
-	$handle = @fopen(NBABASEURLFILE, "w");
-	if ($handle) {
-		fwrite($handle, $baseUrl . "\n");
-		fclose($handle);
-	} else {
-		
-	}
 }
 
 

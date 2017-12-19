@@ -19,7 +19,7 @@ function feature_bioportal_controller_default_box() {
   $box->description = 'Naturalis Logo';
   $box->options = array(
     'body' => array(
-      'value' => '<p><img id="logo-large" src="<?php echo _setBasePath(); ?>profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/logo-large-black.png" style="width:240px" /></p>
+      'value' => '<p><a href="https://www.naturalis.nl" target="_blank"><img id="logo-large" src="<?php echo _setBasePath(); ?>profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/logo-large-black.png" style="width:240px" /></a></p>
 ',
       'format' => 'php_code',
     ),

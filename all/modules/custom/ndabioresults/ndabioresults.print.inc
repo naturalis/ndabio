@@ -35,8 +35,8 @@ function _printSortOptions ($service) {
  * @return string
  */
 function _printTaxonDetail ($data) {
-    global $language;
-    
+    $language = _getLanguage();
+
     $output = _printDebug();
     $output .= "<div class='category'>".t('Taxon')."</div>";
     $output .= "<h2><span class='scientific-name'>";
@@ -808,7 +808,7 @@ function _printPreviousNext ($p) {
  * @return string Formatted output
  */
 function _printMultimedia ($data) {
-	
+
 	if (empty($data['results'])) {
 		return false;
 	}
@@ -1294,7 +1294,7 @@ function _printSource ($data, $source) {
  * @return string Formatted output
  */
 function _printDescriptions ($data) {
-	global $language;
+	$language = _getLanguage();
 	$output = '';
 	$header = "<h3>" . t('Descriptions') . "</h3>";
 	if (isset($data['descriptions']) && !empty($data['descriptions'])) {
@@ -1367,7 +1367,8 @@ function _printCommonNames ($data) {
  * @return string Formatted output
  */
 function _printClassifications ($data) {
-	global $language;
+    $language = _getLanguage();
+
 	$output = '';
 	$header = "<h3>" . t('Classifications') . "</h3>";
 	$printClassifications = array();
@@ -1438,8 +1439,8 @@ function _printClassifications ($data) {
  * @return boolean|string
  */
 function _printSpecimensTaxon ($data) {
-	global $language;
-	
+    $language = _getLanguage();
+
 	$service = 'names.specimens';
 	
 //p($data);
@@ -1606,4 +1607,37 @@ function _printDebug () {
         return $output . '</div></div>';
     }
 }
+
+/**
+ * Prints a fine oops message
+ * 
+ * If any errors have been set these are printed as well
+ * 
+ * @return string
+ */
+function _printOops () {
+	$output = '<h1>' .t('Error'). '!</h1><p>';
+	if (_getErrorMessage()) {
+		$output .= _getErrorMessage() . "</p>\n<p>";
+	}
+	$output .= t('Oops, something went wrong') . '. ' .
+		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
+	return $output;
+}
+
+function _printAdvancedSearchSuggestion ($data) {
+		foreach ($data['modified'] as $label => $value) {
+			$replacement[] .= '<strong>' . $data['original'][$label] . '</strong> ' 
+				. t('with') . ' ' . '<a href="' . $data['url'] . '" class="result-query">' . $value . '</a>';
+		}
+		$message = '<p style="padding-top: 12px; width: 700px;">' . 
+			t('Your query did not produce any results. ' . 
+			'This may be due to the fact that the search engine reverts to a ' .
+			'"starts with" instead of a "contains" search when a term is longer than ' .
+			'%d characters.') . '<p></p>' . 
+			t('Retry your search replacing %s or <a href="%s">modify your search</a>.');
+		return sprintf($message, _nbaMaxContainsStringSize(), implode(', ', $replacement), 
+			_setStartUrl() . '?searchagain=1');
+}
+
 

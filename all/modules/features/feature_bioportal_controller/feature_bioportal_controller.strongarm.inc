@@ -102,7 +102,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_baseurl';
-  $strongarm->value = 'http://145.136.242.164:8080/v2/';
+  $strongarm->value = 'http://api.biodiversitydata.nl/v2';
   $export['ndabioresults_config_baseurl'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -417,6 +417,27 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->name = 'pathauto_node_ndabio_header_image_pattern';
   $strongarm->value = '';
   $export['pathauto_node_ndabio_header_image_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_search_log_pattern';
+  $strongarm->value = '';
+  $export['pathauto_node_search_log_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_nba2text_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_nba2text_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_search_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_search_pattern'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

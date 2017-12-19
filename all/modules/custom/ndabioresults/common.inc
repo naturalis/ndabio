@@ -15,17 +15,25 @@ use nl\naturalis\bioportal\Client as Client;
 /**
  * Set language
  */
-function _setLanguage () {
-    $langs = language_list(); // Note: No argument
-    if (isset($_GET["language"]) && !empty($_GET["language"])) {
-    	$langcode = $_GET["language"];
-    	$_SESSION['nbaLanguage'] = $langcode;
-    } else if (isset($_SESSION['nbaLanguage']) && !empty($_SESSION['nbaLanguage'])) {
-    	$langcode = $_SESSION['nbaLanguage'];
+function _setLanguage() {
+    $language = _getLanguage();
+    $_SESSION['nbaLanguage'] = $language->language;
+    $_SESSION['language'] = $language->language;
+}
+
+function _getLanguage() {
+    global $language;
+    // first check the default language
+    if ($language) {
+        $lang = $language->language;
     }
-    if (isset($langcode)) {
-        variable_set('language_default', $langs[$langcode]);
-    }
+    // if the language already set in the session
+    $lang = (array_key_exists('nbaLanguage', $_SESSION) && !empty($_SESSION['nbaLanguage'])) ? $_SESSION['nbaLanguage'] : $lang;
+    // or is it overuled in the _GET parameter
+    $lang = (array_key_exists('language', $_GET) && !empty($_GET['language'])) ? $_GET['language'] : $lang;
+
+    $langs = language_list();
+    return $langs[$lang];
 }
 
 /**
@@ -161,14 +169,21 @@ function _getOptimalOperators ($fields) {
  * @param string $value
  * @return array|NULL[]
  */
-function _stringToElements ($value, $stringSizeThreshold = false) {
+function _stringToElements ($value, $settings = []) {
 	if ($value == '') {
 		return [null];
 	}
 	$elements = array_map('trim', array_unique(array_filter(explode(' ', trim($value)))));
-	if ($stringSizeThreshold) {
+	if (isset($settings['shorten'])) {
 		foreach ($elements as $i => $element) {
-			if (strlen($element) < (int)$stringSizeThreshold) {
+			if (strlen($element) > $settings['shorten']) {
+				$elements[$i] = substr($element, 0, $settings['shorten']);
+			}
+		}
+	}	
+	if (isset($settings['threshold'])) {
+		foreach ($elements as $i => $element) {
+			if (strlen($element) < $settings['threshold']) {
 				unset($elements[$i]);
 			}
 		}
@@ -189,9 +204,13 @@ function _getDistinctValues ($service, $nbaPath) {
 	    $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
 	    sort($values);
 	    unset($client);
+
 	    return $values;
+
     } catch (Exception $e) {
+
     	_setErrorMessage($e->getMessage());
+
     	return false;
     }
 }
@@ -358,10 +377,11 @@ function _sortArrayByArray ($array, $orderArray) {
     return $ordered + $array;
 }
 
-/**
+/*
  * Validates json
  *
- * @param boolean Valid?
+ * @param string
+ * @return boolean
  */
 function _isValidJson ($string) {
 	return is_object(json_decode($string));
@@ -376,29 +396,31 @@ function _isValidJson ($string) {
  * @return string Formatted number
  */
 function _formatNumber ($n) {
-	global $language;
+	$language = _getLanguage();
 	if ($language->language == 'nl') {
 		return number_format($n, 0, ',', '.');
 	}
 	return number_format($n);
 }
 
-/**
- * Prints a fine oops message
- * 
- * If any errors have been set these are printed as well
- * 
- * @return string
- */
-function _printOops () {
-	$output = '<h1>' .t('Error'). '!</h1><p>';
+
+function _checkInvalidNbaRequest ($data, $noResultCheck =  false) {
+	// There's no reponse at all: 
+	// assume the PHP client has thrown an exception and this has been caught
+	if (!isset($data) || empty($data)) {
+		return _printOops();
+	} 
+	// The NBA returned an exception
 	if (_getErrorMessage()) {
-		$output .= _getErrorMessage() . "</p>\n<p>";
+		return _printOops();
 	}
-	$output .= t('Oops, something went wrong') . '. ' .
-		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
-	return $output;
+	// Optional check: there's no data, but there definitely should be
+	if ($noResultCheck && $data->totalSize == 0) {
+		return _printNoResults();
+	}
+	return false;
 }
+
 
 /**
  * Gets NBA source.name for associated source.code
@@ -409,8 +431,6 @@ function _printOops () {
  * @return string|boolean
  */
 function _getSourceNameBySourceCode ($code) {
-	
-//p(_advancedSelects()); die();
 	foreach (['t', 's', 'm'] as $prefix) {
 		if (isset(_advancedSelects()[$prefix . '_sourceSystem'][$code])) {
 			return _advancedSelects()[$prefix . '_sourceSystem'][$code];
@@ -429,20 +449,17 @@ function _getErrorMessage () {
 }
 
 /**
- * Add error message to stack
+ * Add error message to stack and Drupal log
  */
 function _setErrorMessage ($message = false) {
 	// Parse NBA exceptions into message
-	if (is_object($message)) {
-		if (isset($message->message)) {
-			$output[] = $message->message;
-		}
-		if (isset($message->type)) {
-			$output[] = $message->type;
-		}
+	if (is_object($message) && is_a($message, 'Exception')) {
+		$message = $message->getMessage();
 	}
-	$_SESSION['nbaErrorMessage'] = isset($output) ?
-		implode('<br>', $output) : $message;
+	// Output to debug
+	$_SESSION['nbaErrorMessage'] = $message;
+	// Add to Drupal log
+	watchdog('php', $message, null, WATCHDOG_ERROR);
 }
 
 /**

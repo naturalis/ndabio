@@ -201,7 +201,8 @@ function _getMaxResultsPerPage ($service) {
  * @return boolean|array
  */
 function _getCommonNames ($row, $languageCheck = false) {
-	global $language;
+    $language = _getLanguage();
+
 	foreach ($row->item->taxa as $i => $taxon) {
 		if (isset($taxon->vernacularNames)) {
 			foreach ($taxon->vernacularNames as $name) {
@@ -295,7 +296,7 @@ function _parseMultimedia ($data, $options = []) {
 		}
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row);
+		$d['nameResolutionHits'] = _getNameResolutionHits($service, $hits, $row);
 		$d['taxon'] = _getSpecimenScientificNames($service, $row, $hits);
 		$d['unitID'] = _getMultimediaSpecimenUnitId($row, $hits);
 		$output['results'][] = $d;
@@ -383,7 +384,7 @@ function _parseSpecimenDetail ($data) {
 	    'title',
 	    'multiMediaPublic',
 	    'licenseType',
-	    'license',
+	    //'license',
 	    'assemblyID',
 	    //'collectionType',
     	//'referrer'
@@ -639,8 +640,9 @@ function _setNonNameHits ($service, $hits = []) {
  * @param array $hits
  * @param object $object
  * @return boolean|array
+ * 
  */
-function _setNameResolutionHits ($service, $hits = [], $object) {
+function _getNameResolutionHits ($service, $hits = [], $object) {
 	if (!empty($hits)) {
 		$paths = _getQueryPaths($service);
 		$types = [];
@@ -742,6 +744,138 @@ function _setNameResolutionHits ($service, $hits = [], $object) {
 		return false;
 	}
 }
+
+/*
+function _getNameResolutionHits ($service, $hits = [], $object) {
+    if (count($hits) == 0) {
+        return false;
+    }
+    $paths = _getQueryPaths($service);
+    $types = [];
+    $taxons = [];
+    foreach ($hits as $path => $hit) {
+        if (strpos($path, 'taxonomicEnrichments') !== false) {
+            // Get taxon id
+            list($unused, $type, $field) = explode('.', $path);
+            $types[] = $type;
+
+            if (!isset($object->identifications)) {
+                $object->identifications = $object->item->identifications;
+            }
+
+            foreach ($object->identifications as $i => $identification) {
+
+                if (!is_object($identification) ||
+                    !property_exists($identification, 'taxonomicEnrichments') ||
+                    !is_array($identification->taxonomicEnrichments))
+                    continue;
+
+                foreach ($identification->taxonomicEnrichments as $enrichment) {
+                    if (!is_object($enrichment) ||
+                        !property_exists($enrichment, $type) ||
+                        !is_array($enrichment->{$type}))
+                        continue;
+
+                    foreach ($enrichment->{$type} as $enrichmentType) {
+                        if (isset($enrichmentType->{$field}) && ($enrichmentType->{$field} == $hit)) {
+                            $names = array();
+                            if ($type == 'vernacularNames') {
+
+                                $hit = _highlightMatch($hit, $paths[$path]['values']);
+
+                            } else {
+
+                                // Elements in regular scientific name elements
+                                foreach (_scientificNameElements() as $i => $element) {
+                                    $names[$i] = '';
+                                    if (isset($enrichmentType->{$element}) && !empty(trim($enrichmentType->{$element}))) {
+                                        $names[$i] = trim($enrichmentType->{$element});
+                                    }
+
+                                    // Highlight (assume always CONTAINS operator for name fields)
+                                    if (!empty($names[$i]) && $element == $field) {
+                                        $names[$i] = _highlightMatch($names[$i], $paths[$path]['values']);
+                                    }
+
+                                    // Subgenus between brackets
+                                    if (!empty($names[$i]) && ($element == 'subgenus') && !preg_match("/\(.*\)/", $names[$i])) {
+                                        $names[$i] = sprintf("(%s)", $names[$i]);
+                                    }
+
+                                    // Italics
+                                    if (!empty($names[$i]) && in_array($element, _scientificNameElementsInItalics())) {
+                                        $names[$i] = sprintf("<span class='scientific'>%s</span>", $names[$i]);
+                                    }
+
+                                } // end foreach (_scientificNameElements() as $i => $element)
+
+                                if (count($names) > 0) {
+                                    // Could also be a hit in fullScientificName; try highlighting
+                                    if ($field == 'fullScientificName') {
+                                        foreach ($names as $i => $element) {
+                                            // Only add if not highlighted yet
+                                            if (strpos($element, 'class="result-query"') === false) {
+                                                $names[$i] = _highlightMatch($names[$i], $paths[$path]['values']);
+                                            }
+                                        }
+                                    }
+
+                                    // Only fullScientificName is available; genus, etc are empty
+                                    if (empty($names[0])) {
+                                        $names[0] = $enrichmentType->fullScientificName;
+                                        unset($names[1], $names[2], $names[3]);
+                                        // Try highlighting
+                                        if ($field == 'fullScientificName') {
+                                            $names[0] = _highlightMatch($names[0], $paths[$path]['values']);
+                                        }
+                                    }
+                                    $hit = implode(' ', array_filter($names));
+                                }
+
+                            } // endif ($type != 'vernacularNames')
+                            $taxons[] = [
+                                'taxon' => _getTaxonScientificNameById($enrichment->taxonId),
+                                ($type == 'synonyms') ? 'synonym' : 'vernacular' => $hit
+                            ];
+                        }
+                    } // end foreach ($enrichment->{$type} as $enrichmentType)
+                } // end foreach ($identification->taxonomicEnrichments as $enrichment)
+            }
+        }
+    }
+    
+    if (count($taxons)) {
+        return _filterTaxonHits($taxons);
+    }
+    return false;
+}
+
+function _filterTaxonHits($taxons)
+{
+    $doubles = array();
+
+    // We end up with an array that still should be checked for duplicates: BIOPORVTWO-333
+    foreach ($taxons as $i => $hit) {
+        $type = array_keys($hit)[1];
+        $string = strip_tags($hit[$type]);
+        $nrHits = substr_count($hit[$type], 'class="result-query"');
+        if (isset($doubles[$type][$string])) {
+            // Check number of hits in string; highest number wins
+            // Already exists, has more hits -- delete older entry
+            if ($nrHits > $doubles[$type][$string]['count']) {
+                unset($taxons[$doubles[$type][$string]['nr']]);
+                // Already exists, has fewer hits -- delete this entry
+            } else {
+                unset($taxons[$i]);
+            }
+        }
+        $doubles[$type][$string] = ['nr' => $i, 'count' => $nrHits];
+    }
+    // Garbage collector
+    unset($doubles);
+    return array_map("unserialize", array_unique(array_map("serialize", $taxons)));
+}
+*/
 
 /**
  * Get vernaculars names for taxon
@@ -1118,8 +1252,8 @@ function _parseSpecimens ($data, $options = []) {
 		
 		$hits = _getHits($service, $row->item);
 		$d['hits'] = _setNonNameHits($service, $hits);
-		$d['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $row->item);
-		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);			
+		$d['nameResolutionHits'] = _getNameResolutionHits($service, $hits, $row->item);
+		$d['names'] = _getSpecimenScientificNames($service, $row, $hits, true);
 		$output['results'][] = $d;
 	}
 /*	
@@ -1281,7 +1415,7 @@ function _parseSpecimensTaxon ($data, $options = []) {
 			$hits = _getHits($service, $specimen);
 			$s['hits'] = _setNonNameHits($service, $hits);
 			
-			$s['nameResolutionHits'] = _setNameResolutionHits($service, $hits, $specimen);
+			$s['nameResolutionHits'] = _getNameResolutionHits($service, $hits, $specimen);
 			
 //p($s['nameResolutionHits'] );			
 			
@@ -1605,14 +1739,14 @@ function _getHitInResult ($pathElements, $result, $value, $operator) {
 				if (is_array($result)) {
 					$result = array_values($result)[0];
 				}
-				// Operator determines if we have a hit: 
+				// Operator determines if we have a hit:
 				// CONTAINS...
 				if (($operator == 'CONTAINS' && stripos($result, $value) !== false) ||
 				// STARTS_WITH_IC
 					($operator == 'STARTS_WITH_IC' && stripos($result, $value) === 0) ||						
 				// ... MATCHES or EQUALS_IC	
 					(($operator == 'MATCHES' || $operator == 'EQUALS_IC') && 
-						preg_match("/\b$value\b/i", $result)) ||
+                        preg_match('/(?<!\pL)'.$value.'(?!\pL)/ui', $result)) ||
 				// ... EQUALS
 					($operator == 'EQUALS' && $value == $result)) {
 					$hits[] = $result;
@@ -1837,29 +1971,31 @@ function _getSpecimenVernaculars ($identifications = []) {
  * @return array|void
  */
 function _getGatheringEventSpecimens ($event = []) {
-	foreach ($event as $k => $v) {
-		if (!is_array($v) && !is_object($k) && $v != '') {
-			if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
-				$v = _dateTimeToDate($v);
-			}
-			$d[$k] = $v;
-		}
-	}
-	if (isset($event->gatheringPersons)) {
-		foreach ($event->gatheringPersons as $a) {
-			$agent[] = $a->fullName . (isset($a->organization->name) ? 
-				' (' . $a->organization->name . ')' : '');
-		}
-		$d['gatheringAgents'] = $agent;
-	}
-	if (isset($event->siteCoordinates)) {
-		foreach ($event->siteCoordinates as $c) {
-			if (isset($c->longitudeDecimal) && isset($c->latitudeDecimal)) {
-				$coordinates['lat'] = $c->latitudeDecimal;
-				$coordinates['lon'] = $c->longitudeDecimal;
+	if (!empty($event)) {
+		foreach ($event as $k => $v) {
+			if (!is_array($v) && !is_object($k) && $v != '') {
+				if ($k == 'dateTimeBegin' || $k == 'dateTimeEnd') {
+					$v = _dateTimeToDate($v);
+				}
+				$d[$k] = $v;
 			}
 		}
-		$d['siteCoordinates'] = isset($coordinates) ? $coordinates : null;
+		if (isset($event->gatheringPersons)) {
+			foreach ($event->gatheringPersons as $a) {
+				$agent[] = $a->fullName . (isset($a->organization->name) ? 
+					' (' . $a->organization->name . ')' : '');
+			}
+			$d['gatheringAgents'] = $agent;
+		}
+		if (isset($event->siteCoordinates)) {
+			foreach ($event->siteCoordinates as $c) {
+				if (isset($c->longitudeDecimal) && isset($c->latitudeDecimal)) {
+					$coordinates['lat'] = $c->latitudeDecimal;
+					$coordinates['lon'] = $c->longitudeDecimal;
+				}
+			}
+			$d['siteCoordinates'] = isset($coordinates) ? $coordinates : null;
+		}
 	}
 	return isset($d) ? $d : null;
 }

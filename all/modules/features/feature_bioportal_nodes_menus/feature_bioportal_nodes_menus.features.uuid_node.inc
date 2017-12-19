@@ -651,7 +651,19 @@ echo getNbaData();
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>v2.0:</p>
+        'value' => '<div>
+<p>v2.1:</p>
+
+<ul>
+	<li><u>New</u>: suggestion for alternate search query if advanced search does not produce any results (for selected fields only).</li>
+	<li><u>Improved</u>: search queries and sorting of results have been optimised.</li>
+	<li><u>Improved</u>: interface language preference is saved in a consistent way.</li>
+	<li><u>Fixed</u>: "show all media" link sometimes was broken.</li>
+</ul>
+</div>
+
+<p><br />
+v2.0:</p>
 
 <ul>
 	<li><u>New</u>: BioPortal uses the updated and much improved <a href="http://api.biodiversitydata.nl/v2" target="_blank">NBA v2.0</a> for data queries.</li>
@@ -1522,7 +1534,16 @@ Bringing all information together will help distinguish facts from fables in the
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>v2.0:</p>
+        'value' => '<p>v2.1:</p>
+
+<ul>
+	<li><u>Nieuw</u>: suggestie voor alternatieve zoekopdracht als uitgebreid zoeken geen resultaten oplevert (alleen voor specifieke velden).</li>
+	<li><u>Verbeterd</u>: zoekopdrachten en sorteren van resultaten geoptimaliseerd.</li>
+	<li><u>Verbeterd</u>: taalvoorkeur wordt op een consistente manier bewaard.</li>
+	<li><u>Opgelost</u>: "toon alle media" link was soms gebroken.</li>
+</ul>
+
+<p>v2.0:</p>
 
 <ul>
 	<li><u>Nieuw</u>: BioPortal gebruikt de vernieuwde en sterk verbeterde <a href="http://api.biodiversitydata.nl/v2" target="_blank">NBA v2.0</a> voor zoekopdrachten.</li>
