@@ -105,11 +105,13 @@ function ndabioresults_menu () {
 		'access arguments' => array('access content'),
 		'type' => MENU_CALLBACK 
 	);
+    /*
 	$items['nba/'] = array(
 		'page callback' => '_nba_redirect_old_links',
 		'load arguments' => array('%map', '%index'),
 		'access callback' => true,
 	);
+    */
 	return $items;
 }
 
@@ -2790,6 +2792,8 @@ function _translateNdaField ($str) {
     return t($str);
 }
 
+/*
 function _nba_redirect_old_links ($url) {
 	// die($url);
 }
+*/
