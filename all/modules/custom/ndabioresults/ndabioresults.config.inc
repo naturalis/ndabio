@@ -141,8 +141,8 @@ function ndabioresults_config_form ($form, &$form_state) {
  * Used to write nba base url (ndabioresults_config_baseurl) to text file
  */
 function ndabioresults_admin_settings_submit ($form, &$form_state) {
-	_writeBaseFile($form_state['values']['ndabioresults_config_baseurl']);
-	drupal_set_message(t('NBA base URL saved to text file:') . ' ' . NBABASEURLFILE, 'status');
+//	_writeBaseFile($form_state['values']['ndabioresults_config_baseurl']);
+//	drupal_set_message(t('NBA base URL saved to text file:') . ' ' . NBABASEURLFILE, 'status');
 	return system_settings_form($form);
 }
 
