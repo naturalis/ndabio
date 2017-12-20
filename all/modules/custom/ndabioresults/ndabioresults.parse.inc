@@ -635,117 +635,13 @@ function _setNonNameHits ($service, $hits = []) {
 
 /**
  * Filter hits pertaining to name resolution and highlight these
- * 
+ *
  * @param string $service
  * @param array $hits
  * @param object $object
  * @return boolean|array
- * 
+ *
  */
-function _getNameResolutionHits ($service, $hits = [], $object) {
-	if (!empty($hits)) {
-		$paths = _getQueryPaths($service);
-		$types = [];
-		foreach ($hits as $path => $hit) {
-			if (strpos($path, 'taxonomicEnrichments') !== false) {
-				// Get taxon id
-				$tmp = explode('.', $path);
-				$type = $tmp[2];
-				$field = $tmp[3];
-				$types[] = $type;
-				
-				if (!isset($object->identifications)) {
-					$object->identifications = $object->item->identifications;
-				}
-
-				foreach ($object->identifications as $i => $identification) {
-					if (isset($identification->taxonomicEnrichments)) {
-						foreach ($identification->taxonomicEnrichments as $enrichment) {
-							foreach ($enrichment->{$type} as $enrichmentType) {
-								if (isset($enrichmentType->{$field}) &&
-									$enrichmentType->{$field} == $hit) {
-									if ($type == 'vernacularNames') {
-										$hit = _highlightMatch($hit, $paths[$path]['values']);
-									} else {
-										// Elements in regular scientific name elements
-										foreach (_scientificNameElements() as $i => $element) {
-											$name[$i] = isset($enrichmentType->{$element}) && 
-												!empty(trim($enrichmentType->{$element})) ? 
-												trim($enrichmentType->{$element}) : '';
-											// Highlight (assume always CONTAINS operator for name fields)
-											if (!empty($name[$i]) && $element == $field) {
-												$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
-											}
-											// Subgenus between brackets
-											if ($element == 'subgenus' && !empty($name[$i]) && $name[$i][0] != '(' && 
-												substr($name[$i], -1) != ')') {
-												$name[$i] = '(' . $name[$i] . ')';
-											}
-											// Italics
-											if (!empty($name[$i]) && in_array($element, _scientificNameElementsInItalics())) {
-												$name[$i] = '<span class="scientific">' . $name[$i] . '</span>';
-											}
-										}
-										if (!empty($name)) {
-											// Could also be a hit in fullScientificName; try highlighting
-											if ($field == 'fullScientificName') {
-												foreach ($name as $i => $element) {
-													// Only add if not highlighted yet
-													if (strpos($element, 'class="result-query"') === false) {
-														$name[$i] = _highlightMatch($name[$i], $paths[$path]['values']);
-													}
-												}
-											}
-											// Only fullScientificName is available; genus, etc are empty
-											if (empty($name[0])) {
-												$name[0] = $enrichmentType->fullScientificName;
-												unset($name[1], $name[2], $name[3]);
-												// Try highlighting
-												if ($field == 'fullScientificName') {
-													$name[0] = _highlightMatch($name[0], $paths[$path]['values']);
-												}
-											}
-											$hit = implode(' ', array_filter($name));
-										}
-									}
-									$d[] = [
-										'taxon' => _getTaxonScientificNameById($enrichment->taxonId),
-										$type == 'synonyms' ? 'synonym' : 'vernacular' => $hit
-									]; 
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isset($d)) {
-			// We end up with an array that still should be checked for duplicates: BIOPORVTWO-333
-			foreach ($d as $i => $hit) {
-				$type = array_keys($hit)[1];
-				$string = strip_tags($hit[$type]);
-				$nrHits = substr_count($hit[$type], 'class="result-query"');
-				if (isset($data[$type][$string])) {
-					// Check number of hits in string; highest number wins
-					// Already exists, has more hits -- delete older entry
-					if ($nrHits > $data[$type][$string]['count']) {
-						unset($d[$data[$type][$string]['nr']]);
-					// Already exists, has fewer hits -- delete this entry
-					} else {
-						unset($d[$i]);
-					}
-				}
-				$data[$type][$string] = ['nr' => $i, 'count' => $nrHits];
-			}
-			// Garbage collector
-			unset($data);
-			return array_map("unserialize", array_unique(array_map("serialize", $d)));
-		}
-		return false;
-	}
-}
-
-/*
 function _getNameResolutionHits ($service, $hits = [], $object) {
     if (count($hits) == 0) {
         return false;
@@ -756,7 +652,9 @@ function _getNameResolutionHits ($service, $hits = [], $object) {
     foreach ($hits as $path => $hit) {
         if (strpos($path, 'taxonomicEnrichments') !== false) {
             // Get taxon id
-            list($unused, $type, $field) = explode('.', $path);
+            $parts = explode('.', $path);
+            $type = $parts[2];
+            $field = $parts[3];
             $types[] = $type;
 
             if (!isset($object->identifications)) {
@@ -875,7 +773,6 @@ function _filterTaxonHits($taxons)
     unset($doubles);
     return array_map("unserialize", array_unique(array_map("serialize", $taxons)));
 }
-*/
 
 /**
  * Get vernaculars names for taxon
