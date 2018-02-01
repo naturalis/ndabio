@@ -79,8 +79,10 @@
 
         <div id="intro">
 
-            <?php $intro = "At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions."; ?>
-	    <p><?php print t($intro); ?></p>
+        <?php
+            $intro =  t("At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils, minerals and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.");
+        ?>
+	    <p><?= $intro ?></p>
             <div class="intro-less ">
               <i class="icon-double-chevron-up"></i>
               <?php print t('Back'); ?>
