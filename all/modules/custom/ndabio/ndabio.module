@@ -730,7 +730,8 @@ function nba_areas_callback ($type = false) {
 	         	_geoMunicipalityFixes()));
 	         break;
     	case 'nature':
-         	echo _printGeoList(_natureAreasWithResultsOnly());
+         	echo _omitEmptyAreas() == 1 ? _printGeoList(_natureAreasWithResultsOnly()) :
+         		_printGeoList(_createGeoList('Nature', $language));
     		break;
     	default: 
     		echo _printGeoList(_createGeoList(ucfirst($type), $language));
