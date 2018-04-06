@@ -59,6 +59,10 @@ function _initNbaClient () {
  */
 function _setNbaClient ($service, $post = false) {
 	$client = _initNbaClient();
+	if (!$client->ping()) {
+		_setErrorMessage('Error! NBA currently is unavailable');
+		return false;
+	}
 	if ($post) {
 		$client->setPostHttpRequestType();
 	}
