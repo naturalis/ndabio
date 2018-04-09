@@ -58,9 +58,13 @@ function _initNbaClient () {
  * @return \nl\naturalis\bioportal\Client
  */
 function _setNbaClient ($service, $post = false) {
+	
+	_setErrorMessage('The NBA currently is unavailable.');	
+	return false;
+	
 	$client = _initNbaClient();
 	if (!$client->ping()) {
-		_setErrorMessage('Error! NBA currently is unavailable');
+		_setErrorMessage('The NBA currently is unavailable.');
 		return false;
 	}
 	if ($post) {
@@ -204,19 +208,14 @@ function _stringToElements ($value, $settings = []) {
  */
 function _getDistinctValues ($service, $nbaPath) {
     $client = _setNbaClient($service);
-    try {
+    if ($client) {
 	    $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
 	    sort($values);
 	    unset($client);
-
 	    return $values;
-
-    } catch (Exception $e) {
-
-    	_setErrorMessage($e->getMessage());
-
-    	return false;
     }
+    _setErrorMessage('Could not get distinct values.');
+	return false;
 }
 
 /**

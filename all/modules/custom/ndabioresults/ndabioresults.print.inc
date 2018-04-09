@@ -1618,10 +1618,11 @@ function _printDebug () {
 function _printOops () {
 	$output = '<h1>' .t('Error'). '!</h1><p>';
 	if (_getErrorMessage()) {
-		$output .= _getErrorMessage() . "</p>\n<p>";
+		$output .= _getErrorMessage();
+	} else {
+		$output .= t('Oops, something went wrong') . '. ';
 	}
-	$output .= t('Oops, something went wrong') . '. ' .
-		"<a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
+	$output .= " <a href='" . _setStartUrl() . "'>" . t('Back to home page') . '</a>.</p>';
 	return $output;
 }
 

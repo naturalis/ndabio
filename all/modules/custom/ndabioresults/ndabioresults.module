@@ -159,6 +159,9 @@ function _nba_specimen_callback ($id = false, $scientificNameGroup = false, $sea
 //p($data);
 	
 	$client = _setNbaClient($service, true);
+	if (!$client) {
+		return _printOops();
+	}
 	
 	if (!$scientificNameGroup && !$search) {
 		_setDetailPageNoSearchBackLink();
@@ -387,6 +390,9 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	
 	$service = 'multimedia';
 	$client = _setNbaClient($service, true);
+	if (!$client) {
+		return _printOops();
+	}
 	
 	try {
 		$condition = new Condition('unitID', 'EQUALS', $id);
@@ -640,7 +646,10 @@ function _nba_taxon_callback ($taxon = false, $search = false) {
 	}
 	
     $client = _setNbaClient($service, true);
-
+	if (!$client) {
+		return _printOops();
+	}
+    
     if ($search) {
 		$terms = _getQueryTerms($service, $search);		
 		$data->referrer = _encodeReferrer($terms);		
@@ -704,6 +713,10 @@ function _createTaxonSubsectionLink ($object, $resultPath) {
 
 function _getTaxonMultimedia ($object) {
 	$client = _setNbaClient('multimedia', true);
+	if (!$client) {
+		return null;
+	}
+	
 	try {
 		$condition = new Condition('identifications.scientificName.genusOrMonomial', 'EQUALS', 
 			$object->taxa[0]->acceptedName->genusOrMonomial);
@@ -777,6 +790,10 @@ function _getTaxonSpecimens ($object) {
 function _getSpecimenMultimedia ($object) {
 	
 	$client = _setNbaClient('multimedia', true);
+	if (!$client) {
+		return null;
+	}
+	
 	try {
 		$query = new QuerySpec();
 		$query
@@ -851,6 +868,9 @@ function _getTaxonScientificNameById ($id = false) {
 	if ($id) {
 		if (!isset($_SESSION['nbaNameResolutionTaxa'][$id])) {
 		  	$client = _setNbaClient('taxon');
+			if (!$client) {
+				return false;
+			}
 		  	$timer = _setTimer();
 		  	$data = json_decode($client->find($id));
 			_addDebugMessage('scientific name for ' . $id, _getTimer($timer));
@@ -866,6 +886,9 @@ function _getTaxonScientificNameById ($id = false) {
 function _getTaxonByName ($name) {
     $taxon = explode('_', $name);
   	$client = _setNbaClient('taxon');
+	if (!$client) {
+		return false;
+	}
   	try {
 	  	$condition = new Condition('acceptedName.genusOrMonomial', 'EQUALS_IC', $taxon[0]);
 		if (count($taxon) > 1) {
@@ -1272,6 +1295,10 @@ function _containsOperatorAllowed ($value = '') {
 function _nba_taxon_result_callback ($search = false) {
     $service = 'names.taxa';
 	$client = _setNbaClient($service, true);
+	if (!$client) {
+		return _printOops();
+	}
+	
     $terms = _getQueryTerms($service, $search);
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
@@ -1315,6 +1342,9 @@ function _nba_multimedia_result_callback ($search = false) {
 	$service = 'multimedia';
     $terms = _getQueryTerms($service, $search);
     $client = _setNbaClient($service, true);
+	if (!$client) {
+		return _printOops();
+	}
     
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
@@ -1354,7 +1384,10 @@ function _nba_specimen_result_callback ($search = false) {
 	$service = _getSpecimenService($search);
 	$terms = _getQueryTerms($service, $search);
 	$client = _setNbaClient($service, true);
-    
+	if (!$client) {
+		return _printOops();
+	}
+	
     $headTitle = !isset($_SESSION['nbaSearch']['theme']) || empty($_SESSION['nbaSearch']['theme']) ?
         t('Search results') : t('Explore highlights');
     //$pageTitle = isset($_GET['theme']) ? '' : $pageTitle;
@@ -1435,7 +1468,10 @@ function _nba_specimen_taxon_result_callback ($scientificNameGroup = false, $sea
 	
     $service = 'names.specimens';
 	$client = _setNbaClient($service, true);
-    $terms = _getQueryTerms($service, $search);
+	if (!$client) {
+		return _printOops();
+	}
+	$terms = _getQueryTerms($service, $search);
 	$terms['size'] = _maxResults();
 	_setQueryTerms($service, $terms);
     
@@ -1487,7 +1523,10 @@ function _nba_specimen_map_result_callback ($scientificNameGroup = false, $searc
 
 	$service = 'names.specimens';
 	$client = _setNbaClient($service, true);
-    $terms = _getQueryTerms($service, $search);
+	if (!$client) {
+		return _printOops();
+	}
+	$terms = _getQueryTerms($service, $search);
     $size = isset($terms['size']) ? $terms['size'] : _maxResults();
     unset($terms['size'], $terms['from']);
     
@@ -1621,6 +1660,9 @@ function _getTaxonFromNba ($taxon, $existsOnly = false) {
 					(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 			}
 			$client = _setNbaClient('taxon');
+			if (!$client) {
+				return false;
+			}
 			$timer = _setTimer();
 			// Full data
 			if (!$existsOnly) {
@@ -1702,7 +1744,10 @@ function _nbaAdvancedSearch () {
         if (_serviceUsed($terms)) {
             // Init client
         	$client = _setNbaClient($service, true);
-        	// Cap results
+	        if (!$client) {
+				return _printOops();
+			}
+	        	// Cap results
             $terms['size'] = _maxResultsInitial();
             // Set default score; only has to be set for names.specimens;
             // defaults to score for others.
@@ -1920,6 +1965,9 @@ function _allTermsExistInMultimediaService ($terms) {
 
 function _getSpecimensTotal ($terms, $useNameResolution = false) {
 	$client = _setNbaClient('names.specimens', true);
+	if (!$client) {
+		return -1;
+	}
 	foreach (['size', 'from', 'sort', 'sortDirection'] as $p) {
 		if (isset($terms[$p])) {
 			unset($terms[$p]);
@@ -2308,6 +2356,9 @@ function _nbaSimpleSearch () {
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setNbaClient($service, true);
+		if (!$client) {
+			return _printOops();
+		}
     	// Cap results
 		$terms['size'] = _maxResultsInitial();
 		
@@ -2335,23 +2386,23 @@ function _nbaSimpleSearch () {
 			// used for further navigation
 			$_SESSION['nbaQuery'][$service]['terms'] = $terms;
 			//_setQueryTerms($service);
+			
+		 	// Batch query
+		 	$timer = _setTimer();
+		    $remoteData = $client->multiClientBatchQuery($multiQuery);
+		 	$timerEnd = _getTimer($timer);
+			
+			if ($timerEnd > _nbaTimeout()) {
+				$timeOuts[] = $timerEnd;
+			}
+			
+		 	_addDebugMessage('batch query', $timerEnd);
 		
 		} catch (Exception $e) {
 			_setErrorMessage($e);
 		}
     }
     
- 	// Batch query
- 	$timer = _setTimer();
-    $remoteData = $client->multiClientBatchQuery($multiQuery);
- 	$timerEnd = _getTimer($timer);
-	
-	if ($timerEnd > _nbaTimeout()) {
-		$timeOuts[] = $timerEnd;
-	}
-	
- 	_addDebugMessage('batch query', $timerEnd);
-	
     $pageHeader .= _wrap(t('Search results for') . ' ' .
         _wrap($_SESSION['nbaSearch']['term'], "span", "term"), "h1");
 
@@ -2439,7 +2490,10 @@ function _nbaThemeSearch () {
     foreach ($services as $service => $terms) {
 		// Init client, construct query, fetch results in $remoteData
 		$client = _setNbaClient($service, true);
-    	// Cap results
+    	if (!$client) {
+			return _printOops();
+		}
+		// Cap results
 		$terms['size'] = _maxResultsInitial();
 		
 		// Set default sort

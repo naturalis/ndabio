@@ -757,6 +757,9 @@ function _natureAreasWithResultsOnly () {
 		$all = json_decode(_nbaGeoAreas(), true);
 		$natureAreas = $all['Nature'];
 	    $client = _setNbaClient('specimen', true);
+	    if (!$client) {
+	    	return false;
+	    }
 	    try {
 			foreach ($natureAreas as $area) {
 				$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
