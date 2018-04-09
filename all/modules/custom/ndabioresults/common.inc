@@ -58,10 +58,6 @@ function _initNbaClient () {
  * @return \nl\naturalis\bioportal\Client
  */
 function _setNbaClient ($service, $post = false) {
-	
-	_setErrorMessage('The NBA currently is unavailable.');	
-	return false;
-	
 	$client = _initNbaClient();
 	if (!$client->ping()) {
 		_setErrorMessage('The NBA currently is unavailable.');
