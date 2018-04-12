@@ -46,6 +46,10 @@ function _initNbaClient () {
     $client
     	->setNbaUrl(_nbaBaseUrl())
     	->setNbaTimeout(_nbaTimeout());
+	if (!$client->ping()) {
+		_setErrorMessage('The NBA currently is unavailable.');
+		return false;
+	}
     return $client;
 }
 
@@ -59,8 +63,7 @@ function _initNbaClient () {
  */
 function _setNbaClient ($service, $post = false) {
 	$client = _initNbaClient();
-	if (!$client->ping()) {
-		_setErrorMessage('The NBA currently is unavailable.');
+	if (!$client) {
 		return false;
 	}
 	if ($post) {
