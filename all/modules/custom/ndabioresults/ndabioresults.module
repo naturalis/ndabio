@@ -537,7 +537,6 @@ function _getBackLinkFormatted () {
 }
 
 function _setMultimediaAssociatedObject ($data) {
-	
 	$client = _initNbaClient();
 	foreach (['taxon', 'specimen'] as $service) {
 		$field = 'associated' . ucfirst($service) . 'Reference';
