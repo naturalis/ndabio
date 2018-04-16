@@ -636,23 +636,26 @@ function ndabio_ajax_callback () {
     $lang = _getLanguage();
     $language = (is_object($lang)) ? $lang->language : 'en';
     $client = _initNbaClient();
-    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
-    if (isset($geo->shape)) {
-        // locality is sometimes empty in Dutch;
-        $locality = $geo->locality;
-        if ($language == 'nl' && $geo->areaType == 'Country' &&
-            !empty($geo->countryNL) && $geo->countryNL != '\N') {
-            $locality = $geo->countryNL;
-        }
-        echo json_encode([
-            'nid' => $nid,
-            'locality' => $locality,
-            'source' => $geo->source,
-            'geometry' => $geo->shape
-        ]);
-    }
-    die(); // die() is required to avoid displaying the entire drupal interface
+    if ($client) {
+	    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
+	    if (isset($geo->shape)) {
+	        // locality is sometimes empty in Dutch;
+	        $locality = $geo->locality;
+	        if ($language == 'nl' && $geo->areaType == 'Country' &&
+	            !empty($geo->countryNL) && $geo->countryNL != '\N') {
+	            $locality = $geo->countryNL;
+	        }
+	        echo json_encode([
+	            'nid' => $nid,
+	            'locality' => $locality,
+	            'source' => $geo->source,
+	            'geometry' => $geo->shape
+	        ]);
+	    }
+	    die(); // die() is required to avoid displaying the entire drupal interface
+		}
 	}
+	die('Could not set NBA client!');
 }
 
 function ndabio_theme ($existing, $type, $theme, $path) {
