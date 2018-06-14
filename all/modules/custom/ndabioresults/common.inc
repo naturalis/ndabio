@@ -47,7 +47,7 @@ function _initNbaClient () {
     	->setNbaUrl(_nbaBaseUrl())
     	->setNbaTimeout(_nbaTimeout());
 	if (!$client->ping()) {
-		_setErrorMessage('The NBA currently is unavailable.');
+		_setErrorMessage(t('The backend (Netherlands Biodiversity API) currently is unavailable.'));
 		return false;
 	}
     return $client;
