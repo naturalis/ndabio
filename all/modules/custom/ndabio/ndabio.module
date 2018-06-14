@@ -825,8 +825,8 @@ function _nbaGeoAreas () {
  */
 function _kindOfUnitSelectValues () {
 	$output = array_merge(
-		_getDistinctValues('specimen', 'kindOfUnit'),
-		_getDistinctValues('specimen', 'recordBasis')	
+		_getDistinctValues('specimen', 'kindOfUnit', 200),
+	    _getDistinctValues('specimen', 'recordBasis', 200)	
 	);
 	// Remove unwanted values and duplicates (case insenstive)
 	foreach ($output as $v) {
@@ -860,29 +860,29 @@ function _advancedSelects () {
         $nbaAdvancedSelects['s_sourceSystem'] =
         	_createAdvancedSelectDifferentOptionValue('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType', 100));
         $nbaAdvancedSelects['s_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus', 20));
         $nbaAdvancedSelects['s_kindOfUnit'] =
         	_createAdvancedSelect(_kindOfUnitSelectValues());
         $nbaAdvancedSelects['s_sex'] =
         	_createAdvancedSelect(_getDistinctValues('specimen', 'sex'));
         $nbaAdvancedSelects['s_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage'));
+            _createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage', 20));
         $nbaAdvancedSelects['s_kingdom'] =
         	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['t_sourceSystem'] =
-        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name');
+        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name', 100);
         $nbaAdvancedSelects['t_kingdom'] =
         	_createAdvancedSelect(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_sourceSystem'] =
         	_createAdvancedSelectDifferentOptionValue('multimedia', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['m_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType'));
+            _createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType', 100));
         $nbaAdvancedSelects['m_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus', 20));
         $nbaAdvancedSelects['m_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages', 20));
         $nbaAdvancedSelects['m_sex'] =
         	_createAdvancedSelect(_getDistinctValues('multimedia', 'sexes'));
         $nbaAdvancedSelects['m_kingdom'] =
@@ -939,10 +939,11 @@ function _isMultiAdvancedSelect ($field) {
  * @param string $service NBA service
  * @param string $optionPath NBA path to option value
  * @param string $valuePath NBA path to value value
+ * @param string $size Number of results
  * @return array
  */
-function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
-	$options = _getDistinctValues($service, $optionPath);
+function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath, $size = 10) {
+    $options = _getDistinctValues($service, $optionPath, $size);
 	$client = _initNbaClient();
 	try {
 		foreach ($options as $option) {

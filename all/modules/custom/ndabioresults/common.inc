@@ -203,12 +203,13 @@ function _stringToElements ($value, $settings = []) {
  * 
  * @param string $service
  * @param string $nbaPath
+ * @param string $size (number of results)
  * @return array
  */
-function _getDistinctValues ($service, $nbaPath) {
+function _getDistinctValues ($service, $nbaPath, $size = 10) {
     $client = _setNbaClient($service);
     if ($client) {
-	    $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
+        $values = array_keys(json_decode($client->getDistinctValues($nbaPath, $size), true));
 	    sort($values);
 	    unset($client);
 	    return $values;
