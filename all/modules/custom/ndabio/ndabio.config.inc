@@ -187,9 +187,11 @@ function _nbaMinContainsStringSize () {
             return $nbaMinContainsStringSize;
         }
         $client = _initNbaClient();
-        $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
-        cache_set($cacheId, $nbaMinContainsStringSize);
-        unset($client);
+        if ($client) {
+	        $nbaMinContainsStringSize = $client->getOperatorContainsMinTermLength();
+	        cache_set($cacheId, $nbaMinContainsStringSize);
+	        unset($client);
+        }
     }
     return $nbaMinContainsStringSize;
 }
@@ -209,9 +211,11 @@ function _nbaMaxContainsStringSize () {
             return $nbaMaxContainsStringSize;
         }
         $client = _initNbaClient();
-        $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
-        cache_set($cacheId, $nbaMaxContainsStringSize);
-        unset($client);
+        if ($client) {
+	        $nbaMaxContainsStringSize = $client->getOperatorContainsMaxTermLength();
+	        cache_set($cacheId, $nbaMaxContainsStringSize);
+	        unset($client);
+        }
     }
     return $nbaMaxContainsStringSize;
 }

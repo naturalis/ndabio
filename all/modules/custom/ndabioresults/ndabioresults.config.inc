@@ -10,6 +10,7 @@ define("NBATIMEOUT", 5);
 define("NBAMAXPAGESINPAGINATOR", 20);
 define("NBADEBUG", 0);
 define("NBADEBUGENCODED", 0);
+define("OMIT_EMPTY_AREAS", 1);
 
 // Minimum string length for individual elements in simple search term
 define("NBAMINSTRINGLENGTHSIMPLESEARCH", 3);
@@ -110,8 +111,17 @@ function ndabioresults_config_form ($form, &$form_state) {
     '#description' => t('Maximum number of pages in the paginator.') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
     '#required' => TRUE
   );
+  
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_empty_areas'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Omit areas which do not contain specimens from list in the geo search form'),
+    '#default_value' => variable_get('ndabioresults_config_empty_areas', OMIT_EMPTY_AREAS),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t('Omits area that do not produce results. If this option is set, the list will take considerable time to build before being stored in the cache. Set to 0 when the NBA contains a lot of specimens with lat/lon data!') . '<br />' . t('Default') . ': ' . NBAMAXPAGESINPAGINATOR,
+    '#required' => TRUE
+  );
 
-  // Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_debug'] = array(
     '#type' => 'textfield',
     '#title' => t('Display NBA QuerySpec'),
@@ -121,8 +131,7 @@ function ndabioresults_config_form ($form, &$form_state) {
     '#description' => t('DEBUG: Display query sent to the NBA.') . '<br />' . t('Default') . ': ' . NBADEBUG,
     '#required' => TRUE
   );
-  
-  // Constant: maximum results for subsequent queries
+    // Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_debug_encoded'] = array(
     '#type' => 'textfield',
     '#title' => t('Display NBA QuerySpec url-encoded'),
@@ -223,16 +232,25 @@ function _nbaTimeout () {
  * Taxon urls are stored to reduce the number of queries to the NBA.
  * However, crawlers should not blow up the session.
  * 
- * @return number
+ * @return boolean
  */
 function _maxSizeTaxonUrlCache () {
 	return 1000;
 }
 
 /**
+ * Should empty areas be included when building the list of areas?
+ * 
+ * @return boolean
+ */
+function _omitEmptyAreas () {
+	return variable_get('ndabioresults_config_empty_areas', OMIT_EMPTY_AREAS);
+}
+
+/**
  * Setting for debugging (1/0)
  * 
- * @return int
+ * @return boolean
  */
 function _nbaDebug () {
 	return variable_get('ndabioresults_config_debug', NBADEBUG);
@@ -243,7 +261,7 @@ function _nbaDebug () {
  * 
  * Handy when used directly in a url
  * 
- * @return int
+ * @return boolean
  */
 function _nbaDebugEncoded () {
 	return variable_get('ndabioresults_config_debug_encoded', NBADEBUGENCODED);
