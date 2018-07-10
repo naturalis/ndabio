@@ -16,6 +16,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '095ca378-8c58-45c3-969a-1a7c5978da9f',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -54,6 +56,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 2,
     'uuid' => '0c4563de-1d29-42b9-ba60-22729600cf53',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -82,6 +86,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 6,
     'uuid' => '0c93b002-cd16-400c-a6ec-1ba08a2c929e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -110,6 +116,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '0dad6c98-97dd-41ea-82e9-8782a04950f8',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -124,6 +132,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 6,
     'uuid' => '0db9da4a-2338-418c-be05-383749713024',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -152,6 +162,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => '0ebf93a1-6408-4c52-9bd4-48537da8d6bc',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -190,6 +202,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '0ff80917-a4d6-4602-9b20-0d2c40524d35',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -204,6 +218,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 7,
     'uuid' => '12aae422-736a-4753-8865-2ac1d4f9e17b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -232,6 +248,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 9,
     'uuid' => '12f0c8ad-39a8-47f3-a80e-1c7c01de88e3',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -260,6 +278,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 7,
     'uuid' => '15626ca4-34f4-4636-be98-8c2aebea662a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -288,6 +308,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '15e50579-4702-4509-b77e-ee4cc2cfdd54',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -302,6 +324,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '16dc449e-36ca-4a8c-87af-100b656e8f6c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -317,6 +341,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '1874f59c-0c59-487f-b2ab-7f308a89771a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -345,6 +371,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '19515d9c-2012-4f31-adab-0249626f3e23',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -394,6 +422,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 16,
     'uuid' => '1a3baf4e-b243-44fd-9e87-e6dced3b650f',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -422,6 +452,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '1a4c0770-5950-47b4-9783-716230c7aad4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -436,6 +468,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 10,
     'uuid' => '1f7aa388-bcd7-4703-8422-04831ca75f2a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -464,6 +498,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 5,
     'uuid' => '1fb5261e-7b24-4bfe-b03f-35bb6e121354',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -496,6 +532,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '21fa65b6-b064-4835-8ff7-b05f57f07d98',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -510,6 +548,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '229527a5-d529-465f-9a36-c80b6b1905b5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -524,6 +564,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 5,
     'uuid' => '252b758f-e225-426d-96ac-b3b9f68f7637',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -576,6 +618,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 1,
     'uuid' => '28029cae-53b0-45c5-9a5f-aafac926a6e8',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -614,6 +658,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '28545072-6195-4494-95b0-0721c01c295d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -628,6 +674,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '2a802db0-c206-466a-969a-21f1f004bcc5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -642,6 +690,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '2bc7d345-6def-4b59-82c9-a3c4445c5d65',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -685,6 +735,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '2bc88353-675b-4c2c-950a-02d85d84bb1d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -699,6 +751,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '2e063a66-a28e-41a7-adf3-596091417b1e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -713,6 +767,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '32fc861e-68f3-4816-afba-4a4c6329fe4b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -765,6 +821,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => '33ab617b-d485-42a7-a592-c530998e9409',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -803,6 +861,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 5,
     'uuid' => '34225b6c-5fba-4c11-89e7-b4ded4815039',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -841,6 +901,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '34470bff-c926-4fd4-b0c4-e5c1c1b64258',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -879,6 +941,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => '381d3a69-a9c4-46ae-b921-6c8eb5d00dc9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -917,6 +981,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 7,
     'uuid' => '3a89190c-0b9a-4593-9557-3154b8a8042e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -969,6 +1035,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3a9bd272-91fc-42c5-b513-f2599ba06161',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(),
   );
@@ -978,6 +1046,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3ab82811-072a-4bc7-9886-71e212f2f1c6',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -992,6 +1062,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3ad44115-0f24-4f2c-988d-e751532a50aa',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1006,6 +1078,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 3,
     'uuid' => '3d589c02-40ad-482e-9308-325c8ea8335d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1034,6 +1108,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '3e689df7-1ed6-4ca1-a437-ed95bc675ea9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1048,6 +1124,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 1,
     'uuid' => '3fbce186-b017-403e-99b7-150a7db67619',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1076,6 +1154,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '43170a5f-503d-4304-b534-efe7e4511a7b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1118,6 +1198,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '44d14c91-3410-470f-988d-7fb0634772c5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1160,6 +1242,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '453c7051-f8db-4fb1-b5ae-1dfe556c844d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1198,6 +1282,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 4,
     'uuid' => '461be0f8-a9b5-413f-8ee7-dc8afdcc1909',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1236,6 +1322,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 0,
     'uuid' => '479981df-3e8b-4ec9-86a5-6c9824ebd5b3',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1264,6 +1352,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '481afad4-f569-4baa-b38a-33362ed65707',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1278,6 +1368,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '4d06915b-732b-4086-b2b3-dc596cf2d3a5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1292,6 +1384,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '50e9ad90-9022-493e-8408-e6110b3e8b9c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1306,6 +1400,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '52f35973-2e89-476f-a9cd-a18774ae31dc',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1320,6 +1416,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '534aff72-8e31-42ab-bf1c-39eccca2de5a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1335,6 +1433,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 17,
     'uuid' => '548c7327-9d2e-40b9-bb85-44548a4bd103',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1363,6 +1463,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '5582c7fb-ded2-4077-bfcb-94e8365b72af',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1406,6 +1508,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'full_html',
     'weight' => 3,
     'uuid' => '55be0171-11c8-43e8-8b31-d69a1e0e0dbc',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1434,6 +1538,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '56a509e3-7621-495c-a21e-f2b828bdf04c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1472,6 +1578,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 11,
     'uuid' => '56d49d5a-2348-4289-a578-61bb5c947bd9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1524,6 +1632,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 15,
     'uuid' => '5bc93b06-21dd-4761-b4a2-e4c3b3ae4296',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1552,6 +1662,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '5c38317e-7a8c-4028-9597-45d915605982',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1566,6 +1678,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '5d26d474-beeb-49a7-9405-7707474c4bf4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1611,6 +1725,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '5eac6ebe-7770-41bf-aca1-aa2c46a1bda0',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1625,6 +1741,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '60f93dbc-38d9-499f-a617-28539e8df31a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1663,6 +1781,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 11,
     'uuid' => '61104e9f-e32a-4e22-bbaa-18a563f2abfc',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1691,6 +1811,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '618d5d30-d174-43d1-9345-d57654a4b03c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1729,6 +1851,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 9,
     'uuid' => '6372fb61-264c-490a-9c8f-8e8b9c28af04',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1757,6 +1881,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '639fa982-9878-4584-a0f5-708a14195de3',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1771,6 +1897,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '658088c0-2fbb-4a7c-93f9-d4e5a6dbf43f',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1816,6 +1944,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 3,
     'uuid' => '69161391-770f-4bff-87f4-316c302d0aec',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1854,6 +1984,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 16,
     'uuid' => '6c7cd901-140e-4ea6-bd8b-64ae7535d3de',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -1882,6 +2014,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '703992aa-f931-4e71-a442-a7c80280d6ca',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1896,6 +2030,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '70b39707-2532-4e1c-bb37-7a1e46f940c1',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1910,6 +2046,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '7153ab73-6bfe-4c7f-b94f-702d9c05e960',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1924,6 +2062,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '753765da-6c00-4b97-ab94-510e519b662d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1938,6 +2078,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '759b1bdc-e46d-4cb7-931e-3ebfa02dc5e0',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1952,6 +2094,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '761a6045-7834-44be-bc20-150efc8d5275',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -1966,6 +2110,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '770ee2b2-de8b-4aa3-962d-d1f07188b41e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2004,6 +2150,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '7908bd90-4e9e-4ff3-ae81-250317acf131',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2056,6 +2204,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '79521971-58cf-4ea3-92f2-369eae187c14',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2094,6 +2244,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 84,
     'uuid' => '7a6d1b8b-574f-4dfb-b74b-e4ea17e9d3e5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2114,6 +2266,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 6,
     'uuid' => '7d4df160-0941-49ae-9c74-30ba7d7372e2',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2174,6 +2328,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 6,
     'uuid' => '7f03c683-b1d3-4cc5-aaca-4b7a24af3be9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2226,6 +2382,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '841b706f-ac29-41cb-bb33-d6125a649252',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2240,6 +2398,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '84682775-a10c-4d99-81e1-3ef2d805b00a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2254,6 +2414,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '85a22acf-4972-4aec-b850-91dba233c294',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2268,6 +2430,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => '876ea642-1bc7-4265-bfa4-19677c0b4b8a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2282,6 +2446,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '87afe0ad-9b1a-45d7-8c1e-ab78d0b955da',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'path' => array(
       'pathauto' => 1,
@@ -2299,6 +2465,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '89d0de23-7446-4a26-8728-485896e4e9cb',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2313,6 +2481,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '8c6d3106-adaa-4e2c-9770-59f12eb8cfa4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2327,6 +2497,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '8d42583a-708a-4668-95d2-ccef1876a348',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2341,6 +2513,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '90b6aab9-abaa-400c-a313-d32775441fb2',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2355,6 +2529,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => '92f23ba1-2047-4c3d-a05c-a8bc3da60d4b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2370,6 +2546,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => '93674884-b99c-442a-9bee-aec1175ac576',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2415,6 +2593,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 12,
     'uuid' => '93f35ff9-dd82-4884-ba0b-efdaf8fdfbea',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2467,6 +2647,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 10,
     'uuid' => '98cbc05f-3f0d-44e2-aa57-ef06fc984d80',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2505,6 +2687,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => '9a975141-7129-41cc-8a1c-a55c118f5948',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2547,6 +2731,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 13,
     'uuid' => '9b5a983a-a8ee-4a78-87e6-f9350471133b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2575,6 +2761,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 85,
     'uuid' => '9d7db5bf-a8ec-4b5c-b2a7-923387ea1009',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2595,6 +2783,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 14,
     'uuid' => '9e463bbe-9952-48da-a5ca-34f71f2271f6',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2637,6 +2827,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 1,
     'uuid' => '9f2c4682-88b6-460d-8e9b-587f8b471737',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2679,6 +2871,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 14,
     'uuid' => 'a18a6420-c42a-436e-be9f-87de477a69e1',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2707,6 +2901,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'a197ac18-e48b-4563-85e6-03d1ab80378b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2721,6 +2917,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'a2ebad0c-11c3-4ecb-810f-8fd6f228182b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2735,6 +2933,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'a3ef2682-4358-45ec-9e67-42995420449d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2749,6 +2949,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'a643f544-36b4-47e0-b6f9-665967060a14',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2763,6 +2965,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 7,
     'uuid' => 'abf15890-2907-4350-a0b2-8a3ec2e44512',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2791,6 +2995,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'afe4d99f-3fcb-49c7-8015-343c1db66460',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2805,6 +3011,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'b35315b4-e928-4ed0-a1bc-ec384bc5cc6e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2843,6 +3051,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 8,
     'uuid' => 'b3d916fd-6811-498c-8905-27f38d3c755b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2871,6 +3081,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 8,
     'uuid' => 'b8256f66-b26d-4fc7-8842-cc48feeede11',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2923,6 +3135,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'bb018b96-ff8e-49d0-8101-e7cc1714b33b',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -2937,6 +3151,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 13,
     'uuid' => 'bb2c083f-90cd-4a64-8c78-d90f19563ea4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -2975,6 +3191,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'bc27e6d3-4ae7-4d2f-ae3d-2eeb1ddbd719',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3017,6 +3235,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'bd57062f-e424-4649-9a38-d3c82fc0c2bb',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3031,6 +3251,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 7,
     'uuid' => 'c272d971-f1bc-4728-8b79-ad8b62d232c8',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3069,6 +3291,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 5,
     'uuid' => 'c4323256-7ac6-4929-9b01-5e0ac217ddf5',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3097,6 +3321,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'c4a8bf82-0a73-4630-bb8a-126700cd9452',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3146,6 +3372,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 5,
     'uuid' => 'c7eaee57-8365-48b1-9bc5-eddbeba8210d',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3191,6 +3419,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 15,
     'uuid' => 'cb52e179-647f-4292-9363-21ee9ed12587',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3219,6 +3449,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'cd856700-a807-4794-b17e-cd9d2620e087',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3233,6 +3465,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'cfeae946-83f6-4d6f-842d-d98fdf029e62',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3247,6 +3481,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 1,
     'uuid' => 'd0a78838-d6a0-440b-a950-f7bcfb9efd84',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3285,6 +3521,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'd1179982-7bc2-44de-82c6-a70eeccefe9c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3342,6 +3580,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 12,
     'uuid' => 'd237198d-14ca-459b-a41a-4938e7e8ebd9',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3370,6 +3610,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 8,
     'uuid' => 'd2997fb3-bfb6-46a2-9074-a6db473d4ba3',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3398,6 +3640,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 6,
     'uuid' => 'd3f6f460-cd4d-446a-b5a2-9fbab31cec7c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3426,6 +3670,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 4,
     'uuid' => 'dce82d80-9fba-41ca-bcce-e23628f22566',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3454,6 +3700,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'dd24107d-176d-40fe-9aef-56261c4d716c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3468,6 +3716,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'deb807f4-558d-49ec-973b-057a4b570e47',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3508,6 +3758,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 1,
     'uuid' => 'df111ae5-11b6-4ab0-bff2-f9d81cf3b045',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3536,6 +3788,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'dfb76785-1107-4c0d-acd7-4e2fa4df4e6a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3550,6 +3804,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'e2169f6f-b664-492d-a59b-a4c2088f08c1',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3564,6 +3820,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'e2a060ef-4ff1-428d-ab1f-55a718800f46',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3578,6 +3836,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 4,
     'uuid' => 'e3956f71-9c9e-41dd-a5f3-f656df13ad90',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3627,6 +3887,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 2,
     'uuid' => 'e7ec7114-3f31-4988-a955-0205dd43a697',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3660,6 +3922,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'e7f78485-64dc-4488-9183-209c19b2283e',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3674,6 +3938,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 0,
     'uuid' => 'e9529ceb-48de-4837-bf83-27a7300d53b4',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3688,6 +3954,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 5,
     'uuid' => 'eff23bd4-46a4-4f1b-93cd-b8e506d20c11',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3733,6 +4001,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f09681c8-d9a4-43ef-b192-c64ef08c6703',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3747,6 +4017,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f1acf885-614e-4d0b-a0be-2691f495868f',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3761,6 +4033,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f25d70fd-e86b-4719-86a1-d8916b17f840',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3803,6 +4077,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => NULL,
     'weight' => 8,
     'uuid' => 'f35538ec-5291-40ca-bc5d-abde8fe36984',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3831,6 +4107,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f7f3df5a-1e15-4255-abe8-c32179cae273',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3845,6 +4123,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 2,
     'uuid' => 'fceb4c7d-3ac5-4e70-ac7e-f810b8b3643c',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3883,6 +4163,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'fe546ae8-148a-49cb-b69c-7200ac0d326a',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'nba2text',
     'url_alias' => array(
       0 => array(
@@ -3897,6 +4179,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'plain_text',
     'weight' => 3,
     'uuid' => 'fe616d3d-a1f9-4ef3-af77-6ace87e54b5f',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(
@@ -3930,6 +4214,8 @@ function feature_bioportal_controller_uuid_features_default_terms() {
     'format' => 'markdown',
     'weight' => 9,
     'uuid' => 'fe755df0-08d1-4244-8a16-18dce0311b57',
+    'language' => 'und',
+    'i18n_tsid' => 0,
     'vocabulary_machine_name' => 'search',
     'field_ndadatatype' => array(),
     'field_ndageorelevance' => array(

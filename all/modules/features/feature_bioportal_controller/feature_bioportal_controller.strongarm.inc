@@ -62,7 +62,7 @@ function feature_bioportal_controller_strongarm() {
     'domain' => '',
     'prefix' => 'nl',
     'weight' => '0',
-    'javascript' => 'V-cbMJJwz9wmuD3sx2a2nUKuUhG0t8ZyxbrUNWMcRr4',
+    'javascript' => 'v9xraoPcnc7AlCpRDqqywaPbYiei5TCDmCN_Dgeu2g4',
   );
   $export['language_default'] = $strongarm;
 
@@ -109,7 +109,7 @@ function feature_bioportal_controller_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ndabioresults_config_debug';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['ndabioresults_config_debug'] = $strongarm;
 
   $strongarm = new stdClass();
