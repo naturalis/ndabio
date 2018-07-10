@@ -2640,11 +2640,6 @@ function _logSearch ($saveToDb = false) {
         (empty($data['field_term']) ? 'advanced' : 'simple');
     $file = variable_get('ndabioresults_config_log', NBALOG); // "/tmp/bioportal.log.json";
     file_put_contents($file, json_encode(['bioportal' => ['production' => $data]]) . "\r\n", FILE_APPEND);
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> refs/heads/development
     if ($saveToDb) {
         $node = new stdClass();
         $node->title = $data['field_search_type'] . ' | '. $data['field_ip_address'] .
