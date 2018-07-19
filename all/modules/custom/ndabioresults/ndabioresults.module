@@ -2639,7 +2639,7 @@ function _logSearch ($saveToDb = false) {
     $data['field_search_type'] = _isGeoSearch() ? 'geo ' :
         (empty($data['field_term']) ? 'advanced' : 'simple');
     $file = variable_get('ndabioresults_config_log', NBALOG); // "/tmp/bioportal.log.json";
-    file_put_contents($file, json_encode(['bioportal' => ['production' => $data]]) . "\r\n", FILE_APPEND);
+    file_put_contents($file, json_encode(['bioportal' => ['production' => removeEmptyFromArray($data)]]) . "\r\n", FILE_APPEND);
 
     if ($saveToDb) {
         $node = new stdClass();
@@ -2663,6 +2663,26 @@ function _logSearch ($saveToDb = false) {
     }
 }
 
+/**
+ * Removes empty values from array
+ * 
+ * @param array $array
+ * @return array
+ */
+function removeEmptyFromArray (&$array)
+{
+    foreach ($array as $key => &$value){
+        if (is_array($value)){
+            $value = removeEmptyFromArray($value);
+            if (!count($value)) {
+                unset($array[$key]);
+            }
+        } else if (!strlen($value)) {
+            unset($array[$key]);
+        }
+    }
+    return $array;
+}
 
 
 /**
