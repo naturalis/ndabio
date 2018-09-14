@@ -51,6 +51,10 @@ function _advancedMultiSelectFields () {
 	];
 }
 
+function _naturalisOnlySourceSystems () {
+    return ['BRAHMS', 'CRS', 'NSR', 'COL'];
+}
+
 /**
  * Advanced search form exceptions
  * 

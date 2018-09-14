@@ -16,11 +16,9 @@ function bioportal_admin_style_preprocess_html(&$variables) {
   }
 }
 
-
-// Namespaces not defined in common.inc
+use nl\naturalis\bioportal\Client as Client;
 use nl\naturalis\bioportal\QuerySpec as QuerySpec;
 use nl\naturalis\bioportal\Condition as Condition;
-
 
 /**
  * Bootstrap functions

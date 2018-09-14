@@ -724,7 +724,9 @@ function _getTaxonMultimedia ($object) {
 		$condition->setAnd('identifications.scientificName.infraspecificEpithet', 'EQUALS', 
 			isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
 				$object->taxa[0]->acceptedName->infraspecificEpithet : null);
-		//$condition->setAnd('associatedSpecimenReference', 'EQUALS');
+		// Make sure only Naturalis sources are queried
+		$condition->setAnd(_naturalisOnlyCondition());
+		
 		$query = new QuerySpec();
 		$query
 			->addCondition($condition)
@@ -794,9 +796,13 @@ function _getSpecimenMultimedia ($object) {
 	}
 	
 	try {
+	    
+	    $condition = new Condition('associatedSpecimenReference', 'EQUALS', $object->id);
+	    $condition->setAnd(_naturalisOnlyCondition());
+	    
 		$query = new QuerySpec();
 		$query
-			->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
+		    ->addCondition($condition)
 			->setSize(5)
 			->setConstantScore();
 		_addDebugMessage('specimen multimedia', $query);
@@ -896,6 +902,8 @@ function _getTaxonByName ($name) {
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
+		$condition->setAnd(_naturalisOnlyCondition());
+		
 	    $query = new GroupByScientificNameQuerySpec();
 	    $query->addCondition($condition)->setSpecimensSize(5);
 	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
@@ -1190,6 +1198,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			$query->addCondition(_setCondition($condition));
 		}
 	}
+	// Naturalis only
+	$query->addCondition(_naturalisOnlyCondition());
 	
     // Add map condition if present
     if (isset($geoShape)) {
@@ -1658,6 +1668,7 @@ function _getTaxonFromNba ($taxon, $existsOnly = false) {
 					(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 					(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 			}
+			$condition->setAnd(_naturalisOnlyCondition());
 			$client = _setNbaClient('taxon');
 			if (!$client) {
 				return false;
@@ -2033,6 +2044,7 @@ function _getSpecimenDetails (&$data) {
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->specimens as $item) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
+			$condition->setAnd(_naturalisOnlyCondition());
 			$query = new QuerySpec();
 			$query
 				->addCondition($condition)
@@ -2584,9 +2596,11 @@ function _getOtherSpecimens ($data) {
 		// This information is not present anymore in v2, we must query ourselves
 		$client = _initNbaClient();
 		try {
-			$query = new QuerySpec();
+		    $condition = new Condition('assemblageID', 'EQUALS', $data->assemblageID);
+		    $condition->setAnd(_naturalisOnlyCondition());
+		    $query = new QuerySpec();
 			$query
-				->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
+			    ->addCondition($condition)
 				->setConstantScore();
 			_addDebugMessage('other specimens in assemblage', $query);
 			$result = json_decode($client->specimen()->setQuerySpec($query)->query());
