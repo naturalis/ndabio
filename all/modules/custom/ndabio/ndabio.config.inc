@@ -47,7 +47,8 @@ function _advancedSelectFields () {
 function _advancedMultiSelectFields () {
 	return [
 		's_kindOfUnit',
-		'm_license'
+		'm_license',
+	    //'s_typeStatus',
 	];
 }
 

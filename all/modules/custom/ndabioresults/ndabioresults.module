@@ -1002,7 +1002,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				foreach ($nbaPaths as $path) {
 					// Operator: difference between simple and advanced search
 					// If operator has been set in url use this; overrules all other settings
-					if (isset($operators[$field])) {
+				    if (isset($operators[$field])) {
 						$statement[$path] = strtoupper($operators[$field]);
 					// Advanced search
 					} else if (!$simpleSearch) {
@@ -1028,8 +1028,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						];
 					}
 					$paths[$path] = [
-						'operator' => $statement[$path],
-						'values' => _stringToElements($value, $settings)  
+					    'operator' => $statement[$path],
+					    'values' => _stringToElements($value, $settings)  
 					];
 				}
 			}
@@ -1041,12 +1041,17 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				$elements = array_merge(_stringToElements($value), [$value]);
 				$boost = [$value => NBASIMPLESEARCHFULLTERMBOOST];
 			}
+			// Check if multiselect; change locical operator to OR!
+			$operator = $andOr;
+			if (!$simpleSearch && in_array($service[0] . '_' . $field, _advancedMultiSelectFields())) {
+			    $operator = 'setOr';
+			}
 			// Group associated statements
 			if (!empty($statement)) {
 				$statements[] = [
 					'statement' => $statement,
 					'value' => !empty($elements) ? $elements : [$value],
-					'operator' => $andOr,
+				    'operator' => $operator,
 					'boost' => $boost
 				];
 			}
@@ -1060,8 +1065,22 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
     }
     
-//p($statements);
-    
+    // Concatenate multiselects into single value!
+    // Otherwise we will end up with separate AND statements...
+    foreach ($statements as $i => $statement) {
+        // Get the NBA field
+        $field = array_keys($statement['statement'])[0];
+        // Field is new; append to temp list
+        if (!isset($fields) || !in_array($field, $fields)) {
+            $fields[$i] = $field;
+        // Field already exists; this can only occur for multiselects.
+        // Merge values with existing and delete current
+        } else {
+            $key = array_search($field, $fields);
+            $statements[$key]['value'][] = $statement['value'][0];
+            unset($statements[$i]);
+        }
+    }
     
     // Compile conditions
 	$conditions = [];

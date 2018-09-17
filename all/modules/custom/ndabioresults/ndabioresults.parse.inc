@@ -1569,6 +1569,7 @@ function _getSpecimenAcceptedNames ($row) {
 function _getHits ($service, $result) {
 	// Paths used are stored in session
 	$queryPaths = _getQueryPaths($service);
+//	p($queryPaths);
 	if (!$queryPaths) {
 		return false;
 	}
@@ -1576,12 +1577,16 @@ function _getHits ($service, $result) {
 		$hits = [];
 		// Convert NBA path to object path
 		$pathElements = explode('.', $path);
+//p($item['values']);
 		foreach ($item['values'] as $value) {
 			$hit = _getHitInResult($pathElements, $result, $value, $item['operator']);
 			if (!empty($hit)) {
 				$hits[] = $hit;
 			}
 		}
+		
+//p($hits);
+		
 		// Store value only once; it will always be the same value found multiple times
 		if (!empty($hits)) {
 			$output[$path] = trim($hits[0][0]);
