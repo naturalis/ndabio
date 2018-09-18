@@ -428,7 +428,7 @@ function _parseSpecimenDetail ($data) {
 	$output['titleNames'] = isset($titleNames) ? 
 		implode(', ', array_slice(array_flip($titleNames), 0, 5)) : null;
 	
-p($output);
+//p($output);
 	
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
 	
