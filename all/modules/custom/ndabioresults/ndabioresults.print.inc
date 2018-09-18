@@ -477,10 +477,17 @@ function _printStratigraphy ($data) {
     $output = '';
     // Other specimens in collection/set are printed in different table
     if (isset($data['stratigraphy']) && !empty($data['stratigraphy'])) {
+        $i = 0;
         $output .= "<h3>" . t('Stratigraphy') . "</h3>\n";
         foreach ($data['stratigraphy'] as $type => $stratiData) {
+            $i++;
             $output .= "<h4>" . t(ucfirst(strtolower($type))) . "</h4>\n";
-            $output .= "<div class='property-list' style='margin-bottom: 15px;'>\n";
+            
+            $output .= "<div class='property-list'";
+            if ($i < count($data['stratigraphy'])) {
+                $output .= " style='margin-bottom: 15px;'";
+            }
+            $output .=  ">\n";
             foreach ($stratiData as $values) {
                 foreach ((array)$values as $label => $value) {
                     $output .=  _printDL(_translateNdaField($label), _printValue($value));
