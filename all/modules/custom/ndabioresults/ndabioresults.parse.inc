@@ -386,6 +386,7 @@ function _parseSpecimenDetail ($data) {
 	    'licenseType',
 	    //'license',
 	    'assemblyID',
+        'previousUnitsText'
 	    //'collectionType',
     	//'referrer'
 		// etc
@@ -413,6 +414,8 @@ function _parseSpecimenDetail ($data) {
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
 	$output['stratigraphy'] = _getStratigraphy($data->gatheringEvent);
+	$output['previousUnitsText'] = isset($data->previousUnitsText) ? 
+	   implode(", ", array_map('trim', explode('|', $data->previousUnitsText))) : '';
 	
 	// Collect Dutch and ENglish names for title
 	if (!empty($output['vernaculars'])) {

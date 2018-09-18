@@ -525,6 +525,9 @@ function _nbaFieldMapping () {
                     'gatheringEvent.lithoStratigraphy.bed2',
                     'gatheringEvent.lithoStratigraphy.bed',
                 ],
+                'previousUnitsText' => [
+                    'previousUnitsText'
+                ],
             ],
             'taxon' => [
                 'className' => [

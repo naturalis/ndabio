@@ -100,6 +100,10 @@ function _nbaAdvancedSearchExceptions () {
                     'split' => false,
                  	'operator' => 'EQUALS_IC'
                 ],
+                'previousUnitsText' => [
+                    'split' => true,
+                    'operator' => 'MATCHES'
+                ],
             ],
             'taxon' => [
                 'vernacularName' => [
