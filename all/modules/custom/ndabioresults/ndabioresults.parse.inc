@@ -369,8 +369,8 @@ function _parseSpecimenMediaDetail ($data) {
  * @return boolean|array
  */
 function _parseSpecimenDetail ($data) {
-	
-	if (!isset($data->id)) {
+
+    if (!isset($data->id)) {
 		return false;
 	}
 //p($data);
@@ -412,6 +412,7 @@ function _parseSpecimenDetail ($data) {
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
+	$output['stratigraphy'] = _getStratigraphy($data->gatheringEvent);
 	
 	// Collect Dutch and ENglish names for title
 	if (!empty($output['vernaculars'])) {
@@ -427,11 +428,20 @@ function _parseSpecimenDetail ($data) {
 	$output['titleNames'] = isset($titleNames) ? 
 		implode(', ', array_slice(array_flip($titleNames), 0, 5)) : null;
 	
-//p($output);
+p($output);
 	
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
 	
 	return isset($output) ? $output : false;
+}
+
+function _getStratigraphy ($data) {
+    foreach (['chronoStratigraphy', 'lithoStratigraphy', 'bioStratigraphy'] as $type) {
+        if (isset($data->{$type})) {
+            $output[$type] = $data->{$type};
+        }
+    }
+    return isset($output) ? $output : [];
 }
 
 /**
