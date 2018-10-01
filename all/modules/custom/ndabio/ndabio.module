@@ -28,8 +28,6 @@ use nl\naturalis\bioportal\Condition as Condition;
  * Check for appropriate NBA version and set language
  */
 function ndabio_init () {
-	// Test if NBA is available
-	//_checkIfNbaIsUp();
 	// Check if proper NBA is used
 	_checkNbaVersion();
 	_setLanguage();
@@ -638,23 +636,26 @@ function ndabio_ajax_callback () {
     $lang = _getLanguage();
     $language = (is_object($lang)) ? $lang->language : 'en';
     $client = _initNbaClient();
-    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
-    if (isset($geo->shape)) {
-        // locality is sometimes empty in Dutch;
-        $locality = $geo->locality;
-        if ($language == 'nl' && $geo->areaType == 'Country' &&
-            !empty($geo->countryNL) && $geo->countryNL != '\N') {
-            $locality = $geo->countryNL;
-        }
-        echo json_encode([
-            'nid' => $nid,
-            'locality' => $locality,
-            'source' => $geo->source,
-            'geometry' => $geo->shape
-        ]);
-    }
-    die(); // die() is required to avoid displaying the entire drupal interface
+    if ($client) {
+	    $geo = json_decode($client->geo()->find(_setNbaGid($nid)));
+	    if (isset($geo->shape)) {
+	        // locality is sometimes empty in Dutch;
+	        $locality = $geo->locality;
+	        if ($language == 'nl' && $geo->areaType == 'Country' &&
+	            !empty($geo->countryNL) && $geo->countryNL != '\N') {
+	            $locality = $geo->countryNL;
+	        }
+	        echo json_encode([
+	            'nid' => $nid,
+	            'locality' => $locality,
+	            'source' => $geo->source,
+	            'geometry' => $geo->shape
+	        ]);
+	    }
+	    die(); // die() is required to avoid displaying the entire drupal interface
+		}
 	}
+	die('Could not set NBA client!');
 }
 
 function ndabio_theme ($existing, $type, $theme, $path) {
@@ -730,7 +731,8 @@ function nba_areas_callback ($type = false) {
 	         	_geoMunicipalityFixes()));
 	         break;
     	case 'nature':
-         	echo _printGeoList(_natureAreasWithResultsOnly());
+         	echo _omitEmptyAreas() == 1 ? _printGeoList(_natureAreasWithResultsOnly()) :
+         		_printGeoList(_createGeoList('Nature', $language));
     		break;
     	default: 
     		echo _printGeoList(_createGeoList(ucfirst($type), $language));
@@ -758,6 +760,9 @@ function _natureAreasWithResultsOnly () {
 		$all = json_decode(_nbaGeoAreas(), true);
 		$natureAreas = $all['Nature'];
 	    $client = _setNbaClient('specimen', true);
+	    if (!$client) {
+	    	return false;
+	    }
 	    try {
 			foreach ($natureAreas as $area) {
 				$condition = new Condition('gatheringEvent.siteCoordinates.geoShape', 'IN', $area['locality']['en']);
@@ -820,8 +825,8 @@ function _nbaGeoAreas () {
  */
 function _kindOfUnitSelectValues () {
 	$output = array_merge(
-		_getDistinctValues('specimen', 'kindOfUnit'),
-		_getDistinctValues('specimen', 'recordBasis')	
+		_getDistinctValues('specimen', 'kindOfUnit', 200),
+	    _getDistinctValues('specimen', 'recordBasis', 200)	
 	);
 	// Remove unwanted values and duplicates (case insenstive)
 	foreach ($output as $v) {
@@ -855,29 +860,29 @@ function _advancedSelects () {
         $nbaAdvancedSelects['s_sourceSystem'] =
         	_createAdvancedSelectDifferentOptionValue('specimen', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['s_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'collectionType', 100));
         $nbaAdvancedSelects['s_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.typeStatus', 20));
         $nbaAdvancedSelects['s_kindOfUnit'] =
         	_createAdvancedSelect(_kindOfUnitSelectValues());
         $nbaAdvancedSelects['s_sex'] =
         	_createAdvancedSelect(_getDistinctValues('specimen', 'sex'));
         $nbaAdvancedSelects['s_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage'));
+            _createAdvancedSelect(_getDistinctValues('specimen', 'phaseOrStage', 20));
         $nbaAdvancedSelects['s_kingdom'] =
         	_createAdvancedSelect(_getDistinctValues('specimen', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['t_sourceSystem'] =
-        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name');
+        	_createAdvancedSelectDifferentOptionValue('taxon', 'sourceSystem.code', 'sourceSystem.name', 100);
         $nbaAdvancedSelects['t_kingdom'] =
         	_createAdvancedSelect(_getDistinctValues('taxon', 'defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_sourceSystem'] =
         	_createAdvancedSelectDifferentOptionValue('multimedia', 'sourceSystem.code', 'sourceSystem.name');
         $nbaAdvancedSelects['m_collectionType'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType'));
+            _createAdvancedSelect(_getDistinctValues('multimedia', 'collectionType', 100));
         $nbaAdvancedSelects['m_typeStatus'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.typeStatus', 20));
         $nbaAdvancedSelects['m_phaseOrStage'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages'));
+        	_createAdvancedSelect(_getDistinctValues('multimedia', 'phasesOrStages', 20));
         $nbaAdvancedSelects['m_sex'] =
         	_createAdvancedSelect(_getDistinctValues('multimedia', 'sexes'));
         $nbaAdvancedSelects['m_kingdom'] =
@@ -934,10 +939,11 @@ function _isMultiAdvancedSelect ($field) {
  * @param string $service NBA service
  * @param string $optionPath NBA path to option value
  * @param string $valuePath NBA path to value value
+ * @param string $size Number of results
  * @return array
  */
-function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath) {
-	$options = _getDistinctValues($service, $optionPath);
+function _createAdvancedSelectDifferentOptionValue ($service, $optionPath, $valuePath, $size = 10) {
+    $options = _getDistinctValues($service, $optionPath, $size);
 	$client = _initNbaClient();
 	try {
 		foreach ($options as $option) {

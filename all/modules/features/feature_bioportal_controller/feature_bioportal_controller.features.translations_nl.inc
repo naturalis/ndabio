@@ -9410,6 +9410,15 @@ else {
     'plural' => 0,
   );
   $translatables[] = t('%module module uninstalled.', array(), array('context' => ''));
+  $translations['nl:default']['372412469aeee2a615c9dddce0d7286f'] = array(
+    'source' => 'You can only browse the first %s results.',
+    'context' => '',
+    'location' => '/result?term=vos&op=Zoeken&s_andOr=0&s_scientificName=&s_vernacularName=&s_family=&s_genusOrMonomial=&s_specificEpithet=&s_unitID=&s_sourceSystem=&s_collectionType=&s_typeStatus=&s_localityText=&s_phaseOrStage=&s_sex=&s_gatheringAgent=&s_collectorsFieldNumber=&s_kingdom=&s_phylum=&s_className=&s_order=&s_infraspecificEpithet=&t_andOr=0&t_scientificName=&t_vernacularName=&t_family=&t_genusOrMonomial=&t_specificEpithet=&t_sourceSystem=&t_kingdom=&t_phylum=&t_className=&t_order=&t_subgenus=&t_infraspecificEpithet=&m_andOr=0&m_scientificName=&m_vernacularName=&m_family=&m_genusOrMonomial=&m_specificEpithet=&m_sourceSystem=&m_collectionType=&m_kingdom=&m_phylum=&m_className=&m_order=&m_infraspecificEpithet=&form_build_id=form-PjYYXiMGu6jqrZ-dsNK9X8BrEDh9GPtzFbbPo6j-5mE&form_token=dt0LdU7tkqVNYuvUxQNkf-ukwB8DfyGLn0tT-VMvX4E&form_id=ndabio_advanced_taxonomysearch',
+    'translation' => 'U kunt alleen door de eerste %s rijen bladeren.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('You can only browse the first %s results.', array(), array('context' => ''));
   $translations['nl:default']['373096179026e562d87e64619223e9d2'] = array(
     'source' => 'Entity %entity has no base table.',
     'context' => '',
@@ -19647,6 +19656,15 @@ print t(\'Welcome visitor! Thank you for visiting.\');
     'plural' => 0,
   );
   $translatables[] = t('Both a height and width value must be specified in the !name field.', array(), array('context' => ''));
+  $translations['nl:default']['6e45e14085c69f162b2e7c22b714427f'] = array(
+    'source' => 'At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils, minerals and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.',
+    'context' => '',
+    'location' => '/?language=nl&back',
+    'translation' => 'Bij Naturalis Biodiversity Center verzamelen, bewaren en bestuderen we dieren, planten, paddenstoelen, fossielen, mineralen en gesteenten. Met deze website kan je zoeken door de informatie van collectie exemplaren en soorten die is verzameld door Naturalis en andere Nederlandse organisaties.',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('At Naturalis Biodiversity Center, we collect, conserve and study animals, plants, fungi, fossils, minerals and rocks. This site allows you to search through records of specimen and species descriptions collected by Naturalis and other Dutch institutions.', array(), array('context' => ''));
   $translations['nl:default']['6e5472fe11750dfb9a6bb629173dc3a4'] = array(
     'source' => 'Example: \'website feedback\' or \'product information\'.',
     'context' => '',
@@ -32532,7 +32550,7 @@ password: Your password
   $translations['nl:default']['b61541208db7fa7dba42c85224405911'] = array(
     'source' => 'Menu',
     'context' => '',
-    'location' => '',
+    'location' => '; profiles/naturalis/modules/contrib/adminimal_admin_menu/js/slicknav/jquery-no-conflict.slicknav.js',
     'translation' => 'Menu',
     'plid' => 0,
     'plural' => 0,
@@ -34032,6 +34050,15 @@ password: Your password
     'plural' => 0,
   );
   $translatables[] = t('Not fully protected', array(), array('context' => ''));
+  $translations['nl:default']['bca26a16488f3273bd26caa4d4abefc5'] = array(
+    'source' => 'The backend (Netherlands Biodiversity API) currently is unavailable.',
+    'context' => '',
+    'location' => '/multimedia/L.3349269_01237288576/genusOrMonomial%3DCornus?language=nl&back',
+    'translation' => 'De backend (Netherlands Biodiversity API) is momenteel niet beschikbaar. ',
+    'plid' => 0,
+    'plural' => 0,
+  );
+  $translatables[] = t('The backend (Netherlands Biodiversity API) currently is unavailable.', array(), array('context' => ''));
   $translations['nl:default']['bcba3252aa4829761c157fdb5d66493f'] = array(
     'source' => 'Cannot determine the type of project.',
     'context' => '',
