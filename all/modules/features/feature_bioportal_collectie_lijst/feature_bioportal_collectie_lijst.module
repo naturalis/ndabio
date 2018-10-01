@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the collectie lijst feature.
+ */
+
+include_once 'feature_bioportal_collectie_lijst.features.inc';
