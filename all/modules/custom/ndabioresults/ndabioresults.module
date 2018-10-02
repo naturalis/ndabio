@@ -985,6 +985,10 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     	if (!is_array($values)) {
     		$values = [$values];
 		}
+		// Exception for CC licenses :(
+		if ($field == 'license') {
+		    _setLicenseSearchValues($values);
+		}
 		foreach ($values as $value) {
 			$statement = $elements = $boost = [];
 			$value = trim($value);
@@ -1008,7 +1012,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 					} else if (!$simpleSearch) {
 						// Default
 						$statement[$path] = 'STARTS_WITH_IC';
-						// Select
+						// Select: always EQUALS_IC *except* license
 						if (_isAdvancedSelect($field)) {
 							$statement[$path] = 'EQUALS_IC';
 						// Exception
@@ -1252,6 +1256,24 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 //p($query->getQuerySpec(true)); die();
     
     return $query;
+}
+
+/**
+ * Search exception for CC licenses
+ * 
+ * Appends hard-coded version numbers
+ * 
+ * @param array $values Search term(s)
+ * @return array
+ */
+function _setLicenseSearchValues (&$values) {
+    $append = ['1.0', '2.0', '2.5', '3.0', '4.0'];
+    foreach ($values as $value) {
+        foreach ($append as $suffix) {
+            $values[] = $value . ' ' . $suffix;
+        }
+    }
+    return $values;    
 }
 
 

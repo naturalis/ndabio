@@ -2,7 +2,6 @@
 
 // Config
 require_once 'ndabio.config.inc';
-
 // Shared library in ndabioresult module
 require_once DRUPAL_ROOT . '/sites/all/modules/custom/ndabioresults/common.inc';
 
@@ -886,7 +885,7 @@ function _advancedSelects () {
         $nbaAdvancedSelects['m_kingdom'] =
         	_createAdvancedSelect(_getDistinctValues('multimedia', 'identifications.defaultClassification.kingdom'));
         $nbaAdvancedSelects['m_license'] =
-        	_createAdvancedSelect(_getDistinctValues('multimedia', 'license'));
+            _createAdvancedSelect(_licenseTypes());
         cache_set($cacheId, $nbaAdvancedSelects);
     }
     return $nbaAdvancedSelects;
@@ -988,7 +987,8 @@ function _setNbaGid ($gid = false) {
  * @return string|boolean
  */
 function _getAdvancedFieldOperator ($field) {
-	if (isset(_advancedSelects()[$field])) {
+    // All selects should use EQUALS_IC *except* license...
+    if (isset(_advancedSelects()[$field])) {
 		return 'EQUALS_IC';
 	}
 	$tmp = explode('_', $field);

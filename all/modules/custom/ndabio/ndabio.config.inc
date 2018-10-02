@@ -39,6 +39,19 @@ function _advancedSelectFields () {
 	];
 }
 
+function _licenseTypes () {
+    return [
+        'CC0',
+        'CC BY',
+        'CC BY-SA',
+        'CC BY-ND',
+        'CC BY-NC',
+        'CC BY-NC-SA',
+        'CC BY-NC-ND',
+        'All rights reserved',
+    ];
+}
+
 /**
  * These fields are multiselect in the search form
  * 
