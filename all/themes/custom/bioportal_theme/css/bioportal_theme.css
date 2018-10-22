@@ -1252,4 +1252,18 @@ th .icon-sort_sortable:hover {
     top: inherit;
 }
 
+.page-collections .views-field-title-1, .page-collecties .views-field-title-1 {
+    padding-top : 5px;
+    padding-bottom : 10px;
+}
+
+.page-collections .views-field-title-1 a, .page-collecties .views-field-title-1 a {
+    font-size: 20px;
+    font-weight : 400;
+}
+
+.page-collections td.col-align--top, .page-collecties td.col-align--top {
+   vertical-align : top;
+}
+
 
