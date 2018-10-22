@@ -41,7 +41,7 @@ function feature_bioportal_collectie_lijst_views_default_views() {
     'field_nba_search_term' => 'field_nba_search_term',
     'field_nba_search_term_1' => 'field_nba_search_term_1',
   );
-  /* Veld: Inhoud: NBA search term */
+  /* Field: Content: NBA search term */
   $handler->display->display_options['fields']['field_nba_search_term']['id'] = 'field_nba_search_term';
   $handler->display->display_options['fields']['field_nba_search_term']['table'] = 'field_data_field_nba_search_term';
   $handler->display->display_options['fields']['field_nba_search_term']['field'] = 'field_nba_search_term';
@@ -52,7 +52,7 @@ function feature_bioportal_collectie_lijst_views_default_views() {
   $handler->display->display_options['fields']['field_nba_search_term']['alter']['path'] = '/result?theme=[field_nba_search_term]';
   $handler->display->display_options['fields']['field_nba_search_term']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_nba_search_term']['hide_alter_empty'] = FALSE;
-  /* Veld: Inhoud: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
@@ -62,7 +62,7 @@ function feature_bioportal_collectie_lijst_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['path'] = '/result?theme=[field_nba_search_term]';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Veld: Inhoud: Afbeelding */
+  /* Field: Content: Afbeelding */
   $handler->display->display_options['fields']['field_collectie_afbeelding']['id'] = 'field_collectie_afbeelding';
   $handler->display->display_options['fields']['field_collectie_afbeelding']['table'] = 'field_data_field_collectie_afbeelding';
   $handler->display->display_options['fields']['field_collectie_afbeelding']['field'] = 'field_collectie_afbeelding';
@@ -73,7 +73,7 @@ function feature_bioportal_collectie_lijst_views_default_views() {
     'image_style' => '',
     'image_link' => '',
   );
-  /* Veld: Inhoud: Body */
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -84,26 +84,25 @@ function feature_bioportal_collectie_lijst_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '600',
   );
-  /* Sort criterion: Inhoud: Titel */
+  /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
-  $handler->display->display_options['sorts']['title']['order'] = 'DESC';
-  /* Filter criterion: Inhoud: Gepubliceerd */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Inhoud: Type */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'naturalis_featured_content' => 'naturalis_featured_content',
   );
-  /* Filter criterion: Inhoud: Taal */
+  /* Filter criterion: Content: Language */
   $handler->display->display_options['filters']['language']['id'] = 'language';
   $handler->display->display_options['filters']['language']['table'] = 'node';
   $handler->display->display_options['filters']['language']['field'] = 'language';
@@ -113,14 +112,41 @@ function feature_bioportal_collectie_lijst_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'collecties';
+  $handler->display->display_options['path'] = 'collecties_org';
 
-  /* Display: Collections */
-  $handler = $view->new_display('page', 'Collections', 'page_1');
+  /* Display: Highlights */
+  $handler = $view->new_display('page', 'Highlights', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Collections';
   $handler->display->display_options['display_description'] = 'English collections';
   $handler->display->display_options['path'] = 'collections';
+
+  /* Display: Bijzondere collecties */
+  $handler = $view->new_display('page', 'Bijzondere collecties', 'page_2');
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'naturalis_featured_content' => 'naturalis_featured_content',
+  );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    'nl' => 'nl',
+  );
+  $handler->display->display_options['path'] = 'collecties';
   $translatables['collecties'] = array(
     t('Master'),
     t('Collecties'),
@@ -131,8 +157,10 @@ function feature_bioportal_collectie_lijst_views_default_views() {
     t('Asc'),
     t('Desc'),
     t('Page'),
+    t('Highlights'),
     t('Collections'),
     t('English collections'),
+    t('Bijzondere collecties'),
   );
   $export['collecties'] = $view;
 
