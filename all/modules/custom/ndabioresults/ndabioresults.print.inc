@@ -509,7 +509,7 @@ function _printMultimediaPreview ($data) {
 	if (isset($data['items']) && !empty($data['items'])) {
 		$output = "<div style='overflow: hidden;'>\n";
 		foreach ($data['items'] as $i => $media) {
-			$src = $media['src'];
+			$src = _printMakeMediaSecure($media['src']);
 			if ($media['format'] == 'video/mp4') {
 				$src = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
 			}
@@ -621,9 +621,10 @@ function _printSpecimenMediaDetail ($data) {
 	if (!$headers || !strpos($headers[0], '200')) {
 		$data['imgSrc'] = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
 	}
-    
-    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src=\"" . $data['imgSrc'] . "\" alt=\"$alt\" title=\"$alt\" " .
+
+	$imgSrc = _printMakeMediaSecure($data['imgSrc']);
+    list($width, $height) = _loadPrettyPhoto($imgSrc);
+    $img = "<img src=\"" . $imgSrc . "\" alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
@@ -717,8 +718,9 @@ function _printTaxonMediaDetail ($data) {
     );
     $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
 
-    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src='" . $data['imgSrc'] . "' alt=\"$alt\" title=\"$alt\" " .
+    $imgSrc = _printMakeMediaSecure($data['imgSrc']);
+    list($width, $height) = _loadPrettyPhoto($imgSrc);
+    $img = "<img src='" . $imgSrc . "' alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
@@ -876,10 +878,12 @@ function _printMultimedia ($data) {
 		}
 */				
 		$mmHit = _printMultimediaHit($row);
+
+		$imgSrc = _printMakeMediaSecure($row['imgSrc']);
 		
 		$output .= "<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
 		//"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. "), url(". $fallbackSrc . ");' alt='" . $row['title'] . "'></div>\n" .
-		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>\n" .
+		"  <div class='polaroid-image' style='background-image: url(" . $imgSrc . ");' alt='" . $row['title'] . "'></div>\n" .
 		"  <div class='polaroid-caption'>" .
 		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
 		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>\n";
@@ -1669,4 +1673,8 @@ function _printAdvancedSearchSuggestion ($data) {
 			_setStartUrl() . '?searchagain=1');
 }
 
+
+function _printMakeMediaSecure($src) {
+    return preg_replace("/http:\/\/", "https://", $src);
+}
 
