@@ -39,6 +39,19 @@ function _advancedSelectFields () {
 	];
 }
 
+function _licenseTypes () {
+    return [
+        'CC0',
+        'CC BY',
+        'CC BY-SA',
+        'CC BY-ND',
+        'CC BY-NC',
+        'CC BY-NC-SA',
+        'CC BY-NC-ND',
+        'All rights reserved',
+    ];
+}
+
 /**
  * These fields are multiselect in the search form
  * 
@@ -47,8 +60,13 @@ function _advancedSelectFields () {
 function _advancedMultiSelectFields () {
 	return [
 		's_kindOfUnit',
-		'm_license'
+		'm_license',
+	    's_typeStatus',
 	];
+}
+
+function _naturalisOnlySourceSystems () {
+    return ['BRAHMS', 'CRS', 'NSR', 'COL'];
 }
 
 /**
@@ -94,6 +112,10 @@ function _nbaAdvancedSearchExceptions () {
                 'unitID' => [
                     'split' => false,
                  	'operator' => 'EQUALS_IC'
+                ],
+                'previousUnitsText' => [
+                    'split' => true,
+                    'operator' => 'MATCHES'
                 ],
             ],
             'taxon' => [

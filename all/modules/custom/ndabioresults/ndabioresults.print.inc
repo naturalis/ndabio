@@ -431,16 +431,18 @@ function _printSpecimenDetail ($data) {
 		    );
 		}
 	}
+	$output .= "</div>\n";	
+	$output .= _printStratigraphy($data);
 	// Other specimens in collection/set are printed in different table
 	if (isset($data['otherSpecimens']) && !empty($data['otherSpecimens'])) {
- 		$output .= "</div>\n<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>\n";
+ 		$output .= "<h3>" . t('Other specimens in assemblage') . "</h3>\n<div class='property-list'>\n";
  		foreach ($data['otherSpecimens'] as $i => $specimen) {
 			$output .= '<dl><dt><a href="' . $specimen['url'] . '">' . _setUnitId($specimen['unitID']) . '</a></dt>';
 			$output .= '<dd>' . $specimen['collectionType'] . "</dd></dl>\n";
 		}
+		$output .= "</div>\n";
 	}
-	$output .= "</div>\n";
-	
+		
 	$feedback = "<p style='margin-bottom: 30px;'>" . t('Please report inaccuracies or errors for this specimen to %s.') . "</p>";
 	$mailLink = '<a href="%s">collectie@naturalis.nl</a>';
 	$mailSubject = 'subject=' . rawurlencode(t('Feedback on specimen') . ' ' . $data['unitID'] . ' (' . $data['collectionType'] . ')');
@@ -469,6 +471,32 @@ function _printSpecimenDetail ($data) {
     _setTitle($title . ' | ' . $data['unitID']);
 
 	return $output;
+}
+
+function _printStratigraphy ($data) {
+    $output = '';
+    // Other specimens in collection/set are printed in different table
+    if (isset($data['stratigraphy']) && !empty($data['stratigraphy'])) {
+        $i = 0;
+        $output .= "<h3>" . t('Stratigraphy') . "</h3>\n";
+        foreach ($data['stratigraphy'] as $type => $stratiData) {
+            $i++;
+            $output .= "<h4>" . t(ucfirst(strtolower($type))) . "</h4>\n";
+            
+            $output .= "<div class='property-list'";
+            if ($i < count($data['stratigraphy'])) {
+                $output .= " style='margin-bottom: 15px;'";
+            }
+            $output .=  ">\n";
+            foreach ($stratiData as $values) {
+                foreach ((array)$values as $label => $value) {
+                    $output .=  _printDL(_translateNdaField($label), _printValue($value));
+                }
+            }
+            $output .= '</div>';
+        }
+    }
+    return $output;
 }
 
 /**

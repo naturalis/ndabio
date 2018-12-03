@@ -724,7 +724,9 @@ function _getTaxonMultimedia ($object) {
 		$condition->setAnd('identifications.scientificName.infraspecificEpithet', 'EQUALS', 
 			isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
 				$object->taxa[0]->acceptedName->infraspecificEpithet : null);
-		//$condition->setAnd('associatedSpecimenReference', 'EQUALS');
+		// Make sure only Naturalis sources are queried
+		$condition->setAnd(_naturalisOnlyCondition());
+		
 		$query = new QuerySpec();
 		$query
 			->addCondition($condition)
@@ -794,9 +796,13 @@ function _getSpecimenMultimedia ($object) {
 	}
 	
 	try {
+	    
+	    $condition = new Condition('associatedSpecimenReference', 'EQUALS', $object->id);
+	    $condition->setAnd(_naturalisOnlyCondition());
+	    
 		$query = new QuerySpec();
 		$query
-			->addCondition(new Condition('associatedSpecimenReference', 'EQUALS', $object->id))
+		    ->addCondition($condition)
 			->setSize(5)
 			->setConstantScore();
 		_addDebugMessage('specimen multimedia', $query);
@@ -896,6 +902,8 @@ function _getTaxonByName ($name) {
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
+		$condition->setAnd(_naturalisOnlyCondition());
+		
 	    $query = new GroupByScientificNameQuerySpec();
 	    $query->addCondition($condition)->setSpecimensSize(5);
 	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
@@ -977,6 +985,10 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     	if (!is_array($values)) {
     		$values = [$values];
 		}
+		// Exception for CC licenses :(
+		if ($field == 'license') {
+		    _setLicenseSearchValues($values);
+		}
 		foreach ($values as $value) {
 			$statement = $elements = $boost = [];
 			$value = trim($value);
@@ -994,13 +1006,13 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				foreach ($nbaPaths as $path) {
 					// Operator: difference between simple and advanced search
 					// If operator has been set in url use this; overrules all other settings
-					if (isset($operators[$field])) {
+				    if (isset($operators[$field])) {
 						$statement[$path] = strtoupper($operators[$field]);
 					// Advanced search
 					} else if (!$simpleSearch) {
 						// Default
 						$statement[$path] = 'STARTS_WITH_IC';
-						// Select
+						// Select: always EQUALS_IC *except* license
 						if (_isAdvancedSelect($field)) {
 							$statement[$path] = 'EQUALS_IC';
 						// Exception
@@ -1020,8 +1032,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						];
 					}
 					$paths[$path] = [
-						'operator' => $statement[$path],
-						'values' => _stringToElements($value, $settings)  
+					    'operator' => $statement[$path],
+					    'values' => _stringToElements($value, $settings)  
 					];
 				}
 			}
@@ -1033,12 +1045,17 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 				$elements = array_merge(_stringToElements($value), [$value]);
 				$boost = [$value => NBASIMPLESEARCHFULLTERMBOOST];
 			}
+			// Check if multiselect; change locical operator to OR!
+			$operator = $andOr;
+			if (!$simpleSearch && in_array($service[0] . '_' . $field, _advancedMultiSelectFields())) {
+			    $operator = 'setOr';
+			}
 			// Group associated statements
 			if (!empty($statement)) {
 				$statements[] = [
 					'statement' => $statement,
 					'value' => !empty($elements) ? $elements : [$value],
-					'operator' => $andOr,
+				    'operator' => $operator,
 					'boost' => $boost
 				];
 			}
@@ -1052,8 +1069,22 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
     	$_SESSION['nbaQuery'][$service]['paths'] = $paths;
     }
     
-//p($statements);
-    
+    // Concatenate multiselects into single value!
+    // Otherwise we will end up with separate AND statements...
+    foreach ($statements as $i => $statement) {
+        // Get the NBA field
+        $field = array_keys($statement['statement'])[0];
+        // Field is new; append to temp list
+        if (!isset($fields) || !in_array($field, $fields)) {
+            $fields[$i] = $field;
+        // Field already exists; this can only occur for multiselects.
+        // Merge values with existing and delete current
+        } else {
+            $key = array_search($field, $fields);
+            $statements[$key]['value'][] = $statement['value'][0];
+            unset($statements[$i]);
+        }
+    }
     
     // Compile conditions
 	$conditions = [];
@@ -1190,6 +1221,8 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			$query->addCondition(_setCondition($condition));
 		}
 	}
+	// Naturalis only
+	$query->addCondition(_naturalisOnlyCondition());
 	
     // Add map condition if present
     if (isset($geoShape)) {
@@ -1223,6 +1256,24 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 //p($query->getQuerySpec(true)); die();
     
     return $query;
+}
+
+/**
+ * Search exception for CC licenses
+ * 
+ * Appends hard-coded version numbers
+ * 
+ * @param array $values Search term(s)
+ * @return array
+ */
+function _setLicenseSearchValues (&$values) {
+    $append = ['1.0', '2.0', '2.5', '3.0', '4.0'];
+    foreach ($values as $value) {
+        foreach ($append as $suffix) {
+            $values[] = $value . ' ' . $suffix;
+        }
+    }
+    return $values;    
 }
 
 
@@ -1658,6 +1709,7 @@ function _getTaxonFromNba ($taxon, $existsOnly = false) {
 					(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 					(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 			}
+			$condition->setAnd(_naturalisOnlyCondition());
 			$client = _setNbaClient('taxon');
 			if (!$client) {
 				return false;
@@ -2033,6 +2085,7 @@ function _getSpecimenDetails (&$data) {
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->specimens as $item) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
+			$condition->setAnd(_naturalisOnlyCondition());
 			$query = new QuerySpec();
 			$query
 				->addCondition($condition)
@@ -2542,7 +2595,7 @@ function _nbaThemeSearch () {
 		$pageBody .= _printSpecimens(_parseSpecimens($data, ['showAll']));
 	}
     return $pageHeader .  _printDebug() . 
-    	(!empty($pageBody) ? $pageBody : '<p>' . printNoResults() . '</p>');
+    	(!empty($pageBody) ? $pageBody : '<p>' . _printNoResults() . '</p>');
 }
 
 /**
@@ -2584,9 +2637,11 @@ function _getOtherSpecimens ($data) {
 		// This information is not present anymore in v2, we must query ourselves
 		$client = _initNbaClient();
 		try {
-			$query = new QuerySpec();
+		    $condition = new Condition('assemblageID', 'EQUALS', $data->assemblageID);
+		    $condition->setAnd(_naturalisOnlyCondition());
+		    $query = new QuerySpec();
 			$query
-				->addCondition(new Condition('assemblageID', 'EQUALS', $data->assemblageID))
+			    ->addCondition($condition)
 				->setConstantScore();
 			_addDebugMessage('other specimens in assemblage', $query);
 			$result = json_decode($client->specimen()->setQuerySpec($query)->query());

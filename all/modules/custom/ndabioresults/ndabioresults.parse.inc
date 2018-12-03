@@ -369,8 +369,8 @@ function _parseSpecimenMediaDetail ($data) {
  * @return boolean|array
  */
 function _parseSpecimenDetail ($data) {
-	
-	if (!isset($data->id)) {
+
+    if (!isset($data->id)) {
 		return false;
 	}
 //p($data);
@@ -386,6 +386,7 @@ function _parseSpecimenDetail ($data) {
 	    'licenseType',
 	    //'license',
 	    'assemblyID',
+        'previousUnitsText'
 	    //'collectionType',
     	//'referrer'
 		// etc
@@ -412,6 +413,9 @@ function _parseSpecimenDetail ($data) {
 	//$output['license'] = $data->searchResults[0]->result->license;
 	$output['otherSpecimens'] = isset($data->assemblageID) ? _getOtherSpecimens($data) : null;
 	$output['multimedia'] = $data->multimedia;
+	$output['stratigraphy'] = _getStratigraphy($data->gatheringEvent);
+	$output['previousUnitsText'] = isset($data->previousUnitsText) ? 
+	   implode(", ", array_map('trim', explode('|', $data->previousUnitsText))) : '';
 	
 	// Collect Dutch and ENglish names for title
 	if (!empty($output['vernaculars'])) {
@@ -432,6 +436,15 @@ function _parseSpecimenDetail ($data) {
 	_addDebugMessage('Parsing specimen', _getTimer($timer));
 	
 	return isset($output) ? $output : false;
+}
+
+function _getStratigraphy ($data) {
+    foreach (['chronoStratigraphy', 'lithoStratigraphy', 'bioStratigraphy'] as $type) {
+        if (isset($data->{$type})) {
+            $output[$type] = $data->{$type};
+        }
+    }
+    return isset($output) ? $output : [];
 }
 
 /**
@@ -1569,6 +1582,7 @@ function _getSpecimenAcceptedNames ($row) {
 function _getHits ($service, $result) {
 	// Paths used are stored in session
 	$queryPaths = _getQueryPaths($service);
+//	p($queryPaths);
 	if (!$queryPaths) {
 		return false;
 	}
@@ -1576,12 +1590,16 @@ function _getHits ($service, $result) {
 		$hits = [];
 		// Convert NBA path to object path
 		$pathElements = explode('.', $path);
+//p($item['values']);
 		foreach ($item['values'] as $value) {
 			$hit = _getHitInResult($pathElements, $result, $value, $item['operator']);
 			if (!empty($hit)) {
 				$hits[] = $hit;
 			}
 		}
+		
+//p($hits);
+		
 		// Store value only once; it will always be the same value found multiple times
 		if (!empty($hits)) {
 			$output[$path] = trim($hits[0][0]);

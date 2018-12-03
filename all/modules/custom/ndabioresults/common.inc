@@ -11,6 +11,8 @@ require_once 'ndabioresults.config.inc';
 require_once DRUPAL_ROOT . '/library/bioportal-client/lib/nl/naturalis/bioportal/Loader.php';
 
 use nl\naturalis\bioportal\Client as Client;
+use nl\naturalis\bioportal\QuerySpec as QuerySpec;
+use nl\naturalis\bioportal\Condition as Condition;
 
 /**
  * Set language
@@ -209,7 +211,8 @@ function _stringToElements ($value, $settings = []) {
 function _getDistinctValues ($service, $nbaPath, $size = 10) {
     $client = _setNbaClient($service);
     if ($client) {
-        $values = array_keys(json_decode($client->getDistinctValues($nbaPath, $size), true));
+        _addNaturalisOnlyQuerySpec($service, $client, $size);
+        $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
 	    sort($values);
 	    unset($client);
 	    return $values;
@@ -217,6 +220,35 @@ function _getDistinctValues ($service, $nbaPath, $size = 10) {
     _setErrorMessage('Could not get distinct values.');
 	return false;
 }
+
+
+function _addNaturalisOnlyQuerySpec ($service, &$client, $size = false) {
+    if (in_array($service, ['specimen', 'multimedia'])) {
+        $querySpec = new QuerySpec();
+        $querySpec->addCondition(_naturalisOnlyCondition());
+        if ($size) {
+            $querySpec->setSize($size);
+        }
+        $client->setQuerySpec($querySpec);
+    }
+}
+
+/**
+ * Compiles a condition that selects records from Naturalis-only sources
+ * 
+ * @return \nl\naturalis\bioportal\Condition
+ */
+function _naturalisOnlyCondition () {
+    foreach (_naturalisOnlySourceSystems() as $i => $source) {
+        if ($i == 0) {
+            $condition = new Condition('sourceSystem.code', 'EQUALS', $source);
+        } else {
+            $condition->setOr('sourceSystem.code', 'EQUALS', $source);
+        }
+    }
+    return $condition;
+}
+
 
 /**
  * Converts timestamp in milliseconds to year-month-day
