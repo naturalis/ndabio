@@ -1675,6 +1675,8 @@ function _printAdvancedSearchSuggestion ($data) {
 
 
 function _printMakeMediaSecure($src) {
+    return $src;
+    // Disabled for now
     return preg_replace("/http:\/\/", "https://", $src);
 }
 
