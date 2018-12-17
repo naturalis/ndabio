@@ -276,8 +276,6 @@ function _parseMultimedia ($data, $options = []) {
 	
 	foreach ($data->resultSet as $i => $row) {
 	    
-	    echo $row->item->serviceAccessPoints[0]->accessUri . '<br>';
-	    
 		$type = isset($row->item->associatedTaxonReference) && 
 			!empty($row->item->associatedTaxonReference) ?  'taxon' : 'specimen';
 		$d['title'] = $type == 'taxon' && isset($row->item->title) ? 
