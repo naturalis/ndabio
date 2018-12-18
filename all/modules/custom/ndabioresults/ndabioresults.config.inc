@@ -4,6 +4,7 @@
 define("NBABASEURL", "http://api.biodiversitydata.nl/v2/");
 define("NBALOG", "/tmp/bioportal.log.json");
 define("NBAINITMAXRESULTS", 10);
+define("NBANATURALISONLY", 1);
 define("NBAINITMAXGROUPRESULTS", 10);
 define("NBAMAXRESULTS", 100);
 define("NBATIMEOUT", 5);
@@ -58,20 +59,31 @@ function ndabioresults_config_form ($form, &$form_state) {
   );
 
   // Maximum results for initial "overview"
-  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxresults'] = array(
-    '#type' => 'textfield',
-    '#title' => t('NBA Initial max results'),
-    '#default_value' => variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS),
-    '#size' => 10,
-    '#maxlength' => 10,
-    '#description' => t('Number of maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
-    '#required' => TRUE
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_naturalis_only'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Only query Naturalis sources'),
+      '#default_value' => variable_get('ndabioresults_config_naturalis_only', NBANATURALISONLY),
+      '#size' => 10,
+      '#maxlength' => 10,
+      '#description' => t('Include only Naturalis sources in query results.') . '<br />' . t('Default') . ': ' . NBANATURALISONLY,
+      '#required' => TRUE
   );
-
+  
+  // Maximum results for initial "overview"
+  $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxresults'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Initial max results'),
+      '#default_value' => variable_get('ndabioresults_config_initialmaxresults', NBAINITMAXRESULTS),
+      '#size' => 10,
+      '#maxlength' => 10,
+      '#description' => t('Number of maximum results for initial "overview" query.') . '<br />' . t('Default') . ': ' . NBAINITMAXRESULTS,
+      '#required' => TRUE
+  );
+  
   // Maximum results per group for initial "overview"
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_initialmaxgroupresults'] = array(
   		'#type' => 'textfield',
-  		'#title' => t('NBA Maximum results per group'),
+  		'#title' => t('Maximum results per group'),
   		'#default_value' => variable_get('ndabioresults_config_initialmaxgroupresults', NBAINITMAXGROUPRESULTS),
   		'#size' => 10,
   		'#maxlength' => 10,
@@ -82,7 +94,7 @@ function ndabioresults_config_form ($form, &$form_state) {
   // Maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxresults'] = array(
   		'#type' => 'textfield',
-  		'#title' => t('NBA Maximum results'),
+  		'#title' => t('Maximum results'),
   		'#default_value' => variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS),
   		'#size' => 10,
   		'#maxlength' => 10,
@@ -93,7 +105,7 @@ function ndabioresults_config_form ($form, &$form_state) {
   // Constant: timeout
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_timeout'] = array(
     '#type' => 'textfield',
-    '#title' => t('NBA Timeout'),
+    '#title' => t('NBA timeout'),
     '#default_value' => variable_get('ndabioresults_config_timeout', NBATIMEOUT),
     '#size' => 30,
     '#maxlength' => 30,
@@ -104,7 +116,7 @@ function ndabioresults_config_form ($form, &$form_state) {
    // Constant: maximum results for subsequent queries
   $form['ndabioresults_config']['ndabioresults_config_general']['ndabioresults_config_maxpagesinpaginator'] = array(
     '#type' => 'textfield',
-    '#title' => t('NBA Maximum number of pages in the paginator'),
+    '#title' => t('Maximum number of pages in the paginator'),
     '#default_value' => variable_get('ndabioresults_config_maxpagesinpaginator', NBAMAXPAGESINPAGINATOR),
     '#size' => 10,
     '#maxlength' => 10,
@@ -204,6 +216,15 @@ function _maxResultsInitial () {
  */
 function _maxResults () {
 	return variable_get('ndabioresults_config_maxresults', NBAMAXRESULTS);
+}
+
+/**
+ * Constant: show data from external sources (XC, waaarneming)?
+ *
+ * @return integer
+ */
+function _naturalisOnly () {
+    return variable_get('ndabioresults_config_naturalis_only', NBANATURALISONLY);
 }
 
 

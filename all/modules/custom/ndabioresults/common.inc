@@ -211,7 +211,9 @@ function _stringToElements ($value, $settings = []) {
 function _getDistinctValues ($service, $nbaPath, $size = 10) {
     $client = _setNbaClient($service);
     if ($client) {
-        _addNaturalisOnlyQuerySpec($service, $client, $size);
+        if (_naturalisOnly() == 1) {
+            _addNaturalisOnlyQuerySpec($service, $client, $size);
+        }
         $values = array_keys(json_decode($client->getDistinctValues($nbaPath), true));
 	    sort($values);
 	    unset($client);
