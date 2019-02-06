@@ -257,14 +257,17 @@ function _nbaMaxResultWindow () {
             return $nbaMaxResultWindow;
         }
         $client = _initNbaClient();
-        $nbaMaxResultWindow = false;
-        foreach (['taxon', 'specimen', 'multimedia'] as $service) {
-        	try {
-        		$nbaMaxResultWindow[$service] = $client->{$service}()->getIndexMaxResultWindow();
-        	} catch (Exception $e) { }
+        if ($client) {
+            $nbaMaxResultWindow = false;
+            foreach (['taxon', 'specimen', 'multimedia'] as $service) {
+                try {
+                    $nbaMaxResultWindow[$service] = $client->{$service}()->getIndexMaxResultWindow();
+                } catch (Exception $e) {
+                }
+            }
+            cache_set($cacheId, $nbaMaxResultWindow);
+            unset($client);
         }
-        cache_set($cacheId, $nbaMaxResultWindow);
-        unset($client);
     }
     return $nbaMaxResultWindow;
     
