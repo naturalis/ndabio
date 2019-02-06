@@ -35,6 +35,9 @@ function _printSortOptions ($service) {
  * @return string
  */
 function _printTaxonDetail ($data) {
+
+    //p($data);
+
     $language = _getLanguage();
 
     $output = _printDebug();
@@ -67,12 +70,23 @@ function _printTaxonDetail ($data) {
     		_printSpecimensPreview($data['specimens']) . "</div>\n";
 	}
 	if (!empty($data['multimedia'])) {
-    	$output .= '<h3>' . t('Multimedia') . '</h3><div>' .
+    	$output .= '<h3>' . t('Multimedia') . '</h3><div style="margin-bottom: 48px;">' .
     		_printMultimediaPreview($data['multimedia']) . "</div>\n";
 	}
-    
+
+    $output .= '<h3>' . t('Literature'). '</h3><div id="literature">
+        <p>Searching the Biodiversity Heritage Library catalogue...</p></div>';
+
+
     // Drupal title empty; page title custom
     _setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
+
+    drupal_add_js("var str_base_path = '" . _setBasePath() . "';", 'inline');
+    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
+    drupal_add_js(
+        "jQuery(function() { getBhlReferences('" . urlencode($data['name']) . "'); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
 
     return $output;
 }

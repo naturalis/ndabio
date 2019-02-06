@@ -117,25 +117,124 @@ function ndabioresults_menu () {
 
 
 /**
- * Returns NBA result as JSON, based on given request
+ * Simple method to query api through Ajax
  *
- * Returns json from NBA from Ajax call; request should be given as GET parameter.
- * Optionally this service can return just the total number of records, if getTotal
- * is provided as GET parameter.
+ * Requires two GET parameters: source and term; key is optional
  */
 function ndabioresults_ajax_callback () {
     drupal_add_http_header('Content-Type', 'application/json');
-    if (isset($_GET['nba_request'])) {
-        // For the time being this service is used only to retrieve totalSize
-        // Therefore maxResults is capped to 1 by default
-        $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
-        if (isset($_GET['getTotal'])) {
-            $data = json_decode((reset($remoteData)));
-            die($data->totalSize);
-        }
-        die(reset($remoteData));
+    if (empty($_GET['term']) || empty($_GET['source'])) {
+        die(json_encode('Both "source" and "term" should be passed as get parameters!'));
     }
-    die('Invalid NBA request');
+    if ($_GET['source'] == 'bhl') {
+        die(_getBhlReferences(10));
+    }
+    die(json_encode('Invalid request or request timed out'));
+}
+
+
+function _getBhlReferences ($max = 10) {
+    $result = _queryApi(
+        'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm=[q]&apikey=[k]',
+        $_GET['term'],
+        '92209bfc-0702-4d1d-a086-ff85bfd88e1e',
+        60
+    );
+    $output['references'] = [];
+    if (_isValidJson($result)) {
+        $data = json_decode($result, true);
+
+        if ($data['Status'] == 'ok' && !empty($data['Result'])) {
+            foreach ($data['Result'] as $i => $r) {
+                if ($i >= $max) {
+                    break;
+                }
+                $output['references'][$i]['title'] = _compileReference([
+                    'authors' => array_column($r['Authors'],'Name'),
+                    'title' => isset($r['Title']) ? $r['Title'] : null,
+                    'year' => isset($r['Date']) ? $r['Date'] : null,
+                    'journal' => isset($r['ContainerTitle']) ? $r['ContainerTitle'] : null,
+                    'volume' => isset($r['Volume']) ? $r['Volume'] : null,
+                    'pages' => isset($r['PageRange']) ? $r['PageRange'] : null,
+                    'issue' => isset($r['Issue']) ? $r['Issue'] : null,
+                    'publisher' => [
+                        'name' => isset($r['PublisherName']) ? $r['PublisherName'] : null,
+                        'place' => isset($r['PublisherPlace']) ? $r['PublisherPlace'] : null,
+                        'year' => isset($r['PublisherDate']) ? $r['PublisherDate'] : null
+                    ]
+                ]);
+                $output['references'][$i]['url'] =
+                    !empty($r['PartUrl']) ? $r['PartUrl'] : $r['TitleUrl'];
+            }
+        }
+        $output['count'] = isset($i) ? $i + 1 : 0;
+        $output['source_url'] = isset($i) ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
+            urlencode($_GET['term']) . '&stype=F' : null;
+
+        return json_encode($output);
+    }
+}
+
+/**
+ * @param $parts Individuals parts used to compile a reference
+ * @return string
+ */
+function _compileReference ($parts)
+{
+    foreach ($parts as $k => $v) {
+        if (!is_array($v)) {
+            $$k = trim($v, ' .,/');
+        }
+    }
+    if (!empty($pages)) {
+        $tmp = explode('--', $pages);
+        $pages = $tmp[0] == $tmp[1] ? $tmp[0] : $tmp[0] . '-' . $tmp[1];
+    }
+    $authors = array_map(function($value) {
+        return trim($value, ' .,/');
+    }, $authors);
+    $authors = array_pop($parts['authors']);
+    if ($parts['authors']) {
+        $authors = implode(', ', $parts['authors']) . ' & ' . $authors;
+    }
+    $publisher = implode(' ', $parts['publisher']);
+    $output =
+        (!empty($authors) ? $authors . '. ' : '') .
+        (!empty($year) ? $year . '. ' : '') .
+        (!empty($title) ? $title . '. ' : '') .
+        (!empty($journal) ? $journal . ', ' : '') .
+        (!empty($volume) ? $volume : '') .
+        (!empty($issue) ? '(' . $issue . ')' : '') .
+        (!empty($pages) ? ': ' . $pages . '.' : '') .
+        (!empty(trim($publisher)) ? ': ' . trim($publisher) . '.' : '');
+    return $output;
+
+}
+
+
+/**
+ * Very basic curl request to retrieve data from external apis.
+ * Pass url as http://domain?query=[q](&key=[k])
+ *
+ * @param string $url
+ * @param string $query // Will be encoded here!
+ * @param string $key
+ * @param int $timeout
+ * @return bool|string
+ */
+function _queryApi ($url, $query, $key = false, $timeout = 10) {
+    $url = str_replace('[q]', urlencode($query), $url);
+    if ($key) {
+        $url = str_replace('[k]', $key, $url);
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+
 }
 
 
@@ -2505,7 +2604,7 @@ function _nbaSimpleSearch () {
 }
 
 
-function _rewriteSimpleSearchTerm ($term) {
+function _rewriteSimpleSearchTerm ($terms) {
 	foreach ($terms as $i => $term) {
 		$terms[$i] = substr($term, 0, _nbaMaxContainsStringSize());
 	}
