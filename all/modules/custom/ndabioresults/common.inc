@@ -418,10 +418,24 @@ function _sortArrayByArray ($array, $orderArray) {
  * Validates json
  *
  * @param string
- * @return boolean
+ * @return bool
  */
 function _isValidJson ($string) {
 	return is_object(json_decode($string));
+}
+
+/**
+ * Validates XML
+ *
+ * @param $string
+ * @return bool
+ */
+function _isValidXml($string) {
+    libxml_use_internal_errors(true);
+    $doc = new DOMDocument('1.0', 'utf-8');
+    $doc->loadXML($string);
+    $errors = libxml_get_errors();
+    return empty($errors);
 }
 
 /**
@@ -566,8 +580,8 @@ function _getCurrentUrl () {
  * @return boolean
  */
 function _isJson ($string) {
-  json_decode($string);
-  return (json_last_error() == JSON_ERROR_NONE);
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
 }
 
 /**

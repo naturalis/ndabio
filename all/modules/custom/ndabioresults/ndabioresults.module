@@ -122,14 +122,56 @@ function ndabioresults_menu () {
  * Requires two GET parameters: source and term; key is optional
  */
 function ndabioresults_ajax_callback () {
-    drupal_add_http_header('Content-Type', 'application/json');
+    //drupal_add_http_header('Content-Type', 'application/json');
     if (empty($_GET['term']) || empty($_GET['source'])) {
         die(json_encode('Both "source" and "term" should be passed as get parameters!'));
     }
     if ($_GET['source'] == 'bhl') {
         die(_getBhlReferences(10));
     }
+    if ($_GET['source'] == 'wc') {
+        die(_getWorldCatReferences(10));
+    }
     die(json_encode('Invalid request or request timed out'));
+}
+
+function _getWorldCatReferences () {
+    $result = _queryApi(
+        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=[q]&wskey=[k]&cformat=chicago',
+        //'http://www.worldcat.org/webservices/catalog/search/sru?query=srw.kw%3D%22[q]%22&wskey=[k]&recordSchema=info%3Asrw%2Fschema%2F1%2Fdc',
+        $_GET['term'],
+        'p8KSpphVF5QV3RDa0oinF4K6y4R7TvSXM7DYBjPde0IvOviDbC0DM4W6zUax407GzWYhe8kKlYOnlWrm',
+        30
+    );
+
+    //echo $result;
+
+    $output['references'] = [];
+    if (_isValidXml($result)) {
+        $data = simplexml_load_string($result);
+
+        $nr = count($data->entry);
+        for ($i = 0; $i < $nr; $i++) {
+            $output['references'][$i]['title'] = strip_tags((string)$data->entry[$i]->content);
+            $output['references'][$i]['url'] = (string)$data->entry->link['href'];
+        }
+
+        $output['count'] = $nr;
+        $output['source_url'] = $nr > 0 ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
+            urlencode($_GET['term']) . '&stype=F' : null;
+
+        /*
+        foreach ($data->records->record as $record) {
+            $r = $record->recordData->oclcdcs->children('dc', true);
+            if (isset($r->contributor)) {
+                $coAuthors = is_array($r->contributor) ? $r->contributor : [$r->contributor];
+            }
+
+        }
+        */
+
+    }
+    return json_encode($output);
 }
 
 
@@ -138,7 +180,7 @@ function _getBhlReferences ($max = 10) {
         'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm=[q]&apikey=[k]',
         $_GET['term'],
         '92209bfc-0702-4d1d-a086-ff85bfd88e1e',
-        60
+        30
     );
     $output['references'] = [];
     if (_isValidJson($result)) {
