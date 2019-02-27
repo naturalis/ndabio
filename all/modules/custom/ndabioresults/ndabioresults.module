@@ -144,8 +144,6 @@ function _getWorldCatReferences () {
         30
     );
 
-    //echo $result;
-
     $output['references'] = [];
     if (_isValidXml($result)) {
         $data = simplexml_load_string($result);
