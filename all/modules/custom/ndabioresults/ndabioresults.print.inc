@@ -74,8 +74,13 @@ function _printTaxonDetail ($data) {
     		_printMultimediaPreview($data['multimedia']) . "</div>\n";
 	}
 
-    $output .= '<h3>' . t('Literature'). '</h3><div id="literature">
-        <p>Searching the Biodiversity Heritage Library catalogue...</p></div>';
+    $output .= '<h3>' . t('Literature'). '</h3>
+        <div id="literature"><p>Searching the external sources 
+            <a href="https://www.worldcat.org" target="_blank">WorldCat</a> and the 
+            <a href="Biodiversity Heritage Library" target="_blank">Biodiversity Heritage Library</a> 
+            for literature on ' . $data['acceptedName'] . '...</p></div>
+        <div id="bhl"></div>
+        <div id="wc"></div>';
 
 
     // Drupal title empty; page title custom
@@ -84,7 +89,7 @@ function _printTaxonDetail ($data) {
     drupal_add_js("var str_base_path = '" . _setBasePath() . "';", 'inline');
     drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
     drupal_add_js(
-        "jQuery(function() { getBhlReferences('" . urlencode($data['name']) . "'); });",
+        "jQuery(function() { getReferences('" . urlencode($data['name']) . "'); });",
         array('type' => 'inline', 'scope' => 'footer')
     );
 

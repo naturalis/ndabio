@@ -127,28 +127,30 @@ function ndabioresults_ajax_callback () {
         die(json_encode('Both "source" and "term" should be passed as get parameters!'));
     }
     if ($_GET['source'] == 'bhl') {
-        die(_getBhlReferences(10));
+        die(_getBhlReferences(5));
     }
     if ($_GET['source'] == 'wc') {
-        die(_getWorldCatReferences(10));
+        die(_getWorldCatReferences(5));
     }
     die(json_encode('Invalid request or request timed out'));
 }
 
-function _getWorldCatReferences () {
+function _getWorldCatReferences ($max = 10) {
     $result = _queryApi(
-        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=[q]&wskey=[k]&cformat=chicago',
-        //'http://www.worldcat.org/webservices/catalog/search/sru?query=srw.kw%3D%22[q]%22&wskey=[k]&recordSchema=info%3Asrw%2Fschema%2F1%2Fdc',
-        $_GET['term'],
-        'p8KSpphVF5QV3RDa0oinF4K6y4R7TvSXM7DYBjPde0IvOviDbC0DM4W6zUax407GzWYhe8kKlYOnlWrm',
+        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=' . $_GET['term'] .
+            '&wskey=[k]&cformat=chicago',
+       'p8KSpphVF5QV3RDa0oinF4K6y4R7TvSXM7DYBjPde0IvOviDbC0DM4W6zUax407GzWYhe8kKlYOnlWrm',
         30
     );
 
     $output['references'] = [];
     if (_isValidXml($result)) {
         $data = simplexml_load_string($result);
-
         $nr = count($data->entry);
+        if ($nr > $max) {
+            $nr = $max;
+        }
+
         for ($i = 0; $i < $nr; $i++) {
             $output['references'][$i]['title'] = strip_tags((string)$data->entry[$i]->content);
             $output['references'][$i]['url'] = (string)$data->entry->link['href'];
@@ -157,17 +159,6 @@ function _getWorldCatReferences () {
         $output['count'] = $nr;
         $output['source_url'] = $nr > 0 ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
             urlencode($_GET['term']) . '&stype=F' : null;
-
-        /*
-        foreach ($data->records->record as $record) {
-            $r = $record->recordData->oclcdcs->children('dc', true);
-            if (isset($r->contributor)) {
-                $coAuthors = is_array($r->contributor) ? $r->contributor : [$r->contributor];
-            }
-
-        }
-        */
-
     }
     return json_encode($output);
 }
@@ -175,8 +166,8 @@ function _getWorldCatReferences () {
 
 function _getBhlReferences ($max = 10) {
     $result = _queryApi(
-        'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm=[q]&apikey=[k]',
-        $_GET['term'],
+        'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm="' .
+        urlencode($_GET['term']) . '"&apikey=[k]',
         '92209bfc-0702-4d1d-a086-ff85bfd88e1e',
         30
     );
@@ -262,8 +253,7 @@ function _compileReference ($parts)
  * @param int $timeout
  * @return bool|string
  */
-function _queryApi ($url, $query, $key = false, $timeout = 10) {
-    $url = str_replace('[q]', urlencode($query), $url);
+function _queryApi ($url, $key = false, $timeout = 10) {
     if ($key) {
         $url = str_replace('[k]', $key, $url);
     }
