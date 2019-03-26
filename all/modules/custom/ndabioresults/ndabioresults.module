@@ -157,8 +157,8 @@ function _getWorldCatReferences ($max = 10) {
         }
 
         $output['count'] = $nr;
-        $output['source_url'] = $nr > 0 ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
-            urlencode($_GET['term']) . '&stype=F' : null;
+        $output['source_url'] = $nr > 0 ? 'https://www.worldcat.org/search?qt=worldcat_org_all&q=' .
+            $_GET['term'] : null;
     }
     return json_encode($output);
 }
