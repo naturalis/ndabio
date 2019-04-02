@@ -78,9 +78,10 @@ function _printTaxonDetail ($data) {
         <div id="literature"><p>Searching the external sources 
             <a href="https://www.worldcat.org" target="_blank">WorldCat</a> and the 
             <a href="Biodiversity Heritage Library" target="_blank">Biodiversity Heritage Library</a> 
-            for literature on ' . $data['acceptedName'] . '...</p></div>
-        <div id="bhl"></div>
-        <div id="wc"></div>';
+            for literature on ' . $data['acceptedName'] .
+            '. The first five results for each source will be displayed.</p></div>
+        <div id="wc"></div>
+        <div id="bhl"></div>';
 
 
     // Drupal title empty; page title custom
@@ -1692,10 +1693,16 @@ function _printAdvancedSearchSuggestion ($data) {
 			_setStartUrl() . '?searchagain=1');
 }
 
-
-function _printMakeMediaSecure($src) {
+function _printMakeMediaSecure ($src) {
+    $domains = [
+        'images.naturalis.nl',
+        'medialib.naturalis.nl',
+    ];
+    foreach ($domains as $domain) {
+        if (strpos($src, $domain) !== false) {
+            return str_replace('http://' . $domain, 'https://' . $domain, $src);
+        }
+    }
     return $src;
-    // Disabled for now
-    return preg_replace("/http:\/\/", "https://", $src);
 }
 

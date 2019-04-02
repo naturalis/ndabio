@@ -3012,7 +3012,7 @@ function _isMp4 ($url) {
  */
 function _loadPrettyPhoto ($imageUrl) {
     $maxWidth = $maxHeight = 600;
-    $img = @getimagesize($imageUrl);
+    $img = getimagesize($imageUrl);
     if ($img && $img[0] > $maxWidth || $img[1] > $maxHeight) {
         $path = drupal_get_path('module', 'ndabioresults');
         drupal_add_css($path . "/css/prettyPhoto.css");
