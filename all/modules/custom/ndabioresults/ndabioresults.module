@@ -117,25 +117,154 @@ function ndabioresults_menu () {
 
 
 /**
- * Returns NBA result as JSON, based on given request
+ * Simple method to query api through Ajax
  *
- * Returns json from NBA from Ajax call; request should be given as GET parameter.
- * Optionally this service can return just the total number of records, if getTotal
- * is provided as GET parameter.
+ * Requires two GET parameters: source and term; key is optional
  */
 function ndabioresults_ajax_callback () {
-    drupal_add_http_header('Content-Type', 'application/json');
-    if (isset($_GET['nba_request'])) {
-        // For the time being this service is used only to retrieve totalSize
-        // Therefore maxResults is capped to 1 by default
-        $remoteData = ndaAjaxRequest(urldecode($_GET['nba_request']));
-        if (isset($_GET['getTotal'])) {
-            $data = json_decode((reset($remoteData)));
-            die($data->totalSize);
-        }
-        die(reset($remoteData));
+    //drupal_add_http_header('Content-Type', 'application/json');
+    if (empty($_GET['term']) || empty($_GET['source'])) {
+        die(json_encode('Both "source" and "term" should be passed as get parameters!'));
     }
-    die('Invalid NBA request');
+    if ($_GET['source'] == 'bhl') {
+        die(_getBhlReferences(5));
+    }
+    if ($_GET['source'] == 'wc') {
+        die(_getWorldCatReferences(5));
+    }
+    die(json_encode('Invalid request or request timed out'));
+}
+
+function _getWorldCatReferences ($max = 10) {
+    $result = _queryApi(
+        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=' . $_GET['term'] .
+            '&wskey=[k]&cformat=chicago',
+       'p8KSpphVF5QV3RDa0oinF4K6y4R7TvSXM7DYBjPde0IvOviDbC0DM4W6zUax407GzWYhe8kKlYOnlWrm',
+        30
+    );
+
+    $output['references'] = [];
+    if (_isValidXml($result)) {
+        $data = simplexml_load_string($result);
+        $nr = count($data->entry);
+        if ($nr > $max) {
+            $nr = $max;
+        }
+
+        for ($i = 0; $i < $nr; $i++) {
+            $output['references'][$i]['title'] = strip_tags((string)$data->entry[$i]->content);
+            $output['references'][$i]['url'] = (string)$data->entry->link['href'];
+        }
+
+        $output['count'] = $nr;
+        $output['source_url'] = $nr > 0 ? 'https://www.worldcat.org/search?qt=worldcat_org_all&q=' .
+            $_GET['term'] : null;
+    }
+    return json_encode($output);
+}
+
+
+function _getBhlReferences ($max = 10) {
+    $result = _queryApi(
+        'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm="' .
+        urlencode($_GET['term']) . '"&apikey=[k]',
+        '92209bfc-0702-4d1d-a086-ff85bfd88e1e',
+        30
+    );
+    $output['references'] = [];
+    if (_isValidJson($result)) {
+        $data = json_decode($result, true);
+
+        if ($data['Status'] == 'ok' && !empty($data['Result'])) {
+            foreach ($data['Result'] as $i => $r) {
+                if ($i >= $max) {
+                    break;
+                }
+                $output['references'][$i]['title'] = _compileReference([
+                    'authors' => array_column($r['Authors'],'Name'),
+                    'title' => isset($r['Title']) ? $r['Title'] : null,
+                    'year' => isset($r['Date']) ? $r['Date'] : null,
+                    'journal' => isset($r['ContainerTitle']) ? $r['ContainerTitle'] : null,
+                    'volume' => isset($r['Volume']) ? $r['Volume'] : null,
+                    'pages' => isset($r['PageRange']) ? $r['PageRange'] : null,
+                    'issue' => isset($r['Issue']) ? $r['Issue'] : null,
+                    'publisher' => [
+                        'name' => isset($r['PublisherName']) ? $r['PublisherName'] : null,
+                        'place' => isset($r['PublisherPlace']) ? $r['PublisherPlace'] : null,
+                        'year' => isset($r['PublisherDate']) ? $r['PublisherDate'] : null
+                    ]
+                ]);
+                $output['references'][$i]['url'] =
+                    !empty($r['PartUrl']) ? $r['PartUrl'] : $r['TitleUrl'];
+            }
+        }
+        $output['count'] = isset($i) ? $i + 1 : 0;
+        $output['source_url'] = isset($i) ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
+            urlencode($_GET['term']) . '&stype=F' : null;
+
+        return json_encode($output);
+    }
+}
+
+/**
+ * @param $parts Individuals parts used to compile a reference
+ * @return string
+ */
+function _compileReference ($parts)
+{
+    foreach ($parts as $k => $v) {
+        if (!is_array($v)) {
+            $$k = trim($v, ' .,/');
+        }
+    }
+    if (!empty($pages)) {
+        $tmp = explode('--', $pages);
+        $pages = $tmp[0] == $tmp[1] ? $tmp[0] : $tmp[0] . '-' . $tmp[1];
+    }
+    $authors = array_map(function($value) {
+        return trim($value, ' .,/');
+    }, $authors);
+    $authors = array_pop($parts['authors']);
+    if ($parts['authors']) {
+        $authors = implode(', ', $parts['authors']) . ' & ' . $authors;
+    }
+    $publisher = implode(' ', $parts['publisher']);
+    $output =
+        (!empty($authors) ? $authors . '. ' : '') .
+        (!empty($year) ? $year . '. ' : '') .
+        (!empty($title) ? $title . '. ' : '') .
+        (!empty($journal) ? $journal . ', ' : '') .
+        (!empty($volume) ? $volume : '') .
+        (!empty($issue) ? '(' . $issue . ')' : '') .
+        (!empty($pages) ? ': ' . $pages . '.' : '') .
+        (!empty(trim($publisher)) ? ': ' . trim($publisher) . '.' : '');
+    return $output;
+
+}
+
+
+/**
+ * Very basic curl request to retrieve data from external apis.
+ * Pass url as http://domain?query=[q](&key=[k])
+ *
+ * @param string $url
+ * @param string $query // Will be encoded here!
+ * @param string $key
+ * @param int $timeout
+ * @return bool|string
+ */
+function _queryApi ($url, $key = false, $timeout = 10) {
+    if ($key) {
+        $url = str_replace('[k]', $key, $url);
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+
 }
 
 
@@ -725,7 +854,9 @@ function _getTaxonMultimedia ($object) {
 			isset($object->taxa[0]->acceptedName->infraspecificEpithet) ? 
 				$object->taxa[0]->acceptedName->infraspecificEpithet : null);
 		// Make sure only Naturalis sources are queried
-		$condition->setAnd(_naturalisOnlyCondition());
+		if (_naturalisOnly() == 1) {
+    		$condition->setAnd(_naturalisOnlyCondition());
+		}
 		
 		$query = new QuerySpec();
 		$query
@@ -798,8 +929,9 @@ function _getSpecimenMultimedia ($object) {
 	try {
 	    
 	    $condition = new Condition('associatedSpecimenReference', 'EQUALS', $object->id);
-	    $condition->setAnd(_naturalisOnlyCondition());
-	    
+	    if (_naturalisOnly() == 1) {
+	       $condition->setAnd(_naturalisOnlyCondition());
+	    }
 		$query = new QuerySpec();
 		$query
 		    ->addCondition($condition)
@@ -902,8 +1034,9 @@ function _getTaxonByName ($name) {
 				(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 				(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 		}
-		$condition->setAnd(_naturalisOnlyCondition());
-		
+		if (_naturalisOnly() == 1) {
+            $condition->setAnd(_naturalisOnlyCondition());
+		}
 	    $query = new GroupByScientificNameQuerySpec();
 	    $query->addCondition($condition)->setSpecimensSize(5);
 	    $data = json_decode($client->setQuerySpec($query)->groupByScientificName());
@@ -1222,7 +1355,9 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 		}
 	}
 	// Naturalis only
-	$query->addCondition(_naturalisOnlyCondition());
+	if (_naturalisOnly() == 1) {
+	   $query->addCondition(_naturalisOnlyCondition());
+	}
 	
     // Add map condition if present
     if (isset($geoShape)) {
@@ -1709,7 +1844,9 @@ function _getTaxonFromNba ($taxon, $existsOnly = false) {
 					(count($taxon) == 2 ? 'EQUALS' : 'EQUALS_IC'), 
 					(count($taxon) == 2 ? null : implode(' ', array_slice($taxon, 2))));
 			}
-			$condition->setAnd(_naturalisOnlyCondition());
+			if (_naturalisOnly() == 1) {
+                $condition->setAnd(_naturalisOnlyCondition());
+			}
 			$client = _setNbaClient('taxon');
 			if (!$client) {
 				return false;
@@ -2085,7 +2222,9 @@ function _getSpecimenDetails (&$data) {
 	foreach ($data->resultSet as $i => $row) {
 		foreach ($row->item->specimens as $item) {
 			$condition = new Condition('unitID', 'EQUALS', $item->unitID);
-			$condition->setAnd(_naturalisOnlyCondition());
+			if (_naturalisOnly() == 1) {
+                $condition->setAnd(_naturalisOnlyCondition());
+			}
 			$query = new QuerySpec();
 			$query
 				->addCondition($condition)
@@ -2495,7 +2634,7 @@ function _nbaSimpleSearch () {
 }
 
 
-function _rewriteSimpleSearchTerm ($term) {
+function _rewriteSimpleSearchTerm ($terms) {
 	foreach ($terms as $i => $term) {
 		$terms[$i] = substr($term, 0, _nbaMaxContainsStringSize());
 	}
@@ -2638,7 +2777,9 @@ function _getOtherSpecimens ($data) {
 		$client = _initNbaClient();
 		try {
 		    $condition = new Condition('assemblageID', 'EQUALS', $data->assemblageID);
-		    $condition->setAnd(_naturalisOnlyCondition());
+		    if (_naturalisOnly() == 1) {
+                $condition->setAnd(_naturalisOnlyCondition());
+		    }
 		    $query = new QuerySpec();
 			$query
 			    ->addCondition($condition)
@@ -2871,7 +3012,7 @@ function _isMp4 ($url) {
  */
 function _loadPrettyPhoto ($imageUrl) {
     $maxWidth = $maxHeight = 600;
-    $img = @getimagesize($imageUrl);
+    $img = getimagesize($imageUrl);
     if ($img && $img[0] > $maxWidth || $img[1] > $maxHeight) {
         $path = drupal_get_path('module', 'ndabioresults');
         drupal_add_css($path . "/css/prettyPhoto.css");

@@ -35,6 +35,9 @@ function _printSortOptions ($service) {
  * @return string
  */
 function _printTaxonDetail ($data) {
+
+    //p($data);
+
     $language = _getLanguage();
 
     $output = _printDebug();
@@ -67,12 +70,29 @@ function _printTaxonDetail ($data) {
     		_printSpecimensPreview($data['specimens']) . "</div>\n";
 	}
 	if (!empty($data['multimedia'])) {
-    	$output .= '<h3>' . t('Multimedia') . '</h3><div>' .
+    	$output .= '<h3>' . t('Multimedia') . '</h3><div style="margin-bottom: 48px;">' .
     		_printMultimediaPreview($data['multimedia']) . "</div>\n";
 	}
-    
+
+    $output .= '<h3>' . t('Literature'). '</h3>
+        <div id="literature"><p>Searching the external sources 
+            <a href="https://www.worldcat.org" target="_blank">WorldCat</a> and the 
+            <a href="Biodiversity Heritage Library" target="_blank">Biodiversity Heritage Library</a> 
+            for literature on ' . $data['acceptedName'] .
+            '. The first five results for each source will be displayed.</p></div>
+        <div id="wc"></div>
+        <div id="bhl"></div>';
+
+
     // Drupal title empty; page title custom
     _setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));
+
+    drupal_add_js("var str_base_path = '" . _setBasePath() . "';", 'inline');
+    drupal_add_js(drupal_get_path('module', 'ndabioresults') . "/js/ajax.js", array('weight' => 1));
+    drupal_add_js(
+        "jQuery(function() { getReferences('" . urlencode($data['name']) . "'); });",
+        array('type' => 'inline', 'scope' => 'footer')
+    );
 
     return $output;
 }
@@ -509,7 +529,7 @@ function _printMultimediaPreview ($data) {
 	if (isset($data['items']) && !empty($data['items'])) {
 		$output = "<div style='overflow: hidden;'>\n";
 		foreach ($data['items'] as $i => $media) {
-			$src = $media['src'];
+			$src = _printMakeMediaSecure($media['src']);
 			if ($media['format'] == 'video/mp4') {
 				$src = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/play.png';
 			}
@@ -621,9 +641,10 @@ function _printSpecimenMediaDetail ($data) {
 	if (!$headers || !strpos($headers[0], '200')) {
 		$data['imgSrc'] = _setBasePath() . 'profiles/naturalis/themes/custom/naturalis_theme/images/naturalis/image-not-found.jpg';
 	}
-    
-    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src=\"" . $data['imgSrc'] . "\" alt=\"$alt\" title=\"$alt\" " .
+
+	$imgSrc = _printMakeMediaSecure($data['imgSrc']);
+    list($width, $height) = _loadPrettyPhoto($imgSrc);
+    $img = "<img src=\"" . $imgSrc . "\" alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
@@ -717,8 +738,9 @@ function _printTaxonMediaDetail ($data) {
     );
     $alt = htmlspecialchars(implode(' | ', array_filter($altParts)));
 
-    list($width, $height) = _loadPrettyPhoto($data['imgSrc']);
-    $img = "<img src='" . $data['imgSrc'] . "' alt=\"$alt\" title=\"$alt\" " .
+    $imgSrc = _printMakeMediaSecure($data['imgSrc']);
+    list($width, $height) = _loadPrettyPhoto($imgSrc);
+    $img = "<img src='" . $imgSrc . "' alt=\"$alt\" title=\"$alt\" " .
         "style='width: {$width}px; height: {$height}px;'/>";
     if ($width > 0) {
         $copyright = !empty($data['copyrightText']) ?
@@ -876,10 +898,12 @@ function _printMultimedia ($data) {
 		}
 */				
 		$mmHit = _printMultimediaHit($row);
+
+		$imgSrc = _printMakeMediaSecure($row['imgSrc']);
 		
 		$output .= "<a class='polaroid' href='" . $row['url'] . "' title='" . $row['title'] . "'>" .
 		//"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. "), url(". $fallbackSrc . ");' alt='" . $row['title'] . "'></div>\n" .
-		"  <div class='polaroid-image' style='background-image: url(" . $row['imgSrc']. ");' alt='" . $row['title'] . "'></div>\n" .
+		"  <div class='polaroid-image' style='background-image: url(" . $imgSrc . ");' alt='" . $row['title'] . "'></div>\n" .
 		"  <div class='polaroid-caption'>" .
 		"    <div class='image-title'>" . (!empty($row['taxon']) ? $row['taxon'] : '&mdash;') .
 		(!empty($row['unitID']) ? '<br>' . $row['unitID'] : '') . "</div>\n";
@@ -1669,4 +1693,16 @@ function _printAdvancedSearchSuggestion ($data) {
 			_setStartUrl() . '?searchagain=1');
 }
 
+function _printMakeMediaSecure ($src) {
+    $domains = [
+        'images.naturalis.nl',
+        'medialib.naturalis.nl',
+    ];
+    foreach ($domains as $domain) {
+        if (strpos($src, $domain) !== false) {
+            return str_replace('http://' . $domain, 'https://' . $domain, $src);
+        }
+    }
+    return $src;
+}
 

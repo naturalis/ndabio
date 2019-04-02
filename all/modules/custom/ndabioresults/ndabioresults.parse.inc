@@ -275,6 +275,7 @@ function _parseMultimedia ($data, $options = []) {
 //p($data);
 	
 	foreach ($data->resultSet as $i => $row) {
+	    
 		$type = isset($row->item->associatedTaxonReference) && 
 			!empty($row->item->associatedTaxonReference) ?  'taxon' : 'specimen';
 		$d['title'] = $type == 'taxon' && isset($row->item->title) ? 
