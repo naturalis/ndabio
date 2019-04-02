@@ -77,7 +77,7 @@ function _printTaxonDetail ($data) {
     $output .= '<h3>' . t('Literature'). '</h3>
         <div id="literature"><p>Searching the external sources 
             <a href="https://www.worldcat.org" target="_blank">WorldCat</a> and the 
-            <a href="Biodiversity Heritage Library" target="_blank">Biodiversity Heritage Library</a> 
+            <a href="https://www.biodiversitylibrary.org" target="_blank">Biodiversity Heritage Library</a> 
             for literature on ' . $data['acceptedName'] .
             '. The first five results for each source will be displayed.</p></div>
         <div id="wc"></div>
