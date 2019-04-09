@@ -157,10 +157,8 @@ function _getWorldCatReferences ($max = 10) {
         }
 
         $output['count'] = $nr;
-        $output['source_url'] = $nr > 0 ?
-            'https://naturalis.on.worldcat.org/search?queryString=ti%3A%28%22' . $_GET['term'] .
-            '%22%29&databaseList=1847%2C638&origPageViewName=pages%2Fadvanced-search-page&clusterResults=true&scope='
-             : null;
+        $output['source_url'] = $nr > 0 ? 'https://www.worldcat.org/search?qt=worldcat_org_all&q=' .
+            $_GET['term'] : null;
     }
     return json_encode($output);
 }
