@@ -153,7 +153,7 @@ function _getWorldCatReferences ($max = 10) {
 
         for ($i = 0; $i < $nr; $i++) {
             $output['references'][$i]['title'] = strip_tags((string)$data->entry[$i]->content);
-            $output['references'][$i]['url'] = (string)$data->entry->link['href'];
+            $output['references'][$i]['url'] = (string)$data->entry[$i]->link['href'];
         }
 
         $output['count'] = $nr;
