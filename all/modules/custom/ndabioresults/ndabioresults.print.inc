@@ -75,14 +75,15 @@ function _printTaxonDetail ($data) {
 	}
 
     $output .= '<h3>' . t('Literature'). '</h3>
-        <div id="literature"><p>Searching the external sources 
-            <a href="https://www.worldcat.org" target="_blank">WorldCat</a> and  
-            <a href="https://www.biodiversitylibrary.org" target="_blank">Biodiversity Heritage Library</a> 
-            for literature on ' . $data['acceptedName'] .
-            '. The first five results for each source are displayed.</p></div>
+        <div id="literature"><p>' .
+        sprintf(t('Searching the external sources %s and %s for literature on'),
+            '<a href="https://www.worldcat.org" target="_blank">WorldCat</a>',
+        '<a href="https://www.biodiversitylibrary.org" target="_blank">Biodiversity Heritage Library</a>'
+        ) . ' ' . $data['acceptedName'] . '. ' .
+        t('The first five results for each source are displayed') . '. </p>
+        </div>
         <div id="wc"></div>
         <div id="bhl"></div>';
-
 
     // Drupal title empty; page title custom
     _setTitle(t('Taxon') . ' | '. strip_tags($data['acceptedName']));

@@ -27,7 +27,7 @@ function printReference (data, term, source, name) {
 	if (output == '') {
 		output += '<p>' + Drupal.t('No results for ' + name) + '</p>';
 	} else {
-		output = '<p><strong>References found in ' + name + '</strong>:</p>' + output +
+		output = '<p><strong>' + Drupal.t('References found in') + ' ' + name + '</strong>:</p>' + output +
 			'<div style="margin: 12px 0 30px 0;"><a href="' + data.source_url + '" target="_blank">' +
 			'<i class="icon-arrow-right"></i>' + Drupal.t('Show all results for') + ' ' + name + '</a></div>';
 	}
