@@ -136,9 +136,10 @@ function ndabioresults_ajax_callback () {
 }
 
 function _getWorldCatReferences ($max = 10) {
+    $term = str_replace([' ', '%20'], '+', $_GET['term']);
     $result = _queryApi(
-        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=' . $_GET['term'] .
-            '&wskey=[k]&cformat=chicago',
+        'http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=srw.ti+=%22' . $term .
+            '%22&wskey=[k]&cformat=chicago',
        'p8KSpphVF5QV3RDa0oinF4K6y4R7TvSXM7DYBjPde0IvOviDbC0DM4W6zUax407GzWYhe8kKlYOnlWrm',
         30
     );
@@ -157,17 +158,17 @@ function _getWorldCatReferences ($max = 10) {
         }
 
         $output['count'] = $nr;
-        $output['source_url'] = $nr > 0 ? 'https://www.worldcat.org/search?qt=worldcat_org_all&q=' .
-            $_GET['term'] : null;
+        $output['source_url'] = $nr > 0 ? 'https://www.worldcat.org/search?q=ti%3A%22' . $term  . '%22' : null;
     }
     return json_encode($output);
 }
 
 
 function _getBhlReferences ($max = 10) {
+    $term = str_replace([' ', '%20'], '+', $_GET['term']);
     $result = _queryApi(
         'https://www.biodiversitylibrary.org/api3?op=PublicationSearch&format=json&searchType=C&searchterm="' .
-        urlencode($_GET['term']) . '"&apikey=[k]',
+        $term . '"&apikey=[k]',
         '92209bfc-0702-4d1d-a086-ff85bfd88e1e',
         30
     );
@@ -200,7 +201,7 @@ function _getBhlReferences ($max = 10) {
         }
         $output['count'] = isset($i) ? $i + 1 : 0;
         $output['source_url'] = isset($i) ? 'https://www.biodiversitylibrary.org/search?searchTerm=' .
-            urlencode($_GET['term']) . '&stype=F' : null;
+            $term . '&stype=F' : null;
 
         return json_encode($output);
     }
