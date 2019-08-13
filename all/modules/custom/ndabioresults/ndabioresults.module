@@ -523,7 +523,7 @@ function _nba_multimedia_callback ($id = false, $search = false) {
 	if (!$client) {
 		return _printOops();
 	}
-	
+
 	try {
 		$condition = new Condition('unitID', 'EQUALS', $id);
 		$query = new QuerySpec();
@@ -953,7 +953,7 @@ function _getSpecimenMultimedia ($object) {
 		$output = [];
 		$output['totalSize'] = $data->totalSize;
 		$output['showAllLink'] = $data->totalSize > 5 ?
-			_setBasePath() . 'multimedia/associatedSpecimenReference=' . 
+			_setBasePath() . 'result/multimedia/associatedSpecimenReference=' .
 			urlencode($object->id) . '&associatedSpecimenReferenceOperator=EQUALS' . 
 			'&logicalOperator=AND&size=100&referrer=' . $object->referrer : null;
 		foreach ($data->resultSet as $i => $media) {
