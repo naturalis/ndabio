@@ -1079,7 +1079,7 @@ function _filterQueryOperators (&$terms) {
  * @return \nl\naturalis\bioportal\GroupByScientificNameQuerySpec|\nl\naturalis\bioportal\QuerySpec
  */
 function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
-	// Logical operator is important to compile main QuerySpec: 
+	// Logical operator is important to compile main QuerySpec:
 	// - for OR we will create one big nested OR query
 	// - for AND we will create separate conditions ruled by main logical operator AND
 	$logicalOperator = isset($terms['logicalOperator']) && !empty($terms['logicalOperator']) ?
@@ -1219,10 +1219,12 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
             unset($statements[$i]);
         }
     }
-    
+
+   // p($statements);
+
     // Compile conditions
 	$conditions = [];
-	foreach ($statements as $d) {
+    foreach ($statements as $d) {
 		$statement = $d['statement'];
 		$elements = $d['value'];
 		// Set boost only if there is more than one element
@@ -1236,6 +1238,28 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 			}
 			$first = true;
 			foreach ($statement as $path => $operator) {
+                // geoShape is a special case
+                if (strpos($path, 'geoShape') !== false) {
+                    // geoShape arrives from simple search as area name
+                    // check if location is present in NBA and use that!
+                    if (strpos($element, '@') === false && !_isValidJson($element)) {
+                        $area = _localityInNba($element);
+                        if ($area) {
+                            $element = $area;
+                        } else {
+                            continue;
+                        }
+                        // Valid geoShape (gid or geojson); isolate to process later;
+                        // can only be a single value
+                    } else {
+                        // BIOPORVTWO-457: extract the correct element from values!
+                        $geoShape = [
+                            'path' => $path,
+                            'value' => _getGeoShapeValue($elements),
+                        ];
+                        continue;
+                    }
+                }
 				// Search for empty value
 				if ($element == '') {
 					// Reset operator to EQUALS if it's not either EQUALS/NOT_EQUALS
@@ -1258,27 +1282,6 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 						$operator = 'STARTS_WITH_IC';
 					}
 					
-				}
-				// geoShape is a special case
-				if (strpos($path, 'geoShape') !== false) {
-					// geoShape arrives from simple search as area name
-					// check if location is present in NBA and use that!
-					if (strpos($element, '@') === false && !_isValidJson($element)) {
-						$area = _localityInNba($element);
-						if ($area) {
-							$element = $area;
-						} else {
-							continue;
-						}
-					// Valid geoShape (gid or geojson); isolate to process later;
-					// can only be a single value
-					} else {
-						$geoShape = [
-							'path' => $path,
-							'value' => $elements[0],
-						];
-						continue;
-					}
 				}
 				// Encode search term
 				if (!is_null($element)) {
@@ -1361,7 +1364,7 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
 	}
 	
     // Add map condition if present
-    if (isset($geoShape)) {
+    if (isset($geoShape) && $geoShape !== false) {
 	    $query->addCondition(new Condition($geoShape['path'], 'IN', $geoShape['value']));
     }
     // Add search flags
@@ -1389,10 +1392,21 @@ function _buildNbaQuery ($service, $terms = [], $useNameResolution = false) {
         // If sort is used, we can safely turn it into a constant score query
         $query->setConstantScore();
     }
-//p($query->getQuerySpec(true)); die();
+//p($query->getQuerySpec()); die();
     
     return $query;
 }
+
+
+function _getGeoShapeValue ($values) {
+    foreach ($values as $value) {
+        if (strpos($value, '@GEO') || strpos($value, 'coordinates":[[[')) {
+            return $value;
+        }
+    }
+    return false;
+}
+
 
 /**
  * Search exception for CC licenses
